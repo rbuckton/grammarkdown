@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs"
+    },
+    "files": [
+        "../typings/tsd.d.ts",
+        "../core.ts",
+        "../tokens.ts",
+        "../diagnostics.ts",
+        "../nodes.ts",
+        "../scanner.ts",
+        "../parser.ts",
+        "../binder.ts",
+        "../checker.ts",
+        "index.ts",
+        "diff.ts",
+        "core-tests.ts",
+        "tokens-tests.ts",
+        "diagnostics-tests.ts",
+        "nodes-tests.ts",
+        "scanner-tests.ts",
+        "parser-tests.ts",
+        "binder-tests.ts",
+        "checker-tests.ts"
+    ]
+}

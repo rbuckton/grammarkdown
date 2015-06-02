@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs"
+    },
+    "files": [
+        "typings/tsd.d.ts",
+        "core.ts",
+        "tokens.ts",
+        "diagnostics.ts",
+        "nodes.ts",
+        "scanner.ts",
+        "parser.ts",
+        "binder.ts",
+        "checker.ts",
+        "index.ts",
+        "bin/cli.ts"
+    ]
+}

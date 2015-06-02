@@ -1,0 +1,43 @@
+{
+  "name": "grammarkdown",
+  "version": "0.0.1",
+  "description": "Markdown-like DSL for defining grammatical syntax for programming languages",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp test",
+    "build": "gulp build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rbuckton/grammarkdown.git"
+  },
+  "keywords": [
+    "grammar",
+    "language",
+    "syntax",
+    "dsl",
+    "javascript",
+    "typescript",
+    "ecmascript"
+  ],
+  "author": {
+    "name": "Ron Buckton",
+    "email": "rbuckton@chronicles.org",
+    "url": "http://github.com/rbuckton"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/rbuckton/grammarkdown/issues"
+  },
+  "homepage": "https://github.com/rbuckton/grammarkdown",
+  "devDependencies": {
+    "chai": "^2.3.0",
+    "gulp": "^3.9.0",
+    "gulp-mocha": "^2.1.0",
+    "gulp-tsb": "^1.4.4",
+    "gulp-util": "^3.0.5",
+    "mocha": "^2.2.5",
+    "source-map-support": "^0.3.1",
+    "typescript": "^1.5.0-beta"
+  }
+}
