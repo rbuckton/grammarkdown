@@ -143,7 +143,7 @@
     VerticalTab = 0x0B,           // \v
 }
 
-export const enum SyntaxKind {
+export enum SyntaxKind {
     Unknown,
     EndOfFileToken,
 
@@ -153,9 +153,8 @@ export const enum SyntaxKind {
     DedentToken,
 
     // Literals
-    StringLiteral,
-    NumericLiteral,
     Terminal,
+    UnicodeCharacter,
     Prose,
 
     // Punctuation
@@ -166,6 +165,8 @@ export const enum SyntaxKind {
     OpenParenToken,             // (
     CloseParenToken,            // )
     ColonToken,                 // :
+    ColonColonToken,            // ::
+    ColonColonColonToken,       // :::
     CommaToken,                 // ,
     PlusToken,                  // +
     TildeToken,                 // ~
@@ -175,17 +176,11 @@ export const enum SyntaxKind {
     ExclamationEqualsToken,     // !=
     LessThanExclamationToken,   // <!
     LessThanMinusToken,         // <-
-    AtToken,                    // @
     
     // Identifiers
     Identifier,
     
-    // Preprocessor keywords
-    DefineKeyword,
-    ImportKeyword,
-
     // Keywords
-    AsKeyword,
     ButKeyword,
     EmptyKeyword,
     GoalKeyword,
@@ -197,12 +192,8 @@ export const enum SyntaxKind {
     OfKeyword,
     OneKeyword,
     OrKeyword,
-    TrueKeyword,
-    FalseKeyword,
 
     // Nodes
-    Import,                     // #import "path"
-    Type,                       // @lexical
     Parameter,                  // Production(Parameter):
     ParameterList,
     Argument,                   // NonTerminal(Argument)
@@ -220,29 +211,25 @@ export const enum SyntaxKind {
     BinarySymbol,               // x but not y
     OneOfSymbol,                // one of OrClause
     Nonterminal,
-    InvalidSymbol,
     TerminalList,
     TerminalSet,
 
-    // Constraints
-    LookaheadConstraint,
-    LexicalGoalConstraint,
-    NoSymbolHereConstraint,
-    ParameterValueConstraint,
-
-    Definition,
-    DefinitionOption,
+    // Zero-width Assertions
+    LookaheadAssertion,
+    LexicalGoalAssertion,
+    NoSymbolHereAssertion,
+    ParameterValueAssertion,
 
     // error nodes
-    InvalidConstraint,
+    InvalidSymbol,
+    InvalidAssertion,
     InvalidSourceElement,
 
     // top nodes
     SourceFile,
-    Grammar,
 
-    FirstKeyword = AsKeyword,
-    LastKeyword = FalseKeyword
+    FirstKeyword = ButKeyword,
+    LastKeyword = OrKeyword
 }
 
 export interface Dict<T> {

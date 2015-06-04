@@ -55,15 +55,9 @@ export class Literal extends Constant implements TextContent {
     }
 }
 
-export class StringLiteral extends Literal {
+export class UnicodeCharacterLiteral extends Literal {
     constructor(text: string) {
-        super(SyntaxKind.StringLiteral, text);
-    }
-}
-
-export class NumericLiteral extends Literal {
-    constructor(text: string) {
-        super(SyntaxKind.NumericLiteral, text);
+        super(SyntaxKind.UnicodeCharacter, text);
     }
 }
 
@@ -119,7 +113,7 @@ export class TerminalSet extends Node {
     }
 }
 
-export class Constraint extends Node {
+export class Assertion extends LexicalSymbol {
     public openBracketToken: Node;
     public closeBracketToken: Node;
     constructor(kind: SyntaxKind, openBracketToken: Node, closeBracketToken: Node) {
@@ -129,47 +123,47 @@ export class Constraint extends Node {
     }
 }
 
-export class LookaheadConstraint extends Constraint {
+export class LookaheadAssertion extends Assertion {
     public lookaheadKeyword: Node;
     public operatorToken: Node;
-    public lookahead: Terminal | TerminalSet;
-    constructor(openBracketToken: Node, lookaheadKeyword: Node, operatorToken: Node, lookahead: Terminal | TerminalSet, closeBracketToken: Node) {
-        super(SyntaxKind.LookaheadConstraint, openBracketToken, closeBracketToken);
+    public lookahead: LexicalSymbol | TerminalSet;
+    constructor(openBracketToken: Node, lookaheadKeyword: Node, operatorToken: Node, lookahead: LexicalSymbol | TerminalSet, closeBracketToken: Node) {
+        super(SyntaxKind.LookaheadAssertion, openBracketToken, closeBracketToken);
         this.lookaheadKeyword = lookaheadKeyword;
         this.operatorToken = operatorToken;
         this.lookahead = lookahead;
     }
 }
 
-export class LexicalGoalConstraint extends Constraint {
+export class LexicalGoalAssertion extends Assertion {
     public lexicalKeyword: Node;
     public goalKeyword: Node;
     public symbol: Identifier;
     constructor(openBracketToken: Node, lexicalKeyword: Node, goalKeyword: Node, symbol: Identifier, closeBracketToken: Node) {
-        super(SyntaxKind.LexicalGoalConstraint, openBracketToken, closeBracketToken);
+        super(SyntaxKind.LexicalGoalAssertion, openBracketToken, closeBracketToken);
         this.lexicalKeyword = lexicalKeyword;
         this.goalKeyword = goalKeyword;
         this.symbol = symbol;
     }
 }
 
-export class NoSymbolHereConstraint extends Constraint {
+export class NoSymbolHereAssertion extends Assertion {
     public noKeyword: Node;
     public symbol: Identifier;
     public hereKeyword: Node;
     constructor(openBracketToken: Node, noKeyword: Node, symbol: Identifier, hereKeyword: Node, closeBracketToken: Node) {
-        super(SyntaxKind.NoSymbolHereConstraint, openBracketToken, closeBracketToken);
+        super(SyntaxKind.NoSymbolHereAssertion, openBracketToken, closeBracketToken);
         this.noKeyword = noKeyword;
         this.symbol = symbol;
         this.hereKeyword = hereKeyword;
     }
 }
 
-export class ParameterValueConstraint extends Constraint {
+export class ParameterValueAssertion extends Assertion {
     public operatorToken: Node;
     public name: Identifier;
     constructor(openBracketToken: Node, operatorToken: Node, name: Identifier, closeBracketToken: Node) {
-        super(SyntaxKind.ParameterValueConstraint, openBracketToken, closeBracketToken);
+        super(SyntaxKind.ParameterValueAssertion, openBracketToken, closeBracketToken);
         this.operatorToken = operatorToken;
         this.name = name;
     }
@@ -212,7 +206,7 @@ export class Prose extends LexicalSymbol implements TextContent {
     public text: string;
 
     constructor(text: string) {
-        super(SyntaxKind.Terminal);
+        super(SyntaxKind.Prose);
         this.text = text;
     }
 }
@@ -241,13 +235,11 @@ export class OneOfSymbol extends LexicalSymbol {
 }
 
 export class SymbolSpan extends Node {
-    public constraint: Constraint;
     public symbol: LexicalSymbol;
     public questionToken: Node;
     public next: SymbolSpan;
-    constructor(constraint: Constraint, symbol: LexicalSymbol, questionToken: Node, next: SymbolSpan) {
+    constructor(symbol: LexicalSymbol, questionToken: Node, next: SymbolSpan) {
         super(SyntaxKind.SymbolSpan);
-        this.constraint = constraint;
         this.symbol = symbol;
         this.questionToken = questionToken;
         this.next = next;
@@ -291,16 +283,6 @@ export class OneOfList extends Node {
     }
 }
 
-export class Type extends Node {
-    public atToken: Node;
-    public name: Identifier;
-    constructor(atToken: Node, name: Identifier) {
-        super(SyntaxKind.Type);
-        this.atToken = atToken;
-        this.name = name;
-    }
-}
-
 export class Parameter extends Node {
     public name: Identifier;
     constructor(name: Identifier) {
@@ -325,56 +307,16 @@ export class SourceElement extends Node {
 }
 
 export class Production extends SourceElement {
-    public type: Type;
     public name: Identifier;
     public colonToken: Node;
     public parameterList: ParameterList;
     public body: OneOfList | RightHandSide | RightHandSideList;
-    constructor(type: Type, name: Identifier, parameters: ParameterList, colonToken: Node, body: OneOfList | RightHandSide | RightHandSideList) {
+    constructor(name: Identifier, parameters: ParameterList, colonToken: Node, body: OneOfList | RightHandSide | RightHandSideList) {
         super(SyntaxKind.Production);
-        this.type = type;
         this.name = name;
         this.parameterList = parameters;
         this.colonToken = colonToken;
         this.body = body;
-    }
-}
-
-export class DefinitionOption extends Node {
-    public name: Identifier;
-    public equalsToken: Node;
-    public value: Literal | Constant;
-    constructor(name: Identifier, equalsToken: Node, value: Literal | Constant) {
-        super(SyntaxKind.DefinitionOption);
-        this.name = name;
-        this.equalsToken = equalsToken;
-        this.value = value;
-    }
-}
-
-export class Definition extends SourceElement {
-    public defineKeyword: Node;
-    public type: Type;
-    public options: DefinitionOption[];
-    constructor(defineKeyword: Node, type: Type, options: DefinitionOption[]) {
-        super(SyntaxKind.Definition);
-        this.defineKeyword = defineKeyword;
-        this.type = type;
-        this.options = options;
-    }
-}
-
-export class Import extends SourceElement {
-    public importKeyword: Node;
-    public file: StringLiteral;
-    public asKeyword: Node;
-    public type: Type;
-    constructor(importKeyword: Node, file: StringLiteral, asKeyword: Node, type: Type) {
-        super(SyntaxKind.Import);
-        this.importKeyword = importKeyword;
-        this.file = file;
-        this.asKeyword = asKeyword;
-        this.type = type;
     }
 }
 
@@ -393,17 +335,8 @@ export class SourceFile extends Node {
     }
 }
 
-export class Grammar extends Node {
-    public sources: SourceFile[];
-    constructor(sources: SourceFile[]) {
-        super(SyntaxKind.Grammar);
-        this.sources = sources;
-    }
-}
-
 export enum SymbolKind {
     SourceFile,
-    Type,
     Production,
     Parameter
 }
@@ -573,32 +506,32 @@ export function forEachChild<T>(node: Node, cbNode: (node: Node) => T): T {
                 return visitNode((<TerminalSet>node).openBraceToken, cbNode)
                     || visitNodes((<TerminalSet>node).elements, cbNode)
                     || visitNode((<TerminalSet>node).closeBraceToken, cbNode);
-            case SyntaxKind.LookaheadConstraint:
-                return visitNode((<LookaheadConstraint>node).openBracketToken, cbNode)
-                    || visitNode((<LookaheadConstraint>node).lookaheadKeyword, cbNode)
-                    || visitNode((<LookaheadConstraint>node).operatorToken, cbNode)
-                    || visitNode((<LookaheadConstraint>node).lookahead, cbNode)
-                    || visitNode((<LookaheadConstraint>node).closeBracketToken, cbNode);
-            case SyntaxKind.LexicalGoalConstraint:
-                return visitNode((<LexicalGoalConstraint>node).openBracketToken, cbNode)
-                    || visitNode((<LexicalGoalConstraint>node).lexicalKeyword, cbNode)
-                    || visitNode((<LexicalGoalConstraint>node).goalKeyword, cbNode)
-                    || visitNode((<LexicalGoalConstraint>node).symbol, cbNode)
-                    || visitNode((<LexicalGoalConstraint>node).closeBracketToken, cbNode);
-            case SyntaxKind.NoSymbolHereConstraint:
-                return visitNode((<NoSymbolHereConstraint>node).openBracketToken, cbNode)
-                    || visitNode((<NoSymbolHereConstraint>node).noKeyword, cbNode)
-                    || visitNode((<NoSymbolHereConstraint>node).symbol, cbNode)
-                    || visitNode((<NoSymbolHereConstraint>node).hereKeyword, cbNode)
-                    || visitNode((<NoSymbolHereConstraint>node).closeBracketToken, cbNode);
-            case SyntaxKind.ParameterValueConstraint:
-                return visitNode((<ParameterValueConstraint>node).openBracketToken, cbNode)
-                    || visitNode((<ParameterValueConstraint>node).operatorToken, cbNode)
-                    || visitNode((<ParameterValueConstraint>node).name, cbNode)
-                    || visitNode((<ParameterValueConstraint>node).closeBracketToken, cbNode);
-            case SyntaxKind.InvalidConstraint:
-                return visitNode((<Constraint>node).openBracketToken, cbNode)
-                    || visitNode((<Constraint>node).closeBracketToken, cbNode);
+            case SyntaxKind.LookaheadAssertion:
+                return visitNode((<LookaheadAssertion>node).openBracketToken, cbNode)
+                    || visitNode((<LookaheadAssertion>node).lookaheadKeyword, cbNode)
+                    || visitNode((<LookaheadAssertion>node).operatorToken, cbNode)
+                    || visitNode((<LookaheadAssertion>node).lookahead, cbNode)
+                    || visitNode((<LookaheadAssertion>node).closeBracketToken, cbNode);
+            case SyntaxKind.LexicalGoalAssertion:
+                return visitNode((<LexicalGoalAssertion>node).openBracketToken, cbNode)
+                    || visitNode((<LexicalGoalAssertion>node).lexicalKeyword, cbNode)
+                    || visitNode((<LexicalGoalAssertion>node).goalKeyword, cbNode)
+                    || visitNode((<LexicalGoalAssertion>node).symbol, cbNode)
+                    || visitNode((<LexicalGoalAssertion>node).closeBracketToken, cbNode);
+            case SyntaxKind.NoSymbolHereAssertion:
+                return visitNode((<NoSymbolHereAssertion>node).openBracketToken, cbNode)
+                    || visitNode((<NoSymbolHereAssertion>node).noKeyword, cbNode)
+                    || visitNode((<NoSymbolHereAssertion>node).symbol, cbNode)
+                    || visitNode((<NoSymbolHereAssertion>node).hereKeyword, cbNode)
+                    || visitNode((<NoSymbolHereAssertion>node).closeBracketToken, cbNode);
+            case SyntaxKind.ParameterValueAssertion:
+                return visitNode((<ParameterValueAssertion>node).openBracketToken, cbNode)
+                    || visitNode((<ParameterValueAssertion>node).operatorToken, cbNode)
+                    || visitNode((<ParameterValueAssertion>node).name, cbNode)
+                    || visitNode((<ParameterValueAssertion>node).closeBracketToken, cbNode);
+            case SyntaxKind.InvalidAssertion:
+                return visitNode((<Assertion>node).openBracketToken, cbNode)
+                    || visitNode((<Assertion>node).closeBracketToken, cbNode);
             case SyntaxKind.Nonterminal:
                 return visitNode((<Nonterminal>node).name, cbNode)
                     || visitNode((<Nonterminal>node).argumentList, cbNode);
@@ -609,8 +542,7 @@ export function forEachChild<T>(node: Node, cbNode: (node: Node) => T): T {
                     || visitNode((<BinarySymbol>node).operatorToken, cbNode)
                     || visitNode((<BinarySymbol>node).right, cbNode);
             case SyntaxKind.SymbolSpan:
-                return visitNode((<SymbolSpan>node).constraint, cbNode)
-                    || visitNode((<SymbolSpan>node).symbol, cbNode)
+                return visitNode((<SymbolSpan>node).symbol, cbNode)
                     || visitNode((<SymbolSpan>node).questionToken, cbNode)
                     || visitNode((<SymbolSpan>node).next, cbNode);
             case SyntaxKind.RightHandSide:
@@ -625,9 +557,6 @@ export function forEachChild<T>(node: Node, cbNode: (node: Node) => T): T {
                     || visitNode((<OneOfList>node).openIndentToken, cbNode)
                     || visitNodes((<OneOfList>node).terminals, cbNode)
                     || visitNode((<OneOfList>node).closeIndentToken, cbNode);
-            case SyntaxKind.Type:
-                return visitNode((<Type>node).atToken, cbNode)
-                    || visitNode((<Type>node).name, cbNode);
             case SyntaxKind.Parameter:
                 return visitNode((<Parameter>node).name, cbNode);
             case SyntaxKind.ParameterList:
@@ -642,28 +571,13 @@ export function forEachChild<T>(node: Node, cbNode: (node: Node) => T): T {
                     || visitNodes((<ArgumentList>node).elements, cbNode)
                     || visitNode((<ArgumentList>node).closeParenToken, cbNode)
             case SyntaxKind.Production:
-                return visitNode((<Production>node).type, cbNode)
-                    || visitNode((<Production>node).name, cbNode)
+                return visitNode((<Production>node).name, cbNode)
                     || visitNode((<Production>node).parameterList, cbNode)
                     || visitNode((<Production>node).body, cbNode);
-            case SyntaxKind.DefinitionOption:
-                return visitNode((<DefinitionOption>node).name, cbNode)
-                    || visitNode((<DefinitionOption>node).equalsToken, cbNode)
-                    || visitNode((<DefinitionOption>node).value, cbNode);
-            case SyntaxKind.Definition:
-                return visitNode((<Definition>node).defineKeyword, cbNode)
-                    || visitNode((<Definition>node).type, cbNode)
-                    || visitNodes((<Definition>node).options, cbNode);
-            case SyntaxKind.Import:
-                return visitNode((<Import>node).importKeyword, cbNode)
-                    || visitNode((<Import>node).file, cbNode)
-                    || visitNode((<Import>node).asKeyword, cbNode)
-                    || visitNode((<Import>node).type, cbNode);
             case SyntaxKind.SourceFile:
                 return visitNodes((<SourceFile>node).elements, cbNode);
-            case SyntaxKind.Grammar:
-                return visitNodes((<Grammar>node).sources, cbNode);
         }
     }
+
     return undefined;
 }

@@ -1,0 +1,186 @@
+//
+// Lexical grammar
+//
+DecimalDigit :: one of
+	`0` `1` `2` `3` `4` `5` `6` `7` `8` `9`
+
+HexDigit :: one of
+	`0` `1` `2` `3` `4` `5` `6` `7` `8` `9` `a` `b` `c` `d` `e` `f` `A` `B` `C` `D` `E` `F`
+
+UnicodeCharacterLiteral ::
+	`<` UnicodeCharacterLiteralChars `>`
+
+UnicodeCharacterLiteralChars ::
+	UnicodeCharacterLiteralChar UnicodeCharacterLiteralChars?
+
+UnicodeCharacterLiteralChar ::
+	SourceCharacter but not one of `<` or `>` or LineTerminator
+
+Terminal ::
+	``` ``` ```
+	``` TerminalChars ```
+
+TerminalChars ::
+	TerminalChar TerminalChars?
+
+TerminalChar ::
+	SourceCharacter but not one of ``` or LineTerminator
+
+Prose ::
+	ProseLines
+
+ProseLines ::
+	ProseLine
+	ProseLine LineTerminator ProseLines
+	
+ProseLine ::
+	`>` ProseChars?
+
+ProseChars ::
+	ProseChar ProseChars?
+
+ProseChar ::
+	SourceCharacter but not LineTerminator
+
+//
+// Syntactic grammar
+//
+Argument :
+	Identifier
+
+Arguments :
+	`(` `)`
+	`(` ArgumentList `)`
+
+ArgumentList :
+	Argument
+	ArgumentList `,` Argument
+
+PrimarySymbol :
+	Terminal
+	UnicodeCharacterLiteral
+	Nonterminal
+
+CallSymbol :
+	PrimarySymbol
+	Nonterminal Arguments
+
+OptionalSymbol :
+	CallSymbol `?`?
+
+OrClause :
+	OptionalSymbol
+	OrClause `or` OptionalSymbol
+
+OneOfSymbol :
+	CallSymbol
+	`one` `of` OrClause
+
+UnarySymbol :
+	OneOfSymbol
+
+ButNotSymbol :
+	UnarySymbol
+	ButNotSymbol `but` `not` UnarySymbol
+
+BinarySymbol :
+	ButNotSymbol
+
+SymbolList :
+	CallSymbol
+	SymbolList `,` CallSymbol
+
+SymbolSet :
+	`{` SymbolList `}`
+
+LookaheadEqualsAssertionClause :
+	`lookahead` `==` CallSymbol
+
+LookaheadNotEqualsAssertionClause :
+	`lookahead` `!=` CallSymbol
+
+LookaheadInAssertionClause :
+	`lookahead` `<-` SymbolSet
+
+LookaheadNotInAssertionClause :
+	`lookahead` `<!` SymbolSet
+
+LookaheadAssertionClause :
+	LookaheadEqualsAssertionClause
+	LookaheadNotEqualsAssertionClause
+	LookaheadInAssertionClause
+	LookaheadNotInAssertionClause
+
+NoSymbolAssertionClause :
+	`no` OrClause `here`
+
+LexicalGoalAssertionClause :
+	`lexical` `goal` PrimarySymbol
+
+ParameterValueAssertionClause :
+	`~` Identifier
+	`+` Identifier
+
+AssertionClause :
+	LookaheadAssertionClause
+	NoSymbolAssertionClause
+	LexicalGoalAssertionClause
+	ParameterValueAssertionClause
+
+Assertion :
+	`[` AssertionClause `]`
+	
+ProseSpan :
+	Prose
+	ProseSpan LineTerminator Prose
+
+Symbol :
+	Assertion
+	BinarySymbol
+
+SymbolSpan :
+	`[` `empty` `]`
+	ProseSpan
+	Symbol SymbolSpanRest?
+
+SymbolSpanRest :
+	Symbol SymbolSpanRest?
+
+RightHandSideList :
+	RightHandSide RightHandSideList?
+
+RightHandSide :
+	SymbolSpan LineTerminator
+
+Terminals :
+	Terminal Terminals?
+
+TerminalList :
+	Terminals
+	TerminalList LineTerminator Terminals
+
+OneOfList :
+	`one` `of` Terminals
+	`one` `of` LineTerminator Indent TerminalList Dedent
+
+ParameterList :
+	Parameter
+	ParameterList `,` Parameter
+
+Parameters :
+	`(` ParameterList `)`
+
+Production :
+	Identifier Parameters? `:` OneOfList
+	Identifier Parameters? `:` RightHandSide
+	Identifier Parameters? `:` LineTerminator Indent RightHandSideList Dedent
+
+SourceElement :
+	[empty]
+	Production
+
+SourceElements :
+	SourceElement SourceElements?	
+
+SourceFile :
+	SourceElements

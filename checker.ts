@@ -20,28 +20,21 @@ import {
     SymbolKind,
     SymbolTable,
     Node, 
-    Grammar, 
     SourceFile,
     Constant,
     Literal,
-    StringLiteral,
-    NumericLiteral,
     Prose,
     Identifier,
-    Type,
-    DefinitionOption,
-    Definition,
-    Import,
     Parameter,
     ParameterList,
     OneOfList,
     Terminal,
     TerminalSet,
-    Constraint,
-    LookaheadConstraint,
-    NoSymbolHereConstraint,
-    LexicalGoalConstraint,
-    ParameterValueConstraint,
+    Assertion,
+    LookaheadAssertion,
+    NoSymbolHereAssertion,
+    LexicalGoalAssertion,
+    ParameterValueAssertion,
     Argument,
     ArgumentList,
     Nonterminal,
@@ -66,10 +59,6 @@ export class Checker {
         this.diagnostics = diagnostics;
     }
 
-    public checkGrammar(grammar: Grammar): void {
-        forEach(grammar.sources, sourceFile => this.checkSourceFile(sourceFile));
-    }
-
     public checkSourceFile(sourceFile: SourceFile): void {
         this.diagnostics.setSourceFile(sourceFile);
         forEach(sourceFile.elements, element => this.checkSourceElement(element));
@@ -92,40 +81,6 @@ export class Checker {
         }
     }
 
-    private checkType(node: Type): void {
-        if (!node.atToken) {
-            this.diagnostics.reportNode(node, Diagnostics._0_expected, formatList([SyntaxKind.AtToken]));
-        }
-        else {
-            this.checkIdentifier(node.name);
-        }
-    }
-
-    private checkDefinitionOption(node: DefinitionOption): void {
-        // TODO
-    }
-
-    private checkDefinition(node: Definition): void {
-        if (!node.defineKeyword) {
-            this.diagnostics.reportNode(node, Diagnostics._0_expected, formatList([SyntaxKind.DefineKeyword]));
-        }
-        this.checkType(node.type);
-        forEach(node.options, option => this.checkDefinitionOption(option));
-    }
-
-    private checkImport(node: Import): void {
-        if (!node.importKeyword) {
-            this.diagnostics.reportNode(node, Diagnostics._0_expected, formatList([SyntaxKind.ImportKeyword]));
-        }
-        this.checkStringLiteral(node.file);
-        if (node.asKeyword || node.type) {
-            if (!node.asKeyword) {
-                this.diagnostics.reportNode(node.type, Diagnostics._0_expected, "as");
-            }
-            this.checkType(node.type);
-        }
-    }
-
     private checkParameter(node: Parameter): void {
     }
 
@@ -135,7 +90,7 @@ export class Checker {
     private checkTerminalSet(node: TerminalSet): void {
     }
 
-    private checkLookaheadConstraint(node: LookaheadConstraint): void {
+    private checkLookaheadConstraint(node: LookaheadAssertion): void {
         if (!node.lookaheadKeyword) {
             return this.diagnostics.reportNode(node, Diagnostics._0_expected, tokenToString(SyntaxKind.LookaheadKeyword, /*quoted*/ true));
         }
@@ -201,16 +156,16 @@ export class Checker {
         }
     }
 
-    private checkLexicalGoalConstraint(node: LexicalGoalConstraint): void {
+    private checkLexicalGoalConstraint(node: LexicalGoalAssertion): void {
     }
 
-    private checkNoSymbolHereConstraint(node: NoSymbolHereConstraint): void {
+    private checkNoSymbolHereConstraint(node: NoSymbolHereAssertion): void {
     }
 
-    private checkParameterValueConstraint(node: ParameterValueConstraint): void {
+    private checkParameterValueConstraint(node: ParameterValueAssertion): void {
     }
 
-    private checkInvalidConstraint(node: Constraint): void {
+    private checkInvalidConstraint(node: Assertion): void {
         this.diagnostics.reportNode(node, Diagnostics._0_expected, formatList([
             SyntaxKind.LookaheadKeyword,
             SyntaxKind.LexicalKeyword,
@@ -220,29 +175,29 @@ export class Checker {
         ]));
     }
 
-    private checkConstraint(node: Constraint): void {
+    private checkAssertion(node: Assertion): void {
         if (!node.openBracketToken) {
             this.diagnostics.reportNode(node, Diagnostics._0_expected, formatList([SyntaxKind.OpenBracketToken]));
         }
         switch (node.kind) {
-            case SyntaxKind.LookaheadConstraint:
-                this.checkLookaheadConstraint(<LookaheadConstraint>node);
+            case SyntaxKind.LookaheadAssertion:
+                this.checkLookaheadConstraint(<LookaheadAssertion>node);
                 break;
 
-            case SyntaxKind.LexicalGoalConstraint:
-                this.checkLexicalGoalConstraint(<LexicalGoalConstraint>node);
+            case SyntaxKind.LexicalGoalAssertion:
+                this.checkLexicalGoalConstraint(<LexicalGoalAssertion>node);
                 break;
 
-            case SyntaxKind.NoSymbolHereConstraint:
-                this.checkNoSymbolHereConstraint(<NoSymbolHereConstraint>node);
+            case SyntaxKind.NoSymbolHereAssertion:
+                this.checkNoSymbolHereConstraint(<NoSymbolHereAssertion>node);
                 break;
 
-            case SyntaxKind.ParameterValueConstraint:
-                this.checkParameterValueConstraint(<ParameterValueConstraint>node);
+            case SyntaxKind.ParameterValueAssertion:
+                this.checkParameterValueConstraint(<ParameterValueAssertion>node);
                 break;
 
-            case SyntaxKind.InvalidConstraint:
-                this.checkInvalidConstraint(<Constraint>node);
+            case SyntaxKind.InvalidAssertion:
+                this.checkInvalidConstraint(<Assertion>node);
                 break;
         }
         if (!node.closeBracketToken) {
@@ -250,21 +205,9 @@ export class Checker {
         }
     }
 
-    private checkStringLiteral(node: StringLiteral): void {
-        if (typeof node.text !== "string") {
-            this.diagnostics.reportNode(node, Diagnostics._0_expected, "string");
-        }
-    }
-
-    private checkNumericLiteral(node: NumericLiteral): void {
-        if (typeof node.text !== "string") {
-            this.diagnostics.reportNode(node, Diagnostics._0_expected, "number");
-        }
-    }
-
     private checkProse(node: Prose): void {
         if (typeof node.text !== "string") {
-            this.diagnostics.reportNode(node, Diagnostics._0_expected, tokenToString(SyntaxKind.Prose));
+            this.diagnostics.reportNode(node, Diagnostics._0_expected, tokenToString(SyntaxKind.UnicodeCharacter));
         }
     }
 
@@ -318,11 +261,14 @@ export class Checker {
             case SyntaxKind.Nonterminal:
                 return this.checkNonterminal(<Nonterminal>node);
 
-            case SyntaxKind.Prose:
+            case SyntaxKind.UnicodeCharacter:
                 return this.checkProse(<Prose>node);
 
             case SyntaxKind.InvalidSymbol:
                 return this.checkInvalidSymbol(<LexicalSymbol>node);
+                
+            default:
+                return this.checkAssertion(<Assertion>node);
         }
     }
 
@@ -340,9 +286,6 @@ export class Checker {
     }
 
     private checkSymbolSpan(node: SymbolSpan): void {
-        if (node.constraint) {
-            this.checkConstraint(node.constraint);
-        }
         this.checkLexicalSymbol(node.symbol);            
     }
 
@@ -355,7 +298,7 @@ export class Checker {
             this.diagnostics.reportNode(node, Diagnostics._0_expected, formatList([SyntaxKind.IndentToken]));
         }
         if (!node.elements || node.elements.length === 0) {
-            this.diagnostics.reportNode(node, Diagnostics._0_expected, formatList([SyntaxKind.Terminal, SyntaxKind.Identifier, SyntaxKind.OpenBracketToken, SyntaxKind.AtToken]));
+            this.diagnostics.reportNode(node, Diagnostics._0_expected, formatList([SyntaxKind.Terminal, SyntaxKind.Identifier, SyntaxKind.OpenBracketToken]));
         }
         else {
             forEach(node.elements, element => this.checkRightHandSide(element));
@@ -377,14 +320,10 @@ export class Checker {
             if (parent) {
                 var symbol: Symbol;
                 switch (parent.kind) {
-                    case SyntaxKind.Type:
-                        symbol = this.resolveSymbol(node, node.text, SymbolKind.Type, Diagnostics.Cannot_find_name_0_);
-                        break;
-
                     case SyntaxKind.Production:
                     case SyntaxKind.Nonterminal:
-                    case SyntaxKind.LexicalGoalConstraint:
-                    case SyntaxKind.NoSymbolHereConstraint:
+                    case SyntaxKind.LexicalGoalAssertion:
+                    case SyntaxKind.NoSymbolHereAssertion:
                         symbol = this.resolveSymbol(node, node.text, SymbolKind.Production, Diagnostics.Cannot_find_name_0_);
                         break;
 
@@ -400,10 +339,6 @@ export class Checker {
     }
 
     private checkProduction(node: Production): void {
-        if (node.type) {
-            this.checkType(node.type);
-        }
-
         this.checkIdentifier(node.name);
 
         var pos = node.name.end;
@@ -451,18 +386,12 @@ export class Checker {
 
     private checkInvalidSourceElement(node: SourceElement): void {
         this.diagnostics.reportNode(node, Diagnostics._0_expected, formatList([
-            SyntaxKind.DefineKeyword,
-            SyntaxKind.Import,
             SyntaxKind.Production
         ]));
     }
 
     private checkSourceElement(node: SourceElement): void {
         switch (node.kind) {
-            case SyntaxKind.Definition:
-                return this.checkDefinition(<Definition>node);
-            case SyntaxKind.Import:
-                return this.checkImport(<Import>node);
             case SyntaxKind.Production:
                 return this.checkProduction(<Production>node);
             case SyntaxKind.InvalidSourceElement:

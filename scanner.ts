@@ -37,7 +37,8 @@ export class Scanner {
     constructor(filename: string, text: string, diagnostics: DiagnosticMessages) {
         this.filename = filename;
         this.text = text;
-        this.len = text.length;    
+        this.len = text.length;
+        this.diagnostics = diagnostics;    
     }
 
     public getPos(): number {
@@ -152,10 +153,9 @@ export class Scanner {
                     this.pos++;
                     continue;
 
-                case CharacterCodes.DoubleQuote:
-                    return this.tokenValue = this.scanString(ch), this.token = SyntaxKind.StringLiteral;
                 case CharacterCodes.Backtick:
                     return this.tokenValue = this.scanString(ch), this.token = SyntaxKind.Terminal;
+
                 case CharacterCodes.LessThan:
                     if (this.text.charCodeAt(this.pos + 1) === CharacterCodes.Exclamation) {
                         return this.pos += 2, this.token = SyntaxKind.LessThanExclamationToken;
@@ -164,8 +164,12 @@ export class Scanner {
                         return this.pos += 2, this.token = SyntaxKind.LessThanMinusToken;
                     }
                     else {
-                        return this.tokenValue = this.scanString(CharacterCodes.GreaterThan), this.token = SyntaxKind.Prose;
+                        return this.tokenValue = this.scanString(CharacterCodes.GreaterThan), this.token = SyntaxKind.UnicodeCharacter;
                     }
+
+                case CharacterCodes.GreaterThan:
+                    return this.tokenValue = this.scanProse(), this.token = SyntaxKind.Prose;
+
                 case CharacterCodes.Slash:
                     if (this.pos + 1 < this.len) {
                         switch (this.text.charCodeAt(this.pos + 1)) {
@@ -210,6 +214,7 @@ export class Scanner {
                         }
                     }
                     return this.pos++, this.token = SyntaxKind.Unknown;
+
                 case CharacterCodes.OpenParen:
                     return this.pos++, this.token = SyntaxKind.OpenParenToken;
                 case CharacterCodes.CloseParen:
@@ -228,64 +233,31 @@ export class Scanner {
                     return this.pos++, this.token = SyntaxKind.TildeToken;
                 case CharacterCodes.Comma:
                     return this.pos++, this.token = SyntaxKind.CommaToken;
+
                 case CharacterCodes.Colon:
-                    return this.pos++, this.token = SyntaxKind.ColonToken;
-                case CharacterCodes.Question:
-                    return this.pos++, this.token = SyntaxKind.QuestionToken;
-                case CharacterCodes.NumberSign:
-                    if (this.pos + 7 < this.text.length) {
+                    if (this.pos + 1 < this.len) {
                         ch = this.text.charCodeAt(this.pos + 1);
-                        if (ch === CharacterCodes.UpperD || ch === CharacterCodes.LowerD) {
-                            ch = this.text.charCodeAt(this.pos + 2);
-                            if (ch === CharacterCodes.UpperE || ch === CharacterCodes.LowerE) {
-                                ch = this.text.charCodeAt(this.pos + 3);
-                                if (ch === CharacterCodes.UpperF || ch === CharacterCodes.LowerF) {
-                                    ch = this.text.charCodeAt(this.pos + 4);
-                                    if (ch === CharacterCodes.UpperI || ch === CharacterCodes.LowerI) {
-                                        ch = this.text.charCodeAt(this.pos + 5);
-                                        if (ch === CharacterCodes.UpperN || ch === CharacterCodes.LowerN) {
-                                            ch = this.text.charCodeAt(this.pos + 6);
-                                            if (ch === CharacterCodes.UpperE || ch === CharacterCodes.LowerE) {
-                                                ch = this.text.charCodeAt(this.pos + 7);
-                                                if (!this.isIdentifierPart(ch)) {
-                                                    return this.pos += 7, this.token = SyntaxKind.DefineKeyword;
-                                                }
-                                            }
-                                        }
-                                    }
+                        if (ch === CharacterCodes.Colon) {
+                            if (this.pos + 2 < this.len) {
+                                ch = this.text.charCodeAt(this.pos + 2);
+                                if (ch === CharacterCodes.Colon) {
+                                    return this.pos += 3, this.token = SyntaxKind.ColonColonColonToken;
                                 }
                             }
-                        }
-                        else if (ch === CharacterCodes.UpperI || ch === CharacterCodes.LowerI) {
-                            ch = this.text.charCodeAt(this.pos + 2);
-                            if (ch === CharacterCodes.UpperM || ch === CharacterCodes.LowerM) {
-                                ch = this.text.charCodeAt(this.pos + 3);
-                                if (ch === CharacterCodes.UpperP || ch === CharacterCodes.LowerP) {
-                                    ch = this.text.charCodeAt(this.pos + 4);
-                                    if (ch === CharacterCodes.UpperO || ch === CharacterCodes.LowerO) {
-                                        ch = this.text.charCodeAt(this.pos + 5);
-                                        if (ch === CharacterCodes.UpperR || ch === CharacterCodes.LowerR) {
-                                            ch = this.text.charCodeAt(this.pos + 6);
-                                            if (ch === CharacterCodes.UpperT || ch === CharacterCodes.LowerT) {
-                                                ch = this.text.charCodeAt(this.pos + 7);
-                                                if (!this.isIdentifierPart(ch)) {
-                                                    return this.pos += 7, this.token = SyntaxKind.ImportKeyword;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            return this.pos += 2, this.token = SyntaxKind.ColonColonToken;
                         }
                     }
-                    return this.pos++, this.token = SyntaxKind.Unknown;
-                case CharacterCodes.At:
-                    return this.pos++, this.token = SyntaxKind.AtToken;
+                    return this.pos++, this.token = SyntaxKind.ColonToken;
+
+                case CharacterCodes.Question:
+                    return this.pos++, this.token = SyntaxKind.QuestionToken;
+
                 case CharacterCodes.Equals:
                     if (this.text.charCodeAt(this.pos + 1) === CharacterCodes.Equals) {
                         return this.pos += 2, this.token = SyntaxKind.EqualsEqualsToken;
                     }
                     return this.pos++, this.token = SyntaxKind.EqualsToken;
+
                 case CharacterCodes.Exclamation:
                     if (this.text.charCodeAt(this.pos + 1) === CharacterCodes.Equals) {
                         return this.pos += 2, this.token = SyntaxKind.ExclamationEqualsToken;
@@ -349,7 +321,88 @@ export class Scanner {
             }
         }
     }
+    
+    private scanProse(): string {
+        this.pos++;
+        let result = this.scanLine().trim();
+        while (this.pos < this.len) {
+            let ch = this.text.charCodeAt(this.pos);
+            if (!this.isLineTerminator(ch)) {
+                break;
+            }
 
+            let nextLine = this.speculate(() => this.tryScanNextLineOfProse(), /*isLookahead*/ false);
+            if (nextLine === undefined) {
+                break;
+            }
+            
+            result += nextLine;
+        }
+        
+        return result;
+    }
+    
+    private tryScanNextLineOfProse() {
+        let result = this.scanLineTerminator();
+        this.skipWhiteSpace();
+        if (this.pos < this.len) {
+            let ch = this.text.charCodeAt(this.pos);
+            if (ch === CharacterCodes.GreaterThan) {
+                this.pos++;
+                result += this.scanLine().trim();
+                return result;
+            }
+        }
+        
+        return undefined;
+    }
+    
+    private scanLine(): string {
+        let start = this.pos;
+        while (this.pos < this.len) {
+            let ch = this.text.charCodeAt(this.pos);
+            if (this.isLineTerminator(ch)) {
+                break;
+            }
+            
+            this.pos++;
+        }
+        
+        return this.text.substring(start, this.pos);
+    }
+    
+    private scanLineTerminator(): string {
+        let start = this.pos;
+        let ch = this.text.charCodeAt(start);
+        if (ch === CharacterCodes.CarriageReturn && this.text.charCodeAt(start + 1) === CharacterCodes.LineFeed) {
+            this.pos += 2;
+        }
+        else {
+            this.pos++;
+        }
+        
+        return this.text.substring(start, this.pos);
+    }
+    
+    private skipWhiteSpace(): void {
+        while (true) {
+            let ch = this.text.charCodeAt(this.pos);
+            switch (ch) {
+                case CharacterCodes.LineFeed:
+                case CharacterCodes.CarriageReturn:
+                case CharacterCodes.Space:
+                case CharacterCodes.Tab:
+                case CharacterCodes.VerticalTab:
+                case CharacterCodes.FormFeed:
+                    this.pos++;
+                    continue;
+                    
+                default:
+                    return;
+            }
+        }
+    } 
+    
     private scanString(quote: number): string {
         this.pos++;
         var result = "";
@@ -363,17 +416,29 @@ export class Scanner {
             }
             var ch = this.text.charCodeAt(this.pos);
             if (ch === quote) {
+                // If this is a terminal that consists solely of a single backtick character (e.g. ```), 
+                // we capture the backtick. 
+                if (quote === CharacterCodes.Backtick && this.pos === start && this.pos + 1 < this.len) {
+                    ch = this.text.charCodeAt(this.pos + 1);
+                    if (ch === CharacterCodes.Backtick) {
+                        result = "`";
+                        this.pos += 2;
+                        break;
+                    }
+                }
+                
                 result += this.text.substring(start, this.pos);
                 this.pos++;
                 break;
             }
-            if (ch === CharacterCodes.Backslash) {
+            else if (ch === CharacterCodes.Backslash && quote !== CharacterCodes.Backtick) {
+                // terminals cannot have escape sequences
                 result += this.text.substring(start, this.pos);
                 result += this.scanEscapeSequence();
                 start = this.pos;
                 continue;
             }
-            if (this.isLineTerminator(ch)) {
+            else if (this.isLineTerminator(ch)) {
                 result += this.text.substring(start, this.pos);
                 this.tokenIsUnterminated = true;
                 this.getDiagnostics().report(this.pos, Diagnostics.Unterminated_string_literal);

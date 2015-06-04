@@ -20,3 +20,4 @@ export * from "./scanner";
 export * from "./parser";
 export * from "./binder";
 export * from "./checker";
+export * from "./emitter";

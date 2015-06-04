@@ -24,3 +24,4 @@ import "./scanner-tests";
 import "./parser-tests";
 import "./binder-tests";
 import "./checker-tests";
+import "./emitter-tests";

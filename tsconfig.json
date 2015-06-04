@@ -13,6 +13,7 @@
         "parser.ts",
         "binder.ts",
         "checker.ts",
+        "emitter.ts",
         "index.ts",
         "bin/cli.ts"
     ]

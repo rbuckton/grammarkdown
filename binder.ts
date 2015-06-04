@@ -20,8 +20,6 @@ import {
     SymbolTable,
     SourceFile,
     Production,
-    Definition,
-    Import,
     Parameter,
     Node,
     forEachChild
@@ -50,19 +48,6 @@ export class Binder {
         this.bindChildren(node, /*hasLocals*/ true);
     }
 
-    private bindDefinition(node: Definition): void {
-        this.declareSymbol(node.type.name.text, node, SymbolKind.Type);
-        this.bindChildren(node, /*hasLocals*/ false);
-    }
-
-    private bindImport(node: Import): void {
-        if (node.type) {
-            this.declareSymbol(node.type.name.text, node, SymbolKind.Type);
-        }
-
-        this.bindChildren(node, /*hasLocals*/ false);
-    }
-
     private bindParameter(node: Parameter): void {
         this.declareSymbol(node.name.text, node, SymbolKind.Parameter);
         this.bindChildren(node, /*hasLocals*/ false);
@@ -87,14 +72,6 @@ export class Binder {
             switch (node.kind) {
                 case SyntaxKind.Production:
                     this.bindProduction(<Production>node);
-                    break;
-
-                case SyntaxKind.Definition:
-                    this.bindDefinition(<Definition>node);
-                    break;
-
-                case SyntaxKind.Import:
-                    this.bindImport(<Import>node);
                     break;
 
                 case SyntaxKind.Parameter:

@@ -28,23 +28,22 @@ export function writeTokens(test: string, scanner: Scanner, lineMap: LineMap, ba
     let token: SyntaxKind; 
     do {
         token = scanner.scan();
-        let message = `SyntaxKind[${token}](${lineMap.formatPosition(scanner.getPos()) }): `;
+        let message = `SyntaxKind[${SyntaxKind[token]}](${lineMap.formatPosition(scanner.getPos()) }): `;
         switch (token) {
-            case SyntaxKind.StringLiteral:
-                message += `"${scanner.getTokenValue() }"`;
+            case SyntaxKind.Prose:
+                message += `> ${scanner.getTokenValue()}`;
                 break;
             case SyntaxKind.Identifier:
-            case SyntaxKind.NumericLiteral:
-                message += `${scanner.getTokenValue() }`;
+                message += `${scanner.getTokenValue()}`;
                 break;
             case SyntaxKind.Terminal:
-                message += `\`${scanner.getTokenValue() }\``;
+                message += `\`${scanner.getTokenValue()}\``;
                 break;
-            case SyntaxKind.Prose:
-                message += `<${scanner.getTokenValue() }>`;
+            case SyntaxKind.UnicodeCharacter:
+                message += `<${scanner.getTokenValue()}>`;
                 break;
             default:
-                message += `${tokenToString(token) }`;
+                message += `${tokenToString(token)}`;
         }
         
         text += message + EOL;

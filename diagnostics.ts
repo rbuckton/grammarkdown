@@ -274,14 +274,15 @@ export function formatList(tokens: SyntaxKind[]): string {
 
 export function formatNode(node: Node, sourceFile: SourceFile) {
     var text = `(${sourceFile.lineMap.formatPosition(node.pos) })`;
-    text += `SyntaxKind[${node.kind}]`;
+    text += `SyntaxKind[${SyntaxKind[node.kind]}]`;
     switch (node.kind) {
-        case SyntaxKind.StringLiteral:
-        case SyntaxKind.NumericLiteral:
         case SyntaxKind.Prose:
         case SyntaxKind.Identifier:
         case SyntaxKind.Terminal:
             text += `(text = "${(<Literal | Identifier>node).text}")`;
+            break;
+        case SyntaxKind.UnicodeCharacter:
+            text += `(text = <${(<Literal>node).text}>)`;
             break;
         case SyntaxKind.SourceFile:
             text += `(filename = "${(<SourceFile>node).filename}")`;

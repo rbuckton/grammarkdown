@@ -17,8 +17,6 @@
 import { SyntaxKind, Dict, forEachEntry, hasOwnProperty } from "./core";
 
 var textToToken: Dict<SyntaxKind> = Dict.create({
-    "#define": SyntaxKind.DefineKeyword,
-    "#import": SyntaxKind.ImportKeyword,
     "but": SyntaxKind.ButKeyword,
     "not": SyntaxKind.NotKeyword,
     "empty": SyntaxKind.EmptyKeyword,
@@ -30,11 +28,9 @@ var textToToken: Dict<SyntaxKind> = Dict.create({
     "no": SyntaxKind.NoKeyword,
     "here": SyntaxKind.HereKeyword,
     "or": SyntaxKind.OrKeyword,
-    "as": SyntaxKind.AsKeyword,
-    "true": SyntaxKind.TrueKeyword,
-    "false": SyntaxKind.FalseKeyword,
     ":": SyntaxKind.ColonToken,
-    "@": SyntaxKind.AtToken,
+    "::": SyntaxKind.ColonColonToken,
+    ":::": SyntaxKind.ColonColonColonToken,
     "{": SyntaxKind.OpenBraceToken,
     "}": SyntaxKind.CloseBraceToken,
     "(": SyntaxKind.OpenParenToken,
@@ -77,7 +73,7 @@ export function tokenToString(kind: SyntaxKind, quoted?: boolean) {
             return "«identifier»";
         case SyntaxKind.Terminal:
             return "«terminal»";
-        case SyntaxKind.Prose:
+        case SyntaxKind.UnicodeCharacter:
             return "«prose»";
         case SyntaxKind.Production:
             return "«production»";
