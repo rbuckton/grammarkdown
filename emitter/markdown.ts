@@ -74,7 +74,7 @@ export class MarkdownEmitter extends EmitterBase {
     }
     
     protected emitOneOfList(node: OneOfList) {
-        this.writer.write("**one of **");
+        this.writer.write("**one of**");
         let terminals = node.terminals;
         if (terminals && terminals.length > 0) {
             if (node.openIndentToken) {
@@ -87,13 +87,19 @@ export class MarkdownEmitter extends EmitterBase {
                     }
                 }
                 
+                this.writer.write("  ");
+                this.writer.writeln();
+                this.writer.write("<pre>");
                 let columns = Math.floor(30 / width);
                 let pad = 0;
                 for (let i = 0; i < terminals.length; ++i) {
                     let terminal = terminals[i];
                     if (i % columns === 0) {
-                        this.writer.write("  ");
-                        this.writer.writeln();
+                        if (i > 0) {
+                            this.writer.write("  ");
+                            this.writer.writeln();
+                        }
+                        
                         this.writer.write("&emsp;&emsp;&emsp;");
                     }
                     else {
@@ -101,10 +107,14 @@ export class MarkdownEmitter extends EmitterBase {
                             this.writer.write(" ");
                         }
                     }
-
-                    this.emitNode(terminal);
+                    
+                    this.writer.write("<code>");
+                    this.writer.write(this.encode(terminal.text));
+                    this.writer.write("</code>");
                     pad = width - terminal.text.length;
                 }
+                
+                this.writer.write("</pre>");
             }
             else {
                 this.writer.write(" ");

@@ -21,6 +21,7 @@ import {
     SymbolTable,
     Node, 
     SourceFile,
+    UnicodeCharacterLiteral,
     Prose,
     Identifier,
     Parameter,
@@ -29,6 +30,7 @@ import {
     Terminal,
     SymbolSet,
     Assertion,
+    EmptyAssertion,
     LookaheadAssertion,
     NoSymbolHereAssertion,
     LexicalGoalAssertion,
@@ -87,8 +89,14 @@ export class Checker {
 
     private checkTerminalSet(node: SymbolSet): void {
     }
+    
+    private checkEmptyAssertion(node: EmptyAssertion): void {
+        if (!node.emptyKeyword) {
+            return this.diagnostics.reportNode(node, Diagnostics._0_expected, tokenToString(SyntaxKind.EmptyKeyword, /*quoted*/ true));
+        }
+    }
 
-    private checkLookaheadConstraint(node: LookaheadAssertion): void {
+    private checkLookaheadAssertion(node: LookaheadAssertion): void {
         if (!node.lookaheadKeyword) {
             return this.diagnostics.reportNode(node, Diagnostics._0_expected, tokenToString(SyntaxKind.LookaheadKeyword, /*quoted*/ true));
         }
@@ -154,16 +162,16 @@ export class Checker {
         }
     }
 
-    private checkLexicalGoalConstraint(node: LexicalGoalAssertion): void {
+    private checkLexicalGoalAssertion(node: LexicalGoalAssertion): void {
     }
 
-    private checkNoSymbolHereConstraint(node: NoSymbolHereAssertion): void {
+    private checkNoSymbolHereAssertion(node: NoSymbolHereAssertion): void {
     }
 
-    private checkParameterValueConstraint(node: ParameterValueAssertion): void {
+    private checkParameterValueAssertion(node: ParameterValueAssertion): void {
     }
 
-    private checkInvalidConstraint(node: Assertion): void {
+    private checkInvalidAssertion(node: Assertion): void {
         this.diagnostics.reportNode(node, Diagnostics._0_expected, formatList([
             SyntaxKind.LookaheadKeyword,
             SyntaxKind.LexicalKeyword,
@@ -178,24 +186,28 @@ export class Checker {
             this.diagnostics.reportNode(node, Diagnostics._0_expected, formatList([SyntaxKind.OpenBracketToken]));
         }
         switch (node.kind) {
+            case SyntaxKind.EmptyAssertion:
+                this.checkEmptyAssertion(<EmptyAssertion>node);
+                break;
+                
             case SyntaxKind.LookaheadAssertion:
-                this.checkLookaheadConstraint(<LookaheadAssertion>node);
+                this.checkLookaheadAssertion(<LookaheadAssertion>node);
                 break;
 
             case SyntaxKind.LexicalGoalAssertion:
-                this.checkLexicalGoalConstraint(<LexicalGoalAssertion>node);
+                this.checkLexicalGoalAssertion(<LexicalGoalAssertion>node);
                 break;
 
             case SyntaxKind.NoSymbolHereAssertion:
-                this.checkNoSymbolHereConstraint(<NoSymbolHereAssertion>node);
+                this.checkNoSymbolHereAssertion(<NoSymbolHereAssertion>node);
                 break;
 
             case SyntaxKind.ParameterValueAssertion:
-                this.checkParameterValueConstraint(<ParameterValueAssertion>node);
+                this.checkParameterValueAssertion(<ParameterValueAssertion>node);
                 break;
 
             case SyntaxKind.InvalidAssertion:
-                this.checkInvalidConstraint(<Assertion>node);
+                this.checkInvalidAssertion(<Assertion>node);
                 break;
         }
         if (!node.closeBracketToken) {
@@ -258,8 +270,11 @@ export class Checker {
 
             case SyntaxKind.Nonterminal:
                 return this.checkNonterminal(<Nonterminal>node);
-
+                
             case SyntaxKind.UnicodeCharacterLiteral:
+                return this.checkUnicodeCharacterLiteral(<UnicodeCharacterLiteral>node);
+
+            case SyntaxKind.Prose:
                 return this.checkProse(<Prose>node);
 
             case SyntaxKind.InvalidSymbol:
@@ -307,6 +322,9 @@ export class Checker {
     }
 
     private checkOneOfList(node: OneOfList): void {
+    }
+    
+    private checkUnicodeCharacterLiteral(node: UnicodeCharacterLiteral): void {
     }
 
     private checkIdentifier(node: Identifier): void {
