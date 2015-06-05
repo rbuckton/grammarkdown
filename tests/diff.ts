@@ -39,7 +39,7 @@ export function writeTokens(test: string, scanner: Scanner, lineMap: LineMap, ba
             case SyntaxKind.Terminal:
                 message += `\`${scanner.getTokenValue()}\``;
                 break;
-            case SyntaxKind.UnicodeCharacter:
+            case SyntaxKind.UnicodeCharacterLiteral:
                 message += `<${scanner.getTokenValue()}>`;
                 break;
             default:
@@ -49,8 +49,7 @@ export function writeTokens(test: string, scanner: Scanner, lineMap: LineMap, ba
         text += message + EOL;
     }
     while (token !== SyntaxKind.EndOfFileToken)
-    writeBaseline(test + ".tokens", text);
-    baselines.push(test + ".tokens");
+    writeBaseline(test + ".tokens", text, baselines);
 }
 
 export function writeDiagnostics(test: string, diagnostics: DiagnosticMessages, baselines: string[]) {
@@ -61,8 +60,7 @@ export function writeDiagnostics(test: string, diagnostics: DiagnosticMessages, 
         }
         text += message + EOL;
     });
-    writeBaseline(test + ".diagnostics", text);
-    baselines.push(test + ".diagnostics");
+    writeBaseline(test + ".diagnostics", text, baselines);
 }
 
 export function writeNodes(test: string, sourceFile: SourceFile, baselines: string[]) {
@@ -71,8 +69,7 @@ export function writeNodes(test: string, sourceFile: SourceFile, baselines: stri
     let indentDepth = 0;
 
     printNode(sourceFile);
-    writeBaseline(test + ".nodes", text);
-    baselines.push(test + ".nodes");
+    writeBaseline(test + ".nodes", text, baselines);
 
     function getIndent(depth: number) {
         if (depth >= indents.length) {
@@ -89,7 +86,8 @@ export function writeNodes(test: string, sourceFile: SourceFile, baselines: stri
     }
 }
 
-export function writeBaseline(file: string, text: string) {
+export function writeBaseline(file: string, text: string, baselines: string[]) {
+    baselines.push(file);
     let { localFile } = resolveBaseline(file);
     if (text === undefined) {
         if (existsSync(localFile)) {

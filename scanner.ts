@@ -164,7 +164,7 @@ export class Scanner {
                         return this.pos += 2, this.token = SyntaxKind.LessThanMinusToken;
                     }
                     else {
-                        return this.tokenValue = this.scanString(CharacterCodes.GreaterThan), this.token = SyntaxKind.UnicodeCharacter;
+                        return this.tokenValue = this.scanString(CharacterCodes.GreaterThan), this.token = SyntaxKind.UnicodeCharacterLiteral;
                     }
 
                 case CharacterCodes.GreaterThan:

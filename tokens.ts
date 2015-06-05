@@ -73,7 +73,7 @@ export function tokenToString(kind: SyntaxKind, quoted?: boolean) {
             return "«identifier»";
         case SyntaxKind.Terminal:
             return "«terminal»";
-        case SyntaxKind.UnicodeCharacter:
+        case SyntaxKind.UnicodeCharacterLiteral:
             return "«prose»";
         case SyntaxKind.Production:
             return "«production»";

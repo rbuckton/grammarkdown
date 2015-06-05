@@ -42,25 +42,6 @@ export class Node implements TextRange {
     }
 }
 
-export class Constant extends Node {
-}
-
-// literals
-export class Literal extends Constant implements TextContent {
-    public text: string;
-
-    constructor(kind: SyntaxKind, text: string) {
-        super(kind);
-        this.text = text;
-    }
-}
-
-export class UnicodeCharacterLiteral extends Literal {
-    constructor(text: string) {
-        super(SyntaxKind.UnicodeCharacter, text);
-    }
-}
-
 export class Identifier extends Node implements TextContent {
     public text: string;
     constructor(text: string) {
@@ -71,6 +52,23 @@ export class Identifier extends Node implements TextContent {
 
 export class LexicalSymbol extends Node {
 }
+
+export class OptionalSymbol extends LexicalSymbol {
+    public questionToken: Node;
+    constructor(kind: SyntaxKind, questionToken: Node) {
+        super(kind);
+        this.questionToken = questionToken;
+    }
+}
+
+export class UnicodeCharacterLiteral extends OptionalSymbol implements TextContent {
+    public text: string;
+    constructor(text: string, questionToken: Node) {
+        super(SyntaxKind.UnicodeCharacterLiteral, questionToken);
+        this.text = text;
+    }
+}
+
 
 export class BinarySymbol extends LexicalSymbol {
     public left: LexicalSymbol;
@@ -84,11 +82,10 @@ export class BinarySymbol extends LexicalSymbol {
     }
 }
 
-export class Terminal extends LexicalSymbol implements TextContent {
+export class Terminal extends OptionalSymbol implements TextContent {
     public text: string;
-
-    constructor(text: string) {
-        super(SyntaxKind.Terminal);
+    constructor(text: string, questionToken: Node) {
+        super(SyntaxKind.Terminal, questionToken);
         this.text = text;
     }
 }
@@ -101,12 +98,12 @@ export class TerminalList extends Node {
     }
 }
 
-export class TerminalSet extends Node {
+export class SymbolSet extends Node {
     public openBraceToken: Node;
     public elements: Terminal[];
     public closeBraceToken: Node;
     constructor(openBraceToken: Node, elements: Terminal[], closeBraceToken: Node) {
-        super(SyntaxKind.TerminalSet)
+        super(SyntaxKind.SymbolSet)
         this.openBraceToken = openBraceToken;
         this.elements = elements;
         this.closeBraceToken = closeBraceToken;
@@ -123,11 +120,19 @@ export class Assertion extends LexicalSymbol {
     }
 }
 
+export class EmptyAssertion extends Assertion {
+    public emptyKeyword: Node;
+    constructor(openBracketToken: Node, emptyKeyword: Node, closeBracketToken: Node) {
+        super(SyntaxKind.EmptyAssertion, openBracketToken, closeBracketToken);
+        this.emptyKeyword = emptyKeyword;
+    }
+}
+
 export class LookaheadAssertion extends Assertion {
     public lookaheadKeyword: Node;
     public operatorToken: Node;
-    public lookahead: LexicalSymbol | TerminalSet;
-    constructor(openBracketToken: Node, lookaheadKeyword: Node, operatorToken: Node, lookahead: LexicalSymbol | TerminalSet, closeBracketToken: Node) {
+    public lookahead: LexicalSymbol | SymbolSet;
+    constructor(openBracketToken: Node, lookaheadKeyword: Node, operatorToken: Node, lookahead: LexicalSymbol | SymbolSet, closeBracketToken: Node) {
         super(SyntaxKind.LookaheadAssertion, openBracketToken, closeBracketToken);
         this.lookaheadKeyword = lookaheadKeyword;
         this.operatorToken = operatorToken;
@@ -191,12 +196,11 @@ export class ArgumentList extends Node {
     }
 }
 
-export class Nonterminal extends LexicalSymbol {
+export class Nonterminal extends OptionalSymbol {
     public name: Identifier;
     public argumentList: ArgumentList;
-
-    constructor(name: Identifier, argumentList: ArgumentList) {
-        super(SyntaxKind.Nonterminal);
+    constructor(name: Identifier, argumentList: ArgumentList, questionToken: Node) {
+        super(SyntaxKind.Nonterminal, questionToken);
         this.name = name;
         this.argumentList = argumentList;
     }
@@ -204,7 +208,6 @@ export class Nonterminal extends LexicalSymbol {
 
 export class Prose extends LexicalSymbol implements TextContent {
     public text: string;
-
     constructor(text: string) {
         super(SyntaxKind.Prose);
         this.text = text;
@@ -225,7 +228,6 @@ export class OneOfSymbol extends LexicalSymbol {
     public oneKeyword: Node;
     public ofKeyword: Node;
     public symbols: LexicalSymbol[];
-
     constructor(oneKeyword: Node, ofKeyword: Node, symbols: LexicalSymbol[]) {
         super(SyntaxKind.OneOfSymbol);
         this.oneKeyword = oneKeyword;
@@ -236,12 +238,10 @@ export class OneOfSymbol extends LexicalSymbol {
 
 export class SymbolSpan extends Node {
     public symbol: LexicalSymbol;
-    public questionToken: Node;
     public next: SymbolSpan;
-    constructor(symbol: LexicalSymbol, questionToken: Node, next: SymbolSpan) {
+    constructor(symbol: LexicalSymbol, next: SymbolSpan) {
         super(SyntaxKind.SymbolSpan);
         this.symbol = symbol;
-        this.questionToken = questionToken;
         this.next = next;
     }
 }
@@ -272,7 +272,6 @@ export class OneOfList extends Node {
     public ofKeyword: Node;
     public terminals: Terminal[];
     public closeIndentToken: Node;
-
     constructor(oneKeyword: Node, ofKeyword: Node, openIndentToken: Node, terminals: Terminal[], closeIndentToken: Node) {
         super(SyntaxKind.OneOfList);
         this.oneKeyword = oneKeyword;
@@ -502,10 +501,14 @@ export function forEachChild<T>(node: Node, cbNode: (node: Node) => T): T {
         switch (node.kind) {
             case SyntaxKind.TerminalList:
                 return visitNodes((<TerminalList>node).terminals, cbNode);
-            case SyntaxKind.TerminalSet:
-                return visitNode((<TerminalSet>node).openBraceToken, cbNode)
-                    || visitNodes((<TerminalSet>node).elements, cbNode)
-                    || visitNode((<TerminalSet>node).closeBraceToken, cbNode);
+            case SyntaxKind.SymbolSet:
+                return visitNode((<SymbolSet>node).openBraceToken, cbNode)
+                    || visitNodes((<SymbolSet>node).elements, cbNode)
+                    || visitNode((<SymbolSet>node).closeBraceToken, cbNode);
+            case SyntaxKind.EmptyAssertion:
+                return visitNode((<EmptyAssertion>node).openBracketToken, cbNode)
+                    || visitNode((<EmptyAssertion>node).emptyKeyword, cbNode)
+                    || visitNode((<EmptyAssertion>node).closeBracketToken, cbNode);
             case SyntaxKind.LookaheadAssertion:
                 return visitNode((<LookaheadAssertion>node).openBracketToken, cbNode)
                     || visitNode((<LookaheadAssertion>node).lookaheadKeyword, cbNode)
@@ -532,9 +535,13 @@ export function forEachChild<T>(node: Node, cbNode: (node: Node) => T): T {
             case SyntaxKind.InvalidAssertion:
                 return visitNode((<Assertion>node).openBracketToken, cbNode)
                     || visitNode((<Assertion>node).closeBracketToken, cbNode);
+            case SyntaxKind.Terminal:
+            case SyntaxKind.UnicodeCharacterLiteral:
+                return visitNode((<OptionalSymbol>node).questionToken, cbNode);
             case SyntaxKind.Nonterminal:
                 return visitNode((<Nonterminal>node).name, cbNode)
-                    || visitNode((<Nonterminal>node).argumentList, cbNode);
+                    || visitNode((<Nonterminal>node).argumentList, cbNode)
+                    || visitNode((<Nonterminal>node).questionToken, cbNode);
             case SyntaxKind.OneOfSymbol:
                 return visitNodes((<OneOfSymbol>node).symbols, cbNode);
             case SyntaxKind.BinarySymbol:
@@ -543,7 +550,6 @@ export function forEachChild<T>(node: Node, cbNode: (node: Node) => T): T {
                     || visitNode((<BinarySymbol>node).right, cbNode);
             case SyntaxKind.SymbolSpan:
                 return visitNode((<SymbolSpan>node).symbol, cbNode)
-                    || visitNode((<SymbolSpan>node).questionToken, cbNode)
                     || visitNode((<SymbolSpan>node).next, cbNode);
             case SyntaxKind.RightHandSide:
                 return visitNode((<RightHandSide>node).head, cbNode);

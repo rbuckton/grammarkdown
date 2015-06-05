@@ -133,7 +133,7 @@ Keyword :: one of
 	`default`	`if`		`throw`
 	`delete`	`import`	`try`
 
-FutureReservedWord ::
+FutureReservedWord :: one of
 	`enum`
 	// `await` is only treated as a /FutureReservedWord/ when /Module/ is the goal symbol of the syntactic grammar.
 	`await`

@@ -1,9 +1,11 @@
 import { SyntaxKind } from "./core";
+import { DiagnosticMessages } from "./diagnostics";
+import { Checker } from "./checker";
+import { StringWriter } from "./stringwriter";
+import { tokenToString } from "./tokens";
 import { 
     Node,
     SourceFile,
-    Constant,
-    Literal,
     UnicodeCharacterLiteral,
     Prose,
     Identifier,
@@ -12,8 +14,9 @@ import {
     OneOfList,
     Terminal,
     TerminalList,
-    TerminalSet,
+    SymbolSet,
     Assertion,
+    EmptyAssertion,
     LookaheadAssertion,
     NoSymbolHereAssertion,
     LexicalGoalAssertion,
@@ -30,14 +33,28 @@ import {
     RightHandSideList,
     Production,
     SourceElement,
+    TextContent,
 	forEachChild
 } from "./nodes";
 
 export class EmitterBase {
+    private checker: Checker;
+    private diagnostics: DiagnosticMessages;
+    private innerWriter: StringWriter;
+    constructor(checker: Checker, diagnostics: DiagnosticMessages, writer: StringWriter) {
+        this.checker = checker;
+        this.diagnostics = diagnostics;
+        this.innerWriter = writer;
+    }
+    
+    protected get writer(): StringWriter {
+        return this.innerWriter;
+    }
+    
 	public emitSourceFile(node: SourceFile): void {
         forEachChild(node, child => this.emitNode(child));
 	}
-    
+
     protected emitNode(node: Node): void {
         if (!node) {
             return;
@@ -45,7 +62,7 @@ export class EmitterBase {
         
         switch (node.kind) {
             case SyntaxKind.Terminal: this.emitTerminal(<Terminal>node); break;
-            case SyntaxKind.UnicodeCharacter: this.emitUnicodeCharacterLiteral(<UnicodeCharacterLiteral>node); break;
+            case SyntaxKind.UnicodeCharacterLiteral: this.emitUnicodeCharacterLiteral(<UnicodeCharacterLiteral>node); break;
             case SyntaxKind.Prose: this.emitProse(<Prose>node); break;
             case SyntaxKind.Identifier: this.emitIdentifier(<Identifier>node); break;
             case SyntaxKind.Parameter: this.emitParameter(<Parameter>node); break;
@@ -62,7 +79,8 @@ export class EmitterBase {
             case SyntaxKind.OneOfSymbol: this.emitOneOfSymbol(<OneOfSymbol>node); break;
             case SyntaxKind.Nonterminal: this.emitNonterminal(<Nonterminal>node); break;
             case SyntaxKind.TerminalList: this.emitTerminalList(<TerminalList>node); break;
-            case SyntaxKind.TerminalSet: this.emitTerminalSet(<TerminalSet>node); break;
+            case SyntaxKind.SymbolSet: this.emitTerminalSet(<SymbolSet>node); break;
+            case SyntaxKind.EmptyAssertion: this.emitEmptyAssertion(<EmptyAssertion>node); break;
             case SyntaxKind.LookaheadAssertion: this.emitLookaheadAssertion(<LookaheadAssertion>node); break;
             case SyntaxKind.LexicalGoalAssertion: this.emitLexicalGoalAssertion(<LexicalGoalAssertion>node); break;
             case SyntaxKind.NoSymbolHereAssertion: this.emitNoSymbolHereAssertion(<NoSymbolHereAssertion>node); break;
@@ -70,20 +88,30 @@ export class EmitterBase {
         }
     }
     
+    protected emitToken(node: Node) {
+        this.writer.write(tokenToString(node.kind));
+    }
+    
     protected emitTerminal(node: Terminal) {
-        forEachChild(node, child => this.emitNode(child));
+        this.emitTextContent(node);
+        this.emitNode(node.questionToken);
     }
     
     protected emitUnicodeCharacterLiteral(node: UnicodeCharacterLiteral) {
-        forEachChild(node, child => this.emitNode(child));
+        this.emitTextContent(node);
+        this.emitNode(node.questionToken);
+    }
+    
+    protected emitTextContent(node: TextContent) {
+        this.writer.write(node.text);
     }
     
     protected emitProse(node: Prose) {
-        forEachChild(node, child => this.emitNode(child));
+        this.emitTextContent(node);
     }
     
     protected emitIdentifier(node: Identifier) {
-        forEachChild(node, child => this.emitNode(child));
+        this.emitTextContent(node);
     }    
     
     protected emitParameter(node: Parameter): void {
@@ -142,8 +170,11 @@ export class EmitterBase {
         forEachChild(node, child => this.emitNode(child));
     }
     
-    protected emitTerminalSet(node: TerminalSet): void {
+    protected emitTerminalSet(node: SymbolSet): void {
         forEachChild(node, child => this.emitNode(child));
+    }
+    
+    protected emitEmptyAssertion(node: EmptyAssertion): void {
     }
     
     protected emitLookaheadAssertion(node: LookaheadAssertion): void {
@@ -160,6 +191,18 @@ export class EmitterBase {
     
     protected emitParameterValueAssertion(node: ParameterValueAssertion): void {
         forEachChild(node, child => this.emitNode(child));
+    }
+    
+    protected encode(text: string) {
+        return text.replace(/[&<>'"]/g, ch => {
+            switch (ch) {
+                case "&": return "&amp;";
+                case "<": return "&lt;";
+                case ">": return "&gt;";
+                case "'": return "&apos;";
+                case '"': return "&quot;";
+            }
+        });
     }
 }
 

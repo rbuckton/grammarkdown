@@ -14,6 +14,10 @@
         "../binder.ts",
         "../checker.ts",
         "../emitter.ts",
+        "../compiler.ts",
+        "../emitter/html.ts",
+        "../emitter/markdown.ts",
+        "../emitter/ecmarkup.ts",
         "index.ts",
         "diff.ts",
         "core-tests.ts",
@@ -24,6 +28,8 @@
         "parser-tests.ts",
         "binder-tests.ts",
         "checker-tests.ts",
-        "emitter-tests.ts"
+        "emitter-tests.ts",
+        "ecmarkup-tests.ts",
+        "markdown-tests.ts"
     ]
 }

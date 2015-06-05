@@ -14,8 +14,17 @@
  *  limitations under the License.
  */
 import { CharacterCodes, SyntaxKind, binarySearch } from "./core";
-import { Node, SourceFile, Literal, Identifier, SymbolSpan, Argument } from "./nodes";
 import { tokenToString } from "./tokens";
+import { 
+    Node, 
+    SourceFile, 
+    Identifier, 
+    Nonterminal, 
+    Argument, 
+    Prose, 
+    Terminal, 
+    UnicodeCharacterLiteral 
+} from "./nodes";
 
 export interface Diagnostic {
     code: number;
@@ -279,19 +288,21 @@ export function formatNode(node: Node, sourceFile: SourceFile) {
         case SyntaxKind.Prose:
         case SyntaxKind.Identifier:
         case SyntaxKind.Terminal:
-            text += `(text = "${(<Literal | Identifier>node).text}")`;
+            text += `(text = "${(<Prose | Identifier | Terminal>node).text}")`;
             break;
-        case SyntaxKind.UnicodeCharacter:
-            text += `(text = <${(<Literal>node).text}>)`;
+        case SyntaxKind.UnicodeCharacterLiteral:
+            text += `(text = <${(<UnicodeCharacterLiteral>node).text}>)`;
             break;
         case SyntaxKind.SourceFile:
             text += `(filename = "${(<SourceFile>node).filename}")`;
             break;
     }
     switch (node.kind) {
-        case SyntaxKind.SymbolSpan:
+        case SyntaxKind.Terminal:
         case SyntaxKind.Argument:
-            if ((<SymbolSpan | Argument>node).questionToken) {
+        case SyntaxKind.Nonterminal:
+        case SyntaxKind.UnicodeCharacterLiteral:
+            if ((<Terminal | Argument | Nonterminal | UnicodeCharacterLiteral >node).questionToken) {
                 text += "?";
             }
             break;

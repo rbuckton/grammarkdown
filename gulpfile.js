@@ -7,6 +7,7 @@ var gutil = require("gulp-util");
 var sources = [
     "*.ts",
     "bin/**/*.ts",
+    "emitter/**/*.ts",
     "typings/**/*.d.ts"
 ];
 

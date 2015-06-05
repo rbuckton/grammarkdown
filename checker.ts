@@ -21,15 +21,13 @@ import {
     SymbolTable,
     Node, 
     SourceFile,
-    Constant,
-    Literal,
     Prose,
     Identifier,
     Parameter,
     ParameterList,
     OneOfList,
     Terminal,
-    TerminalSet,
+    SymbolSet,
     Assertion,
     LookaheadAssertion,
     NoSymbolHereAssertion,
@@ -87,7 +85,7 @@ export class Checker {
     private checkParameterList(node: ParameterList): void {
     }
 
-    private checkTerminalSet(node: TerminalSet): void {
+    private checkTerminalSet(node: SymbolSet): void {
     }
 
     private checkLookaheadConstraint(node: LookaheadAssertion): void {
@@ -142,7 +140,7 @@ export class Checker {
 
             case SyntaxKind.LessThanMinusToken:
             case SyntaxKind.LessThanExclamationToken:
-                if (node.lookahead.kind !== SyntaxKind.TerminalSet) {
+                if (node.lookahead.kind !== SyntaxKind.SymbolSet) {
                     return this.diagnostics.reportNode(node, Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBraceToken));
                 }
                 break;
@@ -151,8 +149,8 @@ export class Checker {
         switch (node.lookahead.kind) {
             case SyntaxKind.Terminal:
                 return this.checkTerminal(<Terminal>node.lookahead);
-            case SyntaxKind.TerminalSet:
-                return this.checkTerminalSet(<TerminalSet>node.lookahead);
+            case SyntaxKind.SymbolSet:
+                return this.checkTerminalSet(<SymbolSet>node.lookahead);
         }
     }
 
@@ -207,7 +205,7 @@ export class Checker {
 
     private checkProse(node: Prose): void {
         if (typeof node.text !== "string") {
-            this.diagnostics.reportNode(node, Diagnostics._0_expected, tokenToString(SyntaxKind.UnicodeCharacter));
+            this.diagnostics.reportNode(node, Diagnostics._0_expected, tokenToString(SyntaxKind.UnicodeCharacterLiteral));
         }
     }
 
@@ -261,7 +259,7 @@ export class Checker {
             case SyntaxKind.Nonterminal:
                 return this.checkNonterminal(<Nonterminal>node);
 
-            case SyntaxKind.UnicodeCharacter:
+            case SyntaxKind.UnicodeCharacterLiteral:
                 return this.checkProse(<Prose>node);
 
             case SyntaxKind.InvalidSymbol:

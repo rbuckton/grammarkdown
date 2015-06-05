@@ -14,6 +14,10 @@
         "binder.ts",
         "checker.ts",
         "emitter.ts",
+        "compiler.ts",
+        "emitter/html.ts",
+        "emitter/markdown.ts",
+        "emitter/ecmarkup.ts",
         "index.ts",
         "bin/cli.ts"
     ]

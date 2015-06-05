@@ -154,7 +154,7 @@ export enum SyntaxKind {
 
     // Literals
     Terminal,
-    UnicodeCharacter,
+    UnicodeCharacterLiteral,
     Prose,
 
     // Punctuation
@@ -212,9 +212,10 @@ export enum SyntaxKind {
     OneOfSymbol,                // one of OrClause
     Nonterminal,
     TerminalList,
-    TerminalSet,
+    SymbolSet,
 
     // Zero-width Assertions
+    EmptyAssertion,             // `[` `empty` `]`
     LookaheadAssertion,
     LexicalGoalAssertion,
     NoSymbolHereAssertion,

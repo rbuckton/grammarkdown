@@ -60,20 +60,19 @@ PrimarySymbol :
 	Terminal
 	UnicodeCharacterLiteral
 	Nonterminal
-
-CallSymbol :
-	PrimarySymbol
-	Nonterminal Arguments
+	
+Nonterminal :
+	Identifier Arguments?
 
 OptionalSymbol :
-	CallSymbol `?`?
+	PrimarySymbol `?`?
 
 OrClause :
 	OptionalSymbol
 	OrClause `or` OptionalSymbol
 
 OneOfSymbol :
-	CallSymbol
+	PrimarySymbol
 	`one` `of` OrClause
 
 UnarySymbol :
@@ -87,17 +86,20 @@ BinarySymbol :
 	ButNotSymbol
 
 SymbolList :
-	CallSymbol
-	SymbolList `,` CallSymbol
+	PrimarySymbol
+	SymbolList `,` PrimarySymbol
 
 SymbolSet :
 	`{` SymbolList `}`
 
+EmptyAssertionClause :
+	`empty`
+
 LookaheadEqualsAssertionClause :
-	`lookahead` `==` CallSymbol
+	`lookahead` `==` PrimarySymbol
 
 LookaheadNotEqualsAssertionClause :
-	`lookahead` `!=` CallSymbol
+	`lookahead` `!=` PrimarySymbol
 
 LookaheadInAssertionClause :
 	`lookahead` `<-` SymbolSet
@@ -122,6 +124,7 @@ ParameterValueAssertionClause :
 	`+` Identifier
 
 AssertionClause :
+	EmptyAssertionClause
 	LookaheadAssertionClause
 	NoSymbolAssertionClause
 	LexicalGoalAssertionClause
@@ -139,9 +142,8 @@ Symbol :
 	BinarySymbol
 
 SymbolSpan :
-	`[` `empty` `]`
 	ProseSpan
-	Symbol SymbolSpanRest?
+	SymbolSpanRest
 
 SymbolSpanRest :
 	Symbol SymbolSpanRest?

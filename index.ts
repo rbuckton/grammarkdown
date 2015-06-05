@@ -21,3 +21,4 @@ export * from "./parser";
 export * from "./binder";
 export * from "./checker";
 export * from "./emitter";
+export * from "./compiler";
