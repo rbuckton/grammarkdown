@@ -1,0 +1,523 @@
+<emu-production name="SourceCharacter" type="lexical">
+    <emu-rhs><emu-gprose>any Unicode code point</emu-gprose></emu-rhs>
+</emu-production>
+<emu-production name="InputElementDiv" type="lexical">
+    <emu-rhs><emu-nt>WhiteSpace</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>LineTerminator</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>Comment</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>CommonToken</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>DivPunctuator</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>RightBracePunctuator</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="InputElementRegExp" type="lexical">
+    <emu-rhs><emu-nt>WhiteSpace</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>LineTerminator</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>Comment</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>CommonToken</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>RightBracePunctuator</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>RegularExpressionLiteral</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="InputElementRegExpOrTemplateTail" type="lexical">
+    <emu-rhs><emu-nt>WhiteSpace</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>LineTerminator</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>Comment</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>CommonToken</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>RegularExpressionLiteral</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>TemplateSubstitutionTail</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="InputElementTemplateTail" type="lexical">
+    <emu-rhs><emu-nt>WhiteSpace</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>LineTerminator</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>Comment</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>CommonToken</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>DivPunctuator</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>TemplateSubstitutionTail</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="WhiteSpace" type="lexical">
+    <emu-rhs><emu-gprose>&lt;TAB&gt;</emu-gprose></emu-rhs>
+    <emu-rhs><emu-gprose>&lt;VT&gt;</emu-gprose></emu-rhs>
+    <emu-rhs><emu-gprose>&lt;FF&gt;</emu-gprose></emu-rhs>
+    <emu-rhs><emu-gprose>&lt;SP&gt;</emu-gprose></emu-rhs>
+    <emu-rhs><emu-gprose>&lt;NBSP&gt;</emu-gprose></emu-rhs>
+    <emu-rhs><emu-gprose>&lt;ZWNBSP&gt;</emu-gprose></emu-rhs>
+    <emu-rhs><emu-gprose>&lt;USP&gt;</emu-gprose></emu-rhs>
+</emu-production>
+<emu-production name="LineTerminator" type="lexical">
+    <emu-rhs><emu-gprose>&lt;LF&gt;</emu-gprose></emu-rhs>
+    <emu-rhs><emu-gprose>&lt;CR&gt;</emu-gprose></emu-rhs>
+    <emu-rhs><emu-gprose>&lt;LS&gt;</emu-gprose></emu-rhs>
+    <emu-rhs><emu-gprose>&lt;PS&gt;</emu-gprose></emu-rhs>
+</emu-production>
+<emu-production name="LineTerminatorSequence" type="lexical">
+    <emu-rhs><emu-gprose>&lt;LF&gt;</emu-gprose></emu-rhs>
+    <emu-rhs>
+        <emu-gprose>&lt;CR&gt;</emu-gprose>
+        <emu-gann>lookahead ≠ <emu-gprose>&lt;LF&gt;</emu-gprose></emu-gann>
+    </emu-rhs>
+    <emu-rhs><emu-gprose>&lt;LS&gt;</emu-gprose></emu-rhs>
+    <emu-rhs><emu-gprose>&lt;PS&gt;</emu-gprose></emu-rhs>
+    <emu-rhs>
+        <emu-gprose>&lt;CR&gt;</emu-gprose>
+        <emu-gprose>&lt;LF&gt;</emu-gprose>
+    </emu-rhs>
+</emu-production>
+<emu-production name="Comment" type="lexical">
+    <emu-rhs><emu-nt>MultiLineComment</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>SingleLineComment</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="MultiLineComment" type="lexical">
+    <emu-rhs>
+        <emu-t>/*</emu-t>
+        <emu-nt optional>MultiLineCommentChars</emu-nt>
+        <emu-t>*/</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="MultiLineCommentChars" type="lexical">
+    <emu-rhs>
+        <emu-nt>MultiLineNotAsteriskChar</emu-nt>
+        <emu-nt optional>MultiLineCommentChars</emu-nt>
+    </emu-rhs>
+    <emu-rhs>
+        <emu-t>*</emu-t>
+        <emu-nt optional>PostAsteriskCommentChars</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="PostAsteriskCommentChars" type="lexical">
+    <emu-rhs>
+        <emu-nt>MultiLineNotForwardSlashOrAsteriskChar</emu-nt>
+        <emu-nt optional>MultiLineCommentChars</emu-nt>
+    </emu-rhs>
+    <emu-rhs>
+        <emu-t>*</emu-t>
+        <emu-nt optional>PostAsteriskCommentChars</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="MultiLineNotAsteriskChar" type="lexical">
+    <emu-rhs><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not <emu-t>*</emu-t></emu-gmod></emu-rhs>
+</emu-production>
+<emu-production name="MultiLineNotForwardSlashOrAsteriskChar" type="lexical">
+    <emu-rhs><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not one of <emu-t>/</emu-t> or <emu-t>*</emu-t></emu-gmod></emu-rhs>
+</emu-production>
+<emu-production name="SingleLineComment" type="lexical">
+    <emu-rhs>
+        <emu-t>//</emu-t>
+        <emu-nt optional>SingleLineCommentChars</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="SingleLineCommentChars" type="lexical">
+    <emu-rhs>
+        <emu-nt>SingleLineCommentChar</emu-nt>
+        <emu-nt optional>SingleLineCommentChars</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="SingleLineCommentChar" type="lexical">
+    <emu-rhs><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not <emu-nt>LineTerminator</emu-nt></emu-gmod></emu-rhs>
+</emu-production>
+<emu-production name="CommonToken" type="lexical">
+    <emu-rhs><emu-nt>IdentifierName</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>Punctuator</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>NumericLiteral</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>StringLiteral</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>Template</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="IdentifierName" type="lexical">
+    <emu-rhs><emu-nt>IdentifierStart</emu-nt></emu-rhs>
+    <emu-rhs>
+        <emu-nt>IdentifierName</emu-nt>
+        <emu-nt>IdentifierPart</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="IdentifierStart" type="lexical">
+    <emu-rhs><emu-nt>UnicodeIDStart</emu-nt></emu-rhs>
+    <emu-rhs><emu-t>$</emu-t></emu-rhs>
+    <emu-rhs><emu-t>_</emu-t></emu-rhs>
+    <emu-rhs>
+        <emu-t>\</emu-t>
+        <emu-nt>UnicodeEscapeSequence</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="IdentifierPart" type="lexical">
+    <emu-rhs><emu-nt>UnicodeIDContinue</emu-nt></emu-rhs>
+    <emu-rhs><emu-t>$</emu-t></emu-rhs>
+    <emu-rhs><emu-t>_</emu-t></emu-rhs>
+    <emu-rhs>
+        <emu-t>\</emu-t>
+        <emu-nt>UnicodeEscapeSequence</emu-nt>
+    </emu-rhs>
+    <emu-rhs><emu-gprose>&lt;ZWNJ&gt;</emu-gprose></emu-rhs>
+    <emu-rhs><emu-gprose>&lt;ZWJ&gt;</emu-gprose></emu-rhs>
+</emu-production>
+<emu-production name="UnicodeIDStart" type="lexical">
+    <emu-rhs><emu-gprose>any Unicode code point with the Unicode property &quot;ID_Start&quot; or &quot;Other_ID_Start&quot;</emu-gprose></emu-rhs>
+</emu-production>
+<emu-production name="UnicodeIDContinue" type="lexical">
+    <emu-rhs><emu-gprose>any Unicode code point with the Unicode property &quot;ID_Continue&quot; or &quot;Other_ID_Continue&quot;, or &quot;Other_ID_Start&quot;</emu-gprose></emu-rhs>
+</emu-production>
+<emu-production name="ReservedWord" type="lexical">
+    <emu-rhs><emu-nt>Keyword</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>FutureReservedWord</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>NullLiteral</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>BooleanLiteral</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="Keyword" type="lexical"oneof>
+    <emu-rhs>break do in typeof case else instanceof var catch export new void class extends return while const finally super with continue for switch yield debugger function this default if throw delete import try</emu-rhs>
+</emu-production>
+<emu-production name="FutureReservedWord" type="lexical"oneof>
+    <emu-rhs>enum await implements package protected interface private public</emu-rhs>
+</emu-production>
+<emu-production name="Punctuator" type="lexical"oneof>
+    <emu-rhs>{ } ( ) [ ] . ; , &lt; &gt; &lt;= &gt;= == != === !== + - * % ++ -- &lt;&lt; &gt;&gt; &gt;&gt;&gt; &amp; | ^ ! ~ &amp;&amp; || ?  :: = += -= *= %= &lt;&lt;= &gt;&gt;= &gt;&gt;&gt;= &amp;= |= ^= =&gt;</emu-rhs>
+</emu-production>
+<emu-production name="DivPunctuator" type="lexical"oneof>
+    <emu-rhs>/ /=</emu-rhs>
+</emu-production>
+<emu-production name="RightBracePunctuator" type="lexical"oneof>
+    <emu-rhs>)</emu-rhs>
+</emu-production>
+<emu-production name="NullLiteral" type="lexical">
+    <emu-rhs><emu-t>null</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="BooleanLiteral" type="lexical">
+    <emu-rhs><emu-t>true</emu-t></emu-rhs>
+    <emu-rhs><emu-t>false</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="NumericLiteral" type="lexical">
+    <emu-rhs><emu-nt>DecimalLiteral</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>BinaryIntegerLiteral</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>OctalIntegerLiteral</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>HexIntegerLiteral</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="DecimalLiteral" type="lexical">
+    <emu-rhs>
+        <emu-nt>DecimalIntegerLiteral</emu-nt>
+        <emu-t>.</emu-t>
+        <emu-nt optional>DecimalDigits</emu-nt>
+        <emu-nt optional>ExponentPart</emu-nt>
+    </emu-rhs>
+    <emu-rhs>
+        <emu-t>.</emu-t>
+        <emu-nt>DecimalDigits</emu-nt>
+        <emu-nt optional>ExponentPart</emu-nt>
+    </emu-rhs>
+    <emu-rhs>
+        <emu-nt>DecimalIntegerLiteral</emu-nt>
+        <emu-nt optional>ExponentPart</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="DecimalIntegerLiteral" type="lexical">
+    <emu-rhs><emu-t>0</emu-t></emu-rhs>
+    <emu-rhs>
+        <emu-nt>NonZeroDigit</emu-nt>
+        <emu-nt optional>DecimalDigits</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="DecimalDigits" type="lexical">
+    <emu-rhs><emu-nt>DecimalDigit</emu-nt></emu-rhs>
+    <emu-rhs>
+        <emu-nt>DecimalDigits</emu-nt>
+        <emu-nt>DecimalDigit</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="DecimalDigit" type="lexical"oneof>
+    <emu-rhs>0 1 2 3 4 5 6 7 8 9</emu-rhs>
+</emu-production>
+<emu-production name="NonZeroDigit" type="lexical"oneof>
+    <emu-rhs>1 2 3 4 5 6 7 8 9</emu-rhs>
+</emu-production>
+<emu-production name="ExponetPart" type="lexical">
+    <emu-rhs>
+        <emu-nt>ExponentIndicator</emu-nt>
+        <emu-nt>SignedInteger</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ExponentIndicator" type="lexical"oneof>
+    <emu-rhs>e E</emu-rhs>
+</emu-production>
+<emu-production name="SignedInteger" type="lexical">
+    <emu-rhs><emu-nt>DecimalDigits</emu-nt></emu-rhs>
+    <emu-rhs>
+        <emu-t>+</emu-t>
+        <emu-nt>DecimalDigits</emu-nt>
+    </emu-rhs>
+    <emu-rhs>
+        <emu-t>-</emu-t>
+        <emu-nt>DecimalDigits</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="BinaryIntegerLiteral" type="lexical">
+    <emu-rhs>
+        <emu-t>0b</emu-t>
+        <emu-nt>BinaryDigits</emu-nt>
+    </emu-rhs>
+    <emu-rhs>
+        <emu-t>0B</emu-t>
+        <emu-nt>BinaryDigits</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="BinaryDigits" type="lexical">
+    <emu-rhs><emu-nt>BinaryDigit</emu-nt></emu-rhs>
+    <emu-rhs>
+        <emu-nt>BinaryDigits</emu-nt>
+        <emu-nt>BinaryDigit</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="BinaryDigit" type="lexical"oneof>
+    <emu-rhs>0 1</emu-rhs>
+</emu-production>
+<emu-production name="OctalIntegerLiteral" type="lexical">
+    <emu-rhs>
+        <emu-t>0o</emu-t>
+        <emu-nt>OctalDigits</emu-nt>
+    </emu-rhs>
+    <emu-rhs>
+        <emu-t>0O</emu-t>
+        <emu-nt>OctalDigits</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="OctalDigits" type="lexical">
+    <emu-rhs><emu-nt>OctalDigit</emu-nt></emu-rhs>
+    <emu-rhs>
+        <emu-nt>OctalDigits</emu-nt>
+        <emu-nt>OctalDigit</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="OctalDigit" type="lexical"oneof>
+    <emu-rhs>0 1 2 3 4 5 6 7</emu-rhs>
+</emu-production>
+<emu-production name="HexIntegerLiteral" type="lexical">
+    <emu-rhs>
+        <emu-t>0x</emu-t>
+        <emu-nt>HexDigits</emu-nt>
+    </emu-rhs>
+    <emu-rhs>
+        <emu-t>0X</emu-t>
+        <emu-nt>HexDigits</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="HexDigits" type="lexical">
+    <emu-rhs><emu-nt>HexDigit</emu-nt></emu-rhs>
+    <emu-rhs>
+        <emu-nt>HexDigits</emu-nt>
+        <emu-nt>HexDigit</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="HexDigit" type="lexical"oneof>
+    <emu-rhs>0 1 2 3 4 5 6 7 8 9 a b c d e f A B C D E F</emu-rhs>
+</emu-production>
+<emu-production name="StringLiteral" type="lexical">
+    <emu-rhs>
+        <emu-t>"</emu-t>
+        <emu-nt optional>DoubleStringCharacters</emu-nt>
+        <emu-t>"</emu-t>
+    </emu-rhs>
+    <emu-rhs>
+        <emu-t>'</emu-t>
+        <emu-nt optional>SingleStringCharacters</emu-nt>
+        <emu-t>'</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="DoubleStringCharacters" type="lexical">
+    <emu-rhs>
+        <emu-nt>DoubleStringCharacter</emu-nt>
+        <emu-nt optional>DoubleStringCharacters</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="SingleStringCharacters" type="lexical">
+    <emu-rhs>
+        <emu-nt>SingleStringCharacter</emu-nt>
+        <emu-nt optional>SingleStringCharacters</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="DoubleStringCharacter" type="lexical">
+    <emu-rhs><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not one of <emu-t>"</emu-t> or <emu-t>\</emu-t> or <emu-nt>LineTerminator</emu-nt></emu-gmod></emu-rhs>
+    <emu-rhs>
+        <emu-t>\</emu-t>
+        <emu-nt>EscapeSequence</emu-nt>
+    </emu-rhs>
+    <emu-rhs><emu-nt>LineContinuation</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="SingleStringCharacter" type="lexical">
+    <emu-rhs><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not one of <emu-t>'</emu-t> or <emu-t>\</emu-t> or <emu-nt>LineTerminator</emu-nt></emu-gmod></emu-rhs>
+    <emu-rhs>
+        <emu-t>\</emu-t>
+        <emu-nt>EscapeSequence</emu-nt>
+    </emu-rhs>
+    <emu-rhs><emu-nt>LineContinuation</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="LineContinuation" type="lexical">
+    <emu-rhs>
+        <emu-t>\</emu-t>
+        <emu-nt>LineTerminatorSequence</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="EscapeSequence" type="lexical">
+    <emu-rhs><emu-nt>CharacterEscapeSequence</emu-nt></emu-rhs>
+    <emu-rhs>
+        <emu-t>0</emu-t>
+        <emu-gann>lookahead ∉ <emu-nt>DecimalDigit</emu-nt></emu-gann>
+    </emu-rhs>
+    <emu-rhs><emu-nt>HexEscapeSequence</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>UnicodeEscapeSequence</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="CharacterEscapeSequence" type="lexical">
+    <emu-rhs><emu-nt>SingleEscapeCharacter</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>NonEscapeCharacter</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="SingleEscapeCharacter" type="lexical"oneof>
+    <emu-rhs>&apos; &quot; \ b f n r t v</emu-rhs>
+</emu-production>
+<emu-production name="NonEscapeCharacter" type="lexical">
+    <emu-rhs><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not one of <emu-nt>EscapeCharacter</emu-nt> or <emu-nt>LineTerminator</emu-nt></emu-gmod></emu-rhs>
+</emu-production>
+<emu-production name="EscapeCharacter" type="lexical">
+    <emu-rhs><emu-nt>SingleEscapeCharacter</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>DecimalDigit</emu-nt></emu-rhs>
+    <emu-rhs><emu-t>x</emu-t></emu-rhs>
+    <emu-rhs><emu-t>u</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="HexEscapeSequence" type="lexical">
+    <emu-rhs>
+        <emu-t>x</emu-t>
+        <emu-nt>HexDigit</emu-nt>
+        <emu-nt>HexDigit</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="UnicodeEscapeSequence" type="lexical">
+    <emu-rhs>
+        <emu-t>u</emu-t>
+        <emu-nt>Hex4Digits</emu-nt>
+    </emu-rhs>
+    <emu-rhs>
+        <emu-t>u{</emu-t>
+        <emu-nt>HexDigits</emu-nt>
+        <emu-t>}</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="Hex4Digits" type="lexical">
+    <emu-rhs>
+        <emu-nt>HexDigit</emu-nt>
+        <emu-nt>HexDigit</emu-nt>
+        <emu-nt>HexDigit</emu-nt>
+        <emu-nt>HexDigit</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="RegularExpressionLiteral" type="lexical">
+    <emu-rhs>
+        <emu-t>/</emu-t>
+        <emu-nt>RegularExpressionBody</emu-nt>
+        <emu-t>/</emu-t>
+        <emu-nt>RegularExpressionFlags</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="RegularExpressionBody" type="lexical">
+    <emu-rhs>
+        <emu-nt>RegularExpressionFirstChar</emu-nt>
+        <emu-nt>RegularExpressionChars</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="RegularExpressionChars" type="lexical">
+    <emu-rhs><emu-gann>empty</emu-gann></emu-rhs>
+    <emu-rhs>
+        <emu-nt>RegularExpressionChars</emu-nt>
+        <emu-nt>RegularExpressionChar</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="RegularExpressionFirstChar" type="lexical">
+    <emu-rhs><emu-nt>RegularExpressionNonTerminator</emu-nt><emu-gmod>but not one of <emu-t>*</emu-t> or <emu-t>\</emu-t> or <emu-t>/</emu-t> or <emu-t>[</emu-t></emu-gmod></emu-rhs>
+    <emu-rhs><emu-nt>RegularExpressionBackslashSequence</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>RegularExpressionClass</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="RegularExpressionChar" type="lexical">
+    <emu-rhs><emu-nt>RegularExpressionNonTerminator</emu-nt><emu-gmod>but not one of <emu-t>\</emu-t> or <emu-t>/</emu-t> or <emu-t>[</emu-t></emu-gmod></emu-rhs>
+    <emu-rhs><emu-nt>RegularExpressionBackslashSequence</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>RegularExpressionClass</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="RegularExpressionBackslashSequence" type="lexical">
+    <emu-rhs>
+        <emu-t>\</emu-t>
+        <emu-nt>RegularExpressionNonTerminator</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="RegularExpressionNonTerminator" type="lexical">
+    <emu-rhs><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not <emu-nt>LineTerminator</emu-nt></emu-gmod></emu-rhs>
+</emu-production>
+<emu-production name="RegularExpressionClass" type="lexical">
+    <emu-rhs>
+        <emu-t>[</emu-t>
+        <emu-nt>RegularExpressionClassChars</emu-nt>
+        <emu-t>]</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="RegularExpressionClassChars" type="lexical">
+    <emu-rhs><emu-gann>empty</emu-gann></emu-rhs>
+    <emu-rhs>
+        <emu-nt>RegularExpressionClassChars</emu-nt>
+        <emu-nt>RegularExpressionClassChar</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="RegularExpressionClassChar" type="lexical">
+    <emu-rhs><emu-nt>RegularExpressionNonTerminator</emu-nt><emu-gmod>but not one of <emu-t>]</emu-t> or <emu-t>\</emu-t></emu-gmod></emu-rhs>
+    <emu-rhs><emu-nt>RegularExpressionBackslashSequence</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="RegularExpressionFlags" type="lexical">
+    <emu-rhs><emu-gann>empty</emu-gann></emu-rhs>
+    <emu-rhs>
+        <emu-nt>RegularExpressionFlags</emu-nt>
+        <emu-nt>IdentifierPart</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="Template" type="lexical">
+    <emu-rhs><emu-nt>NoSubstitutionTemplate</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>TemplateHead</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="NoSubstitutionTemplate" type="lexical">
+    <emu-rhs>
+        <emu-t>`</emu-t>
+        <emu-nt optional>TemplateCharacters</emu-nt>
+        <emu-t>`</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="TemplateHead" type="lexical">
+    <emu-rhs>
+        <emu-t>`</emu-t>
+        <emu-nt>TemplateCharactersopt</emu-nt>
+        <emu-t>${</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="TemplateSubstitutionTail" type="lexical">
+    <emu-rhs><emu-nt>TemplateMiddle</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>TemplateTail</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="TemplateMiddle" type="lexical">
+    <emu-rhs>
+        <emu-t>}</emu-t>
+        <emu-nt optional>TemplateCharacters</emu-nt>
+        <emu-t>${</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="TemplateTail" type="lexical">
+    <emu-rhs>
+        <emu-t>}</emu-t>
+        <emu-nt>TemplateCharactersopt</emu-nt>
+        <emu-t>`</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="TemplateCharacters" type="lexical">
+    <emu-rhs>
+        <emu-nt>TemplateCharacter</emu-nt>
+        <emu-nt optional>TemplateCharacters</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="TemplateCharacter" type="lexical">
+    <emu-rhs>
+        <emu-t>$</emu-t>
+        <emu-gann>lookahead ≠ <emu-t>{</emu-t></emu-gann>
+    </emu-rhs>
+    <emu-rhs>
+        <emu-t>\</emu-t>
+        <emu-nt>EscapeSequence</emu-nt>
+    </emu-rhs>
+    <emu-rhs><emu-nt>LineContinuation</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>LineTerminatorSequence</emu-nt></emu-rhs>
+    <emu-rhs><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not one of <emu-t>`</emu-t> or <emu-t>\</emu-t> or <emu-t>$</emu-t> or <emu-nt>LineTerminator</emu-nt></emu-gmod></emu-rhs>
+</emu-production>
