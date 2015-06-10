@@ -21,4 +21,6 @@ export * from "./parser";
 export * from "./binder";
 export * from "./checker";
 export * from "./emitter";
+export * from "./emitter/ecmarkup";
 export * from "./compiler";
+
