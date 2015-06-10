@@ -37,7 +37,7 @@ gulp.task("build", function () {
     return gulp
         .src(sources)
         .pipe(compilation())
-        .pipe(gulp.dest('.')); 
+        .pipe(gulp.dest('./build')); 
 });
 
 gulp.task("watch-build", function () {

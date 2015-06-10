@@ -2,11 +2,12 @@
   "name": "grammarkdown",
   "version": "0.0.1",
   "description": "Markdown-like DSL for defining grammatical syntax for programming languages",
-  "main": "index.js",
+  "main": "build/index.js",
   "scripts": {
     "test": "gulp test",
     "build": "gulp build"
   },
+  "files": ["./build/**/*.js"],
   "repository": {
     "type": "git",
     "url": "https://github.com/rbuckton/grammarkdown.git"
