@@ -1,0 +1,6 @@
+**/*.ts
+**/*.js.map
+tests/
+typings/
+.git/
+.settings/

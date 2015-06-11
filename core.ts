@@ -40,16 +40,17 @@ export class Dict<T> {
     }
 
     [key: string]: T;
+    [key: number]: T;
     
-    static has<T>(object: Dict<T>, key: string): boolean {
+    static has<T>(object: Dict<T>, key: string | number): boolean {
         return Object.prototype.hasOwnProperty.call(object, key);
     }
     
-    static get<T>(object: Dict<T>, key: string): T {
+    static get<T>(object: Dict<T>, key: string | number): T {
         return Dict.has(object, key) ? object[key] : undefined;
     }
     
-    static set<T>(object: Dict<T>, key: string, value: T): Dict<T> {
+    static set<T>(object: Dict<T>, key: string | number, value: T): Dict<T> {
         object[key] = value;
         return object;
     }

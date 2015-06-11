@@ -4,7 +4,7 @@ import { resolve, extname } from "path";
 import { DiagnosticMessages, LineMap } from "../diagnostics";
 import { SyntaxKind } from "../tokens";
 import { SourceFile } from "../nodes";
-import { compile } from "../compiler";
+import { compileAndEmit, EmitResult } from "../compiler";
 import { EcmarkupEmitter } from "../emitter/ecmarkup";
 import { writeTokens, writeDiagnostics, writeBaseline, compareBaselines } from "./diff";
 
@@ -26,8 +26,8 @@ describe("ECMarkup Emitter", () => {
         it(name, () => {
             let baselines: string[] = [];
             let text = readFileSync(file, "utf8");
-            let result = compile(text, file, EcmarkupEmitter);
-            writeBaseline(name + ".ecmu", result.output, baselines);
+            let result = <EmitResult>compileAndEmit(text, file, { emitterFactory: (checker, diagnostics, writer) => new EcmarkupEmitter(checker, diagnostics, writer) });
+            writeBaseline(name + ".ecmarkup.html", result.output, baselines);
             writeDiagnostics(name, result.diagnostics, baselines);
             compareBaselines(baselines);
         });

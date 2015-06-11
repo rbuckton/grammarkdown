@@ -16,6 +16,9 @@
     },
     "source-map-support/source-map-support.d.ts": {
       "commit": "4408b656fab59a4e7f871da2f492311eedc9bdcd"
+    },
+    "nopt/nopt.d.ts": {
+      "commit": "4408b656fab59a4e7f871da2f492311eedc9bdcd"
     }
   }
 }

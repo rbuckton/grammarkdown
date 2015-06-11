@@ -3,29 +3,20 @@ var gulp = require('gulp');
 var tsb = require('gulp-tsb');
 var mocha = require('gulp-mocha');
 var gutil = require("gulp-util");
+var del = require("del");
 
 var sources = [
     "*.ts",
-    "bin/**/*.ts",
-    "emitter/**/*.ts",
-    "typings/**/*.d.ts"
+    "{bin,emitter,tests,typings}/**/*.ts"
 ];
 
-var testSources = sources.concat([
-    "tests/**/*.ts"
-]);
-
-var testOutputs = [
-    "tests/index.js"
+var outputs = [
+    "*.js?(.map)",
+    "{bin,emitter,tests,typings}/**/*.js?(.map)",
+    "!gulpfile.js"
 ];
 
 var compilation = tsb.create({
-    "target": "es5",
-    "module": "commonjs",
-    "sourceMap": true
-});
-
-var testCompilation = tsb.create({
     "target": "es5",
     "module": "commonjs",
     "sourceMap": true
@@ -40,24 +31,21 @@ gulp.task("build", function () {
         .pipe(gulp.dest('.')); 
 });
 
-gulp.task("watch-build", function () {
-    return gulp.watch(sources, ["build"]);
-});
+gulp.task("clean", function (cb) {
+    del(outputs, cb);
+})
 
-gulp.task("build-tests", function () {
+gulp.task("test", ["build"], function() {
     return gulp
-        .src(testSources)
-        .pipe(testCompilation())
-        .pipe(gulp.dest('.'));
-});
-
-gulp.task("test", ["build-tests"], function() {
-    return gulp
-        .src(testOutputs, { read: false })
+        .src(["tests/index.js"], { read: false })
         .pipe(mocha({ reporter: 'dot' }))
         .on("error", function (e) { });
 });
 
-gulp.task("watch-test", ["build-tests", "test"], function() {
-    gulp.watch(testSources, ["build-tests", "test"]);
+gulp.task("watch-build", function () {
+    return gulp.watch(sources, ["build"]);
+});
+
+gulp.task("watch-test", function() {
+    return gulp.watch(sources, ["build", "test"]);
 });
