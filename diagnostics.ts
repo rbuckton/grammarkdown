@@ -13,8 +13,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { CharacterCodes, SyntaxKind, binarySearch } from "./core";
-import { tokenToString } from "./tokens";
+import { binarySearch } from "./core";
+import { CharacterCodes, SyntaxKind, tokenToString } from "./tokens";
 import { 
     Node, 
     SourceFile, 
@@ -43,6 +43,8 @@ export var Diagnostics = {
     Digit_expected: <Diagnostic>{ code: 1006, message: "Digit expected." },
     Production_expected: <Diagnostic>{ code: 1007, message: "Production expected." },
     Cannot_find_name_0_: <Diagnostic>{ code: 2000, message: "Cannot find name: '{0}'." },
+    Duplicate_identifier_0_: <Diagnostic>{ code: 2001, message: "Duplicate identifier: '{0}'." },
+    Duplicate_terminal_0_: <Diagnostic>{ code: 2002, message: "Duplicate terminal: `{0}`." },
 };
 
 export class DiagnosticMessages {
@@ -69,18 +71,21 @@ export class DiagnosticMessages {
         this.sourceFilesDiagnosticOffset[sourceFileIndex] = diagnosticOffset;
     }
 
+    public report(pos: number, message: Diagnostic, args: any[]): void;
     public report(pos: number, message: Diagnostic, ...args: any[]): void;
     public report(pos: number, message: Diagnostic): void {
         this.reportDiagnostic(message, Array.prototype.slice.call(arguments, 2), pos);
     }
     
 
+    public reportNode(node: Node, message: Diagnostic, args: any[]): void;
     public reportNode(node: Node, message: Diagnostic, ...args: any[]): void;
     public reportNode(node: Node, message: Diagnostic): void {
         var pos: number;
         if (node) {
             pos = node.pos;
         }
+        
         this.reportDiagnostic(message, Array.prototype.slice.call(arguments, 2), pos);
     }
 
@@ -89,13 +94,13 @@ export class DiagnosticMessages {
     }
 
     public getMessage(diagnosticIndex: number): string {
-        var diagnostic = this.diagnostics && this.diagnostics[diagnosticIndex];
+        let diagnostic = this.diagnostics && this.diagnostics[diagnosticIndex];
         if (diagnostic) {
-            var diagnosticArguments = this.diagnosticsArguments && this.diagnosticsArguments[diagnosticIndex];
-            var sourceFile = this.getSourceFile(diagnosticIndex);
-            var text = sourceFile ? sourceFile.filename : "";
+            let diagnosticArguments = this.diagnosticsArguments && this.diagnosticsArguments[diagnosticIndex];
+            let sourceFile = this.getSourceFile(diagnosticIndex);
+            let text = sourceFile ? sourceFile.filename : "";
             if (this.diagnosticsPos && diagnosticIndex in this.diagnosticsPos) {
-                var diagnosticPos = this.diagnosticsPos[diagnosticIndex];
+                let diagnosticPos = this.diagnosticsPos[diagnosticIndex];
                 if (sourceFile && sourceFile.lineMap) {
                     text += `(${sourceFile.lineMap.formatPosition(diagnosticPos) })`;
                 }
@@ -103,16 +108,20 @@ export class DiagnosticMessages {
                     text += `(${diagnosticPos})`;
                 }
             }
+            
             text += ": ";
             text += diagnostic.warning ? "warning" : "error";
             text += " MG" + String(diagnostic.code) + ": ";
-            var message = diagnostic.message;
+            
+            let message = diagnostic.message;
             if (diagnosticArguments) {
                 message = formatString(message, diagnosticArguments);
             }
+            
             text += message;
             return text;
         }
+        
         return "";
     }
 
@@ -126,7 +135,7 @@ export class DiagnosticMessages {
 
     public forEach(callback: (message: string, diagnosticIndex: number) => void): void {
         if (this.diagnostics) {
-            for (var diagnosticIndex = 0, l = this.diagnostics.length; diagnosticIndex < l; diagnosticIndex++) {
+            for (let diagnosticIndex = 0, l = this.diagnostics.length; diagnosticIndex < l; diagnosticIndex++) {
                 callback(this.getMessage(diagnosticIndex), diagnosticIndex);
             }
         }
@@ -137,13 +146,18 @@ export class DiagnosticMessages {
             this.diagnostics = [];
         }
 
-        var diagnosticIndex = this.diagnostics.length;
+        let diagnosticIndex = this.diagnostics.length;
         this.diagnostics[diagnosticIndex] = message;
-
+        
+        if (args.length === 1 && args[0] instanceof Array) {
+            args = args[0];
+        }
+        
         if (args.length > 0) {
             if (!this.diagnosticsArguments) {
                 this.diagnosticsArguments = [];
             }
+            
             this.diagnosticsArguments[diagnosticIndex] = args;
         }
 
@@ -151,6 +165,7 @@ export class DiagnosticMessages {
             if (!this.diagnosticsPos) {
                 this.diagnosticsPos = [];
             }
+            
             this.diagnosticsPos[diagnosticIndex] = pos;
         }
 
@@ -158,18 +173,21 @@ export class DiagnosticMessages {
             if (!this.diagnosticsNode) {
                 this.diagnosticsNode = [];
             }
+            
             this.diagnosticsNode[diagnosticIndex] = node;
         }
     }
 
     private getSourceFile(diagnosticIndex: number): SourceFile {
         if (this.sourceFiles) {
-            var offset = binarySearch(this.sourceFilesDiagnosticOffset, diagnosticIndex);
+            let offset = binarySearch(this.sourceFilesDiagnosticOffset, diagnosticIndex);
             if (offset < 0) {
                 offset = (~offset) - 1;
             }
+            
             return this.sourceFiles[offset];
         }
+        
         return undefined;
     }
 }
@@ -251,15 +269,16 @@ export class LineMap {
 export function formatString(format: string, args?: any[]): string;
 export function formatString(format: string, ...args: any[]): string;
 export function formatString(format: string): string {
-    var args = <any[]>Array.prototype.slice.call(arguments, 1);
-    if (args.length === 0 && args[0] instanceof Array) {
+    let args = <any[]>Array.prototype.slice.call(arguments, 1);
+    if (args.length === 1 && args[0] instanceof Array) {
         args = args[0];
     }
+    
     return format.replace(/{(\d+)}/g, (_, index) => args[index]);
 }
 
 export function formatList(tokens: SyntaxKind[]): string {
-    if (tokens.length === 0) {
+    if (tokens.length <= 0) {
         return "";
     }
     else if (tokens.length === 1) {
@@ -272,11 +291,16 @@ export function formatList(tokens: SyntaxKind[]): string {
             tokenToString(tokens[1], /*quoted*/ true));
     }
     else {
-        var text = "";
+        let text = "";
         for (var i = 0; i < tokens.length - 1; i++) {
+            if (i > 0) {
+                text += " ";
+            }
+            
             text += tokenToString(tokens[i], /*quoted*/ true);
-            text += ", ";
+            text += ",";
         }
+        
         return formatString(Diagnostics._0_or_1_.message, text, tokenToString(tokens[tokens.length - 1], /*quoted*/ true));
     }
 }

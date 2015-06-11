@@ -224,7 +224,7 @@
 <emu-production name="NonZeroDigit" type="lexical"oneof>
     <emu-rhs>1 2 3 4 5 6 7 8 9</emu-rhs>
 </emu-production>
-<emu-production name="ExponetPart" type="lexical">
+<emu-production name="ExponentPart" type="lexical">
     <emu-rhs>
         <emu-nt>ExponentIndicator</emu-nt>
         <emu-nt>SignedInteger</emu-nt>
@@ -354,7 +354,7 @@
     <emu-rhs><emu-nt>CharacterEscapeSequence</emu-nt></emu-rhs>
     <emu-rhs>
         <emu-t>0</emu-t>
-        <emu-gann>lookahead ∉ <emu-nt>DecimalDigit</emu-nt></emu-gann>
+        <emu-gann>lookahead ≠ <emu-nt>DecimalDigit</emu-nt></emu-gann>
     </emu-rhs>
     <emu-rhs><emu-nt>HexEscapeSequence</emu-nt></emu-rhs>
     <emu-rhs><emu-nt>UnicodeEscapeSequence</emu-nt></emu-rhs>
@@ -480,7 +480,7 @@
 <emu-production name="TemplateHead" type="lexical">
     <emu-rhs>
         <emu-t>`</emu-t>
-        <emu-nt>TemplateCharactersopt</emu-nt>
+        <emu-nt optional>TemplateCharacters</emu-nt>
         <emu-t>${</emu-t>
     </emu-rhs>
 </emu-production>
@@ -498,7 +498,7 @@
 <emu-production name="TemplateTail" type="lexical">
     <emu-rhs>
         <emu-t>}</emu-t>
-        <emu-nt>TemplateCharactersopt</emu-nt>
+        <emu-nt optional>TemplateCharacters</emu-nt>
         <emu-t>`</emu-t>
     </emu-rhs>
 </emu-production>

@@ -11,6 +11,7 @@
         "nodes.ts",
         "scanner.ts",
         "parser.ts",
+        "symbols.ts",
         "binder.ts",
         "checker.ts",
         "emitter.ts",

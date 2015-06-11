@@ -187,7 +187,7 @@
 &emsp;&emsp;*NonZeroDigit* **::** **one of**  
 <pre>&emsp;&emsp;&emsp;<code>1</code> <code>2</code> <code>3</code> <code>4</code> <code>5</code> <code>6</code> <code>7</code> <code>8</code> <code>9</code></pre>  
   
-&emsp;&emsp;*ExponetPart* **::**  
+&emsp;&emsp;*ExponentPart* **::**  
 &emsp;&emsp;&emsp;*ExponentIndicator*&emsp;*SignedInteger*  
   
 &emsp;&emsp;*ExponentIndicator* **::** **one of**  
@@ -256,7 +256,7 @@
   
 &emsp;&emsp;*EscapeSequence* **::**  
 &emsp;&emsp;&emsp;*CharacterEscapeSequence*  
-&emsp;&emsp;&emsp;`` 0 ``&emsp;[lookahead ∉ *DecimalDigit*]  
+&emsp;&emsp;&emsp;`` 0 ``&emsp;[lookahead ≠ *DecimalDigit*]  
 &emsp;&emsp;&emsp;*HexEscapeSequence*  
 &emsp;&emsp;&emsp;*UnicodeEscapeSequence*  
   
@@ -335,7 +335,7 @@
 &emsp;&emsp;&emsp;`` ` ``&emsp;*TemplateCharacters*<sub>opt</sub>&emsp;`` ` ``  
   
 &emsp;&emsp;*TemplateHead* **::**  
-&emsp;&emsp;&emsp;`` ` ``&emsp;*TemplateCharactersopt*&emsp;`` ${ ``  
+&emsp;&emsp;&emsp;`` ` ``&emsp;*TemplateCharacters*<sub>opt</sub>&emsp;`` ${ ``  
   
 &emsp;&emsp;*TemplateSubstitutionTail* **::**  
 &emsp;&emsp;&emsp;*TemplateMiddle*  
@@ -345,7 +345,7 @@
 &emsp;&emsp;&emsp;`` } ``&emsp;*TemplateCharacters*<sub>opt</sub>&emsp;`` ${ ``  
   
 &emsp;&emsp;*TemplateTail* **::**  
-&emsp;&emsp;&emsp;`` } ``&emsp;*TemplateCharactersopt*&emsp;`` ` ``  
+&emsp;&emsp;&emsp;`` } ``&emsp;*TemplateCharacters*<sub>opt</sub>&emsp;`` ` ``  
   
 &emsp;&emsp;*TemplateCharacters* **::**  
 &emsp;&emsp;&emsp;*TemplateCharacter*&emsp;*TemplateCharacters*<sub>opt</sub>  

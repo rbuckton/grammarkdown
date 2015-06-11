@@ -602,8 +602,8 @@ SyntaxKind[Terminal](190,37): `9`
 SyntaxKind[LineTerminatorToken](191,1): «line terminator»
 SyntaxKind[DedentToken](191,1): «dedent»
 SyntaxKind[LineTerminatorToken](192,1): «line terminator»
-SyntaxKind[Identifier](192,12): ExponetPart
-SyntaxKind[ColonColonToken](192,15): ::
+SyntaxKind[Identifier](192,13): ExponentPart
+SyntaxKind[ColonColonToken](192,16): ::
 SyntaxKind[LineTerminatorToken](193,2): «line terminator»
 SyntaxKind[IndentToken](193,2): «indent»
 SyntaxKind[Identifier](193,19): ExponentIndicator
@@ -862,7 +862,7 @@ SyntaxKind[LineTerminatorToken](261,2): «line terminator»
 SyntaxKind[Terminal](261,5): `0`
 SyntaxKind[OpenBracketToken](261,7): [
 SyntaxKind[LookaheadKeyword](261,16): lookahead
-SyntaxKind[LessThanExclamationToken](261,19): <!
+SyntaxKind[ExclamationEqualsToken](261,19): !=
 SyntaxKind[Identifier](261,32): DecimalDigit
 SyntaxKind[CloseBracketToken](261,33): ]
 SyntaxKind[LineTerminatorToken](262,2): «line terminator»
@@ -1139,8 +1139,9 @@ SyntaxKind[ColonColonToken](339,16): ::
 SyntaxKind[LineTerminatorToken](340,2): «line terminator»
 SyntaxKind[IndentToken](340,2): «indent»
 SyntaxKind[Terminal](340,5): ```
-SyntaxKind[Identifier](340,27): TemplateCharactersopt
-SyntaxKind[Terminal](340,32): `${`
+SyntaxKind[Identifier](340,24): TemplateCharacters
+SyntaxKind[QuestionToken](340,25): ?
+SyntaxKind[Terminal](340,30): `${`
 SyntaxKind[LineTerminatorToken](341,1): «line terminator»
 SyntaxKind[DedentToken](341,1): «dedent»
 SyntaxKind[LineTerminatorToken](342,1): «line terminator»
@@ -1170,8 +1171,9 @@ SyntaxKind[ColonColonToken](349,16): ::
 SyntaxKind[LineTerminatorToken](350,2): «line terminator»
 SyntaxKind[IndentToken](350,2): «indent»
 SyntaxKind[Terminal](350,5): `}`
-SyntaxKind[Identifier](350,27): TemplateCharactersopt
-SyntaxKind[Terminal](350,31): ```
+SyntaxKind[Identifier](350,24): TemplateCharacters
+SyntaxKind[QuestionToken](350,25): ?
+SyntaxKind[Terminal](350,29): ```
 SyntaxKind[LineTerminatorToken](351,1): «line terminator»
 SyntaxKind[DedentToken](351,1): «dedent»
 SyntaxKind[LineTerminatorToken](352,1): «line terminator»
@@ -1217,4 +1219,4 @@ SyntaxKind[LastKeyword](360,53): or
 SyntaxKind[Identifier](360,68): LineTerminator
 SyntaxKind[LineTerminatorToken](361,1): «line terminator»
 SyntaxKind[DedentToken](361,1): «dedent»
-SyntaxKind[EndOfFileToken](361,1): «1»
+SyntaxKind[EndOfFileToken](361,1): «EndOfFileToken»

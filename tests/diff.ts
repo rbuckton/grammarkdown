@@ -17,9 +17,8 @@ import { assert } from "chai";
 import { readFileSync, writeFileSync, mkdirSync, existsSync, statSync, unlinkSync } from "fs";
 import { EOL } from "os";
 import { resolve } from "path";
-import { SyntaxKind } from "../core";
 import { Scanner } from "../scanner";
-import { tokenToString } from "../tokens";
+import { SyntaxKind, tokenToString } from "../tokens";
 import { DiagnosticMessages, LineMap, formatNode } from "../diagnostics";
 import { SourceFile, Node, forEachChild } from "../nodes";
 

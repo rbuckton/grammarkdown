@@ -1,8 +1,7 @@
-import { SyntaxKind } from "./core";
 import { DiagnosticMessages } from "./diagnostics";
 import { Checker } from "./checker";
 import { StringWriter } from "./stringwriter";
-import { tokenToString } from "./tokens";
+import { SyntaxKind, tokenToString } from "./tokens";
 import { 
     Node,
     SourceFile,
@@ -89,7 +88,9 @@ export class EmitterBase {
     }
     
     protected emitToken(node: Node) {
-        this.writer.write(tokenToString(node.kind));
+        if (node) {
+            this.writer.write(tokenToString(node.kind));
+        }
     }
     
     protected emitTerminal(node: Terminal) {

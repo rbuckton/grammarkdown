@@ -1,4 +1,4 @@
-import { SyntaxKind } from "../core";
+import { SyntaxKind } from "../tokens";
 import { EmitterBase } from "../emitter";
 import { DiagnosticMessages } from "../diagnostics";
 import { Checker } from "../checker";
@@ -242,7 +242,16 @@ export class MarkdownEmitter extends EmitterBase {
     
     protected emitNoSymbolHereAssertion(node: NoSymbolHereAssertion): void {
         this.writer.write("[no ");
-        this.emitNode(node.symbol);
+        if (node.symbols) {
+            for (let i = 0; i < node.symbols.length; ++i) {
+                if (i > 0) {
+                    this.writer.write(" or ");
+                }
+                
+                this.emitNode(node.symbols[i]);
+            }
+        }
+
         this.writer.write(" here]");
     }
     

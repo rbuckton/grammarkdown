@@ -1,8 +1,8 @@
 import { DiagnosticMessages } from "./diagnostics";
-import { SourceFile, BindingTable } from "./nodes";
+import { SourceFile } from "./nodes";
 import { Scanner } from "./scanner";
 import { Parser } from "./parser";
-import { Binder } from "./binder";
+import { Binder, BindingTable } from "./binder";
 import { Checker } from "./checker";
 import { EmitterBase } from "./emitter";
 import { StringWriter } from "./stringwriter";

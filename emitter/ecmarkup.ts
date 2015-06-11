@@ -1,4 +1,4 @@
-import { SyntaxKind } from "../core";
+import { SyntaxKind } from "../tokens";
 import { EmitterBase } from "../emitter";
 import { DiagnosticMessages } from "../diagnostics";
 import { Checker } from "../checker";
@@ -240,7 +240,15 @@ export class EcmarkupEmitter extends EmitterBase {
     
     protected emitNoSymbolHereAssertion(node: NoSymbolHereAssertion): void {
         this.writer.write(`<emu-gann>no `);
-        this.emitNode(node.symbol);
+        if (node.symbols) {
+            for (let i = 0; i < node.symbols.length; ++i) {
+                if (i > 0) {
+                    this.writer.write(" or ");
+                }
+                
+                this.emitNode(node.symbols[i]);
+            }
+        }
         this.writer.write(` here</emu-gann>`);
     }
     
@@ -264,12 +272,14 @@ export class EcmarkupEmitter extends EmitterBase {
     
     protected emitOneOfSymbol(node: OneOfSymbol) {
         this.writer.write("one of ");
-        for (let i = 0; i < node.symbols.length; ++i) {
-            if (i > 0) {
-                this.writer.write(" or ");
+        if (node.symbols) {
+            for (let i = 0; i < node.symbols.length; ++i) {
+                if (i > 0) {
+                    this.writer.write(" or ");
+                }
+                
+                this.emitNode(node.symbols[i]);
             }
-            
-            this.emitNode(node.symbols[i]);
         }
     }
     

@@ -182,7 +182,8 @@
               (53,6)SyntaxKind[OpenBracketToken]
               (53,8)SyntaxKind[LookaheadKeyword]
               (53,17)SyntaxKind[ExclamationEqualsToken]
-              (53,20)SyntaxKind[UnicodeCharacterLiteral](text = <LF>)
+              (53,20)SyntaxKind[SymbolSpan]
+                (53,20)SyntaxKind[UnicodeCharacterLiteral](text = <LF>)
               (53,25)SyntaxKind[CloseBracketToken]
       (54,2)SyntaxKind[RightHandSide]
         (54,2)SyntaxKind[SymbolSpan]
@@ -722,9 +723,9 @@
       (190,33)SyntaxKind[Terminal](text = "9")
       (190,37)SyntaxKind[DedentToken]
   (192,1)SyntaxKind[Production]
-    (192,1)SyntaxKind[Identifier](text = "ExponetPart")
-    (192,15)SyntaxKind[RightHandSideList]
-      (192,15)SyntaxKind[IndentToken]
+    (192,1)SyntaxKind[Identifier](text = "ExponentPart")
+    (192,16)SyntaxKind[RightHandSideList]
+      (192,16)SyntaxKind[IndentToken]
       (193,2)SyntaxKind[RightHandSide]
         (193,2)SyntaxKind[SymbolSpan]
           (193,2)SyntaxKind[Nonterminal]
@@ -1042,9 +1043,10 @@
             (261,5)SyntaxKind[LookaheadAssertion]
               (261,5)SyntaxKind[OpenBracketToken]
               (261,7)SyntaxKind[LookaheadKeyword]
-              (261,16)SyntaxKind[LessThanExclamationToken]
-              (261,19)SyntaxKind[Nonterminal]
-                (261,19)SyntaxKind[Identifier](text = "DecimalDigit")
+              (261,16)SyntaxKind[ExclamationEqualsToken]
+              (261,19)SyntaxKind[SymbolSpan]
+                (261,19)SyntaxKind[Nonterminal]
+                  (261,19)SyntaxKind[Identifier](text = "DecimalDigit")
               (261,32)SyntaxKind[CloseBracketToken]
       (262,2)SyntaxKind[RightHandSide]
         (262,2)SyntaxKind[SymbolSpan]
@@ -1389,11 +1391,12 @@
         (340,2)SyntaxKind[SymbolSpan]
           (340,2)SyntaxKind[Terminal](text = "`")
           (340,5)SyntaxKind[SymbolSpan]
-            (340,5)SyntaxKind[Nonterminal]
-              (340,5)SyntaxKind[Identifier](text = "TemplateCharactersopt")
-            (340,27)SyntaxKind[SymbolSpan]
-              (340,27)SyntaxKind[Terminal](text = "${")
-      (340,32)SyntaxKind[DedentToken]
+            (340,5)SyntaxKind[Nonterminal]?
+              (340,5)SyntaxKind[Identifier](text = "TemplateCharacters")
+              (340,24)SyntaxKind[QuestionToken]
+            (340,25)SyntaxKind[SymbolSpan]
+              (340,25)SyntaxKind[Terminal](text = "${")
+      (340,30)SyntaxKind[DedentToken]
   (342,1)SyntaxKind[Production]
     (342,1)SyntaxKind[Identifier](text = "TemplateSubstitutionTail")
     (342,28)SyntaxKind[RightHandSideList]
@@ -1429,11 +1432,12 @@
         (350,2)SyntaxKind[SymbolSpan]
           (350,2)SyntaxKind[Terminal](text = "}")
           (350,5)SyntaxKind[SymbolSpan]
-            (350,5)SyntaxKind[Nonterminal]
-              (350,5)SyntaxKind[Identifier](text = "TemplateCharactersopt")
-            (350,27)SyntaxKind[SymbolSpan]
-              (350,27)SyntaxKind[Terminal](text = "`")
-      (350,31)SyntaxKind[DedentToken]
+            (350,5)SyntaxKind[Nonterminal]?
+              (350,5)SyntaxKind[Identifier](text = "TemplateCharacters")
+              (350,24)SyntaxKind[QuestionToken]
+            (350,25)SyntaxKind[SymbolSpan]
+              (350,25)SyntaxKind[Terminal](text = "`")
+      (350,29)SyntaxKind[DedentToken]
   (352,1)SyntaxKind[Production]
     (352,1)SyntaxKind[Identifier](text = "TemplateCharacters")
     (352,22)SyntaxKind[RightHandSideList]
@@ -1459,7 +1463,8 @@
               (356,5)SyntaxKind[OpenBracketToken]
               (356,7)SyntaxKind[LookaheadKeyword]
               (356,16)SyntaxKind[ExclamationEqualsToken]
-              (356,19)SyntaxKind[Terminal](text = "{")
+              (356,19)SyntaxKind[SymbolSpan]
+                (356,19)SyntaxKind[Terminal](text = "{")
               (356,23)SyntaxKind[CloseBracketToken]
       (357,2)SyntaxKind[RightHandSide]
         (357,2)SyntaxKind[SymbolSpan]

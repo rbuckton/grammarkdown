@@ -68,8 +68,8 @@ OptionalSymbol :
 	PrimarySymbol `?`?
 
 OrClause :
-	OptionalSymbol
-	OrClause `or` OptionalSymbol
+	PrimarySymbol
+	OrClause `or` PrimarySymbol
 
 OneOfSymbol :
 	PrimarySymbol
@@ -79,11 +79,11 @@ UnarySymbol :
 	OneOfSymbol
 
 ButNotSymbol :
-	UnarySymbol
-	ButNotSymbol `but` `not` UnarySymbol
+	UnarySymbol `but` `not` UnarySymbol
 
 BinarySymbol :
 	ButNotSymbol
+	UnarySymbol
 
 SymbolList :
 	PrimarySymbol

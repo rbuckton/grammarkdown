@@ -13,9 +13,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { SyntaxKind } from "./core";
 import { Diagnostics, DiagnosticMessages, NullDiagnosticMessages, formatList } from "./diagnostics";
-import { tokenToString } from "./tokens";
+import { SyntaxKind, tokenToString } from "./tokens";
 import { Scanner } from "./scanner";
 import { 
     Node, 
@@ -56,7 +55,8 @@ enum ParsingContext {
     SymbolSet,
     OneOfList,
     OneOfListIndented,
-    OneOfSymbolList
+    OneOfSymbolList,
+    NoSymbolHere
 }
 
 enum SkipWhitespace {
@@ -104,16 +104,19 @@ export class Parser {
     }
 
     private speculate<T>(callback: () => T, isLookahead: boolean): T {
-        var saveToken = this.token;
-        var saveParsingContext = this.parsingContext;
-        var saveDiagnostics = this.diagnostics;
+        let saveToken = this.token;
+        let saveParsingContext = this.parsingContext;
+        let saveDiagnostics = this.diagnostics;
+        
         this.diagnostics = NullDiagnosticMessages.instance;
-        var result = this.scanner.speculate(callback, isLookahead);
+        let result = this.scanner.speculate(callback, isLookahead);
+        
         this.diagnostics = saveDiagnostics;
         if (!result || isLookahead) {
             this.token = saveToken;
             this.parsingContext = saveParsingContext;
         }
+        
         return result;
     }
 
@@ -121,9 +124,11 @@ export class Parser {
         switch (this.token) {
             case SyntaxKind.LineTerminatorToken:
                 return !!(skip & SkipWhitespace.LineTerminator);
+                
             case SyntaxKind.IndentToken:
             case SyntaxKind.DedentToken:
                 return !!(skip & SkipWhitespace.Indentation);
+                
             default:
                 return false;
         }
@@ -147,10 +152,11 @@ export class Parser {
 
     private readTokenValue(token: SyntaxKind): string {
         if (this.token === token) {
-            var text = this.scanner.getTokenValue();
+            let text = this.scanner.getTokenValue();
             this.nextToken();
             return text;
         }
+        
         return undefined;
     }
 
@@ -159,15 +165,17 @@ export class Parser {
             node.pos = fullStart;
             node.end = this.scanner.getStartPos();
         }
+        
         return node;
     }
 
     private parseToken(token: SyntaxKind): Node {
         if (this.token === token) {
-            var fullStart = this.scanner.getStartPos();
+            let fullStart = this.scanner.getStartPos();
             this.nextToken();
             return this.finishNode(new Node(token), fullStart);
         }
+        
         return undefined;
     }
 
@@ -178,6 +186,7 @@ export class Parser {
             this.nextToken();
             return this.finishNode(node, fullStart);
         }
+        
         return undefined;
     }
 
@@ -215,19 +224,29 @@ export class Parser {
         switch (this.parsingContext) {
             case ParsingContext.SourceElements:
                 return this.isStartOfSourceElement();
+                
             case ParsingContext.Parameters:
                 return this.isStartOfParameter();
+                
             case ParsingContext.Arguments:
                 return this.isStartOfArgument();
+                
             case ParsingContext.RightHandSideListIndented:
                 return this.isStartOfRightHandSide();
+                
             case ParsingContext.SymbolSet:
                 return this.token === SyntaxKind.Terminal || this.token === SyntaxKind.Identifier || this.token === SyntaxKind.UnicodeCharacterLiteral;
+                
             case ParsingContext.OneOfList:
             case ParsingContext.OneOfListIndented:
                 return this.token === SyntaxKind.Terminal;
+                
             case ParsingContext.OneOfSymbolList:
                 return this.token === SyntaxKind.Terminal || this.token === SyntaxKind.Identifier;
+                
+            case ParsingContext.NoSymbolHere:
+                return this.token === SyntaxKind.Terminal || this.token === SyntaxKind.Identifier;
+                
             default:
                 return false;
         }
@@ -261,6 +280,9 @@ export class Parser {
 
             case ParsingContext.OneOfSymbolList:
                 return SkipWhitespace.None;
+                
+            case ParsingContext.NoSymbolHere:
+                return SkipWhitespace.None;
 
             default:
                 // assume significant whitespace for new parsing contexts
@@ -275,6 +297,7 @@ export class Parser {
             case ParsingContext.SymbolSet:
             case ParsingContext.OneOfListIndented:
             case ParsingContext.RightHandSideListIndented:
+            case ParsingContext.NoSymbolHere:
                 return false;
 
             default:
@@ -286,19 +309,27 @@ export class Parser {
         switch (this.parsingContext) {
             case ParsingContext.SourceElements:
                 return this.parseSourceElement();
+                
             case ParsingContext.Parameters:
                 return this.parseParameter();
+                
             case ParsingContext.Arguments:
                 return this.parseArgument();
+                
             case ParsingContext.RightHandSideListIndented:
                 return this.parseRightHandSide();
+                
             case ParsingContext.SymbolSet:
-                return this.parsePrimarySymbol(/*allowOptional*/ false);
+                return this.parseSymbolSpan();
+                
             case ParsingContext.OneOfList:
             case ParsingContext.OneOfListIndented:
                 return this.parseTerminal(/*allowOptional*/ false);
+                
             case ParsingContext.OneOfSymbolList:
+            case ParsingContext.NoSymbolHere:
                 return this.parsePrimarySymbol(/*allowOptional*/ false);
+                
             default:
                 console.error(`Unexpected parsing context: ${ParsingContext[this.parsingContext]}`);
                 return undefined;
@@ -316,6 +347,7 @@ export class Parser {
                 if (this.token === SyntaxKind.LineTerminatorToken) {
                     this.nextToken();
                 }
+                
                 break;
 
             case ParsingContext.Arguments:
@@ -323,6 +355,7 @@ export class Parser {
                 if (this.token === SyntaxKind.LineTerminatorToken) {
                     this.nextToken();
                 }
+                
                 break;
 
             case ParsingContext.RightHandSideListIndented:
@@ -334,6 +367,7 @@ export class Parser {
                 if (this.token === SyntaxKind.LineTerminatorToken) {
                     this.nextToken();
                 }
+                
                 break;
 
             case ParsingContext.OneOfList:
@@ -345,10 +379,15 @@ export class Parser {
                 if (this.token === SyntaxKind.LineTerminatorToken) {
                     this.nextToken();
                 }
+                
                 break;
 
             case ParsingContext.OneOfSymbolList:
                 this.skipUntil(isOneOfSymbolListRecoveryToken);
+                break;
+
+            case ParsingContext.NoSymbolHere:
+                this.skipUntil(isNoSymbolHereRecoveryToken);
                 break;
         }
     }
@@ -390,18 +429,26 @@ export class Parser {
         switch (this.parsingContext) {
             case ParsingContext.SourceElements:
                 return this.token === SyntaxKind.EndOfFileToken;
+                
             case ParsingContext.Parameters:
             case ParsingContext.Arguments:
                 return this.token === SyntaxKind.CloseParenToken;
+                
             case ParsingContext.RightHandSideListIndented:
                 return this.token === SyntaxKind.DedentToken || this.token === SyntaxKind.EndOfFileToken;
+                
             case ParsingContext.SymbolSet:
                 return this.token === SyntaxKind.CloseBraceToken;
+                
             case ParsingContext.OneOfList:
             case ParsingContext.OneOfListIndented:
                 return this.token === SyntaxKind.DedentToken || this.token === SyntaxKind.EndOfFileToken;
+                
             case ParsingContext.OneOfSymbolList:
                 return false;
+                
+            case ParsingContext.NoSymbolHere:
+                return this.token === SyntaxKind.HereKeyword;
         }
     }
     
@@ -432,10 +479,14 @@ export class Parser {
             case ParsingContext.Arguments:
             case ParsingContext.SymbolSet:
                 return this.token === SyntaxKind.CommaToken;
+                
             case ParsingContext.RightHandSideListIndented:
                 return this.token === SyntaxKind.LineTerminatorToken;
+                
             case ParsingContext.OneOfSymbolList:
+            case ParsingContext.NoSymbolHere:
                 return this.token === SyntaxKind.OrKeyword;
+                
             case ParsingContext.SourceElements:
             case ParsingContext.OneOfList:
             case ParsingContext.OneOfListIndented:
@@ -455,6 +506,7 @@ export class Parser {
     private parseList<TNode extends Node>(listContext: ParsingContext): TNode[] {
         let saveContext = this.parsingContext;
         this.parsingContext = listContext;
+        
         let hasCloseToken = this.hasCloseToken();
         let hasSeparator = this.hasSeparator();
         let shouldConsumeCloseToken = this.shouldConsumeCloseToken();
@@ -463,14 +515,14 @@ export class Parser {
         while (!this.isEOF()) {
             this.skipWhitespace(whitespaceToSkip);
 
-            var parsed = false;
+            let parsed = false;
             if (this.shouldParseElement()) {
                 parsed = true;
                 if (!result) {
                     result = [];
                 }
 
-                var element = <TNode>this.parseElement();
+                let element = <TNode>this.parseElement();
                 if (element) {
                     result.push(element);
                 }
@@ -499,13 +551,14 @@ export class Parser {
         if (kind === SyntaxKind.Identifier) {
             return true;
         }
+        
         return kind >= SyntaxKind.FirstKeyword && kind <= SyntaxKind.LastKeyword;
     }
 
     private parseIdentifier(): Identifier {
-        var fullStart = this.scanner.getStartPos();
-        var text = this.canBeIdentifier(this.token) && this.readTokenValue(this.token);
-        var node = new Identifier(text);
+        let fullStart = this.scanner.getStartPos();
+        let text = this.canBeIdentifier(this.token) && this.readTokenValue(this.token);
+        let node = new Identifier(text);
         return this.finishNode(node, fullStart);
     }
 
@@ -518,9 +571,9 @@ export class Parser {
     }
 
     private parseProse(): Prose {
-        var fullStart = this.scanner.getStartPos();
-        var text = this.readTokenValue(SyntaxKind.Prose);
-        var node = new Prose(text);
+        let fullStart = this.scanner.getStartPos();
+        let text = this.readTokenValue(SyntaxKind.Prose);
+        let node = new Prose(text);
         return this.finishNode(node, fullStart);
     }
 
@@ -529,59 +582,61 @@ export class Parser {
     }
 
     private parseParameter(): Parameter {
-        var fullStart = this.scanner.getStartPos();
-        var name = this.parseIdentifier();
-        var node = new Parameter(name);
+        let fullStart = this.scanner.getStartPos();
+        let name = this.parseIdentifier();
+        let node = new Parameter(name);
         return this.finishNode(node, fullStart);
     }
 
     private parseParameterListTail(openParenToken: Node): ParameterList {
-        var elements = this.parseList<Parameter>(ParsingContext.Parameters);
-        var closeParenToken = this.parseToken(SyntaxKind.CloseParenToken);
-        var node = new ParameterList(openParenToken, elements, closeParenToken);
+        let elements = this.parseList<Parameter>(ParsingContext.Parameters);
+        let closeParenToken = this.parseToken(SyntaxKind.CloseParenToken);
+        let node = new ParameterList(openParenToken, elements, closeParenToken);
         return this.finishNode(node, openParenToken.pos);
     }
 
     private tryParseParameterList(): ParameterList {
-        var openParenToken = this.parseToken(SyntaxKind.OpenParenToken);
+        let openParenToken = this.parseToken(SyntaxKind.OpenParenToken);
         if (openParenToken) {
             return this.parseParameterListTail(openParenToken);
         }
+        
         return undefined;
     }
 
     private parseOneOfList(): OneOfList {
-        var oneKeyword = this.parseToken(SyntaxKind.OneKeyword);
-        var ofKeyword = this.parseToken(SyntaxKind.OfKeyword);
+        let oneKeyword = this.parseToken(SyntaxKind.OneKeyword);
+        let ofKeyword = this.parseToken(SyntaxKind.OfKeyword);
         this.parseOptional(SyntaxKind.LineTerminatorToken);
-        var openIndentToken = this.parseToken(SyntaxKind.IndentToken);
-        var terminals = this.parseList<Terminal>(openIndentToken ? ParsingContext.OneOfListIndented : ParsingContext.OneOfList);
-        var closeIndentToken = this.parseToken(SyntaxKind.DedentToken);
-        var node = new OneOfList(oneKeyword, ofKeyword, openIndentToken, terminals, closeIndentToken);
+
+        let openIndentToken = this.parseToken(SyntaxKind.IndentToken);
+        let terminals = this.parseList<Terminal>(openIndentToken ? ParsingContext.OneOfListIndented : ParsingContext.OneOfList);
+        let closeIndentToken = this.parseToken(SyntaxKind.DedentToken);
+        let node = new OneOfList(oneKeyword, ofKeyword, openIndentToken, terminals, closeIndentToken);
         return this.finishNode(node, oneKeyword.pos);
     }
 
     private parseSymbolSetTail(openBraceToken: Node): SymbolSet {
-        var terminals = this.parseList<Terminal>(ParsingContext.SymbolSet);
-        var closeBraceToken = this.parseToken(SyntaxKind.CloseBraceToken);
-        var node = new SymbolSet(openBraceToken, terminals, closeBraceToken);
+        let terminals = this.parseList<SymbolSpan>(ParsingContext.SymbolSet);
+        let closeBraceToken = this.parseToken(SyntaxKind.CloseBraceToken);
+        let node = new SymbolSet(openBraceToken, terminals, closeBraceToken);
         return this.finishNode(node, openBraceToken.pos);
     }
 
-    private parseSymbolOrSymbolSet(): LexicalSymbol | SymbolSet {
-        var openBraceToken = this.parseToken(SyntaxKind.OpenBraceToken);
+    private parseSymbolSpanRestOrSymbolSet(): SymbolSpan | SymbolSet {
+        let openBraceToken = this.parseToken(SyntaxKind.OpenBraceToken);
         if (openBraceToken) {
             return this.parseSymbolSetTail(openBraceToken);
         }
         else {
-            return this.parsePrimarySymbol(/*allowOptional*/ false);
+            return this.parseSymbolSpanRest();
         }
     }
     
     private parseEmptyAssertionTail(openBracketToken: Node): EmptyAssertion {
-        var emptyKeyword = this.parseToken(SyntaxKind.EmptyKeyword);
-        var closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
-        var node = new EmptyAssertion(openBracketToken, emptyKeyword, closeBracketToken);
+        let emptyKeyword = this.parseToken(SyntaxKind.EmptyKeyword);
+        let closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
+        let node = new EmptyAssertion(openBracketToken, emptyKeyword, closeBracketToken);
         return this.finishNode(node, openBracketToken.pos);
     }
 
@@ -592,36 +647,37 @@ export class Parser {
             case SyntaxKind.LessThanMinusToken:
             case SyntaxKind.LessThanExclamationToken:
                 return this.parseToken(this.token);
+                
             default:
                 return undefined;
         }
     }
 
     private parseLookaheadAssertionTail(openBracketToken: Node): LookaheadAssertion {
-        var lookaheadKeyword = this.parseToken(SyntaxKind.LookaheadKeyword);
-        var operatorToken = this.parseAnyLookaheadOperator();
-        var lookahead = this.parseSymbolOrSymbolSet();
-        var closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
-        var node = new LookaheadAssertion(openBracketToken, lookaheadKeyword, operatorToken, lookahead, closeBracketToken);
+        let lookaheadKeyword = this.parseToken(SyntaxKind.LookaheadKeyword);
+        let operatorToken = this.parseAnyLookaheadOperator();
+        let lookahead = this.parseSymbolSpanRestOrSymbolSet();
+        let closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
+        let node = new LookaheadAssertion(openBracketToken, lookaheadKeyword, operatorToken, lookahead, closeBracketToken);
         return this.finishNode(node, openBracketToken.pos);
     }
 
     private parseNoSymbolHereAssertionTail(openBracketToken: Node): NoSymbolHereAssertion {
-        var noKeyword = this.parseToken(SyntaxKind.NoKeyword);
-        var symbol = this.parseIdentifier();
-        var hereKeyword = this.parseToken(SyntaxKind.HereKeyword);
-        var closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
-        var node = new NoSymbolHereAssertion(openBracketToken, noKeyword, symbol, hereKeyword, closeBracketToken);
+        let noKeyword = this.parseToken(SyntaxKind.NoKeyword);
+        let symbols = this.parseList<LexicalSymbol>(ParsingContext.NoSymbolHere);
+        let hereKeyword = this.parseToken(SyntaxKind.HereKeyword);
+        let closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
+        let node = new NoSymbolHereAssertion(openBracketToken, noKeyword, symbols, hereKeyword, closeBracketToken);
         return this.finishNode(node, openBracketToken.pos);
     }
 
     private parseLexicalGoalAssertionTail(openBracketToken: Node): LexicalGoalAssertion {
-        var fullStart = this.scanner.getStartPos();
-        var lexicalKeyword = this.parseToken(SyntaxKind.LexicalKeyword);
-        var goalKeyword = this.parseToken(SyntaxKind.GoalKeyword);
-        var symbol = this.parseIdentifier();
-        var closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
-        var node = new LexicalGoalAssertion(openBracketToken, lexicalKeyword, goalKeyword, symbol, closeBracketToken);
+        let fullStart = this.scanner.getStartPos();
+        let lexicalKeyword = this.parseToken(SyntaxKind.LexicalKeyword);
+        let goalKeyword = this.parseToken(SyntaxKind.GoalKeyword);
+        let symbol = this.parseIdentifier();
+        let closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
+        let node = new LexicalGoalAssertion(openBracketToken, lexicalKeyword, goalKeyword, symbol, closeBracketToken);
         return this.finishNode(node, openBracketToken.pos);
     }
 
@@ -630,24 +686,25 @@ export class Parser {
             case SyntaxKind.PlusToken:
             case SyntaxKind.TildeToken:
                 return this.parseToken(this.token);
+                
             default:
                 return undefined;
         }
     }
 
     private parseParameterValueAssertionTail(openBracketToken: Node): ParameterValueAssertion {
-        var operatorToken = this.parseAnyParameterValueOperator();
-        var name = this.parseIdentifier();
-        var closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
-        var node = new ParameterValueAssertion(openBracketToken, operatorToken, name, closeBracketToken);
+        let operatorToken = this.parseAnyParameterValueOperator();
+        let name = this.parseIdentifier();
+        let closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
+        let node = new ParameterValueAssertion(openBracketToken, operatorToken, name, closeBracketToken);
         return this.finishNode(node, openBracketToken.pos);
     }
     
     private parseInvalidAssertionTail(openBracketToken: Node): Assertion {
-        var fullStart = this.scanner.getStartPos();
+        let fullStart = this.scanner.getStartPos();
         this.skipUntil(isInvalidConstraintTailRecoveryToken);
-        var closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
-        var node = new Assertion(SyntaxKind.InvalidAssertion, openBracketToken, closeBracketToken);
+        let closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
+        let node = new Assertion(SyntaxKind.InvalidAssertion, openBracketToken, closeBracketToken);
         this.finishNode(node, fullStart);
         return node;
     }
@@ -657,15 +714,20 @@ export class Parser {
         switch (this.token) {
             case SyntaxKind.EmptyKeyword:
                 return this.parseEmptyAssertionTail(openBracketToken);
+                
             case SyntaxKind.LookaheadKeyword:
                 return this.parseLookaheadAssertionTail(openBracketToken);
+                
             case SyntaxKind.NoKeyword:
                 return this.parseNoSymbolHereAssertionTail(openBracketToken);
+                
             case SyntaxKind.LexicalKeyword:
                 return this.parseLexicalGoalAssertionTail(openBracketToken);
+                
             case SyntaxKind.TildeToken:
             case SyntaxKind.PlusToken:
                 return this.parseParameterValueAssertionTail(openBracketToken);
+                
             default:
                 return this.parseInvalidAssertionTail(openBracketToken);
         }
@@ -685,25 +747,26 @@ export class Parser {
     }
 
     private parseArgument(): Argument {
-        var fullStart = this.scanner.getStartPos();
-        var questionToken = this.parseToken(SyntaxKind.QuestionToken);
-        var name = this.parseIdentifier();
-        var node = new Argument(questionToken, name);
+        let fullStart = this.scanner.getStartPos();
+        let questionToken = this.parseToken(SyntaxKind.QuestionToken);
+        let name = this.parseIdentifier();
+        let node = new Argument(questionToken, name);
         return this.finishNode(node, fullStart);
     }
 
     private parseArgumentListTail(openParenToken: Node): ArgumentList {
-        var elements = this.parseList<Argument>(ParsingContext.Arguments);
-        var closeParenToken = this.parseToken(SyntaxKind.CloseParenToken);
-        var node = new ArgumentList(openParenToken, elements, closeParenToken);
+        let elements = this.parseList<Argument>(ParsingContext.Arguments);
+        let closeParenToken = this.parseToken(SyntaxKind.CloseParenToken);
+        let node = new ArgumentList(openParenToken, elements, closeParenToken);
         return this.finishNode(node, openParenToken.pos);
     }
 
     private tryParseArgumentList(): ArgumentList {
-        var openParenToken = this.parseToken(SyntaxKind.OpenParenToken);
+        let openParenToken = this.parseToken(SyntaxKind.OpenParenToken);
         if (openParenToken) {
             return this.parseArgumentListTail(openParenToken);
         }
+        
         return undefined;
     }
 
@@ -717,17 +780,17 @@ export class Parser {
     }
 
     private parseOneOfSymbol(): OneOfSymbol {
-        var fullStart = this.scanner.getStartPos();
-        var oneKeyword = this.parseToken(SyntaxKind.OneKeyword);
-        var ofKeyword = this.parseToken(SyntaxKind.OfKeyword);
-        var symbols = this.parseList<LexicalSymbol>(ParsingContext.OneOfSymbolList);
-        var node = new OneOfSymbol(oneKeyword, ofKeyword, symbols);
+        let fullStart = this.scanner.getStartPos();
+        let oneKeyword = this.parseToken(SyntaxKind.OneKeyword);
+        let ofKeyword = this.parseToken(SyntaxKind.OfKeyword);
+        let symbols = this.parseList<LexicalSymbol>(ParsingContext.OneOfSymbolList);
+        let node = new OneOfSymbol(oneKeyword, ofKeyword, symbols);
         return this.finishNode(node, fullStart);
     }
     
     private parseInvalidSymbol(): LexicalSymbol {
-        var fullStart = this.scanner.getStartPos();
-        var node = new LexicalSymbol(SyntaxKind.InvalidSymbol);
+        let fullStart = this.scanner.getStartPos();
+        let node = new LexicalSymbol(SyntaxKind.InvalidSymbol);
         this.skipUntil(isInvalidSymbolRecoveryToken);
         return this.finishNode(node, fullStart);
     }
@@ -759,19 +822,20 @@ export class Parser {
     }
 
     private tryParseButNotOperator(): ButNotOperator {
-        var fullStart = this.scanner.getStartPos();
-        var butKeyword = this.parseToken(SyntaxKind.ButKeyword);
-        var notKeyword = this.parseToken(SyntaxKind.NotKeyword);
+        let fullStart = this.scanner.getStartPos();
+        let butKeyword = this.parseToken(SyntaxKind.ButKeyword);
+        let notKeyword = this.parseToken(SyntaxKind.NotKeyword);
         if (butKeyword || notKeyword) {
-            var node = new ButNotOperator(butKeyword, notKeyword);
+            let node = new ButNotOperator(butKeyword, notKeyword);
             return this.finishNode(node, fullStart);
         }
+        
         return undefined;
     }
 
     private parseBinarySymbolTail(left: LexicalSymbol, operator: ButNotOperator): BinarySymbol {
-        var right = this.parseSymbol();
-        var node = new BinarySymbol(left, operator, right);
+        let right = this.parseSymbol();
+        let node = new BinarySymbol(left, operator, right);
         return this.finishNode(node, left.pos);
     }
 
@@ -785,6 +849,7 @@ export class Parser {
         if (operator) {
             return this.parseBinarySymbolTail(symbol, operator);
         }
+        
         return symbol;
     }
 
@@ -792,6 +857,7 @@ export class Parser {
         if (this.isStartOfSymbolSpan()) {
             return this.parseSymbolSpanRest();
         }
+        
         return undefined;
     }
     
@@ -834,21 +900,22 @@ export class Parser {
     }
 
     private parseRightHandSide(): RightHandSide {
-        var fullStart = this.scanner.getStartPos();
-        var head = this.parseSymbolSpan();
-        var node = new RightHandSide(head);
+        let fullStart = this.scanner.getStartPos();
+        let head = this.parseSymbolSpan();
+        let node = new RightHandSide(head);
         if (this.parsingContext !== ParsingContext.RightHandSideListIndented) {
             this.parseOptional(SyntaxKind.LineTerminatorToken);
         }
+        
         return this.finishNode(node, fullStart);
     }
 
     private parseRightHandSideList(): RightHandSideList {
-        var fullStart = this.scanner.getStartPos();
-        var openIndentToken = this.parseToken(SyntaxKind.IndentToken);
-        var elements = openIndentToken && this.parseList<RightHandSide>(ParsingContext.RightHandSideListIndented);
-        var closeIndentToken = this.parseToken(SyntaxKind.DedentToken);
-        var node = new RightHandSideList(openIndentToken, elements, closeIndentToken);
+        let fullStart = this.scanner.getStartPos();
+        let openIndentToken = this.parseToken(SyntaxKind.IndentToken);
+        let elements = openIndentToken && this.parseList<RightHandSide>(ParsingContext.RightHandSideListIndented);
+        let closeIndentToken = this.parseToken(SyntaxKind.DedentToken);
+        let node = new RightHandSideList(openIndentToken, elements, closeIndentToken);
         return this.finishNode(node, fullStart);
     }
 
@@ -866,12 +933,12 @@ export class Parser {
     }
 
     private parseProduction(): Production {
-        var fullStart = this.scanner.getStartPos();
-        var name = this.parseIdentifier();
-        var parameters = this.tryParseParameterList();
-        var colonToken = this.parseAnyToken(isProductionSeparatorToken);
-        var body = this.parseBody();
-        var node = new Production(name, parameters, colonToken, body);
+        let fullStart = this.scanner.getStartPos();
+        let name = this.parseIdentifier();
+        let parameters = this.tryParseParameterList();
+        let colonToken = this.parseAnyToken(isProductionSeparatorToken);
+        let body = this.parseBody();
+        let node = new Production(name, parameters, colonToken, body);
         return this.finishNode(node, fullStart);
     }
 
@@ -896,6 +963,7 @@ export class Parser {
         switch (this.token) {
             case SyntaxKind.Identifier:
                 return this.parseProduction();
+                
             default:
                 this.diagnostics.report(this.scanner.getStartPos(), Diagnostics.Unexpected_token_0_, tokenToString(this.token));
                 return;
@@ -953,6 +1021,16 @@ function isOneOfListIndentedRecoveryToken(token: SyntaxKind) {
 
 function isOneOfSymbolListRecoveryToken(token: SyntaxKind) {
     return token === SyntaxKind.OrKeyword 
+        || token === SyntaxKind.Terminal 
+        || token === SyntaxKind.Identifier 
+        || token === SyntaxKind.OpenBracketToken 
+        || token === SyntaxKind.QuestionToken 
+        || token === SyntaxKind.LineTerminatorToken
+}
+
+function isNoSymbolHereRecoveryToken(token: SyntaxKind) {
+    return token === SyntaxKind.OrKeyword
+        || token === SyntaxKind.HereKeyword 
         || token === SyntaxKind.Terminal 
         || token === SyntaxKind.Identifier 
         || token === SyntaxKind.OpenBracketToken 

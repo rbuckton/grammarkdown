@@ -16,6 +16,7 @@
 export * from "./core";
 export { Diagnostics, DiagnosticMessages, Diagnostic } from "./diagnostics";
 export * from "./nodes";
+export * from "./symbols";
 export * from "./scanner";
 export * from "./parser";
 export * from "./binder";
