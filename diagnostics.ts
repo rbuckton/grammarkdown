@@ -15,16 +15,7 @@
  */
 import { binarySearch } from "./core";
 import { CharacterCodes, SyntaxKind, tokenToString } from "./tokens";
-import { 
-    Node, 
-    SourceFile, 
-    Identifier, 
-    Nonterminal, 
-    Argument, 
-    Prose, 
-    Terminal, 
-    UnicodeCharacterLiteral 
-} from "./nodes";
+import { Node, SourceFile } from "./nodes";
 
 export interface Diagnostic {
     code: number;
@@ -32,7 +23,7 @@ export interface Diagnostic {
     warning?: boolean;
 }
 
-export var Diagnostics = {
+export const Diagnostics = {
     Constant_expected: <Diagnostic>{ code: 1000, message: "Constant expected." },
     _0_expected: <Diagnostic>{ code: 1001, message: "{0} expected." },
     _0_or_1_: <Diagnostic>{ code: 0, message: "{0} or {1}" },
@@ -48,7 +39,6 @@ export var Diagnostics = {
 };
 
 export class DiagnosticMessages {
-    private static _null: DiagnosticMessages;
     private diagnostics: Diagnostic[];
     private diagnosticsPos: number[];
     private diagnosticsNode: Node[];
@@ -303,33 +293,4 @@ export function formatList(tokens: SyntaxKind[]): string {
         
         return formatString(Diagnostics._0_or_1_.message, text, tokenToString(tokens[tokens.length - 1], /*quoted*/ true));
     }
-}
-
-export function formatNode(node: Node, sourceFile: SourceFile) {
-    var text = `(${sourceFile.lineMap.formatPosition(node.pos) })`;
-    text += `SyntaxKind[${SyntaxKind[node.kind]}]`;
-    switch (node.kind) {
-        case SyntaxKind.Prose:
-        case SyntaxKind.Identifier:
-        case SyntaxKind.Terminal:
-            text += `(text = "${(<Prose | Identifier | Terminal>node).text}")`;
-            break;
-        case SyntaxKind.UnicodeCharacterLiteral:
-            text += `(text = <${(<UnicodeCharacterLiteral>node).text}>)`;
-            break;
-        case SyntaxKind.SourceFile:
-            text += `(filename = "${(<SourceFile>node).filename}")`;
-            break;
-    }
-    switch (node.kind) {
-        case SyntaxKind.Terminal:
-        case SyntaxKind.Argument:
-        case SyntaxKind.Nonterminal:
-        case SyntaxKind.UnicodeCharacterLiteral:
-            if ((<Terminal | Argument | Nonterminal | UnicodeCharacterLiteral >node).questionToken) {
-                text += "?";
-            }
-            break;
-    }
-    return text;
 }

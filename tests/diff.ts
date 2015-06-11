@@ -19,8 +19,18 @@ import { EOL } from "os";
 import { resolve } from "path";
 import { Scanner } from "../scanner";
 import { SyntaxKind, tokenToString } from "../tokens";
-import { DiagnosticMessages, LineMap, formatNode } from "../diagnostics";
-import { SourceFile, Node, forEachChild } from "../nodes";
+import { DiagnosticMessages, LineMap } from "../diagnostics";
+import { 
+    SourceFile, 
+    Node, 
+    Identifier, 
+    Nonterminal, 
+    Argument, 
+    Prose, 
+    Terminal, 
+    UnicodeCharacterLiteral, 
+    forEachChild
+} from "../nodes";
 
 export function writeTokens(test: string, scanner: Scanner, lineMap: LineMap, baselines: string[]) {
     let text: string = `/// ${test}:` + EOL;
@@ -125,4 +135,34 @@ function ensureDirectory(path: string) {
     if (!existsSync(path)) {
         mkdirSync(path);
     }
+}
+
+
+function formatNode(node: Node, sourceFile: SourceFile) {
+    var text = `(${sourceFile.lineMap.formatPosition(node.pos) })`;
+    text += `SyntaxKind[${SyntaxKind[node.kind]}]`;
+    switch (node.kind) {
+        case SyntaxKind.Prose:
+        case SyntaxKind.Identifier:
+        case SyntaxKind.Terminal:
+            text += `(text = "${(<Prose | Identifier | Terminal>node).text}")`;
+            break;
+        case SyntaxKind.UnicodeCharacterLiteral:
+            text += `(text = <${(<UnicodeCharacterLiteral>node).text}>)`;
+            break;
+        case SyntaxKind.SourceFile:
+            text += `(filename = "${(<SourceFile>node).filename}")`;
+            break;
+    }
+    switch (node.kind) {
+        case SyntaxKind.Terminal:
+        case SyntaxKind.Argument:
+        case SyntaxKind.Nonterminal:
+        case SyntaxKind.UnicodeCharacterLiteral:
+            if ((<Terminal | Argument | Nonterminal | UnicodeCharacterLiteral >node).questionToken) {
+                text += "?";
+            }
+            break;
+    }
+    return text;
 }

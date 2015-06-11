@@ -13,8 +13,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-export * from "./core";
-export { Diagnostics, DiagnosticMessages, Diagnostic } from "./diagnostics";
+export * from "./diagnostics";
+export * from "./tokens";
 export * from "./nodes";
 export * from "./symbols";
 export * from "./scanner";
@@ -23,5 +23,6 @@ export * from "./binder";
 export * from "./checker";
 export * from "./emitter";
 export * from "./emitter/ecmarkup";
+export * from "./emitter/markdown";
+export * from "./stringwriter";
 export * from "./compiler";
-
