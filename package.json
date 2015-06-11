@@ -4,7 +4,7 @@
   "description": "Markdown-like DSL for defining syntactic grammars for programming languages.",
   "main": "index.js",
   "bin": {
-    "grammarkdown": "./bin/cli.js"
+    "grammarkdown": "./bin/grammarkdown"
   },
   "scripts": {
     "test": "gulp test",
