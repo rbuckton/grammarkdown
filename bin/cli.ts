@@ -16,9 +16,9 @@
 import * as nopt from "nopt";
 import * as path from "path";
 import { readFileSync, writeFileSync } from "fs";
-import { Dict } from "../core";
 import { readPackageSync } from "./read-package";
-import { compile, emit, EmitFormat } from "../compiler";
+import { Dict } from "../lib/core";
+import { compile, emit, EmitFormat } from "../lib/compiler";
 
 try {
 	require("source-map-support").install();

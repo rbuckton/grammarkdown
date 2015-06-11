@@ -1,11 +1,11 @@
 import { assert, expect } from "chai";
 import { readFileSync, readdirSync, statSync } from "fs";
 import { resolve, extname } from "path";
-import { DiagnosticMessages, LineMap } from "../diagnostics";
-import { SyntaxKind } from "../tokens";
-import { SourceFile } from "../nodes";
-import { compileAndEmit, EmitResult } from "../compiler";
-import { MarkdownEmitter } from "../emitter/markdown";
+import { DiagnosticMessages, LineMap } from "../lib/diagnostics";
+import { SyntaxKind } from "../lib/tokens";
+import { SourceFile } from "../lib/nodes";
+import { compileAndEmit, EmitResult } from "../lib/compiler";
+import { MarkdownEmitter } from "../lib/emitter/markdown";
 import { writeTokens, writeDiagnostics, writeBaseline, compareBaselines } from "./diff";
 
 describe("Markdown Emitter", () => {

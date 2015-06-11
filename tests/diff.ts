@@ -17,9 +17,9 @@ import { assert } from "chai";
 import { readFileSync, writeFileSync, mkdirSync, existsSync, statSync, unlinkSync } from "fs";
 import { EOL } from "os";
 import { resolve } from "path";
-import { Scanner } from "../scanner";
-import { SyntaxKind, tokenToString } from "../tokens";
-import { DiagnosticMessages, LineMap } from "../diagnostics";
+import { Scanner } from "../lib/scanner";
+import { SyntaxKind, tokenToString } from "../lib/tokens";
+import { DiagnosticMessages, LineMap } from "../lib/diagnostics";
 import { 
     SourceFile, 
     Node, 
@@ -30,7 +30,7 @@ import {
     Terminal, 
     UnicodeCharacterLiteral, 
     forEachChild
-} from "../nodes";
+} from "../lib/nodes";
 
 export function writeTokens(test: string, scanner: Scanner, lineMap: LineMap, baselines: string[]) {
     let text: string = `/// ${test}:` + EOL;

@@ -7,12 +7,12 @@ var del = require("del");
 
 var sources = [
     "*.ts",
-    "{bin,emitter,tests,typings}/**/*.ts"
+    "{lib,bin,emitter,tests,typings}/**/*.ts"
 ];
 
 var outputs = [
     "*.js?(.map)",
-    "{bin,emitter,tests,typings}/**/*.js?(.map)",
+    "{lib,bin,emitter,tests,typings}/**/*.js?(.map)",
     "!gulpfile.js"
 ];
 

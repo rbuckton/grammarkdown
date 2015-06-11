@@ -1,10 +1,10 @@
 import { assert, expect } from "chai";
 import { readFileSync, readdirSync, statSync } from "fs";
 import { resolve, extname } from "path";
-import { DiagnosticMessages, LineMap } from "../diagnostics";
-import { SyntaxKind } from "../tokens";
-import { SourceFile } from "../nodes";
-import { Parser } from "../parser";
+import { DiagnosticMessages, LineMap } from "../lib/diagnostics";
+import { SyntaxKind } from "../lib/tokens";
+import { SourceFile } from "../lib/nodes";
+import { Parser } from "../lib/parser";
 import { writeNodes, writeDiagnostics, compareBaselines } from "./diff";
 
 describe("Parser", () => {
