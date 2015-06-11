@@ -1,5 +1,5 @@
+import { EmitterBase } from "./emitter-base";
 import { SyntaxKind } from "../tokens";
-import { EmitterBase } from "../emitter";
 import { DiagnosticMessages } from "../diagnostics";
 import { Checker } from "../checker";
 import { 

@@ -4,7 +4,7 @@ import { Scanner } from "./scanner";
 import { Parser } from "./parser";
 import { Binder, BindingTable } from "./binder";
 import { Checker } from "./checker";
-import { EmitterBase } from "./emitter";
+import { EmitterBase } from "./emitter/emitter-base";
 import { MarkdownEmitter } from "./emitter/markdown";
 import { EcmarkupEmitter } from "./emitter/ecmarkup";
 import { HtmlEmitter } from "./emitter/html";

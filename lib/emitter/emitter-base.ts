@@ -1,7 +1,7 @@
-import { DiagnosticMessages } from "./diagnostics";
-import { Checker } from "./checker";
-import { StringWriter } from "./stringwriter";
-import { SyntaxKind, tokenToString } from "./tokens";
+import { DiagnosticMessages } from "../diagnostics";
+import { Checker } from "../checker";
+import { StringWriter } from "../stringwriter";
+import { SyntaxKind, tokenToString } from "../tokens";
 import { 
     Node,
     SourceFile,
@@ -34,7 +34,7 @@ import {
     SourceElement,
     TextContent,
 	forEachChild
-} from "./nodes";
+} from "../nodes";
 
 export class EmitterBase {
     private checker: Checker;

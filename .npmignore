@@ -4,3 +4,6 @@ tests/
 typings/
 .git/
 .settings/
+tsconfig.json
+tsd.json
+gulpfile.js
