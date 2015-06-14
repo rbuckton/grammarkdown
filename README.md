@@ -58,7 +58,7 @@ NamedImports :
 A *Production* may specify one or more *parameters* that can be used to reuse a *Nonterminal* in various circumstances:
 
 ```
-IdentifierReference(Yield) :
+IdentifierReference[Yield] :
     Identifier
     [~Yield] `yield`
 ```
@@ -67,10 +67,10 @@ If a *Nonterminal* on the right-hand-side of a production needs to set a paramet
 Supplying the name of the argument sets the parameter, prefixing the name with a question mark ('?) passes the current value of the parameter, and eliding the argument clears the parameter:
 
 ```
-Declaration(Yield) :
-	HoistableDeclaration(?Yield)
-	ClassDeclaration(?Yield)
-	LexicalDeclaration(In, ?Yield)
+Declaration[Yield] :
+	HoistableDeclaration[?Yield]
+	ClassDeclaration[?Yield]
+	LexicalDeclaration[In, ?Yield]
 ```
 
 The right-hand-side of a *Production* consists of one or more *Terminal* or *Nonterminal* symbols, a sentance of *Prose*, or an *Assertion*.   
@@ -91,17 +91,17 @@ An *Assertion* is a zero-width assertion that must evaluate successfully for the
 The possible assertions include:
 
 * The *empty assertion*, which matches exactly zero tokens: `[empty]`
-* The *lookahead assertion*, which verifies the next tokens in the stream: `[lookahead != \`function\`]`
+* The *lookahead assertion*, which verifies the next tokens in the stream: ``[lookahead != `function`]``
 * The *no-symbol-here assertion*, which verifies the next token is not the provided symbol: `[no LineTerminator here]`
 * The *lexical-goal assertion*, which states that the current lexical goal is the supplied *Nonterminal*: `[lexical goal InputElementRegExp]`
 * The *parameter assertion*, which states the supplied parameter to the current production is either set (using the plus ('+') character), or cleared (using the tilde ('~') character): `` [~Yield] `yield` ``    
 
 A *lookahead assertion* has the following operators:
 
-* The `!=` operator states the lookahead phrase is not matched: `[lookahead != \`function\`]`
-* The `==` operator states the lookahead phrase is matched: `[lookahead == \`class\`]`
-* The `<!` operator states that any matching phrase in the provided set is not matched: `[lookahead <! { \`{\`, \`function\` }]`  
-* The `<=` operator states that any matching phrase in the provided set is matched: `[lookahead <- { \`public\`, \`private\` }]`
+* The `!=` operator states the lookahead phrase is not matched: ``[lookahead != `function`]``
+* The `==` operator states the lookahead phrase is matched: ``[lookahead == `class`]``
+* The `<!` operator states that any matching phrase in the provided set is not matched: ``[lookahead <! { `{`, `function` }]``  
+* The `<=` operator states that any matching phrase in the provided set is matched: ``[lookahead <- { `public`, `private` }]``
 
 You can also annotate your grammar with C-style single-line and multi-line comments.
 
