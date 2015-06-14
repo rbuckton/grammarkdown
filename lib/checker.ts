@@ -741,7 +741,6 @@ export class Checker {
     }
 
     private reportInvalidSymbol(node: LexicalSymbol): void {
-        throw new Error();
         this.reportGrammarErrorForNode(node, Diagnostics._0_expected, formatList([
             SyntaxKind.Terminal,
             SyntaxKind.Identifier,

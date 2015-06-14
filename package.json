@@ -1,6 +1,6 @@
 {
   "name": "grammarkdown",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Markdown-like DSL for defining syntactic grammars for programming languages.",
   "main": "index.js",
   "bin": {

@@ -272,7 +272,8 @@ SingleEscapeCharacter :: one of
 	`'` `"` `\` `b` `f` `n` `r` `t` `v`
 
 NonEscapeCharacter ::
-	SourceCharacter but not one of EscapeCharacter or LineTerminator
+	SourceCharacter but not \
+		one of EscapeCharacter or LineTerminator
 
 EscapeCharacter ::
 	SingleEscapeCharacter
