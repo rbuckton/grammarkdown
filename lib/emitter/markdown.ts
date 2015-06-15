@@ -38,7 +38,7 @@ import {
 
 export class MarkdownEmitter extends EmitterBase {
 	protected emitProduction(node: Production) {
-        let linkId = this.resolver.getLinkId(node.name, SymbolKind.Production);
+        let linkId = this.resolver.getProductionLinkId(node.name);
         this.writer.write("&emsp;&emsp;");
         this.emitLinkAnchor(linkId);		
         this.writer.write("*");
@@ -142,7 +142,7 @@ export class MarkdownEmitter extends EmitterBase {
     }
     
     protected emitRightHandSide(node: RightHandSide) {
-        let linkId = this.resolver.getUniqueLinkId(node);
+        let linkId = this.resolver.getAlternativeLinkId(node, /*includePrefix*/ true);
         this.emitLinkAnchor(linkId);
         super.emitRightHandSide(node);
         this.writer.write("  ");
@@ -167,7 +167,7 @@ export class MarkdownEmitter extends EmitterBase {
     }
     
     protected emitNonterminal(node: Nonterminal) {
-        let linkId = this.resolver.getLinkId(node.name, SymbolKind.Production);        
+        let linkId = this.resolver.getProductionLinkId(node.name);        
         this.writer.write("*");
         this.emitNodeWithLink(node.name, linkId);
         this.writer.write("*");
@@ -246,7 +246,7 @@ export class MarkdownEmitter extends EmitterBase {
     }
 
     protected emitLexicalGoalAssertion(node: LexicalGoalAssertion): void {
-        let linkId = this.resolver.getLinkId(node.symbol, SymbolKind.Production);
+        let linkId = this.resolver.getProductionLinkId(node.symbol);
         this.writer.write("[lexical goal ");
         this.emitNodeWithLink(node.symbol, linkId);
         this.writer.write("]");

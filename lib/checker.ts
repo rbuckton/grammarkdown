@@ -848,37 +848,25 @@ export class Resolver {
         this.bindings = bindings;
     }
     
-    public getLinkId(node: Identifier, meaning: SymbolKind): string {
-        let symbol = this.bindings.resolveSymbol(node, node.text, meaning);
+    public getProductionLinkId(node: Identifier): string {
+        let symbol = this.bindings.resolveSymbol(node, node.text, SymbolKind.Production);
         if (symbol) {
-            switch (meaning) {
-                case SymbolKind.Production:
-                    return `production-${symbol.name}`;
-                
-                case SymbolKind.Parameter:
-                    return `parameter-${symbol.parent.name}-${symbol.name}`;
-            }
+            return symbol.name;
         }
         
         return undefined;
     }
     
-    public getUniqueLinkId(node: Production | RightHandSide): string {
-        switch (node.kind) {
-            case SyntaxKind.Production:
-                return this.getLinkId((<Production>node).name, SymbolKind.Production);
-                
-            case SyntaxKind.RightHandSide:
-                let production = <Production>this.bindings.getAncestor(node, SyntaxKind.Production);
-                let productionId = this.getLinkId(production.name, SymbolKind.Production);
-                let uniqueId = this.computeHashOfRightHandSide(<RightHandSide>node);
-                return `${productionId}-${uniqueId}`;
-        }
-    }
-    
-    private computeHashOfRightHandSide(node: RightHandSide): string {
+    public getAlternativeLinkId(node: RightHandSide, includePrefix: boolean): string {
         let digest = new RightHandSideDigest();
-        return digest.computeHash(node).toLowerCase();
+        let alternativeId = digest.computeHash(node).toLowerCase();
+        if (includePrefix) {
+            let production = <Production>this.bindings.getAncestor(node, SyntaxKind.Production);
+            let productionId = this.getProductionLinkId(production.name);
+            return productionId + "-" + alternativeId;
+        }
+        
+        return alternativeId;
     }
 }
 
@@ -892,7 +880,8 @@ class RightHandSideDigest {
 
         let hash = createHash("sha1");
         hash.update(this.writer.toString(), "utf8");
-        return hash.digest("hex");
+        let digest = hash.digest("hex");
+        return digest.substr(0, 8);
     }
     
     private writeNode(node: Node) {
@@ -988,8 +977,8 @@ class RightHandSideDigest {
     }
     
     private writeArgument(node: Argument) {
-        this.writeNode(node.name);
         this.writeNode(node.questionToken);
+        this.writeNode(node.name);
     }
     
     private writeEmptyAssertion(node: EmptyAssertion) {

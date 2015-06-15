@@ -84,7 +84,7 @@ export class EcmarkupEmitter extends EmitterBase {
     }
     
     protected emitOneOfList(node: OneOfList) {
-		this.writer.write(`<emu-rhs>`);
+        this.writer.write(`<emu-rhs>`);
 		for (let i = 0; i < node.terminals.length; ++i) {
 			if (i > 0) {
 				this.writer.write(" ");
@@ -103,14 +103,21 @@ export class EcmarkupEmitter extends EmitterBase {
     }
     
     protected emitRightHandSide(node: RightHandSide) {
-        let head = node.head;
         this.writer.write(`<emu-rhs`);
+		
+        let linkId = this.resolver.getAlternativeLinkId(node, /*includePrefix*/ false);
+        if (linkId) {
+            this.writer.write(` a="${linkId}"`);
+        }
+        
+        let head = node.head;
         if (head.symbol.kind === SyntaxKind.ParameterValueAssertion) {
             this.writer.write(` constraints="`);
             this.emitNode(head.symbol);
             this.writer.write(`"`);
             head = head.next;
         }
+        
         this.writer.write(`>`);
         if (head.next) {
             this.writer.indent();
