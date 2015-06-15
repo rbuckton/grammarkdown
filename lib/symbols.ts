@@ -35,7 +35,7 @@ export class SymbolTable {
         return undefined;
     }
 
-    public declareSymbol(name: string, kind: SymbolKind): Symbol {
+    public declareSymbol(name: string, kind: SymbolKind, parent?: Symbol): Symbol {
         let symbol: Symbol;
         if (name) {
             let symbols = this.getSymbols(kind, /*create*/ true);
@@ -51,6 +51,7 @@ export class SymbolTable {
             symbol = new Symbol(kind, "*missing*");
         }
         
+        symbol.parent = parent;
         return symbol;
     }        
 

@@ -13,11 +13,13 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+import { Hash, createHash } from "crypto";
 import { Dict } from "./core";
 import { Diagnostics, DiagnosticMessages, Diagnostic, formatList } from "./diagnostics";
 import { SyntaxKind, tokenToString } from "./tokens";
 import { Symbol, SymbolKind, SymbolTable } from "./symbols";
 import { BindingTable } from "./binder";
+import { StringWriter } from "./stringwriter";
 import {
     Node, 
     SourceFile,
@@ -47,7 +49,8 @@ import {
     RightHandSide,
     RightHandSideList,
     Production,
-    SourceElement
+    SourceElement,
+    forEachChild
 } from "./nodes";
 
 export class Checker {
@@ -58,6 +61,10 @@ export class Checker {
         this.bindings = bindings;
         this.diagnostics = diagnostics;
     }
+    
+    public getResolver(): Resolver {
+        return new Resolver(this.bindings);
+    } 
 
     public checkSourceFile(sourceFile: SourceFile): void {
         this.diagnostics.setSourceFile(sourceFile);
@@ -831,6 +838,248 @@ export class Checker {
     private reportGrammarErrorForNode(location: Node, diagnosticMessage: Diagnostic, arg0?: any, arg1?: any, arg2?: any) {
         this.diagnostics.reportNode(location, diagnosticMessage, arg0, arg1, arg2);
         return true;
+    }
+}
+
+export class Resolver {
+    private bindings: BindingTable;
+    
+    constructor(bindings: BindingTable) {
+        this.bindings = bindings;
+    }
+    
+    public getLinkId(node: Identifier, meaning: SymbolKind): string {
+        let symbol = this.bindings.resolveSymbol(node, node.text, meaning);
+        if (symbol) {
+            switch (meaning) {
+                case SymbolKind.Production:
+                    return `production-${symbol.name}`;
+                
+                case SymbolKind.Parameter:
+                    return `parameter-${symbol.parent.name}-${symbol.name}`;
+            }
+        }
+        
+        return undefined;
+    }
+    
+    public getUniqueLinkId(node: Production | RightHandSide): string {
+        switch (node.kind) {
+            case SyntaxKind.Production:
+                return this.getLinkId((<Production>node).name, SymbolKind.Production);
+                
+            case SyntaxKind.RightHandSide:
+                let production = <Production>this.bindings.getAncestor(node, SyntaxKind.Production);
+                let productionId = this.getLinkId(production.name, SymbolKind.Production);
+                let uniqueId = this.computeHashOfRightHandSide(<RightHandSide>node);
+                return `${productionId}-${uniqueId}`;
+        }
+    }
+    
+    private computeHashOfRightHandSide(node: RightHandSide): string {
+        let digest = new RightHandSideDigest();
+        return digest.computeHash(node).toLowerCase();
+    }
+}
+
+class RightHandSideDigest {
+    private spaceRequested: boolean;
+    private writer: StringWriter;
+    
+    public computeHash(node: RightHandSide): string {
+        this.writer = new StringWriter();
+        this.writeNode(node.head);
+
+        let hash = createHash("sha1");
+        hash.update(this.writer.toString(), "utf8");
+        return hash.digest("hex");
+    }
+    
+    private writeNode(node: Node) {
+        if (!node) {
+            return;
+        }
+        
+        switch (node.kind) {
+            case SyntaxKind.Terminal: this.writeTerminal(<Terminal>node); break;
+            case SyntaxKind.UnicodeCharacterLiteral: this.writeUnicodeCharacterLiteral(<UnicodeCharacterLiteral>node); break;
+            case SyntaxKind.Prose: this.writeProse(<Prose>node); break;
+            case SyntaxKind.Nonterminal: this.writeNonterminal(<Nonterminal>node); break;
+            case SyntaxKind.EmptyAssertion: this.writeEmptyAssertion(<EmptyAssertion>node); break;
+            case SyntaxKind.LexicalGoalAssertion: this.writeLexicalGoalAssertion(<LexicalGoalAssertion>node); break;
+            case SyntaxKind.LookaheadAssertion: this.writeLookaheadAssertion(<LookaheadAssertion>node); break;
+            case SyntaxKind.NoSymbolHereAssertion: this.writeNoSymbolHereAssertion(<NoSymbolHereAssertion>node); break;
+            case SyntaxKind.ParameterValueAssertion: this.writeParameterValueAssertion(<ParameterValueAssertion>node); break;
+            case SyntaxKind.BinarySymbol: this.writeBinarySymbol(<BinarySymbol>node); break;
+            case SyntaxKind.OneOfSymbol: this.writeOneOfSymbol(<OneOfSymbol>node); break;
+            case SyntaxKind.SymbolSpan: this.writeSymbolSpan(<SymbolSpan>node); break;
+            case SyntaxKind.SymbolSet: this.writeSymbolSet(<SymbolSet>node); break;
+            case SyntaxKind.ArgumentList: this.writeArgumentList(<ArgumentList>node); break;
+            case SyntaxKind.Argument: this.writeArgument(<Argument>node); break;
+            case SyntaxKind.Identifier: this.writeIdentifier(<Identifier>node); break;
+            default: 
+                if ((node.kind >= SyntaxKind.FirstKeyword && node.kind <= SyntaxKind.LastKeyword) ||
+                    (node.kind >= SyntaxKind.FirstPunctuation && node.kind <= SyntaxKind.LastKeyword)) {
+                    this.writeToken(node);
+                    break;
+                }
+                else {
+                    forEachChild(node, child => this.writeNode(child));
+                    break;
+                }
+        }
+    }
+    
+    private write(text: string) {
+        if (text) {
+            if (this.spaceRequested && this.writer.size > 0) {
+                this.spaceRequested = false;
+                this.writer.write(" ");
+            }
+            
+            this.writer.write(text);
+        }
+    }
+    
+    private writeToken(node: Node) {
+        this.write(tokenToString(node.kind));
+        this.spaceRequested = true;
+    }
+    
+    private writeTerminal(node: Terminal) {
+        this.write("`");
+        this.write(node.text);
+        this.write("`");
+        this.writeNode(node.questionToken);
+        this.spaceRequested = true;
+    }
+    
+    private writeUnicodeCharacterLiteral(node: UnicodeCharacterLiteral) {
+        this.write("<");
+        this.write(node.text);
+        this.write(">");
+        this.writeNode(node.questionToken);
+        this.spaceRequested = true;
+    }
+    
+    private writeProse(node: Prose) {
+        this.write("> ");
+        this.write(node.text);        
+    }
+    
+    private writeNonterminal(node: Nonterminal) {
+        this.writeNode(node.name);
+        this.writeNode(node.argumentList);
+        this.writeNode(node.questionToken);
+        this.spaceRequested = true;
+    }
+    
+    private writeArgumentList(node: ArgumentList) {
+        this.write("[");
+        for (let i = 0; i < node.elements.length; ++i) {
+            if (i > 0) {
+                this.write(", ");
+            }
+            
+            this.writeNode(node.elements[i]);
+        }
+        
+        this.write("]");
+    }
+    
+    private writeArgument(node: Argument) {
+        this.writeNode(node.name);
+        this.writeNode(node.questionToken);
+    }
+    
+    private writeEmptyAssertion(node: EmptyAssertion) {
+        this.write("[empty]");
+        this.spaceRequested = true;
+    }
+    
+    private writeLexicalGoalAssertion(node: LexicalGoalAssertion) {
+        this.write("[lexical goal ");
+        this.writeNode(node.symbol);
+        this.spaceRequested = false;
+        this.write("]");
+        this.spaceRequested = true;
+    }
+    
+    private writeLookaheadAssertion(node: LookaheadAssertion) {
+        this.write("[lookahead ");
+        this.writeNode(node.operatorToken);
+        this.writeNode(node.lookahead);
+        this.spaceRequested = false;
+        this.write("]");
+        this.spaceRequested = true;
+    }
+    
+    private writeNoSymbolHereAssertion(node: NoSymbolHereAssertion) {
+        this.write("[no ");
+        for (let i = 0; i < node.symbols.length; ++i) {
+            if (i > 0) {
+                this.write(" or ");
+            }
+            
+            this.writeNode(node.symbols[i]);
+            this.spaceRequested = false;
+        }
+        
+        this.write(" here]");
+    }
+    
+    private writeParameterValueAssertion(node: ParameterValueAssertion) {
+        this.write("[");
+        this.writeToken(node.operatorToken);
+        this.spaceRequested = false;
+        this.writeNode(node.name);
+        this.write("]");
+        this.spaceRequested = true;
+    }
+    
+    private writeBinarySymbol(node: BinarySymbol) {
+        this.writeNode(node.left);
+        this.writeNode(node.operatorToken);
+        this.writeNode(node.right);
+        this.spaceRequested = true;
+    }
+    
+    private writeOneOfSymbol(node: OneOfSymbol) {
+        this.write("one of ");
+        for (let i = 0; i < node.symbols.length; ++i) {
+            if (i > 0) {
+                this.write(" or ");
+            }
+            
+            this.writeNode(node.symbols[i]);
+            this.spaceRequested = false;
+        }
+
+        this.spaceRequested = true;
+    }
+    
+    private writeSymbolSpan(node: SymbolSpan) {
+        this.writeNode(node.symbol);
+        this.writeNode(node.next);
+    }
+    
+    private writeSymbolSet(node: SymbolSet) {
+        this.write("{ ");
+        for (let i = 0; i < node.elements.length; ++i) {
+            if (i > 0) {
+                this.write(", ");
+            }
+            
+            this.writeNode(node.elements[i]);
+            this.spaceRequested = false;
+        }
+
+        this.write(" }");
+        this.spaceRequested = true;
+    }
+    
+    private writeIdentifier(node: Identifier) {
+        this.write(node.text);
     }
 }
 

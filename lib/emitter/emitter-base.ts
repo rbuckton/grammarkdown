@@ -1,5 +1,5 @@
 import { DiagnosticMessages } from "../diagnostics";
-import { Checker } from "../checker";
+import { Checker, Resolver } from "../checker";
 import { StringWriter } from "../stringwriter";
 import { SyntaxKind, tokenToString } from "../tokens";
 import { 
@@ -37,13 +37,18 @@ import {
 } from "../nodes";
 
 export class EmitterBase {
-    private checker: Checker;
+    private innerResolver: Resolver;
     private diagnostics: DiagnosticMessages;
     private innerWriter: StringWriter;
+    
     constructor(checker: Checker, diagnostics: DiagnosticMessages, writer: StringWriter) {
-        this.checker = checker;
+        this.innerResolver = checker.getResolver();
         this.diagnostics = diagnostics;
         this.innerWriter = writer;
+    }
+    
+    protected get resolver(): Resolver {
+        return this.innerResolver;
     }
     
     protected get writer(): StringWriter {
@@ -78,7 +83,7 @@ export class EmitterBase {
             case SyntaxKind.OneOfSymbol: this.emitOneOfSymbol(<OneOfSymbol>node); break;
             case SyntaxKind.Nonterminal: this.emitNonterminal(<Nonterminal>node); break;
             case SyntaxKind.TerminalList: this.emitTerminalList(<TerminalList>node); break;
-            case SyntaxKind.SymbolSet: this.emitTerminalSet(<SymbolSet>node); break;
+            case SyntaxKind.SymbolSet: this.emitSymbolSet(<SymbolSet>node); break;
             case SyntaxKind.EmptyAssertion: this.emitEmptyAssertion(<EmptyAssertion>node); break;
             case SyntaxKind.LookaheadAssertion: this.emitLookaheadAssertion(<LookaheadAssertion>node); break;
             case SyntaxKind.LexicalGoalAssertion: this.emitLexicalGoalAssertion(<LexicalGoalAssertion>node); break;
@@ -171,7 +176,7 @@ export class EmitterBase {
         forEachChild(node, child => this.emitNode(child));
     }
     
-    protected emitTerminalSet(node: SymbolSet): void {
+    protected emitSymbolSet(node: SymbolSet): void {
         forEachChild(node, child => this.emitNode(child));
     }
     
@@ -205,16 +210,4 @@ export class EmitterBase {
             }
         });
     }
-}
-
-export class PrettyPrinter extends EmitterBase {
-    
-}
-
-export class MarkdownEmitter extends EmitterBase {
-    
-}
-
-export class HtmlEmitter extends EmitterBase {
-    
 }

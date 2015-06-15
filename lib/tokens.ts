@@ -233,7 +233,9 @@ export enum SyntaxKind {
     SourceFile,
 
     FirstKeyword = ButKeyword,
-    LastKeyword = OrKeyword
+    LastKeyword = OrKeyword,
+    FirstPunctuation = OpenBraceToken,
+    LastPunctuation = LessThanMinusToken,
 }
 
 const textToToken = new Dict({

@@ -142,7 +142,8 @@ export class BindingTable {
 }
 
 export class Binder {
-    private parent: Node;
+    private parentNode: Node;
+    private parentSymbol: Symbol;
     private bindings: BindingTable;
     private scope: SymbolTable;
 
@@ -154,35 +155,38 @@ export class Binder {
     public bindSourceFile(file: SourceFile): void {
         let symbol = this.declareSymbol(file.filename, file, SymbolKind.SourceFile);
         let scope = this.bindings.getScope(symbol);
-        this.bindChildren(file, scope);
+        this.bindChildren(file, symbol, scope);
     }
 
     private bindProduction(node: Production): void {
         let symbol = this.declareSymbol(node.name.text, node, SymbolKind.Production);
         let scope = this.bindings.getScope(symbol);
-        this.bindChildren(node, scope);
+        this.bindChildren(node, symbol, scope);
     }
 
     private bindParameter(node: Parameter): void {
         let symbol = this.declareSymbol(node.name.text, node, SymbolKind.Parameter);
-        this.bindChildren(node, this.scope);
+        this.bindChildren(node, this.parentSymbol, this.scope);
     }
 
-    private bindChildren(node: Node, scope: SymbolTable): void {
-        let saveParent = this.parent;
+    private bindChildren(parentNode: Node, parentSymbol: Symbol, scope: SymbolTable): void {
+        let saveParentNode = this.parentNode;
+        let saveParentSymbol = this.parentSymbol;
         let saveScope = this.scope;
-        this.parent = node;
+        this.parentNode = parentNode;
+        this.parentSymbol = parentSymbol;
         this.scope = scope;
         
-        forEachChild(node, child => this.bind(child));
+        forEachChild(parentNode, child => this.bind(child));
         
         this.scope = saveScope;
-        this.parent = saveParent;
+        this.parentSymbol = saveParentSymbol;
+        this.parentNode = saveParentNode;
     }
 
     private bind(node: Node): void {
         if (node) {
-            this.bindings.setParent(node, this.parent);
+            this.bindings.setParent(node, this.parentNode);
             switch (node.kind) {
                 case SyntaxKind.Production:
                     this.bindProduction(<Production>node);
@@ -193,14 +197,14 @@ export class Binder {
                     break;
 
                 default:
-                    this.bindChildren(node, this.scope);
+                    this.bindChildren(node, this.parentSymbol, this.scope);
                     break;
             }
         }
     }
 
     private declareSymbol(name: string, declaration: Node, kind: SymbolKind): Symbol {
-        let symbol = this.scope.declareSymbol(name, kind);
+        let symbol = this.scope.declareSymbol(name, kind, this.parentSymbol);
         this.bindings.addDeclarationToSymbol(symbol, declaration);
         return symbol;
     }

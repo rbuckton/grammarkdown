@@ -2,6 +2,7 @@ import { EmitterBase } from "./emitter-base";
 import { SyntaxKind } from "../tokens";
 import { DiagnosticMessages } from "../diagnostics";
 import { Checker } from "../checker";
+import { SymbolKind } from "../symbols";
 import { 
     Node,
     SourceFile,
@@ -36,8 +37,10 @@ import {
 } from "../nodes";
 
 export class MarkdownEmitter extends EmitterBase {
-	protected emitProduction(node: Production) {		
+	protected emitProduction(node: Production) {
+        let linkId = this.resolver.getLinkId(node.name, SymbolKind.Production);
         this.writer.write("&emsp;&emsp;");
+        this.emitLinkAnchor(linkId);		
         this.writer.write("*");
         this.emitIdentifier(node.name);
         this.writer.write("*");
@@ -50,7 +53,6 @@ export class MarkdownEmitter extends EmitterBase {
         }
         
         this.emitNode(node.body);
-        this.writer.write("  ");
         this.writer.writeln();
         this.writer.write("  ");
         this.writer.writeln();
@@ -78,9 +80,8 @@ export class MarkdownEmitter extends EmitterBase {
         let terminals = node.terminals;
         if (terminals && terminals.length > 0) {
             if (node.openIndentToken) {
-                
                 // get the maximum size for a terminal
-                let width = 1;
+                let width = 5;
                 for (let terminal of terminals) {
                     if (terminal.text.length > width) {
                         width = terminal.text.length;
@@ -90,7 +91,7 @@ export class MarkdownEmitter extends EmitterBase {
                 this.writer.write("  ");
                 this.writer.writeln();
                 this.writer.write("<pre>");
-                let columns = Math.floor(30 / width);
+                let columns = Math.floor(50 / width);
                 let pad = 0;
                 for (let i = 0; i < terminals.length; ++i) {
                     let terminal = terminals[i];
@@ -125,17 +126,26 @@ export class MarkdownEmitter extends EmitterBase {
                     
                     this.emitNode(node.terminals[i]);
                 }
+                
+                this.writer.write("  ");
             }
         }
     }
     
     protected emitRightHandSideList(node: RightHandSideList) {
+        this.writer.write("  ");
         for (let rhs of node.elements) {
-            this.writer.write("  ");
             this.writer.writeln();
             this.writer.write("&emsp;&emsp;&emsp;");
-            this.emitRightHandSide(rhs);
+            this.emitNode(rhs);
         }
+    }
+    
+    protected emitRightHandSide(node: RightHandSide) {
+        let linkId = this.resolver.getUniqueLinkId(node);
+        this.emitLinkAnchor(linkId);
+        super.emitRightHandSide(node);
+        this.writer.write("  ");
     }
     
     protected emitSymbolSpan(node: SymbolSpan) {
@@ -157,8 +167,9 @@ export class MarkdownEmitter extends EmitterBase {
     }
     
     protected emitNonterminal(node: Nonterminal) {
+        let linkId = this.resolver.getLinkId(node.name, SymbolKind.Production);        
         this.writer.write("*");
-        this.emitNode(node.name);
+        this.emitNodeWithLink(node.name, linkId);
         this.writer.write("*");
         this.emitNode(node.argumentList);
         if (node.questionToken) {
@@ -208,7 +219,7 @@ export class MarkdownEmitter extends EmitterBase {
             this.emitNode(node.elements[i]);
         }
         
-        this.writer.write("}");
+        this.writer.write(" }");
     }
     
     protected emitLookaheadAssertion(node: LookaheadAssertion) {
@@ -235,8 +246,9 @@ export class MarkdownEmitter extends EmitterBase {
     }
 
     protected emitLexicalGoalAssertion(node: LexicalGoalAssertion): void {
+        let linkId = this.resolver.getLinkId(node.symbol, SymbolKind.Production);
         this.writer.write("[lexical goal ");
-        this.emitNode(node.symbol);
+        this.emitNodeWithLink(node.symbol, linkId);
         this.writer.write("]");
     }
     
@@ -288,5 +300,22 @@ export class MarkdownEmitter extends EmitterBase {
     protected emitTextContent(node: TextContent) {
         let text = node.text;
         this.writer.write(text);
+    }
+    
+    private emitLinkAnchor(linkId: string) {
+        if (linkId) {
+            this.writer.write(`<a name="${linkId}"></a>`);
+        }
+    }
+    
+    private emitNodeWithLink(node: Node, linkId: string) {
+        if (linkId) {
+            this.writer.write("[");
+            this.emitNode(node);
+            this.writer.write(`](#${linkId})`);
+        }
+        else {
+            this.emitNode(node);
+        }
     }
 }
