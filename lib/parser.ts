@@ -243,13 +243,13 @@ export class Parser {
                 
             case ParsingContext.OneOfList:
             case ParsingContext.OneOfListIndented:
-                return this.token === SyntaxKind.Terminal;
+                return this.token === SyntaxKind.Terminal || this.token === SyntaxKind.UnicodeCharacterLiteral;
                 
             case ParsingContext.OneOfSymbolList:
-                return this.token === SyntaxKind.Terminal || this.token === SyntaxKind.Identifier;
+                return this.token === SyntaxKind.Terminal || this.token === SyntaxKind.Identifier || this.token === SyntaxKind.UnicodeCharacterLiteral;
                 
             case ParsingContext.NoSymbolHere:
-                return this.token === SyntaxKind.Terminal || this.token === SyntaxKind.Identifier;
+                return this.token === SyntaxKind.Terminal || this.token === SyntaxKind.Identifier || this.token === SyntaxKind.UnicodeCharacterLiteral;
                 
             default:
                 return false;
@@ -453,7 +453,13 @@ export class Parser {
     }
     
     private hasCloseToken() {
-        return this.parsingContext !== ParsingContext.OneOfSymbolList;
+        switch (this.parsingContext) {
+            case ParsingContext.OneOfSymbolList:
+            case ParsingContext.NoSymbolHere:
+                return false;
+        }
+        
+        return true;
     }
     
     private isOnCloseToken() {
@@ -1112,7 +1118,7 @@ function isNoSymbolHereRecoveryToken(token: SyntaxKind) {
         || token === SyntaxKind.HereKeyword 
         || token === SyntaxKind.Terminal 
         || token === SyntaxKind.Identifier 
-        || token === SyntaxKind.OpenBracketToken 
+        || token === SyntaxKind.CloseBracketToken 
         || token === SyntaxKind.QuestionToken 
         || token === SyntaxKind.LineTerminatorToken
 }
