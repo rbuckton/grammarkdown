@@ -37,7 +37,9 @@ import {
 
 export class EcmarkupEmitter extends EmitterBase {
 	protected emitProduction(node: Production) {
-		this.writer.write(`<emu-production name="`);		
+        let linkId = this.resolver.getProductionLinkId(node.name);
+        this.emitLinkAnchor(linkId);
+		this.writer.write(`<emu-production name="`);
         this.emitIdentifier(node.name);
         this.writer.write(`"`);
         this.emitNode(node.parameterList);
@@ -103,9 +105,11 @@ export class EcmarkupEmitter extends EmitterBase {
     }
     
     protected emitRightHandSide(node: RightHandSide) {
+        let linkId = this.resolver.getAlternativeLinkId(node, /*includePrefix*/ false);
+        this.emitLinkAnchor(linkId);
+        
         this.writer.write(`<emu-rhs`);
 		
-        let linkId = this.resolver.getAlternativeLinkId(node, /*includePrefix*/ false);
         if (linkId) {
             this.writer.write(` a="${linkId}"`);
         }
@@ -153,13 +157,14 @@ export class EcmarkupEmitter extends EmitterBase {
     }
     
     protected emitNonterminal(node: Nonterminal) {
+        let linkId = this.resolver.getProductionLinkId(node.name);
         this.writer.write(`<emu-nt`);
         this.emitNode(node.argumentList);
         if (node.questionToken) {
             this.writer.write(` optional`);
         }
         this.writer.write(`>`);
-        this.emitNode(node.name);
+        this.emitNodeWithLink(node.name, linkId);
         this.writer.write(`</emu-nt>`);
     }
     
@@ -212,7 +217,7 @@ export class EcmarkupEmitter extends EmitterBase {
             this.emitNode(node.elements[i]);
         }
         
-        this.writer.write("}");
+        this.writer.write(" }");
     }
     
     protected emitLookaheadAssertion(node: LookaheadAssertion) {
@@ -241,7 +246,8 @@ export class EcmarkupEmitter extends EmitterBase {
 
     protected emitLexicalGoalAssertion(node: LexicalGoalAssertion): void {
         this.writer.write(`<emu-gann>lexical goal `);
-        this.emitNode(node.symbol);
+        let linkId = this.resolver.getProductionLinkId(node.symbol);
+        this.emitNodeWithLink(node.symbol, linkId);
         this.writer.write(`</emu-gann>`);
     }
     
@@ -293,5 +299,22 @@ export class EcmarkupEmitter extends EmitterBase {
     protected emitTextContent(node: TextContent) {
         let text = node.text;
         this.writer.write(text);
+    }
+    
+    private emitLinkAnchor(linkId: string) {
+        // if (linkId) {
+        //     this.writer.write(`<a name="${linkId}"></a>`);
+        // }
+    }
+
+    private emitNodeWithLink(node: Node, linkId: string) {
+        // if (linkId) {
+        //     this.writer.write(`<a href="#${linkId}">`);
+        //     this.emitNode(node);
+        //     this.writer.write(`</a>`);
+        // }
+        // else {
+        this.emitNode(node);
+        // }
     }
 }
