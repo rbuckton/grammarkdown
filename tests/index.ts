@@ -27,3 +27,4 @@ import "./checker-tests";
 import "./emitter-tests";
 import "./markdown-tests";
 import "./ecmarkup-tests";
+import "./html-tests";

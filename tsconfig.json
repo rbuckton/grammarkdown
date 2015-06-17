@@ -37,6 +37,7 @@
         "tests/checker-tests.ts",
         "tests/emitter-tests.ts",
         "tests/ecmarkup-tests.ts",
-        "tests/markdown-tests.ts"
+        "tests/markdown-tests.ts",
+        "tests/html-tests.ts"
     ]
 }
