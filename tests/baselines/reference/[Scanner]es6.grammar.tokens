@@ -3701,7 +3701,7 @@ SyntaxKind[IndentToken](719,2): «indent»
 SyntaxKind[OpenBracketToken](719,3): [
 SyntaxKind[LookaheadKeyword](719,12): lookahead
 SyntaxKind[LessThanExclamationToken](719,15): <!
-SyntaxKind[FirstPunctuation](719,17): {
+SyntaxKind[OpenBraceToken](719,17): {
 SyntaxKind[Terminal](719,21): `{`
 SyntaxKind[CommaToken](719,22): ,
 SyntaxKind[Terminal](719,33): `function`
@@ -3835,7 +3835,7 @@ SyntaxKind[Terminal](728,11): `(`
 SyntaxKind[OpenBracketToken](728,13): [
 SyntaxKind[LookaheadKeyword](728,22): lookahead
 SyntaxKind[LessThanExclamationToken](728,25): <!
-SyntaxKind[FirstPunctuation](728,27): {
+SyntaxKind[OpenBraceToken](728,27): {
 SyntaxKind[Terminal](728,33): `let`
 SyntaxKind[Terminal](728,37): `[`
 SyntaxKind[CloseBraceToken](728,39): }
@@ -3949,7 +3949,7 @@ SyntaxKind[Terminal](731,11): `(`
 SyntaxKind[OpenBracketToken](731,13): [
 SyntaxKind[LookaheadKeyword](731,22): lookahead
 SyntaxKind[LessThanExclamationToken](731,25): <!
-SyntaxKind[FirstPunctuation](731,27): {
+SyntaxKind[OpenBraceToken](731,27): {
 SyntaxKind[Terminal](731,33): `let`
 SyntaxKind[Terminal](731,37): `[`
 SyntaxKind[CloseBraceToken](731,39): }
@@ -5524,7 +5524,7 @@ SyntaxKind[Terminal](974,20): `default`
 SyntaxKind[OpenBracketToken](974,22): [
 SyntaxKind[LookaheadKeyword](974,31): lookahead
 SyntaxKind[LessThanExclamationToken](974,34): <!
-SyntaxKind[FirstPunctuation](974,36): {
+SyntaxKind[OpenBraceToken](974,36): {
 SyntaxKind[Terminal](974,47): `function`
 SyntaxKind[CommaToken](974,48): ,
 SyntaxKind[Terminal](974,56): `class`

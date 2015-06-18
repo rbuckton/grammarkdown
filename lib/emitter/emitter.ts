@@ -1,4 +1,7 @@
+import * as fs from "fs";
+import * as path from "path";
 import { DiagnosticMessages } from "../diagnostics";
+import { CompilerOptions } from "../options";
 import { Checker, Resolver } from "../checker";
 import { StringWriter } from "../stringwriter";
 import { SyntaxKind, tokenToString } from "../tokens";
@@ -31,33 +34,70 @@ import {
     RightHandSide,
     RightHandSideList,
     Production,
+    Import,
     SourceElement,
     TextContent,
 	forEachChild
 } from "../nodes";
 
-export class EmitterBase {
-    private innerResolver: Resolver;
+export class Emitter {
+    protected options: CompilerOptions;
+    protected resolver: Resolver;
+    protected writer: StringWriter;
+    protected extension: string;
+    
     private diagnostics: DiagnosticMessages;
-    private innerWriter: StringWriter;
     
-    constructor(checker: Checker, diagnostics: DiagnosticMessages, writer: StringWriter) {
-        this.innerResolver = checker.getResolver();
+    constructor(options: CompilerOptions, resolver: Resolver, diagnostics: DiagnosticMessages) {
+        this.options = options;
+        this.resolver = resolver;
         this.diagnostics = diagnostics;
-        this.innerWriter = writer;
     }
     
-    protected get resolver(): Resolver {
-        return this.innerResolver;
-    }
-    
-    protected get writer(): StringWriter {
-        return this.innerWriter;
-    }
-    
-	public emitSourceFile(node: SourceFile): void {
-        forEachChild(node, child => this.emitNode(child));
+	public emit(node: SourceFile, writeFile?: (file: string, text: string) => void): void {
+        let saveWriter = this.writer;
+        try {
+            this.writer = this.createWriter();
+            this.emitNode(node);
+            
+            let file = this.getOutputFilename(node);
+            let text = this.writer.toString();
+            this.writeFile(file, text, writeFile);
+        }
+        finally {
+            this.writer = saveWriter;
+        }
 	}
+    
+    protected writeFile(file: string, text: string, callback?: (file: string, text: string) => void): void {
+        if (callback) {
+            callback(file, text);
+        }
+        else {
+            writeOutputFile(file, text);
+        }
+    }
+    
+    protected getOutputFilename(node: SourceFile): string {
+        let parsed: path.ParsedPath;
+        let extension = this.extension || ".out";
+        if (this.options.out) {
+            parsed = path.parse(this.options.out);
+            if (!parsed.ext) {
+                parsed.ext = extension;
+            }
+        }
+        else {
+            parsed = path.parse(node.filename);
+            parsed.ext = extension;
+        }
+        
+        return path.format(parsed);
+    }
+
+    protected createWriter(): StringWriter {
+        return new StringWriter();
+    }
 
     protected emitNode(node: Node): void {
         if (!node) {
@@ -65,6 +105,7 @@ export class EmitterBase {
         }
         
         switch (node.kind) {
+            case SyntaxKind.SourceFile: this.emitSourceFile(<SourceFile>node); break;
             case SyntaxKind.Terminal: this.emitTerminal(<Terminal>node); break;
             case SyntaxKind.UnicodeCharacterLiteral: this.emitUnicodeCharacterLiteral(<UnicodeCharacterLiteral>node); break;
             case SyntaxKind.Prose: this.emitProse(<Prose>node); break;
@@ -74,6 +115,7 @@ export class EmitterBase {
             case SyntaxKind.Argument: this.emitArgument(<Argument>node); break;
             case SyntaxKind.ArgumentList: this.emitArgumentList(<ArgumentList>node); break;
             case SyntaxKind.Production: this.emitProduction(<Production>node); break;
+            case SyntaxKind.Import: this.emitImport(<Import>node); break;
             case SyntaxKind.OneOfList: this.emitOneOfList(<OneOfList>node); break;
             case SyntaxKind.RightHandSideList: this.emitRightHandSideList(<RightHandSideList>node); break;
             case SyntaxKind.RightHandSide: this.emitRightHandSide(<RightHandSide>node); break;
@@ -89,6 +131,12 @@ export class EmitterBase {
             case SyntaxKind.LexicalGoalAssertion: this.emitLexicalGoalAssertion(<LexicalGoalAssertion>node); break;
             case SyntaxKind.NoSymbolHereAssertion: this.emitNoSymbolHereAssertion(<NoSymbolHereAssertion>node); break;
             case SyntaxKind.ParameterValueAssertion: this.emitParameterValueAssertion(<ParameterValueAssertion>node); break;
+        }
+    }
+    
+    protected emitSourceFile(node: SourceFile) {
+        for (let element of node.elements) {
+            this.emitNode(element);
         }
     }
     
@@ -138,6 +186,9 @@ export class EmitterBase {
     
     protected emitProduction(node: Production): void {
         forEachChild(node, child => this.emitNode(child));
+    }
+    
+    protected emitImport(node: Import): void {
     }
     
     protected emitOneOfList(node: OneOfList): void {
@@ -210,4 +261,8 @@ export class EmitterBase {
             }
         });
     }
+}
+
+function writeOutputFile(file: string, text: string): void {
+	fs.writeFileSync(file, text, "utf8");
 }

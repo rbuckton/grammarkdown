@@ -1,5 +1,5 @@
 /// [Parser]es6.grammar:
-(1,1)SyntaxKind[SourceFile](filename = "e:\grammarkdown\tests\resources\es6.grammar")
+(1,1)SyntaxKind[SourceFile](filename = "E:\grammarkdown\tests\resources\es6.grammar")
   (3,1)SyntaxKind[Production]
     (3,1)SyntaxKind[Identifier](text = "SourceCharacter")
     (3,19)SyntaxKind[RightHandSideList]
@@ -5126,7 +5126,7 @@
             (719,3)SyntaxKind[LookaheadKeyword]
             (719,12)SyntaxKind[LessThanExclamationToken]
             (719,15)SyntaxKind[SymbolSet]
-              (719,15)SyntaxKind[FirstPunctuation]
+              (719,15)SyntaxKind[OpenBraceToken]
               (719,17)SyntaxKind[SymbolSpan]
                 (719,17)SyntaxKind[Terminal](text = "{")
               (719,22)SyntaxKind[SymbolSpan]
@@ -5325,7 +5325,7 @@
                 (728,13)SyntaxKind[LookaheadKeyword]
                 (728,22)SyntaxKind[LessThanExclamationToken]
                 (728,25)SyntaxKind[SymbolSet]
-                  (728,25)SyntaxKind[FirstPunctuation]
+                  (728,25)SyntaxKind[OpenBraceToken]
                   (728,27)SyntaxKind[SymbolSpan]
                     (728,27)SyntaxKind[Terminal](text = "let")
                     (728,33)SyntaxKind[SymbolSpan]
@@ -5507,7 +5507,7 @@
                 (731,13)SyntaxKind[LookaheadKeyword]
                 (731,22)SyntaxKind[LessThanExclamationToken]
                 (731,25)SyntaxKind[SymbolSet]
-                  (731,25)SyntaxKind[FirstPunctuation]
+                  (731,25)SyntaxKind[OpenBraceToken]
                   (731,27)SyntaxKind[SymbolSpan]
                     (731,27)SyntaxKind[Terminal](text = "let")
                     (731,33)SyntaxKind[SymbolSpan]
@@ -7834,7 +7834,7 @@
                 (974,22)SyntaxKind[LookaheadKeyword]
                 (974,31)SyntaxKind[LessThanExclamationToken]
                 (974,34)SyntaxKind[SymbolSet]
-                  (974,34)SyntaxKind[FirstPunctuation]
+                  (974,34)SyntaxKind[OpenBraceToken]
                   (974,36)SyntaxKind[SymbolSpan]
                     (974,36)SyntaxKind[Terminal](text = "function")
                   (974,48)SyntaxKind[SymbolSpan]

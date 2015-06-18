@@ -18,7 +18,7 @@ import { Dict } from "./core";
 import { Diagnostics, DiagnosticMessages, Diagnostic, formatList } from "./diagnostics";
 import { SyntaxKind, tokenToString } from "./tokens";
 import { Symbol, SymbolKind, SymbolTable } from "./symbols";
-import { BindingTable } from "./binder";
+import { Binder, BindingTable } from "./binder";
 import { StringWriter } from "./stringwriter";
 import {
     Node, 
@@ -54,23 +54,39 @@ import {
 } from "./nodes";
 
 export class Checker {
+    private checkedFileSet = new Dict<boolean>();
     private bindings: BindingTable;
     private diagnostics: DiagnosticMessages;
+    private binder: Binder;
+    private innerResolver: Resolver;
+    private sourceFile: SourceFile;
 
     constructor(bindings: BindingTable, diagnostics: DiagnosticMessages) {
         this.bindings = bindings;
         this.diagnostics = diagnostics;
     }
     
-    public getResolver(): Resolver {
-        return new Resolver(this.bindings);
+    public get resolver(): Resolver {
+        if (!this.innerResolver) {
+            this.innerResolver = this.createResolver(this.bindings);
+        }
+        
+        return this.innerResolver;
     } 
 
     public checkSourceFile(sourceFile: SourceFile): void {
-        this.diagnostics.setSourceFile(sourceFile);
-        for (let element of sourceFile.elements) {
-            this.checkSourceElement(element);
+        if (!Dict.has(this.checkedFileSet, sourceFile.filename)) {
+            Dict.set(this.checkedFileSet, sourceFile.filename, true);
+            this.sourceFile = sourceFile;
+            this.diagnostics.setSourceFile(this.sourceFile);
+            for (let element of sourceFile.elements) {
+                this.checkSourceElement(element);
+            }
         }
+    }
+    
+    protected createResolver(bindings: BindingTable): Resolver {
+        return new Resolver(bindings);
     }
 
     private checkSourceElement(node: SourceElement): void {

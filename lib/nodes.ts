@@ -44,6 +44,16 @@ export class Node implements TextRange {
     }
 }
 
+export class StringLiteral extends Node implements TextContent {
+    public text: string;
+    
+    constructor(text: string) {
+        super(SyntaxKind.StringLiteral);
+        
+        this.text = text;
+    }
+}
+
 export class Identifier extends Node implements TextContent {
     public text: string;
     
@@ -376,11 +386,25 @@ export class Production extends SourceElement {
     }
 }
 
+export class Import extends SourceElement {
+    public atToken: Node;
+    public importKeyword: Node;
+    public path: StringLiteral;
+    
+    constructor(atToken: Node, importKeyword: Node, path: StringLiteral) {
+        super(SyntaxKind.Import);
+        this.atToken = atToken;
+        this.importKeyword = importKeyword;
+        this.path = path;
+    }
+}
+
 export class SourceFile extends Node {
     public filename: string;
     public text: string;
     public elements: SourceElement[];
     public lineMap: LineMap;
+    public imports: string[];
     
     constructor(filename: string, text: string) {
         super(SyntaxKind.SourceFile);
@@ -519,6 +543,11 @@ export function forEachChild<T>(node: Node, cbNode: (node: Node) => T): T {
                 return visitNode((<Production>node).name, cbNode)
                     || visitNode((<Production>node).parameterList, cbNode)
                     || visitNode((<Production>node).body, cbNode);
+                    
+            case SyntaxKind.Import:
+                return visitNode((<Import>node).atToken, cbNode)
+                    || visitNode((<Import>node).importKeyword, cbNode)
+                    || visitNode((<Import>node).path, cbNode);
                     
             case SyntaxKind.SourceFile:
                 return visitNodes((<SourceFile>node).elements, cbNode);

@@ -1,4 +1,4 @@
-import { EmitterBase } from "./emitter-base";
+import { Emitter } from "./emitter";
 import { SyntaxKind } from "../tokens";
 import { DiagnosticMessages } from "../diagnostics";
 import { Checker } from "../checker";
@@ -35,7 +35,9 @@ import {
     TextContent
 } from "../nodes";
 
-export class EcmarkupEmitter extends EmitterBase {
+export class EcmarkupEmitter extends Emitter {
+    protected extension = ".emu.html";
+
 	protected emitProduction(node: Production) {
         let linkId = this.resolver.getProductionLinkId(node.name);
         this.emitLinkAnchor(linkId);
@@ -163,6 +165,7 @@ export class EcmarkupEmitter extends EmitterBase {
         if (node.questionToken) {
             this.writer.write(` optional`);
         }
+        
         this.writer.write(`>`);
         this.emitNodeWithLink(node.name, linkId);
         this.writer.write(`</emu-nt>`);
@@ -191,6 +194,7 @@ export class EcmarkupEmitter extends EmitterBase {
         if (node.questionToken) {
             this.writer.write(` optional`);
         }
+        
         this.writer.write(`>&lt;`);
         this.writer.write(node.text);
         this.writer.write(`&gt;</emu-gprose>`);        
@@ -262,6 +266,7 @@ export class EcmarkupEmitter extends EmitterBase {
                 this.emitNode(node.symbols[i]);
             }
         }
+        
         this.writer.write(` here</emu-gann>`);
     }
     

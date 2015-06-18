@@ -1270,7 +1270,7 @@
 <emu-production name="ExpressionStatement" params="Yield">
     <emu-rhs a="d307f562">
         <emu-gann>lookahead ∉ { <emu-t>{</emu-t>, <emu-t>function</emu-t>, <emu-t>class</emu-t>, <emu-t>let</emu-t>
-        <emu-t>[</emu-t>}</emu-gann>
+        <emu-t>[</emu-t> }</emu-gann>
         <emu-nt params="In, ?Yield">Expression</emu-nt>
         <emu-t>;</emu-t>
     </emu-rhs>
@@ -1314,7 +1314,7 @@
         <emu-t>for</emu-t>
         <emu-t>(</emu-t>
         <emu-gann>lookahead ∉ { <emu-t>let</emu-t>
-        <emu-t>[</emu-t>}</emu-gann>
+        <emu-t>[</emu-t> }</emu-gann>
         <emu-nt params="?Yield" optional>Expression</emu-nt>
         <emu-t>;</emu-t>
         <emu-nt params="In, ?Yield" optional>Expression</emu-nt>
@@ -1349,7 +1349,7 @@
         <emu-t>for</emu-t>
         <emu-t>(</emu-t>
         <emu-gann>lookahead ∉ { <emu-t>let</emu-t>
-        <emu-t>[</emu-t>}</emu-gann>
+        <emu-t>[</emu-t> }</emu-gann>
         <emu-nt params="?Yield">LeftHandSideExpression</emu-nt>
         <emu-t>in</emu-t>
         <emu-nt params="In, ?Yield">Expression</emu-nt>
@@ -1954,7 +1954,7 @@
     <emu-rhs a="6c7ca5a7">
         <emu-t>export</emu-t>
         <emu-t>default</emu-t>
-        <emu-gann>lookahead ∉ { <emu-t>function</emu-t>, <emu-t>class</emu-t>}</emu-gann>
+        <emu-gann>lookahead ∉ { <emu-t>function</emu-t>, <emu-t>class</emu-t> }</emu-gann>
         <emu-nt params="In">AssignmentExpression</emu-nt>
         <emu-t>;</emu-t>
     </emu-rhs>

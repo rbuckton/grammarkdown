@@ -13,6 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-export * from "./emitter-base";
+export * from "./emitter";
 export * from "./ecmarkup";
+export * from "./html";
 export * from "./markdown";

@@ -13,13 +13,15 @@
         "lib/diagnostics.ts",
         "lib/nodes.ts",
         "lib/scanner.ts",
+        "lib/options.ts",
         "lib/parser.ts",
         "lib/symbols.ts",
         "lib/binder.ts",
         "lib/checker.ts",
+        "lib/grammar.ts",
         "lib/compiler.ts",
         "lib/emitter/index.ts",
-        "lib/emitter/emitter-base.ts",
+        "lib/emitter/emitter.ts",
         "lib/emitter/html.ts",
         "lib/emitter/markdown.ts",
         "lib/emitter/ecmarkup.ts",
@@ -37,6 +39,7 @@
         "tests/checker-tests.ts",
         "tests/emitter-tests.ts",
         "tests/ecmarkup-tests.ts",
-        "tests/markdown-tests.ts"
+        "tests/markdown-tests.ts",
+        "tests/html-tests.ts"
     ]
 }

@@ -1,4 +1,4 @@
-import { EmitterBase } from "./emitter-base";
+import { Emitter } from "./emitter";
 import { SyntaxKind } from "../tokens";
 import { DiagnosticMessages } from "../diagnostics";
 import { Checker } from "../checker";
@@ -36,7 +36,9 @@ import {
     TextContent
 } from "../nodes";
 
-export class MarkdownEmitter extends EmitterBase {
+export class MarkdownEmitter extends Emitter {    
+    protected extension = ".md";    
+    
 	protected emitProduction(node: Production) {
         let linkId = this.resolver.getProductionLinkId(node.name);
         this.writer.write("&emsp;&emsp;");

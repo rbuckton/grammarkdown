@@ -1,11 +1,7 @@
-import { assert, expect } from "chai";
-import { readFileSync, readdirSync, statSync } from "fs";
+import { readdirSync, statSync } from "fs";
 import { resolve, extname } from "path";
-import { DiagnosticMessages, LineMap } from "../lib/diagnostics";
-import { SyntaxKind } from "../lib/tokens";
-import { SourceFile } from "../lib/nodes";
-import { compileAndEmit, EmitResult } from "../lib/compiler";
-import { EcmarkupEmitter } from "../lib/emitter/ecmarkup";
+import { Grammar } from "../lib/grammar";
+import { EmitFormat } from "../lib/options";
 import { writeTokens, writeDiagnostics, writeBaseline, compareBaselines } from "./diff";
 
 describe("ECMarkup Emitter", () => {
@@ -25,10 +21,11 @@ describe("ECMarkup Emitter", () => {
     function defineTest(name: string, file: string) {
         it(name, () => {
             let baselines: string[] = [];
-            let text = readFileSync(file, "utf8");
-            let result = <EmitResult>compileAndEmit(text, file, { emitterFactory: (checker, diagnostics, writer) => new EcmarkupEmitter(checker, diagnostics, writer) });
-            writeBaseline(name + ".ecmarkup.html", result.output, baselines);
-            writeDiagnostics(name, result.diagnostics, baselines);
+            let grammar = new Grammar([file], { format: EmitFormat.ecmarkup });
+            let output: string;
+            grammar.emit(/*sourceFile*/ undefined, (_, _output) => output = _output);
+            writeBaseline(name + ".emu.html", output, baselines);
+            writeDiagnostics(name, grammar.diagnostics, baselines);
             compareBaselines(baselines);
         });
     }

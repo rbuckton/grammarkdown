@@ -14,6 +14,7 @@
  *  limitations under the License.
  */
 export * from "./diagnostics";
+export * from "./options";
 export * from "./tokens";
 export * from "./nodes";
 export * from "./symbols";
@@ -23,4 +24,4 @@ export * from "./binder";
 export * from "./checker";
 export * from "./emitter/index";
 export * from "./stringwriter";
-export * from "./compiler";
+export * from "./grammar";

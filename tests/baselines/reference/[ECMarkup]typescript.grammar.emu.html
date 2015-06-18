@@ -1,0 +1,1164 @@
+<emu-production name="TypeParameters">
+    <emu-rhs a="27ce0641">
+        <emu-t><</emu-t>
+        <emu-nt>TypeParameterList</emu-nt>
+        <emu-t>></emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="TypeParameterList">
+    <emu-rhs a="49b4855e"><emu-nt>TypeParameter</emu-nt></emu-rhs>
+    <emu-rhs a="89045ccd">
+        <emu-nt>TypeParameterList</emu-nt>
+        <emu-t>,</emu-t>
+        <emu-nt>TypeParameter</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="TypeParameter">
+    <emu-rhs a="94e4958a">
+        <emu-nt>Identifier</emu-nt>
+        <emu-nt optional>Constraint</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="Constraint">
+    <emu-rhs a="f5cc0152">
+        <emu-t>extends</emu-t>
+        <emu-nt>Type</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="TypeArguments">
+    <emu-rhs a="8f8c81b6">
+        <emu-t><</emu-t>
+        <emu-nt>TypeArgumentList</emu-nt>
+        <emu-t>></emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="TypeArgumentList">
+    <emu-rhs a="f89ea15f"><emu-nt>TypeArgument</emu-nt></emu-rhs>
+    <emu-rhs a="6ad31614">
+        <emu-nt>TypeArgumentList</emu-nt>
+        <emu-t>,</emu-t>
+        <emu-nt>TypeArgument</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="TypeArgument">
+    <emu-rhs a="3deb7456"><emu-nt>Type</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="Type">
+    <emu-rhs a="257564ec"><emu-nt>PrimaryOrUnionType</emu-nt></emu-rhs>
+    <emu-rhs a="e94e83ec"><emu-nt>FunctionType</emu-nt></emu-rhs>
+    <emu-rhs a="a468d46c"><emu-nt>ConstructorType</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="PrimaryOrUnionType">
+    <emu-rhs a="9713b445"><emu-nt>PrimaryType</emu-nt></emu-rhs>
+    <emu-rhs a="2cfef1bf"><emu-nt>UnionType</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="PrimaryType">
+    <emu-rhs a="ea3ff2ed"><emu-nt>ParenthesizedType</emu-nt></emu-rhs>
+    <emu-rhs a="aeee8ad9"><emu-nt>PredefinedType</emu-nt></emu-rhs>
+    <emu-rhs a="74e8bc50"><emu-nt>TypeReference</emu-nt></emu-rhs>
+    <emu-rhs a="34f1b931"><emu-nt>ObjectType</emu-nt></emu-rhs>
+    <emu-rhs a="77e0a11a"><emu-nt>ArrayType</emu-nt></emu-rhs>
+    <emu-rhs a="afea73f1"><emu-nt>TupleType</emu-nt></emu-rhs>
+    <emu-rhs a="924031c9"><emu-nt>TypeQuery</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ParenthesizedType">
+    <emu-rhs a="1ac8fd41">
+        <emu-t>(</emu-t>
+        <emu-nt>Type</emu-nt>
+        <emu-t>)</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="PredefinedType">
+    <emu-rhs a="8ca7f9b0"><emu-t>any</emu-t></emu-rhs>
+    <emu-rhs a="cf8fbef8"><emu-t>number</emu-t></emu-rhs>
+    <emu-rhs a="5e82704d"><emu-t>boolean</emu-t></emu-rhs>
+    <emu-rhs a="f5c10ab3"><emu-t>string</emu-t></emu-rhs>
+    <emu-rhs a="94b80d2f"><emu-t>void</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="TypeReference">
+    <emu-rhs a="8035819d">
+        <emu-nt>TypeName</emu-nt>
+        <emu-gann>no <emu-nt>LineTerminator</emu-nt> here</emu-gann>
+        <emu-nt optional>TypeArguments</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="TypeName">
+    <emu-rhs a="06b6ace8"><emu-nt>Identifier</emu-nt></emu-rhs>
+    <emu-rhs a="5a7de153">
+        <emu-nt>ModuleName</emu-nt>
+        <emu-t>.</emu-t>
+        <emu-nt>Identifier</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ModuleName">
+    <emu-rhs a="06b6ace8"><emu-nt>Identifier</emu-nt></emu-rhs>
+    <emu-rhs a="5a7de153">
+        <emu-nt>ModuleName</emu-nt>
+        <emu-t>.</emu-t>
+        <emu-nt>Identifier</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ObjectType">
+    <emu-rhs a="a7a8ac82">
+        <emu-t>{</emu-t>
+        <emu-nt optional>TypeBody</emu-nt>
+        <emu-t>}</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="TypeBody">
+    <emu-rhs a="bc262b5a">
+        <emu-nt>TypeMemberList</emu-nt>
+        <emu-t optional>;</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="TypeMemberList">
+    <emu-rhs a="4e9429c1"><emu-nt>TypeMember</emu-nt></emu-rhs>
+    <emu-rhs a="1e7cb02e">
+        <emu-nt>TypeMemberList</emu-nt>
+        <emu-t>;</emu-t>
+        <emu-nt>TypeMember</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="TypeMember">
+    <emu-rhs a="89003b98"><emu-nt>PropertySignature</emu-nt></emu-rhs>
+    <emu-rhs a="c1501895"><emu-nt>CallSignature</emu-nt></emu-rhs>
+    <emu-rhs a="56fc3592"><emu-nt>ConstructSignature</emu-nt></emu-rhs>
+    <emu-rhs a="0dd6b549"><emu-nt>IndexSignature</emu-nt></emu-rhs>
+    <emu-rhs a="52cd7cd6"><emu-nt>MethodSignature</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ArrayType">
+    <emu-rhs a="3cec7106">
+        <emu-nt>PrimaryType</emu-nt>
+        <emu-gann>no <emu-nt>LineTerminator</emu-nt> here</emu-gann>
+        <emu-t>[</emu-t>
+        <emu-t>]</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="TupleType">
+    <emu-rhs a="5173d7d7">
+        <emu-t>[</emu-t>
+        <emu-nt>TupleElementTypes</emu-nt>
+        <emu-t>]</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="TupleElementTypes">
+    <emu-rhs a="eda6874c"><emu-nt>TupleElementType</emu-nt></emu-rhs>
+    <emu-rhs a="6bd6800d">
+        <emu-nt>TupleElementTypes</emu-nt>
+        <emu-t>,</emu-t>
+        <emu-nt>TupleElementType</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="TupleElementType">
+    <emu-rhs a="3deb7456"><emu-nt>Type</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="UnionType">
+    <emu-rhs a="93d8bd25">
+        <emu-nt>PrimaryOrUnionType</emu-nt>
+        <emu-t>|</emu-t>
+        <emu-nt>PrimaryType</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="FunctionType">
+    <emu-rhs a="8f7a82e7">
+        <emu-nt optional>TypeParameters</emu-nt>
+        <emu-t>(</emu-t>
+        <emu-nt optional>ParameterList</emu-nt>
+        <emu-t>)</emu-t>
+        <emu-t>=></emu-t>
+        <emu-nt>Type</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ConstructorType">
+    <emu-rhs a="4490a1b4">
+        <emu-t>new</emu-t>
+        <emu-nt optional>TypeParameters</emu-nt>
+        <emu-t>(</emu-t>
+        <emu-nt optional>ParameterList</emu-nt>
+        <emu-t>)</emu-t>
+        <emu-t>=></emu-t>
+        <emu-nt>Type</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="TypeQuery">
+    <emu-rhs a="7fdc10c8">
+        <emu-t>typeof</emu-t>
+        <emu-nt>TypeQueryExpression</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="TypeQueryExpression">
+    <emu-rhs a="06b6ace8"><emu-nt>Identifier</emu-nt></emu-rhs>
+    <emu-rhs a="74ca3afb">
+        <emu-nt>TypeQueryExpression</emu-nt>
+        <emu-t>.</emu-t>
+        <emu-nt>IdentifierName</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="PropertySignature">
+    <emu-rhs a="45625f88">
+        <emu-nt>PropertyName</emu-nt>
+        <emu-t optional>?</emu-t>
+        <emu-nt optional>TypeAnnotation</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="PropertyName">
+    <emu-rhs a="0ebb31e2"><emu-nt>IdentifierName</emu-nt></emu-rhs>
+    <emu-rhs a="5c74e54d"><emu-nt>StringLiteral</emu-nt></emu-rhs>
+    <emu-rhs a="a548b407"><emu-nt>NumericLiteral</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="CallSignature">
+    <emu-rhs a="480c0935">
+        <emu-nt optional>TypeParameters</emu-nt>
+        <emu-t>(</emu-t>
+        <emu-nt optional>ParameterList</emu-nt>
+        <emu-t>)</emu-t>
+        <emu-nt optional>TypeAnnotation</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ParameterList">
+    <emu-rhs a="bf71dbf2"><emu-nt>RequiredParameterList</emu-nt></emu-rhs>
+    <emu-rhs a="9c07b35b"><emu-nt>OptionalParameterList</emu-nt></emu-rhs>
+    <emu-rhs a="8334dabd"><emu-nt>RestParameter</emu-nt></emu-rhs>
+    <emu-rhs a="c5f488db">
+        <emu-nt>RequiredParameterList</emu-nt>
+        <emu-t>,</emu-t>
+        <emu-nt>OptionalParameterList</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="cea83933">
+        <emu-nt>RequiredParameterList</emu-nt>
+        <emu-t>,</emu-t>
+        <emu-nt>RestParameter</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="7ecbaedf">
+        <emu-nt>OptionalParameterList</emu-nt>
+        <emu-t>,</emu-t>
+        <emu-nt>RestParameter</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="7d876e16">
+        <emu-nt>RequiredParameterList</emu-nt>
+        <emu-t>,</emu-t>
+        <emu-nt>OptionalParameterList</emu-nt>
+        <emu-t>,</emu-t>
+        <emu-nt>RestParameter</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="RequiredParameterList">
+    <emu-rhs a="cb233da7"><emu-nt>RequiredParameter</emu-nt></emu-rhs>
+    <emu-rhs a="fc994f02">
+        <emu-nt>RequiredParameterList</emu-nt>
+        <emu-t>,</emu-t>
+        <emu-nt>RequiredParameter</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="RequiredParameter">
+    <emu-rhs a="6b890662">
+        <emu-nt optional>AccessibilityModifier</emu-nt>
+        <emu-nt>Identifier</emu-nt>
+        <emu-nt optional>TypeAnnotation</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="e691ee59">
+        <emu-nt>Identifier</emu-nt>
+        <emu-t>:</emu-t>
+        <emu-nt>StringLiteral</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="AccessibilityModifier">
+    <emu-rhs a="212f55e2"><emu-t>public</emu-t></emu-rhs>
+    <emu-rhs a="af3e0d5c"><emu-t>private</emu-t></emu-rhs>
+    <emu-rhs a="c1d398df"><emu-t>protected</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="OptionalParameterList">
+    <emu-rhs a="12543786"><emu-nt>OptionalParameter</emu-nt></emu-rhs>
+    <emu-rhs a="2e0ba35a">
+        <emu-nt>OptionalParameterList</emu-nt>
+        <emu-t>,</emu-t>
+        <emu-nt>OptionalParameter</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="OptionalParameter">
+    <emu-rhs a="f505d701">
+        <emu-nt optional>AccessibilityModifier</emu-nt>
+        <emu-nt>Identifier</emu-nt>
+        <emu-t>?</emu-t>
+        <emu-nt optional>TypeAnnotation</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="370e9f41">
+        <emu-nt optional>AccessibilityModifier</emu-nt>
+        <emu-nt>Identifier</emu-nt>
+        <emu-nt optional>TypeAnnotation</emu-nt>
+        <emu-nt>Initializer</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="94975a30">
+        <emu-nt>Identifier</emu-nt>
+        <emu-t>?</emu-t>
+        <emu-t>:</emu-t>
+        <emu-nt>StringLiteral</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="RestParameter">
+    <emu-rhs a="40daecaf">
+        <emu-t>...</emu-t>
+        <emu-nt>Identifier</emu-nt>
+        <emu-nt optional>TypeAnnotation</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ConstructSignature">
+    <emu-rhs a="cf9fd631">
+        <emu-t>new</emu-t>
+        <emu-nt optional>TypeParameters</emu-nt>
+        <emu-t>(</emu-t>
+        <emu-nt optional>ParameterList</emu-nt>
+        <emu-t>)</emu-t>
+        <emu-nt optional>TypeAnnotation</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="IndexSignature">
+    <emu-rhs a="a7214a14">
+        <emu-t>[</emu-t>
+        <emu-nt>Identifier</emu-nt>
+        <emu-t>:</emu-t>
+        <emu-t>string</emu-t>
+        <emu-t>]</emu-t>
+        <emu-nt>TypeAnnotation</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="b128da0b">
+        <emu-t>[</emu-t>
+        <emu-nt>Identifier</emu-nt>
+        <emu-t>:</emu-t>
+        <emu-t>number</emu-t>
+        <emu-t>]</emu-t>
+        <emu-nt>TypeAnnotation</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="MethodSignature">
+    <emu-rhs a="68389351">
+        <emu-nt>PropertyName</emu-nt>
+        <emu-t optional>?</emu-t>
+        <emu-nt>CallSignature</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="TypeAliasDeclaration">
+    <emu-rhs a="86b51e79">
+        <emu-t>type</emu-t>
+        <emu-nt>Identifier</emu-nt>
+        <emu-t>=</emu-t>
+        <emu-nt>Type</emu-nt>
+        <emu-t>;</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="PropertyAssignment">
+    <emu-rhs a="f2d90b76">
+        <emu-nt>PropertyName</emu-nt>
+        <emu-t>:</emu-t>
+        <emu-nt>AssignmentExpression</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="f47f84c4">
+        <emu-nt>PropertyName</emu-nt>
+        <emu-nt>CallSignature</emu-nt>
+        <emu-t>{</emu-t>
+        <emu-nt>FunctionBody</emu-nt>
+        <emu-t>}</emu-t>
+    </emu-rhs>
+    <emu-rhs a="9467bae2"><emu-nt>GetAccessor</emu-nt></emu-rhs>
+    <emu-rhs a="72d41f73"><emu-nt>SetAccessor</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="GetAccessor">
+    <emu-rhs a="56ed38d2">
+        <emu-t>get</emu-t>
+        <emu-nt>PropertyName</emu-nt>
+        <emu-t>(</emu-t>
+        <emu-t>)</emu-t>
+        <emu-nt optional>TypeAnnotation</emu-nt>
+        <emu-t>{</emu-t>
+        <emu-nt>FunctionBody</emu-nt>
+        <emu-t>}</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="SetAccessor">
+    <emu-rhs a="e450b10a">
+        <emu-t>set</emu-t>
+        <emu-nt>PropertyName</emu-nt>
+        <emu-t>(</emu-t>
+        <emu-nt>Identifier</emu-nt>
+        <emu-nt optional>TypeAnnotation</emu-nt>
+        <emu-t>)</emu-t>
+        <emu-t>{</emu-t>
+        <emu-nt>FunctionBody</emu-nt>
+        <emu-t>}</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ElementList">
+    <emu-rhs a="d806b57a">
+        <emu-nt optional>Elision</emu-nt>
+        <emu-nt>AssignmentExpression</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="141a73d1">
+        <emu-nt optional>Elision</emu-nt>
+        <emu-nt>SpreadElement</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="fd2af9b1">
+        <emu-nt>ElementList</emu-nt>
+        <emu-t>,</emu-t>
+        <emu-nt optional>Elision</emu-nt>
+        <emu-nt>AssignmentExpression</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="6a579a6a">
+        <emu-nt>ElementList</emu-nt>
+        <emu-t>,</emu-t>
+        <emu-nt optional>Elision</emu-nt>
+        <emu-nt>SpreadElement</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="SpreadElement">
+    <emu-rhs a="5bb8853e">
+        <emu-t>...</emu-t>
+        <emu-nt>AssignmentExpression</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="CallExpression">
+    <emu-rhs a="35d9ba9f">
+        <emu-t>super</emu-t>
+        <emu-t>(</emu-t>
+        <emu-nt optional>ArgumentList</emu-nt>
+        <emu-t>)</emu-t>
+    </emu-rhs>
+    <emu-rhs a="f690ec4a">
+        <emu-t>super</emu-t>
+        <emu-t>.</emu-t>
+        <emu-nt>IdentifierName</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="FunctionExpression">
+    <emu-rhs a="ac6ff6fe">
+        <emu-t>function</emu-t>
+        <emu-nt optional>Identifier</emu-nt>
+        <emu-nt>CallSignature</emu-nt>
+        <emu-t>{</emu-t>
+        <emu-nt>FunctionBody</emu-nt>
+        <emu-t>}</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="AssignmentExpression">
+    <emu-rhs a="bead12de"><emu-nt>ArrowFunctionExpression</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ArrowFunctionExpression">
+    <emu-rhs a="55d6be67">
+        <emu-nt>ArrowFormalParameters</emu-nt>
+        <emu-t>=></emu-t>
+        <emu-nt>Block</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="05b42266">
+        <emu-nt>ArrowFormalParameters</emu-nt>
+        <emu-t>=></emu-t>
+        <emu-nt>AssignmentExpression</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ArrowFormalParameters">
+    <emu-rhs a="c1501895"><emu-nt>CallSignature</emu-nt></emu-rhs>
+    <emu-rhs a="06b6ace8"><emu-nt>Identifier</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="Arguments">
+    <emu-rhs a="e7c468c3">
+        <emu-nt optional>TypeArguments</emu-nt>
+        <emu-t>(</emu-t>
+        <emu-nt optional>ArgumentList</emu-nt>
+        <emu-t>)</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="UnaryExpression">
+    <emu-rhs a="70eae169">
+        <emu-t><</emu-t>
+        <emu-nt>Type</emu-nt>
+        <emu-t>></emu-t>
+        <emu-nt>UnaryExpression</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="VariableDeclaration">
+    <emu-rhs a="2e75bf14"><emu-nt>SimpleVariableDeclaration</emu-nt></emu-rhs>
+    <emu-rhs a="eaa77664"><emu-nt>DestructuringVariableDeclaration</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="SimpleVariableDeclaration">
+    <emu-rhs a="d903f0bc">
+        <emu-nt>Identifier</emu-nt>
+        <emu-nt optional>TypeAnnotation</emu-nt>
+        <emu-nt optional>Initializer</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="TypeAnnotation">
+    <emu-rhs a="7d690620">
+        <emu-t>:</emu-t>
+        <emu-nt>Type</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="DestructuringVariableDeclaration">
+    <emu-rhs a="bc46404c">
+        <emu-nt>BindingPattern</emu-nt>
+        <emu-nt optional>TypeAnnotation</emu-nt>
+        <emu-nt>Initializer</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="BindingPattern">
+    <emu-rhs a="987dce43"><emu-nt>ObjectBindingPattern</emu-nt></emu-rhs>
+    <emu-rhs a="c638d53b"><emu-nt>ArrayBindingPattern</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ObjectBindingPattern">
+    <emu-rhs a="81ba5a4a">
+        <emu-t>{</emu-t>
+        <emu-t>}</emu-t>
+    </emu-rhs>
+    <emu-rhs a="f5bb9114">
+        <emu-t>{</emu-t>
+        <emu-nt>BindingPropertyList</emu-nt>
+        <emu-t optional>,</emu-t>
+        <emu-t>}</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="BindingPropertyList">
+    <emu-rhs a="63dcfab3"><emu-nt>BindingProperty</emu-nt></emu-rhs>
+    <emu-rhs a="0730de3b">
+        <emu-nt>BindingPropertyList</emu-nt>
+        <emu-t>,</emu-t>
+        <emu-nt>BindingProperty</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="BindingProperty">
+    <emu-rhs a="03059906">
+        <emu-nt>Identifier</emu-nt>
+        <emu-nt optional>Initializer</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="10e7598a">
+        <emu-nt>PropertyName</emu-nt>
+        <emu-t>:</emu-t>
+        <emu-nt>Identifier</emu-nt>
+        <emu-nt optional>Initializer</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="85bf9933">
+        <emu-nt>PropertyName</emu-nt>
+        <emu-t>:</emu-t>
+        <emu-nt>BindingPattern</emu-nt>
+        <emu-nt optional>Initializer</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ArrayBindingPattern">
+    <emu-rhs a="3493053b">
+        <emu-t>[</emu-t>
+        <emu-nt optional>Elision</emu-nt>
+        <emu-nt optional>BindingRestElement</emu-nt>
+        <emu-t>]</emu-t>
+    </emu-rhs>
+    <emu-rhs a="1d096493">
+        <emu-t>[</emu-t>
+        <emu-nt>BindingElementList</emu-nt>
+        <emu-t>]</emu-t>
+    </emu-rhs>
+    <emu-rhs a="d766001e">
+        <emu-t>[</emu-t>
+        <emu-nt>BindingElementList</emu-nt>
+        <emu-t>,</emu-t>
+        <emu-nt optional>Elision</emu-nt>
+        <emu-nt optional>BindingRestElement</emu-nt>
+        <emu-t>]</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="BindingElementList">
+    <emu-rhs a="5a8f4d01">
+        <emu-nt optional>Elision</emu-nt>
+        <emu-nt>BindingElement</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="4e199680">
+        <emu-nt>BindingElementList</emu-nt>
+        <emu-t>,</emu-t>
+        <emu-nt optional>Elision</emu-nt>
+        <emu-nt>BindingElement</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="BindingElement">
+    <emu-rhs a="03059906">
+        <emu-nt>Identifier</emu-nt>
+        <emu-nt optional>Initializer</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="6875fa94">
+        <emu-nt>BindingPattern</emu-nt>
+        <emu-nt optional>Initializer</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="BindingRestElement">
+    <emu-rhs a="ba1e81db">
+        <emu-t>...</emu-t>
+        <emu-nt>Identifier</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="FunctionDeclaration">
+    <emu-rhs a="9fb60434">
+        <emu-nt optional>FunctionOverloads</emu-nt>
+        <emu-nt>FunctionImplementation</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="FunctionOverloads">
+    <emu-rhs a="0a661d5e"><emu-nt>FunctionOverload</emu-nt></emu-rhs>
+    <emu-rhs a="9866b7f2">
+        <emu-nt>FunctionOverloads</emu-nt>
+        <emu-nt>FunctionOverload</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="FunctionOverload">
+    <emu-rhs a="dea5cafe">
+        <emu-t>function</emu-t>
+        <emu-nt>Identifier</emu-nt>
+        <emu-nt>CallSignature</emu-nt>
+        <emu-t>;</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="FunctionImplementation">
+    <emu-rhs a="44f98fb3">
+        <emu-t>function</emu-t>
+        <emu-nt>Identifier</emu-nt>
+        <emu-nt>CallSignature</emu-nt>
+        <emu-t>{</emu-t>
+        <emu-nt>FunctionBody</emu-nt>
+        <emu-t>}</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="InterfaceDeclaration">
+    <emu-rhs a="1cdcb447">
+        <emu-t>interface</emu-t>
+        <emu-nt>Identifier</emu-nt>
+        <emu-nt optional>TypeParameters</emu-nt>
+        <emu-nt optional>InterfaceExtendsClause</emu-nt>
+        <emu-nt>ObjectType</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="InterfaceExtendsClause">
+    <emu-rhs a="5fa66fb1">
+        <emu-t>extends</emu-t>
+        <emu-nt>ClassOrInterfaceTypeList</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ClassOrInterfaceTypeList">
+    <emu-rhs a="cad70070"><emu-nt>ClassOrInterfaceType</emu-nt></emu-rhs>
+    <emu-rhs a="9cf0c139">
+        <emu-nt>ClassOrInterfaceTypeList</emu-nt>
+        <emu-t>,</emu-t>
+        <emu-nt>ClassOrInterfaceType</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ClassOrInterfaceType">
+    <emu-rhs a="74e8bc50"><emu-nt>TypeReference</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ClassDeclaration">
+    <emu-rhs a="16f719aa">
+        <emu-t>class</emu-t>
+        <emu-nt>Identifier</emu-nt>
+        <emu-nt optional>TypeParameters</emu-nt>
+        <emu-nt>ClassHeritage</emu-nt>
+        <emu-t>{</emu-t>
+        <emu-nt>ClassBody</emu-nt>
+        <emu-t>}</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ClassHeritage">
+    <emu-rhs a="24f0c615">
+        <emu-nt optional>ClassExtendsClause</emu-nt>
+        <emu-nt optional>ImplementsClause</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ClassExtendsClause">
+    <emu-rhs a="f9dd0dfb">
+        <emu-t>extends</emu-t>
+        <emu-nt>ClassType</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ClassType">
+    <emu-rhs a="74e8bc50"><emu-nt>TypeReference</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ImplementsClause">
+    <emu-rhs a="2a046db5">
+        <emu-t>implements</emu-t>
+        <emu-nt>ClassOrInterfaceTypeList</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ClassBody">
+    <emu-rhs a="b9f281b3"><emu-nt optional>ClassElements</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ClassElements">
+    <emu-rhs a="711bcbba"><emu-nt>ClassElement</emu-nt></emu-rhs>
+    <emu-rhs a="10ae112f">
+        <emu-nt>ClassElements</emu-nt>
+        <emu-nt>ClassElement</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ClassElement">
+    <emu-rhs a="7594963d"><emu-nt>ConstructorDeclaration</emu-nt></emu-rhs>
+    <emu-rhs a="322b3ffb"><emu-nt>PropertyMemberDeclaration</emu-nt></emu-rhs>
+    <emu-rhs a="9293a271"><emu-nt>IndexMemberDeclaration</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ConstructorDeclaration">
+    <emu-rhs a="99e2c89a">
+        <emu-nt optional>ConstructorOverloads</emu-nt>
+        <emu-nt>ConstructorImplementation</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ConstructorOverloads">
+    <emu-rhs a="41a6177c"><emu-nt>ConstructorOverload</emu-nt></emu-rhs>
+    <emu-rhs a="2dbbf003">
+        <emu-nt>ConstructorOverloads</emu-nt>
+        <emu-nt>ConstructorOverload</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ConstructorOverload">
+    <emu-rhs a="fe883f7d">
+        <emu-nt optional>AccessibilityModifier</emu-nt>
+        <emu-t>constructor</emu-t>
+        <emu-t>(</emu-t>
+        <emu-nt optional>ParameterList</emu-nt>
+        <emu-t>)</emu-t>
+        <emu-t>;</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ConstructorImplementation">
+    <emu-rhs a="34afd5c4">
+        <emu-nt optional>AccessibilityModifier</emu-nt>
+        <emu-t>constructor</emu-t>
+        <emu-t>(</emu-t>
+        <emu-nt optional>ParameterList</emu-nt>
+        <emu-t>)</emu-t>
+        <emu-t>{</emu-t>
+        <emu-nt>FunctionBody</emu-nt>
+        <emu-t>}</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="PropertyMemberDeclaration">
+    <emu-rhs a="9c558c1b"><emu-nt>MemberVariableDeclaration</emu-nt></emu-rhs>
+    <emu-rhs a="e5bd8a89"><emu-nt>MemberFunctionDeclaration</emu-nt></emu-rhs>
+    <emu-rhs a="338d1587"><emu-nt>MemberAccessorDeclaration</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="MemberVariableDeclaration">
+    <emu-rhs a="cbfd2fee">
+        <emu-nt optional>AccessibilityModifier</emu-nt>
+        <emu-t optional>static</emu-t>
+        <emu-nt>PropertyName</emu-nt>
+        <emu-nt optional>TypeAnnotation</emu-nt>
+        <emu-nt optional>Initializer</emu-nt>
+        <emu-t>;</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="MemberFunctionDeclaration">
+    <emu-rhs a="d9f4fd41">
+        <emu-nt optional>MemberFunctionOverloads</emu-nt>
+        <emu-nt>MemberFunctionImplementation</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="MemberFunctionOverloads">
+    <emu-rhs a="bac756b8"><emu-nt>MemberFunctionOverload</emu-nt></emu-rhs>
+    <emu-rhs a="c354b913">
+        <emu-nt>MemberFunctionOverloads</emu-nt>
+        <emu-nt>MemberFunctionOverload</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="MemberFunctionOverload">
+    <emu-rhs a="038c8b1f">
+        <emu-nt optional>AccessibilityModifier</emu-nt>
+        <emu-t optional>static</emu-t>
+        <emu-nt>PropertyName</emu-nt>
+        <emu-nt>CallSignature</emu-nt>
+        <emu-t>;</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="MemberFunctionImplementation">
+    <emu-rhs a="8e940169">
+        <emu-nt optional>AccessibilityModifier</emu-nt>
+        <emu-t optional>static</emu-t>
+        <emu-nt>PropertyName</emu-nt>
+        <emu-nt>CallSignature</emu-nt>
+        <emu-t>{</emu-t>
+        <emu-nt>FunctionBody</emu-nt>
+        <emu-t>}</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="MemberAccessorDeclaration">
+    <emu-rhs a="38f5d586">
+        <emu-nt optional>AccessibilityModifier</emu-nt>
+        <emu-t optional>static</emu-t>
+        <emu-nt>GetAccessor</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="bbe46c14">
+        <emu-nt optional>AccessibilityModifier</emu-nt>
+        <emu-t optional>static</emu-t>
+        <emu-nt>SetAccessor</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="IndexMemberDeclaration">
+    <emu-rhs a="526914fe">
+        <emu-nt>IndexSignature</emu-nt>
+        <emu-t>;</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="EnumDeclaration">
+    <emu-rhs a="a70c06aa">
+        <emu-t optional>const</emu-t>
+        <emu-t>enum</emu-t>
+        <emu-nt>Identifier</emu-nt>
+        <emu-t>{</emu-t>
+        <emu-nt optional>EnumBody</emu-nt>
+        <emu-t>}</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="EnumBody">
+    <emu-rhs a="686fbeb1">
+        <emu-nt>EnumMemberList</emu-nt>
+        <emu-t optional>,</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="EnumMemberList">
+    <emu-rhs a="5459409c"><emu-nt>EnumMember</emu-nt></emu-rhs>
+    <emu-rhs a="ec39fe71">
+        <emu-nt>EnumMemberList</emu-nt>
+        <emu-t>,</emu-t>
+        <emu-nt>EnumMember</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="EnumMember">
+    <emu-rhs a="06660efb"><emu-nt>PropertyName</emu-nt></emu-rhs>
+    <emu-rhs a="e8638251">
+        <emu-nt>PropertyName</emu-nt>
+        <emu-t>=</emu-t>
+        <emu-nt>EnumValue</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="EnumValue">
+    <emu-rhs a="d4fc7da4"><emu-nt>AssignmentExpression</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ModuleDeclaration">
+    <emu-rhs a="0c1d8d8b">
+        <emu-t>module</emu-t>
+        <emu-nt>IdentifierPath</emu-nt>
+        <emu-t>{</emu-t>
+        <emu-nt>ModuleBody</emu-nt>
+        <emu-t>}</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="IdentifierPath">
+    <emu-rhs a="06b6ace8"><emu-nt>Identifier</emu-nt></emu-rhs>
+    <emu-rhs a="3bb835f2">
+        <emu-nt>IdentifierPath</emu-nt>
+        <emu-t>.</emu-t>
+        <emu-nt>Identifier</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ModuleBody">
+    <emu-rhs a="fec4dc75"><emu-nt optional>ModuleElements</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ModuleElements">
+    <emu-rhs a="8d133973"><emu-nt>ModuleElement</emu-nt></emu-rhs>
+    <emu-rhs a="268b379e">
+        <emu-nt>ModuleElements</emu-nt>
+        <emu-nt>ModuleElement</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ModuleElement">
+    <emu-rhs a="a72ca256"><emu-nt>Statement</emu-nt></emu-rhs>
+    <emu-rhs a="34b71929">
+        <emu-t optional>export</emu-t>
+        <emu-nt>VariableDeclaration</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="6abe6389">
+        <emu-t optional>export</emu-t>
+        <emu-nt>FunctionDeclaration</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="a9b7ac21">
+        <emu-t optional>export</emu-t>
+        <emu-nt>ClassDeclaration</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="fa4fbeee">
+        <emu-t optional>export</emu-t>
+        <emu-nt>InterfaceDeclaration</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="34dc9187">
+        <emu-t optional>export</emu-t>
+        <emu-nt>TypeAliasDeclaration</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="39d184a5">
+        <emu-t optional>export</emu-t>
+        <emu-nt>EnumDeclaration</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="f8c9cef1">
+        <emu-t optional>export</emu-t>
+        <emu-nt>ModuleDeclaration</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="d5fe2535">
+        <emu-t optional>export</emu-t>
+        <emu-nt>ImportDeclaration</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="eae3e7f7">
+        <emu-t optional>export</emu-t>
+        <emu-nt>AmbientDeclaration</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ImportDeclaration">
+    <emu-rhs a="1aa6f78c">
+        <emu-t>import</emu-t>
+        <emu-nt>Identifier</emu-nt>
+        <emu-t>=</emu-t>
+        <emu-nt>EntityName</emu-nt>
+        <emu-t>;</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="EntityName">
+    <emu-rhs a="82949a8b"><emu-nt>ModuleName</emu-nt></emu-rhs>
+    <emu-rhs a="5a7de153">
+        <emu-nt>ModuleName</emu-nt>
+        <emu-t>.</emu-t>
+        <emu-nt>Identifier</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="SourceFile">
+    <emu-rhs a="b2ed1f42"><emu-nt>ImplementationSourceFile</emu-nt></emu-rhs>
+    <emu-rhs a="f2f895e8"><emu-nt>DeclarationSourceFile</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ImplementationSourceFile">
+    <emu-rhs a="c9861c0d"><emu-nt optional>ImplementationElements</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ImplementationElements">
+    <emu-rhs a="d9a7edd0"><emu-nt>ImplementationElement</emu-nt></emu-rhs>
+    <emu-rhs a="99927227">
+        <emu-nt>ImplementationElements</emu-nt>
+        <emu-nt>ImplementationElement</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ImplementationElement">
+    <emu-rhs a="8d133973"><emu-nt>ModuleElement</emu-nt></emu-rhs>
+    <emu-rhs a="d0c90aa3"><emu-nt>ExportAssignment</emu-nt></emu-rhs>
+    <emu-rhs a="e0a1092c"><emu-nt>AmbientExternalModuleDeclaration</emu-nt></emu-rhs>
+    <emu-rhs a="a24c5f54">
+        <emu-t optional>export</emu-t>
+        <emu-nt>ExternalImportDeclaration</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="DeclarationSourceFile">
+    <emu-rhs a="38273fe5"><emu-nt optional>DeclarationElements</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="DeclarationElements">
+    <emu-rhs a="2cbc20a6"><emu-nt>DeclarationElement</emu-nt></emu-rhs>
+    <emu-rhs a="5cb364b5">
+        <emu-nt>DeclarationElements</emu-nt>
+        <emu-nt>DeclarationElement</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="DeclarationElement">
+    <emu-rhs a="d0c90aa3"><emu-nt>ExportAssignment</emu-nt></emu-rhs>
+    <emu-rhs a="e0a1092c"><emu-nt>AmbientExternalModuleDeclaration</emu-nt></emu-rhs>
+    <emu-rhs a="fa4fbeee">
+        <emu-t optional>export</emu-t>
+        <emu-nt>InterfaceDeclaration</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="34dc9187">
+        <emu-t optional>export</emu-t>
+        <emu-nt>TypeAliasDeclaration</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="d5fe2535">
+        <emu-t optional>export</emu-t>
+        <emu-nt>ImportDeclaration</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="eae3e7f7">
+        <emu-t optional>export</emu-t>
+        <emu-nt>AmbientDeclaration</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="a24c5f54">
+        <emu-t optional>export</emu-t>
+        <emu-nt>ExternalImportDeclaration</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ExternalImportDeclaration">
+    <emu-rhs a="cf7ef861">
+        <emu-t>import</emu-t>
+        <emu-nt>Identifier</emu-nt>
+        <emu-t>=</emu-t>
+        <emu-nt>ExternalModuleReference</emu-nt>
+        <emu-t>;</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ExternalModuleReference">
+    <emu-rhs a="ba0c8dfe">
+        <emu-t>require</emu-t>
+        <emu-t>(</emu-t>
+        <emu-nt>StringLiteral</emu-nt>
+        <emu-t>)</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ExportAssignment">
+    <emu-rhs a="dad84a0d">
+        <emu-t>export</emu-t>
+        <emu-t>=</emu-t>
+        <emu-nt>Identifier</emu-nt>
+        <emu-t>;</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="AmbientDeclaration">
+    <emu-rhs a="cb9ab148">
+        <emu-t>declare</emu-t>
+        <emu-nt>AmbientVariableDeclaration</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="396404d7">
+        <emu-t>declare</emu-t>
+        <emu-nt>AmbientFunctionDeclaration</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="4b890a8f">
+        <emu-t>declare</emu-t>
+        <emu-nt>AmbientClassDeclaration</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="9e7af45a">
+        <emu-t>declare</emu-t>
+        <emu-nt>AmbientEnumDeclaration</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="54ae2790">
+        <emu-t>declare</emu-t>
+        <emu-nt>AmbientModuleDeclaration</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="AmbientVariableDeclaration">
+    <emu-rhs a="ebd60185">
+        <emu-t>var</emu-t>
+        <emu-nt>Identifier</emu-nt>
+        <emu-nt optional>TypeAnnotation</emu-nt>
+        <emu-t>;</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="AmbientFunctionDeclaration">
+    <emu-rhs a="dea5cafe">
+        <emu-t>function</emu-t>
+        <emu-nt>Identifier</emu-nt>
+        <emu-nt>CallSignature</emu-nt>
+        <emu-t>;</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="AmbientClassDeclaration">
+    <emu-rhs a="932879ae">
+        <emu-t>class</emu-t>
+        <emu-nt>Identifier</emu-nt>
+        <emu-nt optional>TypeParameters</emu-nt>
+        <emu-nt>ClassHeritage</emu-nt>
+        <emu-t>{</emu-t>
+        <emu-nt>AmbientClassBody</emu-nt>
+        <emu-t>}</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="AmbientClassBody">
+    <emu-rhs a="a3220708"><emu-nt optional>AmbientClassBodyElements</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="AmbientClassBodyElements">
+    <emu-rhs a="e310767b"><emu-nt>AmbientClassBodyElement</emu-nt></emu-rhs>
+    <emu-rhs a="17580f0a">
+        <emu-nt>AmbientClassBodyElements</emu-nt>
+        <emu-nt>AmbientClassBodyElement</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="AmbientClassBodyElement">
+    <emu-rhs a="ebca2f4e"><emu-nt>AmbientConstructorDeclaration</emu-nt></emu-rhs>
+    <emu-rhs a="72bd6ea4"><emu-nt>AmbientPropertyMemberDeclaration</emu-nt></emu-rhs>
+    <emu-rhs a="0dd6b549"><emu-nt>IndexSignature</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="AmbientConstructorDeclaration">
+    <emu-rhs a="bc3a462d">
+        <emu-t>constructor</emu-t>
+        <emu-t>(</emu-t>
+        <emu-nt optional>ParameterList</emu-nt>
+        <emu-t>)</emu-t>
+        <emu-t>;</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="AmbientPropertyMemberDeclaration">
+    <emu-rhs a="e222cf95">
+        <emu-nt optional>AccessibilityModifier</emu-nt>
+        <emu-t optional>static</emu-t>
+        <emu-nt>PropertyName</emu-nt>
+        <emu-nt optional>TypeAnnotation</emu-nt>
+        <emu-t>;</emu-t>
+    </emu-rhs>
+    <emu-rhs a="038c8b1f">
+        <emu-nt optional>AccessibilityModifier</emu-nt>
+        <emu-t optional>static</emu-t>
+        <emu-nt>PropertyName</emu-nt>
+        <emu-nt>CallSignature</emu-nt>
+        <emu-t>;</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="AmbientEnumDeclaration">
+    <emu-rhs a="fa872359"><emu-nt>EnumDeclaration</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="AmbientModuleDeclaration">
+    <emu-rhs a="eacfc5ab">
+        <emu-t>module</emu-t>
+        <emu-nt>IdentifierPath</emu-nt>
+        <emu-t>{</emu-t>
+        <emu-nt>AmbientModuleBody</emu-nt>
+        <emu-t>}</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="AmbientModuleBody">
+    <emu-rhs a="0199bc92"><emu-nt optional>AmbientModuleElements</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="AmbientModuleElements">
+    <emu-rhs a="6ae52e7f"><emu-nt>AmbientModuleElement</emu-nt></emu-rhs>
+    <emu-rhs a="f4bb9316">
+        <emu-nt>AmbientModuleElements</emu-nt>
+        <emu-nt>AmbientModuleElement</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="AmbientModuleElement">
+    <emu-rhs a="bc5c0551">
+        <emu-t optional>export</emu-t>
+        <emu-nt>AmbientVariableDeclaration</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="b4c71f06">
+        <emu-t optional>export</emu-t>
+        <emu-nt>AmbientFunctionDeclaration</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="be77c07f">
+        <emu-t optional>export</emu-t>
+        <emu-nt>AmbientClassDeclaration</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="fa4fbeee">
+        <emu-t optional>export</emu-t>
+        <emu-nt>InterfaceDeclaration</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="75143f3f">
+        <emu-t optional>export</emu-t>
+        <emu-nt>AmbientEnumDeclaration</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="4429ad19">
+        <emu-t optional>export</emu-t>
+        <emu-nt>AmbientModuleDeclaration</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="d5fe2535">
+        <emu-t optional>export</emu-t>
+        <emu-nt>ImportDeclaration</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="AmbientExternalModuleDeclaration">
+    <emu-rhs a="732b3abf">
+        <emu-t>declare</emu-t>
+        <emu-t>module</emu-t>
+        <emu-nt>StringLiteral</emu-nt>
+        <emu-t>{</emu-t>
+        <emu-nt>AmbientExternalModuleBody</emu-nt>
+        <emu-t>}</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="AmbientExternalModuleBody">
+    <emu-rhs a="3ae25d56"><emu-nt optional>AmbientExternalModuleElements</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="AmbientExternalModuleElements">
+    <emu-rhs a="11089657"><emu-nt>AmbientExternalModuleElement</emu-nt></emu-rhs>
+    <emu-rhs a="e97b683d">
+        <emu-nt>AmbientExternalModuleElements</emu-nt>
+        <emu-nt>AmbientExternalModuleElement</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="AmbientExternalModuleElement">
+    <emu-rhs a="6ae52e7f"><emu-nt>AmbientModuleElement</emu-nt></emu-rhs>
+    <emu-rhs a="d0c90aa3"><emu-nt>ExportAssignment</emu-nt></emu-rhs>
+    <emu-rhs a="a24c5f54">
+        <emu-t optional>export</emu-t>
+        <emu-nt>ExternalImportDeclaration</emu-nt>
+    </emu-rhs>
+</emu-production>

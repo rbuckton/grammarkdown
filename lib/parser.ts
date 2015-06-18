@@ -18,6 +18,7 @@ import { SyntaxKind, tokenToString } from "./tokens";
 import { Scanner } from "./scanner";
 import { 
     Node, 
+    StringLiteral,
     SourceFile,
     UnicodeCharacterLiteral,
     Prose,
@@ -44,6 +45,7 @@ import {
     RightHandSide,
     RightHandSideList,
     Production,
+    Import,
     SourceElement
 } from "./nodes";
 
@@ -88,8 +90,21 @@ export class Parser {
         this.diagnostics.setSourceFile(this.sourceFile);
         this.scanner = new Scanner(filename, text, this.diagnostics);
         this.parsingContext = ParsingContext.SourceElements;
+        
         this.nextToken();
-        this.sourceFile.elements = this.parseSourceElementList();
+        this.sourceFile.elements = this.parseSourceElementList() || [];
+        
+        let imports: string[] = [];
+        for (let element of this.sourceFile.elements) {
+            if (element.kind === SyntaxKind.Import) {
+                let importNode = <Import>element;
+                if (importNode.path) {
+                    imports.push(importNode.path.text);
+                }
+            }
+        }
+        
+        this.sourceFile.imports = imports;
         return this.sourceFile;
     }
 
@@ -980,7 +995,7 @@ export class Parser {
     private parseRightHandSideList(): RightHandSideList {
         let fullStart = this.scanner.getStartPos();
         let openIndentToken = this.parseToken(SyntaxKind.IndentToken);
-        let elements = openIndentToken && this.parseList<RightHandSide>(ParsingContext.RightHandSideListIndented);
+        let elements = openIndentToken && this.parseList<RightHandSide>(ParsingContext.RightHandSideListIndented) || [];
         let closeIndentToken = this.parseToken(SyntaxKind.DedentToken);
         let node = new RightHandSideList(openIndentToken, elements, closeIndentToken);
         return this.finishNode(node, fullStart);
@@ -1008,9 +1023,31 @@ export class Parser {
         let node = new Production(name, parameters, colonToken, body);
         return this.finishNode(node, fullStart);
     }
+    
+    private parseStringLiteral(): StringLiteral {
+        if (this.token === SyntaxKind.StringLiteral) {
+            let fullStart = this.scanner.getStartPos();
+            let text = this.scanner.getTokenValue();
+            let node = new StringLiteral(text);
+            this.nextToken();
+            return this.finishNode(node, fullStart);
+        }
+        
+        return undefined;
+    }
+    
+    private parseImport(): Import {
+        let fullStart = this.scanner.getStartPos();
+        let atToken = this.parseToken(SyntaxKind.AtToken);
+        let importKeyword = this.parseToken(SyntaxKind.ImportKeyword);
+        let path = this.parseStringLiteral();
+        let node = new Import(atToken, importKeyword, path);
+        return this.finishNode(node, fullStart);
+    }
 
     private isStartOfSourceElement(): boolean {
         switch (this.token) {
+            case SyntaxKind.AtToken: // Import
             case SyntaxKind.Identifier: // Production
                 return true;
 
@@ -1030,6 +1067,9 @@ export class Parser {
         switch (this.token) {
             case SyntaxKind.Identifier:
                 return this.parseProduction();
+                
+            case SyntaxKind.AtToken:
+                return this.parseImport();
                 
             default:
                 this.diagnostics.report(this.scanner.getStartPos(), Diagnostics.Unexpected_token_0_, tokenToString(this.token));

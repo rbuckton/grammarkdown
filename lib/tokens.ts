@@ -156,11 +156,13 @@ export enum SyntaxKind {
     DedentToken,
 
     // Literals
+    StringLiteral,
     Terminal,
     UnicodeCharacterLiteral,
     Prose,
 
     // Punctuation
+    AtToken,                    // @
     OpenBraceToken,             // {
     CloseBraceToken,            // }
     OpenBracketToken,           // [
@@ -188,6 +190,7 @@ export enum SyntaxKind {
     EmptyKeyword,
     GoalKeyword,
     HereKeyword,
+    ImportKeyword,
     LexicalKeyword,
     LookaheadKeyword,
     NoKeyword,
@@ -202,6 +205,7 @@ export enum SyntaxKind {
     Argument,                   // NonTerminal(Argument)
     ArgumentList,
 
+    Import,                     // @import "path"
     Production,                 // Production: ...
     OneOfList,                  // Production: one of ...
     RightHandSideList,          // Production: RightHandSide...
@@ -234,11 +238,12 @@ export enum SyntaxKind {
 
     FirstKeyword = ButKeyword,
     LastKeyword = OrKeyword,
-    FirstPunctuation = OpenBraceToken,
+    FirstPunctuation = AtToken,
     LastPunctuation = LessThanMinusToken,
 }
 
 const textToToken = new Dict({
+    "import": SyntaxKind.ImportKeyword,
     "but": SyntaxKind.ButKeyword,
     "not": SyntaxKind.NotKeyword,
     "empty": SyntaxKind.EmptyKeyword,
@@ -250,6 +255,7 @@ const textToToken = new Dict({
     "no": SyntaxKind.NoKeyword,
     "here": SyntaxKind.HereKeyword,
     "or": SyntaxKind.OrKeyword,
+    "@": SyntaxKind.AtToken,
     ":": SyntaxKind.ColonToken,
     "::": SyntaxKind.ColonColonToken,
     ":::": SyntaxKind.ColonColonColonToken,

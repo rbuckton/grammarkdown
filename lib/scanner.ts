@@ -151,6 +151,13 @@ export class Scanner {
                 case CharacterCodes.FormFeed:
                     this.pos++;
                     continue;
+                    
+                case CharacterCodes.At:
+                    return this.pos++, this.token = SyntaxKind.AtToken;
+                    
+                case CharacterCodes.DoubleQuote:
+                case CharacterCodes.SingleQuote:
+                    return this.tokenValue = this.scanString(ch), this.token = SyntaxKind.StringLiteral;
 
                 case CharacterCodes.Backtick:
                     return this.tokenValue = this.scanString(ch), this.token = SyntaxKind.Terminal;

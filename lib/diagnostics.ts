@@ -45,7 +45,8 @@ export class DiagnosticMessages {
     private diagnosticsArguments: any[][];
     private sourceFiles: SourceFile[];
     private sourceFilesDiagnosticOffset: number[];
-
+    private nextDiagnosticIndex = 0;
+    
     constructor() {
     }
     
@@ -54,9 +55,9 @@ export class DiagnosticMessages {
             this.sourceFiles = [];
             this.sourceFilesDiagnosticOffset = [];
         }
-
-        var diagnosticOffset = this.count();
-        var sourceFileIndex = this.sourceFiles.length;
+        
+        let diagnosticOffset = this.count();
+        let sourceFileIndex = this.sourceFiles.length;
         this.sourceFiles[sourceFileIndex] = sourceFile;
         this.sourceFilesDiagnosticOffset[sourceFileIndex] = diagnosticOffset;
     }
@@ -135,7 +136,7 @@ export class DiagnosticMessages {
         if (!this.diagnostics) {
             this.diagnostics = [];
         }
-
+        
         let diagnosticIndex = this.diagnostics.length;
         this.diagnostics[diagnosticIndex] = message;
         
@@ -173,6 +174,10 @@ export class DiagnosticMessages {
             let offset = binarySearch(this.sourceFilesDiagnosticOffset, diagnosticIndex);
             if (offset < 0) {
                 offset = (~offset) - 1;
+            }
+            
+            while (offset + 1 < this.sourceFiles.length && this.sourceFilesDiagnosticOffset[offset + 1] === diagnosticIndex) {
+                offset++;
             }
             
             return this.sourceFiles[offset];

@@ -18,7 +18,8 @@ import * as path from "path";
 import { readFileSync, writeFileSync } from "fs";
 import { readPackageSync } from "./read-package";
 import { Dict } from "../lib/core";
-import { compile, emit, EmitFormat } from "../lib/compiler";
+import { CompilerOptions, EmitFormat, getDefaultOptions } from "../lib/options";
+import { Grammar } from "../lib/grammar";
 
 try {
 	require("source-map-support").install();
@@ -60,7 +61,7 @@ function parseOptions(): CommandLineOptions {
 		"usage": Boolean,
 		"version": Boolean,
 		"out": [path, null],
-		"format": [Array, "markdown", "md", /* "html", */ "ecmarkup", "ecmu", null],
+		"format": [Array, "markdown", "md", /* "html", */ "ecmarkup", "emu", "ecmu", null],
 		"no-emit": Boolean,
 		"no-emit-on-error": Boolean,
 		"no-checks": Boolean,
@@ -117,6 +118,7 @@ function parseOptions(): CommandLineOptions {
 					
 				case "ecmarkup":
 				case "ecmu":
+				case "emu":
 					parsedFormat = EmitFormat.ecmarkup;
 					break;
 					
@@ -143,7 +145,7 @@ function parseOptions(): CommandLineOptions {
 function printUsage(): void {
 	let package = readPackageSync(path.resolve(__dirname, "../package.json"));
 	console.log(`Version ${package.version}`);
-	console.log("Syntax:   grammarkdown [options] [file]");
+	console.log("Syntax:   grammarkdown [options] [files]");
 	console.log();
 	console.log("Examples: grammarkdown es6.grammar");
 	console.log("          grammarkdown --out es6.md --format markdown es6.grammar");
@@ -168,40 +170,29 @@ function printVersion(): void {
 }
 
 function performCompilation(options: CommandLineOptions): void {
-	let inputFile = options.argv.remain[0];
-	let source = readFileSync(inputFile, "utf8");
-	let { sourceFile, diagnostics, checker } = compile(source, inputFile, { noChecks: !options.checks });
-	if (options.emit && (options["emit-on-error"] || diagnostics.count() === 0)) {		
-		let outputFile: string;
-		let outputExtension: string;
-		if (options.out) {
-			outputFile = options.out;
-		}
-		else {
-			outputExtension = path.extname(inputFile);
-			outputFile = path.join(path.dirname(inputFile), path.basename(inputFile, outputExtension));
-			if (options.parsedFormats.length > 0) {
-				outputExtension = undefined;
+	let compilerOptions = getDefaultOptions();
+	if (options.out) compilerOptions.out = options.out;
+	if (!options.checks) compilerOptions.noChecks = true;
+	if (!options.emit) compilerOptions.noEmit = true;
+	if (!options["emit-on-error"]) compilerOptions.noEmitOnError = true;
+	
+	let inputFiles = options.argv.remain;
+	let grammar = new Grammar(inputFiles, compilerOptions);
+	grammar.bind();
+	grammar.check();
+	
+	if (!compilerOptions.noEmit) {
+		if (!compilerOptions.noEmitOnError || grammar.diagnostics.count() <= 0) {
+			for (let format of options.parsedFormats) {
+				compilerOptions.format = format;
+				grammar.resetEmitter();
+				grammar.emit();
 			}
-		}
-		
-		for (let format of options.parsedFormats) {
-			let currentOutputExtname = outputExtension;
-			if (!currentOutputExtname) {
-				currentOutputExtname = 
-					format === EmitFormat.markdown ? ".md" :
-					format === EmitFormat.html ? ".html" :
-						".ecmarkup.html";
-			}
-			
-			let currentOutputFile = outputFile + currentOutputExtname;
-			let { output } = emit({ sourceFile, diagnostics, checker }, { format });
-			writeFileSync(currentOutputFile, output, "utf8");
 		}
 	}
 	
-	if (diagnostics.count() > 0) {
-		diagnostics.forEach(message => console.log(message));
+	if (grammar.diagnostics.count() > 0) {
+		grammar.diagnostics.forEach(message => console.log(message));
 		process.exit(-1);
 	}
 }

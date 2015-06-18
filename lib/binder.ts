@@ -13,11 +13,14 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+import { Dict } from "./core";
 import { SyntaxKind } from "./tokens";
 import { Symbol, SymbolKind, SymbolTable } from "./symbols";
 import { SourceFile, Production, Parameter, Node, forEachChild } from "./nodes";
 
 export class BindingTable {
+    public globals: SymbolTable = new SymbolTable();
+    
     private parentNodes: Node[];
     private nodes: Node[];
     private nodeMap: Symbol[];
@@ -124,6 +127,15 @@ export class BindingTable {
     public resolveSymbol(location: Node, name: string, meaning: SymbolKind): Symbol {
         if (this.symbolLocals) {
             while (location) {
+                if (location.kind === SyntaxKind.SourceFile) {
+                    let result = this.globals.resolveSymbol(name, meaning);
+                    if (result) {
+                        return result;
+                    }
+                    
+                    break;
+                }
+                
                 let symbol = this.getSymbol(location);
                 let locals = symbol ? this.symbolLocals[symbol.id] : undefined;
                 if (locals) {
@@ -146,16 +158,20 @@ export class Binder {
     private parentSymbol: Symbol;
     private bindings: BindingTable;
     private scope: SymbolTable;
-
+    
     constructor(bindings: BindingTable) {
         this.bindings = bindings;
-        this.scope = new SymbolTable();
+        this.scope = bindings.globals;
     }
 
     public bindSourceFile(file: SourceFile): void {
+        if (this.scope.resolveSymbol(file.filename, SymbolKind.SourceFile)) {
+            // skip files that have already been bound.
+            return;
+        }
+        
         let symbol = this.declareSymbol(file.filename, file, SymbolKind.SourceFile);
-        let scope = this.bindings.getScope(symbol);
-        this.bindChildren(file, symbol, scope);
+        this.bindChildren(file, symbol, this.scope);
     }
 
     private bindProduction(node: Production): void {
