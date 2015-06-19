@@ -9,7 +9,7 @@
   "scripts": {
     "test": "gulp test",
     "build": "gulp build",
-    "update-pages": "gulp update-pages && git checkout gh-pages && del es6.html && del typescript.html && move _es6.html es6.html && move _typescript.html typescript.html && git add es6.html && git add typescript.html && git commit -m \"update pages\" && git checkout master"
+    "update-pages": "gulp update-pages && git checkout gh-pages && del es6.html && del typescript.html && move _es6.html es6.html && move _typescript.html typescript.html && git add es6.html typescript.html && git commit -m \"update pages\" && git checkout master"
   },
   "repository": {
     "type": "git",

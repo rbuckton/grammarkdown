@@ -40,7 +40,8 @@ interface CommandLineOptions {
 	"parsedFormats": EmitFormat[],
 	"emit": boolean,
 	"emit-on-error": boolean,
-	"checks": boolean
+	"checks": boolean,
+	"emit-links": boolean,
 }
 
 function main(): void {
@@ -65,6 +66,7 @@ function parseOptions(): CommandLineOptions {
 		"no-emit": Boolean,
 		"no-emit-on-error": Boolean,
 		"no-checks": Boolean,
+		"emit-links": Boolean,
 	}, {
 		"h": "--usage",
 		"help": "--usage",
@@ -175,6 +177,7 @@ function performCompilation(options: CommandLineOptions): void {
 	if (!options.checks) compilerOptions.noChecks = true;
 	if (!options.emit) compilerOptions.noEmit = true;
 	if (!options["emit-on-error"]) compilerOptions.noEmitOnError = true;
+	if (options["emit-links"]) compilerOptions.emitLinks = true;
 	
 	let inputFiles = options.argv.remain;
 	let grammar = new Grammar(inputFiles, compilerOptions);

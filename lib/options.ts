@@ -10,6 +10,7 @@ export interface CompilerOptions {
 	noEmitOnError?: boolean;
 	format?: EmitFormat;
 	out?: string;
+	emitLinks?: boolean;
 }
 
 export function getDefaultOptions(): CompilerOptions {

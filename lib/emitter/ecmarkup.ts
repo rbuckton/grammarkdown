@@ -307,19 +307,19 @@ export class EcmarkupEmitter extends Emitter {
     }
     
     private emitLinkAnchor(linkId: string) {
-        // if (linkId) {
-        //     this.writer.write(`<a name="${linkId}"></a>`);
-        // }
+        if (linkId && this.options.emitLinks) {
+            this.writer.write(`<a name="${linkId}"></a>`);            
+        }
     }
 
     private emitNodeWithLink(node: Node, linkId: string) {
-        // if (linkId) {
-        //     this.writer.write(`<a href="#${linkId}">`);
-        //     this.emitNode(node);
-        //     this.writer.write(`</a>`);
-        // }
-        // else {
-        this.emitNode(node);
-        // }
+        if (linkId && this.options.emitLinks) {
+            this.writer.write(`<a href="#${linkId}">`);
+            this.emitNode(node);
+            this.writer.write(`</a>`);
+        }
+        else {
+            this.emitNode(node);
+        }
     }
 }

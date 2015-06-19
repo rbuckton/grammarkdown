@@ -71,11 +71,11 @@ gulp.task("update-pages", ["build"], function (cb) {
     advanceToUpdateES6Grammar();
     
     function updateES6Grammar(cb) {
-        exec(process.argv[0], ["./bin/cli.js", "-o", "./spec/es6.grammar.html", "-f", "ecmarkup", "./tests/resources/es6.grammar"], cb);
+        exec(process.argv[0], ["./bin/cli.js", "-o", "./spec/es6.grammar.html", "-f", "ecmarkup", "./tests/resources/es6.grammar", "--emit-links"], cb);
     }
     
     function updateTypeScriptGrammar(cb) {
-        exec(process.argv[0], ["./bin/cli.js", "-o", "./spec/typescript.grammar.html", "-f", "ecmarkup", "./tests/resources/typescript.grammar"], cb);
+        exec(process.argv[0], ["./bin/cli.js", "-o", "./spec/typescript.grammar.html", "-f", "ecmarkup", "./tests/resources/typescript.grammar", "--emit-links"], cb);
     }
     
     function updateES6Page(cb) {
