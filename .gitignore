@@ -26,6 +26,12 @@ build/Release
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
 node_modules
 
+_es6.html
+_typescript.html
+es6.html
+typescript.html
+spec/es6.grammar.html
+spec/typescript.grammar.html
 tests/baselines/local
 *.map
 *.js

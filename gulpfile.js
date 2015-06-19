@@ -62,19 +62,7 @@ gulp.task("diff", function(cb) {
     })
 });
 
-gulp.task("update-es6-grammar", function (cb) {
-    var cmd = process.argv[0];
-    var args = ["./bin/grammarkdown", "-o", "./spec/es6.grammar.html", "-f", "ecmarkup", "./tests/resources/es6.grammar"];
-    exec(cmd, args, cb);
-});
-
-gulp.task("update-typescript-grammar", function (cb) {
-    var cmd = process.argv[0];
-    var args = ["./bin/grammarkdown", "-o", "./spec/typescript.grammar.html", "-f", "ecmarkup", "./tests/resources/typescript.grammar"];
-    exec(cmd, args, cb);
-});
-
-gulp.task("update-pages", ["update-es6-grammar", "update-typescript-grammar"], function (cb) {
+gulp.task("update-pages", ["build"], function (cb) {
     var ecmarkup = process.env["ECMARKUP"];
     if (!ecmarkup) {
         throw new Error("Please set the 'ECMARKUP' environment variable.");
@@ -83,23 +71,45 @@ gulp.task("update-pages", ["update-es6-grammar", "update-typescript-grammar"], f
     advanceToUpdateES6Grammar();
     
     function updateES6Grammar(cb) {
-        exec(process.argv[0], ["./bin/grammarkdown", "-o", "./spec/es6.grammar.html", "-f", "ecmarkup", "./tests/resources/es6.grammar"], cb);
+        exec(process.argv[0], ["./bin/cli.js", "-o", "./spec/es6.grammar.html", "-f", "ecmarkup", "./tests/resources/es6.grammar"], cb);
     }
     
     function updateTypeScriptGrammar(cb) {
-        exec(process.argv[0], ["./bin/grammarkdown", "-o", "./spec/typescript.grammar.html", "-f", "ecmarkup", "./tests/resources/typescript.grammar"], cb);
+        exec(process.argv[0], ["./bin/cli.js", "-o", "./spec/typescript.grammar.html", "-f", "ecmarkup", "./tests/resources/typescript.grammar"], cb);
     }
     
     function updateES6Page(cb) {
-        exec(ecmarkup, ["./spec/es6.html", "./spec/_es6.html"], cb);
+        exec(ecmarkup, ["./spec/es6.html", "./_es6.html"], cb);
     }
     
     function updateTypeScriptPage(cb) {
-        exec(ecmarkup, ["./spec/typescript.html", "./spec/_typescript.html"], cb);
+        exec(ecmarkup, ["./spec/typescript.html", "./_typescript.html"], cb);
     }
     
     function updatePages(cb) {
-        child_process.exec("git checkout gh-pages && rm es6.html && mv _es6.html es6.html && git add es6.html && rm typescript.html && mv _typescript.html typescript.html && git add typescript.html", cb);
+        exec("git", ["stash", "save"], function (err) {
+            if (err) return cb(err);
+            function cleanup(err) {
+                exec("git", ["checkout", "master"], function (e) {
+                   return e ? cb(err) : exec("git", ["stash", "pop"], function () {
+                       return err ? cb(err) : cb();
+                   });
+                });
+            }
+            
+            exec("git", ["checkout", "gh-pages"], function (err) {
+                if (err) return cleanup(err);
+                try { fs.unlinkSync("es6.html"); } catch (e) { }
+                fs.renameSync("_es6.html", "es6.html");
+                try { fs.unlinkSync("typescript.html"); } catch (e) { }
+                fs.renameSync("_typescript.html", "typescript.html");
+                // exec("git", ["add", "es6.html", "typescript.html"], function (err) {
+                //     if (err) return cleanup(err);
+                //     exec("git", ["commit", "-m", "\"update pages\""], cleanup);
+                // });
+                cleanup(err);
+            });
+        });
     }
     
     function advanceToUpdateES6Grammar() {
