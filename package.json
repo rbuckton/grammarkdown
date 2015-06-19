@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "gulp test",
-    "build": "gulp build"
+    "build": "gulp build",
+    "update-pages": "gulp update-pages && git checkout gh-pages && rm es6.html && rm typescript.html && mv _es6.html es6.html && mv _typescript.html typescript.html && git add es6.html && git add typescript.html && git commit -m \"update pages\" && git checkout master"
   },
   "repository": {
     "type": "git",
