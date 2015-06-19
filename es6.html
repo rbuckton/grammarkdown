@@ -1,0 +1,973 @@
+<!doctype html>
+<head><meta charset="utf8">
+<title>ECMA-262 6th Edition Grammar</title>
+<link rel="stylesheet" href="https://bterlson.github.com/ecmarkup/elements.css"> 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/solarized_light.min.css">
+</head><body><emu-biblio href="./biblio.json"></emu-biblio> 
+<h1>ECMA-262 6th Edition Grammar</h1>
+<div><h2>Table of Contents</h2><ol class="toc"><li><a href="#grammar"><span class="secnum">1</span> Grammar</a></li></ol></div><emu-clause id="grammar">
+    <h1><span class="secnum">1</span>Grammar</h1>
+    <emu-production name="SourceCharacter" type="lexical">
+    <emu-nt>SourceCharacter</emu-nt><emu-geq>::</emu-geq><emu-rhs a="c64b38bd"><emu-gprose>any Unicode code point</emu-gprose></emu-rhs>
+</emu-production>
+<emu-production name="InputElementDiv" type="lexical">
+    <emu-nt>InputElementDiv</emu-nt><emu-geq>::</emu-geq><emu-rhs a="1424dc49"><emu-nt>WhiteSpace</emu-nt></emu-rhs>
+    <emu-rhs a="3b331ccd"><emu-nt>LineTerminator</emu-nt></emu-rhs>
+    <emu-rhs a="153d7a58"><emu-nt>Comment</emu-nt></emu-rhs>
+    <emu-rhs a="83158895"><emu-nt>CommonToken</emu-nt></emu-rhs>
+    <emu-rhs a="28035084"><emu-nt>DivPunctuator</emu-nt></emu-rhs>
+    <emu-rhs a="121314a7"><emu-nt>RightBracePunctuator</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="InputElementRegExp" type="lexical">
+    <emu-nt>InputElementRegExp</emu-nt><emu-geq>::</emu-geq><emu-rhs a="1424dc49"><emu-nt>WhiteSpace</emu-nt></emu-rhs>
+    <emu-rhs a="3b331ccd"><emu-nt>LineTerminator</emu-nt></emu-rhs>
+    <emu-rhs a="153d7a58"><emu-nt>Comment</emu-nt></emu-rhs>
+    <emu-rhs a="83158895"><emu-nt>CommonToken</emu-nt></emu-rhs>
+    <emu-rhs a="121314a7"><emu-nt>RightBracePunctuator</emu-nt></emu-rhs>
+    <emu-rhs a="31b672e8"><emu-nt>RegularExpressionLiteral</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="InputElementRegExpOrTemplateTail" type="lexical">
+    <emu-nt>InputElementRegExpOrTemplateTail</emu-nt><emu-geq>::</emu-geq><emu-rhs a="1424dc49"><emu-nt>WhiteSpace</emu-nt></emu-rhs>
+    <emu-rhs a="3b331ccd"><emu-nt>LineTerminator</emu-nt></emu-rhs>
+    <emu-rhs a="153d7a58"><emu-nt>Comment</emu-nt></emu-rhs>
+    <emu-rhs a="83158895"><emu-nt>CommonToken</emu-nt></emu-rhs>
+    <emu-rhs a="31b672e8"><emu-nt>RegularExpressionLiteral</emu-nt></emu-rhs>
+    <emu-rhs a="62ae6eb9"><emu-nt>TemplateSubstitutionTail</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="InputElementTemplateTail" type="lexical">
+    <emu-nt>InputElementTemplateTail</emu-nt><emu-geq>::</emu-geq><emu-rhs a="1424dc49"><emu-nt>WhiteSpace</emu-nt></emu-rhs>
+    <emu-rhs a="3b331ccd"><emu-nt>LineTerminator</emu-nt></emu-rhs>
+    <emu-rhs a="153d7a58"><emu-nt>Comment</emu-nt></emu-rhs>
+    <emu-rhs a="83158895"><emu-nt>CommonToken</emu-nt></emu-rhs>
+    <emu-rhs a="28035084"><emu-nt>DivPunctuator</emu-nt></emu-rhs>
+    <emu-rhs a="62ae6eb9"><emu-nt>TemplateSubstitutionTail</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="WhiteSpace" type="lexical">
+    <emu-nt>WhiteSpace</emu-nt><emu-geq>::</emu-geq><emu-rhs a="3150b35b"><emu-gprose>&lt;TAB&gt;</emu-gprose></emu-rhs>
+    <emu-rhs a="05402817"><emu-gprose>&lt;VT&gt;</emu-gprose></emu-rhs>
+    <emu-rhs a="e31930e9"><emu-gprose>&lt;FF&gt;</emu-gprose></emu-rhs>
+    <emu-rhs a="c3921185"><emu-gprose>&lt;SP&gt;</emu-gprose></emu-rhs>
+    <emu-rhs a="687594de"><emu-gprose>&lt;NBSP&gt;</emu-gprose></emu-rhs>
+    <emu-rhs a="d577bd9e"><emu-gprose>&lt;ZWNBSP&gt;</emu-gprose></emu-rhs>
+    <emu-rhs a="c2b44fad"><emu-gprose>&lt;USP&gt;</emu-gprose></emu-rhs>
+</emu-production>
+<emu-production name="LineTerminator" type="lexical">
+    <emu-nt>LineTerminator</emu-nt><emu-geq>::</emu-geq><emu-rhs a="e1efb062"><emu-gprose>&lt;LF&gt;</emu-gprose></emu-rhs>
+    <emu-rhs a="930d7e02"><emu-gprose>&lt;CR&gt;</emu-gprose></emu-rhs>
+    <emu-rhs a="2812beea"><emu-gprose>&lt;LS&gt;</emu-gprose></emu-rhs>
+    <emu-rhs a="23ff5f46"><emu-gprose>&lt;PS&gt;</emu-gprose></emu-rhs>
+</emu-production>
+<emu-production name="LineTerminatorSequence" type="lexical">
+    <emu-nt>LineTerminatorSequence</emu-nt><emu-geq>::</emu-geq><emu-rhs a="e1efb062"><emu-gprose>&lt;LF&gt;</emu-gprose></emu-rhs>
+    <emu-rhs a="017fecbe"><emu-gprose>&lt;CR&gt;</emu-gprose><emu-gann>[lookahead ≠ <emu-gprose>&lt;LF&gt;</emu-gprose>]</emu-gann></emu-rhs>
+    <emu-rhs a="2812beea"><emu-gprose>&lt;LS&gt;</emu-gprose></emu-rhs>
+    <emu-rhs a="23ff5f46"><emu-gprose>&lt;PS&gt;</emu-gprose></emu-rhs>
+    <emu-rhs a="cd73595b"><emu-gprose>&lt;CR&gt;</emu-gprose><emu-gprose>&lt;LF&gt;</emu-gprose></emu-rhs>
+</emu-production>
+<emu-production name="Comment" type="lexical">
+    <emu-nt>Comment</emu-nt><emu-geq>::</emu-geq><emu-rhs a="b221187a"><emu-nt>MultiLineComment</emu-nt></emu-rhs>
+    <emu-rhs a="49272b29"><emu-nt>SingleLineComment</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="MultiLineComment" type="lexical">
+    <emu-nt>MultiLineComment</emu-nt><emu-geq>::</emu-geq><emu-rhs a="1e164ceb"><emu-t>/*</emu-t><emu-nt optional="">MultiLineCommentChars<emu-mods> opt</emu-mods></emu-nt><emu-t>*/</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="MultiLineCommentChars" type="lexical">
+    <emu-nt>MultiLineCommentChars</emu-nt><emu-geq>::</emu-geq><emu-rhs a="24a6effb"><emu-nt>MultiLineNotAsteriskChar</emu-nt><emu-nt optional="">MultiLineCommentChars<emu-mods> opt</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="6fcb6b58"><emu-t>*</emu-t><emu-nt optional="">PostAsteriskCommentChars<emu-mods> opt</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="PostAsteriskCommentChars" type="lexical">
+    <emu-nt>PostAsteriskCommentChars</emu-nt><emu-geq>::</emu-geq><emu-rhs a="25615007"><emu-nt>MultiLineNotForwardSlashOrAsteriskChar</emu-nt><emu-nt optional="">MultiLineCommentChars<emu-mods> opt</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="6fcb6b58"><emu-t>*</emu-t><emu-nt optional="">PostAsteriskCommentChars<emu-mods> opt</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="MultiLineNotAsteriskChar" type="lexical">
+    <emu-nt>MultiLineNotAsteriskChar</emu-nt><emu-geq>::</emu-geq><emu-rhs a="162032ca"><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not <emu-t>*</emu-t></emu-gmod></emu-rhs>
+</emu-production>
+<emu-production name="MultiLineNotForwardSlashOrAsteriskChar" type="lexical">
+    <emu-nt>MultiLineNotForwardSlashOrAsteriskChar</emu-nt><emu-geq>::</emu-geq><emu-rhs a="475d2033"><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not one of <emu-t>/</emu-t> or <emu-t>*</emu-t></emu-gmod></emu-rhs>
+</emu-production>
+<emu-production name="SingleLineComment" type="lexical">
+    <emu-nt>SingleLineComment</emu-nt><emu-geq>::</emu-geq><emu-rhs a="53edd61c"><emu-t>//</emu-t><emu-nt optional="">SingleLineCommentChars<emu-mods> opt</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="SingleLineCommentChars" type="lexical">
+    <emu-nt>SingleLineCommentChars</emu-nt><emu-geq>::</emu-geq><emu-rhs a="4521d447"><emu-nt>SingleLineCommentChar</emu-nt><emu-nt optional="">SingleLineCommentChars<emu-mods> opt</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="SingleLineCommentChar" type="lexical">
+    <emu-nt>SingleLineCommentChar</emu-nt><emu-geq>::</emu-geq><emu-rhs a="42edda0b"><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not <emu-nt>LineTerminator</emu-nt></emu-gmod></emu-rhs>
+</emu-production>
+<emu-production name="CommonToken" type="lexical">
+    <emu-nt>CommonToken</emu-nt><emu-geq>::</emu-geq><emu-rhs a="0ebb31e2"><emu-nt>IdentifierName</emu-nt></emu-rhs>
+    <emu-rhs a="ee18f3d6"><emu-nt>Punctuator</emu-nt></emu-rhs>
+    <emu-rhs a="a548b407"><emu-nt>NumericLiteral</emu-nt></emu-rhs>
+    <emu-rhs a="5c74e54d"><emu-nt>StringLiteral</emu-nt></emu-rhs>
+    <emu-rhs a="3ec1ae06"><emu-nt>Template</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="IdentifierName" type="lexical">
+    <emu-nt>IdentifierName</emu-nt><emu-geq>::</emu-geq><emu-rhs a="434685ab"><emu-nt>IdentifierStart</emu-nt></emu-rhs>
+    <emu-rhs a="700c1cee"><emu-nt>IdentifierName</emu-nt><emu-nt>IdentifierPart</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="IdentifierStart" type="lexical">
+    <emu-nt>IdentifierStart</emu-nt><emu-geq>::</emu-geq><emu-rhs a="0862e30c"><emu-nt>UnicodeIDStart</emu-nt></emu-rhs>
+    <emu-rhs a="1262cc92"><emu-t>$</emu-t></emu-rhs>
+    <emu-rhs a="07564b94"><emu-t>_</emu-t></emu-rhs>
+    <emu-rhs a="6fbc8b19"><emu-t>\</emu-t><emu-nt>UnicodeEscapeSequence</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="IdentifierPart" type="lexical">
+    <emu-nt>IdentifierPart</emu-nt><emu-geq>::</emu-geq><emu-rhs a="364ac675"><emu-nt>UnicodeIDContinue</emu-nt></emu-rhs>
+    <emu-rhs a="1262cc92"><emu-t>$</emu-t></emu-rhs>
+    <emu-rhs a="07564b94"><emu-t>_</emu-t></emu-rhs>
+    <emu-rhs a="6fbc8b19"><emu-t>\</emu-t><emu-nt>UnicodeEscapeSequence</emu-nt></emu-rhs>
+    <emu-rhs a="f0e58449"><emu-gprose>&lt;ZWNJ&gt;</emu-gprose></emu-rhs>
+    <emu-rhs a="a87f30d6"><emu-gprose>&lt;ZWJ&gt;</emu-gprose></emu-rhs>
+</emu-production>
+<emu-production name="UnicodeIDStart" type="lexical">
+    <emu-nt>UnicodeIDStart</emu-nt><emu-geq>::</emu-geq><emu-rhs a="d2e8afad"><emu-gprose>any Unicode code point with the Unicode property "ID_Start" or "Other_ID_Start"</emu-gprose></emu-rhs>
+</emu-production>
+<emu-production name="UnicodeIDContinue" type="lexical">
+    <emu-nt>UnicodeIDContinue</emu-nt><emu-geq>::</emu-geq><emu-rhs a="75cd6b24"><emu-gprose>any Unicode code point with the Unicode property "ID_Continue" or "Other_ID_Continue", or "Other_ID_Start"</emu-gprose></emu-rhs>
+</emu-production>
+<emu-production name="ReservedWord" type="lexical">
+    <emu-nt>ReservedWord</emu-nt><emu-geq>::</emu-geq><emu-rhs a="a3926e03"><emu-nt>Keyword</emu-nt></emu-rhs>
+    <emu-rhs a="9d71bdc1"><emu-nt>FutureReservedWord</emu-nt></emu-rhs>
+    <emu-rhs a="54f84188"><emu-nt>NullLiteral</emu-nt></emu-rhs>
+    <emu-rhs a="3508e1fd"><emu-nt>BooleanLiteral</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="Keyword" type="lexical" oneof="">
+    <emu-nt>Keyword</emu-nt><emu-geq>::</emu-geq><emu-oneof>one of</emu-oneof><emu-rhs><emu-t>break</emu-t><emu-t>do</emu-t><emu-t>in</emu-t><emu-t>typeof</emu-t><emu-t>case</emu-t><emu-t>else</emu-t><emu-t>instanceof</emu-t><emu-t>var</emu-t><emu-t>catch</emu-t><emu-t>export</emu-t><emu-t>new</emu-t><emu-t>void</emu-t><emu-t>class</emu-t><emu-t>extends</emu-t><emu-t>return</emu-t><emu-t>while</emu-t><emu-t>const</emu-t><emu-t>finally</emu-t><emu-t>super</emu-t><emu-t>with</emu-t><emu-t>continue</emu-t><emu-t>for</emu-t><emu-t>switch</emu-t><emu-t>yield</emu-t><emu-t>debugger</emu-t><emu-t>function</emu-t><emu-t>this</emu-t><emu-t>default</emu-t><emu-t>if</emu-t><emu-t>throw</emu-t><emu-t>delete</emu-t><emu-t>import</emu-t><emu-t>try</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="FutureReservedWord" type="lexical" oneof="">
+    <emu-nt>FutureReservedWord</emu-nt><emu-geq>::</emu-geq><emu-oneof>one of</emu-oneof><emu-rhs><emu-t>enum</emu-t><emu-t>await</emu-t><emu-t>implements</emu-t><emu-t>package</emu-t><emu-t>protected</emu-t><emu-t>interface</emu-t><emu-t>private</emu-t><emu-t>public</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="Punctuator" type="lexical" oneof="">
+    <emu-nt>Punctuator</emu-nt><emu-geq>::</emu-geq><emu-oneof>one of</emu-oneof><emu-rhs><emu-t>{</emu-t><emu-t>}</emu-t><emu-t>(</emu-t><emu-t>)</emu-t><emu-t>[</emu-t><emu-t>]</emu-t><emu-t>.</emu-t><emu-t>;</emu-t><emu-t>,</emu-t><emu-t>&lt;</emu-t><emu-t>&gt;</emu-t><emu-t>&lt;=</emu-t><emu-t>&gt;=</emu-t><emu-t>==</emu-t><emu-t>!=</emu-t><emu-t>===</emu-t><emu-t>!==</emu-t><emu-t>+</emu-t><emu-t>-</emu-t><emu-t>*</emu-t><emu-t>%</emu-t><emu-t>++</emu-t><emu-t>--</emu-t><emu-t>&lt;&lt;</emu-t><emu-t>&gt;&gt;</emu-t><emu-t>&gt;&gt;&gt;</emu-t><emu-t>&amp;</emu-t><emu-t>|</emu-t><emu-t>^</emu-t><emu-t>!</emu-t><emu-t>~</emu-t><emu-t>&amp;&amp;</emu-t><emu-t>||</emu-t><emu-t>?</emu-t><emu-t>::</emu-t><emu-t>=</emu-t><emu-t>+=</emu-t><emu-t>-=</emu-t><emu-t>*=</emu-t><emu-t>%=</emu-t><emu-t>&lt;&lt;=</emu-t><emu-t>&gt;&gt;=</emu-t><emu-t>&gt;&gt;&gt;=</emu-t><emu-t>&amp;=</emu-t><emu-t>|=</emu-t><emu-t>^=</emu-t><emu-t>=&gt;</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="DivPunctuator" type="lexical" oneof="">
+    <emu-nt>DivPunctuator</emu-nt><emu-geq>::</emu-geq><emu-oneof>one of</emu-oneof><emu-rhs><emu-t>/</emu-t><emu-t>/=</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="RightBracePunctuator" type="lexical" oneof="">
+    <emu-nt>RightBracePunctuator</emu-nt><emu-geq>::</emu-geq><emu-oneof>one of</emu-oneof><emu-rhs><emu-t>)</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="NullLiteral" type="lexical">
+    <emu-nt>NullLiteral</emu-nt><emu-geq>::</emu-geq><emu-rhs a="77b50868"><emu-t>null</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="BooleanLiteral" type="lexical">
+    <emu-nt>BooleanLiteral</emu-nt><emu-geq>::</emu-geq><emu-rhs a="fa30b8c6"><emu-t>true</emu-t></emu-rhs>
+    <emu-rhs a="23d2c69d"><emu-t>false</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="NumericLiteral" type="lexical">
+    <emu-nt>NumericLiteral</emu-nt><emu-geq>::</emu-geq><emu-rhs a="18c0356f"><emu-nt>DecimalLiteral</emu-nt></emu-rhs>
+    <emu-rhs a="d3d71ddd"><emu-nt>BinaryIntegerLiteral</emu-nt></emu-rhs>
+    <emu-rhs a="832f57ee"><emu-nt>OctalIntegerLiteral</emu-nt></emu-rhs>
+    <emu-rhs a="1d0c4a66"><emu-nt>HexIntegerLiteral</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="DecimalLiteral" type="lexical">
+    <emu-nt>DecimalLiteral</emu-nt><emu-geq>::</emu-geq><emu-rhs a="fb5198a6"><emu-nt>DecimalIntegerLiteral</emu-nt><emu-t>.</emu-t><emu-nt optional="">DecimalDigits<emu-mods> opt</emu-mods></emu-nt><emu-nt optional="">ExponentPart<emu-mods> opt</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="5cf3aa35"><emu-t>.</emu-t><emu-nt>DecimalDigits</emu-nt><emu-nt optional="">ExponentPart<emu-mods> opt</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="13dbaf21"><emu-nt>DecimalIntegerLiteral</emu-nt><emu-nt optional="">ExponentPart<emu-mods> opt</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="DecimalIntegerLiteral" type="lexical">
+    <emu-nt>DecimalIntegerLiteral</emu-nt><emu-geq>::</emu-geq><emu-rhs a="5259a431"><emu-t>0</emu-t></emu-rhs>
+    <emu-rhs a="2353f0a3"><emu-nt>NonZeroDigit</emu-nt><emu-nt optional="">DecimalDigits<emu-mods> opt</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="DecimalDigits" type="lexical">
+    <emu-nt>DecimalDigits</emu-nt><emu-geq>::</emu-geq><emu-rhs a="b3831ee0"><emu-nt>DecimalDigit</emu-nt></emu-rhs>
+    <emu-rhs a="9f250657"><emu-nt>DecimalDigits</emu-nt><emu-nt>DecimalDigit</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="DecimalDigit" type="lexical" oneof="">
+    <emu-nt>DecimalDigit</emu-nt><emu-geq>::</emu-geq><emu-oneof>one of</emu-oneof><emu-rhs><emu-t>0</emu-t><emu-t>1</emu-t><emu-t>2</emu-t><emu-t>3</emu-t><emu-t>4</emu-t><emu-t>5</emu-t><emu-t>6</emu-t><emu-t>7</emu-t><emu-t>8</emu-t><emu-t>9</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="NonZeroDigit" type="lexical" oneof="">
+    <emu-nt>NonZeroDigit</emu-nt><emu-geq>::</emu-geq><emu-oneof>one of</emu-oneof><emu-rhs><emu-t>1</emu-t><emu-t>2</emu-t><emu-t>3</emu-t><emu-t>4</emu-t><emu-t>5</emu-t><emu-t>6</emu-t><emu-t>7</emu-t><emu-t>8</emu-t><emu-t>9</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="ExponentPart" type="lexical">
+    <emu-nt>ExponentPart</emu-nt><emu-geq>::</emu-geq><emu-rhs a="7f837518"><emu-nt>ExponentIndicator</emu-nt><emu-nt>SignedInteger</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ExponentIndicator" type="lexical" oneof="">
+    <emu-nt>ExponentIndicator</emu-nt><emu-geq>::</emu-geq><emu-oneof>one of</emu-oneof><emu-rhs><emu-t>e</emu-t><emu-t>E</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="SignedInteger" type="lexical">
+    <emu-nt>SignedInteger</emu-nt><emu-geq>::</emu-geq><emu-rhs a="6d7b4e5f"><emu-nt>DecimalDigits</emu-nt></emu-rhs>
+    <emu-rhs a="3bd7fe57"><emu-t>+</emu-t><emu-nt>DecimalDigits</emu-nt></emu-rhs>
+    <emu-rhs a="58000348"><emu-t>-</emu-t><emu-nt>DecimalDigits</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="BinaryIntegerLiteral" type="lexical">
+    <emu-nt>BinaryIntegerLiteral</emu-nt><emu-geq>::</emu-geq><emu-rhs a="600d7817"><emu-t>0b</emu-t><emu-nt>BinaryDigits</emu-nt></emu-rhs>
+    <emu-rhs a="7c1f17d9"><emu-t>0B</emu-t><emu-nt>BinaryDigits</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="BinaryDigits" type="lexical">
+    <emu-nt>BinaryDigits</emu-nt><emu-geq>::</emu-geq><emu-rhs a="e5f1ee23"><emu-nt>BinaryDigit</emu-nt></emu-rhs>
+    <emu-rhs a="82aa7443"><emu-nt>BinaryDigits</emu-nt><emu-nt>BinaryDigit</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="BinaryDigit" type="lexical" oneof="">
+    <emu-nt>BinaryDigit</emu-nt><emu-geq>::</emu-geq><emu-oneof>one of</emu-oneof><emu-rhs><emu-t>0</emu-t><emu-t>1</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="OctalIntegerLiteral" type="lexical">
+    <emu-nt>OctalIntegerLiteral</emu-nt><emu-geq>::</emu-geq><emu-rhs a="a8056cb0"><emu-t>0o</emu-t><emu-nt>OctalDigits</emu-nt></emu-rhs>
+    <emu-rhs a="3a3652fa"><emu-t>0O</emu-t><emu-nt>OctalDigits</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="OctalDigits" type="lexical">
+    <emu-nt>OctalDigits</emu-nt><emu-geq>::</emu-geq><emu-rhs a="99bc1d53"><emu-nt>OctalDigit</emu-nt></emu-rhs>
+    <emu-rhs a="37a295fe"><emu-nt>OctalDigits</emu-nt><emu-nt>OctalDigit</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="OctalDigit" type="lexical" oneof="">
+    <emu-nt>OctalDigit</emu-nt><emu-geq>::</emu-geq><emu-oneof>one of</emu-oneof><emu-rhs><emu-t>0</emu-t><emu-t>1</emu-t><emu-t>2</emu-t><emu-t>3</emu-t><emu-t>4</emu-t><emu-t>5</emu-t><emu-t>6</emu-t><emu-t>7</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="HexIntegerLiteral" type="lexical">
+    <emu-nt>HexIntegerLiteral</emu-nt><emu-geq>::</emu-geq><emu-rhs a="cf154180"><emu-t>0x</emu-t><emu-nt>HexDigits</emu-nt></emu-rhs>
+    <emu-rhs a="9ef756f3"><emu-t>0X</emu-t><emu-nt>HexDigits</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="HexDigits" type="lexical">
+    <emu-nt>HexDigits</emu-nt><emu-geq>::</emu-geq><emu-rhs a="a0c48a71"><emu-nt>HexDigit</emu-nt></emu-rhs>
+    <emu-rhs a="c8221899"><emu-nt>HexDigits</emu-nt><emu-nt>HexDigit</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="HexDigit" type="lexical" oneof="">
+    <emu-nt>HexDigit</emu-nt><emu-geq>::</emu-geq><emu-oneof>one of</emu-oneof><emu-rhs><emu-t>0</emu-t><emu-t>1</emu-t><emu-t>2</emu-t><emu-t>3</emu-t><emu-t>4</emu-t><emu-t>5</emu-t><emu-t>6</emu-t><emu-t>7</emu-t><emu-t>8</emu-t><emu-t>9</emu-t><emu-t>a</emu-t><emu-t>b</emu-t><emu-t>c</emu-t><emu-t>d</emu-t><emu-t>e</emu-t><emu-t>f</emu-t><emu-t>A</emu-t><emu-t>B</emu-t><emu-t>C</emu-t><emu-t>D</emu-t><emu-t>E</emu-t><emu-t>F</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="StringLiteral" type="lexical">
+    <emu-nt>StringLiteral</emu-nt><emu-geq>::</emu-geq><emu-rhs a="15d8b1f1"><emu-t>"</emu-t><emu-nt optional="">DoubleStringCharacters<emu-mods> opt</emu-mods></emu-nt><emu-t>"</emu-t></emu-rhs>
+    <emu-rhs a="82ecb3d9"><emu-t>'</emu-t><emu-nt optional="">SingleStringCharacters<emu-mods> opt</emu-mods></emu-nt><emu-t>'</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="DoubleStringCharacters" type="lexical">
+    <emu-nt>DoubleStringCharacters</emu-nt><emu-geq>::</emu-geq><emu-rhs a="8bdabc77"><emu-nt>DoubleStringCharacter</emu-nt><emu-nt optional="">DoubleStringCharacters<emu-mods> opt</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="SingleStringCharacters" type="lexical">
+    <emu-nt>SingleStringCharacters</emu-nt><emu-geq>::</emu-geq><emu-rhs a="17d28457"><emu-nt>SingleStringCharacter</emu-nt><emu-nt optional="">SingleStringCharacters<emu-mods> opt</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="DoubleStringCharacter" type="lexical">
+    <emu-nt>DoubleStringCharacter</emu-nt><emu-geq>::</emu-geq><emu-rhs a="25593d43"><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not one of <emu-t>"</emu-t> or <emu-t>\</emu-t> or <emu-nt>LineTerminator</emu-nt></emu-gmod></emu-rhs>
+    <emu-rhs a="ea7d8d26"><emu-t>\</emu-t><emu-nt>EscapeSequence</emu-nt></emu-rhs>
+    <emu-rhs a="00992933"><emu-nt>LineContinuation</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="SingleStringCharacter" type="lexical">
+    <emu-nt>SingleStringCharacter</emu-nt><emu-geq>::</emu-geq><emu-rhs a="c574e0b6"><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not one of <emu-t>'</emu-t> or <emu-t>\</emu-t> or <emu-nt>LineTerminator</emu-nt></emu-gmod></emu-rhs>
+    <emu-rhs a="ea7d8d26"><emu-t>\</emu-t><emu-nt>EscapeSequence</emu-nt></emu-rhs>
+    <emu-rhs a="00992933"><emu-nt>LineContinuation</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="LineContinuation" type="lexical">
+    <emu-nt>LineContinuation</emu-nt><emu-geq>::</emu-geq><emu-rhs a="c4893d63"><emu-t>\</emu-t><emu-nt>LineTerminatorSequence</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="EscapeSequence" type="lexical">
+    <emu-nt>EscapeSequence</emu-nt><emu-geq>::</emu-geq><emu-rhs a="e9e86f07"><emu-nt>CharacterEscapeSequence</emu-nt></emu-rhs>
+    <emu-rhs a="3651e0da"><emu-t>0</emu-t><emu-gann>[lookahead ≠ <emu-nt>DecimalDigit</emu-nt>]</emu-gann></emu-rhs>
+    <emu-rhs a="a8071b85"><emu-nt>HexEscapeSequence</emu-nt></emu-rhs>
+    <emu-rhs a="44bd6f55"><emu-nt>UnicodeEscapeSequence</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="CharacterEscapeSequence" type="lexical">
+    <emu-nt>CharacterEscapeSequence</emu-nt><emu-geq>::</emu-geq><emu-rhs a="7444838f"><emu-nt>SingleEscapeCharacter</emu-nt></emu-rhs>
+    <emu-rhs a="b7980a98"><emu-nt>NonEscapeCharacter</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="SingleEscapeCharacter" type="lexical" oneof="">
+    <emu-nt>SingleEscapeCharacter</emu-nt><emu-geq>::</emu-geq><emu-oneof>one of</emu-oneof><emu-rhs><emu-t>'</emu-t><emu-t>"</emu-t><emu-t>\</emu-t><emu-t>b</emu-t><emu-t>f</emu-t><emu-t>n</emu-t><emu-t>r</emu-t><emu-t>t</emu-t><emu-t>v</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="NonEscapeCharacter" type="lexical">
+    <emu-nt>NonEscapeCharacter</emu-nt><emu-geq>::</emu-geq><emu-rhs a="a23e757b"><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not one of <emu-nt>EscapeCharacter</emu-nt> or <emu-nt>LineTerminator</emu-nt></emu-gmod></emu-rhs>
+</emu-production>
+<emu-production name="EscapeCharacter" type="lexical">
+    <emu-nt>EscapeCharacter</emu-nt><emu-geq>::</emu-geq><emu-rhs a="7444838f"><emu-nt>SingleEscapeCharacter</emu-nt></emu-rhs>
+    <emu-rhs a="b3831ee0"><emu-nt>DecimalDigit</emu-nt></emu-rhs>
+    <emu-rhs a="150383a9"><emu-t>x</emu-t></emu-rhs>
+    <emu-rhs a="8c2e6655"><emu-t>u</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="HexEscapeSequence" type="lexical">
+    <emu-nt>HexEscapeSequence</emu-nt><emu-geq>::</emu-geq><emu-rhs a="d8ef973c"><emu-t>x</emu-t><emu-nt>HexDigit</emu-nt><emu-nt>HexDigit</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="UnicodeEscapeSequence" type="lexical">
+    <emu-nt>UnicodeEscapeSequence</emu-nt><emu-geq>::</emu-geq><emu-rhs a="8072ad8d"><emu-t>u</emu-t><emu-nt>Hex4Digits</emu-nt></emu-rhs>
+    <emu-rhs a="bc0db51f"><emu-t>u{</emu-t><emu-nt>HexDigits</emu-nt><emu-t>}</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="Hex4Digits" type="lexical">
+    <emu-nt>Hex4Digits</emu-nt><emu-geq>::</emu-geq><emu-rhs a="0ba8de61"><emu-nt>HexDigit</emu-nt><emu-nt>HexDigit</emu-nt><emu-nt>HexDigit</emu-nt><emu-nt>HexDigit</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="RegularExpressionLiteral" type="lexical">
+    <emu-nt>RegularExpressionLiteral</emu-nt><emu-geq>::</emu-geq><emu-rhs a="5778053b"><emu-t>/</emu-t><emu-nt>RegularExpressionBody</emu-nt><emu-t>/</emu-t><emu-nt>RegularExpressionFlags</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="RegularExpressionBody" type="lexical">
+    <emu-nt>RegularExpressionBody</emu-nt><emu-geq>::</emu-geq><emu-rhs a="bba7969e"><emu-nt>RegularExpressionFirstChar</emu-nt><emu-nt>RegularExpressionChars</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="RegularExpressionChars" type="lexical">
+    <emu-nt>RegularExpressionChars</emu-nt><emu-geq>::</emu-geq><emu-rhs a="37b9c04c"><emu-gann>[empty]</emu-gann></emu-rhs>
+    <emu-rhs a="a9881cec"><emu-nt>RegularExpressionChars</emu-nt><emu-nt>RegularExpressionChar</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="RegularExpressionFirstChar" type="lexical">
+    <emu-nt>RegularExpressionFirstChar</emu-nt><emu-geq>::</emu-geq><emu-rhs a="e5c95cf5"><emu-nt>RegularExpressionNonTerminator</emu-nt><emu-gmod>but not one of <emu-t>*</emu-t> or <emu-t>\</emu-t> or <emu-t>/</emu-t> or <emu-t>[</emu-t></emu-gmod></emu-rhs>
+    <emu-rhs a="9c9579a7"><emu-nt>RegularExpressionBackslashSequence</emu-nt></emu-rhs>
+    <emu-rhs a="5cc6858e"><emu-nt>RegularExpressionClass</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="RegularExpressionChar" type="lexical">
+    <emu-nt>RegularExpressionChar</emu-nt><emu-geq>::</emu-geq><emu-rhs a="70196e5d"><emu-nt>RegularExpressionNonTerminator</emu-nt><emu-gmod>but not one of <emu-t>\</emu-t> or <emu-t>/</emu-t> or <emu-t>[</emu-t></emu-gmod></emu-rhs>
+    <emu-rhs a="9c9579a7"><emu-nt>RegularExpressionBackslashSequence</emu-nt></emu-rhs>
+    <emu-rhs a="5cc6858e"><emu-nt>RegularExpressionClass</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="RegularExpressionBackslashSequence" type="lexical">
+    <emu-nt>RegularExpressionBackslashSequence</emu-nt><emu-geq>::</emu-geq><emu-rhs a="d7656bad"><emu-t>\</emu-t><emu-nt>RegularExpressionNonTerminator</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="RegularExpressionNonTerminator" type="lexical">
+    <emu-nt>RegularExpressionNonTerminator</emu-nt><emu-geq>::</emu-geq><emu-rhs a="42edda0b"><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not <emu-nt>LineTerminator</emu-nt></emu-gmod></emu-rhs>
+</emu-production>
+<emu-production name="RegularExpressionClass" type="lexical">
+    <emu-nt>RegularExpressionClass</emu-nt><emu-geq>::</emu-geq><emu-rhs a="4c1bc40a"><emu-t>[</emu-t><emu-nt>RegularExpressionClassChars</emu-nt><emu-t>]</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="RegularExpressionClassChars" type="lexical">
+    <emu-nt>RegularExpressionClassChars</emu-nt><emu-geq>::</emu-geq><emu-rhs a="37b9c04c"><emu-gann>[empty]</emu-gann></emu-rhs>
+    <emu-rhs a="76bdcb05"><emu-nt>RegularExpressionClassChars</emu-nt><emu-nt>RegularExpressionClassChar</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="RegularExpressionClassChar" type="lexical">
+    <emu-nt>RegularExpressionClassChar</emu-nt><emu-geq>::</emu-geq><emu-rhs a="6941a3c7"><emu-nt>RegularExpressionNonTerminator</emu-nt><emu-gmod>but not one of <emu-t>]</emu-t> or <emu-t>\</emu-t></emu-gmod></emu-rhs>
+    <emu-rhs a="9c9579a7"><emu-nt>RegularExpressionBackslashSequence</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="RegularExpressionFlags" type="lexical">
+    <emu-nt>RegularExpressionFlags</emu-nt><emu-geq>::</emu-geq><emu-rhs a="37b9c04c"><emu-gann>[empty]</emu-gann></emu-rhs>
+    <emu-rhs a="fceefdcd"><emu-nt>RegularExpressionFlags</emu-nt><emu-nt>IdentifierPart</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="Template" type="lexical">
+    <emu-nt>Template</emu-nt><emu-geq>::</emu-geq><emu-rhs a="7bf3ad2b"><emu-nt>NoSubstitutionTemplate</emu-nt></emu-rhs>
+    <emu-rhs a="ab9a4b96"><emu-nt>TemplateHead</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="NoSubstitutionTemplate" type="lexical">
+    <emu-nt>NoSubstitutionTemplate</emu-nt><emu-geq>::</emu-geq><emu-rhs a="056f5c6b"><emu-t>`</emu-t><emu-nt optional="">TemplateCharacters<emu-mods> opt</emu-mods></emu-nt><emu-t>`</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="TemplateHead" type="lexical">
+    <emu-nt>TemplateHead</emu-nt><emu-geq>::</emu-geq><emu-rhs a="bfb172fc"><emu-t>`</emu-t><emu-nt optional="">TemplateCharacters<emu-mods> opt</emu-mods></emu-nt><emu-t>${</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="TemplateSubstitutionTail" type="lexical">
+    <emu-nt>TemplateSubstitutionTail</emu-nt><emu-geq>::</emu-geq><emu-rhs a="ccbc035d"><emu-nt>TemplateMiddle</emu-nt></emu-rhs>
+    <emu-rhs a="57fe6188"><emu-nt>TemplateTail</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="TemplateMiddle" type="lexical">
+    <emu-nt>TemplateMiddle</emu-nt><emu-geq>::</emu-geq><emu-rhs a="37635b4e"><emu-t>}</emu-t><emu-nt optional="">TemplateCharacters<emu-mods> opt</emu-mods></emu-nt><emu-t>${</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="TemplateTail" type="lexical">
+    <emu-nt>TemplateTail</emu-nt><emu-geq>::</emu-geq><emu-rhs a="fcef5bc0"><emu-t>}</emu-t><emu-nt optional="">TemplateCharacters<emu-mods> opt</emu-mods></emu-nt><emu-t>`</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="TemplateCharacters" type="lexical">
+    <emu-nt>TemplateCharacters</emu-nt><emu-geq>::</emu-geq><emu-rhs a="f8c26ac5"><emu-nt>TemplateCharacter</emu-nt><emu-nt optional="">TemplateCharacters<emu-mods> opt</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="TemplateCharacter" type="lexical">
+    <emu-nt>TemplateCharacter</emu-nt><emu-geq>::</emu-geq><emu-rhs a="03c3b542"><emu-t>$</emu-t><emu-gann>[lookahead ≠ <emu-t>{</emu-t>]</emu-gann></emu-rhs>
+    <emu-rhs a="ea7d8d26"><emu-t>\</emu-t><emu-nt>EscapeSequence</emu-nt></emu-rhs>
+    <emu-rhs a="00992933"><emu-nt>LineContinuation</emu-nt></emu-rhs>
+    <emu-rhs a="544825da"><emu-nt>LineTerminatorSequence</emu-nt></emu-rhs>
+    <emu-rhs a="660db50f"><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not one of <emu-t>`</emu-t> or <emu-t>\</emu-t> or <emu-t>$</emu-t> or <emu-nt>LineTerminator</emu-nt></emu-gmod></emu-rhs>
+</emu-production>
+<emu-production name="IdentifierReference" params="Yield">
+    <emu-nt params="Yield">IdentifierReference<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="06b6ace8"><emu-nt>Identifier</emu-nt></emu-rhs>
+    <emu-rhs a="481cca15" constraints="~Yield"><emu-constraints>[~Yield]</emu-constraints><emu-t>yield</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="BindingIdentifier" params="Yield">
+    <emu-nt params="Yield">BindingIdentifier<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="06b6ace8"><emu-nt>Identifier</emu-nt></emu-rhs>
+    <emu-rhs a="481cca15" constraints="~Yield"><emu-constraints>[~Yield]</emu-constraints><emu-t>yield</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="LabelIdentifier" params="Yield">
+    <emu-nt params="Yield">LabelIdentifier<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="06b6ace8"><emu-nt>Identifier</emu-nt></emu-rhs>
+    <emu-rhs a="481cca15" constraints="~Yield"><emu-constraints>[~Yield]</emu-constraints><emu-t>yield</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="Identifier">
+    <emu-nt>Identifier</emu-nt><emu-geq>:</emu-geq><emu-rhs a="bb0c62c5"><emu-nt>IdentifierName</emu-nt><emu-gmod>but not <emu-nt>ReservedWord</emu-nt></emu-gmod></emu-rhs>
+</emu-production>
+<emu-production name="PrimaryExpression" params="Yield">
+    <emu-nt params="Yield">PrimaryExpression<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="8cee0c59"><emu-t>this</emu-t></emu-rhs>
+    <emu-rhs a="3a0131bb"><emu-nt params="?Yield">IdentifierReference<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="92e97e03"><emu-nt>Literal</emu-nt></emu-rhs>
+    <emu-rhs a="ac47bb6b"><emu-nt params="?Yield">ArrayLiteral<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="0392c02a"><emu-nt params="?Yield">ObjectLiteral<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="242eeccd"><emu-nt>FunctionExpression</emu-nt></emu-rhs>
+    <emu-rhs a="c2664089"><emu-nt params="?Yield">ClassExpression<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="abb7f7f4"><emu-nt>GeneratorExpression</emu-nt></emu-rhs>
+    <emu-rhs a="31b672e8"><emu-nt>RegularExpressionLiteral</emu-nt></emu-rhs>
+    <emu-rhs a="2d2930d1"><emu-nt params="?Yield">TemplateLiteral<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="b3fd8fa6"><emu-nt params="?Yield">CoverParenthesizedExpressionAndArrowParameterList<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="CoverParenthesizedExpressionAndArrowParameterList" params="Yield">
+    <emu-nt params="Yield">CoverParenthesizedExpressionAndArrowParameterList<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="029ac257"><emu-t>(</emu-t><emu-nt params="In, ?Yield">Expression<emu-mods> [In, ?Yield]</emu-mods></emu-nt><emu-t>)</emu-t></emu-rhs>
+    <emu-rhs a="78e44c33"><emu-t>(</emu-t><emu-t>)</emu-t></emu-rhs>
+    <emu-rhs a="1f3e167a"><emu-t>(</emu-t><emu-t>...</emu-t><emu-nt params="?Yield">BindingIdentifier<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>)</emu-t></emu-rhs>
+    <emu-rhs a="73ce9d37"><emu-t>(</emu-t><emu-nt params="In, ?Yield">Expression<emu-mods> [In, ?Yield]</emu-mods></emu-nt><emu-t>,</emu-t><emu-t>...</emu-t><emu-nt params="?Yield">BindingIdentifier<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>)</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="Literal">
+    <emu-nt>Literal</emu-nt><emu-geq>:</emu-geq><emu-rhs a="54f84188"><emu-nt>NullLiteral</emu-nt></emu-rhs>
+    <emu-rhs a="3508e1fd"><emu-nt>BooleanLiteral</emu-nt></emu-rhs>
+    <emu-rhs a="a548b407"><emu-nt>NumericLiteral</emu-nt></emu-rhs>
+    <emu-rhs a="5c74e54d"><emu-nt>StringLiteral</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ArrayLiteral" params="Yield">
+    <emu-nt params="Yield">ArrayLiteral<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="906e476b"><emu-t>[</emu-t><emu-nt optional="">Elision<emu-mods> opt</emu-mods></emu-nt><emu-t>]</emu-t></emu-rhs>
+    <emu-rhs a="71e00db5"><emu-t>[</emu-t><emu-nt params="?Yield">ElementList<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>]</emu-t></emu-rhs>
+    <emu-rhs a="eaaf3387"><emu-t>[</emu-t><emu-nt params="?Yield">ElementList<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>,</emu-t><emu-nt optional="">Elision<emu-mods> opt</emu-mods></emu-nt><emu-t>]</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="ElementList" params="Yield">
+    <emu-nt params="Yield">ElementList<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="337c482b"><emu-nt optional="">Elision<emu-mods> opt</emu-mods></emu-nt><emu-nt params="In, ?Yield">AssignmentExpression<emu-mods> [In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="05f42a48"><emu-nt optional="">Elision<emu-mods> opt</emu-mods></emu-nt><emu-nt params="?Yield">SpreadElement<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="5fbdc8af"><emu-nt params="?Yield">ElementList<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>,</emu-t><emu-nt optional="">Elision<emu-mods> opt</emu-mods></emu-nt><emu-nt params="In, ?Yield">AssignmentExpression<emu-mods> [In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="df01e14f"><emu-nt params="?Yield">ElementList<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>,</emu-t><emu-nt optional="">Elision<emu-mods> opt</emu-mods></emu-nt><emu-nt params="?Yield">SpreadElement<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="Elision">
+    <emu-nt>Elision</emu-nt><emu-geq>:</emu-geq><emu-rhs a="9471f753"><emu-t>,</emu-t></emu-rhs>
+    <emu-rhs a="806d0124"><emu-nt>Elision</emu-nt><emu-t>,</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="SpreadElement" params="Yield">
+    <emu-nt params="Yield">SpreadElement<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="06932152"><emu-t>...</emu-t><emu-nt params="In, ?Yield">AssignmentExpression<emu-mods> [In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ObjectLiteral" params="Yield">
+    <emu-nt params="Yield">ObjectLiteral<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="81ba5a4a"><emu-t>{</emu-t><emu-t>}</emu-t></emu-rhs>
+    <emu-rhs a="e8cab933"><emu-t>{</emu-t><emu-nt params="?Yield">PropertyDefinitionList<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>}</emu-t></emu-rhs>
+    <emu-rhs a="f3799aaa"><emu-t>{</emu-t><emu-nt params="?Yield">PropertyDefinitionList<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>,</emu-t><emu-t>}</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="PropertyDefinitionList" params="Yield">
+    <emu-nt params="Yield">PropertyDefinitionList<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="9c5ab7a0"><emu-nt params="?Yield">PropertyDefinition<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="fa54c4a2"><emu-nt params="?Yield">PropertyDefinitionList<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>,</emu-t><emu-nt params="?Yield">PropertyDefinition<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="PropertyDefinition" params="Yield">
+    <emu-nt params="Yield">PropertyDefinition<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="3a0131bb"><emu-nt params="?Yield">IdentifierReference<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="024b5337"><emu-nt params="?Yield">CoverInitializedName<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="e6a7ef49"><emu-nt params="?Yield">PropertyName<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>:</emu-t><emu-nt params="In, ?Yield">AssignmentExpression<emu-mods> [In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="da6bdd4c"><emu-nt params="?Yield">MethodDefinition<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="PropertyName" params="Yield">
+    <emu-nt params="Yield">PropertyName<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="e71e2304"><emu-nt>LiteralPropertyName</emu-nt></emu-rhs>
+    <emu-rhs a="cb2923ed"><emu-nt params="?Yield">ComputedPropertyName<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="LiteralPropertyName">
+    <emu-nt>LiteralPropertyName</emu-nt><emu-geq>:</emu-geq><emu-rhs a="0ebb31e2"><emu-nt>IdentifierName</emu-nt></emu-rhs>
+    <emu-rhs a="5c74e54d"><emu-nt>StringLiteral</emu-nt></emu-rhs>
+    <emu-rhs a="a548b407"><emu-nt>NumericLiteral</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ComputedPropertyName" params="Yield">
+    <emu-nt params="Yield">ComputedPropertyName<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="4acbaecf"><emu-t>[</emu-t><emu-nt params="In, ?Yield">AssignmentExpression<emu-mods> [In, ?Yield]</emu-mods></emu-nt><emu-t>]</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="CoverInitializedName" params="Yield">
+    <emu-nt params="Yield">CoverInitializedName<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="4a7592d9"><emu-nt params="?Yield">IdentifierReference<emu-mods> [?Yield]</emu-mods></emu-nt><emu-nt params="In, ?Yield">Initializer<emu-mods> [In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="Initializer" params="In, Yield">
+    <emu-nt params="In, Yield">Initializer<emu-mods> [In, Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="345dd547"><emu-t>=</emu-t><emu-nt params="?In, ?Yield">AssignmentExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="TemplateLiteral" params="Yield">
+    <emu-nt params="Yield">TemplateLiteral<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="7bf3ad2b"><emu-nt>NoSubstitutionTemplate</emu-nt></emu-rhs>
+    <emu-rhs a="e9a466df"><emu-nt>TemplateHead</emu-nt><emu-nt params="In, ?Yield">Expression<emu-mods> [In, ?Yield]</emu-mods></emu-nt><emu-nt params="?Yield">TemplateSpans<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="TemplateSpans" params="Yield">
+    <emu-nt params="Yield">TemplateSpans<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="57fe6188"><emu-nt>TemplateTail</emu-nt></emu-rhs>
+    <emu-rhs a="2a7f8392"><emu-nt params="?Yield">TemplateMiddleList<emu-mods> [?Yield]</emu-mods></emu-nt><emu-nt>TemplateTail</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="TemplateMiddleList" params="Yield">
+    <emu-nt params="Yield">TemplateMiddleList<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="343328ef"><emu-nt>TemplateMiddle</emu-nt><emu-nt params="In, ?Yield">Expression<emu-mods> [In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="07b7e954"><emu-nt params="?Yield">TemplateMiddleList<emu-mods> [?Yield]</emu-mods></emu-nt><emu-nt>TemplateMiddle</emu-nt><emu-nt params="In, ?Yield">Expression<emu-mods> [In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="MemberExpression" params="Yield">
+    <emu-nt params="Yield">MemberExpression<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="0952d8cb"><emu-nt params="?Yield">PrimaryExpression<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="e1a5c9fb"><emu-nt params="?Yield">MemberExpression<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>[</emu-t><emu-nt params="In, ?Yield">Expression<emu-mods> [In, ?Yield]</emu-mods></emu-nt><emu-t>]</emu-t></emu-rhs>
+    <emu-rhs a="629e16ee"><emu-nt params="?Yield">MemberExpression<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>.</emu-t><emu-nt>IdentifierName</emu-nt></emu-rhs>
+    <emu-rhs a="12893548"><emu-nt params="?Yield">MemberExpression<emu-mods> [?Yield]</emu-mods></emu-nt><emu-nt params="?Yield">TemplateLiteral<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="fcc05c23"><emu-nt params="?Yield">SuperProperty<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="c81ee20f"><emu-nt>MetaProperty</emu-nt></emu-rhs>
+    <emu-rhs a="d5e683a8"><emu-t>new</emu-t><emu-nt params="?Yield">MemberExpression<emu-mods> [?Yield]</emu-mods></emu-nt><emu-nt params="?Yield">Arguments<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="SuperProperty" params="Yield">
+    <emu-nt params="Yield">SuperProperty<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="0b1ba5b1"><emu-t>super</emu-t><emu-t>[</emu-t><emu-nt params="In, ?Yield">Expression<emu-mods> [In, ?Yield]</emu-mods></emu-nt><emu-t>]</emu-t></emu-rhs>
+    <emu-rhs a="f690ec4a"><emu-t>super</emu-t><emu-t>.</emu-t><emu-nt>IdentifierName</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="MetaProperty">
+    <emu-nt>MetaProperty</emu-nt><emu-geq>:</emu-geq><emu-rhs a="733bdb20"><emu-nt>NewTarget</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="NewTarget">
+    <emu-nt>NewTarget</emu-nt><emu-geq>:</emu-geq><emu-rhs a="d2de213d"><emu-t>new</emu-t><emu-t>.</emu-t><emu-t>target</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="NewExpression" params="Yield">
+    <emu-nt params="Yield">NewExpression<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="26b6da76"><emu-nt params="?Yield">MemberExpression<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="e2186e0c"><emu-t>new</emu-t><emu-nt params="?Yield">NewExpression<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="CallExpression" params="Yield">
+    <emu-nt params="Yield">CallExpression<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="eed49138"><emu-nt params="?Yield">MemberExpression<emu-mods> [?Yield]</emu-mods></emu-nt><emu-nt params="?Yield">Arguments<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="91ffa870"><emu-nt params="?Yield">SuperCall<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="13f81c0e"><emu-nt params="?Yield">CallExpression<emu-mods> [?Yield]</emu-mods></emu-nt><emu-nt params="?Yield">Arguments<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="cd2dc062"><emu-nt params="?Yield">CallExpression<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>[</emu-t><emu-nt params="In, ?Yield">Expression<emu-mods> [In, ?Yield]</emu-mods></emu-nt><emu-t>]</emu-t></emu-rhs>
+    <emu-rhs a="710733f7"><emu-nt params="?Yield">CallExpression<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>.</emu-t><emu-nt>IdentifierName</emu-nt></emu-rhs>
+    <emu-rhs a="e3527637"><emu-nt params="?Yield">CallExpression<emu-mods> [?Yield]</emu-mods></emu-nt><emu-nt params="?Yield">TemplateLiteral<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="SuperCall" params="Yield">
+    <emu-nt params="Yield">SuperCall<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="efa163a3"><emu-t>super</emu-t><emu-nt params="?Yield">Arguments<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="Arguments" params="Yield">
+    <emu-nt params="Yield">Arguments<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="78e44c33"><emu-t>(</emu-t><emu-t>)</emu-t></emu-rhs>
+    <emu-rhs a="9c2026a8"><emu-t>(</emu-t><emu-nt params="?Yield">ArgumentList<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>)</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="ArgumentList" params="Yield">
+    <emu-nt params="Yield">ArgumentList<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="bdb9ec6f"><emu-nt params="In, ?Yield">AssignmentExpression<emu-mods> [In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="06932152"><emu-t>...</emu-t><emu-nt params="In, ?Yield">AssignmentExpression<emu-mods> [In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="346fb3ce"><emu-nt params="?Yield">ArgumentList<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>,</emu-t><emu-nt params="In, ?Yield">AssignmentExpression<emu-mods> [In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="34a1ca49"><emu-nt params="?Yield">ArgumentList<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>,</emu-t><emu-t>...</emu-t><emu-nt params="In, ?Yield">AssignmentExpression<emu-mods> [In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="LeftHandSideExpression" params="Yield">
+    <emu-nt params="Yield">LeftHandSideExpression<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="d2389ef6"><emu-nt params="?Yield">NewExpression<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="f68183d8"><emu-nt params="?Yield">CallExpression<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="PostfixExpression" params="Yield">
+    <emu-nt params="Yield">PostfixExpression<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="377fae86"><emu-nt params="?Yield">LeftHandSideExpression<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="01e0f909"><emu-nt params="?Yield">LeftHandSideExpression<emu-mods> [?Yield]</emu-mods></emu-nt><emu-gann>[no <emu-nt>LineTerminator</emu-nt> here]</emu-gann><emu-t>++</emu-t></emu-rhs>
+    <emu-rhs a="f1ad4cc5"><emu-nt params="?Yield">LeftHandSideExpression<emu-mods> [?Yield]</emu-mods></emu-nt><emu-gann>[no <emu-nt>LineTerminator</emu-nt> here]</emu-gann><emu-t>--</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="UnaryExpression" params="Yield">
+    <emu-nt params="Yield">UnaryExpression<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="3511bc90"><emu-nt params="?Yield">PostfixExpression<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="7a45ced6"><emu-t>delete</emu-t><emu-nt params="?Yield">UnaryExpression<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="fecd74e3"><emu-t>void</emu-t><emu-nt params="?Yield">UnaryExpression<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="ed6968ab"><emu-t>typeof</emu-t><emu-nt params="?Yield">UnaryExpression<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="58097953"><emu-t>++</emu-t><emu-nt params="?Yield">UnaryExpression<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="b2900693"><emu-t>--</emu-t><emu-nt params="?Yield">UnaryExpression<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="b2138170"><emu-t>+</emu-t><emu-nt params="?Yield">UnaryExpression<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="d7c5d494"><emu-t>-</emu-t><emu-nt params="?Yield">UnaryExpression<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="e14bfc0e"><emu-t>~</emu-t><emu-nt params="?Yield">UnaryExpression<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="0514e7a2"><emu-t>!</emu-t><emu-nt params="?Yield">UnaryExpression<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="MultiplicativeExpression" params="Yield">
+    <emu-nt params="Yield">MultiplicativeExpression<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="d499e73d"><emu-nt params="?Yield">UnaryExpression<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="dde0aa6f"><emu-nt params="?Yield">MultiplicativeExpression<emu-mods> [?Yield]</emu-mods></emu-nt><emu-nt>MultiplicativeOperator</emu-nt><emu-nt params="?Yield">UnaryExpression<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="MultiplicativeOperator" oneof="">
+    <emu-nt>MultiplicativeOperator</emu-nt><emu-geq>:</emu-geq><emu-oneof>one of</emu-oneof><emu-rhs><emu-t>*</emu-t><emu-t>/</emu-t><emu-t>%</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="AdditiveExpression" params="Yield">
+    <emu-nt params="Yield">AdditiveExpression<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="97b824d7"><emu-nt params="?Yield">MultiplicativeExpression<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="5ba6cc81"><emu-nt params="?Yield">AdditiveExpression<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>+</emu-t><emu-nt params="?Yield">MultiplicativeExpression<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="bf0c1119"><emu-nt params="?Yield">AdditiveExpression<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>-</emu-t><emu-nt params="?Yield">MultiplicativeExpression<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ShiftExpression" params="Yield">
+    <emu-nt params="Yield">ShiftExpression<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="2baeb5db"><emu-nt params="?Yield">AdditiveExpression<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="1e6dbeb2"><emu-nt params="?Yield">ShiftExpression<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>&lt;&lt;</emu-t><emu-nt params="?Yield">AdditiveExpression<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="639cdc26"><emu-nt params="?Yield">ShiftExpression<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>&gt;&gt;</emu-t><emu-nt params="?Yield">AdditiveExpression<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="9d297ffd"><emu-nt params="?Yield">ShiftExpression<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>&gt;&gt;&gt;</emu-t><emu-nt params="?Yield">AdditiveExpression<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="RelationalExpression" params="In, Yield">
+    <emu-nt params="In, Yield">RelationalExpression<emu-mods> [In, Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="14cbe144"><emu-nt params="?Yield">ShiftExpression<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="862f8bef"><emu-nt params="?In, ?Yield">RelationalExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt><emu-t>&lt;</emu-t><emu-nt params="?Yield">ShiftExpression<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="e1b30960"><emu-nt params="?In, ?Yield">RelationalExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt><emu-t>&gt;</emu-t><emu-nt params="?Yield">ShiftExpression<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="707c38bf"><emu-nt params="?In, ?Yield">RelationalExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt><emu-t>&lt;=</emu-t><emu-nt params="?Yield">ShiftExpression<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="cc6c18fa"><emu-nt params="?In, ?Yield">RelationalExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt><emu-t>&gt;=</emu-t><emu-nt params="?Yield">ShiftExpression<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="3bd34097"><emu-nt params="?In, ?Yield">RelationalExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt><emu-t>instanceof</emu-t><emu-nt params="?Yield">ShiftExpression<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="bf2605bc" constraints="+In"><emu-constraints>[+In]</emu-constraints><emu-nt params="In, ?Yield">RelationalExpression<emu-mods> [In, ?Yield]</emu-mods></emu-nt><emu-t>in</emu-t><emu-nt params="?Yield">ShiftExpression<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="EqualityExpression" params="In, Yield">
+    <emu-nt params="In, Yield">EqualityExpression<emu-mods> [In, Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="2f008b2b"><emu-nt params="?In, ?Yield">RelationalExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="4e8ecf54"><emu-nt params="?In, ?Yield">EqualityExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt><emu-t>==</emu-t><emu-nt params="?In, ?Yield">RelationalExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="73baad0e"><emu-nt params="?In, ?Yield">EqualityExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt><emu-t>!=</emu-t><emu-nt params="?In, ?Yield">RelationalExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="5c018f1f"><emu-nt params="?In, ?Yield">EqualityExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt><emu-t>===</emu-t><emu-nt params="?In, ?Yield">RelationalExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="1f512a7e"><emu-nt params="?In, ?Yield">EqualityExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt><emu-t>!==</emu-t><emu-nt params="?In, ?Yield">RelationalExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="BitwiseANDExpression" params="In, Yield">
+    <emu-nt params="In, Yield">BitwiseANDExpression<emu-mods> [In, Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="003e4dd5"><emu-nt params="?In, ?Yield">EqualityExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="dc348a15"><emu-nt params="?In, ?Yield">BitwiseANDExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt><emu-t>&amp;</emu-t><emu-nt params="?In, ?Yield">EqualityExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="BitwiseXORExpression" params="In, Yield">
+    <emu-nt params="In, Yield">BitwiseXORExpression<emu-mods> [In, Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="67b2e707"><emu-nt params="?In, ?Yield">BitwiseANDExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="2519f36e"><emu-nt params="?In, ?Yield">BitwiseXORExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt><emu-t>^</emu-t><emu-nt params="?In, ?Yield">BitwiseANDExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="BitwiseORExpression" params="In, Yield">
+    <emu-nt params="In, Yield">BitwiseORExpression<emu-mods> [In, Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="9dfaebf6"><emu-nt params="?In, ?Yield">BitwiseXORExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="afb46f89"><emu-nt params="?In, ?Yield">BitwiseORExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt><emu-t>|</emu-t><emu-nt params="?In, ?Yield">BitwiseXORExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="LogicalANDExpression" params="In, Yield">
+    <emu-nt params="In, Yield">LogicalANDExpression<emu-mods> [In, Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="43e84f3f"><emu-nt params="?In, ?Yield">BitwiseORExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="de0d5414"><emu-nt params="?In, ?Yield">LogicalANDExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt><emu-t>&amp;&amp;</emu-t><emu-nt params="?In, ?Yield">BitwiseORExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="LogicalORExpression" params="In, Yield">
+    <emu-nt params="In, Yield">LogicalORExpression<emu-mods> [In, Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="6ab59bc8"><emu-nt params="?In, ?Yield">LogicalANDExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="03547d4d"><emu-nt params="?In, ?Yield">LogicalORExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt><emu-t>||</emu-t><emu-nt params="?In, ?Yield">LogicalANDExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ConditionalExpression" params="In, Yield">
+    <emu-nt params="In, Yield">ConditionalExpression<emu-mods> [In, Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="c932f215"><emu-nt params="?In, ?Yield">LogicalORExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="c1f59db1"><emu-nt params="?In, ?Yield">LogicalORExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt><emu-t>?</emu-t><emu-nt params="In, ?Yield">AssignmentExpression<emu-mods> [In, ?Yield]</emu-mods></emu-nt><emu-t>:</emu-t><emu-nt params="?In, ?Yield">AssignmentExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="AssignmentExpression" params="In, Yield">
+    <emu-nt params="In, Yield">AssignmentExpression<emu-mods> [In, Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="0e9e3100"><emu-nt params="?In, ?Yield">ConditionalExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="197afb63" constraints="+Yield"><emu-constraints>[+Yield]</emu-constraints><emu-nt params="?In">YieldExpression<emu-mods> [?In]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="a9fcaed4"><emu-nt params="?In, ?Yield">ArrowFunction<emu-mods> [?In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="4894ae74"><emu-nt params="?Yield">LeftHandSideExpression<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>=</emu-t><emu-nt params="?In, ?Yield">AssignmentExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="10c3e4bb"><emu-nt params="?Yield">LeftHandSideExpression<emu-mods> [?Yield]</emu-mods></emu-nt><emu-nt>AssignmentOperator</emu-nt><emu-nt params="?In, ?Yield">AssignmentExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="AssignmentOperator" oneof="">
+    <emu-nt>AssignmentOperator</emu-nt><emu-geq>:</emu-geq><emu-oneof>one of</emu-oneof><emu-rhs><emu-t>*=</emu-t><emu-t>/=</emu-t><emu-t>%=</emu-t><emu-t>+=</emu-t><emu-t>-=</emu-t><emu-t>&lt;&lt;=</emu-t><emu-t>&gt;&gt;=</emu-t><emu-t>&gt;&gt;&gt;=</emu-t><emu-t>&amp;=</emu-t><emu-t>^=</emu-t><emu-t>|=</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="Expression" params="In, Yield">
+    <emu-nt params="In, Yield">Expression<emu-mods> [In, Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="786f9dbf"><emu-nt params="?In, ?Yield">AssignmentExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="903ff309"><emu-nt params="?In, ?Yield">Expression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt><emu-t>,</emu-t><emu-nt params="?In, ?Yield">AssignmentExpression<emu-mods> [?In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="Statement" params="Yield, Return">
+    <emu-nt params="Yield, Return">Statement<emu-mods> [Yield, Return]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="a078de59"><emu-nt params="?Yield, ?Return">BlockStatement<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="0829ccbc"><emu-nt params="?Yield">VariableStatement<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="7338aabb"><emu-nt>EmptyStatement</emu-nt></emu-rhs>
+    <emu-rhs a="bf83eb13"><emu-nt params="?Yield">ExpressionStatement<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="74e1fb03"><emu-nt params="?Yield, ?Return">IfStatement<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="dc2a2400"><emu-nt params="?Yield, ?Return">BreakableStatement<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="b9a5a50f"><emu-nt params="?Yield">ContinueStatement<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="c8c4fc64"><emu-nt params="?Yield">BreakStatement<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="27633cf7" constraints="+Return"><emu-constraints>[+Return]</emu-constraints><emu-nt params="?Yield">ReturnStatement<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="6530a28f"><emu-nt params="?Yield, ?Return">WithStatement<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="86b75733"><emu-nt params="?Yield, ?Return">LabelledStatement<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="6b7b863f"><emu-nt params="?Yield">ThrowStatement<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="1f0b6d58"><emu-nt params="?Yield, ?Return">TryStatement<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="21212edb"><emu-nt>DebuggerStatement</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="Declaration" params="Yield">
+    <emu-nt params="Yield">Declaration<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="be3797c8"><emu-nt params="?Yield">HoistableDeclaration<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="5e5813be"><emu-nt params="?Yield">ClassDeclaration<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="4e8ce3a9"><emu-nt params="In, ?Yield">LexicalDeclaration<emu-mods> [In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="HoistableDeclaration" params="Yield, Default">
+    <emu-nt params="Yield, Default">HoistableDeclaration<emu-mods> [Yield, Default]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="a1547821"><emu-nt params="?Yield, ?Default">FunctionDeclaration<emu-mods> [?Yield, ?Default]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="967c0035"><emu-nt params="?Yield, ?Default">GeneratorDeclaration<emu-mods> [?Yield, ?Default]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="BreakableStatement" params="Yield, Return">
+    <emu-nt params="Yield, Return">BreakableStatement<emu-mods> [Yield, Return]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="a132b5c7"><emu-nt params="?Yield, ?Return">IterationStatement<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="ce99464e"><emu-nt params="?Yield, ?Return">SwitchStatement<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="BlockStatement" params="Yield, Return">
+    <emu-nt params="Yield, Return">BlockStatement<emu-mods> [Yield, Return]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="6fdf1f1f"><emu-nt params="?Yield, ?Return">Block<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="Block" params="Yield, Return">
+    <emu-nt params="Yield, Return">Block<emu-mods> [Yield, Return]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="a890e138"><emu-t>{</emu-t><emu-nt params="?Yield, ?Return" optional="">StatementList<emu-mods> [?Yield, ?Return] opt</emu-mods></emu-nt><emu-t>}</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="StatementList" params="Yield, Return">
+    <emu-nt params="Yield, Return">StatementList<emu-mods> [Yield, Return]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="ca6617f3"><emu-nt params="?Yield, ?Return">StatementListItem<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="32cfa255"><emu-nt params="?Yield, ?Return">StatementList<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt><emu-nt params="?Yield, ?Return">StatementListItem<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="StatementListItem" params="Yield, Return">
+    <emu-nt params="Yield, Return">StatementListItem<emu-mods> [Yield, Return]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="a5329c8e"><emu-nt params="?Yield, ?Return">Statement<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="404bc939"><emu-nt params="?Yield">Declaration<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="LexicalDeclaration" params="In, Yield">
+    <emu-nt params="In, Yield">LexicalDeclaration<emu-mods> [In, Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="c55fb836"><emu-nt>LetOrConst</emu-nt><emu-nt params="?In, ?Yield">BindingList<emu-mods> [?In, ?Yield]</emu-mods></emu-nt><emu-t>;</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="LetOrConst">
+    <emu-nt>LetOrConst</emu-nt><emu-geq>:</emu-geq><emu-rhs a="940c6b54"><emu-t>let</emu-t></emu-rhs>
+    <emu-rhs a="36233f0f"><emu-t>const</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="BindingList" params="In, Yield">
+    <emu-nt params="In, Yield">BindingList<emu-mods> [In, Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="137d39cb"><emu-nt params="?In, ?Yield">LexicalBinding<emu-mods> [?In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="300461d5"><emu-nt params="?In, ?Yield">BindingList<emu-mods> [?In, ?Yield]</emu-mods></emu-nt><emu-t>,</emu-t><emu-nt params="?In, ?Yield">LexicalBinding<emu-mods> [?In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="LexicalBinding" params="In, Yield">
+    <emu-nt params="In, Yield">LexicalBinding<emu-mods> [In, Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="07d82831"><emu-nt params="?Yield">BindingIdentifier<emu-mods> [?Yield]</emu-mods></emu-nt><emu-nt params="?In, ?Yield" optional="">Initializer<emu-mods> [?In, ?Yield] opt</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="d067a280"><emu-nt params="?Yield">BindingPattern<emu-mods> [?Yield]</emu-mods></emu-nt><emu-nt params="?In, ?Yield">Initializer<emu-mods> [?In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="VariableStatement" params="Yield">
+    <emu-nt params="Yield">VariableStatement<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="e21edf3a"><emu-t>var</emu-t><emu-nt params="In, ?Yield">VariableDeclarationList<emu-mods> [In, ?Yield]</emu-mods></emu-nt><emu-t>;</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="VariableDeclarationList" params="In, Yield">
+    <emu-nt params="In, Yield">VariableDeclarationList<emu-mods> [In, Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="0f4cd65a"><emu-nt params="?In, ?Yield">VariableDeclaration<emu-mods> [?In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="2c3a0675"><emu-nt params="?In, ?Yield">VariableDeclarationList<emu-mods> [?In, ?Yield]</emu-mods></emu-nt><emu-t>,</emu-t><emu-nt params="?In, ?Yield">VariableDeclaration<emu-mods> [?In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="VariableDeclaration" params="In, Yield">
+    <emu-nt params="In, Yield">VariableDeclaration<emu-mods> [In, Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="07d82831"><emu-nt params="?Yield">BindingIdentifier<emu-mods> [?Yield]</emu-mods></emu-nt><emu-nt params="?In, ?Yield" optional="">Initializer<emu-mods> [?In, ?Yield] opt</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="d067a280"><emu-nt params="?Yield">BindingPattern<emu-mods> [?Yield]</emu-mods></emu-nt><emu-nt params="?In, ?Yield">Initializer<emu-mods> [?In, ?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="BindingPattern" params="Yield">
+    <emu-nt params="Yield">BindingPattern<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="22a4b38f"><emu-nt params="?Yield">ObjectBindingPattern<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="4f2a669c"><emu-nt params="?Yield">ArrayBindingPattern<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ObjectBindingPattern" params="Yield">
+    <emu-nt params="Yield">ObjectBindingPattern<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="81ba5a4a"><emu-t>{</emu-t><emu-t>}</emu-t></emu-rhs>
+    <emu-rhs a="290caaf8"><emu-t>{</emu-t><emu-nt params="?Yield">BindingPropertyList<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>}</emu-t></emu-rhs>
+    <emu-rhs a="eadb5f10"><emu-t>{</emu-t><emu-nt params="?Yield">BindingPropertyList<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>,</emu-t><emu-t>}</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="ArrayBindingPattern" params="Yield">
+    <emu-nt params="Yield">ArrayBindingPattern<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="f99d733a"><emu-t>[</emu-t><emu-nt optional="">Elision<emu-mods> opt</emu-mods></emu-nt><emu-nt params="?Yield" optional="">BindingRestElement<emu-mods> [?Yield] opt</emu-mods></emu-nt><emu-t>]</emu-t></emu-rhs>
+    <emu-rhs a="b7b304c9"><emu-t>[</emu-t><emu-nt params="?Yield">BindingElementList<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>]</emu-t></emu-rhs>
+    <emu-rhs a="1fcadd15"><emu-t>[</emu-t><emu-nt params="?Yield">BindingElementList<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>,</emu-t><emu-nt optional="">Elision<emu-mods> opt</emu-mods></emu-nt><emu-nt params="?Yield" optional="">BindingRestElement<emu-mods> [?Yield] opt</emu-mods></emu-nt><emu-t>]</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="BindingPropertyList" params="Yield">
+    <emu-nt params="Yield">BindingPropertyList<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="33e60c4b"><emu-nt params="?Yield">BindingProperty<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="17a90c9e"><emu-nt params="?Yield">BindingPropertyList<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>,</emu-t><emu-nt params="?Yield">BindingProperty<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="BindingElementList" params="Yield">
+    <emu-nt params="Yield">BindingElementList<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="2d312774"><emu-nt params="?Yield">BindingElisionElement<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="c6c3a6f6"><emu-nt params="?Yield">BindingElementList<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>,</emu-t><emu-nt params="?Yield">BindingElisionElement<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="BindingElisionElement" params="Yield">
+    <emu-nt params="Yield">BindingElisionElement<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="6cfe4dc7"><emu-nt optional="">Elision<emu-mods> opt</emu-mods></emu-nt><emu-nt params="?Yield">BindingElement<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="BindingProperty" params="Yield">
+    <emu-nt params="Yield">BindingProperty<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="88cf21e8"><emu-nt params="?Yield">SingleNameBinding<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="b1bb3b8f"><emu-nt params="?Yield">PropertyName<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>:</emu-t><emu-nt params="?Yield">BindingElement<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="BindingElement" params="Yield">
+    <emu-nt params="Yield">BindingElement<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="88cf21e8"><emu-nt params="?Yield">SingleNameBinding<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="c9872fd0"><emu-nt params="?Yield">BindingPattern<emu-mods> [?Yield]</emu-mods></emu-nt><emu-nt params="In, ?Yield" optional="">Initializer<emu-mods> [In, ?Yield] opt</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="SingleNameBinding" params="Yield">
+    <emu-nt params="Yield">SingleNameBinding<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="461bcf3a"><emu-nt params="?Yield">BindingIdentifier<emu-mods> [?Yield]</emu-mods></emu-nt><emu-nt params="In, ?Yield" optional="">Initializer<emu-mods> [In, ?Yield] opt</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="BindingRestElement" params="Yield">
+    <emu-nt params="Yield">BindingRestElement<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="d895576d"><emu-t>...</emu-t><emu-nt params="?Yield">BindingIdentifier<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="EmptyStatement">
+    <emu-nt>EmptyStatement</emu-nt><emu-geq>:</emu-geq><emu-rhs a="4a0dac03"><emu-t>;</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="ExpressionStatement" params="Yield">
+    <emu-nt params="Yield">ExpressionStatement<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="d307f562"><emu-gann>[lookahead ∉ { <emu-t>{</emu-t>, <emu-t>function</emu-t>, <emu-t>class</emu-t>, <emu-t>let</emu-t>
+        <emu-t>[</emu-t> }]</emu-gann><emu-nt params="In, ?Yield">Expression<emu-mods> [In, ?Yield]</emu-mods></emu-nt><emu-t>;</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="IfStatement" params="Yield, Return">
+    <emu-nt params="Yield, Return">IfStatement<emu-mods> [Yield, Return]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="fec214c4"><emu-t>if</emu-t><emu-t>(</emu-t><emu-nt params="In, ?Yield">Expression<emu-mods> [In, ?Yield]</emu-mods></emu-nt><emu-t>)</emu-t><emu-nt params="?Yield, ?Return">Statement<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt><emu-t>else</emu-t><emu-nt params="?Yield, ?Return">Statement<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="fb98736a"><emu-t>if</emu-t><emu-t>(</emu-t><emu-nt params="In, ?Yield">Expression<emu-mods> [In, ?Yield]</emu-mods></emu-nt><emu-t>)</emu-t><emu-nt params="?Yield, ?Return">Statement<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="IterationStatement" params="Yield, Return">
+    <emu-nt params="Yield, Return">IterationStatement<emu-mods> [Yield, Return]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="ba73fb59"><emu-t>do</emu-t><emu-nt params="?Yield, ?Return">Statement<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt><emu-t>while</emu-t><emu-t>(</emu-t><emu-nt params="In, ?Yield">Expression<emu-mods> [In, ?Yield]</emu-mods></emu-nt><emu-t>)</emu-t><emu-t>;</emu-t></emu-rhs>
+    <emu-rhs a="8a37c0c0"><emu-t>while</emu-t><emu-t>(</emu-t><emu-nt params="In, ?Yield">Expression<emu-mods> [In, ?Yield]</emu-mods></emu-nt><emu-t>)</emu-t><emu-nt params="?Yield, ?Return">Statement<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="17470b61"><emu-t>for</emu-t><emu-t>(</emu-t><emu-gann>[lookahead ∉ { <emu-t>let</emu-t>
+        <emu-t>[</emu-t> }]</emu-gann><emu-nt params="?Yield" optional="">Expression<emu-mods> [?Yield] opt</emu-mods></emu-nt><emu-t>;</emu-t><emu-nt params="In, ?Yield" optional="">Expression<emu-mods> [In, ?Yield] opt</emu-mods></emu-nt><emu-t>;</emu-t><emu-nt params="In, ?Yield" optional="">Expression<emu-mods> [In, ?Yield] opt</emu-mods></emu-nt><emu-t>)</emu-t><emu-nt params="?Yield, ?Return">Statement<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="5780fda0"><emu-t>for</emu-t><emu-t>(</emu-t><emu-t>var</emu-t><emu-nt params="?Yield">VariableDeclarationList<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>;</emu-t><emu-nt params="In, ?Yield" optional="">Expression<emu-mods> [In, ?Yield] opt</emu-mods></emu-nt><emu-t>;</emu-t><emu-nt params="In, ?Yield" optional="">Expression<emu-mods> [In, ?Yield] opt</emu-mods></emu-nt><emu-t>)</emu-t><emu-nt params="?Yield, ?Return">Statement<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="84389299"><emu-t>for</emu-t><emu-t>(</emu-t><emu-nt params="?Yield">LexicalDeclaration<emu-mods> [?Yield]</emu-mods></emu-nt><emu-nt params="In, ?Yield" optional="">Expression<emu-mods> [In, ?Yield] opt</emu-mods></emu-nt><emu-t>;</emu-t><emu-nt params="In, ?Yield" optional="">Expression<emu-mods> [In, ?Yield] opt</emu-mods></emu-nt><emu-t>)</emu-t><emu-nt params="?Yield, ?Return">Statement<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="89a1d865"><emu-t>for</emu-t><emu-t>(</emu-t><emu-gann>[lookahead ∉ { <emu-t>let</emu-t>
+        <emu-t>[</emu-t> }]</emu-gann><emu-nt params="?Yield">LeftHandSideExpression<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>in</emu-t><emu-nt params="In, ?Yield">Expression<emu-mods> [In, ?Yield]</emu-mods></emu-nt><emu-t>)</emu-t><emu-nt params="?Yield, ?Return">Statement<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="09924fdf"><emu-t>for</emu-t><emu-t>(</emu-t><emu-t>var</emu-t><emu-nt params="?Yield">ForBinding<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>in</emu-t><emu-nt params="In, ?Yield">Expression<emu-mods> [In, ?Yield]</emu-mods></emu-nt><emu-t>)</emu-t><emu-nt params="?Yield, ?Return">Statement<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="72a15f72"><emu-t>for</emu-t><emu-t>(</emu-t><emu-nt params="?Yield">ForDeclaration<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>in</emu-t><emu-nt params="In, ?Yield">Expression<emu-mods> [In, ?Yield]</emu-mods></emu-nt><emu-t>)</emu-t><emu-nt params="?Yield, ?Return">Statement<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="acb0da27"><emu-t>for</emu-t><emu-t>(</emu-t><emu-gann>[lookahead ≠ <emu-t>let</emu-t>]</emu-gann><emu-nt params="?Yield">LeftHandSideExpression<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>of</emu-t><emu-nt params="In, ?Yield">AssignmentExpression<emu-mods> [In, ?Yield]</emu-mods></emu-nt><emu-t>)</emu-t><emu-nt params="?Yield, ?Return">Statement<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="7c78d3a4"><emu-t>for</emu-t><emu-t>(</emu-t><emu-t>var</emu-t><emu-nt params="?Yield">ForBinding<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>of</emu-t><emu-nt params="In, ?Yield">AssignmentExpression<emu-mods> [In, ?Yield]</emu-mods></emu-nt><emu-t>)</emu-t><emu-nt params="?Yield, ?Return">Statement<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="fa94ed48"><emu-t>for</emu-t><emu-t>(</emu-t><emu-nt params="?Yield">ForDeclaration<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>of</emu-t><emu-nt params="In, ?Yield">AssignmentExpression<emu-mods> [In, ?Yield]</emu-mods></emu-nt><emu-t>)</emu-t><emu-nt params="?Yield, ?Return">Statement<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ForDeclaration" params="Yield">
+    <emu-nt params="Yield">ForDeclaration<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="0a5be63b"><emu-nt>LetOrConst</emu-nt><emu-nt params="?Yield">ForBinding<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ForBinding" params="Yield">
+    <emu-nt params="Yield">ForBinding<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="46cd8f8d"><emu-nt params="?Yield">BindingIdentifier<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="7a565a71"><emu-nt params="?Yield">BindingPattern<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ContinueStatement" params="Yield">
+    <emu-nt params="Yield">ContinueStatement<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="e903cf81"><emu-t>continue</emu-t><emu-t>;</emu-t></emu-rhs>
+    <emu-rhs a="aa0a32b6"><emu-t>continue</emu-t><emu-gann>[no <emu-nt>LineTerminator</emu-nt> here]</emu-gann><emu-nt params="?Yield">LabelIdentifier<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>;</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="BreakStatement" params="Yield">
+    <emu-nt params="Yield">BreakStatement<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="b65229e7"><emu-t>break</emu-t><emu-t>;</emu-t></emu-rhs>
+    <emu-rhs a="8393d74c"><emu-t>break</emu-t><emu-gann>[no <emu-nt>LineTerminator</emu-nt> here]</emu-gann><emu-nt params="?Yield">LabelIdentifier<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>;</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="ReturnStatement" params="Yield">
+    <emu-nt params="Yield">ReturnStatement<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="0b293381"><emu-t>return</emu-t><emu-t>;</emu-t></emu-rhs>
+    <emu-rhs a="07ba34fa"><emu-t>return</emu-t><emu-gann>[no <emu-nt>LineTerminator</emu-nt> here]</emu-gann><emu-nt params="In, ?Yield">Expression<emu-mods> [In, ?Yield]</emu-mods></emu-nt><emu-t>;</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="WithStatement" params="Yield, Return">
+    <emu-nt params="Yield, Return">WithStatement<emu-mods> [Yield, Return]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="3f4e1dc0"><emu-t>with</emu-t><emu-t>(</emu-t><emu-nt params="In, ?Yield">Expression<emu-mods> [In, ?Yield]</emu-mods></emu-nt><emu-t>)</emu-t><emu-nt params="?Yield, ?Return">Statement<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="SwitchStatement" params="Yield, Return">
+    <emu-nt params="Yield, Return">SwitchStatement<emu-mods> [Yield, Return]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="7243ed39"><emu-t>switch</emu-t><emu-t>(</emu-t><emu-nt params="In, ?Yield">Expression<emu-mods> [In, ?Yield]</emu-mods></emu-nt><emu-t>)</emu-t><emu-nt params="?Yield, ?Return">CaseBlock<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="CaseBlock" params="Yield, Return">
+    <emu-nt params="Yield, Return">CaseBlock<emu-mods> [Yield, Return]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="6c183f57"><emu-t>{</emu-t><emu-nt params="?Yield, ?Return" optional="">CaseClauses<emu-mods> [?Yield, ?Return] opt</emu-mods></emu-nt><emu-t>}</emu-t></emu-rhs>
+    <emu-rhs a="f4a86919"><emu-t>{</emu-t><emu-nt params="?Yield, ?Return" optional="">CaseClauses<emu-mods> [?Yield, ?Return] opt</emu-mods></emu-nt><emu-nt params="?Yield, ?Return">DefaultClause<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt><emu-nt params="?Yield, ?Return" optional="">CaseClauses<emu-mods> [?Yield, ?Return] opt</emu-mods></emu-nt><emu-t>}</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="CaseClauses" params="Yield, Return">
+    <emu-nt params="Yield, Return">CaseClauses<emu-mods> [Yield, Return]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="99a26ad4"><emu-nt params="?Yield, ?Return">CaseClause<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="3f591ceb"><emu-nt params="?Yield, ?Return">CaseClauses<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt><emu-nt params="?Yield, ?Return">CaseClause<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="CaseClause" params="Yield, Return">
+    <emu-nt params="Yield, Return">CaseClause<emu-mods> [Yield, Return]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="f2e21f55"><emu-t>case</emu-t><emu-nt params="In, ?Yield">Expression<emu-mods> [In, ?Yield]</emu-mods></emu-nt><emu-t>:</emu-t><emu-nt params="?Yield, ?Return" optional="">StatementList<emu-mods> [?Yield, ?Return] opt</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="DefaultClause" params="Yield, Return">
+    <emu-nt params="Yield, Return">DefaultClause<emu-mods> [Yield, Return]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="59037441"><emu-t>default</emu-t><emu-t>:</emu-t><emu-nt params="?Yield, ?Return" optional="">StatementList<emu-mods> [?Yield, ?Return] opt</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="LabelledStatement" params="Yield, Return">
+    <emu-nt params="Yield, Return">LabelledStatement<emu-mods> [Yield, Return]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="30100c33"><emu-nt params="?Yield">LabelIdentifier<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>:</emu-t><emu-nt params="?Yield, ?Return">LabelledItem<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="LabelledItem" params="Yield, Return">
+    <emu-nt params="Yield, Return">LabelledItem<emu-mods> [Yield, Return]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="a5329c8e"><emu-nt params="?Yield, ?Return">Statement<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="418c3940"><emu-nt params="?Yield">FunctionDeclaration<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ThrowStatement" params="Yield">
+    <emu-nt params="Yield">ThrowStatement<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="465bd174"><emu-t>throw</emu-t><emu-gann>[no <emu-nt>LineTerminator</emu-nt> here]</emu-gann><emu-nt params="In, ?Yield">Expression<emu-mods> [In, ?Yield]</emu-mods></emu-nt><emu-t>;</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="TryStatement" params="Yield, Return">
+    <emu-nt params="Yield, Return">TryStatement<emu-mods> [Yield, Return]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="624913c6"><emu-t>try</emu-t><emu-nt params="?Yield, ?Return">Block<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt><emu-nt params="?Yield, ?Return">Catch<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="4d12a36d"><emu-t>try</emu-t><emu-nt params="?Yield, ?Return">Block<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt><emu-nt params="?Yield, ?Return">Finally<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="0e4cced4"><emu-t>try</emu-t><emu-nt params="?Yield, ?Return">Block<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt><emu-nt params="?Yield, ?Return">Catch<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt><emu-nt params="?Yield, ?Return">Finally<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="Catch" params="Yield, Return">
+    <emu-nt params="Yield, Return">Catch<emu-mods> [Yield, Return]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="626e3734"><emu-t>catch</emu-t><emu-t>(</emu-t><emu-nt params="?Yield">CatchParameter<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>)</emu-t><emu-nt params="?Yield, ?Return">Block<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="Finally" params="Yield, Return">
+    <emu-nt params="Yield, Return">Finally<emu-mods> [Yield, Return]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="a8da6c41"><emu-t>finally</emu-t><emu-nt params="?Yield, ?Return">Block<emu-mods> [?Yield, ?Return]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="CatchParameter" params="Yield">
+    <emu-nt params="Yield">CatchParameter<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="46cd8f8d"><emu-nt params="?Yield">BindingIdentifier<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="7a565a71"><emu-nt params="?Yield">BindingPattern<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="DebuggerStatement">
+    <emu-nt>DebuggerStatement</emu-nt><emu-geq>:</emu-geq><emu-rhs a="352e6172"><emu-t>debugger</emu-t><emu-t>;</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="FunctionDeclaration" params="Yield, Default">
+    <emu-nt params="Yield, Default">FunctionDeclaration<emu-mods> [Yield, Default]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="2f85ccbd"><emu-t>function</emu-t><emu-nt params="?Yield">BindingIdentifier<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>(</emu-t><emu-nt>FormalParameters</emu-nt><emu-t>)</emu-t><emu-t>{</emu-t><emu-nt>FunctionBody</emu-nt><emu-t>}</emu-t></emu-rhs>
+    <emu-rhs a="3294d277" constraints="+Default"><emu-constraints>[+Default]</emu-constraints><emu-t>function</emu-t><emu-t>(</emu-t><emu-nt>FormalParameters</emu-nt><emu-t>)</emu-t><emu-t>{</emu-t><emu-nt>FunctionBody</emu-nt><emu-t>}</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="FunctionExpression">
+    <emu-nt>FunctionExpression</emu-nt><emu-geq>:</emu-geq><emu-rhs a="8379937e"><emu-t>function</emu-t><emu-nt optional="">BindingIdentifier<emu-mods> opt</emu-mods></emu-nt><emu-t>(</emu-t><emu-nt>FormalParameters</emu-nt><emu-t>)</emu-t><emu-t>{</emu-t><emu-nt>FunctionBody</emu-nt><emu-t>}</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="StrictFormalParameters" params="Yield">
+    <emu-nt params="Yield">StrictFormalParameters<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="f2b7baf7"><emu-nt params="?Yield">FormalParameters<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="FormalParameters" params="Yield">
+    <emu-nt params="Yield">FormalParameters<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="37b9c04c"><emu-gann>[empty]</emu-gann></emu-rhs>
+    <emu-rhs a="d2a3a034"><emu-nt params="?Yield">FormalParameterList<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="FormalParameterList" params="Yield">
+    <emu-nt params="Yield">FormalParameterList<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="e68a5f58"><emu-nt params="?Yield">FunctionRestParameter<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="b8cc29a6"><emu-nt params="?Yield">FormalsList<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="b5146716"><emu-nt params="?Yield">FormalsList<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>,</emu-t><emu-nt params="?Yield">FunctionRestParameter<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="FormalsList" params="Yield">
+    <emu-nt params="Yield">FormalsList<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="09746c9e"><emu-nt params="?Yield">FormalParameter<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="0666e9c8"><emu-nt params="?Yield">FormalsList<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>,</emu-t><emu-nt params="?Yield">FormalParameter<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="FunctionRestParameter" params="Yield">
+    <emu-nt params="Yield">FunctionRestParameter<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="32c9732e"><emu-nt params="?Yield">BindingRestElement<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="FormalParameter" params="Yield">
+    <emu-nt params="Yield">FormalParameter<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="9ace2d44"><emu-nt params="?Yield">BindingElement<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="FunctionBody" params="Yield">
+    <emu-nt params="Yield">FunctionBody<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="aba865c5"><emu-nt params="?Yield">FunctionStatementList<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="FunctionStatementList" params="Yield">
+    <emu-nt params="Yield">FunctionStatementList<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="ed437440"><emu-nt params="?Yield, Return" optional="">StatementList<emu-mods> [?Yield, Return] opt</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ArrowFunction" params="In, Yield">
+    <emu-nt params="In, Yield">ArrowFunction<emu-mods> [In, Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="5a88b959"><emu-nt params="?Yield">ArrowParameters<emu-mods> [?Yield]</emu-mods></emu-nt><emu-gann>[no <emu-nt>LineTerminator</emu-nt> here]</emu-gann><emu-t>=&gt;</emu-t><emu-nt params="?In">ConciseBody<emu-mods> [?In]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ArrowParameters" params="Yield">
+    <emu-nt params="Yield">ArrowParameters<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="46cd8f8d"><emu-nt params="?Yield">BindingIdentifier<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="b3fd8fa6"><emu-nt params="?Yield">CoverParenthesizedExpressionAndArrowParameterList<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ConciseBody" params="In">
+    <emu-nt params="In">ConciseBody<emu-mods> [In]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="3d988d12"><emu-gann>[lookahead ≠ <emu-t>{</emu-t>]</emu-gann><emu-nt params="?In">AssignmentExpression<emu-mods> [?In]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="004ac004"><emu-t>{</emu-t><emu-nt>FunctionBody</emu-nt><emu-t>}</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="MethodDefinition" params="Yield">
+    <emu-nt params="Yield">MethodDefinition<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="5c28c96f"><emu-nt params="?Yield">PropertyName<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>(</emu-t><emu-nt>StrictFormalParameters</emu-nt><emu-t>)</emu-t><emu-t>{</emu-t><emu-nt>FunctionBody</emu-nt><emu-t>}</emu-t></emu-rhs>
+    <emu-rhs a="7dafbe5a"><emu-nt params="?Yield">GeneratorMethod<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="3a410e0c"><emu-t>get</emu-t><emu-nt params="?Yield">PropertyName<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>(</emu-t><emu-t>)</emu-t><emu-t>{</emu-t><emu-nt>FunctionBody</emu-nt><emu-t>}</emu-t></emu-rhs>
+    <emu-rhs a="1f33fd7a"><emu-t>set</emu-t><emu-nt params="?Yield">PropertyName<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>(</emu-t><emu-nt>PropertySetParameterList</emu-nt><emu-t>)</emu-t><emu-t>{</emu-t><emu-nt>FunctionBody</emu-nt><emu-t>}</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="PropertySetParameterList">
+    <emu-nt>PropertySetParameterList</emu-nt><emu-geq>:</emu-geq><emu-rhs a="497954f5"><emu-nt>FormalParameter</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="GeneratorMethod" params="Yield">
+    <emu-nt params="Yield">GeneratorMethod<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="856e1087"><emu-t>*</emu-t><emu-nt params="?Yield">PropertyName<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>(</emu-t><emu-nt params="Yield">StrictFormalParameters<emu-mods> [Yield]</emu-mods></emu-nt><emu-t>)</emu-t><emu-t>{</emu-t><emu-nt>GeneratorBody</emu-nt><emu-t>}</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="GeneratorDeclaration" params="Yield, Default">
+    <emu-nt params="Yield, Default">GeneratorDeclaration<emu-mods> [Yield, Default]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="5b7c9573"><emu-t>function</emu-t><emu-t>*</emu-t><emu-nt params="?Yield">BindingIdentifier<emu-mods> [?Yield]</emu-mods></emu-nt><emu-t>(</emu-t><emu-nt params="Yield">FormalParameters<emu-mods> [Yield]</emu-mods></emu-nt><emu-t>)</emu-t><emu-t>{</emu-t><emu-nt>GeneratorBody</emu-nt><emu-t>}</emu-t></emu-rhs>
+    <emu-rhs a="d291018a" constraints="+Default"><emu-constraints>[+Default]</emu-constraints><emu-t>function</emu-t><emu-t>*</emu-t><emu-t>(</emu-t><emu-nt params="Yield">FormalParameters<emu-mods> [Yield]</emu-mods></emu-nt><emu-t>)</emu-t><emu-t>{</emu-t><emu-nt>GeneratorBody</emu-nt><emu-t>}</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="GeneratorExpression">
+    <emu-nt>GeneratorExpression</emu-nt><emu-geq>:</emu-geq><emu-rhs a="3d1a82cb"><emu-t>function</emu-t><emu-t>*</emu-t><emu-nt params="Yield" optional="">BindingIdentifier<emu-mods> [Yield] opt</emu-mods></emu-nt><emu-t>(</emu-t><emu-nt params="Yield">FormalParameters<emu-mods> [Yield]</emu-mods></emu-nt><emu-t>)</emu-t><emu-t>{</emu-t><emu-nt>GeneratorBody</emu-nt><emu-t>}</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="GeneratorBody">
+    <emu-nt>GeneratorBody</emu-nt><emu-geq>:</emu-geq><emu-rhs a="5a62e04c"><emu-nt params="Yield">FunctionBody<emu-mods> [Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="YieldExpression" params="In">
+    <emu-nt params="In">YieldExpression<emu-mods> [In]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="d1df3360"><emu-t>yield</emu-t></emu-rhs>
+    <emu-rhs a="62c9d6fc"><emu-t>yield</emu-t><emu-gann>[no <emu-nt>LineTerminator</emu-nt> here]</emu-gann><emu-nt params="?In, Yield">AssignmentExpression<emu-mods> [?In, Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="34d90b21"><emu-t>yield</emu-t><emu-gann>[no <emu-nt>LineTerminator</emu-nt> here]</emu-gann><emu-t>*</emu-t><emu-nt params="?In, Yield">AssignmentExpression<emu-mods> [?In, Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ClassDeclaration" params="Yield, Default">
+    <emu-nt params="Yield, Default">ClassDeclaration<emu-mods> [Yield, Default]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="3a47f50b"><emu-t>class</emu-t><emu-nt params="?Yield">BindingIdentifier<emu-mods> [?Yield]</emu-mods></emu-nt><emu-nt params="?Yield">ClassTail<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="f1909d63" constraints="+Default"><emu-constraints>[+Default]</emu-constraints><emu-t>class</emu-t><emu-nt params="?Yield">ClassTail<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ClassExpression" params="Yield">
+    <emu-nt params="Yield">ClassExpression<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="89a169d4"><emu-t>class</emu-t><emu-nt params="?Yield" optional="">BindingIdentifier<emu-mods> [?Yield] opt</emu-mods></emu-nt><emu-nt params="?Yield">ClassTail<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ClassTail" params="Yield">
+    <emu-nt params="Yield">ClassTail<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="c3a1600d"><emu-nt params="?Yield" optional="">ClassHeritage<emu-mods> [?Yield] opt</emu-mods></emu-nt><emu-t>{</emu-t><emu-nt params="?Yield" optional="">ClassBody<emu-mods> [?Yield] opt</emu-mods></emu-nt><emu-t>}</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="ClassHeritage" params="Yield">
+    <emu-nt params="Yield">ClassHeritage<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="ccce93bb"><emu-t>extends</emu-t><emu-nt params="?Yield">LeftHandSideExpression<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ClassBody" params="Yield">
+    <emu-nt params="Yield">ClassBody<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="e993dd69"><emu-nt params="?Yield">ClassElementList<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ClassElementList" params="Yield">
+    <emu-nt params="Yield">ClassElementList<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="541da32c"><emu-nt params="?Yield">ClassElement<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="27053723"><emu-nt params="?Yield">ClassElementList<emu-mods> [?Yield]</emu-mods></emu-nt><emu-nt params="?Yield">ClassElement<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ClassElement" params="Yield">
+    <emu-nt params="Yield">ClassElement<emu-mods> [Yield]</emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="da6bdd4c"><emu-nt params="?Yield">MethodDefinition<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="80402d39"><emu-t>static</emu-t><emu-nt params="?Yield">MethodDefinition<emu-mods> [?Yield]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="4a0dac03"><emu-t>;</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="Script">
+    <emu-nt>Script</emu-nt><emu-geq>:</emu-geq><emu-rhs a="08c8df8e"><emu-nt optional="">ScriptBody<emu-mods> opt</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ScriptBody">
+    <emu-nt>ScriptBody</emu-nt><emu-geq>:</emu-geq><emu-rhs a="cf403a0c"><emu-nt>StatementList</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="Module">
+    <emu-nt>Module</emu-nt><emu-geq>:</emu-geq><emu-rhs a="52f49b96"><emu-nt optional="">ModuleBody<emu-mods> opt</emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ModuleBody">
+    <emu-nt>ModuleBody</emu-nt><emu-geq>:</emu-geq><emu-rhs a="89010d7d"><emu-nt>ModuleItemList</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ModuleItemList">
+    <emu-nt>ModuleItemList</emu-nt><emu-geq>:</emu-geq><emu-rhs a="029ec31e"><emu-nt>ModuleItem</emu-nt></emu-rhs>
+    <emu-rhs a="75ddb725"><emu-nt>ModuleItemList</emu-nt><emu-nt>ModuleItem</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ModuleItem">
+    <emu-nt>ModuleItem</emu-nt><emu-geq>:</emu-geq><emu-rhs a="e0559377"><emu-nt>ImportDeclaration</emu-nt></emu-rhs>
+    <emu-rhs a="298e81b0"><emu-nt>ExportDeclaration</emu-nt></emu-rhs>
+    <emu-rhs a="d791d1c9"><emu-nt>StatementListItem</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ImportDeclaration">
+    <emu-nt>ImportDeclaration</emu-nt><emu-geq>:</emu-geq><emu-rhs a="1a51d4c5"><emu-t>import</emu-t><emu-nt>ImportClause</emu-nt><emu-nt>FromClause</emu-nt><emu-t>;</emu-t></emu-rhs>
+    <emu-rhs a="a1d094cc"><emu-t>import</emu-t><emu-nt>ModuleSpecifier</emu-nt><emu-t>;</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="ImportClause">
+    <emu-nt>ImportClause</emu-nt><emu-geq>:</emu-geq><emu-rhs a="3a2f22cc"><emu-nt>ImportedDefaultBinding</emu-nt></emu-rhs>
+    <emu-rhs a="f35b66f8"><emu-nt>NameSpaceImport</emu-nt></emu-rhs>
+    <emu-rhs a="cdf0063c"><emu-nt>NamedImports</emu-nt></emu-rhs>
+    <emu-rhs a="cbd47597"><emu-nt>ImportedDefaultBinding</emu-nt><emu-t>,</emu-t><emu-nt>NameSpaceImport</emu-nt></emu-rhs>
+    <emu-rhs a="8a1f1182"><emu-nt>ImportedDefaultBinding</emu-nt><emu-t>,</emu-t><emu-nt>NamedImports</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ImportedDefaultBinding">
+    <emu-nt>ImportedDefaultBinding</emu-nt><emu-geq>:</emu-geq><emu-rhs a="bedec05a"><emu-nt>ImportedBinding</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="NameSpaceImport">
+    <emu-nt>NameSpaceImport</emu-nt><emu-geq>:</emu-geq><emu-rhs a="b7641ff3"><emu-t>*</emu-t><emu-t>as</emu-t><emu-nt>ImportedBinding</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="NamedImports">
+    <emu-nt>NamedImports</emu-nt><emu-geq>:</emu-geq><emu-rhs a="81ba5a4a"><emu-t>{</emu-t><emu-t>}</emu-t></emu-rhs>
+    <emu-rhs a="835252f8"><emu-t>{</emu-t><emu-nt>ImportsList</emu-nt><emu-t>}</emu-t></emu-rhs>
+    <emu-rhs a="6f18d3a2"><emu-t>{</emu-t><emu-nt>ImportsList</emu-nt><emu-t>,</emu-t><emu-t>}</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="FromClause">
+    <emu-nt>FromClause</emu-nt><emu-geq>:</emu-geq><emu-rhs a="ac457a7a"><emu-t>from</emu-t><emu-nt>ModuleSpecifier</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ImportsList">
+    <emu-nt>ImportsList</emu-nt><emu-geq>:</emu-geq><emu-rhs a="5292cb55"><emu-nt>ImportSpecifier</emu-nt></emu-rhs>
+    <emu-rhs a="82009fbc"><emu-nt>ImportsList</emu-nt><emu-t>,</emu-t><emu-nt>ImportSpecifier</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ImportSpecifier">
+    <emu-nt>ImportSpecifier</emu-nt><emu-geq>:</emu-geq><emu-rhs a="bedec05a"><emu-nt>ImportedBinding</emu-nt></emu-rhs>
+    <emu-rhs a="38da6908"><emu-nt>IdentifierName</emu-nt><emu-t>as</emu-t><emu-nt>ImportedBinding</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ModuleSpecifier">
+    <emu-nt>ModuleSpecifier</emu-nt><emu-geq>:</emu-geq><emu-rhs a="5c74e54d"><emu-nt>StringLiteral</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ImportedBinding">
+    <emu-nt>ImportedBinding</emu-nt><emu-geq>:</emu-geq><emu-rhs a="50e97238"><emu-nt>BindingIdentifier</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ExportDeclaration">
+    <emu-nt>ExportDeclaration</emu-nt><emu-geq>:</emu-geq><emu-rhs a="56ae069c"><emu-t>export</emu-t><emu-t>*</emu-t><emu-nt>FromClause</emu-nt><emu-t>;</emu-t></emu-rhs>
+    <emu-rhs a="54a8804a"><emu-t>export</emu-t><emu-nt>ExportClause</emu-nt><emu-nt>FromClause</emu-nt><emu-t>;</emu-t></emu-rhs>
+    <emu-rhs a="b6878be3"><emu-t>export</emu-t><emu-nt>ExportClause</emu-nt><emu-t>;</emu-t></emu-rhs>
+    <emu-rhs a="6c6de801"><emu-t>export</emu-t><emu-nt>VariableStatement</emu-nt></emu-rhs>
+    <emu-rhs a="828f5ae3"><emu-t>export</emu-t><emu-nt>Declaration</emu-nt></emu-rhs>
+    <emu-rhs a="525566ec"><emu-t>export</emu-t><emu-t>default</emu-t><emu-nt params="Default">HoistableDeclaration<emu-mods> [Default]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="64efdfce"><emu-t>export</emu-t><emu-t>default</emu-t><emu-nt params="Default">ClassDeclaration<emu-mods> [Default]</emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="6c7ca5a7"><emu-t>export</emu-t><emu-t>default</emu-t><emu-gann>[lookahead ∉ { <emu-t>function</emu-t>, <emu-t>class</emu-t> }]</emu-gann><emu-nt params="In">AssignmentExpression<emu-mods> [In]</emu-mods></emu-nt><emu-t>;</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="ExportClause">
+    <emu-nt>ExportClause</emu-nt><emu-geq>:</emu-geq><emu-rhs a="81ba5a4a"><emu-t>{</emu-t><emu-t>}</emu-t></emu-rhs>
+    <emu-rhs a="29b1414e"><emu-t>{</emu-t><emu-nt>ExportsList</emu-nt><emu-t>}</emu-t></emu-rhs>
+    <emu-rhs a="c16c88fe"><emu-t>{</emu-t><emu-nt>ExportsList</emu-nt><emu-t>,</emu-t><emu-t>}</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="ExportsList">
+    <emu-nt>ExportsList</emu-nt><emu-geq>:</emu-geq><emu-rhs a="5b554fef"><emu-nt>ExportSpecifier</emu-nt></emu-rhs>
+    <emu-rhs a="1907cd0c"><emu-nt>ExportsList</emu-nt><emu-t>,</emu-t><emu-nt>ExportSpecifier</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ExportSpecifier">
+    <emu-nt>ExportSpecifier</emu-nt><emu-geq>:</emu-geq><emu-rhs a="0ebb31e2"><emu-nt>IdentifierName</emu-nt></emu-rhs>
+    <emu-rhs a="a9552c46"><emu-nt>IdentifierName</emu-nt><emu-t>as</emu-t><emu-nt>IdentifierName</emu-nt></emu-rhs>
+</emu-production>
+</emu-clause></body>
