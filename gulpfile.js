@@ -85,33 +85,7 @@ gulp.task("update-pages", ["build"], function (cb) {
     function updateTypeScriptPage(cb) {
         exec(ecmarkup, ["./spec/typescript.html", "./_typescript.html"], cb);
     }
-    
-    function updatePages(cb) {
-        exec("git", ["stash", "save"], function (err) {
-            if (err) return cb(err);
-            function cleanup(err) {
-                exec("git", ["checkout", "master"], function (e) {
-                   return e ? cb(err) : exec("git", ["stash", "pop"], function () {
-                       return err ? cb(err) : cb();
-                   });
-                });
-            }
-            
-            exec("git", ["checkout", "gh-pages"], function (err) {
-                if (err) return cleanup(err);
-                try { fs.unlinkSync("es6.html"); } catch (e) { }
-                fs.renameSync("_es6.html", "es6.html");
-                try { fs.unlinkSync("typescript.html"); } catch (e) { }
-                fs.renameSync("_typescript.html", "typescript.html");
-                // exec("git", ["add", "es6.html", "typescript.html"], function (err) {
-                //     if (err) return cleanup(err);
-                //     exec("git", ["commit", "-m", "\"update pages\""], cleanup);
-                // });
-                cleanup(err);
-            });
-        });
-    }
-    
+        
     function advanceToUpdateES6Grammar() {
         return updateES6Grammar(advanceToUpdateES6Page);
     }
@@ -125,11 +99,7 @@ gulp.task("update-pages", ["build"], function (cb) {
     }
     
     function advanceToUpdateTypeScriptPage(err) {
-        return err ? cb(err) : updateTypeScriptPage(advanceToUpdatePages);
-    }
-    
-    function advanceToUpdatePages(err) {
-        return err ? cb(err) : updatePages(cb);
+        return err ? cb(err) : updateTypeScriptPage(cb);
     }
 });
 
