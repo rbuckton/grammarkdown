@@ -107,7 +107,7 @@ export class EcmarkupEmitter extends Emitter {
     }
     
     protected emitRightHandSide(node: RightHandSide) {
-        let linkId = this.resolver.getAlternativeLinkId(node, /*includePrefix*/ false);
+        let linkId = this.resolver.getRightHandSideLinkId(node, /*includePrefix*/ false);
         this.emitLinkAnchor(linkId);
         
         this.writer.write(`<emu-rhs`);

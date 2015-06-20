@@ -1,6 +1,51 @@
 //
 // Lexical grammar
 //
+SourceCharacter ::
+	> any Unicode code point
+
+LineTerminator ::
+	<LF>
+	<CR>
+	<LS>
+	<PS>
+
+IdentifierName ::
+	IdentifierStart
+	IdentifierName IdentifierPart
+
+IdentifierStart ::
+	UnicodeIDStart
+	`_`
+
+IdentifierPart ::
+	UnicodeIDContinue
+	`_`
+	<ZWNJ>
+	<ZWJ>
+	
+UnicodeIDStart ::
+	> any Unicode code point with the Unicode property "ID_Start" or "Other_ID_Start"
+
+UnicodeIDContinue ::
+	> any Unicode code point with the Unicode property "ID_Continue" or "Other_ID_Continue", or "Other_ID_Start"
+
+ReservedWord ::
+	Keyword
+	
+Keyword :: one of
+	`empty`
+	`lookahead`
+	`lexical`
+	`goal`
+	`no`
+	`here`
+	`one`
+	`of`
+	`or`
+	`but`
+	`not`	
+
 DecimalDigit :: one of
 	`0` `1` `2` `3` `4` `5` `6` `7` `8` `9`
 
@@ -15,6 +60,12 @@ UnicodeCharacterLiteralChars ::
 
 UnicodeCharacterLiteralChar ::
 	SourceCharacter but not one of `<` or `>` or LineTerminator
+	
+Indent ::
+	> An increase in the indentation depth from the previous line.
+	
+Dedent ::
+	> A decrease in the indentation depth from the previous line.
 
 Terminal ::
 	``` ``` ```
@@ -45,6 +96,9 @@ ProseChar ::
 //
 // Syntactic grammar
 //
+Identifier :
+	IdentifierName but not ReservedWord
+
 Argument :
 	Identifier
 
@@ -164,6 +218,9 @@ TerminalList :
 OneOfList :
 	`one` `of` Terminals
 	`one` `of` LineTerminator Indent TerminalList Dedent
+
+Parameter :
+	Identifier
 
 ParameterList :
 	Parameter

@@ -1,0 +1,18 @@
+dl.grammar > dt {
+	line-height: 3em;
+}
+dl.grammar > dt .keyword {
+	font-weight: bold;
+}
+dl.grammar > dd {
+	line-height: 1.2em;
+}
+dl.grammar > dd kbd {
+	font-weight: bold;
+}
+dl.grammar > dd var > sub {
+	font-style: normal;
+}
+dl.grammar > dd span.symbol {
+	margin-right: .5em;
+}

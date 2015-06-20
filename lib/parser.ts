@@ -42,6 +42,7 @@ import {
     ButNotOperator,
     BinarySymbol,
     SymbolSpan,
+    LinkReference,
     RightHandSide,
     RightHandSideList,
     Production,
@@ -980,11 +981,23 @@ export class Parser {
     private isStartOfRightHandSide(): boolean {
         return this.isStartOfSymbolSpan();
     }
+    
+    private parseLinkReference(): LinkReference {
+        if (this.token === SyntaxKind.LinkReference) {
+            let fullStart = this.scanner.getStartPos();
+            let text = this.readTokenValue(SyntaxKind.LinkReference);
+            let node = new LinkReference(text);
+            return this.finishNode(node, fullStart);
+        }
+        
+        return undefined;
+    }
 
     private parseRightHandSide(): RightHandSide {
         let fullStart = this.scanner.getStartPos();
         let head = this.parseSymbolSpan();
-        let node = new RightHandSide(head);
+        let reference = this.parseLinkReference();
+        let node = new RightHandSide(head, reference);
         if (this.parsingContext !== ParsingContext.RightHandSideListIndented) {
             this.parseOptional(SyntaxKind.LineTerminatorToken);
         }

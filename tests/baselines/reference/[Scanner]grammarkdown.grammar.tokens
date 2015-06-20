@@ -1,0 +1,769 @@
+/// [Scanner]grammarkdown.grammar:
+SyntaxKind[LineTerminatorToken](2,1): «line terminator»
+SyntaxKind[LineTerminatorToken](3,1): «line terminator»
+SyntaxKind[LineTerminatorToken](4,1): «line terminator»
+SyntaxKind[Identifier](4,16): SourceCharacter
+SyntaxKind[ColonColonToken](4,19): ::
+SyntaxKind[LineTerminatorToken](5,2): «line terminator»
+SyntaxKind[IndentToken](5,2): «indent»
+SyntaxKind[Prose](5,26): > any Unicode code point
+SyntaxKind[LineTerminatorToken](6,1): «line terminator»
+SyntaxKind[DedentToken](6,1): «dedent»
+SyntaxKind[LineTerminatorToken](7,1): «line terminator»
+SyntaxKind[Identifier](7,15): LineTerminator
+SyntaxKind[ColonColonToken](7,18): ::
+SyntaxKind[LineTerminatorToken](8,2): «line terminator»
+SyntaxKind[IndentToken](8,2): «indent»
+SyntaxKind[UnicodeCharacterLiteral](8,6): <LF>
+SyntaxKind[LineTerminatorToken](9,2): «line terminator»
+SyntaxKind[UnicodeCharacterLiteral](9,6): <CR>
+SyntaxKind[LineTerminatorToken](10,2): «line terminator»
+SyntaxKind[UnicodeCharacterLiteral](10,6): <LS>
+SyntaxKind[LineTerminatorToken](11,2): «line terminator»
+SyntaxKind[UnicodeCharacterLiteral](11,6): <PS>
+SyntaxKind[LineTerminatorToken](12,1): «line terminator»
+SyntaxKind[DedentToken](12,1): «dedent»
+SyntaxKind[LineTerminatorToken](13,1): «line terminator»
+SyntaxKind[Identifier](13,15): IdentifierName
+SyntaxKind[ColonColonToken](13,18): ::
+SyntaxKind[LineTerminatorToken](14,2): «line terminator»
+SyntaxKind[IndentToken](14,2): «indent»
+SyntaxKind[Identifier](14,17): IdentifierStart
+SyntaxKind[LineTerminatorToken](15,2): «line terminator»
+SyntaxKind[Identifier](15,16): IdentifierName
+SyntaxKind[Identifier](15,31): IdentifierPart
+SyntaxKind[LineTerminatorToken](16,1): «line terminator»
+SyntaxKind[DedentToken](16,1): «dedent»
+SyntaxKind[LineTerminatorToken](17,1): «line terminator»
+SyntaxKind[Identifier](17,16): IdentifierStart
+SyntaxKind[ColonColonToken](17,19): ::
+SyntaxKind[LineTerminatorToken](18,2): «line terminator»
+SyntaxKind[IndentToken](18,2): «indent»
+SyntaxKind[Identifier](18,16): UnicodeIDStart
+SyntaxKind[LineTerminatorToken](19,2): «line terminator»
+SyntaxKind[Terminal](19,5): `_`
+SyntaxKind[LineTerminatorToken](20,1): «line terminator»
+SyntaxKind[DedentToken](20,1): «dedent»
+SyntaxKind[LineTerminatorToken](21,1): «line terminator»
+SyntaxKind[Identifier](21,15): IdentifierPart
+SyntaxKind[ColonColonToken](21,18): ::
+SyntaxKind[LineTerminatorToken](22,2): «line terminator»
+SyntaxKind[IndentToken](22,2): «indent»
+SyntaxKind[Identifier](22,19): UnicodeIDContinue
+SyntaxKind[LineTerminatorToken](23,2): «line terminator»
+SyntaxKind[Terminal](23,5): `_`
+SyntaxKind[LineTerminatorToken](24,2): «line terminator»
+SyntaxKind[UnicodeCharacterLiteral](24,8): <ZWNJ>
+SyntaxKind[LineTerminatorToken](25,2): «line terminator»
+SyntaxKind[UnicodeCharacterLiteral](25,7): <ZWJ>
+SyntaxKind[LineTerminatorToken](26,2): «line terminator»
+SyntaxKind[LineTerminatorToken](27,1): «line terminator»
+SyntaxKind[DedentToken](27,1): «dedent»
+SyntaxKind[Identifier](27,15): UnicodeIDStart
+SyntaxKind[ColonColonToken](27,18): ::
+SyntaxKind[LineTerminatorToken](28,2): «line terminator»
+SyntaxKind[IndentToken](28,2): «indent»
+SyntaxKind[Prose](28,83): > any Unicode code point with the Unicode property "ID_Start" or "Other_ID_Start"
+SyntaxKind[LineTerminatorToken](29,1): «line terminator»
+SyntaxKind[DedentToken](29,1): «dedent»
+SyntaxKind[LineTerminatorToken](30,1): «line terminator»
+SyntaxKind[Identifier](30,18): UnicodeIDContinue
+SyntaxKind[ColonColonToken](30,21): ::
+SyntaxKind[LineTerminatorToken](31,2): «line terminator»
+SyntaxKind[IndentToken](31,2): «indent»
+SyntaxKind[Prose](31,110): > any Unicode code point with the Unicode property "ID_Continue" or "Other_ID_Continue", or "Other_ID_Start"
+SyntaxKind[LineTerminatorToken](32,1): «line terminator»
+SyntaxKind[DedentToken](32,1): «dedent»
+SyntaxKind[LineTerminatorToken](33,1): «line terminator»
+SyntaxKind[Identifier](33,13): ReservedWord
+SyntaxKind[ColonColonToken](33,16): ::
+SyntaxKind[LineTerminatorToken](34,2): «line terminator»
+SyntaxKind[IndentToken](34,2): «indent»
+SyntaxKind[Identifier](34,9): Keyword
+SyntaxKind[LineTerminatorToken](35,2): «line terminator»
+SyntaxKind[LineTerminatorToken](36,1): «line terminator»
+SyntaxKind[DedentToken](36,1): «dedent»
+SyntaxKind[Identifier](36,8): Keyword
+SyntaxKind[ColonColonToken](36,11): ::
+SyntaxKind[OneKeyword](36,15): one
+SyntaxKind[OfKeyword](36,18): of
+SyntaxKind[LineTerminatorToken](37,2): «line terminator»
+SyntaxKind[IndentToken](37,2): «indent»
+SyntaxKind[Terminal](37,9): `empty`
+SyntaxKind[LineTerminatorToken](38,2): «line terminator»
+SyntaxKind[Terminal](38,13): `lookahead`
+SyntaxKind[LineTerminatorToken](39,2): «line terminator»
+SyntaxKind[Terminal](39,11): `lexical`
+SyntaxKind[LineTerminatorToken](40,2): «line terminator»
+SyntaxKind[Terminal](40,8): `goal`
+SyntaxKind[LineTerminatorToken](41,2): «line terminator»
+SyntaxKind[Terminal](41,6): `no`
+SyntaxKind[LineTerminatorToken](42,2): «line terminator»
+SyntaxKind[Terminal](42,8): `here`
+SyntaxKind[LineTerminatorToken](43,2): «line terminator»
+SyntaxKind[Terminal](43,7): `one`
+SyntaxKind[LineTerminatorToken](44,2): «line terminator»
+SyntaxKind[Terminal](44,6): `of`
+SyntaxKind[LineTerminatorToken](45,2): «line terminator»
+SyntaxKind[Terminal](45,6): `or`
+SyntaxKind[LineTerminatorToken](46,2): «line terminator»
+SyntaxKind[Terminal](46,7): `but`
+SyntaxKind[LineTerminatorToken](47,2): «line terminator»
+SyntaxKind[Terminal](47,7): `not`
+SyntaxKind[LineTerminatorToken](48,1): «line terminator»
+SyntaxKind[DedentToken](48,1): «dedent»
+SyntaxKind[LineTerminatorToken](49,1): «line terminator»
+SyntaxKind[Identifier](49,13): DecimalDigit
+SyntaxKind[ColonColonToken](49,16): ::
+SyntaxKind[OneKeyword](49,20): one
+SyntaxKind[OfKeyword](49,23): of
+SyntaxKind[LineTerminatorToken](50,2): «line terminator»
+SyntaxKind[IndentToken](50,2): «indent»
+SyntaxKind[Terminal](50,5): `0`
+SyntaxKind[Terminal](50,9): `1`
+SyntaxKind[Terminal](50,13): `2`
+SyntaxKind[Terminal](50,17): `3`
+SyntaxKind[Terminal](50,21): `4`
+SyntaxKind[Terminal](50,25): `5`
+SyntaxKind[Terminal](50,29): `6`
+SyntaxKind[Terminal](50,33): `7`
+SyntaxKind[Terminal](50,37): `8`
+SyntaxKind[Terminal](50,41): `9`
+SyntaxKind[LineTerminatorToken](51,1): «line terminator»
+SyntaxKind[DedentToken](51,1): «dedent»
+SyntaxKind[LineTerminatorToken](52,1): «line terminator»
+SyntaxKind[Identifier](52,9): HexDigit
+SyntaxKind[ColonColonToken](52,12): ::
+SyntaxKind[OneKeyword](52,16): one
+SyntaxKind[OfKeyword](52,19): of
+SyntaxKind[LineTerminatorToken](53,2): «line terminator»
+SyntaxKind[IndentToken](53,2): «indent»
+SyntaxKind[Terminal](53,5): `0`
+SyntaxKind[Terminal](53,9): `1`
+SyntaxKind[Terminal](53,13): `2`
+SyntaxKind[Terminal](53,17): `3`
+SyntaxKind[Terminal](53,21): `4`
+SyntaxKind[Terminal](53,25): `5`
+SyntaxKind[Terminal](53,29): `6`
+SyntaxKind[Terminal](53,33): `7`
+SyntaxKind[Terminal](53,37): `8`
+SyntaxKind[Terminal](53,41): `9`
+SyntaxKind[Terminal](53,45): `a`
+SyntaxKind[Terminal](53,49): `b`
+SyntaxKind[Terminal](53,53): `c`
+SyntaxKind[Terminal](53,57): `d`
+SyntaxKind[Terminal](53,61): `e`
+SyntaxKind[Terminal](53,65): `f`
+SyntaxKind[Terminal](53,69): `A`
+SyntaxKind[Terminal](53,73): `B`
+SyntaxKind[Terminal](53,77): `C`
+SyntaxKind[Terminal](53,81): `D`
+SyntaxKind[Terminal](53,85): `E`
+SyntaxKind[Terminal](53,89): `F`
+SyntaxKind[LineTerminatorToken](54,1): «line terminator»
+SyntaxKind[DedentToken](54,1): «dedent»
+SyntaxKind[LineTerminatorToken](55,1): «line terminator»
+SyntaxKind[Identifier](55,24): UnicodeCharacterLiteral
+SyntaxKind[ColonColonToken](55,27): ::
+SyntaxKind[LineTerminatorToken](56,2): «line terminator»
+SyntaxKind[IndentToken](56,2): «indent»
+SyntaxKind[Terminal](56,5): `<`
+SyntaxKind[Identifier](56,34): UnicodeCharacterLiteralChars
+SyntaxKind[Terminal](56,38): `>`
+SyntaxKind[LineTerminatorToken](57,1): «line terminator»
+SyntaxKind[DedentToken](57,1): «dedent»
+SyntaxKind[LineTerminatorToken](58,1): «line terminator»
+SyntaxKind[Identifier](58,29): UnicodeCharacterLiteralChars
+SyntaxKind[ColonColonToken](58,32): ::
+SyntaxKind[LineTerminatorToken](59,2): «line terminator»
+SyntaxKind[IndentToken](59,2): «indent»
+SyntaxKind[Identifier](59,29): UnicodeCharacterLiteralChar
+SyntaxKind[Identifier](59,58): UnicodeCharacterLiteralChars
+SyntaxKind[QuestionToken](59,59): ?
+SyntaxKind[LineTerminatorToken](60,1): «line terminator»
+SyntaxKind[DedentToken](60,1): «dedent»
+SyntaxKind[LineTerminatorToken](61,1): «line terminator»
+SyntaxKind[Identifier](61,28): UnicodeCharacterLiteralChar
+SyntaxKind[ColonColonToken](61,31): ::
+SyntaxKind[LineTerminatorToken](62,2): «line terminator»
+SyntaxKind[IndentToken](62,2): «indent»
+SyntaxKind[Identifier](62,17): SourceCharacter
+SyntaxKind[FirstKeyword](62,21): but
+SyntaxKind[NotKeyword](62,25): not
+SyntaxKind[OneKeyword](62,29): one
+SyntaxKind[OfKeyword](62,32): of
+SyntaxKind[Terminal](62,36): `<`
+SyntaxKind[LastKeyword](62,39): or
+SyntaxKind[Terminal](62,43): `>`
+SyntaxKind[LastKeyword](62,46): or
+SyntaxKind[Identifier](62,61): LineTerminator
+SyntaxKind[LineTerminatorToken](63,2): «line terminator»
+SyntaxKind[LineTerminatorToken](64,1): «line terminator»
+SyntaxKind[DedentToken](64,1): «dedent»
+SyntaxKind[Identifier](64,7): Indent
+SyntaxKind[ColonColonToken](64,10): ::
+SyntaxKind[LineTerminatorToken](65,2): «line terminator»
+SyntaxKind[IndentToken](65,2): «indent»
+SyntaxKind[Prose](65,64): > An increase in the indentation depth from the previous line.
+SyntaxKind[LineTerminatorToken](66,2): «line terminator»
+SyntaxKind[LineTerminatorToken](67,1): «line terminator»
+SyntaxKind[DedentToken](67,1): «dedent»
+SyntaxKind[Identifier](67,7): Dedent
+SyntaxKind[ColonColonToken](67,10): ::
+SyntaxKind[LineTerminatorToken](68,2): «line terminator»
+SyntaxKind[IndentToken](68,2): «indent»
+SyntaxKind[Prose](68,63): > A decrease in the indentation depth from the previous line.
+SyntaxKind[LineTerminatorToken](69,1): «line terminator»
+SyntaxKind[DedentToken](69,1): «dedent»
+SyntaxKind[LineTerminatorToken](70,1): «line terminator»
+SyntaxKind[Identifier](70,9): Terminal
+SyntaxKind[ColonColonToken](70,12): ::
+SyntaxKind[LineTerminatorToken](71,2): «line terminator»
+SyntaxKind[IndentToken](71,2): «indent»
+SyntaxKind[Terminal](71,5): ```
+SyntaxKind[Terminal](71,9): ```
+SyntaxKind[Terminal](71,13): ```
+SyntaxKind[LineTerminatorToken](72,2): «line terminator»
+SyntaxKind[Terminal](72,5): ```
+SyntaxKind[Identifier](72,19): TerminalChars
+SyntaxKind[Terminal](72,23): ```
+SyntaxKind[LineTerminatorToken](73,1): «line terminator»
+SyntaxKind[DedentToken](73,1): «dedent»
+SyntaxKind[LineTerminatorToken](74,1): «line terminator»
+SyntaxKind[Identifier](74,14): TerminalChars
+SyntaxKind[ColonColonToken](74,17): ::
+SyntaxKind[LineTerminatorToken](75,2): «line terminator»
+SyntaxKind[IndentToken](75,2): «indent»
+SyntaxKind[Identifier](75,14): TerminalChar
+SyntaxKind[Identifier](75,28): TerminalChars
+SyntaxKind[QuestionToken](75,29): ?
+SyntaxKind[LineTerminatorToken](76,1): «line terminator»
+SyntaxKind[DedentToken](76,1): «dedent»
+SyntaxKind[LineTerminatorToken](77,1): «line terminator»
+SyntaxKind[Identifier](77,13): TerminalChar
+SyntaxKind[ColonColonToken](77,16): ::
+SyntaxKind[LineTerminatorToken](78,2): «line terminator»
+SyntaxKind[IndentToken](78,2): «indent»
+SyntaxKind[Identifier](78,17): SourceCharacter
+SyntaxKind[FirstKeyword](78,21): but
+SyntaxKind[NotKeyword](78,25): not
+SyntaxKind[OneKeyword](78,29): one
+SyntaxKind[OfKeyword](78,32): of
+SyntaxKind[Terminal](78,36): ```
+SyntaxKind[LastKeyword](78,39): or
+SyntaxKind[Identifier](78,54): LineTerminator
+SyntaxKind[LineTerminatorToken](79,1): «line terminator»
+SyntaxKind[DedentToken](79,1): «dedent»
+SyntaxKind[LineTerminatorToken](80,1): «line terminator»
+SyntaxKind[Identifier](80,6): Prose
+SyntaxKind[ColonColonToken](80,9): ::
+SyntaxKind[LineTerminatorToken](81,2): «line terminator»
+SyntaxKind[IndentToken](81,2): «indent»
+SyntaxKind[Identifier](81,12): ProseLines
+SyntaxKind[LineTerminatorToken](82,1): «line terminator»
+SyntaxKind[DedentToken](82,1): «dedent»
+SyntaxKind[LineTerminatorToken](83,1): «line terminator»
+SyntaxKind[Identifier](83,11): ProseLines
+SyntaxKind[ColonColonToken](83,14): ::
+SyntaxKind[LineTerminatorToken](84,2): «line terminator»
+SyntaxKind[IndentToken](84,2): «indent»
+SyntaxKind[Identifier](84,11): ProseLine
+SyntaxKind[LineTerminatorToken](85,2): «line terminator»
+SyntaxKind[Identifier](85,11): ProseLine
+SyntaxKind[Identifier](85,26): LineTerminator
+SyntaxKind[Identifier](85,37): ProseLines
+SyntaxKind[LineTerminatorToken](86,2): «line terminator»
+SyntaxKind[LineTerminatorToken](87,1): «line terminator»
+SyntaxKind[DedentToken](87,1): «dedent»
+SyntaxKind[Identifier](87,10): ProseLine
+SyntaxKind[ColonColonToken](87,13): ::
+SyntaxKind[LineTerminatorToken](88,2): «line terminator»
+SyntaxKind[IndentToken](88,2): «indent»
+SyntaxKind[Terminal](88,5): `>`
+SyntaxKind[Identifier](88,16): ProseChars
+SyntaxKind[QuestionToken](88,17): ?
+SyntaxKind[LineTerminatorToken](89,1): «line terminator»
+SyntaxKind[DedentToken](89,1): «dedent»
+SyntaxKind[LineTerminatorToken](90,1): «line terminator»
+SyntaxKind[Identifier](90,11): ProseChars
+SyntaxKind[ColonColonToken](90,14): ::
+SyntaxKind[LineTerminatorToken](91,2): «line terminator»
+SyntaxKind[IndentToken](91,2): «indent»
+SyntaxKind[Identifier](91,11): ProseChar
+SyntaxKind[Identifier](91,22): ProseChars
+SyntaxKind[QuestionToken](91,23): ?
+SyntaxKind[LineTerminatorToken](92,1): «line terminator»
+SyntaxKind[DedentToken](92,1): «dedent»
+SyntaxKind[LineTerminatorToken](93,1): «line terminator»
+SyntaxKind[Identifier](93,10): ProseChar
+SyntaxKind[ColonColonToken](93,13): ::
+SyntaxKind[LineTerminatorToken](94,2): «line terminator»
+SyntaxKind[IndentToken](94,2): «indent»
+SyntaxKind[Identifier](94,17): SourceCharacter
+SyntaxKind[FirstKeyword](94,21): but
+SyntaxKind[NotKeyword](94,25): not
+SyntaxKind[Identifier](94,40): LineTerminator
+SyntaxKind[LineTerminatorToken](95,1): «line terminator»
+SyntaxKind[DedentToken](95,1): «dedent»
+SyntaxKind[LineTerminatorToken](96,1): «line terminator»
+SyntaxKind[LineTerminatorToken](97,1): «line terminator»
+SyntaxKind[LineTerminatorToken](98,1): «line terminator»
+SyntaxKind[LineTerminatorToken](99,1): «line terminator»
+SyntaxKind[Identifier](99,11): Identifier
+SyntaxKind[ColonToken](99,13): :
+SyntaxKind[LineTerminatorToken](100,2): «line terminator»
+SyntaxKind[IndentToken](100,2): «indent»
+SyntaxKind[Identifier](100,16): IdentifierName
+SyntaxKind[FirstKeyword](100,20): but
+SyntaxKind[NotKeyword](100,24): not
+SyntaxKind[Identifier](100,37): ReservedWord
+SyntaxKind[LineTerminatorToken](101,1): «line terminator»
+SyntaxKind[DedentToken](101,1): «dedent»
+SyntaxKind[LineTerminatorToken](102,1): «line terminator»
+SyntaxKind[Identifier](102,9): Argument
+SyntaxKind[ColonToken](102,11): :
+SyntaxKind[LineTerminatorToken](103,2): «line terminator»
+SyntaxKind[IndentToken](103,2): «indent»
+SyntaxKind[Identifier](103,12): Identifier
+SyntaxKind[LineTerminatorToken](104,1): «line terminator»
+SyntaxKind[DedentToken](104,1): «dedent»
+SyntaxKind[LineTerminatorToken](105,1): «line terminator»
+SyntaxKind[Identifier](105,10): Arguments
+SyntaxKind[ColonToken](105,12): :
+SyntaxKind[LineTerminatorToken](106,2): «line terminator»
+SyntaxKind[IndentToken](106,2): «indent»
+SyntaxKind[Terminal](106,5): `(`
+SyntaxKind[Terminal](106,9): `)`
+SyntaxKind[LineTerminatorToken](107,2): «line terminator»
+SyntaxKind[Terminal](107,5): `(`
+SyntaxKind[Identifier](107,18): ArgumentList
+SyntaxKind[Terminal](107,22): `)`
+SyntaxKind[LineTerminatorToken](108,1): «line terminator»
+SyntaxKind[DedentToken](108,1): «dedent»
+SyntaxKind[LineTerminatorToken](109,1): «line terminator»
+SyntaxKind[Identifier](109,13): ArgumentList
+SyntaxKind[ColonToken](109,15): :
+SyntaxKind[LineTerminatorToken](110,2): «line terminator»
+SyntaxKind[IndentToken](110,2): «indent»
+SyntaxKind[Identifier](110,10): Argument
+SyntaxKind[LineTerminatorToken](111,2): «line terminator»
+SyntaxKind[Identifier](111,14): ArgumentList
+SyntaxKind[Terminal](111,18): `,`
+SyntaxKind[Identifier](111,27): Argument
+SyntaxKind[LineTerminatorToken](112,1): «line terminator»
+SyntaxKind[DedentToken](112,1): «dedent»
+SyntaxKind[LineTerminatorToken](113,1): «line terminator»
+SyntaxKind[Identifier](113,14): PrimarySymbol
+SyntaxKind[ColonToken](113,16): :
+SyntaxKind[LineTerminatorToken](114,2): «line terminator»
+SyntaxKind[IndentToken](114,2): «indent»
+SyntaxKind[Identifier](114,10): Terminal
+SyntaxKind[LineTerminatorToken](115,2): «line terminator»
+SyntaxKind[Identifier](115,25): UnicodeCharacterLiteral
+SyntaxKind[LineTerminatorToken](116,2): «line terminator»
+SyntaxKind[Identifier](116,13): Nonterminal
+SyntaxKind[LineTerminatorToken](117,2): «line terminator»
+SyntaxKind[LineTerminatorToken](118,1): «line terminator»
+SyntaxKind[DedentToken](118,1): «dedent»
+SyntaxKind[Identifier](118,12): Nonterminal
+SyntaxKind[ColonToken](118,14): :
+SyntaxKind[LineTerminatorToken](119,2): «line terminator»
+SyntaxKind[IndentToken](119,2): «indent»
+SyntaxKind[Identifier](119,12): Identifier
+SyntaxKind[Identifier](119,22): Arguments
+SyntaxKind[QuestionToken](119,23): ?
+SyntaxKind[LineTerminatorToken](120,1): «line terminator»
+SyntaxKind[DedentToken](120,1): «dedent»
+SyntaxKind[LineTerminatorToken](121,1): «line terminator»
+SyntaxKind[Identifier](121,15): OptionalSymbol
+SyntaxKind[ColonToken](121,17): :
+SyntaxKind[LineTerminatorToken](122,2): «line terminator»
+SyntaxKind[IndentToken](122,2): «indent»
+SyntaxKind[Identifier](122,15): PrimarySymbol
+SyntaxKind[Terminal](122,19): `?`
+SyntaxKind[QuestionToken](122,20): ?
+SyntaxKind[LineTerminatorToken](123,1): «line terminator»
+SyntaxKind[DedentToken](123,1): «dedent»
+SyntaxKind[LineTerminatorToken](124,1): «line terminator»
+SyntaxKind[Identifier](124,9): OrClause
+SyntaxKind[ColonToken](124,11): :
+SyntaxKind[LineTerminatorToken](125,2): «line terminator»
+SyntaxKind[IndentToken](125,2): «indent»
+SyntaxKind[Identifier](125,15): PrimarySymbol
+SyntaxKind[LineTerminatorToken](126,2): «line terminator»
+SyntaxKind[Identifier](126,10): OrClause
+SyntaxKind[Terminal](126,15): `or`
+SyntaxKind[Identifier](126,29): PrimarySymbol
+SyntaxKind[LineTerminatorToken](127,1): «line terminator»
+SyntaxKind[DedentToken](127,1): «dedent»
+SyntaxKind[LineTerminatorToken](128,1): «line terminator»
+SyntaxKind[Identifier](128,12): OneOfSymbol
+SyntaxKind[ColonToken](128,14): :
+SyntaxKind[LineTerminatorToken](129,2): «line terminator»
+SyntaxKind[IndentToken](129,2): «indent»
+SyntaxKind[Identifier](129,15): PrimarySymbol
+SyntaxKind[LineTerminatorToken](130,2): «line terminator»
+SyntaxKind[Terminal](130,7): `one`
+SyntaxKind[Terminal](130,12): `of`
+SyntaxKind[Identifier](130,21): OrClause
+SyntaxKind[LineTerminatorToken](131,1): «line terminator»
+SyntaxKind[DedentToken](131,1): «dedent»
+SyntaxKind[LineTerminatorToken](132,1): «line terminator»
+SyntaxKind[Identifier](132,12): UnarySymbol
+SyntaxKind[ColonToken](132,14): :
+SyntaxKind[LineTerminatorToken](133,2): «line terminator»
+SyntaxKind[IndentToken](133,2): «indent»
+SyntaxKind[Identifier](133,13): OneOfSymbol
+SyntaxKind[LineTerminatorToken](134,1): «line terminator»
+SyntaxKind[DedentToken](134,1): «dedent»
+SyntaxKind[LineTerminatorToken](135,1): «line terminator»
+SyntaxKind[Identifier](135,13): ButNotSymbol
+SyntaxKind[ColonToken](135,15): :
+SyntaxKind[LineTerminatorToken](136,2): «line terminator»
+SyntaxKind[IndentToken](136,2): «indent»
+SyntaxKind[Identifier](136,13): UnarySymbol
+SyntaxKind[Terminal](136,19): `but`
+SyntaxKind[Terminal](136,25): `not`
+SyntaxKind[Identifier](136,37): UnarySymbol
+SyntaxKind[LineTerminatorToken](137,1): «line terminator»
+SyntaxKind[DedentToken](137,1): «dedent»
+SyntaxKind[LineTerminatorToken](138,1): «line terminator»
+SyntaxKind[Identifier](138,13): BinarySymbol
+SyntaxKind[ColonToken](138,15): :
+SyntaxKind[LineTerminatorToken](139,2): «line terminator»
+SyntaxKind[IndentToken](139,2): «indent»
+SyntaxKind[Identifier](139,14): ButNotSymbol
+SyntaxKind[LineTerminatorToken](140,2): «line terminator»
+SyntaxKind[Identifier](140,13): UnarySymbol
+SyntaxKind[LineTerminatorToken](141,1): «line terminator»
+SyntaxKind[DedentToken](141,1): «dedent»
+SyntaxKind[LineTerminatorToken](142,1): «line terminator»
+SyntaxKind[Identifier](142,11): SymbolList
+SyntaxKind[ColonToken](142,13): :
+SyntaxKind[LineTerminatorToken](143,2): «line terminator»
+SyntaxKind[IndentToken](143,2): «indent»
+SyntaxKind[Identifier](143,15): PrimarySymbol
+SyntaxKind[LineTerminatorToken](144,2): «line terminator»
+SyntaxKind[Identifier](144,12): SymbolList
+SyntaxKind[Terminal](144,16): `,`
+SyntaxKind[Identifier](144,30): PrimarySymbol
+SyntaxKind[LineTerminatorToken](145,1): «line terminator»
+SyntaxKind[DedentToken](145,1): «dedent»
+SyntaxKind[LineTerminatorToken](146,1): «line terminator»
+SyntaxKind[Identifier](146,10): SymbolSet
+SyntaxKind[ColonToken](146,12): :
+SyntaxKind[LineTerminatorToken](147,2): «line terminator»
+SyntaxKind[IndentToken](147,2): «indent»
+SyntaxKind[Terminal](147,5): `{`
+SyntaxKind[Identifier](147,16): SymbolList
+SyntaxKind[Terminal](147,20): `}`
+SyntaxKind[LineTerminatorToken](148,1): «line terminator»
+SyntaxKind[DedentToken](148,1): «dedent»
+SyntaxKind[LineTerminatorToken](149,1): «line terminator»
+SyntaxKind[Identifier](149,21): EmptyAssertionClause
+SyntaxKind[ColonToken](149,23): :
+SyntaxKind[LineTerminatorToken](150,2): «line terminator»
+SyntaxKind[IndentToken](150,2): «indent»
+SyntaxKind[Terminal](150,9): `empty`
+SyntaxKind[LineTerminatorToken](151,1): «line terminator»
+SyntaxKind[DedentToken](151,1): «dedent»
+SyntaxKind[LineTerminatorToken](152,1): «line terminator»
+SyntaxKind[Identifier](152,31): LookaheadEqualsAssertionClause
+SyntaxKind[ColonToken](152,33): :
+SyntaxKind[LineTerminatorToken](153,2): «line terminator»
+SyntaxKind[IndentToken](153,2): «indent»
+SyntaxKind[Terminal](153,13): `lookahead`
+SyntaxKind[Terminal](153,18): `==`
+SyntaxKind[Identifier](153,32): PrimarySymbol
+SyntaxKind[LineTerminatorToken](154,1): «line terminator»
+SyntaxKind[DedentToken](154,1): «dedent»
+SyntaxKind[LineTerminatorToken](155,1): «line terminator»
+SyntaxKind[Identifier](155,34): LookaheadNotEqualsAssertionClause
+SyntaxKind[ColonToken](155,36): :
+SyntaxKind[LineTerminatorToken](156,2): «line terminator»
+SyntaxKind[IndentToken](156,2): «indent»
+SyntaxKind[Terminal](156,13): `lookahead`
+SyntaxKind[Terminal](156,18): `!=`
+SyntaxKind[Identifier](156,32): PrimarySymbol
+SyntaxKind[LineTerminatorToken](157,1): «line terminator»
+SyntaxKind[DedentToken](157,1): «dedent»
+SyntaxKind[LineTerminatorToken](158,1): «line terminator»
+SyntaxKind[Identifier](158,27): LookaheadInAssertionClause
+SyntaxKind[ColonToken](158,29): :
+SyntaxKind[LineTerminatorToken](159,2): «line terminator»
+SyntaxKind[IndentToken](159,2): «indent»
+SyntaxKind[Terminal](159,13): `lookahead`
+SyntaxKind[Terminal](159,18): `<-`
+SyntaxKind[Identifier](159,28): SymbolSet
+SyntaxKind[LineTerminatorToken](160,1): «line terminator»
+SyntaxKind[DedentToken](160,1): «dedent»
+SyntaxKind[LineTerminatorToken](161,1): «line terminator»
+SyntaxKind[Identifier](161,30): LookaheadNotInAssertionClause
+SyntaxKind[ColonToken](161,32): :
+SyntaxKind[LineTerminatorToken](162,2): «line terminator»
+SyntaxKind[IndentToken](162,2): «indent»
+SyntaxKind[Terminal](162,13): `lookahead`
+SyntaxKind[Terminal](162,18): `<!`
+SyntaxKind[Identifier](162,28): SymbolSet
+SyntaxKind[LineTerminatorToken](163,1): «line terminator»
+SyntaxKind[DedentToken](163,1): «dedent»
+SyntaxKind[LineTerminatorToken](164,1): «line terminator»
+SyntaxKind[Identifier](164,25): LookaheadAssertionClause
+SyntaxKind[ColonToken](164,27): :
+SyntaxKind[LineTerminatorToken](165,2): «line terminator»
+SyntaxKind[IndentToken](165,2): «indent»
+SyntaxKind[Identifier](165,32): LookaheadEqualsAssertionClause
+SyntaxKind[LineTerminatorToken](166,2): «line terminator»
+SyntaxKind[Identifier](166,35): LookaheadNotEqualsAssertionClause
+SyntaxKind[LineTerminatorToken](167,2): «line terminator»
+SyntaxKind[Identifier](167,28): LookaheadInAssertionClause
+SyntaxKind[LineTerminatorToken](168,2): «line terminator»
+SyntaxKind[Identifier](168,31): LookaheadNotInAssertionClause
+SyntaxKind[LineTerminatorToken](169,1): «line terminator»
+SyntaxKind[DedentToken](169,1): «dedent»
+SyntaxKind[LineTerminatorToken](170,1): «line terminator»
+SyntaxKind[Identifier](170,24): NoSymbolAssertionClause
+SyntaxKind[ColonToken](170,26): :
+SyntaxKind[LineTerminatorToken](171,2): «line terminator»
+SyntaxKind[IndentToken](171,2): «indent»
+SyntaxKind[Terminal](171,6): `no`
+SyntaxKind[Identifier](171,15): OrClause
+SyntaxKind[Terminal](171,22): `here`
+SyntaxKind[LineTerminatorToken](172,1): «line terminator»
+SyntaxKind[DedentToken](172,1): «dedent»
+SyntaxKind[LineTerminatorToken](173,1): «line terminator»
+SyntaxKind[Identifier](173,27): LexicalGoalAssertionClause
+SyntaxKind[ColonToken](173,29): :
+SyntaxKind[LineTerminatorToken](174,2): «line terminator»
+SyntaxKind[IndentToken](174,2): «indent»
+SyntaxKind[Terminal](174,11): `lexical`
+SyntaxKind[Terminal](174,18): `goal`
+SyntaxKind[Identifier](174,32): PrimarySymbol
+SyntaxKind[LineTerminatorToken](175,1): «line terminator»
+SyntaxKind[DedentToken](175,1): «dedent»
+SyntaxKind[LineTerminatorToken](176,1): «line terminator»
+SyntaxKind[Identifier](176,30): ParameterValueAssertionClause
+SyntaxKind[ColonToken](176,32): :
+SyntaxKind[LineTerminatorToken](177,2): «line terminator»
+SyntaxKind[IndentToken](177,2): «indent»
+SyntaxKind[Terminal](177,5): `~`
+SyntaxKind[Identifier](177,16): Identifier
+SyntaxKind[LineTerminatorToken](178,2): «line terminator»
+SyntaxKind[Terminal](178,5): `+`
+SyntaxKind[Identifier](178,16): Identifier
+SyntaxKind[LineTerminatorToken](179,1): «line terminator»
+SyntaxKind[DedentToken](179,1): «dedent»
+SyntaxKind[LineTerminatorToken](180,1): «line terminator»
+SyntaxKind[Identifier](180,16): AssertionClause
+SyntaxKind[ColonToken](180,18): :
+SyntaxKind[LineTerminatorToken](181,2): «line terminator»
+SyntaxKind[IndentToken](181,2): «indent»
+SyntaxKind[Identifier](181,22): EmptyAssertionClause
+SyntaxKind[LineTerminatorToken](182,2): «line terminator»
+SyntaxKind[Identifier](182,26): LookaheadAssertionClause
+SyntaxKind[LineTerminatorToken](183,2): «line terminator»
+SyntaxKind[Identifier](183,25): NoSymbolAssertionClause
+SyntaxKind[LineTerminatorToken](184,2): «line terminator»
+SyntaxKind[Identifier](184,28): LexicalGoalAssertionClause
+SyntaxKind[LineTerminatorToken](185,2): «line terminator»
+SyntaxKind[Identifier](185,31): ParameterValueAssertionClause
+SyntaxKind[LineTerminatorToken](186,1): «line terminator»
+SyntaxKind[DedentToken](186,1): «dedent»
+SyntaxKind[LineTerminatorToken](187,1): «line terminator»
+SyntaxKind[Identifier](187,10): Assertion
+SyntaxKind[ColonToken](187,12): :
+SyntaxKind[LineTerminatorToken](188,2): «line terminator»
+SyntaxKind[IndentToken](188,2): «indent»
+SyntaxKind[Terminal](188,5): `[`
+SyntaxKind[Identifier](188,21): AssertionClause
+SyntaxKind[Terminal](188,25): `]`
+SyntaxKind[LineTerminatorToken](189,2): «line terminator»
+SyntaxKind[LineTerminatorToken](190,1): «line terminator»
+SyntaxKind[DedentToken](190,1): «dedent»
+SyntaxKind[Identifier](190,10): ProseSpan
+SyntaxKind[ColonToken](190,12): :
+SyntaxKind[LineTerminatorToken](191,2): «line terminator»
+SyntaxKind[IndentToken](191,2): «indent»
+SyntaxKind[Identifier](191,7): Prose
+SyntaxKind[LineTerminatorToken](192,2): «line terminator»
+SyntaxKind[Identifier](192,11): ProseSpan
+SyntaxKind[Identifier](192,26): LineTerminator
+SyntaxKind[Identifier](192,32): Prose
+SyntaxKind[LineTerminatorToken](193,1): «line terminator»
+SyntaxKind[DedentToken](193,1): «dedent»
+SyntaxKind[LineTerminatorToken](194,1): «line terminator»
+SyntaxKind[Identifier](194,7): Symbol
+SyntaxKind[ColonToken](194,9): :
+SyntaxKind[LineTerminatorToken](195,2): «line terminator»
+SyntaxKind[IndentToken](195,2): «indent»
+SyntaxKind[Identifier](195,11): Assertion
+SyntaxKind[LineTerminatorToken](196,2): «line terminator»
+SyntaxKind[Identifier](196,14): BinarySymbol
+SyntaxKind[LineTerminatorToken](197,1): «line terminator»
+SyntaxKind[DedentToken](197,1): «dedent»
+SyntaxKind[LineTerminatorToken](198,1): «line terminator»
+SyntaxKind[Identifier](198,11): SymbolSpan
+SyntaxKind[ColonToken](198,13): :
+SyntaxKind[LineTerminatorToken](199,2): «line terminator»
+SyntaxKind[IndentToken](199,2): «indent»
+SyntaxKind[Identifier](199,11): ProseSpan
+SyntaxKind[LineTerminatorToken](200,2): «line terminator»
+SyntaxKind[Identifier](200,16): SymbolSpanRest
+SyntaxKind[LineTerminatorToken](201,1): «line terminator»
+SyntaxKind[DedentToken](201,1): «dedent»
+SyntaxKind[LineTerminatorToken](202,1): «line terminator»
+SyntaxKind[Identifier](202,15): SymbolSpanRest
+SyntaxKind[ColonToken](202,17): :
+SyntaxKind[LineTerminatorToken](203,2): «line terminator»
+SyntaxKind[IndentToken](203,2): «indent»
+SyntaxKind[Identifier](203,8): Symbol
+SyntaxKind[Identifier](203,23): SymbolSpanRest
+SyntaxKind[QuestionToken](203,24): ?
+SyntaxKind[LineTerminatorToken](204,1): «line terminator»
+SyntaxKind[DedentToken](204,1): «dedent»
+SyntaxKind[LineTerminatorToken](205,1): «line terminator»
+SyntaxKind[Identifier](205,18): RightHandSideList
+SyntaxKind[ColonToken](205,20): :
+SyntaxKind[LineTerminatorToken](206,2): «line terminator»
+SyntaxKind[IndentToken](206,2): «indent»
+SyntaxKind[Identifier](206,15): RightHandSide
+SyntaxKind[Identifier](206,33): RightHandSideList
+SyntaxKind[QuestionToken](206,34): ?
+SyntaxKind[LineTerminatorToken](207,1): «line terminator»
+SyntaxKind[DedentToken](207,1): «dedent»
+SyntaxKind[LineTerminatorToken](208,1): «line terminator»
+SyntaxKind[Identifier](208,14): RightHandSide
+SyntaxKind[ColonToken](208,16): :
+SyntaxKind[LineTerminatorToken](209,2): «line terminator»
+SyntaxKind[IndentToken](209,2): «indent»
+SyntaxKind[Identifier](209,12): SymbolSpan
+SyntaxKind[Identifier](209,27): LineTerminator
+SyntaxKind[LineTerminatorToken](210,1): «line terminator»
+SyntaxKind[DedentToken](210,1): «dedent»
+SyntaxKind[LineTerminatorToken](211,1): «line terminator»
+SyntaxKind[Identifier](211,10): Terminals
+SyntaxKind[ColonToken](211,12): :
+SyntaxKind[LineTerminatorToken](212,2): «line terminator»
+SyntaxKind[IndentToken](212,2): «indent»
+SyntaxKind[Identifier](212,10): Terminal
+SyntaxKind[Identifier](212,20): Terminals
+SyntaxKind[QuestionToken](212,21): ?
+SyntaxKind[LineTerminatorToken](213,1): «line terminator»
+SyntaxKind[DedentToken](213,1): «dedent»
+SyntaxKind[LineTerminatorToken](214,1): «line terminator»
+SyntaxKind[Identifier](214,13): TerminalList
+SyntaxKind[ColonToken](214,15): :
+SyntaxKind[LineTerminatorToken](215,2): «line terminator»
+SyntaxKind[IndentToken](215,2): «indent»
+SyntaxKind[Identifier](215,11): Terminals
+SyntaxKind[LineTerminatorToken](216,2): «line terminator»
+SyntaxKind[Identifier](216,14): TerminalList
+SyntaxKind[Identifier](216,29): LineTerminator
+SyntaxKind[Identifier](216,39): Terminals
+SyntaxKind[LineTerminatorToken](217,1): «line terminator»
+SyntaxKind[DedentToken](217,1): «dedent»
+SyntaxKind[LineTerminatorToken](218,1): «line terminator»
+SyntaxKind[Identifier](218,10): OneOfList
+SyntaxKind[ColonToken](218,12): :
+SyntaxKind[LineTerminatorToken](219,2): «line terminator»
+SyntaxKind[IndentToken](219,2): «indent»
+SyntaxKind[Terminal](219,7): `one`
+SyntaxKind[Terminal](219,12): `of`
+SyntaxKind[Identifier](219,22): Terminals
+SyntaxKind[LineTerminatorToken](220,2): «line terminator»
+SyntaxKind[Terminal](220,7): `one`
+SyntaxKind[Terminal](220,12): `of`
+SyntaxKind[Identifier](220,27): LineTerminator
+SyntaxKind[Identifier](220,34): Indent
+SyntaxKind[Identifier](220,47): TerminalList
+SyntaxKind[Identifier](220,54): Dedent
+SyntaxKind[LineTerminatorToken](221,1): «line terminator»
+SyntaxKind[DedentToken](221,1): «dedent»
+SyntaxKind[LineTerminatorToken](222,1): «line terminator»
+SyntaxKind[Identifier](222,10): Parameter
+SyntaxKind[ColonToken](222,12): :
+SyntaxKind[LineTerminatorToken](223,2): «line terminator»
+SyntaxKind[IndentToken](223,2): «indent»
+SyntaxKind[Identifier](223,12): Identifier
+SyntaxKind[LineTerminatorToken](224,1): «line terminator»
+SyntaxKind[DedentToken](224,1): «dedent»
+SyntaxKind[LineTerminatorToken](225,1): «line terminator»
+SyntaxKind[Identifier](225,14): ParameterList
+SyntaxKind[ColonToken](225,16): :
+SyntaxKind[LineTerminatorToken](226,2): «line terminator»
+SyntaxKind[IndentToken](226,2): «indent»
+SyntaxKind[Identifier](226,11): Parameter
+SyntaxKind[LineTerminatorToken](227,2): «line terminator»
+SyntaxKind[Identifier](227,15): ParameterList
+SyntaxKind[Terminal](227,19): `,`
+SyntaxKind[Identifier](227,29): Parameter
+SyntaxKind[LineTerminatorToken](228,1): «line terminator»
+SyntaxKind[DedentToken](228,1): «dedent»
+SyntaxKind[LineTerminatorToken](229,1): «line terminator»
+SyntaxKind[Identifier](229,11): Parameters
+SyntaxKind[ColonToken](229,13): :
+SyntaxKind[LineTerminatorToken](230,2): «line terminator»
+SyntaxKind[IndentToken](230,2): «indent»
+SyntaxKind[Terminal](230,5): `(`
+SyntaxKind[Identifier](230,19): ParameterList
+SyntaxKind[Terminal](230,23): `)`
+SyntaxKind[LineTerminatorToken](231,1): «line terminator»
+SyntaxKind[DedentToken](231,1): «dedent»
+SyntaxKind[LineTerminatorToken](232,1): «line terminator»
+SyntaxKind[Identifier](232,11): Production
+SyntaxKind[ColonToken](232,13): :
+SyntaxKind[LineTerminatorToken](233,2): «line terminator»
+SyntaxKind[IndentToken](233,2): «indent»
+SyntaxKind[Identifier](233,12): Identifier
+SyntaxKind[Identifier](233,23): Parameters
+SyntaxKind[QuestionToken](233,24): ?
+SyntaxKind[Terminal](233,28): `:`
+SyntaxKind[Identifier](233,38): OneOfList
+SyntaxKind[LineTerminatorToken](234,2): «line terminator»
+SyntaxKind[Identifier](234,12): Identifier
+SyntaxKind[Identifier](234,23): Parameters
+SyntaxKind[QuestionToken](234,24): ?
+SyntaxKind[Terminal](234,28): `:`
+SyntaxKind[Identifier](234,42): RightHandSide
+SyntaxKind[LineTerminatorToken](235,2): «line terminator»
+SyntaxKind[Identifier](235,12): Identifier
+SyntaxKind[Identifier](235,23): Parameters
+SyntaxKind[QuestionToken](235,24): ?
+SyntaxKind[Terminal](235,28): `:`
+SyntaxKind[Identifier](235,43): LineTerminator
+SyntaxKind[Identifier](235,50): Indent
+SyntaxKind[Identifier](235,68): RightHandSideList
+SyntaxKind[Identifier](235,75): Dedent
+SyntaxKind[LineTerminatorToken](236,1): «line terminator»
+SyntaxKind[DedentToken](236,1): «dedent»
+SyntaxKind[LineTerminatorToken](237,1): «line terminator»
+SyntaxKind[Identifier](237,14): SourceElement
+SyntaxKind[ColonToken](237,16): :
+SyntaxKind[LineTerminatorToken](238,2): «line terminator»
+SyntaxKind[IndentToken](238,2): «indent»
+SyntaxKind[OpenBracketToken](238,3): [
+SyntaxKind[EmptyKeyword](238,8): empty
+SyntaxKind[CloseBracketToken](238,9): ]
+SyntaxKind[LineTerminatorToken](239,2): «line terminator»
+SyntaxKind[Identifier](239,12): Production
+SyntaxKind[LineTerminatorToken](240,1): «line terminator»
+SyntaxKind[DedentToken](240,1): «dedent»
+SyntaxKind[LineTerminatorToken](241,1): «line terminator»
+SyntaxKind[Identifier](241,15): SourceElements
+SyntaxKind[ColonToken](241,17): :
+SyntaxKind[LineTerminatorToken](242,2): «line terminator»
+SyntaxKind[IndentToken](242,2): «indent»
+SyntaxKind[Identifier](242,15): SourceElement
+SyntaxKind[Identifier](242,30): SourceElements
+SyntaxKind[QuestionToken](242,31): ?
+SyntaxKind[LineTerminatorToken](243,1): «line terminator»
+SyntaxKind[DedentToken](243,1): «dedent»
+SyntaxKind[LineTerminatorToken](244,1): «line terminator»
+SyntaxKind[Identifier](244,11): SourceFile
+SyntaxKind[ColonToken](244,13): :
+SyntaxKind[LineTerminatorToken](245,2): «line terminator»
+SyntaxKind[IndentToken](245,2): «indent»
+SyntaxKind[Identifier](245,16): SourceElements
+SyntaxKind[LineTerminatorToken](246,1): «line terminator»
+SyntaxKind[DedentToken](246,1): «dedent»
+SyntaxKind[EndOfFileToken](246,1): «EndOfFileToken»

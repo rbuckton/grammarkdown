@@ -1,0 +1,975 @@
+/// [Parser]grammarkdown.grammar:
+(1,1)SyntaxKind[SourceFile](filename = "grammarkdown.grammar")
+  (4,1)SyntaxKind[Production]
+    (4,1)SyntaxKind[Identifier](text = "SourceCharacter")
+    (4,19)SyntaxKind[RightHandSideList]
+      (4,19)SyntaxKind[IndentToken]
+      (5,2)SyntaxKind[RightHandSide]
+        (5,2)SyntaxKind[SymbolSpan]
+          (5,2)SyntaxKind[Prose](text = "any Unicode code point")
+      (5,26)SyntaxKind[DedentToken]
+  (7,1)SyntaxKind[Production]
+    (7,1)SyntaxKind[Identifier](text = "LineTerminator")
+    (7,18)SyntaxKind[RightHandSideList]
+      (7,18)SyntaxKind[IndentToken]
+      (8,2)SyntaxKind[RightHandSide]
+        (8,2)SyntaxKind[SymbolSpan]
+          (8,2)SyntaxKind[UnicodeCharacterLiteral](text = <LF>)
+      (9,2)SyntaxKind[RightHandSide]
+        (9,2)SyntaxKind[SymbolSpan]
+          (9,2)SyntaxKind[UnicodeCharacterLiteral](text = <CR>)
+      (10,2)SyntaxKind[RightHandSide]
+        (10,2)SyntaxKind[SymbolSpan]
+          (10,2)SyntaxKind[UnicodeCharacterLiteral](text = <LS>)
+      (11,2)SyntaxKind[RightHandSide]
+        (11,2)SyntaxKind[SymbolSpan]
+          (11,2)SyntaxKind[UnicodeCharacterLiteral](text = <PS>)
+      (11,6)SyntaxKind[DedentToken]
+  (13,1)SyntaxKind[Production]
+    (13,1)SyntaxKind[Identifier](text = "IdentifierName")
+    (13,18)SyntaxKind[RightHandSideList]
+      (13,18)SyntaxKind[IndentToken]
+      (14,2)SyntaxKind[RightHandSide]
+        (14,2)SyntaxKind[SymbolSpan]
+          (14,2)SyntaxKind[Nonterminal]
+            (14,2)SyntaxKind[Identifier](text = "IdentifierStart")
+      (15,2)SyntaxKind[RightHandSide]
+        (15,2)SyntaxKind[SymbolSpan]
+          (15,2)SyntaxKind[Nonterminal]
+            (15,2)SyntaxKind[Identifier](text = "IdentifierName")
+          (15,16)SyntaxKind[SymbolSpan]
+            (15,16)SyntaxKind[Nonterminal]
+              (15,16)SyntaxKind[Identifier](text = "IdentifierPart")
+      (15,31)SyntaxKind[DedentToken]
+  (17,1)SyntaxKind[Production]
+    (17,1)SyntaxKind[Identifier](text = "IdentifierStart")
+    (17,19)SyntaxKind[RightHandSideList]
+      (17,19)SyntaxKind[IndentToken]
+      (18,2)SyntaxKind[RightHandSide]
+        (18,2)SyntaxKind[SymbolSpan]
+          (18,2)SyntaxKind[Nonterminal]
+            (18,2)SyntaxKind[Identifier](text = "UnicodeIDStart")
+      (19,2)SyntaxKind[RightHandSide]
+        (19,2)SyntaxKind[SymbolSpan]
+          (19,2)SyntaxKind[Terminal](text = "_")
+      (19,5)SyntaxKind[DedentToken]
+  (21,1)SyntaxKind[Production]
+    (21,1)SyntaxKind[Identifier](text = "IdentifierPart")
+    (21,18)SyntaxKind[RightHandSideList]
+      (21,18)SyntaxKind[IndentToken]
+      (22,2)SyntaxKind[RightHandSide]
+        (22,2)SyntaxKind[SymbolSpan]
+          (22,2)SyntaxKind[Nonterminal]
+            (22,2)SyntaxKind[Identifier](text = "UnicodeIDContinue")
+      (23,2)SyntaxKind[RightHandSide]
+        (23,2)SyntaxKind[SymbolSpan]
+          (23,2)SyntaxKind[Terminal](text = "_")
+      (24,2)SyntaxKind[RightHandSide]
+        (24,2)SyntaxKind[SymbolSpan]
+          (24,2)SyntaxKind[UnicodeCharacterLiteral](text = <ZWNJ>)
+      (25,2)SyntaxKind[RightHandSide]
+        (25,2)SyntaxKind[SymbolSpan]
+          (25,2)SyntaxKind[UnicodeCharacterLiteral](text = <ZWJ>)
+      (26,2)SyntaxKind[DedentToken]
+  (27,1)SyntaxKind[Production]
+    (27,1)SyntaxKind[Identifier](text = "UnicodeIDStart")
+    (27,18)SyntaxKind[RightHandSideList]
+      (27,18)SyntaxKind[IndentToken]
+      (28,2)SyntaxKind[RightHandSide]
+        (28,2)SyntaxKind[SymbolSpan]
+          (28,2)SyntaxKind[Prose](text = "any Unicode code point with the Unicode property "ID_Start" or "Other_ID_Start"")
+      (28,83)SyntaxKind[DedentToken]
+  (30,1)SyntaxKind[Production]
+    (30,1)SyntaxKind[Identifier](text = "UnicodeIDContinue")
+    (30,21)SyntaxKind[RightHandSideList]
+      (30,21)SyntaxKind[IndentToken]
+      (31,2)SyntaxKind[RightHandSide]
+        (31,2)SyntaxKind[SymbolSpan]
+          (31,2)SyntaxKind[Prose](text = "any Unicode code point with the Unicode property "ID_Continue" or "Other_ID_Continue", or "Other_ID_Start"")
+      (31,110)SyntaxKind[DedentToken]
+  (33,1)SyntaxKind[Production]
+    (33,1)SyntaxKind[Identifier](text = "ReservedWord")
+    (33,16)SyntaxKind[RightHandSideList]
+      (33,16)SyntaxKind[IndentToken]
+      (34,2)SyntaxKind[RightHandSide]
+        (34,2)SyntaxKind[SymbolSpan]
+          (34,2)SyntaxKind[Nonterminal]
+            (34,2)SyntaxKind[Identifier](text = "Keyword")
+      (35,2)SyntaxKind[DedentToken]
+  (36,1)SyntaxKind[Production]
+    (36,1)SyntaxKind[Identifier](text = "Keyword")
+    (36,11)SyntaxKind[OneOfList]
+      (36,11)SyntaxKind[OneKeyword]
+      (36,15)SyntaxKind[OfKeyword]
+      (36,18)SyntaxKind[IndentToken]
+      (37,2)SyntaxKind[Terminal](text = "empty")
+      (38,2)SyntaxKind[Terminal](text = "lookahead")
+      (39,2)SyntaxKind[Terminal](text = "lexical")
+      (40,2)SyntaxKind[Terminal](text = "goal")
+      (41,2)SyntaxKind[Terminal](text = "no")
+      (42,2)SyntaxKind[Terminal](text = "here")
+      (43,2)SyntaxKind[Terminal](text = "one")
+      (44,2)SyntaxKind[Terminal](text = "of")
+      (45,2)SyntaxKind[Terminal](text = "or")
+      (46,2)SyntaxKind[Terminal](text = "but")
+      (47,2)SyntaxKind[Terminal](text = "not")
+      (47,7)SyntaxKind[DedentToken]
+  (49,1)SyntaxKind[Production]
+    (49,1)SyntaxKind[Identifier](text = "DecimalDigit")
+    (49,16)SyntaxKind[OneOfList]
+      (49,16)SyntaxKind[OneKeyword]
+      (49,20)SyntaxKind[OfKeyword]
+      (49,23)SyntaxKind[IndentToken]
+      (50,2)SyntaxKind[Terminal](text = "0")
+      (50,5)SyntaxKind[Terminal](text = "1")
+      (50,9)SyntaxKind[Terminal](text = "2")
+      (50,13)SyntaxKind[Terminal](text = "3")
+      (50,17)SyntaxKind[Terminal](text = "4")
+      (50,21)SyntaxKind[Terminal](text = "5")
+      (50,25)SyntaxKind[Terminal](text = "6")
+      (50,29)SyntaxKind[Terminal](text = "7")
+      (50,33)SyntaxKind[Terminal](text = "8")
+      (50,37)SyntaxKind[Terminal](text = "9")
+      (50,41)SyntaxKind[DedentToken]
+  (52,1)SyntaxKind[Production]
+    (52,1)SyntaxKind[Identifier](text = "HexDigit")
+    (52,12)SyntaxKind[OneOfList]
+      (52,12)SyntaxKind[OneKeyword]
+      (52,16)SyntaxKind[OfKeyword]
+      (52,19)SyntaxKind[IndentToken]
+      (53,2)SyntaxKind[Terminal](text = "0")
+      (53,5)SyntaxKind[Terminal](text = "1")
+      (53,9)SyntaxKind[Terminal](text = "2")
+      (53,13)SyntaxKind[Terminal](text = "3")
+      (53,17)SyntaxKind[Terminal](text = "4")
+      (53,21)SyntaxKind[Terminal](text = "5")
+      (53,25)SyntaxKind[Terminal](text = "6")
+      (53,29)SyntaxKind[Terminal](text = "7")
+      (53,33)SyntaxKind[Terminal](text = "8")
+      (53,37)SyntaxKind[Terminal](text = "9")
+      (53,41)SyntaxKind[Terminal](text = "a")
+      (53,45)SyntaxKind[Terminal](text = "b")
+      (53,49)SyntaxKind[Terminal](text = "c")
+      (53,53)SyntaxKind[Terminal](text = "d")
+      (53,57)SyntaxKind[Terminal](text = "e")
+      (53,61)SyntaxKind[Terminal](text = "f")
+      (53,65)SyntaxKind[Terminal](text = "A")
+      (53,69)SyntaxKind[Terminal](text = "B")
+      (53,73)SyntaxKind[Terminal](text = "C")
+      (53,77)SyntaxKind[Terminal](text = "D")
+      (53,81)SyntaxKind[Terminal](text = "E")
+      (53,85)SyntaxKind[Terminal](text = "F")
+      (53,89)SyntaxKind[DedentToken]
+  (55,1)SyntaxKind[Production]
+    (55,1)SyntaxKind[Identifier](text = "UnicodeCharacterLiteral")
+    (55,27)SyntaxKind[RightHandSideList]
+      (55,27)SyntaxKind[IndentToken]
+      (56,2)SyntaxKind[RightHandSide]
+        (56,2)SyntaxKind[SymbolSpan]
+          (56,2)SyntaxKind[Terminal](text = "<")
+          (56,5)SyntaxKind[SymbolSpan]
+            (56,5)SyntaxKind[Nonterminal]
+              (56,5)SyntaxKind[Identifier](text = "UnicodeCharacterLiteralChars")
+            (56,34)SyntaxKind[SymbolSpan]
+              (56,34)SyntaxKind[Terminal](text = ">")
+      (56,38)SyntaxKind[DedentToken]
+  (58,1)SyntaxKind[Production]
+    (58,1)SyntaxKind[Identifier](text = "UnicodeCharacterLiteralChars")
+    (58,32)SyntaxKind[RightHandSideList]
+      (58,32)SyntaxKind[IndentToken]
+      (59,2)SyntaxKind[RightHandSide]
+        (59,2)SyntaxKind[SymbolSpan]
+          (59,2)SyntaxKind[Nonterminal]
+            (59,2)SyntaxKind[Identifier](text = "UnicodeCharacterLiteralChar")
+          (59,29)SyntaxKind[SymbolSpan]
+            (59,29)SyntaxKind[Nonterminal]?
+              (59,29)SyntaxKind[Identifier](text = "UnicodeCharacterLiteralChars")
+              (59,58)SyntaxKind[QuestionToken]
+      (59,59)SyntaxKind[DedentToken]
+  (61,1)SyntaxKind[Production]
+    (61,1)SyntaxKind[Identifier](text = "UnicodeCharacterLiteralChar")
+    (61,31)SyntaxKind[RightHandSideList]
+      (61,31)SyntaxKind[IndentToken]
+      (62,2)SyntaxKind[RightHandSide]
+        (62,2)SyntaxKind[SymbolSpan]
+          (62,2)SyntaxKind[BinarySymbol]
+            (62,2)SyntaxKind[Nonterminal]
+              (62,2)SyntaxKind[Identifier](text = "SourceCharacter")
+            (62,17)SyntaxKind[ButNotOperator]
+            (62,25)SyntaxKind[OneOfSymbol]
+              (62,32)SyntaxKind[Terminal](text = "<")
+              (62,39)SyntaxKind[Terminal](text = ">")
+              (62,46)SyntaxKind[Nonterminal]
+                (62,46)SyntaxKind[Identifier](text = "LineTerminator")
+      (63,2)SyntaxKind[DedentToken]
+  (64,1)SyntaxKind[Production]
+    (64,1)SyntaxKind[Identifier](text = "Indent")
+    (64,10)SyntaxKind[RightHandSideList]
+      (64,10)SyntaxKind[IndentToken]
+      (65,2)SyntaxKind[RightHandSide]
+        (65,2)SyntaxKind[SymbolSpan]
+          (65,2)SyntaxKind[Prose](text = "An increase in the indentation depth from the previous line.")
+      (66,2)SyntaxKind[DedentToken]
+  (67,1)SyntaxKind[Production]
+    (67,1)SyntaxKind[Identifier](text = "Dedent")
+    (67,10)SyntaxKind[RightHandSideList]
+      (67,10)SyntaxKind[IndentToken]
+      (68,2)SyntaxKind[RightHandSide]
+        (68,2)SyntaxKind[SymbolSpan]
+          (68,2)SyntaxKind[Prose](text = "A decrease in the indentation depth from the previous line.")
+      (68,63)SyntaxKind[DedentToken]
+  (70,1)SyntaxKind[Production]
+    (70,1)SyntaxKind[Identifier](text = "Terminal")
+    (70,12)SyntaxKind[RightHandSideList]
+      (70,12)SyntaxKind[IndentToken]
+      (71,2)SyntaxKind[RightHandSide]
+        (71,2)SyntaxKind[SymbolSpan]
+          (71,2)SyntaxKind[Terminal](text = "`")
+          (71,5)SyntaxKind[SymbolSpan]
+            (71,5)SyntaxKind[Terminal](text = "`")
+            (71,9)SyntaxKind[SymbolSpan]
+              (71,9)SyntaxKind[Terminal](text = "`")
+      (72,2)SyntaxKind[RightHandSide]
+        (72,2)SyntaxKind[SymbolSpan]
+          (72,2)SyntaxKind[Terminal](text = "`")
+          (72,5)SyntaxKind[SymbolSpan]
+            (72,5)SyntaxKind[Nonterminal]
+              (72,5)SyntaxKind[Identifier](text = "TerminalChars")
+            (72,19)SyntaxKind[SymbolSpan]
+              (72,19)SyntaxKind[Terminal](text = "`")
+      (72,23)SyntaxKind[DedentToken]
+  (74,1)SyntaxKind[Production]
+    (74,1)SyntaxKind[Identifier](text = "TerminalChars")
+    (74,17)SyntaxKind[RightHandSideList]
+      (74,17)SyntaxKind[IndentToken]
+      (75,2)SyntaxKind[RightHandSide]
+        (75,2)SyntaxKind[SymbolSpan]
+          (75,2)SyntaxKind[Nonterminal]
+            (75,2)SyntaxKind[Identifier](text = "TerminalChar")
+          (75,14)SyntaxKind[SymbolSpan]
+            (75,14)SyntaxKind[Nonterminal]?
+              (75,14)SyntaxKind[Identifier](text = "TerminalChars")
+              (75,28)SyntaxKind[QuestionToken]
+      (75,29)SyntaxKind[DedentToken]
+  (77,1)SyntaxKind[Production]
+    (77,1)SyntaxKind[Identifier](text = "TerminalChar")
+    (77,16)SyntaxKind[RightHandSideList]
+      (77,16)SyntaxKind[IndentToken]
+      (78,2)SyntaxKind[RightHandSide]
+        (78,2)SyntaxKind[SymbolSpan]
+          (78,2)SyntaxKind[BinarySymbol]
+            (78,2)SyntaxKind[Nonterminal]
+              (78,2)SyntaxKind[Identifier](text = "SourceCharacter")
+            (78,17)SyntaxKind[ButNotOperator]
+            (78,25)SyntaxKind[OneOfSymbol]
+              (78,32)SyntaxKind[Terminal](text = "`")
+              (78,39)SyntaxKind[Nonterminal]
+                (78,39)SyntaxKind[Identifier](text = "LineTerminator")
+      (78,54)SyntaxKind[DedentToken]
+  (80,1)SyntaxKind[Production]
+    (80,1)SyntaxKind[Identifier](text = "Prose")
+    (80,9)SyntaxKind[RightHandSideList]
+      (80,9)SyntaxKind[IndentToken]
+      (81,2)SyntaxKind[RightHandSide]
+        (81,2)SyntaxKind[SymbolSpan]
+          (81,2)SyntaxKind[Nonterminal]
+            (81,2)SyntaxKind[Identifier](text = "ProseLines")
+      (81,12)SyntaxKind[DedentToken]
+  (83,1)SyntaxKind[Production]
+    (83,1)SyntaxKind[Identifier](text = "ProseLines")
+    (83,14)SyntaxKind[RightHandSideList]
+      (83,14)SyntaxKind[IndentToken]
+      (84,2)SyntaxKind[RightHandSide]
+        (84,2)SyntaxKind[SymbolSpan]
+          (84,2)SyntaxKind[Nonterminal]
+            (84,2)SyntaxKind[Identifier](text = "ProseLine")
+      (85,2)SyntaxKind[RightHandSide]
+        (85,2)SyntaxKind[SymbolSpan]
+          (85,2)SyntaxKind[Nonterminal]
+            (85,2)SyntaxKind[Identifier](text = "ProseLine")
+          (85,11)SyntaxKind[SymbolSpan]
+            (85,11)SyntaxKind[Nonterminal]
+              (85,11)SyntaxKind[Identifier](text = "LineTerminator")
+            (85,26)SyntaxKind[SymbolSpan]
+              (85,26)SyntaxKind[Nonterminal]
+                (85,26)SyntaxKind[Identifier](text = "ProseLines")
+      (86,2)SyntaxKind[DedentToken]
+  (87,1)SyntaxKind[Production]
+    (87,1)SyntaxKind[Identifier](text = "ProseLine")
+    (87,13)SyntaxKind[RightHandSideList]
+      (87,13)SyntaxKind[IndentToken]
+      (88,2)SyntaxKind[RightHandSide]
+        (88,2)SyntaxKind[SymbolSpan]
+          (88,2)SyntaxKind[Terminal](text = ">")
+          (88,5)SyntaxKind[SymbolSpan]
+            (88,5)SyntaxKind[Nonterminal]?
+              (88,5)SyntaxKind[Identifier](text = "ProseChars")
+              (88,16)SyntaxKind[QuestionToken]
+      (88,17)SyntaxKind[DedentToken]
+  (90,1)SyntaxKind[Production]
+    (90,1)SyntaxKind[Identifier](text = "ProseChars")
+    (90,14)SyntaxKind[RightHandSideList]
+      (90,14)SyntaxKind[IndentToken]
+      (91,2)SyntaxKind[RightHandSide]
+        (91,2)SyntaxKind[SymbolSpan]
+          (91,2)SyntaxKind[Nonterminal]
+            (91,2)SyntaxKind[Identifier](text = "ProseChar")
+          (91,11)SyntaxKind[SymbolSpan]
+            (91,11)SyntaxKind[Nonterminal]?
+              (91,11)SyntaxKind[Identifier](text = "ProseChars")
+              (91,22)SyntaxKind[QuestionToken]
+      (91,23)SyntaxKind[DedentToken]
+  (93,1)SyntaxKind[Production]
+    (93,1)SyntaxKind[Identifier](text = "ProseChar")
+    (93,13)SyntaxKind[RightHandSideList]
+      (93,13)SyntaxKind[IndentToken]
+      (94,2)SyntaxKind[RightHandSide]
+        (94,2)SyntaxKind[SymbolSpan]
+          (94,2)SyntaxKind[BinarySymbol]
+            (94,2)SyntaxKind[Nonterminal]
+              (94,2)SyntaxKind[Identifier](text = "SourceCharacter")
+            (94,17)SyntaxKind[ButNotOperator]
+            (94,25)SyntaxKind[Nonterminal]
+              (94,25)SyntaxKind[Identifier](text = "LineTerminator")
+      (94,40)SyntaxKind[DedentToken]
+  (99,1)SyntaxKind[Production]
+    (99,1)SyntaxKind[Identifier](text = "Identifier")
+    (99,13)SyntaxKind[RightHandSideList]
+      (99,13)SyntaxKind[IndentToken]
+      (100,2)SyntaxKind[RightHandSide]
+        (100,2)SyntaxKind[SymbolSpan]
+          (100,2)SyntaxKind[BinarySymbol]
+            (100,2)SyntaxKind[Nonterminal]
+              (100,2)SyntaxKind[Identifier](text = "IdentifierName")
+            (100,16)SyntaxKind[ButNotOperator]
+            (100,24)SyntaxKind[Nonterminal]
+              (100,24)SyntaxKind[Identifier](text = "ReservedWord")
+      (100,37)SyntaxKind[DedentToken]
+  (102,1)SyntaxKind[Production]
+    (102,1)SyntaxKind[Identifier](text = "Argument")
+    (102,11)SyntaxKind[RightHandSideList]
+      (102,11)SyntaxKind[IndentToken]
+      (103,2)SyntaxKind[RightHandSide]
+        (103,2)SyntaxKind[SymbolSpan]
+          (103,2)SyntaxKind[Nonterminal]
+            (103,2)SyntaxKind[Identifier](text = "Identifier")
+      (103,12)SyntaxKind[DedentToken]
+  (105,1)SyntaxKind[Production]
+    (105,1)SyntaxKind[Identifier](text = "Arguments")
+    (105,12)SyntaxKind[RightHandSideList]
+      (105,12)SyntaxKind[IndentToken]
+      (106,2)SyntaxKind[RightHandSide]
+        (106,2)SyntaxKind[SymbolSpan]
+          (106,2)SyntaxKind[Terminal](text = "(")
+          (106,5)SyntaxKind[SymbolSpan]
+            (106,5)SyntaxKind[Terminal](text = ")")
+      (107,2)SyntaxKind[RightHandSide]
+        (107,2)SyntaxKind[SymbolSpan]
+          (107,2)SyntaxKind[Terminal](text = "(")
+          (107,5)SyntaxKind[SymbolSpan]
+            (107,5)SyntaxKind[Nonterminal]
+              (107,5)SyntaxKind[Identifier](text = "ArgumentList")
+            (107,18)SyntaxKind[SymbolSpan]
+              (107,18)SyntaxKind[Terminal](text = ")")
+      (107,22)SyntaxKind[DedentToken]
+  (109,1)SyntaxKind[Production]
+    (109,1)SyntaxKind[Identifier](text = "ArgumentList")
+    (109,15)SyntaxKind[RightHandSideList]
+      (109,15)SyntaxKind[IndentToken]
+      (110,2)SyntaxKind[RightHandSide]
+        (110,2)SyntaxKind[SymbolSpan]
+          (110,2)SyntaxKind[Nonterminal]
+            (110,2)SyntaxKind[Identifier](text = "Argument")
+      (111,2)SyntaxKind[RightHandSide]
+        (111,2)SyntaxKind[SymbolSpan]
+          (111,2)SyntaxKind[Nonterminal]
+            (111,2)SyntaxKind[Identifier](text = "ArgumentList")
+          (111,14)SyntaxKind[SymbolSpan]
+            (111,14)SyntaxKind[Terminal](text = ",")
+            (111,18)SyntaxKind[SymbolSpan]
+              (111,18)SyntaxKind[Nonterminal]
+                (111,18)SyntaxKind[Identifier](text = "Argument")
+      (111,27)SyntaxKind[DedentToken]
+  (113,1)SyntaxKind[Production]
+    (113,1)SyntaxKind[Identifier](text = "PrimarySymbol")
+    (113,16)SyntaxKind[RightHandSideList]
+      (113,16)SyntaxKind[IndentToken]
+      (114,2)SyntaxKind[RightHandSide]
+        (114,2)SyntaxKind[SymbolSpan]
+          (114,2)SyntaxKind[Nonterminal]
+            (114,2)SyntaxKind[Identifier](text = "Terminal")
+      (115,2)SyntaxKind[RightHandSide]
+        (115,2)SyntaxKind[SymbolSpan]
+          (115,2)SyntaxKind[Nonterminal]
+            (115,2)SyntaxKind[Identifier](text = "UnicodeCharacterLiteral")
+      (116,2)SyntaxKind[RightHandSide]
+        (116,2)SyntaxKind[SymbolSpan]
+          (116,2)SyntaxKind[Nonterminal]
+            (116,2)SyntaxKind[Identifier](text = "Nonterminal")
+      (117,2)SyntaxKind[DedentToken]
+  (118,1)SyntaxKind[Production]
+    (118,1)SyntaxKind[Identifier](text = "Nonterminal")
+    (118,14)SyntaxKind[RightHandSideList]
+      (118,14)SyntaxKind[IndentToken]
+      (119,2)SyntaxKind[RightHandSide]
+        (119,2)SyntaxKind[SymbolSpan]
+          (119,2)SyntaxKind[Nonterminal]
+            (119,2)SyntaxKind[Identifier](text = "Identifier")
+          (119,12)SyntaxKind[SymbolSpan]
+            (119,12)SyntaxKind[Nonterminal]?
+              (119,12)SyntaxKind[Identifier](text = "Arguments")
+              (119,22)SyntaxKind[QuestionToken]
+      (119,23)SyntaxKind[DedentToken]
+  (121,1)SyntaxKind[Production]
+    (121,1)SyntaxKind[Identifier](text = "OptionalSymbol")
+    (121,17)SyntaxKind[RightHandSideList]
+      (121,17)SyntaxKind[IndentToken]
+      (122,2)SyntaxKind[RightHandSide]
+        (122,2)SyntaxKind[SymbolSpan]
+          (122,2)SyntaxKind[Nonterminal]
+            (122,2)SyntaxKind[Identifier](text = "PrimarySymbol")
+          (122,15)SyntaxKind[SymbolSpan]
+            (122,15)SyntaxKind[Terminal](text = "?")?
+              (122,19)SyntaxKind[QuestionToken]
+      (122,20)SyntaxKind[DedentToken]
+  (124,1)SyntaxKind[Production]
+    (124,1)SyntaxKind[Identifier](text = "OrClause")
+    (124,11)SyntaxKind[RightHandSideList]
+      (124,11)SyntaxKind[IndentToken]
+      (125,2)SyntaxKind[RightHandSide]
+        (125,2)SyntaxKind[SymbolSpan]
+          (125,2)SyntaxKind[Nonterminal]
+            (125,2)SyntaxKind[Identifier](text = "PrimarySymbol")
+      (126,2)SyntaxKind[RightHandSide]
+        (126,2)SyntaxKind[SymbolSpan]
+          (126,2)SyntaxKind[Nonterminal]
+            (126,2)SyntaxKind[Identifier](text = "OrClause")
+          (126,10)SyntaxKind[SymbolSpan]
+            (126,10)SyntaxKind[Terminal](text = "or")
+            (126,15)SyntaxKind[SymbolSpan]
+              (126,15)SyntaxKind[Nonterminal]
+                (126,15)SyntaxKind[Identifier](text = "PrimarySymbol")
+      (126,29)SyntaxKind[DedentToken]
+  (128,1)SyntaxKind[Production]
+    (128,1)SyntaxKind[Identifier](text = "OneOfSymbol")
+    (128,14)SyntaxKind[RightHandSideList]
+      (128,14)SyntaxKind[IndentToken]
+      (129,2)SyntaxKind[RightHandSide]
+        (129,2)SyntaxKind[SymbolSpan]
+          (129,2)SyntaxKind[Nonterminal]
+            (129,2)SyntaxKind[Identifier](text = "PrimarySymbol")
+      (130,2)SyntaxKind[RightHandSide]
+        (130,2)SyntaxKind[SymbolSpan]
+          (130,2)SyntaxKind[Terminal](text = "one")
+          (130,7)SyntaxKind[SymbolSpan]
+            (130,7)SyntaxKind[Terminal](text = "of")
+            (130,12)SyntaxKind[SymbolSpan]
+              (130,12)SyntaxKind[Nonterminal]
+                (130,12)SyntaxKind[Identifier](text = "OrClause")
+      (130,21)SyntaxKind[DedentToken]
+  (132,1)SyntaxKind[Production]
+    (132,1)SyntaxKind[Identifier](text = "UnarySymbol")
+    (132,14)SyntaxKind[RightHandSideList]
+      (132,14)SyntaxKind[IndentToken]
+      (133,2)SyntaxKind[RightHandSide]
+        (133,2)SyntaxKind[SymbolSpan]
+          (133,2)SyntaxKind[Nonterminal]
+            (133,2)SyntaxKind[Identifier](text = "OneOfSymbol")
+      (133,13)SyntaxKind[DedentToken]
+  (135,1)SyntaxKind[Production]
+    (135,1)SyntaxKind[Identifier](text = "ButNotSymbol")
+    (135,15)SyntaxKind[RightHandSideList]
+      (135,15)SyntaxKind[IndentToken]
+      (136,2)SyntaxKind[RightHandSide]
+        (136,2)SyntaxKind[SymbolSpan]
+          (136,2)SyntaxKind[Nonterminal]
+            (136,2)SyntaxKind[Identifier](text = "UnarySymbol")
+          (136,13)SyntaxKind[SymbolSpan]
+            (136,13)SyntaxKind[Terminal](text = "but")
+            (136,19)SyntaxKind[SymbolSpan]
+              (136,19)SyntaxKind[Terminal](text = "not")
+              (136,25)SyntaxKind[SymbolSpan]
+                (136,25)SyntaxKind[Nonterminal]
+                  (136,25)SyntaxKind[Identifier](text = "UnarySymbol")
+      (136,37)SyntaxKind[DedentToken]
+  (138,1)SyntaxKind[Production]
+    (138,1)SyntaxKind[Identifier](text = "BinarySymbol")
+    (138,15)SyntaxKind[RightHandSideList]
+      (138,15)SyntaxKind[IndentToken]
+      (139,2)SyntaxKind[RightHandSide]
+        (139,2)SyntaxKind[SymbolSpan]
+          (139,2)SyntaxKind[Nonterminal]
+            (139,2)SyntaxKind[Identifier](text = "ButNotSymbol")
+      (140,2)SyntaxKind[RightHandSide]
+        (140,2)SyntaxKind[SymbolSpan]
+          (140,2)SyntaxKind[Nonterminal]
+            (140,2)SyntaxKind[Identifier](text = "UnarySymbol")
+      (140,13)SyntaxKind[DedentToken]
+  (142,1)SyntaxKind[Production]
+    (142,1)SyntaxKind[Identifier](text = "SymbolList")
+    (142,13)SyntaxKind[RightHandSideList]
+      (142,13)SyntaxKind[IndentToken]
+      (143,2)SyntaxKind[RightHandSide]
+        (143,2)SyntaxKind[SymbolSpan]
+          (143,2)SyntaxKind[Nonterminal]
+            (143,2)SyntaxKind[Identifier](text = "PrimarySymbol")
+      (144,2)SyntaxKind[RightHandSide]
+        (144,2)SyntaxKind[SymbolSpan]
+          (144,2)SyntaxKind[Nonterminal]
+            (144,2)SyntaxKind[Identifier](text = "SymbolList")
+          (144,12)SyntaxKind[SymbolSpan]
+            (144,12)SyntaxKind[Terminal](text = ",")
+            (144,16)SyntaxKind[SymbolSpan]
+              (144,16)SyntaxKind[Nonterminal]
+                (144,16)SyntaxKind[Identifier](text = "PrimarySymbol")
+      (144,30)SyntaxKind[DedentToken]
+  (146,1)SyntaxKind[Production]
+    (146,1)SyntaxKind[Identifier](text = "SymbolSet")
+    (146,12)SyntaxKind[RightHandSideList]
+      (146,12)SyntaxKind[IndentToken]
+      (147,2)SyntaxKind[RightHandSide]
+        (147,2)SyntaxKind[SymbolSpan]
+          (147,2)SyntaxKind[Terminal](text = "{")
+          (147,5)SyntaxKind[SymbolSpan]
+            (147,5)SyntaxKind[Nonterminal]
+              (147,5)SyntaxKind[Identifier](text = "SymbolList")
+            (147,16)SyntaxKind[SymbolSpan]
+              (147,16)SyntaxKind[Terminal](text = "}")
+      (147,20)SyntaxKind[DedentToken]
+  (149,1)SyntaxKind[Production]
+    (149,1)SyntaxKind[Identifier](text = "EmptyAssertionClause")
+    (149,23)SyntaxKind[RightHandSideList]
+      (149,23)SyntaxKind[IndentToken]
+      (150,2)SyntaxKind[RightHandSide]
+        (150,2)SyntaxKind[SymbolSpan]
+          (150,2)SyntaxKind[Terminal](text = "empty")
+      (150,9)SyntaxKind[DedentToken]
+  (152,1)SyntaxKind[Production]
+    (152,1)SyntaxKind[Identifier](text = "LookaheadEqualsAssertionClause")
+    (152,33)SyntaxKind[RightHandSideList]
+      (152,33)SyntaxKind[IndentToken]
+      (153,2)SyntaxKind[RightHandSide]
+        (153,2)SyntaxKind[SymbolSpan]
+          (153,2)SyntaxKind[Terminal](text = "lookahead")
+          (153,13)SyntaxKind[SymbolSpan]
+            (153,13)SyntaxKind[Terminal](text = "==")
+            (153,18)SyntaxKind[SymbolSpan]
+              (153,18)SyntaxKind[Nonterminal]
+                (153,18)SyntaxKind[Identifier](text = "PrimarySymbol")
+      (153,32)SyntaxKind[DedentToken]
+  (155,1)SyntaxKind[Production]
+    (155,1)SyntaxKind[Identifier](text = "LookaheadNotEqualsAssertionClause")
+    (155,36)SyntaxKind[RightHandSideList]
+      (155,36)SyntaxKind[IndentToken]
+      (156,2)SyntaxKind[RightHandSide]
+        (156,2)SyntaxKind[SymbolSpan]
+          (156,2)SyntaxKind[Terminal](text = "lookahead")
+          (156,13)SyntaxKind[SymbolSpan]
+            (156,13)SyntaxKind[Terminal](text = "!=")
+            (156,18)SyntaxKind[SymbolSpan]
+              (156,18)SyntaxKind[Nonterminal]
+                (156,18)SyntaxKind[Identifier](text = "PrimarySymbol")
+      (156,32)SyntaxKind[DedentToken]
+  (158,1)SyntaxKind[Production]
+    (158,1)SyntaxKind[Identifier](text = "LookaheadInAssertionClause")
+    (158,29)SyntaxKind[RightHandSideList]
+      (158,29)SyntaxKind[IndentToken]
+      (159,2)SyntaxKind[RightHandSide]
+        (159,2)SyntaxKind[SymbolSpan]
+          (159,2)SyntaxKind[Terminal](text = "lookahead")
+          (159,13)SyntaxKind[SymbolSpan]
+            (159,13)SyntaxKind[Terminal](text = "<-")
+            (159,18)SyntaxKind[SymbolSpan]
+              (159,18)SyntaxKind[Nonterminal]
+                (159,18)SyntaxKind[Identifier](text = "SymbolSet")
+      (159,28)SyntaxKind[DedentToken]
+  (161,1)SyntaxKind[Production]
+    (161,1)SyntaxKind[Identifier](text = "LookaheadNotInAssertionClause")
+    (161,32)SyntaxKind[RightHandSideList]
+      (161,32)SyntaxKind[IndentToken]
+      (162,2)SyntaxKind[RightHandSide]
+        (162,2)SyntaxKind[SymbolSpan]
+          (162,2)SyntaxKind[Terminal](text = "lookahead")
+          (162,13)SyntaxKind[SymbolSpan]
+            (162,13)SyntaxKind[Terminal](text = "<!")
+            (162,18)SyntaxKind[SymbolSpan]
+              (162,18)SyntaxKind[Nonterminal]
+                (162,18)SyntaxKind[Identifier](text = "SymbolSet")
+      (162,28)SyntaxKind[DedentToken]
+  (164,1)SyntaxKind[Production]
+    (164,1)SyntaxKind[Identifier](text = "LookaheadAssertionClause")
+    (164,27)SyntaxKind[RightHandSideList]
+      (164,27)SyntaxKind[IndentToken]
+      (165,2)SyntaxKind[RightHandSide]
+        (165,2)SyntaxKind[SymbolSpan]
+          (165,2)SyntaxKind[Nonterminal]
+            (165,2)SyntaxKind[Identifier](text = "LookaheadEqualsAssertionClause")
+      (166,2)SyntaxKind[RightHandSide]
+        (166,2)SyntaxKind[SymbolSpan]
+          (166,2)SyntaxKind[Nonterminal]
+            (166,2)SyntaxKind[Identifier](text = "LookaheadNotEqualsAssertionClause")
+      (167,2)SyntaxKind[RightHandSide]
+        (167,2)SyntaxKind[SymbolSpan]
+          (167,2)SyntaxKind[Nonterminal]
+            (167,2)SyntaxKind[Identifier](text = "LookaheadInAssertionClause")
+      (168,2)SyntaxKind[RightHandSide]
+        (168,2)SyntaxKind[SymbolSpan]
+          (168,2)SyntaxKind[Nonterminal]
+            (168,2)SyntaxKind[Identifier](text = "LookaheadNotInAssertionClause")
+      (168,31)SyntaxKind[DedentToken]
+  (170,1)SyntaxKind[Production]
+    (170,1)SyntaxKind[Identifier](text = "NoSymbolAssertionClause")
+    (170,26)SyntaxKind[RightHandSideList]
+      (170,26)SyntaxKind[IndentToken]
+      (171,2)SyntaxKind[RightHandSide]
+        (171,2)SyntaxKind[SymbolSpan]
+          (171,2)SyntaxKind[Terminal](text = "no")
+          (171,6)SyntaxKind[SymbolSpan]
+            (171,6)SyntaxKind[Nonterminal]
+              (171,6)SyntaxKind[Identifier](text = "OrClause")
+            (171,15)SyntaxKind[SymbolSpan]
+              (171,15)SyntaxKind[Terminal](text = "here")
+      (171,22)SyntaxKind[DedentToken]
+  (173,1)SyntaxKind[Production]
+    (173,1)SyntaxKind[Identifier](text = "LexicalGoalAssertionClause")
+    (173,29)SyntaxKind[RightHandSideList]
+      (173,29)SyntaxKind[IndentToken]
+      (174,2)SyntaxKind[RightHandSide]
+        (174,2)SyntaxKind[SymbolSpan]
+          (174,2)SyntaxKind[Terminal](text = "lexical")
+          (174,11)SyntaxKind[SymbolSpan]
+            (174,11)SyntaxKind[Terminal](text = "goal")
+            (174,18)SyntaxKind[SymbolSpan]
+              (174,18)SyntaxKind[Nonterminal]
+                (174,18)SyntaxKind[Identifier](text = "PrimarySymbol")
+      (174,32)SyntaxKind[DedentToken]
+  (176,1)SyntaxKind[Production]
+    (176,1)SyntaxKind[Identifier](text = "ParameterValueAssertionClause")
+    (176,32)SyntaxKind[RightHandSideList]
+      (176,32)SyntaxKind[IndentToken]
+      (177,2)SyntaxKind[RightHandSide]
+        (177,2)SyntaxKind[SymbolSpan]
+          (177,2)SyntaxKind[Terminal](text = "~")
+          (177,5)SyntaxKind[SymbolSpan]
+            (177,5)SyntaxKind[Nonterminal]
+              (177,5)SyntaxKind[Identifier](text = "Identifier")
+      (178,2)SyntaxKind[RightHandSide]
+        (178,2)SyntaxKind[SymbolSpan]
+          (178,2)SyntaxKind[Terminal](text = "+")
+          (178,5)SyntaxKind[SymbolSpan]
+            (178,5)SyntaxKind[Nonterminal]
+              (178,5)SyntaxKind[Identifier](text = "Identifier")
+      (178,16)SyntaxKind[DedentToken]
+  (180,1)SyntaxKind[Production]
+    (180,1)SyntaxKind[Identifier](text = "AssertionClause")
+    (180,18)SyntaxKind[RightHandSideList]
+      (180,18)SyntaxKind[IndentToken]
+      (181,2)SyntaxKind[RightHandSide]
+        (181,2)SyntaxKind[SymbolSpan]
+          (181,2)SyntaxKind[Nonterminal]
+            (181,2)SyntaxKind[Identifier](text = "EmptyAssertionClause")
+      (182,2)SyntaxKind[RightHandSide]
+        (182,2)SyntaxKind[SymbolSpan]
+          (182,2)SyntaxKind[Nonterminal]
+            (182,2)SyntaxKind[Identifier](text = "LookaheadAssertionClause")
+      (183,2)SyntaxKind[RightHandSide]
+        (183,2)SyntaxKind[SymbolSpan]
+          (183,2)SyntaxKind[Nonterminal]
+            (183,2)SyntaxKind[Identifier](text = "NoSymbolAssertionClause")
+      (184,2)SyntaxKind[RightHandSide]
+        (184,2)SyntaxKind[SymbolSpan]
+          (184,2)SyntaxKind[Nonterminal]
+            (184,2)SyntaxKind[Identifier](text = "LexicalGoalAssertionClause")
+      (185,2)SyntaxKind[RightHandSide]
+        (185,2)SyntaxKind[SymbolSpan]
+          (185,2)SyntaxKind[Nonterminal]
+            (185,2)SyntaxKind[Identifier](text = "ParameterValueAssertionClause")
+      (185,31)SyntaxKind[DedentToken]
+  (187,1)SyntaxKind[Production]
+    (187,1)SyntaxKind[Identifier](text = "Assertion")
+    (187,12)SyntaxKind[RightHandSideList]
+      (187,12)SyntaxKind[IndentToken]
+      (188,2)SyntaxKind[RightHandSide]
+        (188,2)SyntaxKind[SymbolSpan]
+          (188,2)SyntaxKind[Terminal](text = "[")
+          (188,5)SyntaxKind[SymbolSpan]
+            (188,5)SyntaxKind[Nonterminal]
+              (188,5)SyntaxKind[Identifier](text = "AssertionClause")
+            (188,21)SyntaxKind[SymbolSpan]
+              (188,21)SyntaxKind[Terminal](text = "]")
+      (189,2)SyntaxKind[DedentToken]
+  (190,1)SyntaxKind[Production]
+    (190,1)SyntaxKind[Identifier](text = "ProseSpan")
+    (190,12)SyntaxKind[RightHandSideList]
+      (190,12)SyntaxKind[IndentToken]
+      (191,2)SyntaxKind[RightHandSide]
+        (191,2)SyntaxKind[SymbolSpan]
+          (191,2)SyntaxKind[Nonterminal]
+            (191,2)SyntaxKind[Identifier](text = "Prose")
+      (192,2)SyntaxKind[RightHandSide]
+        (192,2)SyntaxKind[SymbolSpan]
+          (192,2)SyntaxKind[Nonterminal]
+            (192,2)SyntaxKind[Identifier](text = "ProseSpan")
+          (192,11)SyntaxKind[SymbolSpan]
+            (192,11)SyntaxKind[Nonterminal]
+              (192,11)SyntaxKind[Identifier](text = "LineTerminator")
+            (192,26)SyntaxKind[SymbolSpan]
+              (192,26)SyntaxKind[Nonterminal]
+                (192,26)SyntaxKind[Identifier](text = "Prose")
+      (192,32)SyntaxKind[DedentToken]
+  (194,1)SyntaxKind[Production]
+    (194,1)SyntaxKind[Identifier](text = "Symbol")
+    (194,9)SyntaxKind[RightHandSideList]
+      (194,9)SyntaxKind[IndentToken]
+      (195,2)SyntaxKind[RightHandSide]
+        (195,2)SyntaxKind[SymbolSpan]
+          (195,2)SyntaxKind[Nonterminal]
+            (195,2)SyntaxKind[Identifier](text = "Assertion")
+      (196,2)SyntaxKind[RightHandSide]
+        (196,2)SyntaxKind[SymbolSpan]
+          (196,2)SyntaxKind[Nonterminal]
+            (196,2)SyntaxKind[Identifier](text = "BinarySymbol")
+      (196,14)SyntaxKind[DedentToken]
+  (198,1)SyntaxKind[Production]
+    (198,1)SyntaxKind[Identifier](text = "SymbolSpan")
+    (198,13)SyntaxKind[RightHandSideList]
+      (198,13)SyntaxKind[IndentToken]
+      (199,2)SyntaxKind[RightHandSide]
+        (199,2)SyntaxKind[SymbolSpan]
+          (199,2)SyntaxKind[Nonterminal]
+            (199,2)SyntaxKind[Identifier](text = "ProseSpan")
+      (200,2)SyntaxKind[RightHandSide]
+        (200,2)SyntaxKind[SymbolSpan]
+          (200,2)SyntaxKind[Nonterminal]
+            (200,2)SyntaxKind[Identifier](text = "SymbolSpanRest")
+      (200,16)SyntaxKind[DedentToken]
+  (202,1)SyntaxKind[Production]
+    (202,1)SyntaxKind[Identifier](text = "SymbolSpanRest")
+    (202,17)SyntaxKind[RightHandSideList]
+      (202,17)SyntaxKind[IndentToken]
+      (203,2)SyntaxKind[RightHandSide]
+        (203,2)SyntaxKind[SymbolSpan]
+          (203,2)SyntaxKind[Nonterminal]
+            (203,2)SyntaxKind[Identifier](text = "Symbol")
+          (203,8)SyntaxKind[SymbolSpan]
+            (203,8)SyntaxKind[Nonterminal]?
+              (203,8)SyntaxKind[Identifier](text = "SymbolSpanRest")
+              (203,23)SyntaxKind[QuestionToken]
+      (203,24)SyntaxKind[DedentToken]
+  (205,1)SyntaxKind[Production]
+    (205,1)SyntaxKind[Identifier](text = "RightHandSideList")
+    (205,20)SyntaxKind[RightHandSideList]
+      (205,20)SyntaxKind[IndentToken]
+      (206,2)SyntaxKind[RightHandSide]
+        (206,2)SyntaxKind[SymbolSpan]
+          (206,2)SyntaxKind[Nonterminal]
+            (206,2)SyntaxKind[Identifier](text = "RightHandSide")
+          (206,15)SyntaxKind[SymbolSpan]
+            (206,15)SyntaxKind[Nonterminal]?
+              (206,15)SyntaxKind[Identifier](text = "RightHandSideList")
+              (206,33)SyntaxKind[QuestionToken]
+      (206,34)SyntaxKind[DedentToken]
+  (208,1)SyntaxKind[Production]
+    (208,1)SyntaxKind[Identifier](text = "RightHandSide")
+    (208,16)SyntaxKind[RightHandSideList]
+      (208,16)SyntaxKind[IndentToken]
+      (209,2)SyntaxKind[RightHandSide]
+        (209,2)SyntaxKind[SymbolSpan]
+          (209,2)SyntaxKind[Nonterminal]
+            (209,2)SyntaxKind[Identifier](text = "SymbolSpan")
+          (209,12)SyntaxKind[SymbolSpan]
+            (209,12)SyntaxKind[Nonterminal]
+              (209,12)SyntaxKind[Identifier](text = "LineTerminator")
+      (209,27)SyntaxKind[DedentToken]
+  (211,1)SyntaxKind[Production]
+    (211,1)SyntaxKind[Identifier](text = "Terminals")
+    (211,12)SyntaxKind[RightHandSideList]
+      (211,12)SyntaxKind[IndentToken]
+      (212,2)SyntaxKind[RightHandSide]
+        (212,2)SyntaxKind[SymbolSpan]
+          (212,2)SyntaxKind[Nonterminal]
+            (212,2)SyntaxKind[Identifier](text = "Terminal")
+          (212,10)SyntaxKind[SymbolSpan]
+            (212,10)SyntaxKind[Nonterminal]?
+              (212,10)SyntaxKind[Identifier](text = "Terminals")
+              (212,20)SyntaxKind[QuestionToken]
+      (212,21)SyntaxKind[DedentToken]
+  (214,1)SyntaxKind[Production]
+    (214,1)SyntaxKind[Identifier](text = "TerminalList")
+    (214,15)SyntaxKind[RightHandSideList]
+      (214,15)SyntaxKind[IndentToken]
+      (215,2)SyntaxKind[RightHandSide]
+        (215,2)SyntaxKind[SymbolSpan]
+          (215,2)SyntaxKind[Nonterminal]
+            (215,2)SyntaxKind[Identifier](text = "Terminals")
+      (216,2)SyntaxKind[RightHandSide]
+        (216,2)SyntaxKind[SymbolSpan]
+          (216,2)SyntaxKind[Nonterminal]
+            (216,2)SyntaxKind[Identifier](text = "TerminalList")
+          (216,14)SyntaxKind[SymbolSpan]
+            (216,14)SyntaxKind[Nonterminal]
+              (216,14)SyntaxKind[Identifier](text = "LineTerminator")
+            (216,29)SyntaxKind[SymbolSpan]
+              (216,29)SyntaxKind[Nonterminal]
+                (216,29)SyntaxKind[Identifier](text = "Terminals")
+      (216,39)SyntaxKind[DedentToken]
+  (218,1)SyntaxKind[Production]
+    (218,1)SyntaxKind[Identifier](text = "OneOfList")
+    (218,12)SyntaxKind[RightHandSideList]
+      (218,12)SyntaxKind[IndentToken]
+      (219,2)SyntaxKind[RightHandSide]
+        (219,2)SyntaxKind[SymbolSpan]
+          (219,2)SyntaxKind[Terminal](text = "one")
+          (219,7)SyntaxKind[SymbolSpan]
+            (219,7)SyntaxKind[Terminal](text = "of")
+            (219,12)SyntaxKind[SymbolSpan]
+              (219,12)SyntaxKind[Nonterminal]
+                (219,12)SyntaxKind[Identifier](text = "Terminals")
+      (220,2)SyntaxKind[RightHandSide]
+        (220,2)SyntaxKind[SymbolSpan]
+          (220,2)SyntaxKind[Terminal](text = "one")
+          (220,7)SyntaxKind[SymbolSpan]
+            (220,7)SyntaxKind[Terminal](text = "of")
+            (220,12)SyntaxKind[SymbolSpan]
+              (220,12)SyntaxKind[Nonterminal]
+                (220,12)SyntaxKind[Identifier](text = "LineTerminator")
+              (220,27)SyntaxKind[SymbolSpan]
+                (220,27)SyntaxKind[Nonterminal]
+                  (220,27)SyntaxKind[Identifier](text = "Indent")
+                (220,34)SyntaxKind[SymbolSpan]
+                  (220,34)SyntaxKind[Nonterminal]
+                    (220,34)SyntaxKind[Identifier](text = "TerminalList")
+                  (220,47)SyntaxKind[SymbolSpan]
+                    (220,47)SyntaxKind[Nonterminal]
+                      (220,47)SyntaxKind[Identifier](text = "Dedent")
+      (220,54)SyntaxKind[DedentToken]
+  (222,1)SyntaxKind[Production]
+    (222,1)SyntaxKind[Identifier](text = "Parameter")
+    (222,12)SyntaxKind[RightHandSideList]
+      (222,12)SyntaxKind[IndentToken]
+      (223,2)SyntaxKind[RightHandSide]
+        (223,2)SyntaxKind[SymbolSpan]
+          (223,2)SyntaxKind[Nonterminal]
+            (223,2)SyntaxKind[Identifier](text = "Identifier")
+      (223,12)SyntaxKind[DedentToken]
+  (225,1)SyntaxKind[Production]
+    (225,1)SyntaxKind[Identifier](text = "ParameterList")
+    (225,16)SyntaxKind[RightHandSideList]
+      (225,16)SyntaxKind[IndentToken]
+      (226,2)SyntaxKind[RightHandSide]
+        (226,2)SyntaxKind[SymbolSpan]
+          (226,2)SyntaxKind[Nonterminal]
+            (226,2)SyntaxKind[Identifier](text = "Parameter")
+      (227,2)SyntaxKind[RightHandSide]
+        (227,2)SyntaxKind[SymbolSpan]
+          (227,2)SyntaxKind[Nonterminal]
+            (227,2)SyntaxKind[Identifier](text = "ParameterList")
+          (227,15)SyntaxKind[SymbolSpan]
+            (227,15)SyntaxKind[Terminal](text = ",")
+            (227,19)SyntaxKind[SymbolSpan]
+              (227,19)SyntaxKind[Nonterminal]
+                (227,19)SyntaxKind[Identifier](text = "Parameter")
+      (227,29)SyntaxKind[DedentToken]
+  (229,1)SyntaxKind[Production]
+    (229,1)SyntaxKind[Identifier](text = "Parameters")
+    (229,13)SyntaxKind[RightHandSideList]
+      (229,13)SyntaxKind[IndentToken]
+      (230,2)SyntaxKind[RightHandSide]
+        (230,2)SyntaxKind[SymbolSpan]
+          (230,2)SyntaxKind[Terminal](text = "(")
+          (230,5)SyntaxKind[SymbolSpan]
+            (230,5)SyntaxKind[Nonterminal]
+              (230,5)SyntaxKind[Identifier](text = "ParameterList")
+            (230,19)SyntaxKind[SymbolSpan]
+              (230,19)SyntaxKind[Terminal](text = ")")
+      (230,23)SyntaxKind[DedentToken]
+  (232,1)SyntaxKind[Production]
+    (232,1)SyntaxKind[Identifier](text = "Production")
+    (232,13)SyntaxKind[RightHandSideList]
+      (232,13)SyntaxKind[IndentToken]
+      (233,2)SyntaxKind[RightHandSide]
+        (233,2)SyntaxKind[SymbolSpan]
+          (233,2)SyntaxKind[Nonterminal]
+            (233,2)SyntaxKind[Identifier](text = "Identifier")
+          (233,12)SyntaxKind[SymbolSpan]
+            (233,12)SyntaxKind[Nonterminal]?
+              (233,12)SyntaxKind[Identifier](text = "Parameters")
+              (233,23)SyntaxKind[QuestionToken]
+            (233,24)SyntaxKind[SymbolSpan]
+              (233,24)SyntaxKind[Terminal](text = ":")
+              (233,28)SyntaxKind[SymbolSpan]
+                (233,28)SyntaxKind[Nonterminal]
+                  (233,28)SyntaxKind[Identifier](text = "OneOfList")
+      (234,2)SyntaxKind[RightHandSide]
+        (234,2)SyntaxKind[SymbolSpan]
+          (234,2)SyntaxKind[Nonterminal]
+            (234,2)SyntaxKind[Identifier](text = "Identifier")
+          (234,12)SyntaxKind[SymbolSpan]
+            (234,12)SyntaxKind[Nonterminal]?
+              (234,12)SyntaxKind[Identifier](text = "Parameters")
+              (234,23)SyntaxKind[QuestionToken]
+            (234,24)SyntaxKind[SymbolSpan]
+              (234,24)SyntaxKind[Terminal](text = ":")
+              (234,28)SyntaxKind[SymbolSpan]
+                (234,28)SyntaxKind[Nonterminal]
+                  (234,28)SyntaxKind[Identifier](text = "RightHandSide")
+      (235,2)SyntaxKind[RightHandSide]
+        (235,2)SyntaxKind[SymbolSpan]
+          (235,2)SyntaxKind[Nonterminal]
+            (235,2)SyntaxKind[Identifier](text = "Identifier")
+          (235,12)SyntaxKind[SymbolSpan]
+            (235,12)SyntaxKind[Nonterminal]?
+              (235,12)SyntaxKind[Identifier](text = "Parameters")
+              (235,23)SyntaxKind[QuestionToken]
+            (235,24)SyntaxKind[SymbolSpan]
+              (235,24)SyntaxKind[Terminal](text = ":")
+              (235,28)SyntaxKind[SymbolSpan]
+                (235,28)SyntaxKind[Nonterminal]
+                  (235,28)SyntaxKind[Identifier](text = "LineTerminator")
+                (235,43)SyntaxKind[SymbolSpan]
+                  (235,43)SyntaxKind[Nonterminal]
+                    (235,43)SyntaxKind[Identifier](text = "Indent")
+                  (235,50)SyntaxKind[SymbolSpan]
+                    (235,50)SyntaxKind[Nonterminal]
+                      (235,50)SyntaxKind[Identifier](text = "RightHandSideList")
+                    (235,68)SyntaxKind[SymbolSpan]
+                      (235,68)SyntaxKind[Nonterminal]
+                        (235,68)SyntaxKind[Identifier](text = "Dedent")
+      (235,75)SyntaxKind[DedentToken]
+  (237,1)SyntaxKind[Production]
+    (237,1)SyntaxKind[Identifier](text = "SourceElement")
+    (237,16)SyntaxKind[RightHandSideList]
+      (237,16)SyntaxKind[IndentToken]
+      (238,2)SyntaxKind[RightHandSide]
+        (238,2)SyntaxKind[SymbolSpan]
+          (238,2)SyntaxKind[EmptyAssertion]
+            (238,2)SyntaxKind[OpenBracketToken]
+            (238,3)SyntaxKind[EmptyKeyword]
+            (238,8)SyntaxKind[CloseBracketToken]
+      (239,2)SyntaxKind[RightHandSide]
+        (239,2)SyntaxKind[SymbolSpan]
+          (239,2)SyntaxKind[Nonterminal]
+            (239,2)SyntaxKind[Identifier](text = "Production")
+      (239,12)SyntaxKind[DedentToken]
+  (241,1)SyntaxKind[Production]
+    (241,1)SyntaxKind[Identifier](text = "SourceElements")
+    (241,17)SyntaxKind[RightHandSideList]
+      (241,17)SyntaxKind[IndentToken]
+      (242,2)SyntaxKind[RightHandSide]
+        (242,2)SyntaxKind[SymbolSpan]
+          (242,2)SyntaxKind[Nonterminal]
+            (242,2)SyntaxKind[Identifier](text = "SourceElement")
+          (242,15)SyntaxKind[SymbolSpan]
+            (242,15)SyntaxKind[Nonterminal]?
+              (242,15)SyntaxKind[Identifier](text = "SourceElements")
+              (242,30)SyntaxKind[QuestionToken]
+      (242,31)SyntaxKind[DedentToken]
+  (244,1)SyntaxKind[Production]
+    (244,1)SyntaxKind[Identifier](text = "SourceFile")
+    (244,13)SyntaxKind[RightHandSideList]
+      (244,13)SyntaxKind[IndentToken]
+      (245,2)SyntaxKind[RightHandSide]
+        (245,2)SyntaxKind[SymbolSpan]
+          (245,2)SyntaxKind[Nonterminal]
+            (245,2)SyntaxKind[Identifier](text = "SourceElements")
+      (245,16)SyntaxKind[DedentToken]

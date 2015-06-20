@@ -29,6 +29,7 @@
         "bin/cli.ts",
         "tests/index.ts",
         "tests/diff.ts",
+        "tests/resources.ts",
         "tests/core-tests.ts",
         "tests/tokens-tests.ts",
         "tests/diagnostics-tests.ts",

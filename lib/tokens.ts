@@ -204,6 +204,7 @@ export enum SyntaxKind {
     ParameterList,
     Argument,                   // NonTerminal(Argument)
     ArgumentList,
+    LinkReference,              // #link
 
     Import,                     // @import "path"
     Production,                 // Production: ...

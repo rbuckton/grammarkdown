@@ -144,7 +144,7 @@ export class MarkdownEmitter extends Emitter {
     }
     
     protected emitRightHandSide(node: RightHandSide) {
-        let linkId = this.resolver.getAlternativeLinkId(node, /*includePrefix*/ true);
+        let linkId = this.resolver.getRightHandSideLinkId(node, /*includePrefix*/ true);
         this.emitLinkAnchor(linkId);
         super.emitRightHandSide(node);
         this.writer.write("  ");

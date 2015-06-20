@@ -1,5 +1,5 @@
 /// [Parser]typescript.grammar:
-(1,1)SyntaxKind[SourceFile](filename = "E:\grammarkdown\tests\resources\typescript.grammar")
+(1,1)SyntaxKind[SourceFile](filename = "typescript.grammar")
   (1,1)SyntaxKind[Import]
     (1,1)SyntaxKind[FirstPunctuation]
     (1,2)SyntaxKind[ImportKeyword]

@@ -301,13 +301,25 @@ export class SymbolSpan extends Node {
     }
 }
 
+export class LinkReference extends Node {
+    public text: string;
+    
+    constructor(text: string) {
+        super(SyntaxKind.LinkReference);
+        
+        this.text = text;
+    }
+}
+
 export class RightHandSide extends Node {
     public head: SymbolSpan;
+    public reference: LinkReference;
     
-    constructor(head: SymbolSpan) {
+    constructor(head: SymbolSpan, reference: LinkReference) {
         super(SyntaxKind.RightHandSide);
         
         this.head = head;
+        this.reference = reference;
     }
 }
 
@@ -508,7 +520,8 @@ export function forEachChild<T>(node: Node, cbNode: (node: Node) => T): T {
                     || visitNode((<SymbolSpan>node).next, cbNode);
                     
             case SyntaxKind.RightHandSide:
-                return visitNode((<RightHandSide>node).head, cbNode);
+                return visitNode((<RightHandSide>node).head, cbNode)
+                    || visitNode((<RightHandSide>node).reference, cbNode);
                 
             case SyntaxKind.RightHandSideList:
                 return visitNode((<RightHandSideList>node).openIndentToken, cbNode)

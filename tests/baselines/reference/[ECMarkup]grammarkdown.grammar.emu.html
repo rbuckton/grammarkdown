@@ -1,0 +1,393 @@
+<emu-production name="SourceCharacter" type="lexical">
+    <emu-rhs a="c64b38bd"><emu-gprose>any Unicode code point</emu-gprose></emu-rhs>
+</emu-production>
+<emu-production name="LineTerminator" type="lexical">
+    <emu-rhs a="e1efb062"><emu-gprose>&lt;LF&gt;</emu-gprose></emu-rhs>
+    <emu-rhs a="930d7e02"><emu-gprose>&lt;CR&gt;</emu-gprose></emu-rhs>
+    <emu-rhs a="2812beea"><emu-gprose>&lt;LS&gt;</emu-gprose></emu-rhs>
+    <emu-rhs a="23ff5f46"><emu-gprose>&lt;PS&gt;</emu-gprose></emu-rhs>
+</emu-production>
+<emu-production name="IdentifierName" type="lexical">
+    <emu-rhs a="434685ab"><emu-nt>IdentifierStart</emu-nt></emu-rhs>
+    <emu-rhs a="700c1cee">
+        <emu-nt>IdentifierName</emu-nt>
+        <emu-nt>IdentifierPart</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="IdentifierStart" type="lexical">
+    <emu-rhs a="0862e30c"><emu-nt>UnicodeIDStart</emu-nt></emu-rhs>
+    <emu-rhs a="07564b94"><emu-t>_</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="IdentifierPart" type="lexical">
+    <emu-rhs a="364ac675"><emu-nt>UnicodeIDContinue</emu-nt></emu-rhs>
+    <emu-rhs a="07564b94"><emu-t>_</emu-t></emu-rhs>
+    <emu-rhs a="f0e58449"><emu-gprose>&lt;ZWNJ&gt;</emu-gprose></emu-rhs>
+    <emu-rhs a="a87f30d6"><emu-gprose>&lt;ZWJ&gt;</emu-gprose></emu-rhs>
+</emu-production>
+<emu-production name="UnicodeIDStart" type="lexical">
+    <emu-rhs a="d2e8afad"><emu-gprose>any Unicode code point with the Unicode property &quot;ID_Start&quot; or &quot;Other_ID_Start&quot;</emu-gprose></emu-rhs>
+</emu-production>
+<emu-production name="UnicodeIDContinue" type="lexical">
+    <emu-rhs a="75cd6b24"><emu-gprose>any Unicode code point with the Unicode property &quot;ID_Continue&quot; or &quot;Other_ID_Continue&quot;, or &quot;Other_ID_Start&quot;</emu-gprose></emu-rhs>
+</emu-production>
+<emu-production name="ReservedWord" type="lexical">
+    <emu-rhs a="a3926e03"><emu-nt>Keyword</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="Keyword" type="lexical"oneof>
+    <emu-rhs>empty lookahead lexical goal no here one of or but not</emu-rhs>
+</emu-production>
+<emu-production name="DecimalDigit" type="lexical"oneof>
+    <emu-rhs>0 1 2 3 4 5 6 7 8 9</emu-rhs>
+</emu-production>
+<emu-production name="HexDigit" type="lexical"oneof>
+    <emu-rhs>0 1 2 3 4 5 6 7 8 9 a b c d e f A B C D E F</emu-rhs>
+</emu-production>
+<emu-production name="UnicodeCharacterLiteral" type="lexical">
+    <emu-rhs a="eb4a6a4b">
+        <emu-t><</emu-t>
+        <emu-nt>UnicodeCharacterLiteralChars</emu-nt>
+        <emu-t>></emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="UnicodeCharacterLiteralChars" type="lexical">
+    <emu-rhs a="38ed7616">
+        <emu-nt>UnicodeCharacterLiteralChar</emu-nt>
+        <emu-nt optional>UnicodeCharacterLiteralChars</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="UnicodeCharacterLiteralChar" type="lexical">
+    <emu-rhs a="3490f5bb"><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not one of <emu-t><</emu-t> or <emu-t>></emu-t> or <emu-nt>LineTerminator</emu-nt></emu-gmod></emu-rhs>
+</emu-production>
+<emu-production name="Indent" type="lexical">
+    <emu-rhs a="e1ed22ce"><emu-gprose>An increase in the indentation depth from the previous line.</emu-gprose></emu-rhs>
+</emu-production>
+<emu-production name="Dedent" type="lexical">
+    <emu-rhs a="300a16b0"><emu-gprose>A decrease in the indentation depth from the previous line.</emu-gprose></emu-rhs>
+</emu-production>
+<emu-production name="Terminal" type="lexical">
+    <emu-rhs a="212dbddf">
+        <emu-t>`</emu-t>
+        <emu-t>`</emu-t>
+        <emu-t>`</emu-t>
+    </emu-rhs>
+    <emu-rhs a="242c39ec">
+        <emu-t>`</emu-t>
+        <emu-nt>TerminalChars</emu-nt>
+        <emu-t>`</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="TerminalChars" type="lexical">
+    <emu-rhs a="cfc72e14">
+        <emu-nt>TerminalChar</emu-nt>
+        <emu-nt optional>TerminalChars</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="TerminalChar" type="lexical">
+    <emu-rhs a="4e1d9628"><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not one of <emu-t>`</emu-t> or <emu-nt>LineTerminator</emu-nt></emu-gmod></emu-rhs>
+</emu-production>
+<emu-production name="Prose" type="lexical">
+    <emu-rhs a="a4d5e18a"><emu-nt>ProseLines</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ProseLines" type="lexical">
+    <emu-rhs a="5a8416e5"><emu-nt>ProseLine</emu-nt></emu-rhs>
+    <emu-rhs a="178ac932">
+        <emu-nt>ProseLine</emu-nt>
+        <emu-nt>LineTerminator</emu-nt>
+        <emu-nt>ProseLines</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ProseLine" type="lexical">
+    <emu-rhs a="a16b392e">
+        <emu-t>></emu-t>
+        <emu-nt optional>ProseChars</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ProseChars" type="lexical">
+    <emu-rhs a="68b7c295">
+        <emu-nt>ProseChar</emu-nt>
+        <emu-nt optional>ProseChars</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ProseChar" type="lexical">
+    <emu-rhs a="42edda0b"><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not <emu-nt>LineTerminator</emu-nt></emu-gmod></emu-rhs>
+</emu-production>
+<emu-production name="Identifier">
+    <emu-rhs a="bb0c62c5"><emu-nt>IdentifierName</emu-nt><emu-gmod>but not <emu-nt>ReservedWord</emu-nt></emu-gmod></emu-rhs>
+</emu-production>
+<emu-production name="Argument">
+    <emu-rhs a="06b6ace8"><emu-nt>Identifier</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="Arguments">
+    <emu-rhs a="78e44c33">
+        <emu-t>(</emu-t>
+        <emu-t>)</emu-t>
+    </emu-rhs>
+    <emu-rhs a="234fb96b">
+        <emu-t>(</emu-t>
+        <emu-nt>ArgumentList</emu-nt>
+        <emu-t>)</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ArgumentList">
+    <emu-rhs a="ce5e5792"><emu-nt>Argument</emu-nt></emu-rhs>
+    <emu-rhs a="581c256a">
+        <emu-nt>ArgumentList</emu-nt>
+        <emu-t>,</emu-t>
+        <emu-nt>Argument</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="PrimarySymbol">
+    <emu-rhs a="a1f52cdc"><emu-nt>Terminal</emu-nt></emu-rhs>
+    <emu-rhs a="793f8970"><emu-nt>UnicodeCharacterLiteral</emu-nt></emu-rhs>
+    <emu-rhs a="025060f9"><emu-nt>Nonterminal</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="Nonterminal">
+    <emu-rhs a="967632df">
+        <emu-nt>Identifier</emu-nt>
+        <emu-nt optional>Arguments</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="OptionalSymbol">
+    <emu-rhs a="05c72298">
+        <emu-nt>PrimarySymbol</emu-nt>
+        <emu-t optional>?</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="OrClause">
+    <emu-rhs a="3f20f9ae"><emu-nt>PrimarySymbol</emu-nt></emu-rhs>
+    <emu-rhs a="01c87b7a">
+        <emu-nt>OrClause</emu-nt>
+        <emu-t>or</emu-t>
+        <emu-nt>PrimarySymbol</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="OneOfSymbol">
+    <emu-rhs a="3f20f9ae"><emu-nt>PrimarySymbol</emu-nt></emu-rhs>
+    <emu-rhs a="c573547e">
+        <emu-t>one</emu-t>
+        <emu-t>of</emu-t>
+        <emu-nt>OrClause</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="UnarySymbol">
+    <emu-rhs a="1ea4c20a"><emu-nt>OneOfSymbol</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ButNotSymbol">
+    <emu-rhs a="7b400d1b">
+        <emu-nt>UnarySymbol</emu-nt>
+        <emu-t>but</emu-t>
+        <emu-t>not</emu-t>
+        <emu-nt>UnarySymbol</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="BinarySymbol">
+    <emu-rhs a="711fdb04"><emu-nt>ButNotSymbol</emu-nt></emu-rhs>
+    <emu-rhs a="4336266b"><emu-nt>UnarySymbol</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="SymbolList">
+    <emu-rhs a="3f20f9ae"><emu-nt>PrimarySymbol</emu-nt></emu-rhs>
+    <emu-rhs a="45dd22d9">
+        <emu-nt>SymbolList</emu-nt>
+        <emu-t>,</emu-t>
+        <emu-nt>PrimarySymbol</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="SymbolSet">
+    <emu-rhs a="3f4042cc">
+        <emu-t>{</emu-t>
+        <emu-nt>SymbolList</emu-nt>
+        <emu-t>}</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="EmptyAssertionClause">
+    <emu-rhs a="a6f2a968"><emu-t>empty</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="LookaheadEqualsAssertionClause">
+    <emu-rhs a="0594dce2">
+        <emu-t>lookahead</emu-t>
+        <emu-t>==</emu-t>
+        <emu-nt>PrimarySymbol</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="LookaheadNotEqualsAssertionClause">
+    <emu-rhs a="21afcb5a">
+        <emu-t>lookahead</emu-t>
+        <emu-t>!=</emu-t>
+        <emu-nt>PrimarySymbol</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="LookaheadInAssertionClause">
+    <emu-rhs a="d21a8670">
+        <emu-t>lookahead</emu-t>
+        <emu-t><-</emu-t>
+        <emu-nt>SymbolSet</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="LookaheadNotInAssertionClause">
+    <emu-rhs a="175dd806">
+        <emu-t>lookahead</emu-t>
+        <emu-t><!</emu-t>
+        <emu-nt>SymbolSet</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="LookaheadAssertionClause">
+    <emu-rhs a="ea4c3682"><emu-nt>LookaheadEqualsAssertionClause</emu-nt></emu-rhs>
+    <emu-rhs a="40d68bcb"><emu-nt>LookaheadNotEqualsAssertionClause</emu-nt></emu-rhs>
+    <emu-rhs a="b407a314"><emu-nt>LookaheadInAssertionClause</emu-nt></emu-rhs>
+    <emu-rhs a="bccafc6f"><emu-nt>LookaheadNotInAssertionClause</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="NoSymbolAssertionClause">
+    <emu-rhs a="93da6768">
+        <emu-t>no</emu-t>
+        <emu-nt>OrClause</emu-nt>
+        <emu-t>here</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="LexicalGoalAssertionClause">
+    <emu-rhs a="75dfd5be">
+        <emu-t>lexical</emu-t>
+        <emu-t>goal</emu-t>
+        <emu-nt>PrimarySymbol</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ParameterValueAssertionClause">
+    <emu-rhs a="0d65c0ec">
+        <emu-t>~</emu-t>
+        <emu-nt>Identifier</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="4324796f">
+        <emu-t>+</emu-t>
+        <emu-nt>Identifier</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="AssertionClause">
+    <emu-rhs a="677faf63"><emu-nt>EmptyAssertionClause</emu-nt></emu-rhs>
+    <emu-rhs a="2e322246"><emu-nt>LookaheadAssertionClause</emu-nt></emu-rhs>
+    <emu-rhs a="9dc22c42"><emu-nt>NoSymbolAssertionClause</emu-nt></emu-rhs>
+    <emu-rhs a="1594107c"><emu-nt>LexicalGoalAssertionClause</emu-nt></emu-rhs>
+    <emu-rhs a="83a4e5cc"><emu-nt>ParameterValueAssertionClause</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="Assertion">
+    <emu-rhs a="a05028e9">
+        <emu-t>[</emu-t>
+        <emu-nt>AssertionClause</emu-nt>
+        <emu-t>]</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ProseSpan">
+    <emu-rhs a="097d0715"><emu-nt>Prose</emu-nt></emu-rhs>
+    <emu-rhs a="44ed1349">
+        <emu-nt>ProseSpan</emu-nt>
+        <emu-nt>LineTerminator</emu-nt>
+        <emu-nt>Prose</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="Symbol">
+    <emu-rhs a="e03dc251"><emu-nt>Assertion</emu-nt></emu-rhs>
+    <emu-rhs a="db35a295"><emu-nt>BinarySymbol</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="SymbolSpan">
+    <emu-rhs a="e959bc2b"><emu-nt>ProseSpan</emu-nt></emu-rhs>
+    <emu-rhs a="695ced9a"><emu-nt>SymbolSpanRest</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="SymbolSpanRest">
+    <emu-rhs a="f1442de0">
+        <emu-nt>Symbol</emu-nt>
+        <emu-nt optional>SymbolSpanRest</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="RightHandSideList">
+    <emu-rhs a="34e2c10c">
+        <emu-nt>RightHandSide</emu-nt>
+        <emu-nt optional>RightHandSideList</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="RightHandSide">
+    <emu-rhs a="23199d25">
+        <emu-nt>SymbolSpan</emu-nt>
+        <emu-nt>LineTerminator</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="Terminals">
+    <emu-rhs a="1a4d4441">
+        <emu-nt>Terminal</emu-nt>
+        <emu-nt optional>Terminals</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="TerminalList">
+    <emu-rhs a="814b2520"><emu-nt>Terminals</emu-nt></emu-rhs>
+    <emu-rhs a="a9feb9ba">
+        <emu-nt>TerminalList</emu-nt>
+        <emu-nt>LineTerminator</emu-nt>
+        <emu-nt>Terminals</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="OneOfList">
+    <emu-rhs a="f888749c">
+        <emu-t>one</emu-t>
+        <emu-t>of</emu-t>
+        <emu-nt>Terminals</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="a6099582">
+        <emu-t>one</emu-t>
+        <emu-t>of</emu-t>
+        <emu-nt>LineTerminator</emu-nt>
+        <emu-nt>Indent</emu-nt>
+        <emu-nt>TerminalList</emu-nt>
+        <emu-nt>Dedent</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="Parameter">
+    <emu-rhs a="06b6ace8"><emu-nt>Identifier</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ParameterList">
+    <emu-rhs a="f699f295"><emu-nt>Parameter</emu-nt></emu-rhs>
+    <emu-rhs a="7a714dd4">
+        <emu-nt>ParameterList</emu-nt>
+        <emu-t>,</emu-t>
+        <emu-nt>Parameter</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="Parameters">
+    <emu-rhs a="9fe02178">
+        <emu-t>(</emu-t>
+        <emu-nt>ParameterList</emu-nt>
+        <emu-t>)</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="Production">
+    <emu-rhs a="d2040e0a">
+        <emu-nt>Identifier</emu-nt>
+        <emu-nt optional>Parameters</emu-nt>
+        <emu-t>:</emu-t>
+        <emu-nt>OneOfList</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="5478e70a">
+        <emu-nt>Identifier</emu-nt>
+        <emu-nt optional>Parameters</emu-nt>
+        <emu-t>:</emu-t>
+        <emu-nt>RightHandSide</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="7bece964">
+        <emu-nt>Identifier</emu-nt>
+        <emu-nt optional>Parameters</emu-nt>
+        <emu-t>:</emu-t>
+        <emu-nt>LineTerminator</emu-nt>
+        <emu-nt>Indent</emu-nt>
+        <emu-nt>RightHandSideList</emu-nt>
+        <emu-nt>Dedent</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="SourceElement">
+    <emu-rhs a="37b9c04c"><emu-gann>empty</emu-gann></emu-rhs>
+    <emu-rhs a="df70fc79"><emu-nt>Production</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="SourceElements">
+    <emu-rhs a="3e0c8782">
+        <emu-nt>SourceElement</emu-nt>
+        <emu-nt optional>SourceElements</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="SourceFile">
+    <emu-rhs a="63962636"><emu-nt>SourceElements</emu-nt></emu-rhs>
+</emu-production>

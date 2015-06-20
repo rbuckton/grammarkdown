@@ -82,17 +82,13 @@ export class Emitter {
         let parsed: path.ParsedPath;
         let extension = this.extension || ".out";
         if (this.options.out) {
-            parsed = path.parse(this.options.out);
-            if (!parsed.ext) {
-                parsed.ext = extension;
-            }
+            return this.options.out;
         }
         else {
-            parsed = path.parse(node.filename);
-            parsed.ext = extension;
+            let dirname = path.dirname(node.filename);
+            let basename = path.basename(node.filename, ".grammar");
+            return path.join(dirname, basename + extension);
         }
-        
-        return path.format(parsed);
     }
 
     protected createWriter(): StringWriter {

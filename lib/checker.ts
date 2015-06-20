@@ -46,6 +46,7 @@ import {
     ButNotOperator,
     BinarySymbol,
     SymbolSpan,
+    LinkReference,
     RightHandSide,
     RightHandSideList,
     Production,
@@ -240,6 +241,21 @@ export class Checker {
 
     private checkRightHandSide(node: RightHandSide): void {
         this.checkSymbolSpan(node.head);
+        if (node.reference) {
+            this.checkLinkReference(node.reference);
+        }
+    }
+    
+    private checkLinkReference(node: LinkReference) {
+        this.checkGrammarLinkReference(node);
+    }
+    
+    private checkGrammarLinkReference(node: LinkReference): boolean {
+        if (!node.text) {
+            return this.reportGrammarErrorForNode(node, Diagnostics._0_expected, "string");
+        }
+        
+        return false;
     }
 
     private checkSymbolSpan(node: SymbolSpan): void {
@@ -873,16 +889,23 @@ export class Resolver {
         return undefined;
     }
     
-    public getAlternativeLinkId(node: RightHandSide, includePrefix: boolean): string {
-        let digest = new RightHandSideDigest();
-        let alternativeId = digest.computeHash(node).toLowerCase();
+    public getRightHandSideLinkId(node: RightHandSide, includePrefix: boolean): string {
+        let linkId: string;
+        if (node.reference && node.reference.text) {
+            linkId = node.reference.text.replace(/[^a-z0-9]+/g, '-');
+        }
+        else {
+            let digest = new RightHandSideDigest();
+            linkId = digest.computeHash(node).toLowerCase();
+        }
+
         if (includePrefix) {
             let production = <Production>this.bindings.getAncestor(node, SyntaxKind.Production);
             let productionId = this.getProductionLinkId(production.name);
-            return productionId + "-" + alternativeId;
+            return productionId + "-" + linkId;
         }
         
-        return alternativeId;
+        return linkId;
     }
 }
 

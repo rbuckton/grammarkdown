@@ -16,7 +16,7 @@
 import { assert } from "chai";
 import { readFileSync, writeFileSync, mkdirSync, existsSync, statSync, unlinkSync } from "fs";
 import { EOL } from "os";
-import { resolve } from "path";
+import { resolve, basename } from "path";
 import { Scanner } from "../lib/scanner";
 import { SyntaxKind, tokenToString } from "../lib/tokens";
 import { DiagnosticMessages, LineMap } from "../lib/diagnostics";
@@ -151,7 +151,7 @@ function formatNode(node: Node, sourceFile: SourceFile) {
             text += `(text = <${(<UnicodeCharacterLiteral>node).text}>)`;
             break;
         case SyntaxKind.SourceFile:
-            text += `(filename = "${(<SourceFile>node).filename}")`;
+            text += `(filename = "${basename((<SourceFile>node).filename)}")`;
             break;
     }
     switch (node.kind) {

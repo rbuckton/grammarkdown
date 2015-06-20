@@ -1,20 +1,15 @@
-import { readdirSync, statSync } from "fs";
-import { resolve, extname } from "path";
+import { basename } from "path";
 import { Grammar } from "../lib/grammar";
 import { EmitFormat } from "../lib/options";
+import { getGrammarFiles } from "./resources";
 import { writeTokens, writeDiagnostics, writeBaseline, compareBaselines } from "./diff";
 
 describe("ECMarkup Emitter", () => {
     defineTests();
     
     function defineTests() {
-        let resourcesPath = resolve(__dirname, "resources");
-        let files = readdirSync(resourcesPath);
-        for (let file of files) {
-            let filePath = resolve(resourcesPath, file); 
-            if (statSync(filePath).isFile() && extname(file) === ".grammar") {
-                defineTest("[ECMarkup]" + file, filePath);
-            }
+        for (let file of getGrammarFiles()) {
+            defineTest("[ECMarkup]" + basename(file), file);
         }
     }
     

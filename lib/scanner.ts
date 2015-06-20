@@ -155,12 +155,15 @@ export class Scanner {
                 case CharacterCodes.At:
                     return this.pos++, this.token = SyntaxKind.AtToken;
                     
+                case CharacterCodes.NumberSign:
+                    return this.pos++, this.tokenValue = this.scanLine(), this.token = SyntaxKind.LinkReference;
+                    
                 case CharacterCodes.DoubleQuote:
                 case CharacterCodes.SingleQuote:
-                    return this.tokenValue = this.scanString(ch), this.token = SyntaxKind.StringLiteral;
+                    return this.pos++, this.tokenValue = this.scanString(ch), this.token = SyntaxKind.StringLiteral;
 
                 case CharacterCodes.Backtick:
-                    return this.tokenValue = this.scanString(ch), this.token = SyntaxKind.Terminal;
+                    return this.pos++, this.tokenValue = this.scanString(ch), this.token = SyntaxKind.Terminal;
 
                 case CharacterCodes.LessThan:
                     if (this.text.charCodeAt(this.pos + 1) === CharacterCodes.Exclamation) {
@@ -170,7 +173,7 @@ export class Scanner {
                         return this.pos += 2, this.token = SyntaxKind.LessThanMinusToken;
                     }
                     else {
-                        return this.tokenValue = this.scanString(CharacterCodes.GreaterThan), this.token = SyntaxKind.UnicodeCharacterLiteral;
+                        return this.pos++, this.tokenValue = this.scanString(CharacterCodes.GreaterThan), this.token = SyntaxKind.UnicodeCharacterLiteral;
                     }
 
                 case CharacterCodes.GreaterThan:
@@ -436,7 +439,6 @@ export class Scanner {
     } 
     
     private scanString(quote: number): string {
-        this.pos++;
         let result = "";
         let start = this.pos;
         while (true) {

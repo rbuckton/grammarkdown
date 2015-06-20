@@ -244,6 +244,37 @@ export class Dict<T> {
         
         return inverted;
     }
+    
+    static keys<T>(dict: Dict<T>): string[] {
+        let result: string[] = [];
+        for (let key in dict) {
+            if (Dict.has(dict, key)) {
+                result.push(key);
+            }
+        }
+        
+        return result;
+    }
+    
+    static values<T>(dict: Dict<T>): T[] {
+        let result: T[] = [];
+        for (let key in dict) {
+            if (Dict.has(dict, key)) {
+                result.push(Dict.get(dict, key));
+            }
+        }
+        return result;
+    }
+    
+    static entries<T>(dict: Dict<T>): [string | number, T][] {
+        let result: [string | number, T][] = [];
+        for (let key in dict) {
+            if (Dict.has(dict, key)) {
+                result.push([key, Dict.get(dict, key)]);
+            }
+        }
+        return result;
+    }
 }
 
 Dict.prototype = createEmptyPrototype();
