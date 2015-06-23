@@ -7,21 +7,19 @@ The grammar supported by `grammarkdown` is based on the parametric grammar used 
 
 ## Usage
 ```
-Syntax:   grammarkdown [options] [file]
+Syntax:                   grammarkdown [options] [...files]
 
-Examples: grammarkdown es6.grammar
-          grammarkdown --out es6.md --format markdown es6.grammar
+Examples:                 grammarkdown es6.grammar
+                          grammarkdown --out es6.md --format markdown es6.grammar
 
 Options:
- -h, --help                       Print this message.
- -v, --version                    Print the version.
- -o, --out FILE                   Specify the output file. If multiple formats are provided, their 
-                                  relevant extensions will be appended to the end of the file.
- -f, --format FORMAT              One or more output formats: 'markdown' (default) or 'ecmarkup'.
- --no-emit                        Does not emit output.
- --no-emit-on-error               Does not emit output if there are errors.
- --no-checks                      Does not perform static checking of the grammar.
- --md                             Shortcut for: --format markdown
+ -f, --format FORMAT      The output format.
+ -h, --help               Prints this message.
+     --noChecks           Does not perform static checking of the grammar.
+     --noEmit             Does not emit output.
+     --noEmitOnError      Does not emit output if there are errors.
+ -o, --out FILE           Specify the output file.
+ -v, --version            Prints the version.
 ```
 
 ## Syntax
@@ -105,7 +103,7 @@ A *lookahead assertion* has the following operators:
 
 You can also annotate your grammar with C-style single-line and multi-line comments.
 
-For a comprehensive example of `grammarkdown` syntax, you can brows the [full grammar for ECMA-262 version 2015 (ES6)](https://github.com/rbuckton/grammarkdown/blob/master/tests/resources/es6.grammar).
+For a comprehensive example of `grammarkdown` syntax, you can brows the [full grammar for ECMA-262 version 2015 (ES6)](https://github.com/rbuckton/grammarkdown/blob/master/spec/es6.grammar).
 
 ## API
 
@@ -113,37 +111,29 @@ For a comprehensive example of `grammarkdown` syntax, you can brows the [full gr
 
 ```js
 var grammarkdown = require("grammarkdown")
-  , DiagnosticMessages = grammarkdown.DiagnosticMessages
-  , Parser = grammarkdown.Parser
-  , BindingTable = grammarkdown.BindingTable
-  , Binder = grammarkdown.Binder
-  , Checker = grammarkdown.Checker
-  , MarkdownEmitter = grammarkdown.MarkdownEmitter
-  , StringWriter = grammarkdown.StringWriter;
+  , Grammar = grammarkdown.Grammar
+  , EmitFormat = grammarkdown.EmitFormat
   
 var filename = "...";
 var source = "...";
-var diagnostics = new DiagnosticMessages();
+var output;
 
 // parse
-var parser = new Parser(diagnostics);
-var sourceFile = parser.parseSourceFile(file, source);
+var grammar = new Grammar(
+  [filename], 
+  { format: EmitFormat.markdown }, 
+  function () { return source; });
 
-// bind
-var bindings = new BindingTable();
-var binder = new Binder(bindings);
-binder.bindSourceFile(sourceFile);
+// bind (optional, bind happens automatically during check)
+grammar.bind();
 
-// check
-var checker = new Checker(bindings, diagnostics);
-checker.checkSourceFile(sourceFile);
+// check (optional, check happens automatically during emit)
+grammar.check();
 
 // emit
-var writer = new StringWriter();
-var emitter = new MarkdownEmitter(checker, diagnostics, writer);
-emitter.emitSourceFile(sourceFile);
+grammar.emit(undefined, function (file, text) { output = text; });
 
-console.log(writer.toString());
+console.log(output);
 ```
 
 ## Related

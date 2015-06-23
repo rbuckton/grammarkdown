@@ -1,6 +1,8 @@
 **/*.ts
+!**/*.d.ts
 **/*.js.map
 **/*.grammar
+spec/
 tests/
 typings/
 .git/
