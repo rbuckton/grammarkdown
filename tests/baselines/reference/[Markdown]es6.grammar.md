@@ -972,3 +972,6 @@
 &emsp;&emsp;&emsp;<a name="ExportSpecifier-0ebb31e2"></a>*[IdentifierName](#IdentifierName)*  
 &emsp;&emsp;&emsp;<a name="ExportSpecifier-a9552c46"></a>*[IdentifierName](#IdentifierName)*&emsp;`` as ``&emsp;*[IdentifierName](#IdentifierName)*  
   
+&emsp;&emsp;<a name="SingleLineHTMLOpenComment"></a>*SingleLineHTMLOpenComment* **::**  
+&emsp;&emsp;&emsp;<a name="SingleLineHTMLOpenComment-f50b0f2f"></a>`` <!-- ``&emsp;*[SingleLineCommentChars](#SingleLineCommentChars)*<sub>opt</sub>  
+  

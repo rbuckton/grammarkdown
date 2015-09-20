@@ -2,6 +2,8 @@ import { Emitter } from "./emitter";
 import { SyntaxKind } from "../tokens";
 import { DiagnosticMessages } from "../diagnostics";
 import { Checker } from "../checker";
+var escape = require("html-escape");
+
 import { 
     Node,
     SourceFile,
@@ -154,7 +156,7 @@ export class EcmarkupEmitter extends Emitter {
             this.writer.write(` optional`);
         }
         this.writer.write(`>`);
-        this.writer.write(node.text);
+        this.writer.write(escape(node.text));
         this.writer.write(`</emu-t>`);
     }
     
@@ -302,7 +304,7 @@ export class EcmarkupEmitter extends Emitter {
     }
     
     protected emitTextContent(node: TextContent) {
-        let text = node.text;
+        let text = escape(node.text);
         this.writer.write(text);
     }
     

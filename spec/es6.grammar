@@ -985,3 +985,6 @@ ExportsList :
 ExportSpecifier :
 	IdentifierName
 	IdentifierName `as` IdentifierName
+
+SingleLineHTMLOpenComment ::
+        `<!--` SingleLineCommentChars?
