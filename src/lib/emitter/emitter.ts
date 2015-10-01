@@ -37,7 +37,7 @@ import {
     Import,
     SourceElement,
     TextContent,
-	forEachChild
+    forEachChild
 } from "../nodes";
 
 export class Emitter {
@@ -54,7 +54,7 @@ export class Emitter {
         this.diagnostics = diagnostics;
     }
     
-	public emit(node: SourceFile, writeFile?: (file: string, text: string) => void): void {
+    public emit(node: SourceFile, writeFile?: (file: string, text: string) => void): void {
         let saveWriter = this.writer;
         try {
             this.writer = this.createWriter();
@@ -67,7 +67,7 @@ export class Emitter {
         finally {
             this.writer = saveWriter;
         }
-	}
+    }
     
     protected writeFile(file: string, text: string, callback?: (file: string, text: string) => void): void {
         if (callback) {
@@ -260,5 +260,5 @@ export class Emitter {
 }
 
 function writeOutputFile(file: string, text: string): void {
-	fs.writeFileSync(file, text, "utf8");
+    fs.writeFileSync(file, text, "utf8");
 }

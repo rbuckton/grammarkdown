@@ -1,131 +1,49 @@
 /* global process */
-var fs = require('fs');
-var gulp = require('gulp');
-var tsb = require('gulp-tsb');
-var mocha = require('gulp-mocha');
-var gutil = require("gulp-util");
-var del = require("del");
-var child_process = require("child_process");
+var gulp = require("gulp")
+  , src = require("./build/tools/src")
+  , clean = require("./build/tasks/clean")
+  , build = require("./build/tasks/build")
+  , test = require("./build/tasks/test")
+  , watch = require("./build/tasks/watch")
+  , diff = require("./build/tasks/diff")
+  , pages = require("./build/tasks/pages");
 
-var sources = [
-    "*.ts",
-    "{lib,bin,emitter,tests,typings}/**/*.ts"
-];
+var lib = {
+    project: "./src/lib/tsconfig.json",
+    base: "./src/lib/",
+    dest: "./lib/",
+    src: ["./src/lib/**/*.ts"],
+    out: ["./lib/**/*"],
+    tests: ["./tests/index.js"]
+};
 
-var outputs = [
-    "*.js?(.map)",
-    "{lib,bin,emitter,tests,typings}/**/*.js?(.map)",
-    "!gulpfile.js"
-];
+var tests = {
+    project: "./src/tests/tsconfig.json",
+    base: "./src/tests/",
+    dest: "./tests/",
+    src: ["./src/tests/**/*.ts"],
+    out: ["./tests/**/*", "!./tests/baselines/**"]
+};
 
-var compilation = tsb.create({
-    "target": "es5",
-    "module": "commonjs",
-    "sourceMap": true
-});
+var baselines = {
+    remote: "./baselines/reference/",
+    local: "./baselines/local/",
+    out: ["./baselines/local/**/*"]
+};
 
-var referenceBaselinesDir = "./tests/baselines/reference";
-var localBaselinesDir = "./tests/baselines/local";
-
+gulp.task("clean:lib", clean(lib));
+gulp.task("clean:tests", clean(tests));
+gulp.task("clean:baselines", clean(baselines));
+gulp.task("clean", ["clean:lib", "clean:tests", "clean:baselines"]);
+gulp.task("build:lib", build(lib));
+gulp.task("build:tests", ["build:lib"], build(tests));
+gulp.task("build", ["build:lib", "build:tests"]);
+gulp.task("test:lib", ["build:tests", "clean:baselines"], test(lib));
+gulp.task("test", ["test:lib"]);
+gulp.task("watch:lib", ["build:lib"], watch(src(lib), ["build:lib"]));
+gulp.task("watch:tests", ["test:lib"], watch(src(lib, tests), ["test:lib"]));
+gulp.task("watch", ["watch:tests"]);
 gulp.task("default", ["build"]);
-
-gulp.task("build", function () {
-    return gulp
-        .src(sources)
-        .pipe(compilation())
-        .pipe(gulp.dest('.')); 
-});
-
-gulp.task("clean", function (cb) {
-    del(outputs, cb);
-})
-
-gulp.task("test", ["build"], function() {
-    return gulp
-        .src(["tests/index.js"], { read: false })
-        .pipe(mocha({ reporter: 'dot' }))
-        .on("error", function (e) { });
-});
-
-gulp.task("watch-build", function () {
-    return gulp.watch(sources, ["build"]);
-});
-
-gulp.task("watch-test", function() {
-    return gulp.watch(sources, ["build", "test"]);
-});
-
-gulp.task("diff", function(cb) {
-    diff(referenceBaselinesDir, localBaselinesDir, function (err) {
-        if (err) cb(err);
-        cb();
-    })
-});
-
-gulp.task("update-pages", ["build"], function (cb) {
-    var ecmarkup = process.env["ECMARKUP"];
-    if (!ecmarkup) {
-        throw new Error("Please set the 'ECMARKUP' environment variable.");
-    }
-    
-    advanceToUpdateES6Grammar();
-    
-    function updateES6Grammar(cb) {
-        exec(process.argv[0], ["./bin/cli.js", "-o", "./spec/es6.grammar.html", "-f", "ecmarkup", "./tests/resources/es6.grammar", "--emit-links"], cb);
-    }
-    
-    function updateTypeScriptGrammar(cb) {
-        exec(process.argv[0], ["./bin/cli.js", "-o", "./spec/typescript.grammar.html", "-f", "ecmarkup", "./tests/resources/typescript.grammar", "--emit-links"], cb);
-    }
-    
-    function updateES6Page(cb) {
-        exec(ecmarkup, ["./spec/es6.html", "./_es6.html"], cb);
-    }
-    
-    function updateTypeScriptPage(cb) {
-        exec(ecmarkup, ["./spec/typescript.html", "./_typescript.html"], cb);
-    }
-        
-    function advanceToUpdateES6Grammar() {
-        return updateES6Grammar(advanceToUpdateES6Page);
-    }
-    
-    function advanceToUpdateES6Page(err) {
-        return err ? cb(err) : updateES6Page(advanceToUpdateTypeScriptGrammar);
-    }
-    
-    function advanceToUpdateTypeScriptGrammar(err) {
-        return err ? cb(err) : updateTypeScriptGrammar(advanceToUpdateTypeScriptPage);
-    }
-    
-    function advanceToUpdateTypeScriptPage(err) {
-        return err ? cb(err) : updateTypeScriptPage(cb);
-    }
-});
-
-function diff(reference, local, cb) {
-    var diff = process.env["DIFF"];
-    if (!diff) {
-        throw new Error("Please set the 'DIFF' environment variable.");
-    }
-    
-    exec(diff, [reference, local], cb);
-}
-
-function exec(cmd, args, cb) {
-    var done = false;
-    console.log(cmd + " " + args.join(" "));
-    child_process.spawn(cmd, args, {
-        stdio: [process.stdin, process.stdout, process.stderr]
-    })
-    .on("error", function (e) {
-        if (done) return;
-        done = true;
-        cb(e);
-    })
-    .on("close", function () {
-        if (done) return;
-        done = true;
-        cb();
-    });
-}
+gulp.task("diff", diff(baselines));
+gulp.task("publish:pages", ["build"], pages());
+gulp.task("publish", ["publish:pages"]);
