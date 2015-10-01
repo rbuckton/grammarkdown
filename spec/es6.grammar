@@ -837,7 +837,7 @@ FunctionBody[Yield] :
 	FunctionStatementList[?Yield]
 
 FunctionStatementList[Yield] :
-	StatementList(?Yield, Return)?
+	StatementList[?Yield, Return]?
 
 ArrowFunction[In, Yield]  :
 	ArrowParameters[?Yield] [no LineTerminator here] `=>` ConciseBody[?In]
