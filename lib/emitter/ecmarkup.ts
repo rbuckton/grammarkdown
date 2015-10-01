@@ -38,37 +38,37 @@ import {
 export class EcmarkupEmitter extends Emitter {
     protected extension = ".emu.html";
 
-	protected emitProduction(node: Production) {
+    protected emitProduction(node: Production) {
         let linkId = this.resolver.getProductionLinkId(node.name);
         this.emitLinkAnchor(linkId);
-		this.writer.write(`<emu-production name="`);
+        this.writer.write(`<emu-production name="`);
         this.emitIdentifier(node.name);
         this.writer.write(`"`);
         this.emitNode(node.parameterList);
-		if (node.colonToken) {
-			switch (node.colonToken.kind) {
-				case SyntaxKind.ColonColonToken:
-					this.writer.write(` type="lexical"`);
-					break;
-				case SyntaxKind.ColonColonColonToken:
-					this.writer.write(` type="regexp"`);
-					break;
-			}
-		}
-		
-		if (node.body && node.body.kind === SyntaxKind.OneOfList) {
-			this.writer.write(`oneof`);
-		}
-		
-		this.writer.write(`>`);
-		this.writer.indent();
-		this.writer.writeln();
-        this.emitNode(node.body);
-		this.writer.dedent();
-		this.writer.writeln();
-		this.writer.write(`</emu-production>`);
+        if (node.colonToken) {
+            switch (node.colonToken.kind) {
+                case SyntaxKind.ColonColonToken:
+                    this.writer.write(` type="lexical"`);
+                    break;
+                case SyntaxKind.ColonColonColonToken:
+                    this.writer.write(` type="regexp"`);
+                    break;
+            }
+        }
+        
+        if (node.body && node.body.kind === SyntaxKind.OneOfList) {
+            this.writer.write(` oneof`);
+        }
+        
+        this.writer.write(`>`);
+        this.writer.indent();
         this.writer.writeln();
-	}
+        this.emitNode(node.body);
+        this.writer.dedent();
+        this.writer.writeln();
+        this.writer.write(`</emu-production>`);
+        this.writer.writeln();
+    }
     
     protected emitParameterList(node: ParameterList) {
         this.writer.write(` params="`);
@@ -89,13 +89,13 @@ export class EcmarkupEmitter extends Emitter {
     
     protected emitOneOfList(node: OneOfList) {
         this.writer.write(`<emu-rhs>`);
-		for (let i = 0; i < node.terminals.length; ++i) {
-			if (i > 0) {
-				this.writer.write(" ");
-			}
-			
-			this.writer.write(this.encode(node.terminals[i].text));
-		}
+        for (let i = 0; i < node.terminals.length; ++i) {
+            if (i > 0) {
+                this.writer.write(" ");
+            }
+            
+            this.writer.write(this.encode(node.terminals[i].text));
+        }
         this.writer.write(`</emu-rhs>`);
         this.writer.writeln();
     }
@@ -111,7 +111,7 @@ export class EcmarkupEmitter extends Emitter {
         this.emitLinkAnchor(linkId);
         
         this.writer.write(`<emu-rhs`);
-		
+        
         if (linkId) {
             this.writer.write(` a="${linkId}"`);
         }
@@ -154,7 +154,7 @@ export class EcmarkupEmitter extends Emitter {
             this.writer.write(` optional`);
         }
         this.writer.write(`>`);
-        this.writer.write(node.text);
+        this.writer.write(this.encode(node.text));
         this.writer.write(`</emu-t>`);
     }
     
@@ -196,8 +196,8 @@ export class EcmarkupEmitter extends Emitter {
         }
         
         this.writer.write(`>&lt;`);
-        this.writer.write(node.text);
-        this.writer.write(`&gt;</emu-gprose>`);        
+        this.writer.write(this.encode(node.text));
+        this.writer.write(`&gt;</emu-gprose>`);
     }
     
     protected emitProse(node: Prose) {
@@ -303,12 +303,12 @@ export class EcmarkupEmitter extends Emitter {
     
     protected emitTextContent(node: TextContent) {
         let text = node.text;
-        this.writer.write(text);
+        this.writer.write(this.encode(text));
     }
     
     private emitLinkAnchor(linkId: string) {
         if (linkId && this.options.emitLinks) {
-            this.writer.write(`<a name="${linkId}"></a>`);            
+            this.writer.write(`<a name="${linkId}"></a>`);
         }
     }
 

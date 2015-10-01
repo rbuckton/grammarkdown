@@ -33,20 +33,20 @@
 <emu-production name="ReservedWord" type="lexical">
     <emu-rhs a="a3926e03"><emu-nt>Keyword</emu-nt></emu-rhs>
 </emu-production>
-<emu-production name="Keyword" type="lexical"oneof>
+<emu-production name="Keyword" type="lexical" oneof>
     <emu-rhs>empty lookahead lexical goal no here one of or but not</emu-rhs>
 </emu-production>
-<emu-production name="DecimalDigit" type="lexical"oneof>
+<emu-production name="DecimalDigit" type="lexical" oneof>
     <emu-rhs>0 1 2 3 4 5 6 7 8 9</emu-rhs>
 </emu-production>
-<emu-production name="HexDigit" type="lexical"oneof>
+<emu-production name="HexDigit" type="lexical" oneof>
     <emu-rhs>0 1 2 3 4 5 6 7 8 9 a b c d e f A B C D E F</emu-rhs>
 </emu-production>
 <emu-production name="UnicodeCharacterLiteral" type="lexical">
     <emu-rhs a="eb4a6a4b">
-        <emu-t><</emu-t>
+        <emu-t>&lt;</emu-t>
         <emu-nt>UnicodeCharacterLiteralChars</emu-nt>
-        <emu-t>></emu-t>
+        <emu-t>&gt;</emu-t>
     </emu-rhs>
 </emu-production>
 <emu-production name="UnicodeCharacterLiteralChars" type="lexical">
@@ -56,7 +56,7 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="UnicodeCharacterLiteralChar" type="lexical">
-    <emu-rhs a="3490f5bb"><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not one of <emu-t><</emu-t> or <emu-t>></emu-t> or <emu-nt>LineTerminator</emu-nt></emu-gmod></emu-rhs>
+    <emu-rhs a="3490f5bb"><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not one of <emu-t>&lt;</emu-t> or <emu-t>&gt;</emu-t> or <emu-nt>LineTerminator</emu-nt></emu-gmod></emu-rhs>
 </emu-production>
 <emu-production name="Indent" type="lexical">
     <emu-rhs a="e1ed22ce"><emu-gprose>An increase in the indentation depth from the previous line.</emu-gprose></emu-rhs>
@@ -98,7 +98,7 @@
 </emu-production>
 <emu-production name="ProseLine" type="lexical">
     <emu-rhs a="a16b392e">
-        <emu-t>></emu-t>
+        <emu-t>&gt;</emu-t>
         <emu-nt optional>ProseChars</emu-nt>
     </emu-rhs>
 </emu-production>
@@ -219,14 +219,14 @@
 <emu-production name="LookaheadInAssertionClause">
     <emu-rhs a="d21a8670">
         <emu-t>lookahead</emu-t>
-        <emu-t><-</emu-t>
+        <emu-t>&lt;-</emu-t>
         <emu-nt>SymbolSet</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="LookaheadNotInAssertionClause">
     <emu-rhs a="175dd806">
         <emu-t>lookahead</emu-t>
-        <emu-t><!</emu-t>
+        <emu-t>&lt;!</emu-t>
         <emu-nt>SymbolSet</emu-nt>
     </emu-rhs>
 </emu-production>

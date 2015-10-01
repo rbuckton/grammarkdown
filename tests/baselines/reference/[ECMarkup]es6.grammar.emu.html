@@ -159,19 +159,19 @@
     <emu-rhs a="54f84188"><emu-nt>NullLiteral</emu-nt></emu-rhs>
     <emu-rhs a="3508e1fd"><emu-nt>BooleanLiteral</emu-nt></emu-rhs>
 </emu-production>
-<emu-production name="Keyword" type="lexical"oneof>
+<emu-production name="Keyword" type="lexical" oneof>
     <emu-rhs>break do in typeof case else instanceof var catch export new void class extends return while const finally super with continue for switch yield debugger function this default if throw delete import try</emu-rhs>
 </emu-production>
-<emu-production name="FutureReservedWord" type="lexical"oneof>
+<emu-production name="FutureReservedWord" type="lexical" oneof>
     <emu-rhs>enum await implements package protected interface private public</emu-rhs>
 </emu-production>
-<emu-production name="Punctuator" type="lexical"oneof>
+<emu-production name="Punctuator" type="lexical" oneof>
     <emu-rhs>{ } ( ) [ ] . ; , &lt; &gt; &lt;= &gt;= == != === !== + - * % ++ -- &lt;&lt; &gt;&gt; &gt;&gt;&gt; &amp; | ^ ! ~ &amp;&amp; || ?  :: = += -= *= %= &lt;&lt;= &gt;&gt;= &gt;&gt;&gt;= &amp;= |= ^= =&gt;</emu-rhs>
 </emu-production>
-<emu-production name="DivPunctuator" type="lexical"oneof>
+<emu-production name="DivPunctuator" type="lexical" oneof>
     <emu-rhs>/ /=</emu-rhs>
 </emu-production>
-<emu-production name="RightBracePunctuator" type="lexical"oneof>
+<emu-production name="RightBracePunctuator" type="lexical" oneof>
     <emu-rhs>)</emu-rhs>
 </emu-production>
 <emu-production name="NullLiteral" type="lexical">
@@ -218,10 +218,10 @@
         <emu-nt>DecimalDigit</emu-nt>
     </emu-rhs>
 </emu-production>
-<emu-production name="DecimalDigit" type="lexical"oneof>
+<emu-production name="DecimalDigit" type="lexical" oneof>
     <emu-rhs>0 1 2 3 4 5 6 7 8 9</emu-rhs>
 </emu-production>
-<emu-production name="NonZeroDigit" type="lexical"oneof>
+<emu-production name="NonZeroDigit" type="lexical" oneof>
     <emu-rhs>1 2 3 4 5 6 7 8 9</emu-rhs>
 </emu-production>
 <emu-production name="ExponentPart" type="lexical">
@@ -230,7 +230,7 @@
         <emu-nt>SignedInteger</emu-nt>
     </emu-rhs>
 </emu-production>
-<emu-production name="ExponentIndicator" type="lexical"oneof>
+<emu-production name="ExponentIndicator" type="lexical" oneof>
     <emu-rhs>e E</emu-rhs>
 </emu-production>
 <emu-production name="SignedInteger" type="lexical">
@@ -261,7 +261,7 @@
         <emu-nt>BinaryDigit</emu-nt>
     </emu-rhs>
 </emu-production>
-<emu-production name="BinaryDigit" type="lexical"oneof>
+<emu-production name="BinaryDigit" type="lexical" oneof>
     <emu-rhs>0 1</emu-rhs>
 </emu-production>
 <emu-production name="OctalIntegerLiteral" type="lexical">
@@ -281,7 +281,7 @@
         <emu-nt>OctalDigit</emu-nt>
     </emu-rhs>
 </emu-production>
-<emu-production name="OctalDigit" type="lexical"oneof>
+<emu-production name="OctalDigit" type="lexical" oneof>
     <emu-rhs>0 1 2 3 4 5 6 7</emu-rhs>
 </emu-production>
 <emu-production name="HexIntegerLiteral" type="lexical">
@@ -301,19 +301,19 @@
         <emu-nt>HexDigit</emu-nt>
     </emu-rhs>
 </emu-production>
-<emu-production name="HexDigit" type="lexical"oneof>
+<emu-production name="HexDigit" type="lexical" oneof>
     <emu-rhs>0 1 2 3 4 5 6 7 8 9 a b c d e f A B C D E F</emu-rhs>
 </emu-production>
 <emu-production name="StringLiteral" type="lexical">
     <emu-rhs a="15d8b1f1">
-        <emu-t>"</emu-t>
+        <emu-t>&quot;</emu-t>
         <emu-nt optional>DoubleStringCharacters</emu-nt>
-        <emu-t>"</emu-t>
+        <emu-t>&quot;</emu-t>
     </emu-rhs>
     <emu-rhs a="82ecb3d9">
-        <emu-t>'</emu-t>
+        <emu-t>&apos;</emu-t>
         <emu-nt optional>SingleStringCharacters</emu-nt>
-        <emu-t>'</emu-t>
+        <emu-t>&apos;</emu-t>
     </emu-rhs>
 </emu-production>
 <emu-production name="DoubleStringCharacters" type="lexical">
@@ -329,7 +329,7 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="DoubleStringCharacter" type="lexical">
-    <emu-rhs a="25593d43"><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not one of <emu-t>"</emu-t> or <emu-t>\</emu-t> or <emu-nt>LineTerminator</emu-nt></emu-gmod></emu-rhs>
+    <emu-rhs a="25593d43"><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not one of <emu-t>&quot;</emu-t> or <emu-t>\</emu-t> or <emu-nt>LineTerminator</emu-nt></emu-gmod></emu-rhs>
     <emu-rhs a="ea7d8d26">
         <emu-t>\</emu-t>
         <emu-nt>EscapeSequence</emu-nt>
@@ -337,7 +337,7 @@
     <emu-rhs a="00992933"><emu-nt>LineContinuation</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="SingleStringCharacter" type="lexical">
-    <emu-rhs a="c574e0b6"><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not one of <emu-t>'</emu-t> or <emu-t>\</emu-t> or <emu-nt>LineTerminator</emu-nt></emu-gmod></emu-rhs>
+    <emu-rhs a="c574e0b6"><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not one of <emu-t>&apos;</emu-t> or <emu-t>\</emu-t> or <emu-nt>LineTerminator</emu-nt></emu-gmod></emu-rhs>
     <emu-rhs a="ea7d8d26">
         <emu-t>\</emu-t>
         <emu-nt>EscapeSequence</emu-nt>
@@ -363,7 +363,7 @@
     <emu-rhs a="7444838f"><emu-nt>SingleEscapeCharacter</emu-nt></emu-rhs>
     <emu-rhs a="b7980a98"><emu-nt>NonEscapeCharacter</emu-nt></emu-rhs>
 </emu-production>
-<emu-production name="SingleEscapeCharacter" type="lexical"oneof>
+<emu-production name="SingleEscapeCharacter" type="lexical" oneof>
     <emu-rhs>&apos; &quot; \ b f n r t v</emu-rhs>
 </emu-production>
 <emu-production name="NonEscapeCharacter" type="lexical">
@@ -903,7 +903,7 @@
         <emu-nt params="?Yield">UnaryExpression</emu-nt>
     </emu-rhs>
 </emu-production>
-<emu-production name="MultiplicativeOperator"oneof>
+<emu-production name="MultiplicativeOperator" oneof>
     <emu-rhs>* / %</emu-rhs>
 </emu-production>
 <emu-production name="AdditiveExpression" params="Yield">
@@ -923,17 +923,17 @@
     <emu-rhs a="2baeb5db"><emu-nt params="?Yield">AdditiveExpression</emu-nt></emu-rhs>
     <emu-rhs a="1e6dbeb2">
         <emu-nt params="?Yield">ShiftExpression</emu-nt>
-        <emu-t><<</emu-t>
+        <emu-t>&lt;&lt;</emu-t>
         <emu-nt params="?Yield">AdditiveExpression</emu-nt>
     </emu-rhs>
     <emu-rhs a="639cdc26">
         <emu-nt params="?Yield">ShiftExpression</emu-nt>
-        <emu-t>>></emu-t>
+        <emu-t>&gt;&gt;</emu-t>
         <emu-nt params="?Yield">AdditiveExpression</emu-nt>
     </emu-rhs>
     <emu-rhs a="9d297ffd">
         <emu-nt params="?Yield">ShiftExpression</emu-nt>
-        <emu-t>>>></emu-t>
+        <emu-t>&gt;&gt;&gt;</emu-t>
         <emu-nt params="?Yield">AdditiveExpression</emu-nt>
     </emu-rhs>
 </emu-production>
@@ -941,22 +941,22 @@
     <emu-rhs a="14cbe144"><emu-nt params="?Yield">ShiftExpression</emu-nt></emu-rhs>
     <emu-rhs a="862f8bef">
         <emu-nt params="?In, ?Yield">RelationalExpression</emu-nt>
-        <emu-t><</emu-t>
+        <emu-t>&lt;</emu-t>
         <emu-nt params="?Yield">ShiftExpression</emu-nt>
     </emu-rhs>
     <emu-rhs a="e1b30960">
         <emu-nt params="?In, ?Yield">RelationalExpression</emu-nt>
-        <emu-t>></emu-t>
+        <emu-t>&gt;</emu-t>
         <emu-nt params="?Yield">ShiftExpression</emu-nt>
     </emu-rhs>
     <emu-rhs a="707c38bf">
         <emu-nt params="?In, ?Yield">RelationalExpression</emu-nt>
-        <emu-t><=</emu-t>
+        <emu-t>&lt;=</emu-t>
         <emu-nt params="?Yield">ShiftExpression</emu-nt>
     </emu-rhs>
     <emu-rhs a="cc6c18fa">
         <emu-nt params="?In, ?Yield">RelationalExpression</emu-nt>
-        <emu-t>>=</emu-t>
+        <emu-t>&gt;=</emu-t>
         <emu-nt params="?Yield">ShiftExpression</emu-nt>
     </emu-rhs>
     <emu-rhs a="3bd34097">
@@ -997,7 +997,7 @@
     <emu-rhs a="003e4dd5"><emu-nt params="?In, ?Yield">EqualityExpression</emu-nt></emu-rhs>
     <emu-rhs a="dc348a15">
         <emu-nt params="?In, ?Yield">BitwiseANDExpression</emu-nt>
-        <emu-t>&</emu-t>
+        <emu-t>&amp;</emu-t>
         <emu-nt params="?In, ?Yield">EqualityExpression</emu-nt>
     </emu-rhs>
 </emu-production>
@@ -1021,7 +1021,7 @@
     <emu-rhs a="43e84f3f"><emu-nt params="?In, ?Yield">BitwiseORExpression</emu-nt></emu-rhs>
     <emu-rhs a="de0d5414">
         <emu-nt params="?In, ?Yield">LogicalANDExpression</emu-nt>
-        <emu-t>&&</emu-t>
+        <emu-t>&amp;&amp;</emu-t>
         <emu-nt params="?In, ?Yield">BitwiseORExpression</emu-nt>
     </emu-rhs>
 </emu-production>
@@ -1058,7 +1058,7 @@
         <emu-nt params="?In, ?Yield">AssignmentExpression</emu-nt>
     </emu-rhs>
 </emu-production>
-<emu-production name="AssignmentOperator"oneof>
+<emu-production name="AssignmentOperator" oneof>
     <emu-rhs>*= /= %= += -= &lt;&lt;= &gt;&gt;= &gt;&gt;&gt;= &amp;= ^= |=</emu-rhs>
 </emu-production>
 <emu-production name="Expression" params="In, Yield">
@@ -1640,7 +1640,7 @@
     <emu-rhs a="5a88b959">
         <emu-nt params="?Yield">ArrowParameters</emu-nt>
         <emu-gann>no <emu-nt>LineTerminator</emu-nt> here</emu-gann>
-        <emu-t>=></emu-t>
+        <emu-t>=&gt;</emu-t>
         <emu-nt params="?In">ConciseBody</emu-nt>
     </emu-rhs>
 </emu-production>
