@@ -102,6 +102,7 @@ export class Emitter {
         
         switch (node.kind) {
             case SyntaxKind.SourceFile: this.emitSourceFile(<SourceFile>node); break;
+            case SyntaxKind.AtToken: this.emitPlaceholder(<LexicalSymbol>node); break;
             case SyntaxKind.Terminal: this.emitTerminal(<Terminal>node); break;
             case SyntaxKind.UnicodeCharacterLiteral: this.emitUnicodeCharacterLiteral(<UnicodeCharacterLiteral>node); break;
             case SyntaxKind.Prose: this.emitProse(<Prose>node); break;
@@ -140,6 +141,10 @@ export class Emitter {
         if (node) {
             this.writer.write(tokenToString(node.kind));
         }
+    }
+    
+    protected emitPlaceholder(node: LexicalSymbol) {
+        this.emitToken(node);
     }
     
     protected emitTerminal(node: Terminal) {

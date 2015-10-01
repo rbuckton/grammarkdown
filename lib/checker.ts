@@ -336,7 +336,7 @@ export class Checker {
     private checkSymbolOrHigher(node: LexicalSymbol): void {
         if (isAssertion(node)) {
             this.checkAssertion(<Assertion>node);
-            return;            
+            return;
         }
         
         this.checkBinarySymbolOrHigher(node);
@@ -691,6 +691,10 @@ export class Checker {
                 this.checkNonterminal(<Nonterminal>node, allowOptional);
                 break;
                 
+            case SyntaxKind.AtToken:
+                this.checkPlaceholder(<LexicalSymbol>node);
+                break;
+                
             default:
                 this.reportInvalidSymbol(<LexicalSymbol>node);
                 break;
@@ -729,6 +733,9 @@ export class Checker {
         }
         
         return false;
+    }
+    
+    private checkPlaceholder(node: LexicalSymbol): void {
     }
 
     private checkNonterminal(node: Nonterminal, allowOptional?: boolean): void {

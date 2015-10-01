@@ -1,0 +1,13 @@
+/// [Parser]test.grammar:
+(1,1)SyntaxKind[SourceFile](filename = "test.grammar")
+  (1,1)SyntaxKind[Production]
+    (1,1)SyntaxKind[Identifier](text = "A")
+    (1,4)SyntaxKind[RightHandSide]
+      (1,4)SyntaxKind[SymbolSpan]
+        (1,4)SyntaxKind[Nonterminal]
+          (1,4)SyntaxKind[Identifier](text = "A")
+        (1,6)SyntaxKind[SymbolSpan]
+          (1,6)SyntaxKind[FirstPunctuation]
+          (1,8)SyntaxKind[SymbolSpan]
+            (1,8)SyntaxKind[Nonterminal]
+              (1,8)SyntaxKind[Identifier](text = "A")

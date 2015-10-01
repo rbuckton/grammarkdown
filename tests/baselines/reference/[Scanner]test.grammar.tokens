@@ -1,0 +1,7 @@
+/// [Scanner]test.grammar:
+SyntaxKind[Identifier](1,2): A
+SyntaxKind[ColonToken](1,4): :
+SyntaxKind[Identifier](1,6): A
+SyntaxKind[FirstPunctuation](1,8): @
+SyntaxKind[Identifier](1,10): A
+SyntaxKind[EndOfFileToken](1,10): «EndOfFileToken»
