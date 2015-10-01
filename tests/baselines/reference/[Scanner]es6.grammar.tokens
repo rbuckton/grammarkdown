@@ -5579,4 +5579,14 @@ SyntaxKind[Terminal](987,21): `as`
 SyntaxKind[Identifier](987,36): IdentifierName
 SyntaxKind[LineTerminatorToken](988,1): «line terminator»
 SyntaxKind[DedentToken](988,1): «dedent»
-SyntaxKind[EndOfFileToken](988,1): «EndOfFileToken»
+SyntaxKind[LineTerminatorToken](989,1): «line terminator»
+SyntaxKind[Identifier](989,26): SingleLineHTMLOpenComment
+SyntaxKind[ColonColonToken](989,29): ::
+SyntaxKind[LineTerminatorToken](990,9): «line terminator»
+SyntaxKind[IndentToken](990,9): «indent»
+SyntaxKind[Terminal](990,15): `<!--`
+SyntaxKind[Identifier](990,38): SingleLineCommentChars
+SyntaxKind[QuestionToken](990,39): ?
+SyntaxKind[LineTerminatorToken](991,1): «line terminator»
+SyntaxKind[DedentToken](991,1): «dedent»
+SyntaxKind[EndOfFileToken](991,1): «EndOfFileToken»

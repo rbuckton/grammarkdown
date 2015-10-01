@@ -7916,3 +7916,15 @@
               (987,21)SyntaxKind[Nonterminal]
                 (987,21)SyntaxKind[Identifier](text = "IdentifierName")
       (987,36)SyntaxKind[DedentToken]
+  (989,1)SyntaxKind[Production]
+    (989,1)SyntaxKind[Identifier](text = "SingleLineHTMLOpenComment")
+    (989,29)SyntaxKind[RightHandSideList]
+      (989,29)SyntaxKind[IndentToken]
+      (990,9)SyntaxKind[RightHandSide]
+        (990,9)SyntaxKind[SymbolSpan]
+          (990,9)SyntaxKind[Terminal](text = "<!--")
+          (990,15)SyntaxKind[SymbolSpan]
+            (990,15)SyntaxKind[Nonterminal]?
+              (990,15)SyntaxKind[Identifier](text = "SingleLineCommentChars")
+              (990,38)SyntaxKind[QuestionToken]
+      (990,39)SyntaxKind[DedentToken]

@@ -306,14 +306,14 @@
 </emu-production>
 <emu-production name="StringLiteral" type="lexical">
     <emu-rhs a="15d8b1f1">
-        <emu-t>"</emu-t>
+        <emu-t>&quot;</emu-t>
         <emu-nt optional>DoubleStringCharacters</emu-nt>
-        <emu-t>"</emu-t>
+        <emu-t>&quot;</emu-t>
     </emu-rhs>
     <emu-rhs a="82ecb3d9">
-        <emu-t>'</emu-t>
+        <emu-t>&#39;</emu-t>
         <emu-nt optional>SingleStringCharacters</emu-nt>
-        <emu-t>'</emu-t>
+        <emu-t>&#39;</emu-t>
     </emu-rhs>
 </emu-production>
 <emu-production name="DoubleStringCharacters" type="lexical">
@@ -329,7 +329,7 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="DoubleStringCharacter" type="lexical">
-    <emu-rhs a="25593d43"><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not one of <emu-t>"</emu-t> or <emu-t>\</emu-t> or <emu-nt>LineTerminator</emu-nt></emu-gmod></emu-rhs>
+    <emu-rhs a="25593d43"><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not one of <emu-t>&quot;</emu-t> or <emu-t>\</emu-t> or <emu-nt>LineTerminator</emu-nt></emu-gmod></emu-rhs>
     <emu-rhs a="ea7d8d26">
         <emu-t>\</emu-t>
         <emu-nt>EscapeSequence</emu-nt>
@@ -337,7 +337,7 @@
     <emu-rhs a="00992933"><emu-nt>LineContinuation</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="SingleStringCharacter" type="lexical">
-    <emu-rhs a="c574e0b6"><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not one of <emu-t>'</emu-t> or <emu-t>\</emu-t> or <emu-nt>LineTerminator</emu-nt></emu-gmod></emu-rhs>
+    <emu-rhs a="c574e0b6"><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not one of <emu-t>&#39;</emu-t> or <emu-t>\</emu-t> or <emu-nt>LineTerminator</emu-nt></emu-gmod></emu-rhs>
     <emu-rhs a="ea7d8d26">
         <emu-t>\</emu-t>
         <emu-nt>EscapeSequence</emu-nt>
@@ -923,17 +923,17 @@
     <emu-rhs a="2baeb5db"><emu-nt params="?Yield">AdditiveExpression</emu-nt></emu-rhs>
     <emu-rhs a="1e6dbeb2">
         <emu-nt params="?Yield">ShiftExpression</emu-nt>
-        <emu-t><<</emu-t>
+        <emu-t>&lt;&lt;</emu-t>
         <emu-nt params="?Yield">AdditiveExpression</emu-nt>
     </emu-rhs>
     <emu-rhs a="639cdc26">
         <emu-nt params="?Yield">ShiftExpression</emu-nt>
-        <emu-t>>></emu-t>
+        <emu-t>&gt;&gt;</emu-t>
         <emu-nt params="?Yield">AdditiveExpression</emu-nt>
     </emu-rhs>
     <emu-rhs a="9d297ffd">
         <emu-nt params="?Yield">ShiftExpression</emu-nt>
-        <emu-t>>>></emu-t>
+        <emu-t>&gt;&gt;&gt;</emu-t>
         <emu-nt params="?Yield">AdditiveExpression</emu-nt>
     </emu-rhs>
 </emu-production>
@@ -941,22 +941,22 @@
     <emu-rhs a="14cbe144"><emu-nt params="?Yield">ShiftExpression</emu-nt></emu-rhs>
     <emu-rhs a="862f8bef">
         <emu-nt params="?In, ?Yield">RelationalExpression</emu-nt>
-        <emu-t><</emu-t>
+        <emu-t>&lt;</emu-t>
         <emu-nt params="?Yield">ShiftExpression</emu-nt>
     </emu-rhs>
     <emu-rhs a="e1b30960">
         <emu-nt params="?In, ?Yield">RelationalExpression</emu-nt>
-        <emu-t>></emu-t>
+        <emu-t>&gt;</emu-t>
         <emu-nt params="?Yield">ShiftExpression</emu-nt>
     </emu-rhs>
     <emu-rhs a="707c38bf">
         <emu-nt params="?In, ?Yield">RelationalExpression</emu-nt>
-        <emu-t><=</emu-t>
+        <emu-t>&lt;=</emu-t>
         <emu-nt params="?Yield">ShiftExpression</emu-nt>
     </emu-rhs>
     <emu-rhs a="cc6c18fa">
         <emu-nt params="?In, ?Yield">RelationalExpression</emu-nt>
-        <emu-t>>=</emu-t>
+        <emu-t>&gt;=</emu-t>
         <emu-nt params="?Yield">ShiftExpression</emu-nt>
     </emu-rhs>
     <emu-rhs a="3bd34097">
@@ -997,7 +997,7 @@
     <emu-rhs a="003e4dd5"><emu-nt params="?In, ?Yield">EqualityExpression</emu-nt></emu-rhs>
     <emu-rhs a="dc348a15">
         <emu-nt params="?In, ?Yield">BitwiseANDExpression</emu-nt>
-        <emu-t>&</emu-t>
+        <emu-t>&amp;</emu-t>
         <emu-nt params="?In, ?Yield">EqualityExpression</emu-nt>
     </emu-rhs>
 </emu-production>
@@ -1021,7 +1021,7 @@
     <emu-rhs a="43e84f3f"><emu-nt params="?In, ?Yield">BitwiseORExpression</emu-nt></emu-rhs>
     <emu-rhs a="de0d5414">
         <emu-nt params="?In, ?Yield">LogicalANDExpression</emu-nt>
-        <emu-t>&&</emu-t>
+        <emu-t>&amp;&amp;</emu-t>
         <emu-nt params="?In, ?Yield">BitwiseORExpression</emu-nt>
     </emu-rhs>
 </emu-production>
@@ -1640,7 +1640,7 @@
     <emu-rhs a="5a88b959">
         <emu-nt params="?Yield">ArrowParameters</emu-nt>
         <emu-gann>no <emu-nt>LineTerminator</emu-nt> here</emu-gann>
-        <emu-t>=></emu-t>
+        <emu-t>=&gt;</emu-t>
         <emu-nt params="?In">ConciseBody</emu-nt>
     </emu-rhs>
 </emu-production>
@@ -1990,5 +1990,11 @@
         <emu-nt>IdentifierName</emu-nt>
         <emu-t>as</emu-t>
         <emu-nt>IdentifierName</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="SingleLineHTMLOpenComment" type="lexical">
+    <emu-rhs a="f50b0f2f">
+        <emu-t>&lt;!--</emu-t>
+        <emu-nt optional>SingleLineCommentChars</emu-nt>
     </emu-rhs>
 </emu-production>
