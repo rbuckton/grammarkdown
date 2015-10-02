@@ -871,6 +871,13 @@ export class Parser {
         return this.finishNode(node, fullStart);
     }
     
+    private parsePlaceholderSymbol(): LexicalSymbol {
+        let fullStart = this.scanner.getStartPos();
+        let node = new LexicalSymbol(this.token);
+        this.nextToken();
+        return this.finishNode(node, fullStart);
+    }
+    
     private parseInvalidSymbol(): LexicalSymbol {
         let fullStart = this.scanner.getStartPos();
         let node = new LexicalSymbol(SyntaxKind.InvalidSymbol);
@@ -888,6 +895,9 @@ export class Parser {
 
             case SyntaxKind.Identifier:
                 return this.parseNonterminal(allowOptional);
+                
+            case SyntaxKind.AtToken:
+                return this.parsePlaceholderSymbol();
                 
             default:
                 return this.parseInvalidSymbol();
@@ -971,6 +981,7 @@ export class Parser {
             case SyntaxKind.Identifier:
             case SyntaxKind.OpenBracketToken:
             case SyntaxKind.Prose:
+            case SyntaxKind.AtToken:
                 return true;
 
             default:

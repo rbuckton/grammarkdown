@@ -147,6 +147,10 @@ export class EcmarkupEmitter extends Emitter {
             this.emitNode(node.next);
         }
     }
+    
+    protected emitPlaceholder(node: LexicalSymbol) {
+        this.writer.write(`<emu-t placeholder>@</emu-t>`);
+    }
 
     protected emitTerminal(node: Terminal) {
         this.writer.write(`<emu-t`);
