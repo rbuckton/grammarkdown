@@ -39,10 +39,10 @@ import {
 export class MarkdownEmitter extends Emitter {    
     protected extension = ".md";    
     
-	protected emitProduction(node: Production) {
+    protected emitProduction(node: Production) {
         let linkId = this.resolver.getProductionLinkId(node.name);
         this.writer.write("&emsp;&emsp;");
-        this.emitLinkAnchor(linkId);		
+        this.emitLinkAnchor(linkId);        
         this.writer.write("*");
         this.emitIdentifier(node.name);
         this.writer.write("*");
@@ -58,7 +58,7 @@ export class MarkdownEmitter extends Emitter {
         this.writer.writeln();
         this.writer.write("  ");
         this.writer.writeln();
-	}
+    }
     
     protected emitParameterList(node: ParameterList) {
         this.writer.write("<sub>[");

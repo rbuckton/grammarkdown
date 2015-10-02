@@ -13,4 +13,10 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-export * from "./lib/index";
+import { install } from "source-map-support";
+install();
+
+import "./scanner-tests";
+import "./parser-tests";
+import "./markdown-tests";
+import "./ecmarkup-tests";
