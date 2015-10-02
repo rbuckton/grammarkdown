@@ -4,4 +4,19 @@ SyntaxKind[ColonToken](1,4): :
 SyntaxKind[Identifier](1,6): A
 SyntaxKind[FirstPunctuation](1,8): @
 SyntaxKind[Identifier](1,10): A
-SyntaxKind[EndOfFileToken](1,10): «EndOfFileToken»
+SyntaxKind[LineTerminatorToken](2,1): «line terminator»
+SyntaxKind[Identifier](2,2): B
+SyntaxKind[ColonToken](2,4): :
+SyntaxKind[Identifier](2,6): A
+SyntaxKind[FirstKeyword](2,10): but
+SyntaxKind[NotKeyword](2,14): not
+SyntaxKind[OneKeyword](2,18): one
+SyntaxKind[OfKeyword](2,21): of
+SyntaxKind[Terminal](2,25): `"`
+SyntaxKind[OrKeyword](2,28): or
+SyntaxKind[Terminal](2,32): `\`
+SyntaxKind[OrKeyword](2,35): or
+SyntaxKind[UnicodeCharacterLiteral](2,42): U+0000
+SyntaxKind[LastKeyword](2,50): through
+SyntaxKind[UnicodeCharacterLiteral](2,57): U+001F
+SyntaxKind[EndOfFileToken](2,57): «EndOfFileToken»

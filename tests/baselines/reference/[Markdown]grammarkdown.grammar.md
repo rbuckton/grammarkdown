@@ -2,10 +2,10 @@
 &emsp;&emsp;&emsp;<a name="SourceCharacter-c64b38bd"></a>any Unicode code point  
   
 &emsp;&emsp;<a name="LineTerminator"></a>*LineTerminator* **::**  
-&emsp;&emsp;&emsp;<a name="LineTerminator-e1efb062"></a>&lt;LF&gt;  
-&emsp;&emsp;&emsp;<a name="LineTerminator-930d7e02"></a>&lt;CR&gt;  
-&emsp;&emsp;&emsp;<a name="LineTerminator-2812beea"></a>&lt;LS&gt;  
-&emsp;&emsp;&emsp;<a name="LineTerminator-23ff5f46"></a>&lt;PS&gt;  
+&emsp;&emsp;&emsp;<a name="LineTerminator-7b39d525"></a>&lt;LF&gt;  
+&emsp;&emsp;&emsp;<a name="LineTerminator-435c91d5"></a>&lt;CR&gt;  
+&emsp;&emsp;&emsp;<a name="LineTerminator-10022ab3"></a>&lt;LS&gt;  
+&emsp;&emsp;&emsp;<a name="LineTerminator-cfc875d1"></a>&lt;PS&gt;  
   
 &emsp;&emsp;<a name="IdentifierName"></a>*IdentifierName* **::**  
 &emsp;&emsp;&emsp;<a name="IdentifierName-434685ab"></a>*[IdentifierStart](#IdentifierStart)*  
@@ -18,8 +18,8 @@
 &emsp;&emsp;<a name="IdentifierPart"></a>*IdentifierPart* **::**  
 &emsp;&emsp;&emsp;<a name="IdentifierPart-364ac675"></a>*[UnicodeIDContinue](#UnicodeIDContinue)*  
 &emsp;&emsp;&emsp;<a name="IdentifierPart-07564b94"></a>`` _ ``  
-&emsp;&emsp;&emsp;<a name="IdentifierPart-f0e58449"></a>&lt;ZWNJ&gt;  
-&emsp;&emsp;&emsp;<a name="IdentifierPart-a87f30d6"></a>&lt;ZWJ&gt;  
+&emsp;&emsp;&emsp;<a name="IdentifierPart-60d2dd13"></a>&lt;ZWNJ&gt;  
+&emsp;&emsp;&emsp;<a name="IdentifierPart-cdf80ff5"></a>&lt;ZWJ&gt;  
   
 &emsp;&emsp;<a name="UnicodeIDStart"></a>*UnicodeIDStart* **::**  
 &emsp;&emsp;&emsp;<a name="UnicodeIDStart-d2e8afad"></a>any Unicode code point with the Unicode property "ID_Start" or "Other_ID_Start"  

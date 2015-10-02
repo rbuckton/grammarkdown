@@ -207,7 +207,7 @@ SyntaxKind[NotKeyword](79,25): not
 SyntaxKind[OneKeyword](79,29): one
 SyntaxKind[OfKeyword](79,32): of
 SyntaxKind[Terminal](79,36): `/`
-SyntaxKind[LastKeyword](79,39): or
+SyntaxKind[OrKeyword](79,39): or
 SyntaxKind[Terminal](79,43): `*`
 SyntaxKind[LineTerminatorToken](80,1): «line terminator»
 SyntaxKind[DedentToken](80,1): «dedent»
@@ -812,9 +812,9 @@ SyntaxKind[NotKeyword](249,25): not
 SyntaxKind[OneKeyword](249,29): one
 SyntaxKind[OfKeyword](249,32): of
 SyntaxKind[Terminal](249,36): `"`
-SyntaxKind[LastKeyword](249,39): or
+SyntaxKind[OrKeyword](249,39): or
 SyntaxKind[Terminal](249,43): `\`
-SyntaxKind[LastKeyword](249,46): or
+SyntaxKind[OrKeyword](249,46): or
 SyntaxKind[Identifier](249,61): LineTerminator
 SyntaxKind[LineTerminatorToken](250,2): «line terminator»
 SyntaxKind[Terminal](250,5): `\`
@@ -834,9 +834,9 @@ SyntaxKind[NotKeyword](254,25): not
 SyntaxKind[OneKeyword](254,29): one
 SyntaxKind[OfKeyword](254,32): of
 SyntaxKind[Terminal](254,36): `'`
-SyntaxKind[LastKeyword](254,39): or
+SyntaxKind[OrKeyword](254,39): or
 SyntaxKind[Terminal](254,43): `\`
-SyntaxKind[LastKeyword](254,46): or
+SyntaxKind[OrKeyword](254,46): or
 SyntaxKind[Identifier](254,61): LineTerminator
 SyntaxKind[LineTerminatorToken](255,2): «line terminator»
 SyntaxKind[Terminal](255,5): `\`
@@ -912,7 +912,7 @@ SyntaxKind[NotKeyword](275,25): not
 SyntaxKind[OneKeyword](275,29): one
 SyntaxKind[OfKeyword](275,32): of
 SyntaxKind[Identifier](275,48): EscapeCharacter
-SyntaxKind[LastKeyword](275,51): or
+SyntaxKind[OrKeyword](275,51): or
 SyntaxKind[Identifier](275,66): LineTerminator
 SyntaxKind[LineTerminatorToken](276,1): «line terminator»
 SyntaxKind[DedentToken](276,1): «dedent»
@@ -1008,11 +1008,11 @@ SyntaxKind[NotKeyword](304,40): not
 SyntaxKind[OneKeyword](304,44): one
 SyntaxKind[OfKeyword](304,47): of
 SyntaxKind[Terminal](304,51): `*`
-SyntaxKind[LastKeyword](304,54): or
+SyntaxKind[OrKeyword](304,54): or
 SyntaxKind[Terminal](304,58): `\`
-SyntaxKind[LastKeyword](304,61): or
+SyntaxKind[OrKeyword](304,61): or
 SyntaxKind[Terminal](304,65): `/`
-SyntaxKind[LastKeyword](304,68): or
+SyntaxKind[OrKeyword](304,68): or
 SyntaxKind[Terminal](304,72): `[`
 SyntaxKind[LineTerminatorToken](305,2): «line terminator»
 SyntaxKind[Identifier](305,36): RegularExpressionBackslashSequence
@@ -1031,9 +1031,9 @@ SyntaxKind[NotKeyword](309,40): not
 SyntaxKind[OneKeyword](309,44): one
 SyntaxKind[OfKeyword](309,47): of
 SyntaxKind[Terminal](309,51): `\`
-SyntaxKind[LastKeyword](309,54): or
+SyntaxKind[OrKeyword](309,54): or
 SyntaxKind[Terminal](309,58): `/`
-SyntaxKind[LastKeyword](309,61): or
+SyntaxKind[OrKeyword](309,61): or
 SyntaxKind[Terminal](309,65): `[`
 SyntaxKind[LineTerminatorToken](310,2): «line terminator»
 SyntaxKind[Identifier](310,36): RegularExpressionBackslashSequence
@@ -1095,7 +1095,7 @@ SyntaxKind[NotKeyword](327,40): not
 SyntaxKind[OneKeyword](327,44): one
 SyntaxKind[OfKeyword](327,47): of
 SyntaxKind[Terminal](327,51): `]`
-SyntaxKind[LastKeyword](327,54): or
+SyntaxKind[OrKeyword](327,54): or
 SyntaxKind[Terminal](327,58): `\`
 SyntaxKind[LineTerminatorToken](328,2): «line terminator»
 SyntaxKind[Identifier](328,36): RegularExpressionBackslashSequence
@@ -1213,11 +1213,11 @@ SyntaxKind[NotKeyword](362,25): not
 SyntaxKind[OneKeyword](362,29): one
 SyntaxKind[OfKeyword](362,32): of
 SyntaxKind[Terminal](362,36): ```
-SyntaxKind[LastKeyword](362,39): or
+SyntaxKind[OrKeyword](362,39): or
 SyntaxKind[Terminal](362,43): `\`
-SyntaxKind[LastKeyword](362,46): or
+SyntaxKind[OrKeyword](362,46): or
 SyntaxKind[Terminal](362,50): `$`
-SyntaxKind[LastKeyword](362,53): or
+SyntaxKind[OrKeyword](362,53): or
 SyntaxKind[Identifier](362,68): LineTerminator
 SyntaxKind[LineTerminatorToken](363,1): «line terminator»
 SyntaxKind[DedentToken](363,1): «dedent»

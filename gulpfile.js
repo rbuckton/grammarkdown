@@ -26,9 +26,9 @@ var tests = {
 };
 
 var baselines = {
-    remote: "./baselines/reference/",
-    local: "./baselines/local/",
-    out: ["./baselines/local/**/*"]
+    remote: "./tests/baselines/reference/",
+    local: "./tests/baselines/local/",
+    out: ["./tests/baselines/local/**/*"]
 };
 
 gulp.task("clean:lib", clean(lib));

@@ -193,9 +193,9 @@ SyntaxKind[NotKeyword](62,25): not
 SyntaxKind[OneKeyword](62,29): one
 SyntaxKind[OfKeyword](62,32): of
 SyntaxKind[Terminal](62,36): `<`
-SyntaxKind[LastKeyword](62,39): or
+SyntaxKind[OrKeyword](62,39): or
 SyntaxKind[Terminal](62,43): `>`
-SyntaxKind[LastKeyword](62,46): or
+SyntaxKind[OrKeyword](62,46): or
 SyntaxKind[Identifier](62,61): LineTerminator
 SyntaxKind[LineTerminatorToken](63,2): «line terminator»
 SyntaxKind[LineTerminatorToken](64,1): «line terminator»
@@ -250,7 +250,7 @@ SyntaxKind[NotKeyword](78,25): not
 SyntaxKind[OneKeyword](78,29): one
 SyntaxKind[OfKeyword](78,32): of
 SyntaxKind[Terminal](78,36): ```
-SyntaxKind[LastKeyword](78,39): or
+SyntaxKind[OrKeyword](78,39): or
 SyntaxKind[Identifier](78,54): LineTerminator
 SyntaxKind[LineTerminatorToken](79,1): «line terminator»
 SyntaxKind[DedentToken](79,1): «dedent»

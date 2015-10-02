@@ -2,7 +2,7 @@ import { Emitter } from "./emitter";
 import { SyntaxKind } from "../tokens";
 import { DiagnosticMessages } from "../diagnostics";
 import { Checker } from "../checker";
-import { 
+import {
     Node,
     SourceFile,
     UnicodeCharacterLiteral,
@@ -55,11 +55,11 @@ export class EcmarkupEmitter extends Emitter {
                     break;
             }
         }
-        
+
         if (node.body && node.body.kind === SyntaxKind.OneOfList) {
             this.writer.write(` oneof`);
         }
-        
+
         this.writer.write(`>`);
         this.writer.indent();
         this.writer.writeln();
@@ -69,53 +69,53 @@ export class EcmarkupEmitter extends Emitter {
         this.writer.write(`</emu-production>`);
         this.writer.writeln();
     }
-    
+
     protected emitParameterList(node: ParameterList) {
         this.writer.write(` params="`);
         for (let i = 0; i < node.elements.length; ++i) {
             if (i > 0) {
                 this.writer.write(", ");
             }
-            
+
             this.emitNode(node.elements[i]);
         }
-        
+
         this.writer.write(`"`);
     }
-    
+
     protected emitParameter(node: Parameter) {
         this.emitIdentifier(node.name);
     }
-    
+
     protected emitOneOfList(node: OneOfList) {
         this.writer.write(`<emu-rhs>`);
         for (let i = 0; i < node.terminals.length; ++i) {
             if (i > 0) {
                 this.writer.write(" ");
             }
-            
+
             this.writer.write(this.encode(node.terminals[i].text));
         }
         this.writer.write(`</emu-rhs>`);
         this.writer.writeln();
     }
-    
+
     protected emitRightHandSideList(node: RightHandSideList) {
         for (let rhs of node.elements) {
             this.emitRightHandSide(rhs);
         }
     }
-    
+
     protected emitRightHandSide(node: RightHandSide) {
         let linkId = this.resolver.getRightHandSideLinkId(node, /*includePrefix*/ false);
         this.emitLinkAnchor(linkId);
-        
+
         this.writer.write(`<emu-rhs`);
-        
+
         if (linkId) {
             this.writer.write(` a="${linkId}"`);
         }
-        
+
         let head = node.head;
         if (head.symbol.kind === SyntaxKind.ParameterValueAssertion) {
             this.writer.write(` constraints="`);
@@ -123,7 +123,7 @@ export class EcmarkupEmitter extends Emitter {
             this.writer.write(`"`);
             head = head.next;
         }
-        
+
         this.writer.write(`>`);
         if (head.next) {
             this.writer.indent();
@@ -135,11 +135,11 @@ export class EcmarkupEmitter extends Emitter {
         else {
             this.emitNode(head);
         }
-        
+
         this.writer.write(`</emu-rhs>`);
         this.writer.writeln();
     }
-    
+
     protected emitSymbolSpan(node: SymbolSpan) {
         this.emitNode(node.symbol);
         if (node.next) {
@@ -147,7 +147,7 @@ export class EcmarkupEmitter extends Emitter {
             this.emitNode(node.next);
         }
     }
-    
+
     protected emitPlaceholder(node: LexicalSymbol) {
         this.writer.write(`<emu-t placeholder>@</emu-t>`);
     }
@@ -161,7 +161,7 @@ export class EcmarkupEmitter extends Emitter {
         this.writer.write(this.encode(node.text));
         this.writer.write(`</emu-t>`);
     }
-    
+
     protected emitNonterminal(node: Nonterminal) {
         let linkId = this.resolver.getProductionLinkId(node.name);
         this.writer.write(`<emu-nt`);
@@ -169,85 +169,85 @@ export class EcmarkupEmitter extends Emitter {
         if (node.questionToken) {
             this.writer.write(` optional`);
         }
-        
+
         this.writer.write(`>`);
         this.emitNodeWithLink(node.name, linkId);
         this.writer.write(`</emu-nt>`);
     }
-    
+
     protected emitArgumentList(node: ArgumentList) {
         this.writer.write(` params="`);
         for (let i = 0; i < node.elements.length; ++i) {
             if (i > 0) {
                 this.writer.write(", ");
             }
-            
+
             this.emitNode(node.elements[i]);
         }
-        
+
         this.writer.write(`"`);
     }
-    
+
     protected emitArgument(node: Argument) {
         this.emitToken(node.questionToken);
         this.emitNode(node.name);
     }
-    
+
     protected emitUnicodeCharacterLiteral(node: UnicodeCharacterLiteral) {
         this.writer.write(`<emu-gprose`);
         if (node.questionToken) {
             this.writer.write(` optional`);
         }
-        
-        this.writer.write(`>&lt;`);
+
+        this.writer.write(`>`);
         this.writer.write(this.encode(node.text));
-        this.writer.write(`&gt;</emu-gprose>`);
+        this.writer.write(`</emu-gprose>`);
     }
-    
+
     protected emitProse(node: Prose) {
         this.writer.write(`<emu-gprose>`);
         this.writer.write(this.encode(node.text));
         this.writer.write(`</emu-gprose>`);
     }
-    
+
     protected emitEmptyAssertion(node: EmptyAssertion) {
         this.writer.write(`<emu-gann>empty</emu-gann>`);
     }
-    
+
     protected emitSymbolSet(node: SymbolSet) {
         this.writer.write("{");
         for (let i = 0; i < node.elements.length; ++i) {
             if (i > 0) {
                 this.writer.write(",");
             }
-            
+
             this.writer.write(" ");
             this.emitNode(node.elements[i]);
         }
-        
+
         this.writer.write(" }");
     }
-    
+
     protected emitLookaheadAssertion(node: LookaheadAssertion) {
         this.writer.write(`<emu-gann>`);
         switch (node.operatorToken.kind) {
             case SyntaxKind.ExclamationEqualsToken:
                 this.writer.write("lookahead ≠ ");
                 break;
-                
+
             case SyntaxKind.EqualsEqualsToken:
                 this.writer.write("lookahead = ");
                 break;
-                
+
             case SyntaxKind.LessThanMinusToken:
                 this.writer.write("lookahead ∈ ");
                 break;
-                
+
             case SyntaxKind.LessThanExclamationToken:
                 this.writer.write("lookahead ∉ ");
                 break;
         }
-        
+
         this.emitNode(node.lookahead);
         this.writer.write(`</emu-gann>`);
     }
@@ -258,7 +258,7 @@ export class EcmarkupEmitter extends Emitter {
         this.emitNodeWithLink(node.symbol, linkId);
         this.writer.write(`</emu-gann>`);
     }
-    
+
     protected emitNoSymbolHereAssertion(node: NoSymbolHereAssertion): void {
         this.writer.write(`<emu-gann>no `);
         if (node.symbols) {
@@ -266,19 +266,19 @@ export class EcmarkupEmitter extends Emitter {
                 if (i > 0) {
                     this.writer.write(" or ");
                 }
-                
+
                 this.emitNode(node.symbols[i]);
             }
         }
-        
+
         this.writer.write(` here</emu-gann>`);
     }
-    
+
     protected emitParameterValueAssertion(node: ParameterValueAssertion): void {
         this.emitToken(node.operatorToken);
         this.emitNode(node.name);
     }
-    
+
     protected emitBinarySymbol(node: BinarySymbol) {
         this.emitNode(node.left);
         this.writer.write(`<emu-gmod>`);
@@ -287,11 +287,11 @@ export class EcmarkupEmitter extends Emitter {
         this.emitNode(node.right);
         this.writer.write(`</emu-gmod>`);
     }
-    
+
     protected emitButNotOperator(node: ButNotOperator) {
         this.writer.write("but not");
     }
-    
+
     protected emitOneOfSymbol(node: OneOfSymbol) {
         this.writer.write("one of ");
         if (node.symbols) {
@@ -299,17 +299,17 @@ export class EcmarkupEmitter extends Emitter {
                 if (i > 0) {
                     this.writer.write(" or ");
                 }
-                
+
                 this.emitNode(node.symbols[i]);
             }
         }
     }
-    
+
     protected emitTextContent(node: TextContent) {
         let text = node.text;
         this.writer.write(this.encode(text));
     }
-    
+
     private emitLinkAnchor(linkId: string) {
         if (linkId && this.options.emitLinks) {
             this.writer.write(`<a name="${linkId}"></a>`);

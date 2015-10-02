@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
- 
+
 import { Dict } from "./core";
 
  export const enum CharacterCodes {
@@ -44,7 +44,7 @@ import { Dict } from "./core";
     NarrowNoBreakSpace = 0x202F,
     IdeographicSpace = 0x3000,
     MathematicalSpace = 0x205F,
-    Ogham = 0x1680, 
+    Ogham = 0x1680,
 
     Underscore = 0x5F,
 
@@ -177,16 +177,16 @@ export enum SyntaxKind {
     TildeToken,                 // ~
     QuestionToken,              // ?
     EqualsToken,                // =
-    EqualsEqualsToken,          // == 
+    EqualsEqualsToken,          // ==
     ExclamationEqualsToken,     // !=
     LessThanExclamationToken,   // <!
     LessThanMinusToken,         // <-
-    
+
     // Identifiers
     Identifier,
-    
+
     // Keywords
-    ButKeyword,
+    ButKeyword, // FirstKeyword
     EmptyKeyword,
     GoalKeyword,
     HereKeyword,
@@ -198,6 +198,7 @@ export enum SyntaxKind {
     OfKeyword,
     OneKeyword,
     OrKeyword,
+    ThroughKeyword, // LastKeyword
 
     // Nodes
     Parameter,                  // Production(Parameter):
@@ -238,7 +239,7 @@ export enum SyntaxKind {
     SourceFile,
 
     FirstKeyword = ButKeyword,
-    LastKeyword = OrKeyword,
+    LastKeyword = ThroughKeyword,
     FirstPunctuation = AtToken,
     LastPunctuation = LessThanMinusToken,
 }
@@ -256,6 +257,7 @@ const textToToken = new Dict({
     "no": SyntaxKind.NoKeyword,
     "here": SyntaxKind.HereKeyword,
     "or": SyntaxKind.OrKeyword,
+    "through": SyntaxKind.ThroughKeyword,
     "@": SyntaxKind.AtToken,
     ":": SyntaxKind.ColonToken,
     "::": SyntaxKind.ColonColonToken,
@@ -288,7 +290,7 @@ export function tokenToString(kind: SyntaxKind, quoted?: boolean) {
         var text = tokenToText[kind];
         return quoted ? `'${text}'` : text;
     }
-    
+
     switch (kind) {
         case SyntaxKind.LineTerminatorToken:
             return "«line terminator»";
@@ -311,6 +313,6 @@ export function tokenToString(kind: SyntaxKind, quoted?: boolean) {
         case SyntaxKind.RightHandSide:
             return "«right hand side»";
     }
-    
+
     return "«" + SyntaxKind[kind] + "»";
 }

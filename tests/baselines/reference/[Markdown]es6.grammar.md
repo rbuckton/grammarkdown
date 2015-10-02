@@ -34,26 +34,26 @@
 &emsp;&emsp;&emsp;<a name="InputElementTemplateTail-62ae6eb9"></a>*[TemplateSubstitutionTail](#TemplateSubstitutionTail)*  
   
 &emsp;&emsp;<a name="WhiteSpace"></a>*WhiteSpace* **::**  
-&emsp;&emsp;&emsp;<a name="WhiteSpace-3150b35b"></a>&lt;TAB&gt;  
-&emsp;&emsp;&emsp;<a name="WhiteSpace-05402817"></a>&lt;VT&gt;  
-&emsp;&emsp;&emsp;<a name="WhiteSpace-e31930e9"></a>&lt;FF&gt;  
-&emsp;&emsp;&emsp;<a name="WhiteSpace-c3921185"></a>&lt;SP&gt;  
-&emsp;&emsp;&emsp;<a name="WhiteSpace-687594de"></a>&lt;NBSP&gt;  
-&emsp;&emsp;&emsp;<a name="WhiteSpace-d577bd9e"></a>&lt;ZWNBSP&gt;  
-&emsp;&emsp;&emsp;<a name="WhiteSpace-c2b44fad"></a>&lt;USP&gt;  
+&emsp;&emsp;&emsp;<a name="WhiteSpace-9384a802"></a>&lt;TAB&gt;  
+&emsp;&emsp;&emsp;<a name="WhiteSpace-c3f7084f"></a>&lt;VT&gt;  
+&emsp;&emsp;&emsp;<a name="WhiteSpace-0d57c596"></a>&lt;FF&gt;  
+&emsp;&emsp;&emsp;<a name="WhiteSpace-d35745b8"></a>&lt;SP&gt;  
+&emsp;&emsp;&emsp;<a name="WhiteSpace-404e9052"></a>&lt;NBSP&gt;  
+&emsp;&emsp;&emsp;<a name="WhiteSpace-fb8196ba"></a>&lt;ZWNBSP&gt;  
+&emsp;&emsp;&emsp;<a name="WhiteSpace-ebc9d288"></a>&lt;USP&gt;  
   
 &emsp;&emsp;<a name="LineTerminator"></a>*LineTerminator* **::**  
-&emsp;&emsp;&emsp;<a name="LineTerminator-e1efb062"></a>&lt;LF&gt;  
-&emsp;&emsp;&emsp;<a name="LineTerminator-930d7e02"></a>&lt;CR&gt;  
-&emsp;&emsp;&emsp;<a name="LineTerminator-2812beea"></a>&lt;LS&gt;  
-&emsp;&emsp;&emsp;<a name="LineTerminator-23ff5f46"></a>&lt;PS&gt;  
+&emsp;&emsp;&emsp;<a name="LineTerminator-7b39d525"></a>&lt;LF&gt;  
+&emsp;&emsp;&emsp;<a name="LineTerminator-435c91d5"></a>&lt;CR&gt;  
+&emsp;&emsp;&emsp;<a name="LineTerminator-10022ab3"></a>&lt;LS&gt;  
+&emsp;&emsp;&emsp;<a name="LineTerminator-cfc875d1"></a>&lt;PS&gt;  
   
 &emsp;&emsp;<a name="LineTerminatorSequence"></a>*LineTerminatorSequence* **::**  
-&emsp;&emsp;&emsp;<a name="LineTerminatorSequence-e1efb062"></a>&lt;LF&gt;  
-&emsp;&emsp;&emsp;<a name="LineTerminatorSequence-017fecbe"></a>&lt;CR&gt;&emsp;[lookahead ≠ &lt;LF&gt;]  
-&emsp;&emsp;&emsp;<a name="LineTerminatorSequence-2812beea"></a>&lt;LS&gt;  
-&emsp;&emsp;&emsp;<a name="LineTerminatorSequence-23ff5f46"></a>&lt;PS&gt;  
-&emsp;&emsp;&emsp;<a name="LineTerminatorSequence-cd73595b"></a>&lt;CR&gt;&emsp;&lt;LF&gt;  
+&emsp;&emsp;&emsp;<a name="LineTerminatorSequence-7b39d525"></a>&lt;LF&gt;  
+&emsp;&emsp;&emsp;<a name="LineTerminatorSequence-1e22ed49"></a>&lt;CR&gt;&emsp;[lookahead ≠ &lt;LF&gt;]  
+&emsp;&emsp;&emsp;<a name="LineTerminatorSequence-10022ab3"></a>&lt;LS&gt;  
+&emsp;&emsp;&emsp;<a name="LineTerminatorSequence-cfc875d1"></a>&lt;PS&gt;  
+&emsp;&emsp;&emsp;<a name="LineTerminatorSequence-2da252ec"></a>&lt;CR&gt;&emsp;&lt;LF&gt;  
   
 &emsp;&emsp;<a name="Comment"></a>*Comment* **::**  
 &emsp;&emsp;&emsp;<a name="Comment-b221187a"></a>*[MultiLineComment](#MultiLineComment)*  
@@ -107,8 +107,8 @@
 &emsp;&emsp;&emsp;<a name="IdentifierPart-1262cc92"></a>`` $ ``  
 &emsp;&emsp;&emsp;<a name="IdentifierPart-07564b94"></a>`` _ ``  
 &emsp;&emsp;&emsp;<a name="IdentifierPart-6fbc8b19"></a>`` \ ``&emsp;*[UnicodeEscapeSequence](#UnicodeEscapeSequence)*  
-&emsp;&emsp;&emsp;<a name="IdentifierPart-f0e58449"></a>&lt;ZWNJ&gt;  
-&emsp;&emsp;&emsp;<a name="IdentifierPart-a87f30d6"></a>&lt;ZWJ&gt;  
+&emsp;&emsp;&emsp;<a name="IdentifierPart-60d2dd13"></a>&lt;ZWNJ&gt;  
+&emsp;&emsp;&emsp;<a name="IdentifierPart-cdf80ff5"></a>&lt;ZWJ&gt;  
   
 &emsp;&emsp;<a name="UnicodeIDStart"></a>*UnicodeIDStart* **::**  
 &emsp;&emsp;&emsp;<a name="UnicodeIDStart-d2e8afad"></a>any Unicode code point with the Unicode property "ID_Start" or "Other_ID_Start"  

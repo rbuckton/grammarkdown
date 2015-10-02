@@ -18,23 +18,23 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync, statSync, unlinkSyn
 import { EOL } from "os";
 import { resolve, basename } from "path";
 import { Scanner } from "../lib/scanner";
-import { SyntaxKind, tokenToString } from "../lib/tokens";
+import { SyntaxKind, tokenToString, CharacterCodes } from "../lib/tokens";
 import { DiagnosticMessages, LineMap } from "../lib/diagnostics";
-import { 
-    SourceFile, 
-    Node, 
-    Identifier, 
-    Nonterminal, 
-    Argument, 
-    Prose, 
-    Terminal, 
-    UnicodeCharacterLiteral, 
+import {
+    SourceFile,
+    Node,
+    Identifier,
+    Nonterminal,
+    Argument,
+    Prose,
+    Terminal,
+    UnicodeCharacterLiteral,
     forEachChild
 } from "../lib/nodes";
 
 export function writeTokens(test: string, scanner: Scanner, lineMap: LineMap, baselines: string[]) {
     let text: string = `/// ${test}:` + EOL;
-    let token: SyntaxKind; 
+    let token: SyntaxKind;
     do {
         token = scanner.scan();
         let message = `SyntaxKind[${SyntaxKind[token]}](${lineMap.formatPosition(scanner.getPos()) }): `;
@@ -49,12 +49,12 @@ export function writeTokens(test: string, scanner: Scanner, lineMap: LineMap, ba
                 message += `\`${scanner.getTokenValue()}\``;
                 break;
             case SyntaxKind.UnicodeCharacterLiteral:
-                message += `<${scanner.getTokenValue()}>`;
+                message += scanner.getTokenText();
                 break;
             default:
                 message += `${tokenToString(token)}`;
         }
-        
+
         text += message + EOL;
     }
     while (token !== SyntaxKind.EndOfFileToken)
@@ -148,7 +148,7 @@ function formatNode(node: Node, sourceFile: SourceFile) {
             text += `(text = "${(<Prose | Identifier | Terminal>node).text}")`;
             break;
         case SyntaxKind.UnicodeCharacterLiteral:
-            text += `(text = <${(<UnicodeCharacterLiteral>node).text}>)`;
+            text += `(text = ${sourceFile.text.slice(node.pos, node.end)})`;
             break;
         case SyntaxKind.SourceFile:
             text += `(filename = "${basename((<SourceFile>node).filename)}")`;

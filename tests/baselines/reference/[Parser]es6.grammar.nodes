@@ -183,7 +183,7 @@
               (55,8)SyntaxKind[LookaheadKeyword]
               (55,17)SyntaxKind[ExclamationEqualsToken]
               (55,20)SyntaxKind[SymbolSpan]
-                (55,20)SyntaxKind[UnicodeCharacterLiteral](text = <LF>)
+                (55,21)SyntaxKind[UnicodeCharacterLiteral](text = <LF>)
               (55,25)SyntaxKind[CloseBracketToken]
       (56,2)SyntaxKind[RightHandSide]
         (56,2)SyntaxKind[SymbolSpan]
@@ -195,7 +195,7 @@
         (58,2)SyntaxKind[SymbolSpan]
           (58,2)SyntaxKind[UnicodeCharacterLiteral](text = <CR>)
           (58,6)SyntaxKind[SymbolSpan]
-            (58,6)SyntaxKind[UnicodeCharacterLiteral](text = <LF>)
+            (58,7)SyntaxKind[UnicodeCharacterLiteral](text = <LF>)
       (58,11)SyntaxKind[DedentToken]
   (60,1)SyntaxKind[Production]
     (60,1)SyntaxKind[Identifier](text = "Comment")

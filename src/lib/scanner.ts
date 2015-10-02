@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
- 
+
 import { CharacterCodes, SyntaxKind, stringToToken } from "./tokens";
 import { Diagnostics, DiagnosticMessages, NullDiagnosticMessages } from "./diagnostics";
 
@@ -37,7 +37,7 @@ export class Scanner {
         this.filename = filename;
         this.text = text;
         this.len = text.length;
-        this.diagnostics = diagnostics;    
+        this.diagnostics = diagnostics;
     }
 
     public getPos(): number {
@@ -60,9 +60,13 @@ export class Scanner {
         return this.token;
     }
 
+    public getTokenText(): string {
+        return this.text.slice(this.tokenPos, this.pos);
+    }
+
     public getTokenValue(): string {
         return this.tokenValue;
-    }        
+    }
 
     public getDiagnostics(): DiagnosticMessages {
         return this.diagnostics;
@@ -135,7 +139,7 @@ export class Scanner {
                     else {
                         this.pos++;
                     }
-                    
+
                     this.enqueueToken(SyntaxKind.LineTerminatorToken);
                     this.scanIndent();
                     return -1;
@@ -151,13 +155,13 @@ export class Scanner {
                 case CharacterCodes.FormFeed:
                     this.pos++;
                     continue;
-                    
+
                 case CharacterCodes.At:
                     return this.pos++, this.token = SyntaxKind.AtToken;
-                    
+
                 case CharacterCodes.NumberSign:
                     return this.pos++, this.tokenValue = this.scanLine(), this.token = SyntaxKind.LinkReference;
-                    
+
                 case CharacterCodes.DoubleQuote:
                 case CharacterCodes.SingleQuote:
                     return this.pos++, this.tokenValue = this.scanString(ch), this.token = SyntaxKind.StringLiteral;
@@ -188,12 +192,12 @@ export class Scanner {
                                     if (isLineTerminator(this.text.charCodeAt(this.pos))) {
                                         break;
                                     }
-                                    
+
                                     this.pos++;
                                 }
-                                
+
                                 continue;
-                                
+
                             case CharacterCodes.Asterisk:
                                 this.pos += 2;
                                 let commentClosed = false;
@@ -204,23 +208,23 @@ export class Scanner {
                                         commentClosed = true;
                                         break;
                                     }
-                                    
+
                                     this.pos++;
                                 }
 
                                 if (!commentClosed) {
                                     this.getDiagnostics().report(this.pos, Diagnostics._0_expected, "*/");
                                 }
-                                
+
                                 continue;
-                                
+
                             case CharacterCodes.CarriageReturn:
                                 if (this.pos + 2 < this.len && this.text.charCodeAt(this.pos + 2) === CharacterCodes.LineFeed) {
                                     this.pos++;
                                 }
-                                
+
                                 // fall through
-                                
+
                             case CharacterCodes.LineFeed:
                             case CharacterCodes.LineSeparator:
                             case CharacterCodes.ParagraphSeparator:
@@ -228,33 +232,33 @@ export class Scanner {
                                 continue;
                         }
                     }
-                    
+
                     return this.pos++, this.token = SyntaxKind.Unknown;
 
                 case CharacterCodes.OpenParen:
                     return this.pos++, this.token = SyntaxKind.OpenParenToken;
-                    
+
                 case CharacterCodes.CloseParen:
                     return this.pos++, this.token = SyntaxKind.CloseParenToken;
-                    
+
                 case CharacterCodes.OpenBracket:
                     return this.pos++, this.token = SyntaxKind.OpenBracketToken;
-                    
+
                 case CharacterCodes.CloseBracket:
                     return this.pos++, this.token = SyntaxKind.CloseBracketToken;
-                    
+
                 case CharacterCodes.OpenBrace:
                     return this.pos++, this.token = SyntaxKind.OpenBraceToken;
-                    
+
                 case CharacterCodes.CloseBrace:
                     return this.pos++, this.token = SyntaxKind.CloseBraceToken;
-                    
+
                 case CharacterCodes.Plus:
                     return this.pos++, this.token = SyntaxKind.PlusToken;
-                    
+
                 case CharacterCodes.Tilde:
                     return this.pos++, this.token = SyntaxKind.TildeToken;
-                    
+
                 case CharacterCodes.Comma:
                     return this.pos++, this.token = SyntaxKind.CommaToken;
 
@@ -268,11 +272,11 @@ export class Scanner {
                                     return this.pos += 3, this.token = SyntaxKind.ColonColonColonToken;
                                 }
                             }
-                            
+
                             return this.pos += 2, this.token = SyntaxKind.ColonColonToken;
                         }
                     }
-                    
+
                     return this.pos++, this.token = SyntaxKind.ColonToken;
 
                 case CharacterCodes.Question:
@@ -282,15 +286,28 @@ export class Scanner {
                     if (this.text.charCodeAt(this.pos + 1) === CharacterCodes.Equals) {
                         return this.pos += 2, this.token = SyntaxKind.EqualsEqualsToken;
                     }
-                    
+
                     return this.pos++, this.token = SyntaxKind.EqualsToken;
 
                 case CharacterCodes.Exclamation:
                     if (this.text.charCodeAt(this.pos + 1) === CharacterCodes.Equals) {
                         return this.pos += 2, this.token = SyntaxKind.ExclamationEqualsToken;
                     }
-                    
+
                     return this.pos++, this.token = SyntaxKind.Unknown;
+
+                case CharacterCodes.UpperU:
+                case CharacterCodes.LowerU:
+                    if (this.pos + 5 < this.len
+                        && this.text.charCodeAt(this.pos + 1) === CharacterCodes.Plus
+                        && isHexDigit(this.text.charCodeAt(this.pos + 2))
+                        && isHexDigit(this.text.charCodeAt(this.pos + 3))
+                        && isHexDigit(this.text.charCodeAt(this.pos + 4))
+                        && isHexDigit(this.text.charCodeAt(this.pos + 5))) {
+                        return this.tokenValue = this.text.substr(this.pos, 6), this.pos += 6, this.token = SyntaxKind.UnicodeCharacterLiteral;
+                    }
+
+                    // fall-through
 
                 default:
                     if (isIdentifierStart(ch)) {
@@ -298,11 +315,11 @@ export class Scanner {
                         while (this.pos < this.len && isIdentifierPart(ch = this.text.charCodeAt(this.pos))) {
                             this.pos++;
                         }
-                        
+
                         this.tokenValue = this.text.substring(this.tokenPos, this.pos);
                         return this.token = this.getIdentifierToken();
                     }
-                    
+
                     this.getDiagnostics().report(this.pos, Diagnostics.Invalid_character);
                     return this.pos++, this.token = SyntaxKind.Unknown;
             }
@@ -316,7 +333,7 @@ export class Scanner {
                 this.indents.pop();
                 this.enqueueToken(SyntaxKind.DedentToken);
             }
-            
+
             return;
         }
 
@@ -340,7 +357,7 @@ export class Scanner {
                 this.indents = this.indents.slice(0);
                 this.copyIndentsOnWrite = false;
             }
-            
+
             this.indents.push(tokenLen);
             this.enqueueToken(SyntaxKind.IndentToken);
         }
@@ -350,13 +367,13 @@ export class Scanner {
                     this.indents = this.indents.slice(0);
                     this.copyIndentsOnWrite = false;
                 }
-                
+
                 this.indents.pop();
                 this.enqueueToken(SyntaxKind.DedentToken);
             }
         }
     }
-    
+
     private scanProse(): string {
         this.pos++;
         let result = this.scanLine().trim();
@@ -370,13 +387,13 @@ export class Scanner {
             if (nextLine === undefined) {
                 break;
             }
-            
+
             result += nextLine;
         }
-        
+
         return result;
     }
-    
+
     private tryScanNextLineOfProse() {
         let result = this.scanLineTerminator();
         this.skipWhiteSpace();
@@ -388,10 +405,10 @@ export class Scanner {
                 return result;
             }
         }
-        
+
         return undefined;
     }
-    
+
     private scanLine(): string {
         let start = this.pos;
         while (this.pos < this.len) {
@@ -399,13 +416,13 @@ export class Scanner {
             if (isLineTerminator(ch)) {
                 break;
             }
-            
+
             this.pos++;
         }
-        
+
         return this.text.substring(start, this.pos);
     }
-    
+
     private scanLineTerminator(): string {
         let start = this.pos;
         let ch = this.text.charCodeAt(start);
@@ -415,10 +432,10 @@ export class Scanner {
         else {
             this.pos++;
         }
-        
+
         return this.text.substring(start, this.pos);
     }
-    
+
     private skipWhiteSpace(): void {
         while (true) {
             let ch = this.text.charCodeAt(this.pos);
@@ -431,13 +448,13 @@ export class Scanner {
                 case CharacterCodes.FormFeed:
                     this.pos++;
                     continue;
-                    
+
                 default:
                     return;
             }
         }
-    } 
-    
+    }
+
     private scanString(quote: number): string {
         let result = "";
         let start = this.pos;
@@ -448,11 +465,11 @@ export class Scanner {
                 this.getDiagnostics().report(this.pos, Diagnostics.Unterminated_string_literal);
                 break;
             }
-            
+
             let ch = this.text.charCodeAt(this.pos);
             if (ch === quote) {
-                // If this is a terminal that consists solely of a single backtick character (e.g. ```), 
-                // we capture the backtick. 
+                // If this is a terminal that consists solely of a single backtick character (e.g. ```),
+                // we capture the backtick.
                 if (quote === CharacterCodes.Backtick && this.pos === start && this.pos + 1 < this.len) {
                     ch = this.text.charCodeAt(this.pos + 1);
                     if (ch === CharacterCodes.Backtick) {
@@ -461,7 +478,7 @@ export class Scanner {
                         break;
                     }
                 }
-                
+
                 result += this.text.substring(start, this.pos);
                 this.pos++;
                 break;
@@ -479,10 +496,10 @@ export class Scanner {
                 this.getDiagnostics().report(this.pos, Diagnostics.Unterminated_string_literal);
                 break;
             }
-            
+
             this.pos++;
         }
-        
+
         return result;
     }
 
@@ -498,31 +515,31 @@ export class Scanner {
         switch (ch) {
             case CharacterCodes.Number0:
                 return "\0";
-                
+
             case CharacterCodes.LowerB:
                 return "\b";
-                
+
             case CharacterCodes.LowerT:
                 return "\t";
-                
+
             case CharacterCodes.LowerN:
                 return "\n";
-                
+
             case CharacterCodes.LowerV:
                 return "\v";
-                
+
             case CharacterCodes.LowerF:
                 return "\f";
-                
+
             case CharacterCodes.LowerR:
                 return "\r";
-                
+
             case CharacterCodes.SingleQuote:
                 return "\'";
-                
+
             case CharacterCodes.DoubleQuote:
                 return "\"";
-                
+
             case CharacterCodes.LowerX:
             case CharacterCodes.LowerU:
                 ch = this.scanHexDigits(ch === CharacterCodes.LowerX ? 2 : 4, /*mustMatchCount*/ true);
@@ -540,14 +557,14 @@ export class Scanner {
                 if (this.pos < this.len && this.text.charCodeAt(this.pos) === CharacterCodes.LineFeed) {
                     this.pos++;
                 }
-                
+
                 // fall through
-                
+
             case CharacterCodes.LineFeed:
             case CharacterCodes.LineSeparator:
             case CharacterCodes.ParagraphSeparator:
                 return ""
-                
+
             default:
                 return String.fromCharCode(ch);
         }
@@ -570,15 +587,15 @@ export class Scanner {
             else {
                 break;
             }
-            
+
             this.pos++;
             digits++;
         }
-        
+
         if (digits < count) {
             value = -1;
         }
-        
+
         return value;
     }
 
@@ -587,34 +604,34 @@ export class Scanner {
         while (isDigit(this.text.charCodeAt(this.pos))) {
             this.pos++;
         }
-        
+
         if (this.text.charCodeAt(this.pos) === CharacterCodes.Dot) {
             this.pos++;
             while (isDigit(this.text.charCodeAt(this.pos))) {
                 this.pos++;
             }
         }
-        
+
         let end = this.pos;
         if (this.text.charCodeAt(this.pos) === CharacterCodes.UpperE || this.text.charCodeAt(this.pos) === CharacterCodes.LowerE) {
             this.pos++;
             if (this.text.charCodeAt(this.pos) === CharacterCodes.Plus || this.text.charCodeAt(this.pos) === CharacterCodes.Minus) {
                 this.pos++;
             }
-            
+
             if (isDigit(this.text.charCodeAt(this.pos))) {
                 this.pos++;
                 while (isDigit(this.text.charCodeAt(this.pos))) {
                     this.pos++;
                 }
-                
+
                 end = this.pos;
             }
             else {
                 this.getDiagnostics().report(start, Diagnostics.Digit_expected);
             }
         }
-        
+
         return +(this.text.substring(start, end));
     }
 
@@ -629,7 +646,7 @@ export class Scanner {
                 }
             }
         }
-        
+
         return this.token = SyntaxKind.Identifier;
     }
 
@@ -645,7 +662,7 @@ export class Scanner {
             this.queue = this.queue.slice(0);
             this.copyQueueOnWrite = false;
         }
-        
+
         this.queue.push(token);
     }
 
@@ -655,7 +672,7 @@ export class Scanner {
                 this.queue = this.queue.slice(0);
                 this.copyQueueOnWrite = false;
             }
-            
+
             return this.queue.shift();
         }
     }
@@ -680,4 +697,10 @@ function isLineTerminator(ch: number): boolean {
 
 function isDigit(ch: number): boolean {
     return ch >= CharacterCodes.Number0 && ch <= CharacterCodes.Number9;
+}
+
+function isHexDigit(ch: number): boolean {
+    return ch >= CharacterCodes.UpperA && ch <= CharacterCodes.UpperF
+        || ch >= CharacterCodes.LowerA && ch <= CharacterCodes.LowerF
+        || ch >= CharacterCodes.Number0 && ch <= CharacterCodes.Number9;
 }
