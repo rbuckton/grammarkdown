@@ -192,10 +192,11 @@
       (61,31)SyntaxKind[IndentToken]
       (62,2)SyntaxKind[RightHandSide]
         (62,2)SyntaxKind[SymbolSpan]
-          (62,2)SyntaxKind[BinarySymbol]
+          (62,2)SyntaxKind[ButNotSymbol]
             (62,2)SyntaxKind[Nonterminal]
               (62,2)SyntaxKind[Identifier](text = "SourceCharacter")
-            (62,17)SyntaxKind[ButNotOperator]
+            (62,17)SyntaxKind[ButKeyword]
+            (62,21)SyntaxKind[NotKeyword]
             (62,25)SyntaxKind[OneOfSymbol]
               (62,32)SyntaxKind[Terminal](text = "<")
               (62,39)SyntaxKind[Terminal](text = ">")
@@ -257,10 +258,11 @@
       (77,16)SyntaxKind[IndentToken]
       (78,2)SyntaxKind[RightHandSide]
         (78,2)SyntaxKind[SymbolSpan]
-          (78,2)SyntaxKind[BinarySymbol]
+          (78,2)SyntaxKind[ButNotSymbol]
             (78,2)SyntaxKind[Nonterminal]
               (78,2)SyntaxKind[Identifier](text = "SourceCharacter")
-            (78,17)SyntaxKind[ButNotOperator]
+            (78,17)SyntaxKind[ButKeyword]
+            (78,21)SyntaxKind[NotKeyword]
             (78,25)SyntaxKind[OneOfSymbol]
               (78,32)SyntaxKind[Terminal](text = "`")
               (78,39)SyntaxKind[Nonterminal]
@@ -325,10 +327,11 @@
       (93,13)SyntaxKind[IndentToken]
       (94,2)SyntaxKind[RightHandSide]
         (94,2)SyntaxKind[SymbolSpan]
-          (94,2)SyntaxKind[BinarySymbol]
+          (94,2)SyntaxKind[ButNotSymbol]
             (94,2)SyntaxKind[Nonterminal]
               (94,2)SyntaxKind[Identifier](text = "SourceCharacter")
-            (94,17)SyntaxKind[ButNotOperator]
+            (94,17)SyntaxKind[ButKeyword]
+            (94,21)SyntaxKind[NotKeyword]
             (94,25)SyntaxKind[Nonterminal]
               (94,25)SyntaxKind[Identifier](text = "LineTerminator")
       (94,40)SyntaxKind[DedentToken]
@@ -338,10 +341,11 @@
       (99,13)SyntaxKind[IndentToken]
       (100,2)SyntaxKind[RightHandSide]
         (100,2)SyntaxKind[SymbolSpan]
-          (100,2)SyntaxKind[BinarySymbol]
+          (100,2)SyntaxKind[ButNotSymbol]
             (100,2)SyntaxKind[Nonterminal]
               (100,2)SyntaxKind[Identifier](text = "IdentifierName")
-            (100,16)SyntaxKind[ButNotOperator]
+            (100,16)SyntaxKind[ButKeyword]
+            (100,20)SyntaxKind[NotKeyword]
             (100,24)SyntaxKind[Nonterminal]
               (100,24)SyntaxKind[Identifier](text = "ReservedWord")
       (100,37)SyntaxKind[DedentToken]

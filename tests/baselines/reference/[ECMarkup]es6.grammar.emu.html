@@ -93,10 +93,10 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="MultiLineNotAsteriskChar" type="lexical">
-    <emu-rhs a="162032ca"><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not <emu-t>*</emu-t></emu-gmod></emu-rhs>
+    <emu-rhs a="9452de17"><emu-nt>SourceCharacter</emu-nt><emu-t>*</emu-t></emu-rhs>
 </emu-production>
 <emu-production name="MultiLineNotForwardSlashOrAsteriskChar" type="lexical">
-    <emu-rhs a="475d2033"><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not one of <emu-t>/</emu-t> or <emu-t>*</emu-t></emu-gmod></emu-rhs>
+    <emu-rhs a="1dd7e7ae"><emu-nt>SourceCharacter</emu-nt>one of <emu-t>/</emu-t> or <emu-t>*</emu-t></emu-rhs>
 </emu-production>
 <emu-production name="SingleLineComment" type="lexical">
     <emu-rhs a="53edd61c">
@@ -111,7 +111,7 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="SingleLineCommentChar" type="lexical">
-    <emu-rhs a="42edda0b"><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not <emu-nt>LineTerminator</emu-nt></emu-gmod></emu-rhs>
+    <emu-rhs a="2d5bdfa7"><emu-nt>SourceCharacter</emu-nt><emu-nt>LineTerminator</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="CommonToken" type="lexical">
     <emu-rhs a="0ebb31e2"><emu-nt>IdentifierName</emu-nt></emu-rhs>
@@ -329,7 +329,7 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="DoubleStringCharacter" type="lexical">
-    <emu-rhs a="25593d43"><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not one of <emu-t>&quot;</emu-t> or <emu-t>\</emu-t> or <emu-nt>LineTerminator</emu-nt></emu-gmod></emu-rhs>
+    <emu-rhs a="a87f95ed"><emu-nt>SourceCharacter</emu-nt>one of <emu-t>&quot;</emu-t> or <emu-t>\</emu-t> or <emu-nt>LineTerminator</emu-nt></emu-rhs>
     <emu-rhs a="ea7d8d26">
         <emu-t>\</emu-t>
         <emu-nt>EscapeSequence</emu-nt>
@@ -337,7 +337,7 @@
     <emu-rhs a="00992933"><emu-nt>LineContinuation</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="SingleStringCharacter" type="lexical">
-    <emu-rhs a="c574e0b6"><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not one of <emu-t>&apos;</emu-t> or <emu-t>\</emu-t> or <emu-nt>LineTerminator</emu-nt></emu-gmod></emu-rhs>
+    <emu-rhs a="5ea9e1d2"><emu-nt>SourceCharacter</emu-nt>one of <emu-t>&apos;</emu-t> or <emu-t>\</emu-t> or <emu-nt>LineTerminator</emu-nt></emu-rhs>
     <emu-rhs a="ea7d8d26">
         <emu-t>\</emu-t>
         <emu-nt>EscapeSequence</emu-nt>
@@ -367,7 +367,7 @@
     <emu-rhs>&apos; &quot; \ b f n r t v</emu-rhs>
 </emu-production>
 <emu-production name="NonEscapeCharacter" type="lexical">
-    <emu-rhs a="a23e757b"><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not one of <emu-nt>EscapeCharacter</emu-nt> or <emu-nt>LineTerminator</emu-nt></emu-gmod></emu-rhs>
+    <emu-rhs a="1bac6127"><emu-nt>SourceCharacter</emu-nt>one of <emu-nt>EscapeCharacter</emu-nt> or <emu-nt>LineTerminator</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="EscapeCharacter" type="lexical">
     <emu-rhs a="7444838f"><emu-nt>SingleEscapeCharacter</emu-nt></emu-rhs>
@@ -423,12 +423,12 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="RegularExpressionFirstChar" type="lexical">
-    <emu-rhs a="e5c95cf5"><emu-nt>RegularExpressionNonTerminator</emu-nt><emu-gmod>but not one of <emu-t>*</emu-t> or <emu-t>\</emu-t> or <emu-t>/</emu-t> or <emu-t>[</emu-t></emu-gmod></emu-rhs>
+    <emu-rhs a="da1b0c0a"><emu-nt>RegularExpressionNonTerminator</emu-nt>one of <emu-t>*</emu-t> or <emu-t>\</emu-t> or <emu-t>/</emu-t> or <emu-t>[</emu-t></emu-rhs>
     <emu-rhs a="9c9579a7"><emu-nt>RegularExpressionBackslashSequence</emu-nt></emu-rhs>
     <emu-rhs a="5cc6858e"><emu-nt>RegularExpressionClass</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="RegularExpressionChar" type="lexical">
-    <emu-rhs a="70196e5d"><emu-nt>RegularExpressionNonTerminator</emu-nt><emu-gmod>but not one of <emu-t>\</emu-t> or <emu-t>/</emu-t> or <emu-t>[</emu-t></emu-gmod></emu-rhs>
+    <emu-rhs a="f0c3ff14"><emu-nt>RegularExpressionNonTerminator</emu-nt>one of <emu-t>\</emu-t> or <emu-t>/</emu-t> or <emu-t>[</emu-t></emu-rhs>
     <emu-rhs a="9c9579a7"><emu-nt>RegularExpressionBackslashSequence</emu-nt></emu-rhs>
     <emu-rhs a="5cc6858e"><emu-nt>RegularExpressionClass</emu-nt></emu-rhs>
 </emu-production>
@@ -439,7 +439,7 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="RegularExpressionNonTerminator" type="lexical">
-    <emu-rhs a="42edda0b"><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not <emu-nt>LineTerminator</emu-nt></emu-gmod></emu-rhs>
+    <emu-rhs a="2d5bdfa7"><emu-nt>SourceCharacter</emu-nt><emu-nt>LineTerminator</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="RegularExpressionClass" type="lexical">
     <emu-rhs a="4c1bc40a">
@@ -456,7 +456,7 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="RegularExpressionClassChar" type="lexical">
-    <emu-rhs a="6941a3c7"><emu-nt>RegularExpressionNonTerminator</emu-nt><emu-gmod>but not one of <emu-t>]</emu-t> or <emu-t>\</emu-t></emu-gmod></emu-rhs>
+    <emu-rhs a="7fd10851"><emu-nt>RegularExpressionNonTerminator</emu-nt>one of <emu-t>]</emu-t> or <emu-t>\</emu-t></emu-rhs>
     <emu-rhs a="9c9579a7"><emu-nt>RegularExpressionBackslashSequence</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="RegularExpressionFlags" type="lexical">
@@ -519,7 +519,7 @@
     </emu-rhs>
     <emu-rhs a="00992933"><emu-nt>LineContinuation</emu-nt></emu-rhs>
     <emu-rhs a="544825da"><emu-nt>LineTerminatorSequence</emu-nt></emu-rhs>
-    <emu-rhs a="660db50f"><emu-nt>SourceCharacter</emu-nt><emu-gmod>but not one of <emu-t>`</emu-t> or <emu-t>\</emu-t> or <emu-t>$</emu-t> or <emu-nt>LineTerminator</emu-nt></emu-gmod></emu-rhs>
+    <emu-rhs a="4c80ea41"><emu-nt>SourceCharacter</emu-nt>one of <emu-t>`</emu-t> or <emu-t>\</emu-t> or <emu-t>$</emu-t> or <emu-nt>LineTerminator</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="IdentifierReference" params="Yield">
     <emu-rhs a="06b6ace8"><emu-nt>Identifier</emu-nt></emu-rhs>
@@ -534,7 +534,7 @@
     <emu-rhs a="481cca15" constraints="~Yield"><emu-t>yield</emu-t></emu-rhs>
 </emu-production>
 <emu-production name="Identifier">
-    <emu-rhs a="bb0c62c5"><emu-nt>IdentifierName</emu-nt><emu-gmod>but not <emu-nt>ReservedWord</emu-nt></emu-gmod></emu-rhs>
+    <emu-rhs a="bfa5c374"><emu-nt>IdentifierName</emu-nt><emu-nt>ReservedWord</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="PrimaryExpression" params="Yield">
     <emu-rhs a="8cee0c59"><emu-t>this</emu-t></emu-rhs>

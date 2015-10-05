@@ -15,7 +15,7 @@
  */
 
 import { CharacterCodes, SyntaxKind, stringToToken } from "./tokens";
-import { Diagnostics, DiagnosticMessages, NullDiagnosticMessages } from "./diagnostics";
+import { Diagnostics, Diagnostic, DiagnosticMessages, NullDiagnosticMessages } from "./diagnostics";
 
 export class Scanner {
     private pos: number = 0;
@@ -164,10 +164,13 @@ export class Scanner {
 
                 case CharacterCodes.DoubleQuote:
                 case CharacterCodes.SingleQuote:
-                    return this.pos++, this.tokenValue = this.scanString(ch), this.token = SyntaxKind.StringLiteral;
+                    return this.pos++, this.tokenValue = this.scanString(ch, this.token = SyntaxKind.StringLiteral), this.token;
 
                 case CharacterCodes.Backtick:
-                    return this.pos++, this.tokenValue = this.scanString(ch), this.token = SyntaxKind.Terminal;
+                    return this.pos++, this.tokenValue = this.scanString(ch, this.token = SyntaxKind.Terminal), this.token;
+
+                case CharacterCodes.Bar:
+                    return this.pos++, this.tokenValue = this.scanString(ch, this.token = SyntaxKind.Identifier), this.token;
 
                 case CharacterCodes.LessThan:
                     if (this.text.charCodeAt(this.pos + 1) === CharacterCodes.Exclamation) {
@@ -177,7 +180,7 @@ export class Scanner {
                         return this.pos += 2, this.token = SyntaxKind.LessThanMinusToken;
                     }
                     else {
-                        return this.pos++, this.tokenValue = this.scanString(CharacterCodes.GreaterThan), this.token = SyntaxKind.UnicodeCharacterLiteral;
+                        return this.pos++, this.tokenValue = this.scanString(CharacterCodes.GreaterThan, this.token = SyntaxKind.UnicodeCharacterLiteral), this.token;
                     }
 
                 case CharacterCodes.GreaterThan:
@@ -455,14 +458,29 @@ export class Scanner {
         }
     }
 
-    private scanString(quote: number): string {
+    private scanString(quote: number, kind: SyntaxKind): string {
+        let multiLine = false;
+        let consumeQuote = true;
+        let diagnostic = Diagnostics.Unterminated_string_literal;
+        let decodeEscapeSequences = true;
+        if (kind === SyntaxKind.Identifier) {
+            diagnostic = Diagnostics.Unterminated_identifier_literal;
+        }
+        else if (kind === SyntaxKind.Prose) {
+            multiLine = true;
+            consumeQuote = false;
+        }
+        else if (kind === SyntaxKind.Terminal) {
+            decodeEscapeSequences = false;
+        }
+
         let result = "";
         let start = this.pos;
         while (true) {
             if (this.pos >= this.len) {
                 result += this.text.substring(start, this.pos);
                 this.tokenIsUnterminated = true;
-                this.getDiagnostics().report(this.pos, Diagnostics.Unterminated_string_literal);
+                this.getDiagnostics().report(this.pos, diagnostic || Diagnostics.Unterminated_string_literal);
                 break;
             }
 
@@ -480,20 +498,23 @@ export class Scanner {
                 }
 
                 result += this.text.substring(start, this.pos);
-                this.pos++;
+                if (consumeQuote) {
+                    this.pos++;
+                }
+
                 break;
             }
-            else if (ch === CharacterCodes.Backslash && quote !== CharacterCodes.Backtick) {
+            else if (decodeEscapeSequences && ch === CharacterCodes.Backslash) {
                 // terminals cannot have escape sequences
                 result += this.text.substring(start, this.pos);
                 result += this.scanEscapeSequence();
                 start = this.pos;
                 continue;
             }
-            else if (isLineTerminator(ch)) {
+            else if (!multiLine && isLineTerminator(ch)) {
                 result += this.text.substring(start, this.pos);
                 this.tokenIsUnterminated = true;
-                this.getDiagnostics().report(this.pos, Diagnostics.Unterminated_string_literal);
+                this.getDiagnostics().report(this.pos, diagnostic || Diagnostics.Unterminated_string_literal);
                 break;
             }
 

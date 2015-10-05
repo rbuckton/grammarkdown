@@ -7,7 +7,7 @@
         (1,4)SyntaxKind[Nonterminal]
           (1,4)SyntaxKind[Identifier](text = "A")
         (1,6)SyntaxKind[SymbolSpan]
-          (1,6)SyntaxKind[FirstPunctuation]
+          (1,6)SyntaxKind[AtToken]
           (1,8)SyntaxKind[SymbolSpan]
             (1,8)SyntaxKind[Nonterminal]
               (1,8)SyntaxKind[Identifier](text = "A")
@@ -15,14 +15,15 @@
     (2,1)SyntaxKind[Identifier](text = "B")
     (2,4)SyntaxKind[RightHandSide]
       (2,4)SyntaxKind[SymbolSpan]
-        (2,4)SyntaxKind[BinarySymbol]
+        (2,4)SyntaxKind[ButNotSymbol]
           (2,4)SyntaxKind[Nonterminal]
             (2,4)SyntaxKind[Identifier](text = "A")
-          (2,6)SyntaxKind[ButNotOperator]
-          (2,14)SyntaxKind[OneOfSymbol]
-            (2,21)SyntaxKind[Terminal](text = """)
-            (2,28)SyntaxKind[Terminal](text = "\")
-            (2,36)SyntaxKind[BinarySymbol]
-              (2,36)SyntaxKind[UnicodeCharacterLiteral](text = U+0000)
-              (2,42)SyntaxKind[LastKeyword]
-              (2,51)SyntaxKind[UnicodeCharacterLiteral](text = U+001F)
+          (2,8)SyntaxKind[ButKeyword]
+          (2,12)SyntaxKind[NotKeyword]
+          (2,16)SyntaxKind[OneOfSymbol]
+            (2,23)SyntaxKind[Terminal](text = """)
+            (2,30)SyntaxKind[Terminal](text = "\")
+            (2,38)SyntaxKind[UnicodeCharacterRange]
+              (2,38)SyntaxKind[UnicodeCharacterLiteral](text = U+0000)
+              (2,44)SyntaxKind[ThroughKeyword]
+              (2,53)SyntaxKind[UnicodeCharacterLiteral](text = U+001F)

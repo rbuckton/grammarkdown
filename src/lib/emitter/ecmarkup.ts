@@ -6,6 +6,7 @@ import {
     Node,
     SourceFile,
     UnicodeCharacterLiteral,
+    UnicodeCharacterRange,
     Prose,
     Identifier,
     Parameter,
@@ -25,8 +26,7 @@ import {
     Nonterminal,
     OneOfSymbol,
     LexicalSymbol,
-    ButNotOperator,
-    BinarySymbol,
+    ButNotSymbol,
     SymbolSpan,
     RightHandSide,
     RightHandSideList,
@@ -50,6 +50,7 @@ export class EcmarkupEmitter extends Emitter {
                 case SyntaxKind.ColonColonToken:
                     this.writer.write(` type="lexical"`);
                     break;
+
                 case SyntaxKind.ColonColonColonToken:
                     this.writer.write(` type="regexp"`);
                     break;
@@ -74,7 +75,7 @@ export class EcmarkupEmitter extends Emitter {
         this.writer.write(` params="`);
         for (let i = 0; i < node.elements.length; ++i) {
             if (i > 0) {
-                this.writer.write(", ");
+                this.writer.write(`, `);
             }
 
             this.emitNode(node.elements[i]);
@@ -91,10 +92,10 @@ export class EcmarkupEmitter extends Emitter {
         this.writer.write(`<emu-rhs>`);
         for (let i = 0; i < node.terminals.length; ++i) {
             if (i > 0) {
-                this.writer.write(" ");
+                this.writer.write(` `);
             }
 
-            this.writer.write(this.encode(node.terminals[i].text));
+            this.emitTextContent(node.terminals[i]);
         }
         this.writer.write(`</emu-rhs>`);
         this.writer.writeln();
@@ -158,7 +159,7 @@ export class EcmarkupEmitter extends Emitter {
             this.writer.write(` optional`);
         }
         this.writer.write(`>`);
-        this.writer.write(this.encode(node.text));
+        this.emitTextContent(node);
         this.writer.write(`</emu-t>`);
     }
 
@@ -179,7 +180,7 @@ export class EcmarkupEmitter extends Emitter {
         this.writer.write(` params="`);
         for (let i = 0; i < node.elements.length; ++i) {
             if (i > 0) {
-                this.writer.write(", ");
+                this.writer.write(`, `);
             }
 
             this.emitNode(node.elements[i]);
@@ -193,6 +194,14 @@ export class EcmarkupEmitter extends Emitter {
         this.emitNode(node.name);
     }
 
+    protected emitUnicodeCharacterRange(node: UnicodeCharacterRange) {
+        this.writer.write(`<emu-gprose>`);
+        this.emitTextContent(node.left);
+        this.writer.write(` through `);
+        this.emitTextContent(node.right);
+        this.writer.write(`</emu-gprose>`);
+    }
+
     protected emitUnicodeCharacterLiteral(node: UnicodeCharacterLiteral) {
         this.writer.write(`<emu-gprose`);
         if (node.questionToken) {
@@ -200,13 +209,13 @@ export class EcmarkupEmitter extends Emitter {
         }
 
         this.writer.write(`>`);
-        this.writer.write(this.encode(node.text));
+        this.emitTextContent(node);
         this.writer.write(`</emu-gprose>`);
     }
 
     protected emitProse(node: Prose) {
         this.writer.write(`<emu-gprose>`);
-        this.writer.write(this.encode(node.text));
+        this.emitTextContent(node);
         this.writer.write(`</emu-gprose>`);
     }
 
@@ -215,36 +224,36 @@ export class EcmarkupEmitter extends Emitter {
     }
 
     protected emitSymbolSet(node: SymbolSet) {
-        this.writer.write("{");
+        this.writer.write(`{`);
         for (let i = 0; i < node.elements.length; ++i) {
             if (i > 0) {
-                this.writer.write(",");
+                this.writer.write(`,`);
             }
 
-            this.writer.write(" ");
+            this.writer.write(` `);
             this.emitNode(node.elements[i]);
         }
 
-        this.writer.write(" }");
+        this.writer.write(` }`);
     }
 
     protected emitLookaheadAssertion(node: LookaheadAssertion) {
         this.writer.write(`<emu-gann>`);
         switch (node.operatorToken.kind) {
             case SyntaxKind.ExclamationEqualsToken:
-                this.writer.write("lookahead ≠ ");
+                this.writer.write(`lookahead ≠ `);
                 break;
 
             case SyntaxKind.EqualsEqualsToken:
-                this.writer.write("lookahead = ");
+                this.writer.write(`lookahead = `);
                 break;
 
             case SyntaxKind.LessThanMinusToken:
-                this.writer.write("lookahead ∈ ");
+                this.writer.write(`lookahead ∈ `);
                 break;
 
             case SyntaxKind.LessThanExclamationToken:
-                this.writer.write("lookahead ∉ ");
+                this.writer.write(`lookahead ∉ `);
                 break;
         }
 
@@ -264,7 +273,7 @@ export class EcmarkupEmitter extends Emitter {
         if (node.symbols) {
             for (let i = 0; i < node.symbols.length; ++i) {
                 if (i > 0) {
-                    this.writer.write(" or ");
+                    this.writer.write(` or `);
                 }
 
                 this.emitNode(node.symbols[i]);
@@ -279,25 +288,19 @@ export class EcmarkupEmitter extends Emitter {
         this.emitNode(node.name);
     }
 
-    protected emitBinarySymbol(node: BinarySymbol) {
+    protected emitBinarySymbol(node: ButNotSymbol) {
         this.emitNode(node.left);
-        this.writer.write(`<emu-gmod>`);
-        this.emitNode(node.operatorToken);
-        this.writer.write(` `);
+        this.writer.write(`<emu-gmod>but not `);
         this.emitNode(node.right);
         this.writer.write(`</emu-gmod>`);
     }
 
-    protected emitButNotOperator(node: ButNotOperator) {
-        this.writer.write("but not");
-    }
-
     protected emitOneOfSymbol(node: OneOfSymbol) {
-        this.writer.write("one of ");
+        this.writer.write(`one of `);
         if (node.symbols) {
             for (let i = 0; i < node.symbols.length; ++i) {
                 if (i > 0) {
-                    this.writer.write(" or ");
+                    this.writer.write(` or `);
                 }
 
                 this.emitNode(node.symbols[i]);
@@ -306,8 +309,10 @@ export class EcmarkupEmitter extends Emitter {
     }
 
     protected emitTextContent(node: TextContent) {
-        let text = node.text;
-        this.writer.write(this.encode(text));
+        if (node) {
+            let text = node.text;
+            this.writer.write(this.encode(text));
+        }
     }
 
     private emitLinkAnchor(linkId: string) {

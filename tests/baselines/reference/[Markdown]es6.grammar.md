@@ -71,10 +71,10 @@
 &emsp;&emsp;&emsp;<a name="PostAsteriskCommentChars-6fcb6b58"></a>`` * ``&emsp;*[PostAsteriskCommentChars](#PostAsteriskCommentChars)*<sub>opt</sub>  
   
 &emsp;&emsp;<a name="MultiLineNotAsteriskChar"></a>*MultiLineNotAsteriskChar* **::**  
-&emsp;&emsp;&emsp;<a name="MultiLineNotAsteriskChar-162032ca"></a>*[SourceCharacter](#SourceCharacter)* **but not** `` * ``  
+&emsp;&emsp;&emsp;<a name="MultiLineNotAsteriskChar-9452de17"></a>*[SourceCharacter](#SourceCharacter)* **but not** `` * ``  
   
 &emsp;&emsp;<a name="MultiLineNotForwardSlashOrAsteriskChar"></a>*MultiLineNotForwardSlashOrAsteriskChar* **::**  
-&emsp;&emsp;&emsp;<a name="MultiLineNotForwardSlashOrAsteriskChar-475d2033"></a>*[SourceCharacter](#SourceCharacter)* **but not** **one of** `` / `` **or** `` * ``  
+&emsp;&emsp;&emsp;<a name="MultiLineNotForwardSlashOrAsteriskChar-1dd7e7ae"></a>*[SourceCharacter](#SourceCharacter)* **but not** **one of** `` / `` **or** `` * ``  
   
 &emsp;&emsp;<a name="SingleLineComment"></a>*SingleLineComment* **::**  
 &emsp;&emsp;&emsp;<a name="SingleLineComment-53edd61c"></a>`` // ``&emsp;*[SingleLineCommentChars](#SingleLineCommentChars)*<sub>opt</sub>  
@@ -83,7 +83,7 @@
 &emsp;&emsp;&emsp;<a name="SingleLineCommentChars-4521d447"></a>*[SingleLineCommentChar](#SingleLineCommentChar)*&emsp;*[SingleLineCommentChars](#SingleLineCommentChars)*<sub>opt</sub>  
   
 &emsp;&emsp;<a name="SingleLineCommentChar"></a>*SingleLineCommentChar* **::**  
-&emsp;&emsp;&emsp;<a name="SingleLineCommentChar-42edda0b"></a>*[SourceCharacter](#SourceCharacter)* **but not** *[LineTerminator](#LineTerminator)*  
+&emsp;&emsp;&emsp;<a name="SingleLineCommentChar-2d5bdfa7"></a>*[SourceCharacter](#SourceCharacter)* **but not** *[LineTerminator](#LineTerminator)*  
   
 &emsp;&emsp;<a name="CommonToken"></a>*CommonToken* **::**  
 &emsp;&emsp;&emsp;<a name="CommonToken-0ebb31e2"></a>*[IdentifierName](#IdentifierName)*  
@@ -237,12 +237,12 @@
 &emsp;&emsp;&emsp;<a name="SingleStringCharacters-17d28457"></a>*[SingleStringCharacter](#SingleStringCharacter)*&emsp;*[SingleStringCharacters](#SingleStringCharacters)*<sub>opt</sub>  
   
 &emsp;&emsp;<a name="DoubleStringCharacter"></a>*DoubleStringCharacter* **::**  
-&emsp;&emsp;&emsp;<a name="DoubleStringCharacter-25593d43"></a>*[SourceCharacter](#SourceCharacter)* **but not** **one of** `` " `` **or** `` \ `` **or** *[LineTerminator](#LineTerminator)*  
+&emsp;&emsp;&emsp;<a name="DoubleStringCharacter-a87f95ed"></a>*[SourceCharacter](#SourceCharacter)* **but not** **one of** `` " `` **or** `` \ `` **or** *[LineTerminator](#LineTerminator)*  
 &emsp;&emsp;&emsp;<a name="DoubleStringCharacter-ea7d8d26"></a>`` \ ``&emsp;*[EscapeSequence](#EscapeSequence)*  
 &emsp;&emsp;&emsp;<a name="DoubleStringCharacter-00992933"></a>*[LineContinuation](#LineContinuation)*  
   
 &emsp;&emsp;<a name="SingleStringCharacter"></a>*SingleStringCharacter* **::**  
-&emsp;&emsp;&emsp;<a name="SingleStringCharacter-c574e0b6"></a>*[SourceCharacter](#SourceCharacter)* **but not** **one of** `` ' `` **or** `` \ `` **or** *[LineTerminator](#LineTerminator)*  
+&emsp;&emsp;&emsp;<a name="SingleStringCharacter-5ea9e1d2"></a>*[SourceCharacter](#SourceCharacter)* **but not** **one of** `` ' `` **or** `` \ `` **or** *[LineTerminator](#LineTerminator)*  
 &emsp;&emsp;&emsp;<a name="SingleStringCharacter-ea7d8d26"></a>`` \ ``&emsp;*[EscapeSequence](#EscapeSequence)*  
 &emsp;&emsp;&emsp;<a name="SingleStringCharacter-00992933"></a>*[LineContinuation](#LineContinuation)*  
   
@@ -263,7 +263,7 @@
 <pre>&emsp;&emsp;&emsp;<code>&apos;</code>     <code>&quot;</code>     <code>\</code>     <code>b</code>     <code>f</code>     <code>n</code>     <code>r</code>     <code>t</code>     <code>v</code></pre>
   
 &emsp;&emsp;<a name="NonEscapeCharacter"></a>*NonEscapeCharacter* **::**  
-&emsp;&emsp;&emsp;<a name="NonEscapeCharacter-a23e757b"></a>*[SourceCharacter](#SourceCharacter)* **but not** **one of** *[EscapeCharacter](#EscapeCharacter)* **or** *[LineTerminator](#LineTerminator)*  
+&emsp;&emsp;&emsp;<a name="NonEscapeCharacter-1bac6127"></a>*[SourceCharacter](#SourceCharacter)* **but not** **one of** *[EscapeCharacter](#EscapeCharacter)* **or** *[LineTerminator](#LineTerminator)*  
   
 &emsp;&emsp;<a name="EscapeCharacter"></a>*EscapeCharacter* **::**  
 &emsp;&emsp;&emsp;<a name="EscapeCharacter-7444838f"></a>*[SingleEscapeCharacter](#SingleEscapeCharacter)*  
@@ -292,12 +292,12 @@
 &emsp;&emsp;&emsp;<a name="RegularExpressionChars-a9881cec"></a>*[RegularExpressionChars](#RegularExpressionChars)*&emsp;*[RegularExpressionChar](#RegularExpressionChar)*  
   
 &emsp;&emsp;<a name="RegularExpressionFirstChar"></a>*RegularExpressionFirstChar* **::**  
-&emsp;&emsp;&emsp;<a name="RegularExpressionFirstChar-e5c95cf5"></a>*[RegularExpressionNonTerminator](#RegularExpressionNonTerminator)* **but not** **one of** `` * `` **or** `` \ `` **or** `` / `` **or** `` [ ``  
+&emsp;&emsp;&emsp;<a name="RegularExpressionFirstChar-da1b0c0a"></a>*[RegularExpressionNonTerminator](#RegularExpressionNonTerminator)* **but not** **one of** `` * `` **or** `` \ `` **or** `` / `` **or** `` [ ``  
 &emsp;&emsp;&emsp;<a name="RegularExpressionFirstChar-9c9579a7"></a>*[RegularExpressionBackslashSequence](#RegularExpressionBackslashSequence)*  
 &emsp;&emsp;&emsp;<a name="RegularExpressionFirstChar-5cc6858e"></a>*[RegularExpressionClass](#RegularExpressionClass)*  
   
 &emsp;&emsp;<a name="RegularExpressionChar"></a>*RegularExpressionChar* **::**  
-&emsp;&emsp;&emsp;<a name="RegularExpressionChar-70196e5d"></a>*[RegularExpressionNonTerminator](#RegularExpressionNonTerminator)* **but not** **one of** `` \ `` **or** `` / `` **or** `` [ ``  
+&emsp;&emsp;&emsp;<a name="RegularExpressionChar-f0c3ff14"></a>*[RegularExpressionNonTerminator](#RegularExpressionNonTerminator)* **but not** **one of** `` \ `` **or** `` / `` **or** `` [ ``  
 &emsp;&emsp;&emsp;<a name="RegularExpressionChar-9c9579a7"></a>*[RegularExpressionBackslashSequence](#RegularExpressionBackslashSequence)*  
 &emsp;&emsp;&emsp;<a name="RegularExpressionChar-5cc6858e"></a>*[RegularExpressionClass](#RegularExpressionClass)*  
   
@@ -305,7 +305,7 @@
 &emsp;&emsp;&emsp;<a name="RegularExpressionBackslashSequence-d7656bad"></a>`` \ ``&emsp;*[RegularExpressionNonTerminator](#RegularExpressionNonTerminator)*  
   
 &emsp;&emsp;<a name="RegularExpressionNonTerminator"></a>*RegularExpressionNonTerminator* **::**  
-&emsp;&emsp;&emsp;<a name="RegularExpressionNonTerminator-42edda0b"></a>*[SourceCharacter](#SourceCharacter)* **but not** *[LineTerminator](#LineTerminator)*  
+&emsp;&emsp;&emsp;<a name="RegularExpressionNonTerminator-2d5bdfa7"></a>*[SourceCharacter](#SourceCharacter)* **but not** *[LineTerminator](#LineTerminator)*  
   
 &emsp;&emsp;<a name="RegularExpressionClass"></a>*RegularExpressionClass* **::**  
 &emsp;&emsp;&emsp;<a name="RegularExpressionClass-4c1bc40a"></a>`` [ ``&emsp;*[RegularExpressionClassChars](#RegularExpressionClassChars)*&emsp;`` ] ``  
@@ -315,7 +315,7 @@
 &emsp;&emsp;&emsp;<a name="RegularExpressionClassChars-76bdcb05"></a>*[RegularExpressionClassChars](#RegularExpressionClassChars)*&emsp;*[RegularExpressionClassChar](#RegularExpressionClassChar)*  
   
 &emsp;&emsp;<a name="RegularExpressionClassChar"></a>*RegularExpressionClassChar* **::**  
-&emsp;&emsp;&emsp;<a name="RegularExpressionClassChar-6941a3c7"></a>*[RegularExpressionNonTerminator](#RegularExpressionNonTerminator)* **but not** **one of** `` ] `` **or** `` \ ``  
+&emsp;&emsp;&emsp;<a name="RegularExpressionClassChar-7fd10851"></a>*[RegularExpressionNonTerminator](#RegularExpressionNonTerminator)* **but not** **one of** `` ] `` **or** `` \ ``  
 &emsp;&emsp;&emsp;<a name="RegularExpressionClassChar-9c9579a7"></a>*[RegularExpressionBackslashSequence](#RegularExpressionBackslashSequence)*  
   
 &emsp;&emsp;<a name="RegularExpressionFlags"></a>*RegularExpressionFlags* **::**  
@@ -350,7 +350,7 @@
 &emsp;&emsp;&emsp;<a name="TemplateCharacter-ea7d8d26"></a>`` \ ``&emsp;*[EscapeSequence](#EscapeSequence)*  
 &emsp;&emsp;&emsp;<a name="TemplateCharacter-00992933"></a>*[LineContinuation](#LineContinuation)*  
 &emsp;&emsp;&emsp;<a name="TemplateCharacter-544825da"></a>*[LineTerminatorSequence](#LineTerminatorSequence)*  
-&emsp;&emsp;&emsp;<a name="TemplateCharacter-660db50f"></a>*[SourceCharacter](#SourceCharacter)* **but not** **one of** `` ` `` **or** `` \ `` **or** `` $ `` **or** *[LineTerminator](#LineTerminator)*  
+&emsp;&emsp;&emsp;<a name="TemplateCharacter-4c80ea41"></a>*[SourceCharacter](#SourceCharacter)* **but not** **one of** `` ` `` **or** `` \ `` **or** `` $ `` **or** *[LineTerminator](#LineTerminator)*  
   
 &emsp;&emsp;<a name="IdentifierReference"></a>*IdentifierReference*<sub>[Yield]</sub> **:**  
 &emsp;&emsp;&emsp;<a name="IdentifierReference-06b6ace8"></a>*[Identifier](#Identifier)*  
@@ -365,7 +365,7 @@
 &emsp;&emsp;&emsp;<a name="LabelIdentifier-481cca15"></a>[~Yield]&emsp;`` yield ``  
   
 &emsp;&emsp;<a name="Identifier"></a>*Identifier* **:**  
-&emsp;&emsp;&emsp;<a name="Identifier-bb0c62c5"></a>*[IdentifierName](#IdentifierName)* **but not** *[ReservedWord](#ReservedWord)*  
+&emsp;&emsp;&emsp;<a name="Identifier-bfa5c374"></a>*[IdentifierName](#IdentifierName)* **but not** *[ReservedWord](#ReservedWord)*  
   
 &emsp;&emsp;<a name="PrimaryExpression"></a>*PrimaryExpression*<sub>[Yield]</sub> **:**  
 &emsp;&emsp;&emsp;<a name="PrimaryExpression-8cee0c59"></a>`` this ``  

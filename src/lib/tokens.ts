@@ -214,10 +214,9 @@ export enum SyntaxKind {
     RightHandSide,              // ...: SymbolSpan
     SymbolSpan,                 // Symbol Symbolopt
 
-    ButNotOperator,             // x but not y
-
     // Symbols
-    BinarySymbol,               // x but not y
+    ButNotSymbol,               // x but not y
+    UnicodeCharacterRange,      // x through y
     OneOfSymbol,                // one of OrClause
     Nonterminal,
     TerminalList,
@@ -245,17 +244,17 @@ export enum SyntaxKind {
 }
 
 const textToToken = new Dict({
-    "import": SyntaxKind.ImportKeyword,
     "but": SyntaxKind.ButKeyword,
-    "not": SyntaxKind.NotKeyword,
     "empty": SyntaxKind.EmptyKeyword,
-    "lexical": SyntaxKind.LexicalKeyword,
     "goal": SyntaxKind.GoalKeyword,
-    "lookahead": SyntaxKind.LookaheadKeyword,
-    "one": SyntaxKind.OneKeyword,
-    "of": SyntaxKind.OfKeyword,
-    "no": SyntaxKind.NoKeyword,
     "here": SyntaxKind.HereKeyword,
+    "import": SyntaxKind.ImportKeyword,
+    "lexical": SyntaxKind.LexicalKeyword,
+    "lookahead": SyntaxKind.LookaheadKeyword,
+    "no": SyntaxKind.NoKeyword,
+    "not": SyntaxKind.NotKeyword,
+    "of": SyntaxKind.OfKeyword,
+    "one": SyntaxKind.OneKeyword,
     "or": SyntaxKind.OrKeyword,
     "through": SyntaxKind.ThroughKeyword,
     "@": SyntaxKind.AtToken,

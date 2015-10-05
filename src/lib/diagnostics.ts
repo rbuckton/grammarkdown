@@ -33,6 +33,7 @@ export const Diagnostics = {
     Invalid_escape_sequence: <Diagnostic>{ code: 1005, message: "Invalid escape sequence." },
     Digit_expected: <Diagnostic>{ code: 1006, message: "Digit expected." },
     Production_expected: <Diagnostic>{ code: 1007, message: "Production expected." },
+    Unterminated_identifier_literal: <Diagnostic>{ code: 1008, message: "Unterminated identifier literal." },
     Cannot_find_name_0_: <Diagnostic>{ code: 2000, message: "Cannot find name: '{0}'." },
     Duplicate_identifier_0_: <Diagnostic>{ code: 2001, message: "Duplicate identifier: '{0}'." },
     Duplicate_terminal_0_: <Diagnostic>{ code: 2002, message: "Duplicate terminal: `{0}`." },
@@ -46,16 +47,16 @@ export class DiagnosticMessages {
     private sourceFiles: SourceFile[];
     private sourceFilesDiagnosticOffset: number[];
     private nextDiagnosticIndex = 0;
-    
+
     constructor() {
     }
-    
+
     public setSourceFile(sourceFile: SourceFile): void {
         if (!this.sourceFiles) {
             this.sourceFiles = [];
             this.sourceFilesDiagnosticOffset = [];
         }
-        
+
         let diagnosticOffset = this.count();
         let sourceFileIndex = this.sourceFiles.length;
         this.sourceFiles[sourceFileIndex] = sourceFile;
@@ -67,7 +68,7 @@ export class DiagnosticMessages {
     public report(pos: number, message: Diagnostic): void {
         this.reportDiagnostic(message, Array.prototype.slice.call(arguments, 2), pos);
     }
-    
+
 
     public reportNode(node: Node, message: Diagnostic, args: any[]): void;
     public reportNode(node: Node, message: Diagnostic, ...args: any[]): void;
@@ -76,7 +77,7 @@ export class DiagnosticMessages {
         if (node) {
             pos = node.pos;
         }
-        
+
         this.reportDiagnostic(message, Array.prototype.slice.call(arguments, 2), pos);
     }
 
@@ -99,20 +100,20 @@ export class DiagnosticMessages {
                     text += `(${diagnosticPos})`;
                 }
             }
-            
+
             text += ": ";
             text += diagnostic.warning ? "warning" : "error";
             text += " MG" + String(diagnostic.code) + ": ";
-            
+
             let message = diagnostic.message;
             if (diagnosticArguments) {
                 message = formatString(message, diagnosticArguments);
             }
-            
+
             text += message;
             return text;
         }
-        
+
         return "";
     }
 
@@ -136,19 +137,19 @@ export class DiagnosticMessages {
         if (!this.diagnostics) {
             this.diagnostics = [];
         }
-        
+
         let diagnosticIndex = this.diagnostics.length;
         this.diagnostics[diagnosticIndex] = message;
-        
+
         if (args.length === 1 && args[0] instanceof Array) {
             args = args[0];
         }
-        
+
         if (args.length > 0) {
             if (!this.diagnosticsArguments) {
                 this.diagnosticsArguments = [];
             }
-            
+
             this.diagnosticsArguments[diagnosticIndex] = args;
         }
 
@@ -156,7 +157,7 @@ export class DiagnosticMessages {
             if (!this.diagnosticsPos) {
                 this.diagnosticsPos = [];
             }
-            
+
             this.diagnosticsPos[diagnosticIndex] = pos;
         }
 
@@ -164,7 +165,7 @@ export class DiagnosticMessages {
             if (!this.diagnosticsNode) {
                 this.diagnosticsNode = [];
             }
-            
+
             this.diagnosticsNode[diagnosticIndex] = node;
         }
     }
@@ -175,25 +176,25 @@ export class DiagnosticMessages {
             if (offset < 0) {
                 offset = (~offset) - 1;
             }
-            
+
             while (offset + 1 < this.sourceFiles.length && this.sourceFilesDiagnosticOffset[offset + 1] === diagnosticIndex) {
                 offset++;
             }
-            
+
             return this.sourceFiles[offset];
         }
-        
+
         return undefined;
     }
 }
 
 export class NullDiagnosticMessages extends DiagnosticMessages {
     private static _instance: NullDiagnosticMessages;
-    
+
     public static get instance() {
         return this._instance || (this._instance = new NullDiagnosticMessages());
     }
-    
+
     public reportCore(message: Diagnostic, arg0?: any, arg1?: any): number { return 0; }
     public report(pos: number, message: Diagnostic, arg0?: any, arg1?: any): number { return 0; }
     public reportNode(node: Node, message: Diagnostic, arg0?: any, arg1?: any): number { return 0; }
@@ -216,7 +217,7 @@ export class LineMap {
         this.computeLineStarts();
         var lineNumber = binarySearch(this.lineStarts, pos);
         if (lineNumber < 0) {
-            // If the actual position was not found, 
+            // If the actual position was not found,
             // the binary search returns the negative value of the next line start
             // e.g. if the line starts at [5, 10, 23, 80] and the position requested was 20
             // then the search will return -2
@@ -249,7 +250,7 @@ export class LineMap {
             }
         }
         lineStarts.push(lineStart);
-        this.lineStarts = lineStarts;            
+        this.lineStarts = lineStarts;
     }
 
     private isLineBreak(ch: number): boolean {
@@ -268,7 +269,7 @@ export function formatString(format: string): string {
     if (args.length === 1 && args[0] instanceof Array) {
         args = args[0];
     }
-    
+
     return format.replace(/{(\d+)}/g, (_, index) => args[index]);
 }
 
@@ -291,11 +292,11 @@ export function formatList(tokens: SyntaxKind[]): string {
             if (i > 0) {
                 text += " ";
             }
-            
+
             text += tokenToString(tokens[i], /*quoted*/ true);
             text += ",";
         }
-        
+
         return formatString(Diagnostics._0_or_1_.message, text, tokenToString(tokens[tokens.length - 1], /*quoted*/ true));
     }
 }

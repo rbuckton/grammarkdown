@@ -9,6 +9,7 @@ import {
     Node,
     SourceFile,
     UnicodeCharacterLiteral,
+    UnicodeCharacterRange,
     Prose,
     Identifier,
     Parameter,
@@ -28,8 +29,7 @@ import {
     Nonterminal,
     OneOfSymbol,
     LexicalSymbol,
-    ButNotOperator,
-    BinarySymbol,
+    ButNotSymbol,
     SymbolSpan,
     RightHandSide,
     RightHandSideList,
@@ -105,6 +105,7 @@ export class Emitter {
             case SyntaxKind.AtToken: this.emitPlaceholder(<LexicalSymbol>node); break;
             case SyntaxKind.Terminal: this.emitTerminal(<Terminal>node); break;
             case SyntaxKind.UnicodeCharacterLiteral: this.emitUnicodeCharacterLiteral(<UnicodeCharacterLiteral>node); break;
+            case SyntaxKind.UnicodeCharacterRange: this.emitUnicodeCharacterRange(<UnicodeCharacterRange>node); break;
             case SyntaxKind.Prose: this.emitProse(<Prose>node); break;
             case SyntaxKind.Identifier: this.emitIdentifier(<Identifier>node); break;
             case SyntaxKind.Parameter: this.emitParameter(<Parameter>node); break;
@@ -118,8 +119,7 @@ export class Emitter {
             case SyntaxKind.RightHandSide: this.emitRightHandSide(<RightHandSide>node); break;
             case SyntaxKind.SymbolSpan: this.emitSymbolSpan(<SymbolSpan>node); break;
             case SyntaxKind.ThroughKeyword: this.emitKeyword(node); break;
-            case SyntaxKind.ButNotOperator: this.emitButNotOperator(<ButNotOperator>node); break;
-            case SyntaxKind.BinarySymbol: this.emitBinarySymbol(<BinarySymbol>node); break;
+            case SyntaxKind.ButNotSymbol: this.emitButNotSymbol(<ButNotSymbol>node); break;
             case SyntaxKind.OneOfSymbol: this.emitOneOfSymbol(<OneOfSymbol>node); break;
             case SyntaxKind.Nonterminal: this.emitNonterminal(<Nonterminal>node); break;
             case SyntaxKind.TerminalList: this.emitTerminalList(<TerminalList>node); break;
@@ -213,11 +213,11 @@ export class Emitter {
         forEachChild(node, child => this.emitNode(child));
     }
 
-    protected emitButNotOperator(node: ButNotOperator): void {
+    protected emitUnicodeCharacterRange(node: UnicodeCharacterRange): void {
         forEachChild(node, child => this.emitNode(child));
     }
 
-    protected emitBinarySymbol(node: BinarySymbol): void {
+    protected emitButNotSymbol(node: ButNotSymbol): void {
         forEachChild(node, child => this.emitNode(child));
     }
 

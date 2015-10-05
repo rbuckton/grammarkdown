@@ -39,8 +39,8 @@ import {
     Nonterminal,
     OneOfSymbol,
     LexicalSymbol,
-    ButNotOperator,
-    BinarySymbol,
+    ButNotSymbol,
+    UnicodeCharacterRange,
     SymbolSpan,
     LinkReference,
     RightHandSide,
@@ -747,7 +747,6 @@ export class Parser {
     }
 
     private parseLexicalGoalAssertionTail(openBracketToken: Node): LexicalGoalAssertion {
-        let fullStart = this.scanner.getStartPos();
         let lexicalKeyword = this.parseToken(SyntaxKind.LexicalKeyword);
         let goalKeyword = this.parseToken(SyntaxKind.GoalKeyword);
         let symbol = this.parseIdentifier();
@@ -895,21 +894,20 @@ export class Parser {
         return this.finishNode(node, fullStart);
     }
 
-    private parseUnicodeCharacterRangeOrHigher(allowOptional: boolean): LexicalSymbol {
+    private parseUnicodeCharacterRangeOrHigher(allowOptional: boolean): UnicodeCharacterLiteral | UnicodeCharacterRange {
         let symbol = this.parseUnicodeCharacterLiteral(allowOptional);
         if (!allowOptional) {
-            let operator = this.tryParseThroughOperator();
-            if (operator) {
-                return this.parseUnicodeCharacterRangeTail(symbol, operator);
+            let throughKeyword = this.parseToken(SyntaxKind.ThroughKeyword);
+            if (throughKeyword) {
+                return this.parseUnicodeCharacterRangeTail(symbol, throughKeyword);
             }
         }
-
         return symbol;
     }
 
-    private parseUnicodeCharacterRangeTail(left: UnicodeCharacterLiteral, operator: Node): BinarySymbol {
+    private parseUnicodeCharacterRangeTail(left: UnicodeCharacterLiteral, throughKeyword: Node): UnicodeCharacterRange {
         let right = this.parseUnicodeCharacterLiteral(/*allowOptional*/ false);
-        let node = new BinarySymbol(left, operator, right);
+        let node = new UnicodeCharacterRange(left, throughKeyword, right);
         return this.finishNode(node, left.pos);
     }
 
@@ -950,21 +948,9 @@ export class Parser {
         return undefined;
     }
 
-    private tryParseButNotOperator(): ButNotOperator {
-        let fullStart = this.scanner.getStartPos();
-        let butKeyword = this.parseToken(SyntaxKind.ButKeyword);
-        let notKeyword = this.parseToken(SyntaxKind.NotKeyword);
-        if (butKeyword || notKeyword) {
-            let node = new ButNotOperator(butKeyword, notKeyword);
-            return this.finishNode(node, fullStart);
-        }
-
-        return undefined;
-    }
-
-    private parseBinarySymbolTail(left: LexicalSymbol, operator: Node): BinarySymbol {
+    private parseButNotSymbolTail(left: LexicalSymbol, butKeyword: Node, notKeyword: Node): ButNotSymbol {
         let right = this.parseSymbol();
-        let node = new BinarySymbol(left, operator, right);
+        let node = new ButNotSymbol(left, butKeyword, notKeyword, right);
         return this.finishNode(node, left.pos);
     }
 
@@ -974,9 +960,10 @@ export class Parser {
         }
 
         let symbol = this.parseUnarySymbol();
-        let operator = this.tryParseButNotOperator();
-        if (operator) {
-            return this.parseBinarySymbolTail(symbol, operator);
+        let butKeyword = this.parseToken(SyntaxKind.ButKeyword);
+        let notKeyword = this.parseToken(SyntaxKind.NotKeyword);
+        if (butKeyword || notKeyword) {
+            return this.parseButNotSymbolTail(symbol, butKeyword, notKeyword);
         }
 
         return symbol;

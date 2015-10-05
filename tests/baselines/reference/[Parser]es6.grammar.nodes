@@ -270,10 +270,11 @@
       (75,28)SyntaxKind[IndentToken]
       (76,2)SyntaxKind[RightHandSide]
         (76,2)SyntaxKind[SymbolSpan]
-          (76,2)SyntaxKind[BinarySymbol]
+          (76,2)SyntaxKind[ButNotSymbol]
             (76,2)SyntaxKind[Nonterminal]
               (76,2)SyntaxKind[Identifier](text = "SourceCharacter")
-            (76,17)SyntaxKind[ButNotOperator]
+            (76,17)SyntaxKind[ButKeyword]
+            (76,21)SyntaxKind[NotKeyword]
             (76,25)SyntaxKind[Terminal](text = "*")
       (76,29)SyntaxKind[DedentToken]
   (78,1)SyntaxKind[Production]
@@ -282,10 +283,11 @@
       (78,42)SyntaxKind[IndentToken]
       (79,2)SyntaxKind[RightHandSide]
         (79,2)SyntaxKind[SymbolSpan]
-          (79,2)SyntaxKind[BinarySymbol]
+          (79,2)SyntaxKind[ButNotSymbol]
             (79,2)SyntaxKind[Nonterminal]
               (79,2)SyntaxKind[Identifier](text = "SourceCharacter")
-            (79,17)SyntaxKind[ButNotOperator]
+            (79,17)SyntaxKind[ButKeyword]
+            (79,21)SyntaxKind[NotKeyword]
             (79,25)SyntaxKind[OneOfSymbol]
               (79,32)SyntaxKind[Terminal](text = "/")
               (79,39)SyntaxKind[Terminal](text = "*")
@@ -321,10 +323,11 @@
       (87,25)SyntaxKind[IndentToken]
       (88,2)SyntaxKind[RightHandSide]
         (88,2)SyntaxKind[SymbolSpan]
-          (88,2)SyntaxKind[BinarySymbol]
+          (88,2)SyntaxKind[ButNotSymbol]
             (88,2)SyntaxKind[Nonterminal]
               (88,2)SyntaxKind[Identifier](text = "SourceCharacter")
-            (88,17)SyntaxKind[ButNotOperator]
+            (88,17)SyntaxKind[ButKeyword]
+            (88,21)SyntaxKind[NotKeyword]
             (88,25)SyntaxKind[Nonterminal]
               (88,25)SyntaxKind[Identifier](text = "LineTerminator")
       (88,40)SyntaxKind[DedentToken]
@@ -971,10 +974,11 @@
       (248,25)SyntaxKind[IndentToken]
       (249,2)SyntaxKind[RightHandSide]
         (249,2)SyntaxKind[SymbolSpan]
-          (249,2)SyntaxKind[BinarySymbol]
+          (249,2)SyntaxKind[ButNotSymbol]
             (249,2)SyntaxKind[Nonterminal]
               (249,2)SyntaxKind[Identifier](text = "SourceCharacter")
-            (249,17)SyntaxKind[ButNotOperator]
+            (249,17)SyntaxKind[ButKeyword]
+            (249,21)SyntaxKind[NotKeyword]
             (249,25)SyntaxKind[OneOfSymbol]
               (249,32)SyntaxKind[Terminal](text = """)
               (249,39)SyntaxKind[Terminal](text = "\")
@@ -997,10 +1001,11 @@
       (253,25)SyntaxKind[IndentToken]
       (254,2)SyntaxKind[RightHandSide]
         (254,2)SyntaxKind[SymbolSpan]
-          (254,2)SyntaxKind[BinarySymbol]
+          (254,2)SyntaxKind[ButNotSymbol]
             (254,2)SyntaxKind[Nonterminal]
               (254,2)SyntaxKind[Identifier](text = "SourceCharacter")
-            (254,17)SyntaxKind[ButNotOperator]
+            (254,17)SyntaxKind[ButKeyword]
+            (254,21)SyntaxKind[NotKeyword]
             (254,25)SyntaxKind[OneOfSymbol]
               (254,32)SyntaxKind[Terminal](text = "'")
               (254,39)SyntaxKind[Terminal](text = "\")
@@ -1092,10 +1097,11 @@
       (274,22)SyntaxKind[IndentToken]
       (275,2)SyntaxKind[RightHandSide]
         (275,2)SyntaxKind[SymbolSpan]
-          (275,2)SyntaxKind[BinarySymbol]
+          (275,2)SyntaxKind[ButNotSymbol]
             (275,2)SyntaxKind[Nonterminal]
               (275,2)SyntaxKind[Identifier](text = "SourceCharacter")
-            (275,17)SyntaxKind[ButNotOperator]
+            (275,17)SyntaxKind[ButKeyword]
+            (275,21)SyntaxKind[NotKeyword]
             (275,25)SyntaxKind[OneOfSymbol]
               (275,32)SyntaxKind[Nonterminal]
                 (275,32)SyntaxKind[Identifier](text = "EscapeCharacter")
@@ -1224,10 +1230,11 @@
       (303,30)SyntaxKind[IndentToken]
       (304,2)SyntaxKind[RightHandSide]
         (304,2)SyntaxKind[SymbolSpan]
-          (304,2)SyntaxKind[BinarySymbol]
+          (304,2)SyntaxKind[ButNotSymbol]
             (304,2)SyntaxKind[Nonterminal]
               (304,2)SyntaxKind[Identifier](text = "RegularExpressionNonTerminator")
-            (304,32)SyntaxKind[ButNotOperator]
+            (304,32)SyntaxKind[ButKeyword]
+            (304,36)SyntaxKind[NotKeyword]
             (304,40)SyntaxKind[OneOfSymbol]
               (304,47)SyntaxKind[Terminal](text = "*")
               (304,54)SyntaxKind[Terminal](text = "\")
@@ -1248,10 +1255,11 @@
       (308,25)SyntaxKind[IndentToken]
       (309,2)SyntaxKind[RightHandSide]
         (309,2)SyntaxKind[SymbolSpan]
-          (309,2)SyntaxKind[BinarySymbol]
+          (309,2)SyntaxKind[ButNotSymbol]
             (309,2)SyntaxKind[Nonterminal]
               (309,2)SyntaxKind[Identifier](text = "RegularExpressionNonTerminator")
-            (309,32)SyntaxKind[ButNotOperator]
+            (309,32)SyntaxKind[ButKeyword]
+            (309,36)SyntaxKind[NotKeyword]
             (309,40)SyntaxKind[OneOfSymbol]
               (309,47)SyntaxKind[Terminal](text = "\")
               (309,54)SyntaxKind[Terminal](text = "/")
@@ -1282,10 +1290,11 @@
       (316,34)SyntaxKind[IndentToken]
       (317,2)SyntaxKind[RightHandSide]
         (317,2)SyntaxKind[SymbolSpan]
-          (317,2)SyntaxKind[BinarySymbol]
+          (317,2)SyntaxKind[ButNotSymbol]
             (317,2)SyntaxKind[Nonterminal]
               (317,2)SyntaxKind[Identifier](text = "SourceCharacter")
-            (317,17)SyntaxKind[ButNotOperator]
+            (317,17)SyntaxKind[ButKeyword]
+            (317,21)SyntaxKind[NotKeyword]
             (317,25)SyntaxKind[Nonterminal]
               (317,25)SyntaxKind[Identifier](text = "LineTerminator")
       (317,40)SyntaxKind[DedentToken]
@@ -1326,10 +1335,11 @@
       (326,30)SyntaxKind[IndentToken]
       (327,2)SyntaxKind[RightHandSide]
         (327,2)SyntaxKind[SymbolSpan]
-          (327,2)SyntaxKind[BinarySymbol]
+          (327,2)SyntaxKind[ButNotSymbol]
             (327,2)SyntaxKind[Nonterminal]
               (327,2)SyntaxKind[Identifier](text = "RegularExpressionNonTerminator")
-            (327,32)SyntaxKind[ButNotOperator]
+            (327,32)SyntaxKind[ButKeyword]
+            (327,36)SyntaxKind[NotKeyword]
             (327,40)SyntaxKind[OneOfSymbol]
               (327,47)SyntaxKind[Terminal](text = "]")
               (327,54)SyntaxKind[Terminal](text = "\")
@@ -1482,10 +1492,11 @@
             (361,2)SyntaxKind[Identifier](text = "LineTerminatorSequence")
       (362,2)SyntaxKind[RightHandSide]
         (362,2)SyntaxKind[SymbolSpan]
-          (362,2)SyntaxKind[BinarySymbol]
+          (362,2)SyntaxKind[ButNotSymbol]
             (362,2)SyntaxKind[Nonterminal]
               (362,2)SyntaxKind[Identifier](text = "SourceCharacter")
-            (362,17)SyntaxKind[ButNotOperator]
+            (362,17)SyntaxKind[ButKeyword]
+            (362,21)SyntaxKind[NotKeyword]
             (362,25)SyntaxKind[OneOfSymbol]
               (362,32)SyntaxKind[Terminal](text = "`")
               (362,39)SyntaxKind[Terminal](text = "\")
@@ -1568,10 +1579,11 @@
       (377,13)SyntaxKind[IndentToken]
       (378,2)SyntaxKind[RightHandSide]
         (378,2)SyntaxKind[SymbolSpan]
-          (378,2)SyntaxKind[BinarySymbol]
+          (378,2)SyntaxKind[ButNotSymbol]
             (378,2)SyntaxKind[Nonterminal]
               (378,2)SyntaxKind[Identifier](text = "IdentifierName")
-            (378,16)SyntaxKind[ButNotOperator]
+            (378,16)SyntaxKind[ButKeyword]
+            (378,20)SyntaxKind[NotKeyword]
             (378,24)SyntaxKind[Nonterminal]
               (378,24)SyntaxKind[Identifier](text = "ReservedWord")
       (378,37)SyntaxKind[DedentToken]

@@ -13,7 +13,6 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { assert } from "chai";
 import { readFileSync, writeFileSync, mkdirSync, existsSync, statSync, unlinkSync } from "fs";
 import { EOL } from "os";
 import { resolve, basename } from "path";
@@ -137,10 +136,18 @@ function ensureDirectory(path: string) {
     }
 }
 
+function formatKind(kind: SyntaxKind) {
+    for (var p in SyntaxKind) {
+        if (SyntaxKind[<string>p] === kind) {
+            return p;
+        }
+    }
+    return SyntaxKind[kind];
+}
 
 function formatNode(node: Node, sourceFile: SourceFile) {
     var text = `(${sourceFile.lineMap.formatPosition(node.pos) })`;
-    text += `SyntaxKind[${SyntaxKind[node.kind]}]`;
+    text += `SyntaxKind[${formatKind(node.kind)}]`;
     switch (node.kind) {
         case SyntaxKind.Prose:
         case SyntaxKind.Identifier:

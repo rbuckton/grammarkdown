@@ -1,4 +1,3 @@
-import { assert, expect } from "chai";
 import { readFileSync } from "fs";
 import { basename } from "path";
 import { DiagnosticMessages, LineMap } from "../lib/diagnostics";
@@ -10,17 +9,17 @@ import { writeTokens, writeDiagnostics, compareBaselines } from "./diff";
 
 describe("Scanner", () => {
     defineTests();
-    
+
     function defineTests() {
         for (let file of getGrammarFiles()) {
             defineTest("[Scanner]" + basename(file), file);
         }
     }
-    
+
     function defineTest(name: string, file: string) {
         it(name, () => {
             let baselines: string[] = [];
-            let text = readFileSync(file, "utf8"); 
+            let text = readFileSync(file, "utf8");
             let sourceFile = new SourceFile(file, text);
             let diagnostics = new DiagnosticMessages();
             diagnostics.setSourceFile(sourceFile);

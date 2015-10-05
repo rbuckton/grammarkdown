@@ -50,7 +50,7 @@
 &emsp;&emsp;&emsp;<a name="UnicodeCharacterLiteralChars-38ed7616"></a>*[UnicodeCharacterLiteralChar](#UnicodeCharacterLiteralChar)*&emsp;*[UnicodeCharacterLiteralChars](#UnicodeCharacterLiteralChars)*<sub>opt</sub>  
   
 &emsp;&emsp;<a name="UnicodeCharacterLiteralChar"></a>*UnicodeCharacterLiteralChar* **::**  
-&emsp;&emsp;&emsp;<a name="UnicodeCharacterLiteralChar-3490f5bb"></a>*[SourceCharacter](#SourceCharacter)* **but not** **one of** `` < `` **or** `` > `` **or** *[LineTerminator](#LineTerminator)*  
+&emsp;&emsp;&emsp;<a name="UnicodeCharacterLiteralChar-22948f2e"></a>*[SourceCharacter](#SourceCharacter)* **but not** **one of** `` < `` **or** `` > `` **or** *[LineTerminator](#LineTerminator)*  
   
 &emsp;&emsp;<a name="Indent"></a>*Indent* **::**  
 &emsp;&emsp;&emsp;<a name="Indent-e1ed22ce"></a>An increase in the indentation depth from the previous line.  
@@ -66,7 +66,7 @@
 &emsp;&emsp;&emsp;<a name="TerminalChars-cfc72e14"></a>*[TerminalChar](#TerminalChar)*&emsp;*[TerminalChars](#TerminalChars)*<sub>opt</sub>  
   
 &emsp;&emsp;<a name="TerminalChar"></a>*TerminalChar* **::**  
-&emsp;&emsp;&emsp;<a name="TerminalChar-4e1d9628"></a>*[SourceCharacter](#SourceCharacter)* **but not** **one of** `` ` `` **or** *[LineTerminator](#LineTerminator)*  
+&emsp;&emsp;&emsp;<a name="TerminalChar-94153dfd"></a>*[SourceCharacter](#SourceCharacter)* **but not** **one of** `` ` `` **or** *[LineTerminator](#LineTerminator)*  
   
 &emsp;&emsp;<a name="Prose"></a>*Prose* **::**  
 &emsp;&emsp;&emsp;<a name="Prose-a4d5e18a"></a>*[ProseLines](#ProseLines)*  
@@ -82,10 +82,10 @@
 &emsp;&emsp;&emsp;<a name="ProseChars-68b7c295"></a>*[ProseChar](#ProseChar)*&emsp;*[ProseChars](#ProseChars)*<sub>opt</sub>  
   
 &emsp;&emsp;<a name="ProseChar"></a>*ProseChar* **::**  
-&emsp;&emsp;&emsp;<a name="ProseChar-42edda0b"></a>*[SourceCharacter](#SourceCharacter)* **but not** *[LineTerminator](#LineTerminator)*  
+&emsp;&emsp;&emsp;<a name="ProseChar-2d5bdfa7"></a>*[SourceCharacter](#SourceCharacter)* **but not** *[LineTerminator](#LineTerminator)*  
   
 &emsp;&emsp;<a name="Identifier"></a>*Identifier* **:**  
-&emsp;&emsp;&emsp;<a name="Identifier-bb0c62c5"></a>*[IdentifierName](#IdentifierName)* **but not** *[ReservedWord](#ReservedWord)*  
+&emsp;&emsp;&emsp;<a name="Identifier-bfa5c374"></a>*[IdentifierName](#IdentifierName)* **but not** *[ReservedWord](#ReservedWord)*  
   
 &emsp;&emsp;<a name="Argument"></a>*Argument* **:**  
 &emsp;&emsp;&emsp;<a name="Argument-06b6ace8"></a>*[Identifier](#Identifier)*  

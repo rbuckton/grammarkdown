@@ -1,7 +1,7 @@
 /// [Parser]typescript.grammar:
 (1,1)SyntaxKind[SourceFile](filename = "typescript.grammar")
   (1,1)SyntaxKind[Import]
-    (1,1)SyntaxKind[FirstPunctuation]
+    (1,1)SyntaxKind[AtToken]
     (1,2)SyntaxKind[ImportKeyword]
     (1,8)SyntaxKind[StringLiteral]
   (4,1)SyntaxKind[Production]

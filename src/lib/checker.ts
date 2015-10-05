@@ -24,6 +24,7 @@ import {
     Node,
     SourceFile,
     UnicodeCharacterLiteral,
+    UnicodeCharacterRange,
     Prose,
     Identifier,
     Parameter,
@@ -43,8 +44,7 @@ import {
     OneOfSymbol,
     LexicalSymbol,
     OptionalSymbol,
-    ButNotOperator,
-    BinarySymbol,
+    ButNotSymbol,
     SymbolSpan,
     LinkReference,
     RightHandSide,
@@ -339,7 +339,7 @@ export class Checker {
             return;
         }
 
-        this.checkBinarySymbolOrHigher(node);
+        this.checkButNotSymbolOrHigher(node);
     }
 
     private checkAssertion(node: Assertion): void {
@@ -597,31 +597,28 @@ export class Checker {
         ]));
     }
 
-    private checkBinarySymbolOrHigher(node: LexicalSymbol) {
-        if (node.kind === SyntaxKind.BinarySymbol) {
-            this.checkBinarySymbol(<BinarySymbol>node);
+    private checkButNotSymbolOrHigher(node: LexicalSymbol) {
+        if (node.kind === SyntaxKind.ButNotSymbol) {
+            this.checkButNotSymbol(<ButNotSymbol>node);
             return;
         }
 
         this.checkUnarySymbolOrHigher(node);
     }
 
-    private checkBinarySymbol(node: BinarySymbol): void {
-        this.checkGrammarBinarySymbol(node);
+    private checkButNotSymbol(node: ButNotSymbol): void {
+        this.checkGrammarButNotSymbol(node);
         this.checkUnarySymbolOrHigher(node.left);
         this.checkUnarySymbolOrHigher(node.right);
     }
 
-    private checkGrammarBinarySymbol(node: BinarySymbol): boolean {
-        if (node.kind === SyntaxKind.ButNotOperator) {
-            let operator = <ButNotOperator>node.operatorToken;
-            if (!operator.butKeyword) {
-                return this.reportGrammarError(operator.pos, Diagnostics._0_expected, tokenToString(SyntaxKind.ButKeyword));
-            }
+    private checkGrammarButNotSymbol(node: ButNotSymbol): boolean {
+        if (!node.butKeyword) {
+            return this.reportGrammarErrorForNode(node.notKeyword || node.right, Diagnostics._0_expected, tokenToString(SyntaxKind.ButKeyword));
+        }
 
-            if (!operator.notKeyword) {
-                return this.reportGrammarError(operator.butKeyword.end, Diagnostics._0_expected, tokenToString(SyntaxKind.ButKeyword));
-            }
+        if (!node.notKeyword) {
+            return this.reportGrammarErrorForNode(node.right, Diagnostics._0_expected, tokenToString(SyntaxKind.NotKeyword));
         }
 
         if (!node.right) {
@@ -689,8 +686,8 @@ export class Checker {
                 this.checkUnicodeCharacterLiteral(<UnicodeCharacterLiteral>node, allowOptional);
                 break;
 
-            case SyntaxKind.BinarySymbol:
-                this.checkUnicodeCharacterRange(<BinarySymbol>node);
+            case SyntaxKind.UnicodeCharacterRange:
+                this.checkUnicodeCharacterRange(<UnicodeCharacterRange>node);
                 break;
 
             case SyntaxKind.Nonterminal:
@@ -729,23 +726,23 @@ export class Checker {
         return false;
     }
 
-    private checkGrammarUnicodeCharacterRange(node: BinarySymbol): boolean {
-        if (!node.left || node.left.kind !== SyntaxKind.UnicodeCharacterLiteral) {
-            return this.reportGrammarError(node.left.pos, Diagnostics._0_expected, tokenToString(SyntaxKind.UnicodeCharacterLiteral));
+    private checkGrammarUnicodeCharacterRange(node: UnicodeCharacterRange): boolean {
+        if (!node.left) {
+            return this.reportGrammarErrorForNode(node.throughKeyword || node.right || node, Diagnostics._0_expected, tokenToString(SyntaxKind.UnicodeCharacterLiteral));
         }
-        if (!node.operatorToken || node.operatorToken.kind !== SyntaxKind.ThroughKeyword) {
-            return this.reportGrammarError(node.operatorToken.pos, Diagnostics._0_expected, tokenToString(SyntaxKind.ThroughKeyword));
+        if (!node.throughKeyword) {
+            return this.reportGrammarErrorForNode(node.right || node, Diagnostics._0_expected, tokenToString(SyntaxKind.ThroughKeyword));
         }
-        if (!node.right || node.right.kind !== SyntaxKind.UnicodeCharacterLiteral) {
-            return this.reportGrammarError(node.right.pos, Diagnostics._0_expected, tokenToString(SyntaxKind.UnicodeCharacterLiteral));
+        if (!node.right) {
+            return this.reportGrammarError(node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.UnicodeCharacterLiteral));
         }
         return false;
     }
 
-    private checkUnicodeCharacterRange(node: BinarySymbol): void {
+    private checkUnicodeCharacterRange(node: UnicodeCharacterRange): void {
         this.checkGrammarUnicodeCharacterRange(node);
-        this.checkSymbolOrHigher(node.left);
-        this.checkSymbolOrHigher(node.right);
+        this.checkUnicodeCharacterLiteral(node.left);
+        this.checkUnicodeCharacterLiteral(node.right);
     }
 
     private checkUnicodeCharacterLiteral(node: UnicodeCharacterLiteral, allowOptional?: boolean): void {
@@ -970,7 +967,8 @@ class RightHandSideDigest {
             case SyntaxKind.LookaheadAssertion: this.writeLookaheadAssertion(<LookaheadAssertion>node); break;
             case SyntaxKind.NoSymbolHereAssertion: this.writeNoSymbolHereAssertion(<NoSymbolHereAssertion>node); break;
             case SyntaxKind.ParameterValueAssertion: this.writeParameterValueAssertion(<ParameterValueAssertion>node); break;
-            case SyntaxKind.BinarySymbol: this.writeBinarySymbol(<BinarySymbol>node); break;
+            case SyntaxKind.UnicodeCharacterRange: this.writeUnicodeCharacterRange(<UnicodeCharacterRange>node); break;
+            case SyntaxKind.ButNotSymbol: this.writeButNotSymbol(<ButNotSymbol>node); break;
             case SyntaxKind.OneOfSymbol: this.writeOneOfSymbol(<OneOfSymbol>node); break;
             case SyntaxKind.SymbolSpan: this.writeSymbolSpan(<SymbolSpan>node); break;
             case SyntaxKind.SymbolSet: this.writeSymbolSet(<SymbolSet>node); break;
@@ -1097,9 +1095,17 @@ class RightHandSideDigest {
         this.spaceRequested = true;
     }
 
-    private writeBinarySymbol(node: BinarySymbol) {
+    private writeUnicodeCharacterRange(node: UnicodeCharacterRange) {
         this.writeNode(node.left);
-        this.writeNode(node.operatorToken);
+        this.writeNode(node.throughKeyword);
+        this.writeNode(node.right);
+        this.spaceRequested = true;
+    }
+
+    private writeButNotSymbol(node: ButNotSymbol) {
+        this.writeNode(node.left);
+        this.writeNode(node.butKeyword);
+        this.writeNode(node.notKeyword);
         this.writeNode(node.right);
         this.spaceRequested = true;
     }

@@ -1,2 +1,2 @@
 A : A @ A
-B : A but not one of `"` or `\` or U+0000 through U+001F
+B : |A| but not one of `"` or `\` or U+0000 through U+001F
