@@ -162,8 +162,28 @@ export class Checker {
     }
 
     private checkParameterList(node: ParameterList): void {
+        this.checkGrammarParameterList(node);
+
         for (let element of node.elements) {
             this.checkParameter(element);
+        }
+    }
+
+    private checkGrammarParameterList(node: ParameterList): boolean {
+        if (!node.openParenToken) {
+            return this.reportGrammarError(node.pos, Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBracketToken));
+        }
+
+        if (node.openParenToken.kind === SyntaxKind.OpenParenToken) {
+            return this.reportGrammarErrorForNode(node.openParenToken, Diagnostics.Obsolete_0_, `Support for using parenthesis to enclose production parameter lists is deprecated and may be removed in a future update. Please switch to bracket's ('[', ']') when enclosing production parameter lists.`)
+        }
+
+        if (!node.elements) {
+            return this.reportGrammarError(node.pos, Diagnostics._0_expected, tokenToString(SyntaxKind.Identifier));
+        }
+
+        if (!node.closeParenToken) {
+            return this.reportGrammarError(node.pos, Diagnostics._0_expected, tokenToString(SyntaxKind.CloseBracketToken));
         }
     }
 
@@ -781,7 +801,11 @@ export class Checker {
 
     private checkGrammarArgumentList(node: ArgumentList): boolean {
         if (!node.openParenToken) {
-            return this.reportGrammarError(node.pos, Diagnostics._0_expected, tokenToString(SyntaxKind.OpenParenToken));
+            return this.reportGrammarError(node.pos, Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBracketToken));
+        }
+
+        if (node.openParenToken.kind === SyntaxKind.OpenParenToken) {
+            return this.reportGrammarErrorForNode(node.openParenToken, Diagnostics.Obsolete_0_, `Support for using parenthesis to enclose an argument list is deprecated and may be removed in a future update. Please switch to bracket's ('[', ']') when enclosing argument lists.`)
         }
 
         if (!node.elements) {
@@ -789,7 +813,7 @@ export class Checker {
         }
 
         if (!node.closeParenToken) {
-            return this.reportGrammarError(node.pos, Diagnostics._0_expected, tokenToString(SyntaxKind.CloseParenToken));
+            return this.reportGrammarError(node.pos, Diagnostics._0_expected, tokenToString(SyntaxKind.CloseBracketToken));
         }
 
         return false;

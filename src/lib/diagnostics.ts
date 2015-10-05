@@ -34,6 +34,7 @@ export const Diagnostics = {
     Digit_expected: <Diagnostic>{ code: 1006, message: "Digit expected." },
     Production_expected: <Diagnostic>{ code: 1007, message: "Production expected." },
     Unterminated_identifier_literal: <Diagnostic>{ code: 1008, message: "Unterminated identifier literal." },
+    Obsolete_0_: <Diagnostic>{ code: 1009, message: "Obsolete: {0}", warning: true },
     Cannot_find_name_0_: <Diagnostic>{ code: 2000, message: "Cannot find name: '{0}'." },
     Duplicate_identifier_0_: <Diagnostic>{ code: 2001, message: "Duplicate identifier: '{0}'." },
     Duplicate_terminal_0_: <Diagnostic>{ code: 2002, message: "Duplicate terminal: `{0}`." },
