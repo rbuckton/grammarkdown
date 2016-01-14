@@ -29,7 +29,7 @@ however using multiple spaces for indentation is supported as long as all nested
 
 #### Productions
 
-A *Production* consists of a left-hand-side *Nonterminal* followed by a colon (`:`) separator and one or more *right-hand-side* sentances consisting of
+A *Production* consists of a left-hand-side *Nonterminal* followed by a colon (`:`) separator and one or more *right-hand-side* sentences consisting of
 various forms of *terminal* and *nonterminal* symbols. For example:
 
 ```
@@ -46,7 +46,7 @@ NamedImports : `{` ImportList `}`
 NamedImports : `{` ImportList `,` `}`
 ```
 
-You may also specify multiple left-hand-side sentances for a single production by indenting them:
+You may also specify multiple left-hand-side sentences for a single production by indenting them:
 
 ```
 NamedImports :
@@ -90,7 +90,7 @@ Declaration[Yield] :
 	LexicalDeclaration[In, ?Yield]
 ```
 
-The right-hand-side of a *Production* consists of one or more *Terminal* or *Nonterminal* symbols, a sentance of *Prose*, or an *Assertion*.
+The right-hand-side of a *Production* consists of one or more *Terminal* or *Nonterminal* symbols, a sentence of *Prose*, or an *Assertion*.
 
 #### Terminals
 
@@ -120,7 +120,7 @@ Character ranges may be specified using the `through` keyword:
 
 #### Prose
 
-A sentance of *Prose* is a single line with a leading greater-than ('>') character. For example: `> any Unicode code point`
+A sentence of *Prose* is a single line with a leading greater-than ('>') character. For example: `> any Unicode code point`
 
 #### The `but not` Condition
 
