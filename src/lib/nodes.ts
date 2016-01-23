@@ -13,10 +13,14 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { Dict } from "./core";
+import { Dict, Range, Position } from "./core";
 import { LineMap } from "./diagnostics";
 import { SyntaxKind } from "./tokens";
 import { SymbolTable } from "./symbols";
+import { metadata, getPropertyMetadata } from "./metadata";
+
+// override TypeScript __metadata decorator.
+var __metadata = metadata;
 
 let nextNodeId = 0;
 
@@ -33,14 +37,36 @@ export interface TextRange {
     end: number;
 }
 
+export interface NodeEdge {
+    name: string;
+    isArray: boolean;
+    read?(node: Node): Node;
+    readArray?(node: Node): Node[];
+}
+
+export namespace NodeEdge {
+    export function create(name: string, read: (node: Node) => Node): NodeEdge {
+        return { name, isArray: false, read };
+    }
+
+    export function createArray(name: string, readArray: (node: Node) => Node[]): NodeEdge {
+        return { name, isArray: true, readArray };
+    }
+}
+
 export class Node implements TextRange {
     public kind: SyntaxKind;
     public id: number = ++nextNodeId;
     public pos: number;
     public end: number;
+    private _edges: NodeEdge[];
 
     constructor(kind: SyntaxKind) {
         this.kind = kind;
+    }
+
+    public getEdges() {
+        return this._edges ? this._edges.slice() : [];
     }
 }
 
@@ -71,12 +97,20 @@ export class PrimarySymbol extends LexicalSymbol {
 }
 
 export class OptionalSymbol extends PrimarySymbol {
-    public questionToken: Node;
+    @edge questionToken: Node;
 
     constructor(kind: SyntaxKind, questionToken: Node) {
         super(kind);
 
         this.questionToken = questionToken;
+    }
+
+    public getChildrenCount() {
+        return this.questionToken ? 1 : 0;
+    }
+
+    public getNthChild(offset: number) {
+        return this.questionToken;
     }
 }
 
@@ -91,9 +125,10 @@ export class UnicodeCharacterLiteral extends OptionalSymbol implements TextConte
 }
 
 export class UnicodeCharacterRange extends LexicalSymbol {
-    public left: UnicodeCharacterLiteral;
-    public throughKeyword: Node;
-    public right: UnicodeCharacterLiteral;
+    @edge left: UnicodeCharacterLiteral;
+    @edge throughKeyword: Node;
+    @edge right: UnicodeCharacterLiteral;
+
     constructor(left: UnicodeCharacterLiteral, throughKeyword: Node, right: UnicodeCharacterLiteral) {
         super(SyntaxKind.UnicodeCharacterRange);
         this.left = left;
@@ -103,10 +138,10 @@ export class UnicodeCharacterRange extends LexicalSymbol {
 }
 
 export class ButNotSymbol extends LexicalSymbol {
-    public left: LexicalSymbol;
-    public butKeyword: Node;
-    public notKeyword: Node;
-    public right: LexicalSymbol;
+    @edge left: LexicalSymbol;
+    @edge butKeyword: Node;
+    @edge notKeyword: Node;
+    @edge right: LexicalSymbol;
 
     constructor(left: LexicalSymbol, butKeyword: Node, notKeyword: Node, right: LexicalSymbol) {
         super(SyntaxKind.ButNotSymbol);
@@ -128,7 +163,7 @@ export class Terminal extends OptionalSymbol implements TextContent {
 }
 
 export class TerminalList extends Node {
-    public terminals: Terminal[];
+    @edge terminals: Terminal[];
 
     constructor(terminals: Terminal[] = []) {
         super(SyntaxKind.TerminalList);
@@ -138,9 +173,9 @@ export class TerminalList extends Node {
 }
 
 export class SymbolSet extends Node {
-    public openBraceToken: Node;
-    public elements: SymbolSpan[];
-    public closeBraceToken: Node;
+    @edge openBraceToken: Node;
+    @edge elements: SymbolSpan[];
+    @edge closeBraceToken: Node;
 
     constructor(openBraceToken: Node, elements: SymbolSpan[], closeBraceToken: Node) {
         super(SyntaxKind.SymbolSet);
@@ -152,8 +187,8 @@ export class SymbolSet extends Node {
 }
 
 export class Assertion extends LexicalSymbol {
-    public openBracketToken: Node;
-    public closeBracketToken: Node;
+    @edge openBracketToken: Node;
+    @edge closeBracketToken: Node;
 
     constructor(kind: SyntaxKind, openBracketToken: Node, closeBracketToken: Node) {
         super(kind);
@@ -164,7 +199,9 @@ export class Assertion extends LexicalSymbol {
 }
 
 export class EmptyAssertion extends Assertion {
-    public emptyKeyword: Node;
+    @edge openBracketToken: Node;
+    @edge emptyKeyword: Node;
+    @edge closeBracketToken: Node;
 
     constructor(openBracketToken: Node, emptyKeyword: Node, closeBracketToken: Node) {
         super(SyntaxKind.EmptyAssertion, openBracketToken, closeBracketToken);
@@ -174,9 +211,11 @@ export class EmptyAssertion extends Assertion {
 }
 
 export class LookaheadAssertion extends Assertion {
-    public lookaheadKeyword: Node;
-    public operatorToken: Node;
-    public lookahead: SymbolSpan | SymbolSet;
+    @edge openBracketToken: Node;
+    @edge lookaheadKeyword: Node;
+    @edge operatorToken: Node;
+    @edge lookahead: SymbolSpan | SymbolSet;
+    @edge closeBracketToken: Node;
 
     constructor(openBracketToken: Node, lookaheadKeyword: Node, operatorToken: Node, lookahead: SymbolSpan | SymbolSet, closeBracketToken: Node) {
         super(SyntaxKind.LookaheadAssertion, openBracketToken, closeBracketToken);
@@ -188,9 +227,11 @@ export class LookaheadAssertion extends Assertion {
 }
 
 export class LexicalGoalAssertion extends Assertion {
-    public lexicalKeyword: Node;
-    public goalKeyword: Node;
-    public symbol: Identifier;
+    @edge openBracketToken: Node;
+    @edge lexicalKeyword: Node;
+    @edge goalKeyword: Node;
+    @edge symbol: Identifier;
+    @edge closeBracketToken: Node;
 
     constructor(openBracketToken: Node, lexicalKeyword: Node, goalKeyword: Node, symbol: Identifier, closeBracketToken: Node) {
         super(SyntaxKind.LexicalGoalAssertion, openBracketToken, closeBracketToken);
@@ -202,9 +243,11 @@ export class LexicalGoalAssertion extends Assertion {
 }
 
 export class NoSymbolHereAssertion extends Assertion {
-    public noKeyword: Node;
-    public symbols: PrimarySymbol[];
-    public hereKeyword: Node;
+    @edge openBracketToken: Node;
+    @edge noKeyword: Node;
+    @edge symbols: PrimarySymbol[];
+    @edge hereKeyword: Node;
+    @edge closeBracketToken: Node;
 
     constructor(openBracketToken: Node, noKeyword: Node, symbols: PrimarySymbol[], hereKeyword: Node, closeBracketToken: Node) {
         super(SyntaxKind.NoSymbolHereAssertion, openBracketToken, closeBracketToken);
@@ -216,8 +259,10 @@ export class NoSymbolHereAssertion extends Assertion {
 }
 
 export class ParameterValueAssertion extends Assertion {
-    public operatorToken: Node;
-    public name: Identifier;
+    @edge openBracketToken: Node;
+    @edge operatorToken: Node;
+    @edge name: Identifier;
+    @edge closeBracketToken: Node;
 
     constructor(openBracketToken: Node, operatorToken: Node, name: Identifier, closeBracketToken: Node) {
         super(SyntaxKind.ParameterValueAssertion, openBracketToken, closeBracketToken);
@@ -228,8 +273,8 @@ export class ParameterValueAssertion extends Assertion {
 }
 
 export class Argument extends Node {
-    public questionToken: Node;
-    public name: Identifier;
+    @edge questionToken: Node;
+    @edge name: Identifier;
 
     constructor(questionToken: Node, name: Identifier) {
         super(SyntaxKind.Argument);
@@ -240,9 +285,9 @@ export class Argument extends Node {
 }
 
 export class ArgumentList extends Node {
-    public openParenToken: Node;
-    public elements: Argument[];
-    public closeParenToken: Node;
+    @edge openParenToken: Node;
+    @edge elements: Argument[];
+    @edge closeParenToken: Node;
 
     constructor(openParenToken: Node, elements: Argument[], closeParenToken: Node) {
         super(SyntaxKind.ArgumentList);
@@ -254,8 +299,8 @@ export class ArgumentList extends Node {
 }
 
 export class Nonterminal extends OptionalSymbol {
-    public name: Identifier;
-    public argumentList: ArgumentList;
+    @edge name: Identifier;
+    @edge argumentList: ArgumentList;
 
     constructor(name: Identifier, argumentList: ArgumentList, questionToken: Node) {
         super(SyntaxKind.Nonterminal, questionToken);
@@ -276,9 +321,9 @@ export class Prose extends LexicalSymbol implements TextContent {
 }
 
 export class OneOfSymbol extends LexicalSymbol {
-    public oneKeyword: Node;
-    public ofKeyword: Node;
-    public symbols: LexicalSymbol[];
+    @edge oneKeyword: Node;
+    @edge ofKeyword: Node;
+    @edge symbols: LexicalSymbol[];
 
     constructor(oneKeyword: Node, ofKeyword: Node, symbols: LexicalSymbol[]) {
         super(SyntaxKind.OneOfSymbol);
@@ -290,8 +335,8 @@ export class OneOfSymbol extends LexicalSymbol {
 }
 
 export class SymbolSpan extends Node {
-    public symbol: LexicalSymbol;
-    public next: SymbolSpan;
+    @edge symbol: LexicalSymbol;
+    @edge next: SymbolSpan;
 
     constructor(symbol: LexicalSymbol, next: SymbolSpan) {
         super(SyntaxKind.SymbolSpan);
@@ -312,8 +357,8 @@ export class LinkReference extends Node {
 }
 
 export class RightHandSide extends Node {
-    public head: SymbolSpan;
-    public reference: LinkReference;
+    @edge head: SymbolSpan;
+    @edge reference: LinkReference;
 
     constructor(head: SymbolSpan, reference: LinkReference) {
         super(SyntaxKind.RightHandSide);
@@ -324,9 +369,9 @@ export class RightHandSide extends Node {
 }
 
 export class RightHandSideList extends Node {
-    public openIndentToken: Node;
-    public elements: RightHandSide[];
-    public closeIndentToken: Node;
+    @edge openIndentToken: Node;
+    @edge elements: RightHandSide[];
+    @edge closeIndentToken: Node;
 
     constructor(openIndentToken: Node, elements: RightHandSide[], closeIndentToken: Node) {
         super(SyntaxKind.RightHandSideList);
@@ -338,11 +383,11 @@ export class RightHandSideList extends Node {
 }
 
 export class OneOfList extends Node {
-    public openIndentToken: Node;
-    public oneKeyword: Node;
-    public ofKeyword: Node;
-    public terminals: Terminal[];
-    public closeIndentToken: Node;
+    @edge openIndentToken: Node;
+    @edge oneKeyword: Node;
+    @edge ofKeyword: Node;
+    @edge terminals: Terminal[];
+    @edge closeIndentToken: Node;
 
     constructor(oneKeyword: Node, ofKeyword: Node, openIndentToken: Node, terminals: Terminal[], closeIndentToken: Node) {
         super(SyntaxKind.OneOfList);
@@ -356,7 +401,7 @@ export class OneOfList extends Node {
 }
 
 export class Parameter extends Node {
-    public name: Identifier;
+    @edge name: Identifier;
 
     constructor(name: Identifier) {
         super(SyntaxKind.Parameter);
@@ -366,9 +411,9 @@ export class Parameter extends Node {
 }
 
 export class ParameterList extends Node {
-    public openParenToken: Node;
-    public elements: Parameter[];
-    public closeParenToken: Node;
+    @edge openParenToken: Node;
+    @edge elements: Parameter[];
+    @edge closeParenToken: Node;
 
     constructor(openParenToken: Node, elements: Parameter[], closeParenToken: Node) {
         super(SyntaxKind.ParameterList);
@@ -383,10 +428,10 @@ export class SourceElement extends Node {
 }
 
 export class Production extends SourceElement {
-    public name: Identifier;
-    public colonToken: Node;
-    public parameterList: ParameterList;
-    public body: OneOfList | RightHandSide | RightHandSideList;
+    @edge name: Identifier;
+    @edge colonToken: Node;
+    @edge parameterList: ParameterList;
+    @edge body: OneOfList | RightHandSide | RightHandSideList;
 
     constructor(name: Identifier, parameters: ParameterList, colonToken: Node, body: OneOfList | RightHandSide | RightHandSideList) {
         super(SyntaxKind.Production);
@@ -399,9 +444,9 @@ export class Production extends SourceElement {
 }
 
 export class Import extends SourceElement {
-    public atToken: Node;
-    public importKeyword: Node;
-    public path: StringLiteral;
+    @edge atToken: Node;
+    @edge importKeyword: Node;
+    @edge path: StringLiteral;
 
     constructor(atToken: Node, importKeyword: Node, path: StringLiteral) {
         super(SyntaxKind.Import);
@@ -414,7 +459,7 @@ export class Import extends SourceElement {
 export class SourceFile extends Node {
     public filename: string;
     public text: string;
-    public elements: SourceElement[];
+    @edge elements: SourceElement[];
     public lineMap: LineMap;
     public imports: string[];
 
@@ -574,4 +619,24 @@ export function forEachChild<T>(node: Node, cbNode: (node: Node) => T): T {
     }
 
     return undefined;
+}
+
+function ensureEdges(target: Node): NodeEdge[] {
+    if (!Object.prototype.hasOwnProperty.call(target, "_edges")) {
+        Object.defineProperty(target, "_edges", { value: [] });
+    }
+    return (<any>target)._edges;
+}
+
+function addEdge(target: Node, edge: NodeEdge) {
+    ensureEdges(target).push(edge);
+}
+
+export function edge(target: Node, name: string) {
+    const designType = getPropertyMetadata(target, name, "design:type");
+    const read = node => Dict.get<any>(node, name);
+    const edge = designType === Array
+        ? NodeEdge.createArray(name, read)
+        : NodeEdge.create(name, read);
+    addEdge(target, edge);
 }

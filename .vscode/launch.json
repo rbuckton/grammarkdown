@@ -1,38 +1,51 @@
 {
-	"version": "0.1.0",
-	// List of configurations. Add new configurations or edit existing ones.  
-	// ONLY "node" and "mono" are supported, change "type" to switch.
+	"version": "0.2.0",
 	"configurations": [
 		{
-			// Name of configuration; appears in the launch configuration drop down menu.
-			"name": "Launch app.js",
-			// Type of configuration. Possible values: "node", "mono".
+			"name": "Launch",
 			"type": "node",
-			// Workspace relative or absolute path to the program.
-			"program": "bin/cli.js",
-			// Automatically stop program after launch.
+			"request": "launch",
+			"program": "./bin/cli.js",
 			"stopOnEntry": true,
-			// Command line arguments passed to the program.
 			"args": [],
-			// Workspace relative or absolute path to the working directory of the program being debugged. Default is the current workspace.
 			"cwd": ".",
-			// Workspace relative or absolute path to the runtime executable to be used. Default is the runtime executable on the PATH.
 			"runtimeExecutable": null,
-			// Optional arguments passed to the runtime executable.
-			"runtimeArguments": [],
-			// Environment variables passed to the program.
-			"env": { },
-			// Use JavaScript source maps (if they exist).
-			"sourceMaps": false
-		}, 
+			"runtimeArgs": [
+				"--nolazy"
+			],
+			"env": {
+				"NODE_ENV": "development"
+			},
+			"externalConsole": false,
+			"sourceMaps": true,
+			"outDir": "./lib"
+		},
+        {
+            "name": "Test",
+            "type": "node",
+            "request": "launch",
+            "program": "./tests/index.js",
+            "stopOnEntry": true,
+            "args": [],
+            "cwd": ".",
+            "runtimeExecutable": "./node_modules/.bin/mocha.cmd",
+            "runtimeArgs": [
+                "--nolazy",
+                "--reporter",
+                "dot"
+            ],
+            "env": {
+                "NODE_ENV": "development"
+            },
+            "externalConsole": false,
+            "sourceMaps": true,
+            "outDir": "./tests"
+        },
 		{
 			"name": "Attach",
 			"type": "node",
-			// TCP/IP address. Default is "localhost".
-			"address": "localhost",
-			// Port to attach to.
-			"port": 5858,
-			"sourceMaps": false
+			"request": "attach",
+			"port": 5858
 		}
 	]
 }

@@ -13,7 +13,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { Diagnostics, DiagnosticMessages, NullDiagnosticMessages, formatList } from "./diagnostics";
+import { Range, Position } from "./core";
+import { Diagnostics, DiagnosticMessages, NullDiagnosticMessages, LineMap, formatList } from "./diagnostics";
 import { SyntaxKind, tokenToString } from "./tokens";
 import { Scanner } from "./scanner";
 import {
@@ -49,6 +50,7 @@ import {
     Import,
     SourceElement
 } from "./nodes";
+import { NodeNavigator } from "./navigator";
 
 enum ParsingContext {
     SourceElements,
@@ -71,8 +73,35 @@ enum SkipWhitespace {
     All = LineTerminator | Indentation,
 }
 
-export interface Host {
-    readFile(filename: string): string;
+export class TextChange {
+    range: Range;
+    text: string;
+}
+
+export namespace TextChange {
+    export function create(text: string, range: Range) {
+        return { text, range };
+    }
+
+    export function clone(change: TextChange) {
+        return create(change.text, Range.clone(change.range));
+    }
+
+    export function isUnchanged(change: TextChange) {
+        return change.text.length === 0
+            && Range.isCollapsed(change.range);
+    }
+
+    export function applyChange(originalText: string, change: TextChange) {
+        if (isUnchanged(change)) {
+            return originalText;
+        }
+
+        const lineMap = new LineMap(originalText);
+        const pos = lineMap.getPositionOfLineAndCharacter(change.range.start);
+        const end = lineMap.getPositionOfLineAndCharacter(change.range.end);
+        return originalText.substr(0, pos) + change.text + originalText.substr(end);
+    }
 }
 
 export class Parser {
@@ -81,12 +110,45 @@ export class Parser {
     private sourceFile: SourceFile;
     private diagnostics: DiagnosticMessages;
     private parsingContext: ParsingContext;
+    private previousSourceFile: SourceFile;
 
     constructor(diagnostics: DiagnosticMessages) {
         this.diagnostics = diagnostics;
     }
 
+    // TODO(rbuckton): Incremental parser
+    // public updateSourceFile(sourceFile: SourceFile, change: TextChange) {
+    //     if (TextChange.isUnchanged(change)) {
+    //         return sourceFile;
+    //     }
+
+    //     if (sourceFile.elements.length === 0) {
+    //         return this.parseSourceFile(sourceFile.filename, change.text);
+    //     }
+
+    //     const navigator = new NodeNavigator(sourceFile);
+    //     navigator.moveToPosition(change.range.start);
+    //     navigator.moveToSourceElement();
+    //     const startPos = navigator.getNode().pos;
+    //     const startOffset = navigator.getOffset();
+    //     navigator.moveToPosition(change.range.end);
+    //     navigator.moveToSourceElement();
+    //     const endPos = navigator.getNode().end;
+    //     const endOffset = navigator.getOffset();
+
+    //     // 1) replace the text from sourceFile.text with the specified changes
+    //     // 2) create a new SourceFile, copying nodes from the original source file
+    //     // up to startOffset
+    //     // 3) parse the new text fragment, adding nodes to the new SourceFile
+    //     // 4) clone nodes from the old source file to the new source file
+    //     // with new positions
+    // }
+
     public parseSourceFile(filename: string, text: string): SourceFile {
+        return this.parse(filename, text, /*previousSourceFile*/ undefined, /*changeRange*/ undefined);
+    }
+
+    private parse(filename: string, text: string, previousSourceFile: SourceFile, changeRange: TextRange) {
         this.sourceFile = new SourceFile(filename, text);
         this.diagnostics.setSourceFile(this.sourceFile);
         this.scanner = new Scanner(filename, text, this.diagnostics);
@@ -199,7 +261,7 @@ export class Parser {
 
     private parseToken(token: SyntaxKind): Node {
         if (this.token === token) {
-            let fullStart = this.scanner.getStartPos();
+            let fullStart = this.scanner.getTokenPos();
             this.nextToken();
             return this.finishNode(new Node(token), fullStart);
         }
@@ -209,7 +271,7 @@ export class Parser {
 
     private parseAnyToken(predicate: (token: SyntaxKind) => boolean): Node {
         if (predicate(this.token)) {
-            let fullStart = this.scanner.getStartPos();
+            let fullStart = this.scanner.getTokenPos();
             let node = new Node(this.token);
             this.nextToken();
             return this.finishNode(node, fullStart);
@@ -234,7 +296,7 @@ export class Parser {
             return true;
         }
         else {
-            this.diagnostics.report(this.scanner.getStartPos(), Diagnostics._0_expected, tokenToString(token));
+            this.diagnostics.report(this.scanner.getTokenPos(), Diagnostics._0_expected, tokenToString(token));
             return false;
         }
     }
@@ -447,33 +509,33 @@ export class Parser {
     private reportDiagnostics(): void {
         switch (this.parsingContext) {
             case ParsingContext.SourceElements:
-                this.diagnostics.report(this.scanner.getStartPos(), Diagnostics.Production_expected);
+                this.diagnostics.report(this.scanner.getTokenPos(), Diagnostics.Production_expected);
                 break;
 
             case ParsingContext.Parameters:
             case ParsingContext.Arguments:
-                this.diagnostics.report(this.scanner.getStartPos(), Diagnostics._0_expected, formatList([SyntaxKind.CommaToken, SyntaxKind.CloseParenToken]));
+                this.diagnostics.report(this.scanner.getTokenPos(), Diagnostics._0_expected, formatList([SyntaxKind.CommaToken, SyntaxKind.CloseParenToken]));
                 break;
 
             case ParsingContext.BracketedParameters:
             case ParsingContext.BracketedArguments:
-                this.diagnostics.report(this.scanner.getStartPos(), Diagnostics._0_expected, formatList([SyntaxKind.CommaToken, SyntaxKind.CloseBracketToken]));
+                this.diagnostics.report(this.scanner.getTokenPos(), Diagnostics._0_expected, formatList([SyntaxKind.CommaToken, SyntaxKind.CloseBracketToken]));
                 break;
 
             case ParsingContext.SymbolSet:
-                this.diagnostics.report(this.scanner.getStartPos(), Diagnostics._0_expected, formatList([SyntaxKind.CommaToken, SyntaxKind.CloseBraceToken]));
+                this.diagnostics.report(this.scanner.getTokenPos(), Diagnostics._0_expected, formatList([SyntaxKind.CommaToken, SyntaxKind.CloseBraceToken]));
                 break;
 
             case ParsingContext.OneOfList:
-                this.diagnostics.report(this.scanner.getStartPos(), Diagnostics._0_expected, formatList([SyntaxKind.Terminal, SyntaxKind.LineTerminatorToken]));
+                this.diagnostics.report(this.scanner.getTokenPos(), Diagnostics._0_expected, formatList([SyntaxKind.Terminal, SyntaxKind.LineTerminatorToken]));
                 break;
 
             case ParsingContext.OneOfListIndented:
-                this.diagnostics.report(this.scanner.getStartPos(), Diagnostics._0_expected, formatList([SyntaxKind.Terminal, SyntaxKind.DedentToken]));
+                this.diagnostics.report(this.scanner.getTokenPos(), Diagnostics._0_expected, formatList([SyntaxKind.Terminal, SyntaxKind.DedentToken]));
                 break;
 
             case ParsingContext.RightHandSideListIndented:
-                this.diagnostics.report(this.scanner.getStartPos(), Diagnostics.Production_expected);
+                this.diagnostics.report(this.scanner.getTokenPos(), Diagnostics.Production_expected);
                 break;
         }
     }
@@ -625,7 +687,7 @@ export class Parser {
     }
 
     private parseIdentifier(): Identifier {
-        let fullStart = this.scanner.getStartPos();
+        let fullStart = this.scanner.getTokenPos();
         let text = this.canBeIdentifier(this.token) && this.readTokenValue(this.token);
         let node = new Identifier(text);
         return this.finishNode(node, fullStart);
@@ -640,7 +702,7 @@ export class Parser {
     }
 
     private parseProse(): Prose {
-        let fullStart = this.scanner.getStartPos();
+        let fullStart = this.scanner.getTokenPos();
         let text = this.readTokenValue(SyntaxKind.Prose);
         let node = new Prose(text);
         return this.finishNode(node, fullStart);
@@ -651,7 +713,7 @@ export class Parser {
     }
 
     private parseParameter(): Parameter {
-        let fullStart = this.scanner.getStartPos();
+        let fullStart = this.scanner.getTokenPos();
         let name = this.parseIdentifier();
         let node = new Parameter(name);
         return this.finishNode(node, fullStart);
@@ -775,7 +837,7 @@ export class Parser {
     }
 
     private parseInvalidAssertionTail(openBracketToken: Node): Assertion {
-        let fullStart = this.scanner.getStartPos();
+        let fullStart = this.scanner.getTokenPos();
         this.skipUntil(isInvalidConstraintTailRecoveryToken);
         let closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
         let node = new Assertion(SyntaxKind.InvalidAssertion, openBracketToken, closeBracketToken);
@@ -808,7 +870,7 @@ export class Parser {
     }
 
     private parseTerminal(allowOptional: boolean): Terminal {
-        let fullStart = this.scanner.getStartPos();
+        let fullStart = this.scanner.getTokenPos();
         let text = this.readTokenValue(SyntaxKind.Terminal);
         let questionToken = allowOptional ? this.parseToken(SyntaxKind.QuestionToken) : undefined;
         let node = new Terminal(text, questionToken);
@@ -821,7 +883,7 @@ export class Parser {
     }
 
     private parseArgument(): Argument {
-        let fullStart = this.scanner.getStartPos();
+        let fullStart = this.scanner.getTokenPos();
         let questionToken = this.parseToken(SyntaxKind.QuestionToken);
         let name = this.parseIdentifier();
         let node = new Argument(questionToken, name);
@@ -863,7 +925,7 @@ export class Parser {
     }
 
     private parseNonterminal(allowOptional: boolean): Nonterminal {
-        let fullStart = this.scanner.getStartPos();
+        let fullStart = this.scanner.getTokenPos();
         let name = this.parseIdentifier();
         let argumentList = this.tryParseArgumentList();
         let questionToken = allowOptional ? this.parseToken(SyntaxKind.QuestionToken) : undefined;
@@ -872,7 +934,7 @@ export class Parser {
     }
 
     private parseOneOfSymbol(): OneOfSymbol {
-        let fullStart = this.scanner.getStartPos();
+        let fullStart = this.scanner.getTokenPos();
         let oneKeyword = this.parseToken(SyntaxKind.OneKeyword);
         let ofKeyword = this.parseToken(SyntaxKind.OfKeyword);
         let symbols = this.parseList<LexicalSymbol>(ParsingContext.OneOfSymbolList);
@@ -881,14 +943,14 @@ export class Parser {
     }
 
     private parsePlaceholderSymbol(): LexicalSymbol {
-        let fullStart = this.scanner.getStartPos();
+        let fullStart = this.scanner.getTokenPos();
         let node = new LexicalSymbol(this.token);
         this.nextToken();
         return this.finishNode(node, fullStart);
     }
 
     private parseInvalidSymbol(): LexicalSymbol {
-        let fullStart = this.scanner.getStartPos();
+        let fullStart = this.scanner.getTokenPos();
         let node = new LexicalSymbol(SyntaxKind.InvalidSymbol);
         this.skipUntil(isInvalidSymbolRecoveryToken);
         return this.finishNode(node, fullStart);
@@ -978,7 +1040,7 @@ export class Parser {
     }
 
     private parseSymbolSpanRest(): SymbolSpan {
-        let fullStart = this.scanner.getStartPos();
+        let fullStart = this.scanner.getTokenPos();
         let symbol = this.parseSymbol();
         let next = this.tryParseSymbolSpan();
         let node = new SymbolSpan(symbol, next);
@@ -986,7 +1048,7 @@ export class Parser {
     }
 
     private parseSymbolSpan(): SymbolSpan {
-        let fullStart = this.scanner.getStartPos();
+        let fullStart = this.scanner.getTokenPos();
         if (this.token === SyntaxKind.Prose) {
             let symbol = this.parseProse();
             let node = new SymbolSpan(symbol, /*next*/ undefined);
@@ -1018,7 +1080,7 @@ export class Parser {
 
     private parseLinkReference(): LinkReference {
         if (this.token === SyntaxKind.LinkReference) {
-            let fullStart = this.scanner.getStartPos();
+            let fullStart = this.scanner.getTokenPos();
             let text = this.readTokenValue(SyntaxKind.LinkReference);
             let node = new LinkReference(text);
             return this.finishNode(node, fullStart);
@@ -1028,7 +1090,7 @@ export class Parser {
     }
 
     private parseRightHandSide(): RightHandSide {
-        let fullStart = this.scanner.getStartPos();
+        let fullStart = this.scanner.getTokenPos();
         let head = this.parseSymbolSpan();
         let reference = this.parseLinkReference();
         let node = new RightHandSide(head, reference);
@@ -1040,7 +1102,7 @@ export class Parser {
     }
 
     private parseRightHandSideList(): RightHandSideList {
-        let fullStart = this.scanner.getStartPos();
+        let fullStart = this.scanner.getTokenPos();
         let openIndentToken = this.parseToken(SyntaxKind.IndentToken);
         let elements = openIndentToken && this.parseList<RightHandSide>(ParsingContext.RightHandSideListIndented) || [];
         let closeIndentToken = this.parseToken(SyntaxKind.DedentToken);
@@ -1062,7 +1124,7 @@ export class Parser {
     }
 
     private parseProduction(): Production {
-        let fullStart = this.scanner.getStartPos();
+        let fullStart = this.scanner.getTokenPos();
         let name = this.parseIdentifier();
         let parameters = this.tryParseParameterList();
         let colonToken = this.parseAnyToken(isProductionSeparatorToken);
@@ -1073,7 +1135,7 @@ export class Parser {
 
     private parseStringLiteral(): StringLiteral {
         if (this.token === SyntaxKind.StringLiteral) {
-            let fullStart = this.scanner.getStartPos();
+            let fullStart = this.scanner.getTokenPos();
             let text = this.scanner.getTokenValue();
             let node = new StringLiteral(text);
             this.nextToken();
@@ -1084,7 +1146,7 @@ export class Parser {
     }
 
     private parseImport(): Import {
-        let fullStart = this.scanner.getStartPos();
+        let fullStart = this.scanner.getTokenPos();
         let atToken = this.parseToken(SyntaxKind.AtToken);
         let importKeyword = this.parseToken(SyntaxKind.ImportKeyword);
         let path = this.parseStringLiteral();
@@ -1119,7 +1181,7 @@ export class Parser {
                 return this.parseImport();
 
             default:
-                this.diagnostics.report(this.scanner.getStartPos(), Diagnostics.Unexpected_token_0_, tokenToString(this.token));
+                this.diagnostics.report(this.scanner.getTokenPos(), Diagnostics.Unexpected_token_0_, tokenToString(this.token));
                 return;
         }
     }

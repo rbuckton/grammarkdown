@@ -1,20 +1,8 @@
 {
   "name": "grammarkdown",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Markdown-like DSL for defining syntactic grammars for programming languages.",
-  "main": "./lib/index.js",
-  "bin": {
-    "grammarkdown": "./bin/grammarkdown"
-  },
-  "scripts": {
-    "test": "gulp test",
-    "build": "gulp build",
-    "update-pages": "gulp publish"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/rbuckton/grammarkdown.git"
-  },
+  "license": "Apache-2.0",
   "keywords": [
     "grammar",
     "language",
@@ -29,11 +17,24 @@
     "email": "rbuckton@chronicles.org",
     "url": "http://github.com/rbuckton"
   },
-  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rbuckton/grammarkdown.git"
+  },
   "bugs": {
     "url": "https://github.com/rbuckton/grammarkdown/issues"
   },
   "homepage": "https://github.com/rbuckton/grammarkdown",
+  "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
+  "bin": {
+    "grammarkdown": "./bin/grammarkdown"
+  },
+  "scripts": {
+    "test": "gulp test",
+    "build": "gulp build",
+    "update-pages": "gulp publish"
+  },
   "devDependencies": {
     "chai": "^2.3.0",
     "del": "^2.0.2",

@@ -111,7 +111,7 @@ IdentifierPart ::
 	`\` UnicodeEscapeSequence
 	<ZWNJ>
 	<ZWJ>
-	
+
 UnicodeIDStart ::
 	> any Unicode code point with the Unicode property "ID_Start" or "Other_ID_Start"
 
@@ -300,61 +300,61 @@ RegularExpressionChars ::
 	[empty]
 	RegularExpressionChars RegularExpressionChar
 
-RegularExpressionFirstChar :: 
+RegularExpressionFirstChar ::
 	RegularExpressionNonTerminator but not one of `*` or `\` or `/` or `[`
 	RegularExpressionBackslashSequence
 	RegularExpressionClass
 
-RegularExpressionChar :: 
+RegularExpressionChar ::
 	RegularExpressionNonTerminator but not one of `\` or `/` or `[`
 	RegularExpressionBackslashSequence
 	RegularExpressionClass
 
-RegularExpressionBackslashSequence :: 
+RegularExpressionBackslashSequence ::
 	`\` RegularExpressionNonTerminator
 
-RegularExpressionNonTerminator :: 
+RegularExpressionNonTerminator ::
 	SourceCharacter but not LineTerminator
 
-RegularExpressionClass :: 
+RegularExpressionClass ::
 	`[` RegularExpressionClassChars `]`
 
-RegularExpressionClassChars :: 
+RegularExpressionClassChars ::
 	[empty]
 	RegularExpressionClassChars RegularExpressionClassChar
 
-RegularExpressionClassChar :: 
+RegularExpressionClassChar ::
 	RegularExpressionNonTerminator but not one of `]` or `\`
 	RegularExpressionBackslashSequence
 
-RegularExpressionFlags :: 
+RegularExpressionFlags ::
 	[empty]
 	RegularExpressionFlags IdentifierPart
 
-Template :: 
+Template ::
 	NoSubstitutionTemplate
 	TemplateHead
 
-NoSubstitutionTemplate :: 
+NoSubstitutionTemplate ::
 	``` TemplateCharacters? ```
 
-TemplateHead :: 
+TemplateHead ::
 	``` TemplateCharacters? `${`
 
-TemplateSubstitutionTail :: 
+TemplateSubstitutionTail ::
 	TemplateMiddle
 	TemplateTail
 
-TemplateMiddle :: 
+TemplateMiddle ::
 	`}` TemplateCharacters? `${`
 
-TemplateTail :: 
+TemplateTail ::
 	`}` TemplateCharacters? ```
 
-TemplateCharacters :: 
+TemplateCharacters ::
 	TemplateCharacter TemplateCharacters?
 
-TemplateCharacter :: 
+TemplateCharacter ::
 	`$` [lookahead != `{` ]
 	`\` EscapeSequence
 	LineContinuation
@@ -369,7 +369,7 @@ IdentifierReference[Yield] :
 BindingIdentifier[Yield] :
 	Identifier
 	[~Yield] `yield`
-	
+
 LabelIdentifier[Yield] :
 	Identifier
 	[~Yield] `yield`
@@ -391,7 +391,7 @@ PrimaryExpression[Yield] :
 	CoverParenthesizedExpressionAndArrowParameterList[?Yield]
 
 CoverParenthesizedExpressionAndArrowParameterList[Yield] :
-	`(` Expression[In, ?Yield] `)` 
+	`(` Expression[In, ?Yield] `)`
 	`(` `)`
 	`(` `...` BindingIdentifier[?Yield] `)`
 	`(` Expression[In, ?Yield] `,` `...` BindingIdentifier[?Yield] `)`
@@ -454,7 +454,7 @@ Initializer[In, Yield] :
 	`=` AssignmentExpression[?In, ?Yield]
 
 TemplateLiteral[Yield] :
-	NoSubstitutionTemplate 
+	NoSubstitutionTemplate
 	TemplateHead Expression[In, ?Yield] TemplateSpans[?Yield]
 
 TemplateSpans[Yield] :
@@ -470,8 +470,8 @@ MemberExpression[Yield] :
 	MemberExpression[?Yield] `[` Expression[In, ?Yield] `]`
 	MemberExpression[?Yield] `.` IdentifierName
 	MemberExpression[?Yield] TemplateLiteral[?Yield]
-	SuperProperty[?Yield] 
-	MetaProperty 
+	SuperProperty[?Yield]
+	MetaProperty
 	`new` MemberExpression[?Yield] Arguments[?Yield]
 
 SuperProperty[Yield] :
@@ -485,8 +485,8 @@ NewTarget :
 	`new` `.` `target`
 
 NewExpression[Yield] :
-	MemberExpression[?Yield] 
-	`new` NewExpression[?Yield] 
+	MemberExpression[?Yield]
+	`new` NewExpression[?Yield]
 
 CallExpression[Yield] :
 	MemberExpression[?Yield] Arguments[?Yield]
@@ -494,7 +494,7 @@ CallExpression[Yield] :
 	CallExpression[?Yield] Arguments[?Yield]
 	CallExpression[?Yield] `[` Expression[In, ?Yield] `]`
 	CallExpression[?Yield] `.` IdentifierName
-	CallExpression[?Yield] TemplateLiteral[?Yield] 
+	CallExpression[?Yield] TemplateLiteral[?Yield]
 
 SuperCall[Yield] :
 	`super` Arguments[?Yield]
@@ -592,7 +592,7 @@ AssignmentExpression[In, Yield] :
 	ConditionalExpression[?In, ?Yield]
 	[+Yield] YieldExpression[?In]
 	ArrowFunction[?In, ?Yield]
-	LeftHandSideExpression[?Yield] `=` AssignmentExpression[?In, ?Yield] 
+	LeftHandSideExpression[?Yield] `=` AssignmentExpression[?In, ?Yield]
 	LeftHandSideExpression[?Yield] AssignmentOperator AssignmentExpression[?In, ?Yield]
 
 AssignmentOperator : one of
@@ -692,7 +692,7 @@ BindingPropertyList[Yield] :
 	BindingPropertyList[?Yield] `,` BindingProperty[?Yield]
 
 BindingElementList[Yield] :
-	BindingElisionElement[?Yield] 
+	BindingElisionElement[?Yield]
 	BindingElementList[?Yield] `,` BindingElisionElement[?Yield]
 
 BindingElisionElement[Yield] :
@@ -710,7 +710,7 @@ SingleNameBinding[Yield] :
 	BindingIdentifier[?Yield] Initializer[In, ?Yield]?
 
 BindingRestElement[Yield] :
-	`...` BindingIdentifier[?Yield] 
+	`...` BindingIdentifier[?Yield]
 
 EmptyStatement :
 	`;`
@@ -740,7 +740,7 @@ ForDeclaration[Yield] :
 
 ForBinding[Yield] :
 	BindingIdentifier[?Yield]
-	BindingPattern[?Yield] 
+	BindingPattern[?Yield]
 
 ContinueStatement[Yield] :
 	`continue` `;`
@@ -801,7 +801,7 @@ CatchParameter[Yield] :
 
 DebuggerStatement :
 	`debugger` `;`
-	
+
 // A.4 - Functions and Classes
 
 FunctionDeclaration[Yield, Default]  :
@@ -847,13 +847,13 @@ ArrowParameters[Yield]  :
 	CoverParenthesizedExpressionAndArrowParameterList[?Yield]
 
 ConciseBody[In] :
-	[lookahead != `{`] AssignmentExpression[?In] 
+	[lookahead != `{`] AssignmentExpression[?In]
 	`{` FunctionBody `}`
 
 MethodDefinition[Yield] :
-	PropertyName[?Yield] `(` StrictFormalParameters `)` `{` FunctionBody `}`  
-	GeneratorMethod[?Yield]  
-	`get` PropertyName[?Yield] `(` `)` `{` FunctionBody `}` 
+	PropertyName[?Yield] `(` StrictFormalParameters `)` `{` FunctionBody `}`
+	GeneratorMethod[?Yield]
+	`get` PropertyName[?Yield] `(` `)` `{` FunctionBody `}`
 	`set` PropertyName[?Yield] `(` PropertySetParameterList `)` `{` FunctionBody `}`
 
 PropertySetParameterList :
@@ -878,14 +878,14 @@ YieldExpression[In] :
 	`yield` [no LineTerminator here] `*` AssignmentExpression[?In, Yield]
 
 ClassDeclaration[Yield, Default] :
-	`class` BindingIdentifier[?Yield] ClassTail[?Yield] 
+	`class` BindingIdentifier[?Yield] ClassTail[?Yield]
 	[+Default] `class` ClassTail[?Yield]
 
 ClassExpression[Yield] :
 	`class` BindingIdentifier[?Yield]? ClassTail[?Yield]
 
 ClassTail[Yield] :
-	ClassHeritage[?Yield]? `{` ClassBody[?Yield]? `}` 
+	ClassHeritage[?Yield]? `{` ClassBody[?Yield]? `}`
 
 ClassHeritage[Yield] :
 	`extends` LeftHandSideExpression[?Yield]
@@ -894,18 +894,18 @@ ClassBody[Yield] :
 	ClassElementList[?Yield]
 
 ClassElementList[Yield] :
-	ClassElement[?Yield] 
+	ClassElement[?Yield]
 	ClassElementList[?Yield]  ClassElement[?Yield]
 
 ClassElement[Yield] :
-	MethodDefinition[?Yield] 
-	`static` MethodDefinition[?Yield] 
+	MethodDefinition[?Yield]
+	`static` MethodDefinition[?Yield]
 	`;`
 
 // A.5 - Scripts and Modules
 Script :
 	ScriptBody?
-	
+
 ScriptBody :
 	StatementList
 
@@ -929,9 +929,9 @@ ImportDeclaration :
 	`import`  ModuleSpecifier `;`
 
 ImportClause :
-	ImportedDefaultBinding 
-	NameSpaceImport 
-	NamedImports 
+	ImportedDefaultBinding
+	NameSpaceImport
+	NamedImports
 	ImportedDefaultBinding `,` NameSpaceImport
 	ImportedDefaultBinding `,` NamedImports
 
@@ -939,10 +939,10 @@ ImportedDefaultBinding :
 	ImportedBinding
 
 NameSpaceImport :
-	`*` `as` ImportedBinding	
+	`*` `as` ImportedBinding
 
 NamedImports :
-	`{` `}`  
+	`{` `}`
 	`{` ImportsList `}`
 	`{` ImportsList `,` `}`
 
@@ -967,14 +967,14 @@ ExportDeclaration :
 	`export` `*` FromClause `;`
 	`export` ExportClause FromClause `;`
 	`export` ExportClause `;`
-	`export` VariableStatement 
-	`export` Declaration  
+	`export` VariableStatement
+	`export` Declaration
 	`export` `default` HoistableDeclaration[Default]
 	`export` `default` ClassDeclaration[Default]
 	`export` `default` [lookahead <! { `function`, `class` }] AssignmentExpression[In] `;`
 
 ExportClause :
-	`{` `}`  
+	`{` `}`
 	`{` ExportsList `}`
 	`{` ExportsList `,` `}`
 

@@ -17,14 +17,14 @@ function createEmptyPrototype() {
     if (Object.create) {
         return Object.freeze(Object.create(null));
     }
-    
+
     let prototype: any = {};
     for (let name of ["constructor", "toString", "toLocaleString", "valueOf", "hasOwnProperty", "isPrototypeOf", "propertyIsEnumerable"]) {
         if (typeof prototype[name] !== "undefined") {
             prototype[name] = undefined;
         }
     }
-    
+
     return Object.freeze ? Object.freeze(prototype) : prototype;
 }
 
@@ -41,20 +41,20 @@ export class Dict<T> {
 
     [key: string]: T;
     [key: number]: T;
-    
+
     static has<T>(object: Dict<T>, key: string | number): boolean {
         return Object.prototype.hasOwnProperty.call(object, key);
     }
-    
+
     static get<T>(object: Dict<T>, key: string | number): T {
         return Dict.has(object, key) ? object[key] : undefined;
     }
-    
+
     static set<T>(object: Dict<T>, key: string | number, value: T): Dict<T> {
         object[key] = value;
         return object;
     }
-    
+
     static assign<T>(target: Dict<T>, ...sources: Dict<T>[]): Dict<T> {
         for (let source of sources) {
             for (let key in source) {
@@ -63,7 +63,7 @@ export class Dict<T> {
                 }
             }
         }
-        
+
         return target;
     }
 
@@ -75,10 +75,10 @@ export class Dict<T> {
                 }
             }
         }
-        
+
         return target;
     }
-    
+
     static forEach<T>(object: Dict<T>, callbackfn: (value: T, key: string, dict: Dict<T>) => void, thisArg?: any): void {
         for (let key in object) {
             if (Dict.has(object, key)) {
@@ -87,7 +87,7 @@ export class Dict<T> {
             }
         }
     }
-    
+
     static map<T, U>(object: Dict<T>, callbackfn: (value: T, key: string, dict: Dict<T>) => U, thisArg?: any): Dict<U> {
         let newObject = new Dict<U>();
         for (let key in object) {
@@ -97,10 +97,10 @@ export class Dict<T> {
                 newObject[key] = mappedValue;
             }
         }
-        
+
         return newObject;
     }
-    
+
     static mapPairs<T, U>(object: Dict<T>, callbackfn: (value: T, key: string, dict: Dict<T>) => [string, U], thisArg?: any): Dict<U> {
         let newObject = new Dict<U>();
         for (let key in object) {
@@ -110,10 +110,10 @@ export class Dict<T> {
                 newObject[mappedKey] = mappedValue;
             }
         }
-        
+
         return newObject;
     }
-    
+
     static filter<T>(object: Dict<T>, callbackfn: (value: T, key: string, dict: Dict<T>) => boolean, thisArg?: any): Dict<T> {
         let newObject = new Dict<T>();
         for (let key in object) {
@@ -124,10 +124,10 @@ export class Dict<T> {
                 }
             }
         }
-        
+
         return newObject;
     }
-    
+
     static some<T>(object: Dict<T>, callbackfn?: (value: T, key: string, dict: Dict<T>) => boolean, thisArg?: any): boolean {
         for (let key in object) {
             if (Dict.has(object, key)) {
@@ -137,10 +137,10 @@ export class Dict<T> {
                 }
             }
         }
-        
+
         return false;
     }
-    
+
     static every<T>(object: Dict<T>, callbackfn: (value: T, key: string, dict: Dict<T>) => boolean, thisArg?: any): boolean {
         let any = false;
         for (let key in object) {
@@ -149,14 +149,14 @@ export class Dict<T> {
                 if (!callbackfn.call(thisArg, value, key, object)) {
                     return false;
                 }
-                
+
                 any = true;
             }
         }
-        
+
         return any;
     }
-    
+
     static find<T>(object: Dict<T>, callbackfn: (value: T, key: string, dict: Dict<T>) => boolean, thisArg?: any): T {
         for (let key in object) {
             if (Dict.has(object, key)) {
@@ -166,10 +166,10 @@ export class Dict<T> {
                 }
             }
         }
-        
+
         return undefined;
     }
-    
+
     static findKey<T>(object: Dict<T>, callbackfn: (value: T, key: string, dict: Dict<T>) => boolean, thisArg?: any): string {
         for (let key in object) {
             if (Dict.has(object, key)) {
@@ -179,10 +179,10 @@ export class Dict<T> {
                 }
             }
         }
-        
+
         return undefined;
     }
-    
+
     static keyOf<T>(object: Dict<T>, value: T): string {
         for (let key in object) {
             if (Dict.has(object, key)) {
@@ -191,10 +191,10 @@ export class Dict<T> {
                 }
             }
         }
-        
+
         return undefined;
     }
-    
+
     static includes<T>(object: Dict<T>, value: T): boolean {
         for (let key in object) {
             if (Dict.has(object, key)) {
@@ -203,10 +203,10 @@ export class Dict<T> {
                 }
             }
         }
-        
+
         return false;
     }
-    
+
     static reduce<T>(object: Dict<T>, callbackfn: (previousValue: T, value: T, key: string, dict: Dict<T>) => T, initialValue: T): T;
     static reduce<T, U>(object: Dict<T>, callbackfn: (previousValue: U, value: T, key: string, dict: Dict<T>) => U, initialValue: U): U;
     static reduce<T, U>(object: Dict<T>, callbackfn: (previousValue: U, value: T, key: string, dict: Dict<T>) => U, initialValue: U): U {
@@ -217,23 +217,23 @@ export class Dict<T> {
                 aggregate = callbackfn(aggregate, value, key, object);
             }
         }
-        
+
         return aggregate;
     }
-    
+
     static turn<T>(object: Dict<T>, callbackfn: (memo: Dict<T>, value: T, key: string, dict: Dict<T>) => void, memo?: Dict<T>): Dict<T>;
     static turn<T, U>(object: Dict<T>, callbackfn: (memo: Dict<U>, value: T, key: string, dict: Dict<T>) => void, memo: Dict<U>): Dict<U>;
-    static turn<T, U>(object: Dict<T>, callbackfn: (memo: Dict<T | U>, value: T, key: string, dict: Dict<T>) => void, memo: Dict<T | U> = object): Dict<U> {        
+    static turn<T, U>(object: Dict<T>, callbackfn: (memo: Dict<T | U>, value: T, key: string, dict: Dict<T>) => void, memo: Dict<T | U> = object): Dict<U> {
         for (let key in object) {
             if (Dict.has(object, key)) {
                 let value = object[key];
                 callbackfn(memo, value, key, object);
             }
         }
-        
+
         return <Dict<U>>memo;
     }
-    
+
     static invert<T extends string | number>(dict: Dict<T>): Dict<string> {
         let inverted = new Dict<string>();
         for (let key in dict) {
@@ -241,10 +241,10 @@ export class Dict<T> {
                 Dict.set(inverted, String(Dict.get(dict, key)), key);
             }
         }
-        
+
         return inverted;
     }
-    
+
     static keys<T>(dict: Dict<T>): string[] {
         let result: string[] = [];
         for (let key in dict) {
@@ -252,10 +252,10 @@ export class Dict<T> {
                 result.push(key);
             }
         }
-        
+
         return result;
     }
-    
+
     static values<T>(dict: Dict<T>): T[] {
         let result: T[] = [];
         for (let key in dict) {
@@ -265,7 +265,7 @@ export class Dict<T> {
         }
         return result;
     }
-    
+
     static entries<T>(dict: Dict<T>): [string | number, T][] {
         let result: [string | number, T][] = [];
         for (let key in dict) {
@@ -295,6 +295,81 @@ export function binarySearch(array: number[], value: number): number {
             low = middle + 1;
         }
     }
-    
+
     return ~low;
+}
+
+export interface Position {
+    line: number;
+    character: number;
+}
+
+export namespace Position {
+    export function create(line: number, character: number): Position {
+        return { line, character };
+    }
+
+    export function clone(position: Position): Position {
+        return create(position.line, position.character);
+    }
+
+    export function compare(left: Position, right: Position) {
+        if (left.line < right.line) return -1;
+        if (left.line > right.line) return +1;
+        if (left.character < right.character) return -1;
+        if (left.character > right.character) return +1;
+        return 0;
+    }
+
+    export function equals(left: Position, right: Position) {
+        return left.line === right.line
+            && left.character === right.character;
+    }
+}
+
+export interface Range {
+    start: Position;
+    end: Position;
+}
+
+export namespace Range {
+    export function create(start: Position, end: Position): Range {
+        return { start, end };
+    }
+
+    export function clone(range: Range): Range {
+        return create(Position.clone(range.start), Position.clone(range.end));
+    }
+
+    export function collapseToStart(range: Range): Range {
+        return create(range.start, range.start);
+    }
+
+    export function collapseToEnd(range: Range): Range {
+        return create(range.end, range.end);
+    }
+
+    export function isCollapsed(range: Range): boolean {
+        return Position.compare(range.start, range.end) >= 0;
+    }
+
+    export function contains(left: Range, right: Range): boolean {
+        return Position.compare(left.start, right.start) <= 0
+            && Position.compare(left.end, right.end) >= 0;
+    }
+
+    export function containsPosition(range: Range, position: Position): boolean {
+        return Position.compare(range.start, position) <= 0
+            && Position.compare(range.end, position) >= 0;
+    }
+
+    export function intersects(left: Range, right: Range): boolean {
+        return containsPosition(left, right.start)
+            || containsPosition(left, right.end);
+    }
+
+    export function equals(left: Range, right: Range): boolean {
+        return Position.equals(left.start, right.start)
+            && Position.equals(left.end, right.end)
+    }
 }

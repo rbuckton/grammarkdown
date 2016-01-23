@@ -20,19 +20,20 @@ import { SourceFile, Production, Parameter, Node, forEachChild } from "./nodes";
 
 export class BindingTable {
     public globals: SymbolTable = new SymbolTable();
-    
+
     private parentNodes: Node[];
     private nodes: Node[];
     private nodeMap: Symbol[];
+    private symbolReferences: Node[][];
     private symbolLocals: SymbolTable[];
-    private symbolDeclarations: Node[][];
+    private symbolDeclarations: (SourceFile | Production | Parameter)[][];
 
     public setParent(node: Node, parent: Node): void {
         if (node && parent) {
             if (!this.parentNodes) {
                 this.parentNodes = [];
             }
-            
+
             this.parentNodes[node.id] = parent;
         }
     }
@@ -44,24 +45,43 @@ export class BindingTable {
     public getParent(node: Node): Node {
         return node && this.parentNodes && this.parentNodes[node.id];
     }
-    
+
     public getAncestor(node: Node, kind: SyntaxKind): Node {
         for (let parent = this.getParent(node); parent; parent = this.getParent(parent)) {
             if (parent.kind === kind) {
                 return parent;
             }
         }
-        
+
         return undefined;
     }
 
     public setSymbol(node: Node, symbol: Symbol): void {
         if (node && symbol) {
-            if (!this.nodeMap) {
-                this.nodeMap = [];
-            }
-            
-            this.nodeMap[node.id] = symbol;
+            this.setSymbolForNode(node, symbol);
+            this.addReferenceToSymbol(symbol, node);
+        }
+    }
+
+    private setSymbolForNode(node: Node, symbol: Symbol): void {
+        if (!this.nodeMap) {
+            this.nodeMap = [];
+        }
+
+        this.nodeMap[node.id] = symbol;
+    }
+
+    private addReferenceToSymbol(symbol: Symbol, node: Node): void {
+        if (!this.symbolReferences) {
+            this.symbolReferences = [];
+        }
+
+        if (!this.symbolReferences[symbol.id]) {
+            this.symbolReferences[symbol.id] = [];
+        }
+
+        if (this.symbolReferences[symbol.id].indexOf(node) === -1) {
+            this.symbolReferences[symbol.id].push(node);
         }
     }
 
@@ -73,17 +93,17 @@ export class BindingTable {
         if (node && this.nodeMap) {
             return this.nodeMap[node.id];
         }
-        
+
         return undefined;
     }
 
-    public addDeclarationToSymbol(symbol: Symbol, node: Node): void {
+    public addDeclarationToSymbol(symbol: Symbol, node: SourceFile | Production | Parameter): void {
         if (symbol && node) {
             if (!this.symbolDeclarations) {
                 this.symbolDeclarations = [];
             }
 
-            let declarations: Node[];
+            let declarations: (SourceFile | Production | Parameter)[];
             if (symbol.id in this.symbolDeclarations) {
                 declarations = this.symbolDeclarations[symbol.id];
             }
@@ -93,37 +113,53 @@ export class BindingTable {
             }
 
             declarations.push(node);
-            this.setSymbol(node, symbol);
+            this.setSymbolForNode(node, symbol);
+            if (node.kind !== SyntaxKind.SourceFile) {
+                this.addReferenceToSymbol(symbol, (<Production | Parameter>node).name);
+            }
         }
     }
 
-    public getDeclarations(symbol: Symbol): Node[] {
-        let declarations: Node[];
+    public getDeclarations(symbol: Symbol): (SourceFile | Production | Parameter)[] {
+        let declarations: (SourceFile | Production | Parameter)[];
         if (symbol && this.symbolDeclarations) {
             declarations = this.symbolDeclarations[symbol.id];
         }
-        
+
         if (declarations) {
             return declarations;
         }
-        
+
         return [];
     }
-    
+
+    public getReferences(symbol: Symbol): Node[] {
+        let references: Node[];
+        if (symbol && this.symbolReferences) {
+            references = this.symbolReferences[symbol.id];
+        }
+
+        if (references) {
+            return references;
+        }
+
+        return [];
+    }
+
     public getScope(container: Symbol): SymbolTable {
         if (!this.symbolLocals) {
             this.symbolLocals = [];
         }
-        
+
         let scope = this.symbolLocals[container.id];
         if (!scope) {
             scope = new SymbolTable();
             this.symbolLocals[container.id] = scope;
         }
-        
+
         return scope;
     }
-    
+
     public resolveSymbol(location: Node, name: string, meaning: SymbolKind): Symbol {
         if (this.symbolLocals) {
             while (location) {
@@ -132,10 +168,10 @@ export class BindingTable {
                     if (result) {
                         return result;
                     }
-                    
+
                     break;
                 }
-                
+
                 let symbol = this.getSymbol(location);
                 let locals = symbol ? this.symbolLocals[symbol.id] : undefined;
                 if (locals) {
@@ -144,11 +180,11 @@ export class BindingTable {
                         return result;
                     }
                 }
-                
+
                 location = this.getParent(location);
             }
         }
-        
+
         return undefined;
     }
 }
@@ -158,7 +194,7 @@ export class Binder {
     private parentSymbol: Symbol;
     private bindings: BindingTable;
     private scope: SymbolTable;
-    
+
     constructor(bindings: BindingTable) {
         this.bindings = bindings;
         this.scope = bindings.globals;
@@ -169,7 +205,7 @@ export class Binder {
             // skip files that have already been bound.
             return;
         }
-        
+
         let symbol = this.declareSymbol(file.filename, file, SymbolKind.SourceFile);
         this.bindChildren(file, symbol, this.scope);
     }
@@ -192,9 +228,9 @@ export class Binder {
         this.parentNode = parentNode;
         this.parentSymbol = parentSymbol;
         this.scope = scope;
-        
+
         forEachChild(parentNode, child => this.bind(child));
-        
+
         this.scope = saveScope;
         this.parentSymbol = saveParentSymbol;
         this.parentNode = saveParentNode;
@@ -219,7 +255,7 @@ export class Binder {
         }
     }
 
-    private declareSymbol(name: string, declaration: Node, kind: SymbolKind): Symbol {
+    private declareSymbol(name: string, declaration: SourceFile | Production | Parameter, kind: SymbolKind): Symbol {
         let symbol = this.scope.declareSymbol(name, kind, this.parentSymbol);
         this.bindings.addDeclarationToSymbol(symbol, declaration);
         return symbol;

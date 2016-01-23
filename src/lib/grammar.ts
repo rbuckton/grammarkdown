@@ -2,6 +2,7 @@ import * as fs from "fs";
 import * as path from "path";
 import * as os from "os";
 import { Dict } from "./core";
+import { Host, HostLike } from "./host";
 import { DiagnosticMessages, NullDiagnosticMessages } from "./diagnostics";
 import { EmitFormat, CompilerOptions, getDefaultOptions } from "./options";
 import { SyntaxKind } from "./tokens";
@@ -16,7 +17,7 @@ export class Grammar {
     public sourceFiles: SourceFile[] = [];
     public options: CompilerOptions;
     public diagnostics: DiagnosticMessages = new DiagnosticMessages();
-    
+
     private bindings: BindingTable = new BindingTable();
     private fileMap: Dict<SourceFile> = new Dict<SourceFile>();
     private ignoreCase: boolean;
@@ -24,60 +25,70 @@ export class Grammar {
     private innerBinder: Binder;
     private innerChecker: Checker;
     private innerEmitter: Emitter;
-    private innerReadFile: (file: string) => string;
-    
-    constructor(rootNames: string[], options: CompilerOptions = getDefaultOptions(), readFile?: (file: string) => string) {
-        let platform = os.platform();
-        this.ignoreCase = /^(win32|win64|darwin)$/.test(platform);
-        this.innerReadFile = readFile; 
+    private host: Host;
+    private oldGrammar: Grammar;
+
+    constructor(rootNames: string[]);
+    constructor(rootNames: string[], options: CompilerOptions);
+    constructor(rootNames: string[], options: CompilerOptions, host: Host, oldGrammar?: Grammar);
+    constructor(rootNames: string[], options: CompilerOptions, readFile: (file: string) => string, oldGrammar?: Grammar);
+    constructor(rootNames: string[], options: CompilerOptions = getDefaultOptions(), readFileOrHostLike?: ((file: string) => string) | HostLike, oldGrammar?: Grammar) {
+        this.host = Host.getHost(readFileOrHostLike);
         this.options = options;
+
+        this.oldGrammar = oldGrammar;
         for (let rootName of rootNames) {
             this.processRootFile(this.resolveFile(rootName));
         }
-        
+
+        this.oldGrammar = undefined;
         Object.freeze(this.sourceFiles);
+    }
+
+    public get resolver(): Resolver {
+        return this.checker.resolver;
     }
 
     protected get parser(): Parser {
         if (!this.innerParser) {
             this.innerParser = this.createParser(this.options);
         }
-        
+
         return this.innerParser;
     }
-    
+
     protected get binder(): Binder {
         if (!this.innerBinder) {
             this.innerBinder = this.createBinder(this.options, this.bindings);
         }
-        
+
         return this.innerBinder;
     }
-    
+
     protected get checker(): Checker {
         if (!this.innerChecker) {
             this.innerChecker = this.createChecker(this.options, this.bindings);
         }
-        
+
         return this.innerChecker;
     }
-    
+
     protected get emitter(): Emitter {
         if (!this.innerEmitter) {
             this.innerEmitter = this.createEmitter(this.options, this.checker.resolver);
         }
-        
+
         return this.innerEmitter;
     }
-    
+
     public getSourceFile(file: string) {
         file = this.resolveFile(file);
         return Dict.get(this.fileMap, this.normalizeFile(file));
     }
-    
+
     public bind(sourceFile?: SourceFile) {
         let binder = this.binder;
-        
+
         if (sourceFile) {
             binder.bindSourceFile(sourceFile);
         }
@@ -90,7 +101,7 @@ export class Grammar {
 
     public check(sourceFile?: SourceFile): void {
         this.bind(sourceFile);
-        
+
         let checker = this.checker;
         if (sourceFile) {
             checker.checkSourceFile(sourceFile);
@@ -101,15 +112,15 @@ export class Grammar {
             }
         }
     }
-    
+
     public resetEmitter(): void {
         this.innerEmitter = undefined;
     }
-    
+
     public emit(sourceFile?: SourceFile, writeFile?: (file: string, output: string) => void): void {
         this.bind(sourceFile);
         this.check(sourceFile);
-        
+
         let emitter = this.emitter;
         if (sourceFile) {
             emitter.emit(sourceFile, writeFile);
@@ -120,27 +131,27 @@ export class Grammar {
             }
         }
     }
-        
+
     protected createParser(options: CompilerOptions): Parser {
         return new Parser(this.diagnostics);
     }
-    
+
     protected createBinder(options: CompilerOptions, bindings: BindingTable): Binder {
         return new Binder(bindings);
     }
-    
+
     protected createChecker(options: CompilerOptions, bindings: BindingTable): Checker {
-        return new Checker(bindings, options.noChecks ? NullDiagnosticMessages.instance : this.diagnostics); 
+        return new Checker(bindings, options.noChecks ? NullDiagnosticMessages.instance : this.diagnostics);
     }
-    
+
     protected createEmitter(options: CompilerOptions, resolver: Resolver): Emitter {
         switch (options.format) {
             case EmitFormat.ecmarkup:
                 return new EcmarkupEmitter(options, resolver, this.diagnostics)
-            
+
             case EmitFormat.html:
                 return new HtmlEmitter(options, resolver, this.diagnostics);
-                
+
             case EmitFormat.markdown:
             default:
                 return new MarkdownEmitter(options, resolver, this.diagnostics);
@@ -148,44 +159,27 @@ export class Grammar {
     }
 
     protected readFile(file: string): string {
-        try {
-            let callback = this.innerReadFile;
-            if (callback) {
-                return callback(file);
-            }
-            
-            return readFile(file);
-        }
-        catch (e) {
-            // report error
-            return undefined;
-        }
+        return this.host.readFile(file);
     }
-        
+
     private resolveFile(file: string, referer?: string) {
-        let result: string;
-        if (referer) {
-            result = path.resolve(path.dirname(referer), file);
-        } 
-        else {
-            result = path.resolve(file);
-        }
-        
-        result = result.replace(/\\/g, "/");
-        return result;
+        return this.host.resolveFile(file, referer);
     }
-    
+
     private normalizeFile(file: string) {
-        return this.ignoreCase ? file.toLowerCase() : file;
+        return this.host.normalizeFile(file);
     }
-    
+
     private processRootFile(file: string) {
         let sourceFile = this.processFile(file);
+        if (sourceFile === undefined) {
+            throw new Error("Invalid source file");
+        }
         if (this.rootFiles.indexOf(sourceFile) === -1) {
             this.rootFiles.push(sourceFile);
         }
     }
-    
+
     private processFile(file: string, referer?: SourceFile, refererPos?: number, refererEnd?: number): SourceFile {
         let sourceFile = this.getSourceFile(file);
         if (sourceFile) {
@@ -202,7 +196,7 @@ export class Grammar {
 
         return sourceFile;
     }
-    
+
     private processImports(sourceFile: SourceFile, refererName: string) {
         for (let element of sourceFile.elements) {
             if (element.kind === SyntaxKind.Import) {
@@ -214,17 +208,24 @@ export class Grammar {
             }
         }
     }
-    
+
     private parseSourceFile(file: string): SourceFile {
         if (!this.parser) {
             this.parser = new Parser(this.diagnostics);
         }
-        
+
         let sourceText = this.readFile(file);
-        if (sourceText !== undefined) {        
+        if (sourceText !== undefined) {
+            if (this.oldGrammar) {
+                const oldSourceFile = this.oldGrammar.getSourceFile(file);
+                if (oldSourceFile && oldSourceFile.text === sourceText) {
+                    return oldSourceFile;
+                }
+            }
+
             return this.parser.parseSourceFile(file, sourceText);
         }
-        
+
         return undefined;
     }
 }

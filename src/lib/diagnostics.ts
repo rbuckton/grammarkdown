@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { binarySearch } from "./core";
+import { binarySearch, Range, Position } from "./core";
 import { CharacterCodes, SyntaxKind, tokenToString } from "./tokens";
 import { Node, SourceFile } from "./nodes";
 
@@ -39,6 +39,19 @@ export const Diagnostics = {
     Duplicate_identifier_0_: <Diagnostic>{ code: 2001, message: "Duplicate identifier: '{0}'." },
     Duplicate_terminal_0_: <Diagnostic>{ code: 2002, message: "Duplicate terminal: `{0}`." },
 };
+
+export interface DiagnosticInfo {
+    diagnosticIndex: number;
+    code: number;
+    message: string;
+    messageArguments: any[];
+    warning: boolean;
+    range: Range;
+    sourceFile: SourceFile;
+    node: Node;
+    pos: number;
+    formattedMessage?: string;
+}
 
 export class DiagnosticMessages {
     private diagnostics: Diagnostic[];
@@ -79,32 +92,36 @@ export class DiagnosticMessages {
             pos = node.pos;
         }
 
-        this.reportDiagnostic(message, Array.prototype.slice.call(arguments, 2), pos);
+        this.reportDiagnostic(message, Array.prototype.slice.call(arguments, 2), pos, node);
     }
 
     public count(): number {
         return this.diagnostics ? this.diagnostics.length : 0;
     }
 
-    public getMessage(diagnosticIndex: number): string {
+    public getMessage(diagnosticIndex: number, options: { detailed?: boolean; } = { detailed: true }): string {
         let diagnostic = this.diagnostics && this.diagnostics[diagnosticIndex];
         if (diagnostic) {
+            const { detailed = true } = options;
             let diagnosticArguments = this.diagnosticsArguments && this.diagnosticsArguments[diagnosticIndex];
-            let sourceFile = this.getSourceFile(diagnosticIndex);
-            let text = sourceFile ? sourceFile.filename : "";
-            if (this.diagnosticsPos && diagnosticIndex in this.diagnosticsPos) {
-                let diagnosticPos = this.diagnosticsPos[diagnosticIndex];
-                if (sourceFile && sourceFile.lineMap) {
-                    text += `(${sourceFile.lineMap.formatPosition(diagnosticPos) })`;
+            let sourceFile = this.getDiagnosticSourceFile(diagnosticIndex);
+            let text = "";
+            if (detailed) {
+                text += sourceFile ? sourceFile.filename : "";
+                if (this.diagnosticsPos && diagnosticIndex in this.diagnosticsPos) {
+                    let diagnosticPos = this.diagnosticsPos[diagnosticIndex];
+                    if (sourceFile && sourceFile.lineMap) {
+                        text += `(${sourceFile.lineMap.formatPosition(diagnosticPos) })`;
+                    }
+                    else {
+                        text += `(${diagnosticPos})`;
+                    }
                 }
-                else {
-                    text += `(${diagnosticPos})`;
-                }
-            }
 
-            text += ": ";
-            text += diagnostic.warning ? "warning" : "error";
-            text += " MG" + String(diagnostic.code) + ": ";
+                text += ": ";
+                text += diagnostic.warning ? "warning" : "error";
+                text += " GM" + String(diagnostic.code) + ": ";
+            }
 
             let message = diagnostic.message;
             if (diagnosticArguments) {
@@ -122,16 +139,81 @@ export class DiagnosticMessages {
         return this.diagnostics && this.diagnostics[diagnosticIndex];
     }
 
-    public getNode(diagnosticIndex: number): Node {
+    public getDiagnosticInfos(options?: { formatMessage?: boolean; detailedMessage?: boolean; }): DiagnosticInfo[] {
+        const result: DiagnosticInfo[] = [];
+        for (let i = 0; i < this.count(); i++) {
+            result.push(this.getDiagnosticInfo(i, options));
+        }
+
+        return result;
+    }
+
+    public getDiagnosticInfosForSourceFile(sourceFile: SourceFile, options?: { formatMessage?: boolean; detailedMessage?: boolean; }): DiagnosticInfo[] {
+        const result: DiagnosticInfo[] = [];
+        for (let i = 0; i < this.count(); i++) {
+            if (this.getDiagnosticSourceFile(i) === sourceFile) {
+                result.push(this.getDiagnosticInfo(i, options));
+            }
+        }
+
+        return result;
+    }
+
+    public getDiagnosticInfo(diagnosticIndex: number, options: { formatMessage?: boolean; detailedMessage?: boolean; } = {}): DiagnosticInfo {
+        const diagnostic = this.getDiagnostic(diagnosticIndex);
+        if (diagnostic) {
+            const info: DiagnosticInfo = {
+                diagnosticIndex,
+                code: diagnostic.code,
+                warning: diagnostic.warning || false,
+                message: diagnostic.message,
+                messageArguments: this.getDiagnosticArguments(diagnosticIndex),
+                range: this.getDiagnosticRange(diagnosticIndex),
+                sourceFile: this.getDiagnosticSourceFile(diagnosticIndex),
+                node: this.getDiagnosticNode(diagnosticIndex),
+                pos: this.getDiagnosticPos(diagnosticIndex)
+            };
+
+            if (options.formatMessage) {
+                info.formattedMessage = this.getMessage(diagnosticIndex, { detailed: options.detailedMessage });
+            }
+
+            return info;
+        }
+
+        return undefined;
+    }
+
+    public getDiagnosticArguments(diagnosticIndex: number): any[] {
+        return this.diagnosticsArguments && this.diagnosticsArguments[diagnosticIndex];
+    }
+
+    public getDiagnosticRange(diagnosticIndex: number) {
+        const diagnostic = this.getDiagnostic(diagnosticIndex);
+        const sourceFile = this.getDiagnosticSourceFile(diagnosticIndex);
+        const node = this.getDiagnosticNode(diagnosticIndex);
+        const pos = this.getDiagnosticPos(diagnosticIndex);
+        if (diagnostic && node || pos > -1) {
+            return getDiagnosticRange(node, pos, sourceFile);
+        }
+
+        return undefined;
+    }
+
+    public getDiagnosticNode(diagnosticIndex: number): Node {
         return this.diagnosticsNode && this.diagnosticsNode[diagnosticIndex];
     }
 
     public forEach(callback: (message: string, diagnosticIndex: number) => void): void {
         if (this.diagnostics) {
             for (let diagnosticIndex = 0, l = this.diagnostics.length; diagnosticIndex < l; diagnosticIndex++) {
-                callback(this.getMessage(diagnosticIndex), diagnosticIndex);
+                callback(this.getMessage(diagnosticIndex, { detailed: true }), diagnosticIndex);
             }
         }
+    }
+
+    private getDiagnosticPos(diagnosticIndex: number): number {
+        return this.diagnosticsPos && this.diagnosticsPos[diagnosticIndex] || -1;
     }
 
     private reportDiagnostic(message: Diagnostic, args: any[], pos?: number, node?: Node): void {
@@ -171,7 +253,7 @@ export class DiagnosticMessages {
         }
     }
 
-    private getSourceFile(diagnosticIndex: number): SourceFile {
+    public getDiagnosticSourceFile(diagnosticIndex: number): SourceFile {
         if (this.sourceFiles) {
             let offset = binarySearch(this.sourceFilesDiagnosticOffset, diagnosticIndex);
             if (offset < 0) {
@@ -202,7 +284,7 @@ export class NullDiagnosticMessages extends DiagnosticMessages {
     public count(): number { return 0; }
     public getMessage(diagnosticIndex: number): string { return ""; }
     public getDiagnostic(diagnosticIndex: number): Diagnostic { return undefined; }
-    public getNode(diagnosticIndex: number): Node { return undefined; }
+    public getDiagnosticNode(diagnosticIndex: number): Node { return undefined; }
     public forEach(callback: (message: string, diagnosticIndex: number) => void): void { }
 }
 
@@ -225,6 +307,45 @@ export class LineMap {
             lineNumber = (~lineNumber) - 1;
         }
         return `${lineNumber + 1},${pos - this.lineStarts[lineNumber] + 1}`;
+    }
+
+    public getPositionOfLineAndCharacter(lineAndCharacter: Position) {
+        this.computeLineStarts();
+        if (lineAndCharacter.line < 0 ||
+            lineAndCharacter.character < 0 ||
+            lineAndCharacter.line >= this.lineStarts.length) {
+            return -1;
+        }
+
+        const pos = this.lineStarts[lineAndCharacter.line] + lineAndCharacter.character;
+        const lineEnd = lineAndCharacter.line + 1 < this.lineStarts.length
+            ? this.lineStarts[lineAndCharacter.line + 1]
+            : this.text.length;
+
+        if (pos >= lineEnd) {
+            return -1;
+        }
+
+        if (this.text.charCodeAt(pos) === CharacterCodes.LineFeed ||
+            this.text.charCodeAt(pos) === CharacterCodes.CarriageReturn) {
+            return -1;
+        }
+
+        return pos;
+    }
+
+    public getLineAndCharacterOfPosition(pos: number): Position {
+        this.computeLineStarts();
+        let lineNumber = binarySearch(this.lineStarts, pos);
+        if (lineNumber < 0) {
+            // If the actual position was not found,
+            // the binary search returns the negative value of the next line start
+            // e.g. if the line starts at [5, 10, 23, 80] and the position requested was 20
+            // then the search will return -2
+            lineNumber = (~lineNumber) - 1;
+        }
+
+        return { line: lineNumber, character: pos - this.lineStarts[lineNumber] };
     }
 
     private computeLineStarts() {
@@ -261,6 +382,27 @@ export class LineMap {
             || ch === CharacterCodes.ParagraphSeparator
             || ch === CharacterCodes.NextLine;
     }
+}
+
+function getDiagnosticRange(diagnosticNode: Node, diagnosticPos: number, sourceFile: SourceFile): Range {
+    return {
+        start: getLineAndCharacterOfStart(diagnosticNode, diagnosticPos, sourceFile),
+        end: getLineAndCharacterOfEnd(diagnosticNode, diagnosticPos, sourceFile)
+    }
+}
+
+function getLineAndCharacterOfStart(diagnosticNode: Node, diagnosticPos: number, sourceFile: SourceFile) {
+    return getLineAndCharacterOfPosition(diagnosticNode ? diagnosticNode.pos : diagnosticPos, sourceFile);
+}
+
+function getLineAndCharacterOfEnd(diagnosticNode: Node, diagnosticPos: number, sourceFile: SourceFile) {
+    return getLineAndCharacterOfPosition(diagnosticNode ? diagnosticNode.end : diagnosticPos, sourceFile);
+}
+
+function getLineAndCharacterOfPosition(diagnosticPos: number, sourceFile: SourceFile) {
+    return sourceFile && sourceFile.lineMap
+        ? sourceFile.lineMap.getLineAndCharacterOfPosition(diagnosticPos)
+        : { line: 0, character: diagnosticPos };
 }
 
 export function formatString(format: string, args?: any[]): string;

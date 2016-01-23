@@ -13,6 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+export * from "./host";
 export * from "./diagnostics";
 export * from "./options";
 export * from "./tokens";
@@ -25,3 +26,4 @@ export * from "./checker";
 export * from "./emitter/index";
 export * from "./stringwriter";
 export * from "./grammar";
+export * from "./navigator";

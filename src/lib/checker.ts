@@ -53,6 +53,7 @@ import {
     SourceElement,
     forEachChild
 } from "./nodes";
+import { NodeNavigator } from "./navigator";
 
 export class Checker {
     private checkedFileSet = new Dict<boolean>();
@@ -879,7 +880,10 @@ export class Checker {
                                 let productionSymbol = this.resolveSymbol(node, nonterminal.name.text, SymbolKind.Production);
                                 if (productionSymbol) {
                                     let production = <Production>this.bindings.getDeclarations(productionSymbol)[0];
-                                    symbol = this.resolveSymbol(production, node.text, SymbolKind.Parameter, Diagnostics.Cannot_find_name_0_);
+                                    symbol = this.resolveSymbol(production, node.text, SymbolKind.Parameter);
+                                    if (!symbol) {
+                                        this.diagnostics.reportNode(node, Diagnostics.Cannot_find_name_0_, node.text);
+                                    }
                                 }
                             }
                         }
@@ -931,6 +935,54 @@ export class Resolver {
 
     constructor(bindings: BindingTable) {
         this.bindings = bindings;
+    }
+
+    public createNavigator(node: Node): NodeNavigator {
+        if (node.kind === SyntaxKind.SourceFile) {
+            return new NodeNavigator(<SourceFile>node);
+        }
+        else {
+            const parent = this.bindings.getParent(node);
+            if (parent) {
+                const navigator = this.createNavigator(parent);
+                if (navigator && navigator.moveToFirstChild(child => child === node)) {
+                    return navigator;
+                }
+            }
+        }
+
+        return undefined;
+    }
+
+    public getSourceFileOfNode(node: Node) {
+        return <SourceFile>this.bindings.getAncestor(node, SyntaxKind.SourceFile);
+    }
+
+    public getDeclarations(node: Identifier) {
+        const parent = this.bindings.getParent(node);
+
+        let symbol = this.bindings.getSymbol(node);
+        if (!symbol) {
+            symbol = this.bindings.resolveSymbol(node, node.text, getSymbolMeaning(parent));
+        }
+
+        if (symbol) {
+            return this.bindings.getDeclarations(symbol);
+        }
+
+        return [];
+    }
+
+    public getReferences(node: Identifier) {
+        const symbol = this.bindings.getParent(node).kind === SyntaxKind.Parameter
+            ? this.bindings.resolveSymbol(node, node.text, SymbolKind.Parameter)
+            : this.bindings.resolveSymbol(node, node.text, SymbolKind.Production);
+
+        if (symbol) {
+            return this.bindings.getReferences(symbol);
+        }
+
+        return [];
     }
 
     public getProductionLinkId(node: Identifier): string {
@@ -1187,4 +1239,15 @@ function isAssertion(node: LexicalSymbol) {
     }
 
     return false;
+}
+
+function getSymbolMeaning(node: Node) {
+    switch (node.kind) {
+        case SyntaxKind.Parameter:
+        case SyntaxKind.Argument:
+        case SyntaxKind.ParameterValueAssertion:
+            return SymbolKind.Parameter;
+    }
+
+    return SymbolKind.Production;
 }

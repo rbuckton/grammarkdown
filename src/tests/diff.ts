@@ -36,7 +36,7 @@ export function writeTokens(test: string, scanner: Scanner, lineMap: LineMap, ba
     let token: SyntaxKind;
     do {
         token = scanner.scan();
-        let message = `SyntaxKind[${SyntaxKind[token]}](${lineMap.formatPosition(scanner.getPos()) }): `;
+        let message = `SyntaxKind[${SyntaxKind[token]}](${lineMap.formatPosition(scanner.getTokenPos()) }): `;
         switch (token) {
             case SyntaxKind.Prose:
                 message += `> ${scanner.getTokenValue()}`;

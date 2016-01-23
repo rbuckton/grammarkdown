@@ -20,3 +20,4 @@ import "./scanner-tests";
 import "./parser-tests";
 import "./markdown-tests";
 import "./ecmarkup-tests";
+import "./navigator-tests";

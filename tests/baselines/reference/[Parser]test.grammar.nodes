@@ -2,28 +2,28 @@
 (1,1)SyntaxKind[SourceFile](filename = "test.grammar")
   (1,1)SyntaxKind[Production]
     (1,1)SyntaxKind[Identifier](text = "A")
-    (1,4)SyntaxKind[RightHandSide]
-      (1,4)SyntaxKind[SymbolSpan]
-        (1,4)SyntaxKind[Nonterminal]
-          (1,4)SyntaxKind[Identifier](text = "A")
-        (1,6)SyntaxKind[SymbolSpan]
-          (1,6)SyntaxKind[AtToken]
-          (1,8)SyntaxKind[SymbolSpan]
-            (1,8)SyntaxKind[Nonterminal]
-              (1,8)SyntaxKind[Identifier](text = "A")
+    (1,5)SyntaxKind[RightHandSide]
+      (1,5)SyntaxKind[SymbolSpan]
+        (1,5)SyntaxKind[Nonterminal]
+          (1,5)SyntaxKind[Identifier](text = "A")
+        (1,7)SyntaxKind[SymbolSpan]
+          (1,7)SyntaxKind[AtToken]
+          (1,9)SyntaxKind[SymbolSpan]
+            (1,9)SyntaxKind[Nonterminal]
+              (1,9)SyntaxKind[Identifier](text = "A")
   (2,1)SyntaxKind[Production]
     (2,1)SyntaxKind[Identifier](text = "B")
-    (2,4)SyntaxKind[RightHandSide]
-      (2,4)SyntaxKind[SymbolSpan]
-        (2,4)SyntaxKind[ButNotSymbol]
-          (2,4)SyntaxKind[Nonterminal]
-            (2,4)SyntaxKind[Identifier](text = "A")
-          (2,8)SyntaxKind[ButKeyword]
-          (2,12)SyntaxKind[NotKeyword]
-          (2,16)SyntaxKind[OneOfSymbol]
-            (2,23)SyntaxKind[Terminal](text = """)
-            (2,30)SyntaxKind[Terminal](text = "\")
+    (2,5)SyntaxKind[RightHandSide]
+      (2,5)SyntaxKind[SymbolSpan]
+        (2,5)SyntaxKind[ButNotSymbol]
+          (2,5)SyntaxKind[Nonterminal]
+            (2,5)SyntaxKind[Identifier](text = "A")
+          (2,9)SyntaxKind[ButKeyword]
+          (2,13)SyntaxKind[NotKeyword]
+          (2,17)SyntaxKind[OneOfSymbol]
+            (2,24)SyntaxKind[Terminal](text = """)
+            (2,31)SyntaxKind[Terminal](text = "\")
             (2,38)SyntaxKind[UnicodeCharacterRange]
               (2,38)SyntaxKind[UnicodeCharacterLiteral](text = U+0000)
-              (2,44)SyntaxKind[ThroughKeyword]
+              (2,45)SyntaxKind[ThroughKeyword]
               (2,53)SyntaxKind[UnicodeCharacterLiteral](text = U+001F)
