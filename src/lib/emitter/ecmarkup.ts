@@ -288,9 +288,9 @@ export class EcmarkupEmitter extends Emitter {
         this.emitNode(node.name);
     }
 
-    protected emitBinarySymbol(node: ButNotSymbol) {
+    protected emitButNotSymbol(node: ButNotSymbol) {
         this.emitNode(node.left);
-        this.writer.write(`<emu-gmod>but not `);
+        this.writer.write(` <emu-gmod>but not `);
         this.emitNode(node.right);
         this.writer.write(`</emu-gmod>`);
     }

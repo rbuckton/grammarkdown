@@ -56,7 +56,7 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="UnicodeCharacterLiteralChar" type="lexical">
-    <emu-rhs a="22948f2e"><emu-nt>SourceCharacter</emu-nt>one of <emu-t>&lt;</emu-t> or <emu-t>&gt;</emu-t> or <emu-nt>LineTerminator</emu-nt></emu-rhs>
+    <emu-rhs a="22948f2e"><emu-nt>SourceCharacter</emu-nt> <emu-gmod>but not one of <emu-t>&lt;</emu-t> or <emu-t>&gt;</emu-t> or <emu-nt>LineTerminator</emu-nt></emu-gmod></emu-rhs>
 </emu-production>
 <emu-production name="Indent" type="lexical">
     <emu-rhs a="e1ed22ce"><emu-gprose>An increase in the indentation depth from the previous line.</emu-gprose></emu-rhs>
@@ -83,7 +83,7 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="TerminalChar" type="lexical">
-    <emu-rhs a="94153dfd"><emu-nt>SourceCharacter</emu-nt>one of <emu-t>`</emu-t> or <emu-nt>LineTerminator</emu-nt></emu-rhs>
+    <emu-rhs a="94153dfd"><emu-nt>SourceCharacter</emu-nt> <emu-gmod>but not one of <emu-t>`</emu-t> or <emu-nt>LineTerminator</emu-nt></emu-gmod></emu-rhs>
 </emu-production>
 <emu-production name="Prose" type="lexical">
     <emu-rhs a="a4d5e18a"><emu-nt>ProseLines</emu-nt></emu-rhs>
@@ -109,10 +109,10 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="ProseChar" type="lexical">
-    <emu-rhs a="2d5bdfa7"><emu-nt>SourceCharacter</emu-nt><emu-nt>LineTerminator</emu-nt></emu-rhs>
+    <emu-rhs a="2d5bdfa7"><emu-nt>SourceCharacter</emu-nt> <emu-gmod>but not <emu-nt>LineTerminator</emu-nt></emu-gmod></emu-rhs>
 </emu-production>
 <emu-production name="Identifier">
-    <emu-rhs a="bfa5c374"><emu-nt>IdentifierName</emu-nt><emu-nt>ReservedWord</emu-nt></emu-rhs>
+    <emu-rhs a="bfa5c374"><emu-nt>IdentifierName</emu-nt> <emu-gmod>but not <emu-nt>ReservedWord</emu-nt></emu-gmod></emu-rhs>
 </emu-production>
 <emu-production name="Argument">
     <emu-rhs a="06b6ace8"><emu-nt>Identifier</emu-nt></emu-rhs>
