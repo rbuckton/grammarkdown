@@ -22,6 +22,7 @@ import {
     NoSymbolHereAssertion,
     LexicalGoalAssertion,
     ParameterValueAssertion,
+    ProseAssertion,
     Argument,
     ArgumentList,
     Nonterminal,
@@ -280,6 +281,12 @@ export class MarkdownEmitter extends Emitter {
         this.emitToken(node.operatorToken);
         this.emitNode(node.name);
         this.writer.write(`]`);
+    }
+
+    protected emitProseAssertion(node: ProseAssertion): void {
+        for (const fragment of node.fragments) {
+            this.emitNode(fragment);
+        }
     }
 
     protected emitUnicodeCharacterRange(node: UnicodeCharacterRange) {

@@ -24,6 +24,8 @@ import {
     NoSymbolHereAssertion,
     LexicalGoalAssertion,
     ParameterValueAssertion,
+    ProseAssertion,
+    ProseFragmentLiteral,
     Argument,
     ArgumentList,
     Nonterminal,
@@ -129,6 +131,11 @@ export class Emitter {
             case SyntaxKind.LexicalGoalAssertion: this.emitLexicalGoalAssertion(<LexicalGoalAssertion>node); break;
             case SyntaxKind.NoSymbolHereAssertion: this.emitNoSymbolHereAssertion(<NoSymbolHereAssertion>node); break;
             case SyntaxKind.ParameterValueAssertion: this.emitParameterValueAssertion(<ParameterValueAssertion>node); break;
+            case SyntaxKind.ProseAssertion: this.emitProseAssertion(<ProseAssertion>node); break;
+            case SyntaxKind.ProseFull: this.emitProseFragmentLiteral(<ProseFragmentLiteral>node); break;
+            case SyntaxKind.ProseHead: this.emitProseFragmentLiteral(<ProseFragmentLiteral>node); break;
+            case SyntaxKind.ProseMiddle: this.emitProseFragmentLiteral(<ProseFragmentLiteral>node); break;
+            case SyntaxKind.ProseTail: this.emitProseFragmentLiteral(<ProseFragmentLiteral>node); break;
         }
     }
 
@@ -167,7 +174,7 @@ export class Emitter {
     }
 
     protected emitProse(node: Prose) {
-        this.emitTextContent(node);
+        forEachChild(node, child => this.emitNode(child));
     }
 
     protected emitIdentifier(node: Identifier) {
@@ -254,6 +261,14 @@ export class Emitter {
 
     protected emitParameterValueAssertion(node: ParameterValueAssertion): void {
         forEachChild(node, child => this.emitNode(child));
+    }
+
+    protected emitProseAssertion(node: ProseAssertion): void {
+        forEachChild(node, child => this.emitNode(child));
+    }
+
+    protected emitProseFragmentLiteral(node: ProseFragmentLiteral): void {
+        this.emitTextContent(node);
     }
 
     protected encode(text: string) {

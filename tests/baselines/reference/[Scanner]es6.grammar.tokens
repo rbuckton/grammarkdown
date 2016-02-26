@@ -5,7 +5,8 @@ SyntaxKind[Identifier](3,1): SourceCharacter
 SyntaxKind[ColonColonToken](3,17): ::
 SyntaxKind[LineTerminatorToken](4,1): «line terminator»
 SyntaxKind[IndentToken](4,1): «indent»
-SyntaxKind[Prose](4,2): > any Unicode code point
+SyntaxKind[GreaterThanToken](4,2): >
+SyntaxKind[ProseFull](4,4): any Unicode code point
 SyntaxKind[LineTerminatorToken](5,1): «line terminator»
 SyntaxKind[DedentToken](5,1): «dedent»
 SyntaxKind[LineTerminatorToken](6,1): «line terminator»
@@ -308,7 +309,8 @@ SyntaxKind[Identifier](115,1): UnicodeIDStart
 SyntaxKind[ColonColonToken](115,16): ::
 SyntaxKind[LineTerminatorToken](116,1): «line terminator»
 SyntaxKind[IndentToken](116,1): «indent»
-SyntaxKind[Prose](116,2): > any Unicode code point with the Unicode property "ID_Start" or "Other_ID_Start"
+SyntaxKind[GreaterThanToken](116,2): >
+SyntaxKind[ProseFull](116,4): any Unicode code point with the Unicode property "ID_Start" or "Other_ID_Start"
 SyntaxKind[LineTerminatorToken](117,1): «line terminator»
 SyntaxKind[DedentToken](117,1): «dedent»
 SyntaxKind[LineTerminatorToken](118,1): «line terminator»
@@ -316,7 +318,8 @@ SyntaxKind[Identifier](118,1): UnicodeIDContinue
 SyntaxKind[ColonColonToken](118,19): ::
 SyntaxKind[LineTerminatorToken](119,1): «line terminator»
 SyntaxKind[IndentToken](119,1): «indent»
-SyntaxKind[Prose](119,2): > any Unicode code point with the Unicode property "ID_Continue" or "Other_ID_Continue", or "Other_ID_Start"
+SyntaxKind[GreaterThanToken](119,2): >
+SyntaxKind[ProseFull](119,4): any Unicode code point with the Unicode property "ID_Continue" or "Other_ID_Continue", or "Other_ID_Start"
 SyntaxKind[LineTerminatorToken](120,1): «line terminator»
 SyntaxKind[DedentToken](120,1): «dedent»
 SyntaxKind[LineTerminatorToken](121,1): «line terminator»

@@ -6,7 +6,8 @@ SyntaxKind[Identifier](4,1): SourceCharacter
 SyntaxKind[ColonColonToken](4,17): ::
 SyntaxKind[LineTerminatorToken](5,1): «line terminator»
 SyntaxKind[IndentToken](5,1): «indent»
-SyntaxKind[Prose](5,2): > any Unicode code point
+SyntaxKind[GreaterThanToken](5,2): >
+SyntaxKind[ProseFull](5,4): any Unicode code point
 SyntaxKind[LineTerminatorToken](6,1): «line terminator»
 SyntaxKind[DedentToken](6,1): «dedent»
 SyntaxKind[LineTerminatorToken](7,1): «line terminator»
@@ -63,7 +64,8 @@ SyntaxKind[Identifier](27,1): UnicodeIDStart
 SyntaxKind[ColonColonToken](27,16): ::
 SyntaxKind[LineTerminatorToken](28,1): «line terminator»
 SyntaxKind[IndentToken](28,1): «indent»
-SyntaxKind[Prose](28,2): > any Unicode code point with the Unicode property "ID_Start" or "Other_ID_Start"
+SyntaxKind[GreaterThanToken](28,2): >
+SyntaxKind[ProseFull](28,4): any Unicode code point with the Unicode property "ID_Start" or "Other_ID_Start"
 SyntaxKind[LineTerminatorToken](29,1): «line terminator»
 SyntaxKind[DedentToken](29,1): «dedent»
 SyntaxKind[LineTerminatorToken](30,1): «line terminator»
@@ -71,7 +73,8 @@ SyntaxKind[Identifier](30,1): UnicodeIDContinue
 SyntaxKind[ColonColonToken](30,19): ::
 SyntaxKind[LineTerminatorToken](31,1): «line terminator»
 SyntaxKind[IndentToken](31,1): «indent»
-SyntaxKind[Prose](31,2): > any Unicode code point with the Unicode property "ID_Continue" or "Other_ID_Continue", or "Other_ID_Start"
+SyntaxKind[GreaterThanToken](31,2): >
+SyntaxKind[ProseFull](31,4): any Unicode code point with the Unicode property "ID_Continue" or "Other_ID_Continue", or "Other_ID_Start"
 SyntaxKind[LineTerminatorToken](32,1): «line terminator»
 SyntaxKind[DedentToken](32,1): «dedent»
 SyntaxKind[LineTerminatorToken](33,1): «line terminator»
@@ -204,7 +207,8 @@ SyntaxKind[Identifier](64,1): Indent
 SyntaxKind[ColonColonToken](64,8): ::
 SyntaxKind[LineTerminatorToken](65,1): «line terminator»
 SyntaxKind[IndentToken](65,1): «indent»
-SyntaxKind[Prose](65,2): > An increase in the indentation depth from the previous line.
+SyntaxKind[GreaterThanToken](65,2): >
+SyntaxKind[ProseFull](65,4): An increase in the indentation depth from the previous line.
 SyntaxKind[LineTerminatorToken](66,1): «line terminator»
 SyntaxKind[LineTerminatorToken](67,1): «line terminator»
 SyntaxKind[DedentToken](67,1): «dedent»
@@ -212,7 +216,8 @@ SyntaxKind[Identifier](67,1): Dedent
 SyntaxKind[ColonColonToken](67,8): ::
 SyntaxKind[LineTerminatorToken](68,1): «line terminator»
 SyntaxKind[IndentToken](68,1): «indent»
-SyntaxKind[Prose](68,2): > A decrease in the indentation depth from the previous line.
+SyntaxKind[GreaterThanToken](68,2): >
+SyntaxKind[ProseFull](68,4): A decrease in the indentation depth from the previous line.
 SyntaxKind[LineTerminatorToken](69,1): «line terminator»
 SyntaxKind[DedentToken](69,1): «dedent»
 SyntaxKind[LineTerminatorToken](70,1): «line terminator»

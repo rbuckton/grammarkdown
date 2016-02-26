@@ -19,4 +19,23 @@ SyntaxKind[OrKeyword](2,35): or
 SyntaxKind[UnicodeCharacterLiteral](2,38): U+0000
 SyntaxKind[LastKeyword](2,45): through
 SyntaxKind[UnicodeCharacterLiteral](2,53): U+001F
-SyntaxKind[EndOfFileToken](2,59): «EndOfFileToken»
+SyntaxKind[LineTerminatorToken](3,1): «line terminator»
+SyntaxKind[LineTerminatorToken](4,1): «line terminator»
+SyntaxKind[Identifier](4,1): C
+SyntaxKind[ColonToken](4,3): :
+SyntaxKind[Identifier](4,5): A
+SyntaxKind[OpenBracketGreaterThanToken](4,7): [>
+SyntaxKind[ProseFull](4,9): full prose span
+SyntaxKind[CloseBracketToken](4,24): ]
+SyntaxKind[LineTerminatorToken](5,1): «line terminator»
+SyntaxKind[Identifier](5,1): C
+SyntaxKind[ColonToken](5,3): :
+SyntaxKind[Identifier](5,5): A
+SyntaxKind[OpenBracketGreaterThanToken](5,7): [>
+SyntaxKind[FirstProseFragment](5,9): head 
+SyntaxKind[Terminal](5,14): `terminal`
+SyntaxKind[ProseMiddle](5,24):  middle 
+SyntaxKind[Identifier](5,32): B
+SyntaxKind[LastProseFragment](5,35):  tail
+SyntaxKind[CloseBracketToken](5,40): ]
+SyntaxKind[EndOfFileToken](5,41): «EndOfFileToken»

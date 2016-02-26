@@ -14,6 +14,7 @@
  *  limitations under the License.
  */
 
+import { EOL } from 'os';
 import { CharacterCodes, SyntaxKind, stringToToken } from "./tokens";
 import { Diagnostics, Diagnostic, DiagnosticMessages, NullDiagnosticMessages } from "./diagnostics";
 
@@ -32,6 +33,7 @@ export class Scanner {
     private copyIndentsOnWrite: boolean;
     private filename: string;
     private diagnostics: DiagnosticMessages;
+    private proseStartToken: SyntaxKind;
 
     constructor(filename: string, text: string, diagnostics: DiagnosticMessages) {
         this.filename = filename;
@@ -100,6 +102,7 @@ export class Scanner {
         let saveQueue = this.queue;
         let saveIndents = this.indents;
         let saveDiagnostics = this.diagnostics;
+
         this.diagnostics = NullDiagnosticMessages.instance;
         this.copyQueueOnWrite = true;
         this.copyIndentsOnWrite = true;
@@ -127,6 +130,10 @@ export class Scanner {
             this.tokenPos = this.pos;
             if (this.pos >= this.len) {
                 return this.token = SyntaxKind.EndOfFileToken;
+            }
+
+            if (this.proseStartToken) {
+                return this.token = this.scanProse();
             }
 
             let ch = this.text.charCodeAt(this.pos);
@@ -184,7 +191,7 @@ export class Scanner {
                     }
 
                 case CharacterCodes.GreaterThan:
-                    return this.tokenValue = this.scanProse(), this.token = SyntaxKind.Prose;
+                    return this.pos++, this.skipWhiteSpace(), this.proseStartToken = this.token = SyntaxKind.GreaterThanToken;
 
                 case CharacterCodes.Slash:
                     if (this.pos + 1 < this.len) {
@@ -245,6 +252,13 @@ export class Scanner {
                     return this.pos++, this.token = SyntaxKind.CloseParenToken;
 
                 case CharacterCodes.OpenBracket:
+                    if (this.pos + 1 < this.len) {
+                        ch = this.text.charCodeAt(this.pos + 1);
+                        if (ch === CharacterCodes.GreaterThan) {
+                            return this.pos += 2, this.skipWhiteSpace(), this.proseStartToken = this.token = SyntaxKind.OpenBracketGreaterThanToken;
+                        }
+                    }
+
                     return this.pos++, this.token = SyntaxKind.OpenBracketToken;
 
                 case CharacterCodes.CloseBracket:
@@ -377,41 +391,6 @@ export class Scanner {
         }
     }
 
-    private scanProse(): string {
-        this.pos++;
-        let result = this.scanLine().trim();
-        while (this.pos < this.len) {
-            let ch = this.text.charCodeAt(this.pos);
-            if (!isLineTerminator(ch)) {
-                break;
-            }
-
-            let nextLine = this.speculate(() => this.tryScanNextLineOfProse(), /*isLookahead*/ false);
-            if (nextLine === undefined) {
-                break;
-            }
-
-            result += nextLine;
-        }
-
-        return result;
-    }
-
-    private tryScanNextLineOfProse() {
-        let result = this.scanLineTerminator();
-        this.skipWhiteSpace();
-        if (this.pos < this.len) {
-            let ch = this.text.charCodeAt(this.pos);
-            if (ch === CharacterCodes.GreaterThan) {
-                this.pos++;
-                result += this.scanLine().trim();
-                return result;
-            }
-        }
-
-        return undefined;
-    }
-
     private scanLine(): string {
         let start = this.pos;
         while (this.pos < this.len) {
@@ -424,6 +403,18 @@ export class Scanner {
         }
 
         return this.text.substring(start, this.pos);
+    }
+
+    private skipLineTerminator() {
+        const ch = this.text.charCodeAt(this.pos);
+        if (ch === CharacterCodes.CarriageReturn || ch === CharacterCodes.LineFeed) {
+            if (ch === CharacterCodes.CarriageReturn && this.text.charCodeAt(this.pos + 1) === CharacterCodes.LineFeed) {
+                this.pos += 2;
+            }
+            else {
+                this.pos++;
+            }
+        }
     }
 
     private scanLineTerminator(): string {
@@ -443,8 +434,6 @@ export class Scanner {
         while (true) {
             let ch = this.text.charCodeAt(this.pos);
             switch (ch) {
-                case CharacterCodes.LineFeed:
-                case CharacterCodes.CarriageReturn:
                 case CharacterCodes.Space:
                 case CharacterCodes.Tab:
                 case CharacterCodes.VerticalTab:
@@ -456,6 +445,84 @@ export class Scanner {
                     return;
             }
         }
+    }
+
+    private scanProse() {
+        const previousToken = this.token;
+        const isMultiLine = this.proseStartToken === SyntaxKind.GreaterThanToken;
+        const atStartOfProse = previousToken === this.proseStartToken;
+        const previousTokenWasFragment = isProseFragment(previousToken);
+
+        let start = this.pos;
+        let token: SyntaxKind;
+        let tokenValue: string = "";
+        while (true) {
+            if (this.pos >= this.len) {
+                tokenValue += this.text.substring(start, this.pos);
+                this.tokenValue = tokenValue;
+                this.proseStartToken = undefined;
+                if (!isMultiLine) {
+                    this.tokenIsUnterminated = true;
+                    this.getDiagnostics().report(this.pos, Diagnostics._0_expected, "]");
+                }
+                return atStartOfProse ? SyntaxKind.ProseFull : SyntaxKind.ProseTail;
+            }
+
+            const ch = this.text.charCodeAt(this.pos);
+            if (previousTokenWasFragment) {
+                if (ch === CharacterCodes.Backtick) {
+                    return this.pos++, this.tokenValue = this.scanString(ch, this.token = SyntaxKind.Terminal), this.token;
+                }
+                else if (ch === CharacterCodes.Bar) {
+                    return this.pos++, this.tokenValue = this.scanString(ch, this.token = SyntaxKind.Identifier), this.token;
+                }
+            }
+
+            if (isMultiLine) {
+                if (isLineTerminator(ch)) {
+                    tokenValue += this.text.substring(start, this.pos);
+                    if (this.nextLineIsProse()) {
+                        tokenValue += EOL;
+                        continue;
+                    }
+
+                    this.tokenValue = tokenValue;
+                    this.proseStartToken = undefined;
+                    return atStartOfProse ? SyntaxKind.ProseFull : SyntaxKind.ProseTail;
+                }
+            }
+            else {
+                if (ch === CharacterCodes.CloseBracket) {
+                    tokenValue += this.text.substring(start, this.pos);
+                    this.tokenValue = tokenValue;
+                    this.proseStartToken = undefined;
+                    return atStartOfProse ? SyntaxKind.ProseFull : SyntaxKind.ProseTail;
+                }
+            }
+
+            if (ch === CharacterCodes.Backtick || ch === CharacterCodes.Bar) {
+                tokenValue += this.text.substring(start, this.pos);
+                this.tokenValue = tokenValue;
+                return atStartOfProse ? SyntaxKind.ProseHead : SyntaxKind.ProseMiddle;
+            }
+
+            this.pos++;
+        }
+    }
+
+    private nextLineIsProse() {
+        return this.speculate(() => {
+            this.skipLineTerminator();
+            this.skipWhiteSpace();
+            if (this.pos < this.len) {
+                if (this.text.charCodeAt(this.pos) === CharacterCodes.GreaterThan) {
+                    this.pos++;
+                    this.skipWhiteSpace();
+                    return true;
+                }
+            }
+            return false;
+        }, /*isLookahead*/ false);
     }
 
     private scanString(quote: number, kind: SyntaxKind): string {
@@ -724,4 +791,9 @@ function isHexDigit(ch: number): boolean {
     return ch >= CharacterCodes.UpperA && ch <= CharacterCodes.UpperF
         || ch >= CharacterCodes.LowerA && ch <= CharacterCodes.LowerF
         || ch >= CharacterCodes.Number0 && ch <= CharacterCodes.Number9;
+}
+
+function isProseFragment(token: SyntaxKind): boolean {
+    return token >= SyntaxKind.FirstProseFragment
+        && token <= SyntaxKind.LastProseFragment;
 }

@@ -35,6 +35,8 @@ import {
     NoSymbolHereAssertion,
     LexicalGoalAssertion,
     ParameterValueAssertion,
+    ProseAssertion,
+    ProseFragmentLiteral,
     Argument,
     ArgumentList,
     Nonterminal,
@@ -702,9 +704,10 @@ export class Parser {
     }
 
     private parseProse(): Prose {
-        let fullStart = this.scanner.getTokenPos();
-        let text = this.readTokenValue(SyntaxKind.Prose);
-        let node = new Prose(text);
+        const fullStart = this.scanner.getTokenPos();
+        const greaterThanToken = this.parseToken(SyntaxKind.GreaterThanToken);
+        const fragments = this.parseProseFragments();
+        const node = new Prose(greaterThanToken, fragments);
         return this.finishNode(node, fullStart);
     }
 
@@ -869,6 +872,45 @@ export class Parser {
         }
     }
 
+    private parseProseAssertion(): ProseAssertion {
+        const openBracketToken = this.parseToken(SyntaxKind.OpenBracketGreaterThanToken);
+        const fragments = this.parseProseFragments();
+        const closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
+        const node = new ProseAssertion(openBracketToken, fragments, closeBracketToken);
+        return this.finishNode(node, openBracketToken.pos);
+    }
+
+    private parseProseFragments() {
+        const fragments: (ProseFragmentLiteral | Terminal | Nonterminal)[] = [];
+        while (true) {
+            if (this.token === SyntaxKind.ProseFull) {
+                fragments.push(this.parseProseFragmentLiteral(this.token));
+                break;
+            }
+            else if (this.token >= SyntaxKind.FirstProseFragment && this.token <= SyntaxKind.LastProseFragment) {
+                fragments.push(this.parseProseFragmentLiteral(this.token));
+            }
+            else if (this.token === SyntaxKind.Terminal) {
+                fragments.push(this.parseTerminal(/*allowOptional*/ false));
+            }
+            else if (this.token === SyntaxKind.Identifier) {
+                fragments.push(this.parseNonterminal(/*allowArgumentList*/ false, /*allowOptional*/ false));
+            }
+            else {
+                break;
+            }
+        }
+
+        return fragments;
+    }
+
+    private parseProseFragmentLiteral(token: SyntaxKind) {
+        const fullStart = this.scanner.getTokenPos();
+        const text = this.readTokenValue(token);
+        const node = new ProseFragmentLiteral(token, text);
+        return this.finishNode(node, fullStart);
+    }
+
     private parseTerminal(allowOptional: boolean): Terminal {
         let fullStart = this.scanner.getTokenPos();
         let text = this.readTokenValue(SyntaxKind.Terminal);
@@ -924,10 +966,10 @@ export class Parser {
             || this.token === SyntaxKind.Identifier;
     }
 
-    private parseNonterminal(allowOptional: boolean): Nonterminal {
+    private parseNonterminal(allowArgumentList: boolean, allowOptional: boolean): Nonterminal {
         let fullStart = this.scanner.getTokenPos();
         let name = this.parseIdentifier();
-        let argumentList = this.tryParseArgumentList();
+        let argumentList = allowArgumentList ? this.tryParseArgumentList() : undefined;
         let questionToken = allowOptional ? this.parseToken(SyntaxKind.QuestionToken) : undefined;
         let node = new Nonterminal(name, argumentList, questionToken);
         return this.finishNode(node, fullStart);
@@ -982,7 +1024,7 @@ export class Parser {
                 return this.parseTerminal(allowOptional);
 
             case SyntaxKind.Identifier:
-                return this.parseNonterminal(allowOptional);
+                return this.parseNonterminal(/*allowArgumentList*/ true, allowOptional);
 
             case SyntaxKind.AtToken:
                 return this.parsePlaceholderSymbol();
@@ -1020,6 +1062,9 @@ export class Parser {
         if (this.token === SyntaxKind.OpenBracketToken) {
             return this.parseAssertion();
         }
+        else if (this.token === SyntaxKind.OpenBracketGreaterThanToken) {
+            return this.parseProseAssertion();
+        }
 
         let symbol = this.parseUnarySymbol();
         let butKeyword = this.parseToken(SyntaxKind.ButKeyword);
@@ -1049,7 +1094,7 @@ export class Parser {
 
     private parseSymbolSpan(): SymbolSpan {
         let fullStart = this.scanner.getTokenPos();
-        if (this.token === SyntaxKind.Prose) {
+        if (this.token === SyntaxKind.GreaterThanToken) {
             let symbol = this.parseProse();
             let node = new SymbolSpan(symbol, /*next*/ undefined);
             return this.finishNode(node, fullStart);
@@ -1065,7 +1110,8 @@ export class Parser {
             case SyntaxKind.Terminal:
             case SyntaxKind.Identifier:
             case SyntaxKind.OpenBracketToken:
-            case SyntaxKind.Prose:
+            case SyntaxKind.OpenBracketGreaterThanToken:
+            case SyntaxKind.GreaterThanToken:
             case SyntaxKind.AtToken:
                 return true;
 

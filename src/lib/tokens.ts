@@ -161,12 +161,19 @@ export enum SyntaxKind {
     UnicodeCharacterLiteral,
     Prose,
 
+    ProseHead,
+    ProseMiddle,
+    ProseTail,
+    ProseFull,
+
     // Punctuation
     AtToken,                    // @
     OpenBraceToken,             // {
     CloseBraceToken,            // }
     OpenBracketToken,           // [
+    OpenBracketGreaterThanToken,// [>
     CloseBracketToken,          // ]
+    GreaterThanToken,           // >
     OpenParenToken,             // (
     CloseParenToken,            // )
     ColonToken,                 // :
@@ -228,6 +235,7 @@ export enum SyntaxKind {
     LexicalGoalAssertion,
     NoSymbolHereAssertion,
     ParameterValueAssertion,
+    ProseAssertion,
 
     // error nodes
     InvalidSymbol,
@@ -237,6 +245,8 @@ export enum SyntaxKind {
     // top nodes
     SourceFile,
 
+    FirstProseFragment = ProseHead,
+    LastProseFragment = ProseTail,
     FirstKeyword = ButKeyword,
     LastKeyword = ThroughKeyword,
     FirstPunctuation = AtToken,
@@ -266,7 +276,9 @@ const textToToken = new Dict({
     "(": SyntaxKind.OpenParenToken,
     ")": SyntaxKind.CloseParenToken,
     "[": SyntaxKind.OpenBracketToken,
+    "[>": SyntaxKind.OpenBracketGreaterThanToken,
     "]": SyntaxKind.CloseBracketToken,
+    ">": SyntaxKind.GreaterThanToken,
     ",": SyntaxKind.CommaToken,
     "+": SyntaxKind.PlusToken,
     "~": SyntaxKind.TildeToken,

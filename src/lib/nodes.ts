@@ -272,6 +272,28 @@ export class ParameterValueAssertion extends Assertion {
     }
 }
 
+export class ProseAssertion extends Assertion {
+    @edge openBracketToken: Node;
+    @edge fragments: ProseFragment[];
+    @edge closeBracketToken: Node;
+
+    constructor(openBracketToken: Node, fragments: ProseFragment[], closeBracketToken: Node) {
+        super(SyntaxKind.ProseAssertion, openBracketToken, closeBracketToken);
+        this.fragments = fragments;
+    }
+}
+
+export class ProseFragmentLiteral extends Node implements TextContent {
+    text: string;
+
+    constructor(kind: SyntaxKind, text: string) {
+        super(kind);
+        this.text = text;
+    }
+}
+
+export type ProseFragment = ProseFragmentLiteral | Terminal | Nonterminal;
+
 export class Argument extends Node {
     @edge questionToken: Node;
     @edge name: Identifier;
@@ -310,13 +332,15 @@ export class Nonterminal extends OptionalSymbol {
     }
 }
 
-export class Prose extends LexicalSymbol implements TextContent {
-    public text: string;
+export class Prose extends LexicalSymbol {
+    @edge greaterThanToken: Node;
+    @edge fragments: ProseFragment[];
 
-    constructor(text: string) {
+    constructor(greaterThanToken: Node, fragments: ProseFragment[]) {
         super(SyntaxKind.Prose);
 
-        this.text = text;
+        this.greaterThanToken = greaterThanToken;
+        this.fragments = fragments;
     }
 }
 
@@ -539,9 +563,18 @@ export function forEachChild<T>(node: Node, cbNode: (node: Node) => T): T {
                     || visitNode((<ParameterValueAssertion>node).name, cbNode)
                     || visitNode((<ParameterValueAssertion>node).closeBracketToken, cbNode);
 
+            case SyntaxKind.ProseAssertion:
+                return visitNode((<ProseAssertion>node).openBracketToken, cbNode)
+                    || visitNodes((<ProseAssertion>node).fragments, cbNode)
+                    || visitNode((<ProseAssertion>node).closeBracketToken, cbNode);
+
             case SyntaxKind.InvalidAssertion:
                 return visitNode((<Assertion>node).openBracketToken, cbNode)
                     || visitNode((<Assertion>node).closeBracketToken, cbNode);
+
+            case SyntaxKind.Prose:
+                return visitNode((<Prose>node).greaterThanToken, cbNode)
+                    || visitNodes((<Prose>node).fragments, cbNode);
 
             case SyntaxKind.Terminal:
             case SyntaxKind.UnicodeCharacterLiteral:

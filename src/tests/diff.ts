@@ -26,6 +26,7 @@ import {
     Nonterminal,
     Argument,
     Prose,
+    ProseFragmentLiteral,
     Terminal,
     UnicodeCharacterLiteral,
     forEachChild
@@ -38,8 +39,11 @@ export function writeTokens(test: string, scanner: Scanner, lineMap: LineMap, ba
         token = scanner.scan();
         let message = `SyntaxKind[${SyntaxKind[token]}](${lineMap.formatPosition(scanner.getTokenPos()) }): `;
         switch (token) {
-            case SyntaxKind.Prose:
-                message += `> ${scanner.getTokenValue()}`;
+            case SyntaxKind.ProseFull:
+            case SyntaxKind.ProseHead:
+            case SyntaxKind.ProseMiddle:
+            case SyntaxKind.ProseTail:
+                message += scanner.getTokenValue();
                 break;
             case SyntaxKind.Identifier:
                 message += `${scanner.getTokenValue()}`;
@@ -149,10 +153,13 @@ function formatNode(node: Node, sourceFile: SourceFile) {
     var text = `(${sourceFile.lineMap.formatPosition(node.pos) })`;
     text += `SyntaxKind[${formatKind(node.kind)}]`;
     switch (node.kind) {
-        case SyntaxKind.Prose:
         case SyntaxKind.Identifier:
         case SyntaxKind.Terminal:
-            text += `(text = "${(<Prose | Identifier | Terminal>node).text}")`;
+        case SyntaxKind.ProseFull:
+        case SyntaxKind.ProseHead:
+        case SyntaxKind.ProseMiddle:
+        case SyntaxKind.ProseTail:
+            text += `(text = "${(<ProseFragmentLiteral | Identifier | Terminal>node).text}")`;
             break;
         case SyntaxKind.UnicodeCharacterLiteral:
             text += `(text = ${sourceFile.text.slice(node.pos, node.end)})`;

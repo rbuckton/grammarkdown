@@ -6,7 +6,9 @@
       (4,1)SyntaxKind[IndentToken]
       (4,2)SyntaxKind[RightHandSide]
         (4,2)SyntaxKind[SymbolSpan]
-          (4,2)SyntaxKind[Prose](text = "any Unicode code point")
+          (4,2)SyntaxKind[Prose]
+            (4,2)SyntaxKind[GreaterThanToken]
+            (4,4)SyntaxKind[ProseFull](text = "any Unicode code point")
       (5,1)SyntaxKind[DedentToken]
   (6,1)SyntaxKind[Production]
     (6,1)SyntaxKind[Identifier](text = "InputElementDiv")
@@ -426,7 +428,9 @@
       (116,1)SyntaxKind[IndentToken]
       (116,2)SyntaxKind[RightHandSide]
         (116,2)SyntaxKind[SymbolSpan]
-          (116,2)SyntaxKind[Prose](text = "any Unicode code point with the Unicode property "ID_Start" or "Other_ID_Start"")
+          (116,2)SyntaxKind[Prose]
+            (116,2)SyntaxKind[GreaterThanToken]
+            (116,4)SyntaxKind[ProseFull](text = "any Unicode code point with the Unicode property "ID_Start" or "Other_ID_Start"")
       (117,1)SyntaxKind[DedentToken]
   (118,1)SyntaxKind[Production]
     (118,1)SyntaxKind[Identifier](text = "UnicodeIDContinue")
@@ -434,7 +438,9 @@
       (119,1)SyntaxKind[IndentToken]
       (119,2)SyntaxKind[RightHandSide]
         (119,2)SyntaxKind[SymbolSpan]
-          (119,2)SyntaxKind[Prose](text = "any Unicode code point with the Unicode property "ID_Continue" or "Other_ID_Continue", or "Other_ID_Start"")
+          (119,2)SyntaxKind[Prose]
+            (119,2)SyntaxKind[GreaterThanToken]
+            (119,4)SyntaxKind[ProseFull](text = "any Unicode code point with the Unicode property "ID_Continue" or "Other_ID_Continue", or "Other_ID_Start"")
       (120,1)SyntaxKind[DedentToken]
   (121,1)SyntaxKind[Production]
     (121,1)SyntaxKind[Identifier](text = "ReservedWord")

@@ -21,6 +21,7 @@ import {
     NoSymbolHereAssertion,
     LexicalGoalAssertion,
     ParameterValueAssertion,
+    ProseAssertion,
     Argument,
     ArgumentList,
     Nonterminal,
@@ -215,7 +216,10 @@ export class EcmarkupEmitter extends Emitter {
 
     protected emitProse(node: Prose) {
         this.writer.write(`<emu-gprose>`);
-        this.emitTextContent(node);
+        for (const fragment of node.fragments) {
+            this.emitNode(fragment);
+        }
+
         this.writer.write(`</emu-gprose>`);
     }
 
@@ -286,6 +290,15 @@ export class EcmarkupEmitter extends Emitter {
     protected emitParameterValueAssertion(node: ParameterValueAssertion): void {
         this.emitToken(node.operatorToken);
         this.emitNode(node.name);
+    }
+
+    protected emitProseAssertion(node: ProseAssertion): void {
+        this.writer.write(`<emu-gmod>`);
+        for (const fragment of node.fragments) {
+            this.emitNode(fragment);
+        }
+
+        this.writer.write(`</emu-gmod>`);
     }
 
     protected emitButNotSymbol(node: ButNotSymbol) {

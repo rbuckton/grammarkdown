@@ -38,6 +38,9 @@ import {
     NoSymbolHereAssertion,
     LexicalGoalAssertion,
     ParameterValueAssertion,
+    ProseAssertion,
+    ProseFragment,
+    ProseFragmentLiteral,
     Argument,
     ArgumentList,
     Nonterminal,
@@ -318,8 +321,8 @@ export class Checker {
     }
 
     private checkProse(node: Prose): void {
-        if (typeof node.text !== "string") {
-            this.reportGrammarErrorForNode(node, Diagnostics._0_expected, tokenToString(SyntaxKind.UnicodeCharacterLiteral));
+        for (const fragment of node.fragments) {
+            this.checkProseFragment(fragment);
         }
     }
 
@@ -383,6 +386,10 @@ export class Checker {
 
             case SyntaxKind.ParameterValueAssertion:
                 this.checkParameterValueAssertion(<ParameterValueAssertion>node);
+                break;
+
+            case SyntaxKind.ProseAssertion:
+                this.checkProseAssertion(<ProseAssertion>node);
                 break;
 
             case SyntaxKind.InvalidAssertion:
@@ -602,6 +609,47 @@ export class Checker {
         }
 
         return false;
+    }
+
+    private checkProseAssertion(node: ProseAssertion): void {
+        this.checkGrammarProseAssertionHead(node) || this.checkGrammarAssertionTail(node);
+
+        for (const fragment of node.fragments) {
+            this.checkProseFragment(fragment);
+        }
+    }
+
+    private checkGrammarProseAssertionHead(node: Assertion): boolean {
+        if (!node.openBracketToken) {
+            return this.reportGrammarError(node.pos, Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBracketGreaterThanToken));
+        }
+
+        return false;
+    }
+
+    private checkProseFragment(fragment: ProseFragment): void {
+        switch (fragment.kind) {
+            case SyntaxKind.Nonterminal:
+                this.checkNonterminal(<Nonterminal>fragment, /*allowOptional*/ false);
+                break;
+
+            case SyntaxKind.Terminal:
+                this.checkTerminal(<Terminal>fragment, /*allowOptional*/ false);
+                break;
+
+            case SyntaxKind.ProseFull:
+            case SyntaxKind.ProseHead:
+            case SyntaxKind.ProseMiddle:
+            case SyntaxKind.ProseTail:
+                this.checkProseFragmentLiteral(<ProseFragmentLiteral>fragment);
+                break;
+        }
+    }
+
+    private checkProseFragmentLiteral(node: ProseFragmentLiteral): void {
+        if (typeof node.text !== "string") {
+            this.reportGrammarErrorForNode(node, Diagnostics._0_expected, tokenToString(SyntaxKind.UnicodeCharacterLiteral));
+        }
     }
 
     private reportInvalidAssertion(node: Assertion): void {
@@ -1043,6 +1091,11 @@ class RightHandSideDigest {
             case SyntaxKind.LookaheadAssertion: this.writeLookaheadAssertion(<LookaheadAssertion>node); break;
             case SyntaxKind.NoSymbolHereAssertion: this.writeNoSymbolHereAssertion(<NoSymbolHereAssertion>node); break;
             case SyntaxKind.ParameterValueAssertion: this.writeParameterValueAssertion(<ParameterValueAssertion>node); break;
+            case SyntaxKind.ProseAssertion: this.writeProseAssertion(<ProseAssertion>node); break;
+            case SyntaxKind.ProseFull: this.writeProseFragmentLiteral(<ProseFragmentLiteral>node); break;
+            case SyntaxKind.ProseHead: this.writeProseFragmentLiteral(<ProseFragmentLiteral>node); break;
+            case SyntaxKind.ProseMiddle: this.writeProseFragmentLiteral(<ProseFragmentLiteral>node); break;
+            case SyntaxKind.ProseTail: this.writeProseFragmentLiteral(<ProseFragmentLiteral>node); break;
             case SyntaxKind.UnicodeCharacterRange: this.writeUnicodeCharacterRange(<UnicodeCharacterRange>node); break;
             case SyntaxKind.ButNotSymbol: this.writeButNotSymbol(<ButNotSymbol>node); break;
             case SyntaxKind.OneOfSymbol: this.writeOneOfSymbol(<OneOfSymbol>node); break;
@@ -1098,7 +1151,9 @@ class RightHandSideDigest {
 
     private writeProse(node: Prose) {
         this.write("> ");
-        this.write(node.text);
+        for (const fragment of node.fragments) {
+            this.writeNode(fragment);
+        }
     }
 
     private writeNonterminal(node: Nonterminal) {
@@ -1171,6 +1226,28 @@ class RightHandSideDigest {
         this.spaceRequested = true;
     }
 
+    private writeProseAssertion(node: ProseAssertion) {
+        this.write("[>");
+        this.spaceRequested = false;
+        for (const fragment of node.fragments) {
+            if (fragment.kind === SyntaxKind.Identifier) {
+                this.write("|");
+                this.writeNode(fragment);
+                this.spaceRequested = false;
+                this.write("|");
+            }
+            else {
+                this.writeNode(fragment);
+            }
+        }
+        this.write("]");
+        this.spaceRequested = true;
+    }
+
+    private writeProseFragmentLiteral(node: ProseFragmentLiteral) {
+        this.write(node.text);
+    }
+
     private writeUnicodeCharacterRange(node: UnicodeCharacterRange) {
         this.writeNode(node.left);
         this.writeNode(node.throughKeyword);
@@ -1233,6 +1310,7 @@ function isAssertion(node: LexicalSymbol) {
             case SyntaxKind.LexicalGoalAssertion:
             case SyntaxKind.NoSymbolHereAssertion:
             case SyntaxKind.ParameterValueAssertion:
+            case SyntaxKind.ProseAssertion:
             case SyntaxKind.InvalidAssertion:
                 return true;
         }
