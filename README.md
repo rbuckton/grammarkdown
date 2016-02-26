@@ -155,13 +155,14 @@ The possible assertions include:
 * The *no-symbol-here assertion*, which verifies the next token is not the provided symbol: `[no LineTerminator here]`
 * The *lexical-goal assertion*, which states that the current lexical goal is the supplied *Nonterminal*: `[lexical goal InputElementRegExp]`
 * The *parameter assertion*, which states the supplied parameter to the current production is either set (using the plus ('+') character), or cleared (using the tilde ('~') character): `` [~Yield] `yield` ``
+* The *prose assertion*, which allows for arbitrary prose, mixed with terminals and nonterminals: ``[> prose text `terminal` prose text |NonTerminal| prose text]``
 
 A *lookahead assertion* has the following operators:
 
-* The `!=` operator states the lookahead phrase is not matched: ``[lookahead != `function`]``
 * The `==` operator states the lookahead phrase is matched: ``[lookahead == `class`]``
+* The `!=` operator states the lookahead phrase is not matched: ``[lookahead != `function`]``
+* The `<-` operator states that any matching phrase in the provided set is matched: ``[lookahead <- { `public`, `private` }]``
 * The `<!` operator states that any matching phrase in the provided set is not matched: ``[lookahead <! { `{`, `function` }]``
-* The `<=` operator states that any matching phrase in the provided set is matched: ``[lookahead <- { `public`, `private` }]``
 
 #### Linking
 
