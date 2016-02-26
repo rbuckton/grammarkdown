@@ -58,8 +58,13 @@ export class EcmarkupEmitter extends Emitter {
             }
         }
 
-        if (node.body && node.body.kind === SyntaxKind.OneOfList) {
-            this.writer.write(` oneof`);
+        if (node.body) {
+            if (node.body.kind === SyntaxKind.OneOfList) {
+                this.writer.write(` oneof`);
+            }
+            else if (node.body.kind === SyntaxKind.RightHandSide) {
+                this.writer.write(` collapsed`);
+            }
         }
 
         this.writer.write(`>`);
