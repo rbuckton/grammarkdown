@@ -170,11 +170,25 @@ function formatNode(node: Node, sourceFile: SourceFile) {
     }
     switch (node.kind) {
         case SyntaxKind.Terminal:
-        case SyntaxKind.Argument:
         case SyntaxKind.Nonterminal:
         case SyntaxKind.UnicodeCharacterLiteral:
-            if ((<Terminal | Argument | Nonterminal | UnicodeCharacterLiteral >node).questionToken) {
+            if ((<Terminal | Nonterminal | UnicodeCharacterLiteral>node).questionToken) {
                 text += "?";
+            }
+            break;
+        case SyntaxKind.Argument:
+            if ((<Argument>node).operatorToken) {
+                switch ((<Argument>node).operatorToken.kind) {
+                    case SyntaxKind.QuestionToken:
+                        text += "?";
+                        break;
+                    case SyntaxKind.TildeToken:
+                        text += "~";
+                        break;
+                    case SyntaxKind.PlusToken:
+                        text += "+";
+                        break;
+                }
             }
             break;
     }

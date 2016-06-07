@@ -58,6 +58,10 @@ import {
 } from "./nodes";
 import { NodeNavigator } from "./navigator";
 
+
+// TODO: Check a Nonterminal as a call
+// TODO: Check all Productions to ensure they have the same parameters.
+
 export class Checker {
     private checkedFileSet = new Dict<boolean>();
     private bindings: BindingTable;
@@ -874,8 +878,11 @@ export class Checker {
     }
 
     private checkGrammarArgument(node: Argument): boolean {
-        if (node.questionToken && node.questionToken.kind !== SyntaxKind.QuestionToken) {
-            return this.reportGrammarErrorForNode(node.questionToken, Diagnostics.Unexpected_token_0_, tokenToString(node.questionToken.kind));
+        if (node.operatorToken
+            && node.operatorToken.kind !== SyntaxKind.QuestionToken
+            && node.operatorToken.kind !== SyntaxKind.PlusToken
+            && node.operatorToken.kind !== SyntaxKind.TildeToken) {
+            return this.reportGrammarErrorForNode(node.operatorToken, Diagnostics.Unexpected_token_0_, tokenToString(node.operatorToken.kind));
         }
 
         return false;
@@ -918,7 +925,7 @@ export class Checker {
 
                     case SyntaxKind.Argument:
                         let argument = <Argument>parent;
-                        if (argument.questionToken) {
+                        if (argument.operatorToken && argument.operatorToken.kind === SyntaxKind.QuestionToken) {
                             symbol = this.resolveSymbol(node, node.text, SymbolKind.Parameter, Diagnostics.Cannot_find_name_0_);
                         }
                         else {
@@ -1177,7 +1184,7 @@ class RightHandSideDigest {
     }
 
     private writeArgument(node: Argument) {
-        this.writeNode(node.questionToken);
+        this.writeNode(node.operatorToken);
         this.writeNode(node.name);
     }
 

@@ -43,7 +43,7 @@ gulp.task("test", ["test:lib"]);
 gulp.task("watch:lib", watch(src(lib), ["build:lib"]));
 gulp.task("watch:tests", watch(src(lib, tests), ["test:lib"]));
 gulp.task("watch", ["watch:tests"]);
-gulp.task("default", ["build"]);
+gulp.task("default", ["test"]);
 gulp.task("diff", diff(baselines));
 gulp.task("publish:pages", ["build"], pages());
 gulp.task("publish", ["publish:pages"]);

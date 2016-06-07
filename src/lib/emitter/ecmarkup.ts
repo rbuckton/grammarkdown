@@ -196,7 +196,7 @@ export class EcmarkupEmitter extends Emitter {
     }
 
     protected emitArgument(node: Argument) {
-        this.emitToken(node.questionToken);
+        this.emitToken(node.operatorToken);
         this.emitNode(node.name);
     }
 

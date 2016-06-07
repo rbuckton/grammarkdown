@@ -391,10 +391,10 @@ PrimaryExpression[Yield] :
 	CoverParenthesizedExpressionAndArrowParameterList[?Yield]
 
 CoverParenthesizedExpressionAndArrowParameterList[Yield] :
-	`(` Expression[In, ?Yield] `)`
+	`(` Expression[+In, ?Yield] `)`
 	`(` `)`
 	`(` `...` BindingIdentifier[?Yield] `)`
-	`(` Expression[In, ?Yield] `,` `...` BindingIdentifier[?Yield] `)`
+	`(` Expression[+In, ?Yield] `,` `...` BindingIdentifier[?Yield] `)`
 
 Literal :
 	NullLiteral

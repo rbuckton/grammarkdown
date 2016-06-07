@@ -1353,12 +1353,13 @@ SyntaxKind[IndentToken](394,1): «indent»
 SyntaxKind[Terminal](394,2): `(`
 SyntaxKind[Identifier](394,6): Expression
 SyntaxKind[OpenBracketToken](394,16): [
-SyntaxKind[Identifier](394,17): In
-SyntaxKind[CommaToken](394,19): ,
-SyntaxKind[QuestionToken](394,21): ?
-SyntaxKind[Identifier](394,22): Yield
-SyntaxKind[CloseBracketToken](394,27): ]
-SyntaxKind[Terminal](394,29): `)`
+SyntaxKind[PlusToken](394,17): +
+SyntaxKind[Identifier](394,18): In
+SyntaxKind[CommaToken](394,20): ,
+SyntaxKind[QuestionToken](394,22): ?
+SyntaxKind[Identifier](394,23): Yield
+SyntaxKind[CloseBracketToken](394,28): ]
+SyntaxKind[Terminal](394,30): `)`
 SyntaxKind[LineTerminatorToken](395,1): «line terminator»
 SyntaxKind[Terminal](395,2): `(`
 SyntaxKind[Terminal](395,6): `)`
@@ -1375,19 +1376,20 @@ SyntaxKind[LineTerminatorToken](397,1): «line terminator»
 SyntaxKind[Terminal](397,2): `(`
 SyntaxKind[Identifier](397,6): Expression
 SyntaxKind[OpenBracketToken](397,16): [
-SyntaxKind[Identifier](397,17): In
-SyntaxKind[CommaToken](397,19): ,
-SyntaxKind[QuestionToken](397,21): ?
-SyntaxKind[Identifier](397,22): Yield
-SyntaxKind[CloseBracketToken](397,27): ]
-SyntaxKind[Terminal](397,29): `,`
-SyntaxKind[Terminal](397,33): `...`
-SyntaxKind[Identifier](397,39): BindingIdentifier
-SyntaxKind[OpenBracketToken](397,56): [
-SyntaxKind[QuestionToken](397,57): ?
-SyntaxKind[Identifier](397,58): Yield
-SyntaxKind[CloseBracketToken](397,63): ]
-SyntaxKind[Terminal](397,65): `)`
+SyntaxKind[PlusToken](397,17): +
+SyntaxKind[Identifier](397,18): In
+SyntaxKind[CommaToken](397,20): ,
+SyntaxKind[QuestionToken](397,22): ?
+SyntaxKind[Identifier](397,23): Yield
+SyntaxKind[CloseBracketToken](397,28): ]
+SyntaxKind[Terminal](397,30): `,`
+SyntaxKind[Terminal](397,34): `...`
+SyntaxKind[Identifier](397,40): BindingIdentifier
+SyntaxKind[OpenBracketToken](397,57): [
+SyntaxKind[QuestionToken](397,58): ?
+SyntaxKind[Identifier](397,59): Yield
+SyntaxKind[CloseBracketToken](397,64): ]
+SyntaxKind[Terminal](397,66): `)`
 SyntaxKind[LineTerminatorToken](398,1): «line terminator»
 SyntaxKind[DedentToken](398,1): «dedent»
 SyntaxKind[LineTerminatorToken](399,1): «line terminator»

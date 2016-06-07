@@ -381,10 +381,10 @@
 &emsp;&emsp;&emsp;<a name="PrimaryExpression-b3fd8fa6"></a>*[CoverParenthesizedExpressionAndArrowParameterList](#CoverParenthesizedExpressionAndArrowParameterList)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="CoverParenthesizedExpressionAndArrowParameterList"></a>*CoverParenthesizedExpressionAndArrowParameterList*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="CoverParenthesizedExpressionAndArrowParameterList-029ac257"></a>`` ( ``&emsp;*[Expression](#Expression)*<sub>[In, ?Yield]</sub>&emsp;`` ) ``  
+&emsp;&emsp;&emsp;<a name="CoverParenthesizedExpressionAndArrowParameterList-aff23fda"></a>`` ( ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` ) ``  
 &emsp;&emsp;&emsp;<a name="CoverParenthesizedExpressionAndArrowParameterList-78e44c33"></a>`` ( ``&emsp;`` ) ``  
 &emsp;&emsp;&emsp;<a name="CoverParenthesizedExpressionAndArrowParameterList-1f3e167a"></a>`` ( ``&emsp;`` ... ``&emsp;*[BindingIdentifier](#BindingIdentifier)*<sub>[?Yield]</sub>&emsp;`` ) ``  
-&emsp;&emsp;&emsp;<a name="CoverParenthesizedExpressionAndArrowParameterList-73ce9d37"></a>`` ( ``&emsp;*[Expression](#Expression)*<sub>[In, ?Yield]</sub>&emsp;`` , ``&emsp;`` ... ``&emsp;*[BindingIdentifier](#BindingIdentifier)*<sub>[?Yield]</sub>&emsp;`` ) ``  
+&emsp;&emsp;&emsp;<a name="CoverParenthesizedExpressionAndArrowParameterList-939f8720"></a>`` ( ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` , ``&emsp;`` ... ``&emsp;*[BindingIdentifier](#BindingIdentifier)*<sub>[?Yield]</sub>&emsp;`` ) ``  
   
 &emsp;&emsp;<a name="Literal"></a>*Literal* **:**  
 &emsp;&emsp;&emsp;<a name="Literal-54f84188"></a>*[NullLiteral](#NullLiteral)*  

@@ -1699,14 +1699,15 @@
               (394,6)SyntaxKind[Identifier](text = "Expression")
               (394,16)SyntaxKind[ArgumentList]
                 (394,16)SyntaxKind[OpenBracketToken]
-                (394,17)SyntaxKind[Argument]
-                  (394,17)SyntaxKind[Identifier](text = "In")
-                (394,21)SyntaxKind[Argument]?
-                  (394,21)SyntaxKind[QuestionToken]
-                  (394,22)SyntaxKind[Identifier](text = "Yield")
-                (394,27)SyntaxKind[CloseBracketToken]
-            (394,29)SyntaxKind[SymbolSpan]
-              (394,29)SyntaxKind[Terminal](text = ")")
+                (394,17)SyntaxKind[Argument]+
+                  (394,17)SyntaxKind[PlusToken]
+                  (394,18)SyntaxKind[Identifier](text = "In")
+                (394,22)SyntaxKind[Argument]?
+                  (394,22)SyntaxKind[QuestionToken]
+                  (394,23)SyntaxKind[Identifier](text = "Yield")
+                (394,28)SyntaxKind[CloseBracketToken]
+            (394,30)SyntaxKind[SymbolSpan]
+              (394,30)SyntaxKind[Terminal](text = ")")
       (395,2)SyntaxKind[RightHandSide]
         (395,2)SyntaxKind[SymbolSpan]
           (395,2)SyntaxKind[Terminal](text = "(")
@@ -1736,27 +1737,28 @@
               (397,6)SyntaxKind[Identifier](text = "Expression")
               (397,16)SyntaxKind[ArgumentList]
                 (397,16)SyntaxKind[OpenBracketToken]
-                (397,17)SyntaxKind[Argument]
-                  (397,17)SyntaxKind[Identifier](text = "In")
-                (397,21)SyntaxKind[Argument]?
-                  (397,21)SyntaxKind[QuestionToken]
-                  (397,22)SyntaxKind[Identifier](text = "Yield")
-                (397,27)SyntaxKind[CloseBracketToken]
-            (397,29)SyntaxKind[SymbolSpan]
-              (397,29)SyntaxKind[Terminal](text = ",")
-              (397,33)SyntaxKind[SymbolSpan]
-                (397,33)SyntaxKind[Terminal](text = "...")
-                (397,39)SyntaxKind[SymbolSpan]
-                  (397,39)SyntaxKind[Nonterminal]
-                    (397,39)SyntaxKind[Identifier](text = "BindingIdentifier")
-                    (397,56)SyntaxKind[ArgumentList]
-                      (397,56)SyntaxKind[OpenBracketToken]
-                      (397,57)SyntaxKind[Argument]?
-                        (397,57)SyntaxKind[QuestionToken]
-                        (397,58)SyntaxKind[Identifier](text = "Yield")
-                      (397,63)SyntaxKind[CloseBracketToken]
-                  (397,65)SyntaxKind[SymbolSpan]
-                    (397,65)SyntaxKind[Terminal](text = ")")
+                (397,17)SyntaxKind[Argument]+
+                  (397,17)SyntaxKind[PlusToken]
+                  (397,18)SyntaxKind[Identifier](text = "In")
+                (397,22)SyntaxKind[Argument]?
+                  (397,22)SyntaxKind[QuestionToken]
+                  (397,23)SyntaxKind[Identifier](text = "Yield")
+                (397,28)SyntaxKind[CloseBracketToken]
+            (397,30)SyntaxKind[SymbolSpan]
+              (397,30)SyntaxKind[Terminal](text = ",")
+              (397,34)SyntaxKind[SymbolSpan]
+                (397,34)SyntaxKind[Terminal](text = "...")
+                (397,40)SyntaxKind[SymbolSpan]
+                  (397,40)SyntaxKind[Nonterminal]
+                    (397,40)SyntaxKind[Identifier](text = "BindingIdentifier")
+                    (397,57)SyntaxKind[ArgumentList]
+                      (397,57)SyntaxKind[OpenBracketToken]
+                      (397,58)SyntaxKind[Argument]?
+                        (397,58)SyntaxKind[QuestionToken]
+                        (397,59)SyntaxKind[Identifier](text = "Yield")
+                      (397,64)SyntaxKind[CloseBracketToken]
+                  (397,66)SyntaxKind[SymbolSpan]
+                    (397,66)SyntaxKind[Terminal](text = ")")
       (398,1)SyntaxKind[DedentToken]
   (399,1)SyntaxKind[Production]
     (399,1)SyntaxKind[Identifier](text = "Literal")

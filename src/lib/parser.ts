@@ -920,15 +920,15 @@ export class Parser {
     }
 
     private isStartOfArgument(): boolean {
-        return this.token === SyntaxKind.QuestionToken
+        return isLeadingArgumentToken(this.token)
             || this.canBeIdentifier(this.token);
     }
 
     private parseArgument(): Argument {
         let fullStart = this.scanner.getTokenPos();
-        let questionToken = this.parseToken(SyntaxKind.QuestionToken);
+        let operatorToken = this.parseAnyToken(isLeadingArgumentToken);
         let name = this.parseIdentifier();
-        let node = new Argument(questionToken, name);
+        let node = new Argument(operatorToken, name);
         return this.finishNode(node, fullStart);
     }
 
@@ -962,7 +962,7 @@ export class Parser {
 
     private nextTokenIsArgument(): boolean {
         this.nextToken();
-        return this.token === SyntaxKind.QuestionToken
+        return isLeadingArgumentToken(this.token)
             || this.token === SyntaxKind.Identifier;
     }
 
@@ -1336,4 +1336,10 @@ function isProductionSeparatorToken(token: SyntaxKind) {
     return token === SyntaxKind.ColonToken
         || token === SyntaxKind.ColonColonToken
         || token === SyntaxKind.ColonColonColonToken;
+}
+
+function isLeadingArgumentToken(token: SyntaxKind) {
+    return token === SyntaxKind.QuestionToken
+        || token === SyntaxKind.PlusToken
+        || token === SyntaxKind.TildeToken;
 }

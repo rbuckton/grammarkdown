@@ -295,13 +295,13 @@ export class ProseFragmentLiteral extends Node implements TextContent {
 export type ProseFragment = ProseFragmentLiteral | Terminal | Nonterminal;
 
 export class Argument extends Node {
-    @edge questionToken: Node;
+    @edge operatorToken: Node;
     @edge name: Identifier;
 
-    constructor(questionToken: Node, name: Identifier) {
+    constructor(operatorToken: Node, name: Identifier) {
         super(SyntaxKind.Argument);
 
-        this.questionToken = questionToken;
+        this.operatorToken = operatorToken;
         this.name = name;
     }
 }
@@ -628,7 +628,7 @@ export function forEachChild<T>(node: Node, cbNode: (node: Node) => T): T {
                     || visitNode((<ParameterList>node).closeParenToken, cbNode);
 
             case SyntaxKind.Argument:
-                return visitNode((<Argument>node).questionToken, cbNode)
+                return visitNode((<Argument>node).operatorToken, cbNode)
                     || visitNode((<Argument>node).name, cbNode);
 
             case SyntaxKind.ArgumentList:
