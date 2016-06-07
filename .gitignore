@@ -3,4 +3,5 @@ lib
 !src/lib
 tests
 !tests/baselines
+!src/tests
 spec/*.grammar.html
