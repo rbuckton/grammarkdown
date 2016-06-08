@@ -142,7 +142,7 @@ export class NodeNavigator {
 
     public hasAncestor(predicate?: (node: Node) => boolean): boolean {
         for (let nextDepth = this.currentDepth - 1; nextDepth >= 0; nextDepth--) {
-            let nextNode = this.nodeStack[nextDepth];
+            const nextNode = this.nodeStack[nextDepth];
             if (!predicate || predicate(nextNode)) {
                 return true;
             }
@@ -257,7 +257,7 @@ export class NodeNavigator {
 
     public moveToAncestor(predicate: (node: Node) => boolean): boolean {
         for (let nextDepth = this.currentDepth - 1; nextDepth >= 0; nextDepth--) {
-            let nextNode = this.nodeStack[nextDepth];
+            const nextNode = this.nodeStack[nextDepth];
             if (predicate(nextNode)) {
                 this.beforeNavigate();
                 while (this.currentDepth !== nextDepth) {

@@ -79,8 +79,8 @@ export class DiagnosticMessages {
             this.sourceFilesDiagnosticOffset = [];
         }
 
-        let diagnosticOffset = this.count();
-        let sourceFileIndex = this.sourceFiles.length;
+        const diagnosticOffset = this.count();
+        const sourceFileIndex = this.sourceFiles.length;
         this.sourceFiles[sourceFileIndex] = sourceFile;
         this.sourceFilesDiagnosticOffset[sourceFileIndex] = diagnosticOffset;
     }
@@ -110,7 +110,7 @@ export class DiagnosticMessages {
     }
 
     public getMessage(diagnosticIndex: number, options: { detailed?: boolean; } = { detailed: true }): string {
-        let diagnostic = this.diagnostics && this.diagnostics[diagnosticIndex];
+        const diagnostic = this.diagnostics && this.diagnostics[diagnosticIndex];
         if (diagnostic) {
             const { detailed = true } = options;
             const diagnosticMessages = detailed
@@ -121,13 +121,13 @@ export class DiagnosticMessages {
                 return Dict.get(diagnosticMessages, diagnosticIndex);
             }
 
-            let diagnosticArguments = this.diagnosticsArguments && this.diagnosticsArguments[diagnosticIndex];
-            let sourceFile = this.getDiagnosticSourceFile(diagnosticIndex);
+            const diagnosticArguments = this.diagnosticsArguments && this.diagnosticsArguments[diagnosticIndex];
+            const sourceFile = this.getDiagnosticSourceFile(diagnosticIndex);
             let text = "";
             if (detailed) {
                 text += sourceFile ? sourceFile.filename : "";
                 if (this.diagnosticsPos && diagnosticIndex in this.diagnosticsPos) {
-                    let diagnosticPos = this.diagnosticsPos[diagnosticIndex];
+                    const diagnosticPos = this.diagnosticsPos[diagnosticIndex];
                     if (sourceFile && sourceFile.lineMap) {
                         text += `(${sourceFile.lineMap.formatPosition(diagnosticPos) })`;
                     }
@@ -304,7 +304,7 @@ export class DiagnosticMessages {
             this.diagnostics = [];
         }
 
-        let diagnosticIndex = this.diagnostics.length;
+        const diagnosticIndex = this.diagnostics.length;
         this.diagnostics[diagnosticIndex] = message;
 
         if (args.length === 1 && args[0] instanceof Array) {

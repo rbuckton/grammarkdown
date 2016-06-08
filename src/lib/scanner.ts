@@ -107,21 +107,21 @@ export class Scanner {
     }
 
     public speculate<T>(callback: () => T, isLookahead: boolean): T {
-        let savePos = this.pos;
-        let saveStartPos = this.startPos;
-        let saveTokenPos = this.tokenPos;
-        let saveToken = this.token;
-        let saveTokenValue = this.tokenValue;
-        let saveCopyQueueOnWrite = this.copyQueueOnWrite;
-        let saveCopyIndentsOnWrite = this.copyIndentsOnWrite;
-        let saveQueue = this.queue;
-        let saveIndents = this.indents;
-        let saveDiagnostics = this.diagnostics;
+        const savePos = this.pos;
+        const saveStartPos = this.startPos;
+        const saveTokenPos = this.tokenPos;
+        const saveToken = this.token;
+        const saveTokenValue = this.tokenValue;
+        const saveCopyQueueOnWrite = this.copyQueueOnWrite;
+        const saveCopyIndentsOnWrite = this.copyIndentsOnWrite;
+        const saveQueue = this.queue;
+        const saveIndents = this.indents;
+        const saveDiagnostics = this.diagnostics;
 
         this.diagnostics = NullDiagnosticMessages.instance;
         this.copyQueueOnWrite = true;
         this.copyIndentsOnWrite = true;
-        let result = callback();
+        const result = callback();
         this.diagnostics = saveDiagnostics;
         if (!result || isLookahead) {
             this.pos = savePos;
@@ -407,9 +407,9 @@ export class Scanner {
     }
 
     private scanLine(): string {
-        let start = this.pos;
+        const start = this.pos;
         while (this.pos < this.len) {
-            let ch = this.text.charCodeAt(this.pos);
+            const ch = this.text.charCodeAt(this.pos);
             if (isLineTerminator(ch)) {
                 break;
             }
@@ -433,8 +433,8 @@ export class Scanner {
     }
 
     private scanLineTerminator(): string {
-        let start = this.pos;
-        let ch = this.text.charCodeAt(start);
+        const start = this.pos;
+        const ch = this.text.charCodeAt(start);
         if (ch === CharacterCodes.CarriageReturn && this.text.charCodeAt(start + 1) === CharacterCodes.LineFeed) {
             this.pos += 2;
         }
@@ -447,7 +447,7 @@ export class Scanner {
 
     private skipWhiteSpace(): void {
         while (true) {
-            let ch = this.text.charCodeAt(this.pos);
+            const ch = this.text.charCodeAt(this.pos);
             switch (ch) {
                 case CharacterCodes.Space:
                 case CharacterCodes.Tab:
@@ -468,7 +468,7 @@ export class Scanner {
         const atStartOfProse = previousToken === this.proseStartToken;
         const previousTokenWasFragment = isProseFragment(previousToken);
 
-        let start = this.pos;
+        const start = this.pos;
         let token: SyntaxKind;
         let tokenValue: string = "";
         while (true) {
@@ -607,7 +607,7 @@ export class Scanner {
     }
 
     private scanEscapeSequence(): string {
-        let start = this.pos;
+        const start = this.pos;
         this.pos++;
         if (this.pos >= this.len) {
             this.getDiagnostics().report(start, Diagnostics.Invalid_escape_sequence);
@@ -677,7 +677,7 @@ export class Scanner {
         let digits = 0;
         let value = 0;
         while (digits < count || !mustMatchCount) {
-            let ch = this.text.charCodeAt(this.pos);
+            const ch = this.text.charCodeAt(this.pos);
             if (ch >= CharacterCodes.Number0 && ch <= CharacterCodes.Number9) {
                 value = value * 16 + ch - CharacterCodes.Number0;
             }
@@ -703,7 +703,7 @@ export class Scanner {
     }
 
     private scanNumber(): number {
-        let start = this.pos;
+        const start = this.pos;
         while (isDigit(this.text.charCodeAt(this.pos))) {
             this.pos++;
         }
@@ -739,11 +739,11 @@ export class Scanner {
     }
 
     private getIdentifierToken(): SyntaxKind {
-        let len = this.tokenValue.length;
+        const len = this.tokenValue.length;
         if (len >= 2 && len <= 9) {
-            let ch = this.tokenValue.charCodeAt(0);
+            const ch = this.tokenValue.charCodeAt(0);
             if (ch >= CharacterCodes.LowerA && ch <= CharacterCodes.LowerT) {
-                let token = stringToToken(this.tokenValue);
+                const token = stringToToken(this.tokenValue);
                 if (token !== undefined) {
                     return this.token = token;
                 }

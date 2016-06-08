@@ -49,7 +49,7 @@ export class MarkdownEmitter extends Emitter {
     }
 
     protected emitProduction(node: Production) {
-        let linkId = this.resolver.getProductionLinkId(node.name);
+        const linkId = this.resolver.getProductionLinkId(node.name);
         this.writer.write(`&emsp;&emsp;`);
         this.emitLinkAnchor(linkId);
         this.writer.write(`*`);
@@ -88,12 +88,12 @@ export class MarkdownEmitter extends Emitter {
 
     protected emitOneOfList(node: OneOfList) {
         this.writer.write(`**one of**`);
-        let terminals = node.terminals;
+        const terminals = node.terminals;
         if (terminals && terminals.length > 0) {
             if (node.openIndentToken) {
                 // get the maximum size for a terminal
                 let width = 5;
-                for (let terminal of terminals) {
+                for (const terminal of terminals) {
                     if (terminal.text.length > width) {
                         width = terminal.text.length;
                     }
@@ -102,10 +102,10 @@ export class MarkdownEmitter extends Emitter {
                 this.writer.write(`  `);
                 this.writer.writeln();
                 this.writer.write(`<pre>`);
-                let columns = Math.floor(50 / width);
+                const columns = Math.floor(50 / width);
                 let pad = 0;
                 for (let i = 0; i < terminals.length; ++i) {
-                    let terminal = terminals[i];
+                    const terminal = terminals[i];
                     if (i % columns === 0) {
                         if (i > 0) {
                             this.writer.write(`  `);
@@ -145,7 +145,7 @@ export class MarkdownEmitter extends Emitter {
 
     protected emitRightHandSideList(node: RightHandSideList) {
         this.writer.write(`  `);
-        for (let rhs of node.elements) {
+        for (const rhs of node.elements) {
             this.writer.writeln();
             this.writer.write(`&emsp;&emsp;&emsp;`);
             this.emitNode(rhs);
@@ -153,7 +153,7 @@ export class MarkdownEmitter extends Emitter {
     }
 
     protected emitRightHandSide(node: RightHandSide) {
-        let linkId = this.resolver.getRightHandSideLinkId(node, /*includePrefix*/ true);
+        const linkId = this.resolver.getRightHandSideLinkId(node, /*includePrefix*/ true);
         this.emitLinkAnchor(linkId);
         super.emitRightHandSide(node);
         this.writer.write(`  `);
@@ -178,7 +178,7 @@ export class MarkdownEmitter extends Emitter {
     }
 
     protected emitNonterminal(node: Nonterminal) {
-        let linkId = this.resolver.getProductionLinkId(node.name);
+        const linkId = this.resolver.getProductionLinkId(node.name);
         this.writer.write(`*`);
         this.emitNodeWithLink(node.name, linkId);
         this.writer.write(`*`);
@@ -255,7 +255,7 @@ export class MarkdownEmitter extends Emitter {
     }
 
     protected emitLexicalGoalAssertion(node: LexicalGoalAssertion): void {
-        let linkId = this.resolver.getProductionLinkId(node.symbol);
+        const linkId = this.resolver.getProductionLinkId(node.symbol);
         this.writer.write(`\[lexical goal `);
         this.emitNodeWithLink(node.symbol, linkId);
         this.writer.write(`]`);
@@ -313,7 +313,7 @@ export class MarkdownEmitter extends Emitter {
     }
 
     protected emitTextContent(node: TextContent) {
-        let text = node.text;
+        const text = node.text;
         this.writer.write(text);
     }
 

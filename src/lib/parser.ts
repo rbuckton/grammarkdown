@@ -161,10 +161,10 @@ export class Parser {
         this.nextToken();
         this.sourceFile.elements = this.parseSourceElementList() || [];
 
-        let imports: string[] = [];
-        for (let element of this.sourceFile.elements) {
+        const imports: string[] = [];
+        for (const element of this.sourceFile.elements) {
             if (element.kind === SyntaxKind.Import) {
-                let importNode = <Import>element;
+                const importNode = <Import>element;
                 if (importNode.path) {
                     imports.push(importNode.path.text);
                 }
@@ -188,12 +188,12 @@ export class Parser {
     }
 
     private speculate<T>(callback: () => T, isLookahead: boolean): T {
-        let saveToken = this.token;
-        let saveParsingContext = this.parsingContext;
-        let saveDiagnostics = this.diagnostics;
+        const saveToken = this.token;
+        const saveParsingContext = this.parsingContext;
+        const saveDiagnostics = this.diagnostics;
 
         this.diagnostics = NullDiagnosticMessages.instance;
-        let result = this.scanner.speculate(callback, isLookahead);
+        const result = this.scanner.speculate(callback, isLookahead);
 
         this.diagnostics = saveDiagnostics;
         if (!result || isLookahead) {
@@ -236,7 +236,7 @@ export class Parser {
 
     private readTokenValue(token: SyntaxKind): string {
         if (this.token === token) {
-            let text = this.scanner.getTokenValue();
+            const text = this.scanner.getTokenValue();
             this.nextToken();
             return text;
         }
@@ -246,7 +246,7 @@ export class Parser {
 
     private readTokenText(token: SyntaxKind): string {
         if (this.token === token) {
-            let text = this.scanner.getTokenText();
+            const text = this.scanner.getTokenText();
             this.nextToken();
             return text;
         }
@@ -265,7 +265,7 @@ export class Parser {
 
     private parseToken(token: SyntaxKind): Node {
         if (this.token === token) {
-            let fullStart = this.scanner.getTokenPos();
+            const fullStart = this.scanner.getTokenPos();
             this.nextToken();
             return this.finishNode(new Node(token), fullStart);
         }
@@ -275,8 +275,8 @@ export class Parser {
 
     private parseAnyToken(predicate: (token: SyntaxKind) => boolean): Node {
         if (predicate(this.token)) {
-            let fullStart = this.scanner.getTokenPos();
-            let node = new Node(this.token);
+            const fullStart = this.scanner.getTokenPos();
+            const node = new Node(this.token);
             this.nextToken();
             return this.finishNode(node, fullStart);
         }
@@ -639,13 +639,13 @@ export class Parser {
     }
 
     private parseList<TNode extends Node>(listContext: ParsingContext): TNode[] {
-        let saveContext = this.parsingContext;
+        const saveContext = this.parsingContext;
         this.parsingContext = listContext;
 
-        let hasCloseToken = this.hasCloseToken();
-        let hasSeparator = this.hasSeparator();
-        let shouldConsumeCloseToken = this.shouldConsumeCloseToken();
-        let whitespaceToSkip = this.shouldSkipWhitespace();
+        const hasCloseToken = this.hasCloseToken();
+        const hasSeparator = this.hasSeparator();
+        const shouldConsumeCloseToken = this.shouldConsumeCloseToken();
+        const whitespaceToSkip = this.shouldSkipWhitespace();
         let result: TNode[];
         while (!this.isEOF()) {
             this.skipWhitespace(whitespaceToSkip);
@@ -657,7 +657,7 @@ export class Parser {
                     result = [];
                 }
 
-                let element = <TNode>this.parseElement();
+                const element = <TNode>this.parseElement();
                 if (element) {
                     result.push(element);
                 }
@@ -691,17 +691,17 @@ export class Parser {
     }
 
     private parseIdentifier(): Identifier {
-        let fullStart = this.scanner.getTokenPos();
-        let text = this.canBeIdentifier(this.token) && this.readTokenValue(this.token);
-        let node = new Identifier(text);
+        const fullStart = this.scanner.getTokenPos();
+        const text = this.canBeIdentifier(this.token) && this.readTokenValue(this.token);
+        const node = new Identifier(text);
         return this.finishNode(node, fullStart);
     }
 
     private parseUnicodeCharacterLiteral(allowOptional: boolean): UnicodeCharacterLiteral {
-        let fullStart = this.scanner.getTokenPos();
-        let text = this.readTokenText(SyntaxKind.UnicodeCharacterLiteral);
-        let questionToken = allowOptional ? this.parseToken(SyntaxKind.QuestionToken) : undefined;
-        let node = new UnicodeCharacterLiteral(text, questionToken);
+        const fullStart = this.scanner.getTokenPos();
+        const text = this.readTokenText(SyntaxKind.UnicodeCharacterLiteral);
+        const questionToken = allowOptional ? this.parseToken(SyntaxKind.QuestionToken) : undefined;
+        const node = new UnicodeCharacterLiteral(text, questionToken);
         return this.finishNode(node, fullStart);
     }
 
@@ -718,16 +718,16 @@ export class Parser {
     }
 
     private parseParameter(): Parameter {
-        let fullStart = this.scanner.getTokenPos();
-        let name = this.parseIdentifier();
-        let node = new Parameter(name);
+        const fullStart = this.scanner.getTokenPos();
+        const name = this.parseIdentifier();
+        const node = new Parameter(name);
         return this.finishNode(node, fullStart);
     }
 
     private parseParameterListTail(openToken: Node, parsingContext: ParsingContext, closeTokenKind: SyntaxKind): ParameterList {
-        let elements = this.parseList<Parameter>(parsingContext);
-        let closeToken = this.parseToken(closeTokenKind);
-        let node = new ParameterList(openToken, elements, closeToken);
+        const elements = this.parseList<Parameter>(parsingContext);
+        const closeToken = this.parseToken(closeTokenKind);
+        const node = new ParameterList(openToken, elements, closeToken);
         return this.finishNode(node, openToken.pos);
     }
 
@@ -747,26 +747,26 @@ export class Parser {
     }
 
     private parseOneOfList(): OneOfList {
-        let oneKeyword = this.parseToken(SyntaxKind.OneKeyword);
-        let ofKeyword = this.parseToken(SyntaxKind.OfKeyword);
+        const oneKeyword = this.parseToken(SyntaxKind.OneKeyword);
+        const ofKeyword = this.parseToken(SyntaxKind.OfKeyword);
         this.parseOptional(SyntaxKind.LineTerminatorToken);
 
-        let openIndentToken = this.parseToken(SyntaxKind.IndentToken);
-        let terminals = this.parseList<Terminal>(openIndentToken ? ParsingContext.OneOfListIndented : ParsingContext.OneOfList);
-        let closeIndentToken = this.parseToken(SyntaxKind.DedentToken);
-        let node = new OneOfList(oneKeyword, ofKeyword, openIndentToken, terminals, closeIndentToken);
+        const openIndentToken = this.parseToken(SyntaxKind.IndentToken);
+        const terminals = this.parseList<Terminal>(openIndentToken ? ParsingContext.OneOfListIndented : ParsingContext.OneOfList);
+        const closeIndentToken = this.parseToken(SyntaxKind.DedentToken);
+        const node = new OneOfList(oneKeyword, ofKeyword, openIndentToken, terminals, closeIndentToken);
         return this.finishNode(node, oneKeyword.pos);
     }
 
     private parseSymbolSetTail(openBraceToken: Node): SymbolSet {
-        let terminals = this.parseList<SymbolSpan>(ParsingContext.SymbolSet);
-        let closeBraceToken = this.parseToken(SyntaxKind.CloseBraceToken);
-        let node = new SymbolSet(openBraceToken, terminals, closeBraceToken);
+        const terminals = this.parseList<SymbolSpan>(ParsingContext.SymbolSet);
+        const closeBraceToken = this.parseToken(SyntaxKind.CloseBraceToken);
+        const node = new SymbolSet(openBraceToken, terminals, closeBraceToken);
         return this.finishNode(node, openBraceToken.pos);
     }
 
     private parseSymbolSpanRestOrSymbolSet(): SymbolSpan | SymbolSet {
-        let openBraceToken = this.parseToken(SyntaxKind.OpenBraceToken);
+        const openBraceToken = this.parseToken(SyntaxKind.OpenBraceToken);
         if (openBraceToken) {
             return this.parseSymbolSetTail(openBraceToken);
         }
@@ -776,9 +776,9 @@ export class Parser {
     }
 
     private parseEmptyAssertionTail(openBracketToken: Node): EmptyAssertion {
-        let emptyKeyword = this.parseToken(SyntaxKind.EmptyKeyword);
-        let closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
-        let node = new EmptyAssertion(openBracketToken, emptyKeyword, closeBracketToken);
+        const emptyKeyword = this.parseToken(SyntaxKind.EmptyKeyword);
+        const closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
+        const node = new EmptyAssertion(openBracketToken, emptyKeyword, closeBracketToken);
         return this.finishNode(node, openBracketToken.pos);
     }
 
@@ -796,29 +796,29 @@ export class Parser {
     }
 
     private parseLookaheadAssertionTail(openBracketToken: Node): LookaheadAssertion {
-        let lookaheadKeyword = this.parseToken(SyntaxKind.LookaheadKeyword);
-        let operatorToken = this.parseAnyLookaheadOperator();
-        let lookahead = this.parseSymbolSpanRestOrSymbolSet();
-        let closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
-        let node = new LookaheadAssertion(openBracketToken, lookaheadKeyword, operatorToken, lookahead, closeBracketToken);
+        const lookaheadKeyword = this.parseToken(SyntaxKind.LookaheadKeyword);
+        const operatorToken = this.parseAnyLookaheadOperator();
+        const lookahead = this.parseSymbolSpanRestOrSymbolSet();
+        const closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
+        const node = new LookaheadAssertion(openBracketToken, lookaheadKeyword, operatorToken, lookahead, closeBracketToken);
         return this.finishNode(node, openBracketToken.pos);
     }
 
     private parseNoSymbolHereAssertionTail(openBracketToken: Node): NoSymbolHereAssertion {
-        let noKeyword = this.parseToken(SyntaxKind.NoKeyword);
-        let symbols = this.parseList<LexicalSymbol>(ParsingContext.NoSymbolHere);
-        let hereKeyword = this.parseToken(SyntaxKind.HereKeyword);
-        let closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
-        let node = new NoSymbolHereAssertion(openBracketToken, noKeyword, symbols, hereKeyword, closeBracketToken);
+        const noKeyword = this.parseToken(SyntaxKind.NoKeyword);
+        const symbols = this.parseList<LexicalSymbol>(ParsingContext.NoSymbolHere);
+        const hereKeyword = this.parseToken(SyntaxKind.HereKeyword);
+        const closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
+        const node = new NoSymbolHereAssertion(openBracketToken, noKeyword, symbols, hereKeyword, closeBracketToken);
         return this.finishNode(node, openBracketToken.pos);
     }
 
     private parseLexicalGoalAssertionTail(openBracketToken: Node): LexicalGoalAssertion {
-        let lexicalKeyword = this.parseToken(SyntaxKind.LexicalKeyword);
-        let goalKeyword = this.parseToken(SyntaxKind.GoalKeyword);
-        let symbol = this.parseIdentifier();
-        let closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
-        let node = new LexicalGoalAssertion(openBracketToken, lexicalKeyword, goalKeyword, symbol, closeBracketToken);
+        const lexicalKeyword = this.parseToken(SyntaxKind.LexicalKeyword);
+        const goalKeyword = this.parseToken(SyntaxKind.GoalKeyword);
+        const symbol = this.parseIdentifier();
+        const closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
+        const node = new LexicalGoalAssertion(openBracketToken, lexicalKeyword, goalKeyword, symbol, closeBracketToken);
         return this.finishNode(node, openBracketToken.pos);
     }
 
@@ -834,24 +834,24 @@ export class Parser {
     }
 
     private parseParameterValueAssertionTail(openBracketToken: Node): ParameterValueAssertion {
-        let operatorToken = this.parseAnyParameterValueOperator();
-        let name = this.parseIdentifier();
-        let closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
-        let node = new ParameterValueAssertion(openBracketToken, operatorToken, name, closeBracketToken);
+        const operatorToken = this.parseAnyParameterValueOperator();
+        const name = this.parseIdentifier();
+        const closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
+        const node = new ParameterValueAssertion(openBracketToken, operatorToken, name, closeBracketToken);
         return this.finishNode(node, openBracketToken.pos);
     }
 
     private parseInvalidAssertionTail(openBracketToken: Node): Assertion {
-        let fullStart = this.scanner.getTokenPos();
+        const fullStart = this.scanner.getTokenPos();
         this.skipUntil(isInvalidConstraintTailRecoveryToken);
-        let closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
-        let node = new Assertion(SyntaxKind.InvalidAssertion, openBracketToken, closeBracketToken);
+        const closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
+        const node = new Assertion(SyntaxKind.InvalidAssertion, openBracketToken, closeBracketToken);
         this.finishNode(node, fullStart);
         return node;
     }
 
     private parseAssertion(): Assertion {
-        let openBracketToken = this.parseToken(SyntaxKind.OpenBracketToken);
+        const openBracketToken = this.parseToken(SyntaxKind.OpenBracketToken);
         switch (this.token) {
             case SyntaxKind.EmptyKeyword:
                 return this.parseEmptyAssertionTail(openBracketToken);
@@ -914,10 +914,10 @@ export class Parser {
     }
 
     private parseTerminal(allowOptional: boolean): Terminal {
-        let fullStart = this.scanner.getTokenPos();
-        let text = this.readTokenValue(SyntaxKind.Terminal);
-        let questionToken = allowOptional ? this.parseToken(SyntaxKind.QuestionToken) : undefined;
-        let node = new Terminal(text, questionToken);
+        const fullStart = this.scanner.getTokenPos();
+        const text = this.readTokenValue(SyntaxKind.Terminal);
+        const questionToken = allowOptional ? this.parseToken(SyntaxKind.QuestionToken) : undefined;
+        const node = new Terminal(text, questionToken);
         return this.finishNode(node, fullStart);
     }
 
@@ -927,17 +927,17 @@ export class Parser {
     }
 
     private parseArgument(): Argument {
-        let fullStart = this.scanner.getTokenPos();
-        let operatorToken = this.parseAnyToken(isLeadingArgumentToken);
-        let name = this.parseIdentifier();
-        let node = new Argument(operatorToken, name);
+        const fullStart = this.scanner.getTokenPos();
+        const operatorToken = this.parseAnyToken(isLeadingArgumentToken);
+        const name = this.parseIdentifier();
+        const node = new Argument(operatorToken, name);
         return this.finishNode(node, fullStart);
     }
 
     private parseArgumentListTail(openToken: Node, parsingContext: ParsingContext, closeTokenKind: SyntaxKind): ArgumentList {
-        let elements = this.parseList<Argument>(parsingContext);
-        let closeToken = this.parseToken(closeTokenKind);
-        let node = new ArgumentList(openToken, elements, closeToken);
+        const elements = this.parseList<Argument>(parsingContext);
+        const closeToken = this.parseToken(closeTokenKind);
+        const node = new ArgumentList(openToken, elements, closeToken);
         return this.finishNode(node, openToken.pos);
     }
 
@@ -969,41 +969,41 @@ export class Parser {
     }
 
     private parseNonterminal(allowArgumentList: boolean, allowOptional: boolean): Nonterminal {
-        let fullStart = this.scanner.getTokenPos();
-        let name = this.parseIdentifier();
-        let argumentList = allowArgumentList ? this.tryParseArgumentList() : undefined;
-        let questionToken = allowOptional ? this.parseToken(SyntaxKind.QuestionToken) : undefined;
-        let node = new Nonterminal(name, argumentList, questionToken);
+        const fullStart = this.scanner.getTokenPos();
+        const name = this.parseIdentifier();
+        const argumentList = allowArgumentList ? this.tryParseArgumentList() : undefined;
+        const questionToken = allowOptional ? this.parseToken(SyntaxKind.QuestionToken) : undefined;
+        const node = new Nonterminal(name, argumentList, questionToken);
         return this.finishNode(node, fullStart);
     }
 
     private parseOneOfSymbol(): OneOfSymbol {
-        let fullStart = this.scanner.getTokenPos();
-        let oneKeyword = this.parseToken(SyntaxKind.OneKeyword);
-        let ofKeyword = this.parseToken(SyntaxKind.OfKeyword);
-        let symbols = this.parseList<LexicalSymbol>(ParsingContext.OneOfSymbolList);
-        let node = new OneOfSymbol(oneKeyword, ofKeyword, symbols);
+        const fullStart = this.scanner.getTokenPos();
+        const oneKeyword = this.parseToken(SyntaxKind.OneKeyword);
+        const ofKeyword = this.parseToken(SyntaxKind.OfKeyword);
+        const symbols = this.parseList<LexicalSymbol>(ParsingContext.OneOfSymbolList);
+        const node = new OneOfSymbol(oneKeyword, ofKeyword, symbols);
         return this.finishNode(node, fullStart);
     }
 
     private parsePlaceholderSymbol(): LexicalSymbol {
-        let fullStart = this.scanner.getTokenPos();
-        let node = new LexicalSymbol(this.token);
+        const fullStart = this.scanner.getTokenPos();
+        const node = new LexicalSymbol(this.token);
         this.nextToken();
         return this.finishNode(node, fullStart);
     }
 
     private parseInvalidSymbol(): LexicalSymbol {
-        let fullStart = this.scanner.getTokenPos();
-        let node = new LexicalSymbol(SyntaxKind.InvalidSymbol);
+        const fullStart = this.scanner.getTokenPos();
+        const node = new LexicalSymbol(SyntaxKind.InvalidSymbol);
         this.skipUntil(isInvalidSymbolRecoveryToken);
         return this.finishNode(node, fullStart);
     }
 
     private parseUnicodeCharacterRangeOrHigher(allowOptional: boolean): UnicodeCharacterLiteral | UnicodeCharacterRange {
-        let symbol = this.parseUnicodeCharacterLiteral(allowOptional);
+        const symbol = this.parseUnicodeCharacterLiteral(allowOptional);
         if (!allowOptional) {
-            let throughKeyword = this.parseToken(SyntaxKind.ThroughKeyword);
+            const throughKeyword = this.parseToken(SyntaxKind.ThroughKeyword);
             if (throughKeyword) {
                 return this.parseUnicodeCharacterRangeTail(symbol, throughKeyword);
             }
@@ -1012,8 +1012,8 @@ export class Parser {
     }
 
     private parseUnicodeCharacterRangeTail(left: UnicodeCharacterLiteral, throughKeyword: Node): UnicodeCharacterRange {
-        let right = this.parseUnicodeCharacterLiteral(/*allowOptional*/ false);
-        let node = new UnicodeCharacterRange(left, throughKeyword, right);
+        const right = this.parseUnicodeCharacterLiteral(/*allowOptional*/ false);
+        const node = new UnicodeCharacterRange(left, throughKeyword, right);
         return this.finishNode(node, left.pos);
     }
 
@@ -1055,8 +1055,8 @@ export class Parser {
     }
 
     private parseButNotSymbolTail(left: LexicalSymbol, butKeyword: Node, notKeyword: Node): ButNotSymbol {
-        let right = this.parseSymbol();
-        let node = new ButNotSymbol(left, butKeyword, notKeyword, right);
+        const right = this.parseSymbol();
+        const node = new ButNotSymbol(left, butKeyword, notKeyword, right);
         return this.finishNode(node, left.pos);
     }
 
@@ -1068,9 +1068,9 @@ export class Parser {
             return this.parseProseAssertion();
         }
 
-        let symbol = this.parseUnarySymbol();
-        let butKeyword = this.parseToken(SyntaxKind.ButKeyword);
-        let notKeyword = this.parseToken(SyntaxKind.NotKeyword);
+        const symbol = this.parseUnarySymbol();
+        const butKeyword = this.parseToken(SyntaxKind.ButKeyword);
+        const notKeyword = this.parseToken(SyntaxKind.NotKeyword);
         if (butKeyword || notKeyword) {
             return this.parseButNotSymbolTail(symbol, butKeyword, notKeyword);
         }
@@ -1087,18 +1087,18 @@ export class Parser {
     }
 
     private parseSymbolSpanRest(): SymbolSpan {
-        let fullStart = this.scanner.getTokenPos();
-        let symbol = this.parseSymbol();
-        let next = this.tryParseSymbolSpan();
-        let node = new SymbolSpan(symbol, next);
+        const fullStart = this.scanner.getTokenPos();
+        const symbol = this.parseSymbol();
+        const next = this.tryParseSymbolSpan();
+        const node = new SymbolSpan(symbol, next);
         return this.finishNode(node, fullStart);
     }
 
     private parseSymbolSpan(): SymbolSpan {
-        let fullStart = this.scanner.getTokenPos();
+        const fullStart = this.scanner.getTokenPos();
         if (this.token === SyntaxKind.GreaterThanToken) {
-            let symbol = this.parseProse();
-            let node = new SymbolSpan(symbol, /*next*/ undefined);
+            const symbol = this.parseProse();
+            const node = new SymbolSpan(symbol, /*next*/ undefined);
             return this.finishNode(node, fullStart);
         }
         else {
@@ -1128,9 +1128,9 @@ export class Parser {
 
     private parseLinkReference(): LinkReference {
         if (this.token === SyntaxKind.LinkReference) {
-            let fullStart = this.scanner.getTokenPos();
-            let text = this.readTokenValue(SyntaxKind.LinkReference);
-            let node = new LinkReference(text);
+            const fullStart = this.scanner.getTokenPos();
+            const text = this.readTokenValue(SyntaxKind.LinkReference);
+            const node = new LinkReference(text);
             return this.finishNode(node, fullStart);
         }
 
@@ -1138,10 +1138,10 @@ export class Parser {
     }
 
     private parseRightHandSide(): RightHandSide {
-        let fullStart = this.scanner.getTokenPos();
-        let head = this.parseSymbolSpan();
-        let reference = this.parseLinkReference();
-        let node = new RightHandSide(head, reference);
+        const fullStart = this.scanner.getTokenPos();
+        const head = this.parseSymbolSpan();
+        const reference = this.parseLinkReference();
+        const node = new RightHandSide(head, reference);
         if (this.parsingContext !== ParsingContext.RightHandSideListIndented) {
             this.parseOptional(SyntaxKind.LineTerminatorToken);
         }
@@ -1150,11 +1150,11 @@ export class Parser {
     }
 
     private parseRightHandSideList(): RightHandSideList {
-        let fullStart = this.scanner.getTokenPos();
-        let openIndentToken = this.parseToken(SyntaxKind.IndentToken);
-        let elements = openIndentToken && this.parseList<RightHandSide>(ParsingContext.RightHandSideListIndented) || [];
-        let closeIndentToken = this.parseToken(SyntaxKind.DedentToken);
-        let node = new RightHandSideList(openIndentToken, elements, closeIndentToken);
+        const fullStart = this.scanner.getTokenPos();
+        const openIndentToken = this.parseToken(SyntaxKind.IndentToken);
+        const elements = openIndentToken && this.parseList<RightHandSide>(ParsingContext.RightHandSideListIndented) || [];
+        const closeIndentToken = this.parseToken(SyntaxKind.DedentToken);
+        const node = new RightHandSideList(openIndentToken, elements, closeIndentToken);
         return this.finishNode(node, fullStart);
     }
 
@@ -1172,20 +1172,20 @@ export class Parser {
     }
 
     private parseProduction(): Production {
-        let fullStart = this.scanner.getTokenPos();
-        let name = this.parseIdentifier();
-        let parameters = this.tryParseParameterList();
-        let colonToken = this.parseAnyToken(isProductionSeparatorToken);
-        let body = this.parseBody();
-        let node = new Production(name, parameters, colonToken, body);
+        const fullStart = this.scanner.getTokenPos();
+        const name = this.parseIdentifier();
+        const parameters = this.tryParseParameterList();
+        const colonToken = this.parseAnyToken(isProductionSeparatorToken);
+        const body = this.parseBody();
+        const node = new Production(name, parameters, colonToken, body);
         return this.finishNode(node, fullStart);
     }
 
     private parseStringLiteral(): StringLiteral {
         if (this.token === SyntaxKind.StringLiteral) {
-            let fullStart = this.scanner.getTokenPos();
-            let text = this.scanner.getTokenValue();
-            let node = new StringLiteral(text);
+            const fullStart = this.scanner.getTokenPos();
+            const text = this.scanner.getTokenValue();
+            const node = new StringLiteral(text);
             this.nextToken();
             return this.finishNode(node, fullStart);
         }
@@ -1208,17 +1208,17 @@ export class Parser {
     }
 
     private parseImport(fullStart: number, atToken: Node): Import {
-        let importKeyword = this.parseToken(SyntaxKind.ImportKeyword);
-        let path = this.parseStringLiteral();
-        let node = new Import(atToken, importKeyword, path);
+        const importKeyword = this.parseToken(SyntaxKind.ImportKeyword);
+        const path = this.parseStringLiteral();
+        const node = new Import(atToken, importKeyword, path);
         return this.finishNode(node, fullStart);
     }
 
     private parseDefine(fullStart: number, atToken: Node): Define {
-        let defineKeyword = this.parseToken(SyntaxKind.DefineKeyword);
-        let key = this.parseIdentifier();
-        let valueToken = this.parseAnyToken(isBooleanLiteralToken);
-        let node = new Define(atToken, defineKeyword, key, valueToken);
+        const defineKeyword = this.parseToken(SyntaxKind.DefineKeyword);
+        const key = this.parseIdentifier();
+        const valueToken = this.parseAnyToken(isBooleanLiteralToken);
+        const node = new Define(atToken, defineKeyword, key, valueToken);
         return this.finishNode(node, fullStart);
     }
 

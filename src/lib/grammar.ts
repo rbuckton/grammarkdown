@@ -37,7 +37,7 @@ export class Grammar {
         this.options = options;
 
         this.oldGrammar = oldGrammar;
-        for (let rootName of rootNames) {
+        for (const rootName of rootNames) {
             this.processRootFile(this.resolveFile(rootName));
         }
 
@@ -87,13 +87,13 @@ export class Grammar {
     }
 
     public bind(sourceFile?: SourceFile) {
-        let binder = this.binder;
+        const binder = this.binder;
 
         if (sourceFile) {
             binder.bindSourceFile(sourceFile);
         }
         else {
-            for (let sourceFile of this.sourceFiles) {
+            for (const sourceFile of this.sourceFiles) {
                 binder.bindSourceFile(sourceFile);
             }
         }
@@ -102,12 +102,12 @@ export class Grammar {
     public check(sourceFile?: SourceFile): void {
         this.bind(sourceFile);
 
-        let checker = this.checker;
+        const checker = this.checker;
         if (sourceFile) {
             checker.checkSourceFile(sourceFile);
         }
         else {
-            for (let sourceFile of this.sourceFiles) {
+            for (const sourceFile of this.sourceFiles) {
                 checker.checkSourceFile(sourceFile);
             }
         }
@@ -121,12 +121,12 @@ export class Grammar {
         this.bind(sourceFile);
         this.check(sourceFile);
 
-        let emitter = this.emitter;
+        const emitter = this.emitter;
         if (sourceFile) {
             emitter.emit(sourceFile, writeFile);
         }
         else {
-            for (let sourceFile of this.rootFiles) {
+            for (const sourceFile of this.rootFiles) {
                 emitter.emit(sourceFile, writeFile);
             }
         }
@@ -171,7 +171,7 @@ export class Grammar {
     }
 
     private processRootFile(file: string) {
-        let sourceFile = this.processFile(file);
+        const sourceFile = this.processFile(file);
         if (sourceFile === undefined) {
             throw new Error("Invalid source file");
         }
@@ -198,11 +198,11 @@ export class Grammar {
     }
 
     private processImports(sourceFile: SourceFile, refererName: string) {
-        for (let element of sourceFile.elements) {
+        for (const element of sourceFile.elements) {
             if (element.kind === SyntaxKind.Import) {
-                let importNode = <Import>element;
+                const importNode = <Import>element;
                 if (importNode.path) {
-                    let importPath = this.resolveFile(importNode.path.text, refererName);
+                    const importPath = this.resolveFile(importNode.path.text, refererName);
                     this.processFile(importPath, sourceFile, importNode.pos, importNode.end);
                 }
             }
@@ -214,7 +214,7 @@ export class Grammar {
             this.parser = new Parser(this.diagnostics);
         }
 
-        let sourceText = this.readFile(file);
+        const sourceText = this.readFile(file);
         if (sourceText !== undefined) {
             if (this.oldGrammar) {
                 const oldSourceFile = this.oldGrammar.getSourceFile(file);

@@ -97,11 +97,11 @@ export class Checker {
 
             const savedNoStrictParametricProductions = this.noStrictParametricProductions;
 
-            for (let element of sourceFile.elements) {
+            for (const element of sourceFile.elements) {
                 this.preprocessSourceElement(element);
             }
 
-            for (let element of sourceFile.elements) {
+            for (const element of sourceFile.elements) {
                 this.checkSourceElement(element);
             }
 
@@ -299,7 +299,7 @@ export class Checker {
     private checkParameterList(node: ParameterList): void {
         this.checkGrammarParameterList(node);
 
-        for (let element of node.elements) {
+        for (const element of node.elements) {
             this.checkParameter(element);
         }
     }
@@ -330,9 +330,9 @@ export class Checker {
         this.checkGrammarOneOfList(node);
 
         if (node.terminals) {
-            let terminalSet = new Dict<boolean>();
-            for (let terminal of node.terminals) {
-                let text = terminal.text;
+            const terminalSet = new Dict<boolean>();
+            for (const terminal of node.terminals) {
+                const text = terminal.text;
                 if (Dict.has(terminalSet, text)) {
                     this.diagnostics.reportNode(terminal, Diagnostics.Duplicate_terminal_0_, text);
                 }
@@ -368,7 +368,7 @@ export class Checker {
         this.checkGrammarRightHandSideList(node);
 
         if (node.elements) {
-            for (let element of node.elements) {
+            for (const element of node.elements) {
                 this.checkRightHandSide(element);
             }
         }
@@ -639,7 +639,7 @@ export class Checker {
         this.checkGrammarSymbolSet(node);
 
         if (node.elements) {
-            for (let element of node.elements) {
+            for (const element of node.elements) {
                 this.checkSymbolSpanRest(element);
             }
         }
@@ -693,7 +693,7 @@ export class Checker {
         this.checkGrammarAssertionHead(node) || this.checkGrammarNoSymbolHereAssertion(node) || this.checkGrammarAssertionTail(node);
 
         if (node.symbols) {
-            for (let symbol of node.symbols) {
+            for (const symbol of node.symbols) {
                 this.checkPrimarySymbol(symbol);
             }
         }
@@ -846,7 +846,7 @@ export class Checker {
         this.checkGrammarOneOfSymbol(node);
 
         if (node.symbols) {
-            for (let symbol of node.symbols) {
+            for (const symbol of node.symbols) {
                 this.checkPrimarySymbol(symbol);
             }
         }
@@ -1025,7 +1025,7 @@ export class Checker {
         this.checkGrammarArgumentList(node);
 
         if (node.elements) {
-            for (let element of node.elements) {
+            for (const element of node.elements) {
                 this.checkArgument(element);
             }
         }
@@ -1080,7 +1080,7 @@ export class Checker {
         this.checkGrammarIdentifier(node);
 
         if (node.text) {
-            let parent = this.bindings.getParent(node);
+            const parent = this.bindings.getParent(node);
             if (parent) {
                 let symbol: Symbol;
                 switch (parent.kind) {
@@ -1103,7 +1103,7 @@ export class Checker {
                         break;
 
                     case SyntaxKind.Argument:
-                        let argument = <Argument>parent;
+                        const argument = <Argument>parent;
                         if (argument.operatorToken && argument.operatorToken.kind === SyntaxKind.QuestionToken) {
                             symbol = this.resolveSymbol(node, node.text, SymbolKind.Parameter);
                             if (!symbol) {
@@ -1113,11 +1113,11 @@ export class Checker {
                         }
                         else {
                             // get the symbol of the parameter of the target production
-                            let nonterminal = <Nonterminal>this.bindings.getAncestor(parent, SyntaxKind.Nonterminal);
+                            const nonterminal = <Nonterminal>this.bindings.getAncestor(parent, SyntaxKind.Nonterminal);
                             if (nonterminal && nonterminal.name && nonterminal.name.text) {
-                                let productionSymbol = this.resolveSymbol(node, nonterminal.name.text, SymbolKind.Production);
+                                const productionSymbol = this.resolveSymbol(node, nonterminal.name.text, SymbolKind.Production);
                                 if (productionSymbol) {
-                                    let production = <Production>this.bindings.getDeclarations(productionSymbol)[0];
+                                    const production = <Production>this.bindings.getDeclarations(productionSymbol)[0];
                                     symbol = this.resolveSymbol(production, node.text, SymbolKind.Parameter);
                                     if (!symbol) {
                                         this.diagnostics.reportNode(node, Diagnostics.Production_0_does_not_have_a_parameter_named_1_, production.name.text, node.text);
@@ -1152,7 +1152,7 @@ export class Checker {
     }
 
     private resolveSymbol(location: Node, name: string, meaning: SymbolKind, diagnosticMessage?: Diagnostic): Symbol {
-        let result = this.bindings.resolveSymbol(location, name, meaning);
+        const result = this.bindings.resolveSymbol(location, name, meaning);
         if (!result && diagnosticMessage) {
             this.diagnostics.reportNode(location, diagnosticMessage, name);
         }
@@ -1227,7 +1227,7 @@ export class Resolver {
     }
 
     public getProductionLinkId(node: Identifier): string {
-        let symbol = this.bindings.resolveSymbol(node, node.text, SymbolKind.Production);
+        const symbol = this.bindings.resolveSymbol(node, node.text, SymbolKind.Production);
         if (symbol) {
             return symbol.name;
         }
@@ -1241,13 +1241,13 @@ export class Resolver {
             linkId = node.reference.text.replace(/[^a-z0-9]+/g, '-');
         }
         else {
-            let digest = new RightHandSideDigest();
+            const digest = new RightHandSideDigest();
             linkId = digest.computeHash(node).toLowerCase();
         }
 
         if (includePrefix) {
-            let production = <Production>this.bindings.getAncestor(node, SyntaxKind.Production);
-            let productionId = this.getProductionLinkId(production.name);
+            const production = <Production>this.bindings.getAncestor(node, SyntaxKind.Production);
+            const productionId = this.getProductionLinkId(production.name);
             return productionId + "-" + linkId;
         }
 
@@ -1263,9 +1263,10 @@ class RightHandSideDigest {
         this.writer = new StringWriter();
         this.writeNode(node.head);
 
-        let hash = createHash("sha1");
+        const hash = createHash("sha1");
         hash.update(this.writer.toString(), "utf8");
-        let digest = hash.digest("hex");
+
+        const digest = hash.digest("hex");
         return digest.substr(0, 8);
     }
 
@@ -1299,7 +1300,7 @@ class RightHandSideDigest {
             case SyntaxKind.Identifier: this.writeIdentifier(<Identifier>node); break;
             default:
                 if ((node.kind >= SyntaxKind.FirstKeyword && node.kind <= SyntaxKind.LastKeyword) ||
-                    (node.kind >= SyntaxKind.FirstPunctuation && node.kind <= SyntaxKind.LastKeyword)) {
+                    (node.kind >= SyntaxKind.FirstPunctuation && node.kind <= SyntaxKind.LastPunctuation)) {
                     this.writeToken(node);
                     break;
                 }

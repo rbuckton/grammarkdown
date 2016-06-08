@@ -40,7 +40,7 @@ export class EcmarkupEmitter extends Emitter {
     protected extension = ".emu.html";
 
     protected emitProduction(node: Production) {
-        let linkId = this.resolver.getProductionLinkId(node.name);
+        const linkId = this.resolver.getProductionLinkId(node.name);
         this.emitLinkAnchor(linkId);
         this.writer.write(`<emu-production name="`);
         this.emitIdentifier(node.name);
@@ -108,13 +108,13 @@ export class EcmarkupEmitter extends Emitter {
     }
 
     protected emitRightHandSideList(node: RightHandSideList) {
-        for (let rhs of node.elements) {
+        for (const rhs of node.elements) {
             this.emitRightHandSide(rhs);
         }
     }
 
     protected emitRightHandSide(node: RightHandSide) {
-        let linkId = this.resolver.getRightHandSideLinkId(node, /*includePrefix*/ false);
+        const linkId = this.resolver.getRightHandSideLinkId(node, /*includePrefix*/ false);
         this.emitLinkAnchor(linkId);
 
         this.writer.write(`<emu-rhs`);
@@ -170,7 +170,7 @@ export class EcmarkupEmitter extends Emitter {
     }
 
     protected emitNonterminal(node: Nonterminal) {
-        let linkId = this.resolver.getProductionLinkId(node.name);
+        const linkId = this.resolver.getProductionLinkId(node.name);
         this.writer.write(`<emu-nt`);
         this.emitNode(node.argumentList);
         if (node.questionToken) {
@@ -272,7 +272,7 @@ export class EcmarkupEmitter extends Emitter {
 
     protected emitLexicalGoalAssertion(node: LexicalGoalAssertion): void {
         this.writer.write(`<emu-gann>lexical goal `);
-        let linkId = this.resolver.getProductionLinkId(node.symbol);
+        const linkId = this.resolver.getProductionLinkId(node.symbol);
         this.emitNodeWithLink(node.symbol, linkId);
         this.writer.write(`</emu-gann>`);
     }
@@ -328,7 +328,7 @@ export class EcmarkupEmitter extends Emitter {
 
     protected emitTextContent(node: TextContent) {
         if (node) {
-            let text = node.text;
+            const text = node.text;
             this.writer.write(this.encode(text));
         }
     }

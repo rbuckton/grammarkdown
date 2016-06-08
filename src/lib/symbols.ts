@@ -26,19 +26,19 @@ export class SymbolTable {
 
     public resolveSymbol(name: string, kind: SymbolKind): Symbol {
         if (name) {
-            let symbols = this.getSymbols(kind, /*create*/ false);
+            const symbols = this.getSymbols(kind, /*create*/ false);
             if (symbols) {
                 return Dict.get(symbols, name);
             }
         }
-        
+
         return undefined;
     }
 
     public declareSymbol(name: string, kind: SymbolKind, parent?: Symbol): Symbol {
         let symbol: Symbol;
         if (name) {
-            let symbols = this.getSymbols(kind, /*create*/ true);
+            const symbols = this.getSymbols(kind, /*create*/ true);
             if (Dict.has(symbols, name)) {
                 symbol = Dict.get(symbols, name);
             }
@@ -50,10 +50,10 @@ export class SymbolTable {
         else {
             symbol = new Symbol(kind, "*missing*");
         }
-        
+
         symbol.parent = parent;
         return symbol;
-    }        
+    }
 
     private getSymbols(kind: SymbolKind, create: boolean): Dict<Symbol> {
         if (!this.nameMap) {

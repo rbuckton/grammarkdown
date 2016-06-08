@@ -57,13 +57,13 @@ export class Emitter {
     }
 
     public emit(node: SourceFile, writeFile?: (file: string, text: string) => void): void {
-        let saveWriter = this.writer;
+        const saveWriter = this.writer;
         try {
             this.writer = this.createWriter();
             this.emitNode(node);
 
-            let file = this.getOutputFilename(node);
-            let text = this.writer.toString();
+            const file = this.getOutputFilename(node);
+            const text = this.writer.toString();
             this.writeFile(file, text, writeFile);
         }
         finally {
@@ -81,14 +81,13 @@ export class Emitter {
     }
 
     protected getOutputFilename(node: SourceFile): string {
-        let parsed: path.ParsedPath;
-        let extension = this.extension || ".out";
+        const extension = this.extension || ".out";
         if (this.options.out) {
             return this.options.out;
         }
         else {
-            let dirname = path.dirname(node.filename);
-            let basename = path.basename(node.filename, ".grammar");
+            const dirname = path.dirname(node.filename);
+            const basename = path.basename(node.filename, ".grammar");
             return path.join(dirname, basename + extension);
         }
     }
@@ -140,7 +139,7 @@ export class Emitter {
     }
 
     protected emitSourceFile(node: SourceFile) {
-        for (let element of node.elements) {
+        for (const element of node.elements) {
             this.emitNode(element);
         }
     }

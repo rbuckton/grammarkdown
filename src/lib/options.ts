@@ -65,9 +65,9 @@ export interface ParsedArguments {
 }
 
 export function parse<T extends ParsedArguments>(options: KnownOptions, args: string[] = process.argv.slice(2)): T {
-    let known = createKnownOptionMaps(options);
-    let raw: RawArguments = { args: [], rest: [] };
-    let messages: string[] = [];
+    const known = createKnownOptionMaps(options);
+    const raw: RawArguments = { args: [], rest: [] };
+    const messages: string[] = [];
     let result: ParseResult
     result = parseArguments(args, known, raw, messages);
     if (result === ParseResult.Success) {
@@ -76,7 +76,7 @@ export function parse<T extends ParsedArguments>(options: KnownOptions, args: st
             Object.freeze(raw.rest);
             Object.freeze(raw.args);
             Object.freeze(raw);
-            let parsed: T = <T>{ argv: args.slice(0) };
+            const parsed: T = <T>{ argv: args.slice(0) };
             result = evaluateArguments(parsed, known, raw, messages);
             if (result === ParseResult.Success) {
                 return parsed;
@@ -105,9 +105,9 @@ export class UsageWriter {
     }
 
     public writeOption(left: string, right: string) {
-        let leftLines = left ? this.fit(left, this.margin) : emptyArray;
-        let rightLines = right ? this.fit(right, this.remainder) : emptyArray;
-        let lineCount = Math.max(leftLines.length, rightLines.length);
+        const leftLines = left ? this.fit(left, this.margin) : emptyArray;
+        const rightLines = right ? this.fit(right, this.remainder) : emptyArray;
+        const lineCount = Math.max(leftLines.length, rightLines.length);
         for (let i = 0; i < lineCount; ++i) {
             let line = "";
             if (i < leftLines.length) {
@@ -127,10 +127,10 @@ export class UsageWriter {
     }
 
     private fit(text: string, width: number) {
-        let lines: string[] = [];
+        const lines: string[] = [];
         let pos = 0, len = text.length;
         while (pos < len) {
-            let ch = text.charCodeAt(pos);
+            const ch = text.charCodeAt(pos);
             if (ch === CharacterCodes.CarriageReturn || ch === CharacterCodes.LineFeed) {
                 pos++;
                 if (ch === CharacterCodes.CarriageReturn && pos < len && text.charCodeAt(pos) === CharacterCodes.LineFeed) {
@@ -167,11 +167,11 @@ export class UsageWriter {
 }
 
 export function usage(options: KnownOptions, margin: number = 0, printHeader?: (writer: UsageWriter) => void) {
-    let knownOptions: KnownOption[] = [];
+    const knownOptions: KnownOption[] = [];
     let hasShortNames = false;
-    for (let key in options) {
+    for (const key in options) {
         if (Dict.has(options, key)) {
-            let option = importKnownOption(key, Dict.get(options, key));
+            const option = importKnownOption(key, Dict.get(options, key));
             if (option.hidden) {
                 continue;
             }
@@ -194,16 +194,16 @@ export function usage(options: KnownOptions, margin: number = 0, printHeader?: (
         }
     }
 
-    let writer = new UsageWriter(margin, 1);
+    const writer = new UsageWriter(margin, 1);
     if (printHeader) {
         printHeader(writer);
     }
 
     knownOptions.sort(compareKnownOptions);
 
-    let descriptionSize = 120 - margin;
-    let marginText = padRight("", margin);
-    for (let option of knownOptions) {
+    const descriptionSize = 120 - margin;
+    const marginText = padRight("", margin);
+    for (const option of knownOptions) {
         let left = " ";
         if (option.shortName) {
             left += `-${option.shortName}, `;
@@ -233,25 +233,25 @@ function padRight(text: string, size: number, char: string = " ") {
 }
 
 function printErrors(messages: string[]) {
-    for (let message of messages) {
+    for (const message of messages) {
         console.error(message);
     }
 }
 
 function compareKnownOptions(x: KnownOption, y: KnownOption) {
-    let xName = x.longName.toLowerCase();
-    let yName = y.longName.toLowerCase();
+    const xName = x.longName.toLowerCase();
+    const yName = y.longName.toLowerCase();
     return xName.localeCompare(yName);
 }
 
 function importTypeMap(dict: Dict<any>) {
-    let copy = Dict.turn(dict, (memo, value, key) => Dict.set(memo, String(key), value), new Dict<any>());
+    const copy = Dict.turn(dict, (memo, value, key) => Dict.set(memo, String(key), value), new Dict<any>());
     Object.freeze(copy);
     return copy;
 }
 
 function importKnownOption(key: string, option: KnownOption) {
-    let copy: KnownOption = { longName: key };
+    const copy: KnownOption = { longName: key };
     if (typeof option.longName === "string") copy.longName = option.longName;
     if (typeof option.shortName === "string" && option.shortName.length > 0) copy.shortName = option.shortName.substr(0, 1);
     if (typeof option.param === "string") copy.param = option.param;
@@ -270,12 +270,12 @@ function importKnownOption(key: string, option: KnownOption) {
 }
 
 function createKnownOptionMaps(options: KnownOptions): KnownOptionMaps {
-    let longNames = new Dict<KnownOption>();
-    let shortNames = new Dict<KnownOption>();
-    for (let key in options) {
-        let rawOption = Dict.get(options, key);
+    const longNames = new Dict<KnownOption>();
+    const shortNames = new Dict<KnownOption>();
+    for (const key in options) {
+        const rawOption = Dict.get(options, key);
         if (rawOption) {
-            let knownOption = importKnownOption(key, rawOption);
+            const knownOption = importKnownOption(key, rawOption);
             Dict.set(longNames, knownOption.longName.toLowerCase(), knownOption);
             if (knownOption.shortName) {
                 Dict.set(shortNames, knownOption.shortName, knownOption);
@@ -302,18 +302,18 @@ function parseArguments(args: string[], known: KnownOptionMaps, raw: RawArgument
         let arg = args[argi++];
         let ch = arg.charCodeAt(0);
         if (ch === CharacterCodes.At) {
-            let result = parseResponseFile(arg.substr(1), known, raw, messages)
+            const result = parseResponseFile(arg.substr(1), known, raw, messages)
             if (result !== ParseResult.Success) {
                 return result;
             }
         }
         else if (ch === CharacterCodes.Minus) {
             ch = arg.charCodeAt(1);
-            let colonIndex = arg.indexOf(":");
-            let hasInlineValue = colonIndex > 0;
-            let shortName = ch !== CharacterCodes.Minus;
-            let rawKey = arg.substring(shortName ? 1 : 2, hasInlineValue ? colonIndex : arg.length);
-            let match = matchKnownOption(known, rawKey, shortName);
+            const colonIndex = arg.indexOf(":");
+            const hasInlineValue = colonIndex > 0;
+            const shortName = ch !== CharacterCodes.Minus;
+            const rawKey = arg.substring(shortName ? 1 : 2, hasInlineValue ? colonIndex : arg.length);
+            const match = matchKnownOption(known, rawKey, shortName);
 
             switch (match.cardinality) {
                 case "none":
@@ -322,16 +322,16 @@ function parseArguments(args: string[], known: KnownOptionMaps, raw: RawArgument
 
                 case "many":
                     messages.push(`Unrecognized option: ${rawKey}. Did you mean:`);
-                    for (let option of match.candidates) {
+                    for (const option of match.candidates) {
                         messages.push(`    --${option.longName}`);
                     }
 
                     return ParseResult.Error;
             }
 
-            let option = match.option;
-            let formattedKey = shortName ? "-" + option.shortName : "--" + option.longName;
-            let valueRequired = optionRequiresValue(option);
+            const option = match.option;
+            const formattedKey = shortName ? "-" + option.shortName : "--" + option.longName;
+            const valueRequired = optionRequiresValue(option);
             let value: string;
             if (valueRequired || hasInlineValue) {
                 if (hasInlineValue) {
@@ -369,7 +369,7 @@ function parseArguments(args: string[], known: KnownOptionMaps, raw: RawArgument
                 }
             }
 
-            let rawArgument: RawArgument = {
+            const rawArgument: RawArgument = {
                 rawKey,
                 formattedKey,
                 value,
@@ -403,9 +403,9 @@ function parseResponseFile(file: string, known: KnownOptionMaps, raw: RawArgumen
         return ParseResult.Error;
     }
 
-    let args: string[] = [];
+    const args: string[] = [];
     let pos = 0;
-    let len = text.length;
+    const len = text.length;
     while (pos < len) {
         let ch = text.charCodeAt(pos);
         if (isWhiteSpace(ch)) {
@@ -413,7 +413,7 @@ function parseResponseFile(file: string, known: KnownOptionMaps, raw: RawArgumen
             continue;
         }
 
-        let start = pos;
+        const start = pos;
         if (ch === CharacterCodes.DoubleQuote) {
             pos++;
             while (pos < len) {
@@ -478,21 +478,21 @@ interface KnownOptionMatchResult {
 
 function matchKnownOption(known: KnownOptionMaps, key: string, shortName: boolean): KnownOptionMatchResult {
     if (shortName) {
-        let option = Dict.get(known.shortNames, key);
+        const option = Dict.get(known.shortNames, key);
         if (option) {
             return { cardinality: "one", option };
         }
     }
     else {
-        let keyLower = key.toLowerCase();
+        const keyLower = key.toLowerCase();
         if (Dict.has(known.longNames, keyLower)) {
-            let option = Dict.get(known.longNames, keyLower);
+            const option = Dict.get(known.longNames, keyLower);
             if (option) {
                 return { cardinality: "one", option };
             }
         }
         else {
-            let keyLen = keyLower.length;
+            const keyLen = keyLower.length;
             let candidates: KnownOption[];
             let knownKey: string;
             for (knownKey in known.longNames) {
@@ -509,7 +509,7 @@ function matchKnownOption(known: KnownOptionMaps, key: string, shortName: boolea
 
             if (candidates) {
                 if (candidates.length === 1) {
-                    let option = candidates[0];
+                    const option = candidates[0];
                     return { cardinality: "one", option };
                 }
                 else if (candidates.length > 1) {
@@ -524,8 +524,8 @@ function matchKnownOption(known: KnownOptionMaps, key: string, shortName: boolea
 
 function expandArguments(known: KnownOptionMaps, raw: RawArguments, messages: string[]) {
     for (let i = 0; i < raw.args.length; ++i) {
-        let arg = raw.args[i];
-        let option = arg.option;
+        const arg = raw.args[i];
+        const option = arg.option;
         if (option.aliasFor) {
             let args = option.aliasFor;
             if (arg.value) {
@@ -542,7 +542,7 @@ function expandArguments(known: KnownOptionMaps, raw: RawArguments, messages: st
 }
 
 function evaluateArguments(parsed: ParsedArguments, known: KnownOptionMaps, raw: RawArguments, messages: string[]) {
-    for (let arg of raw.args) {
+    for (const arg of raw.args) {
         let { formattedKey, value, option } = arg;
         if (option.aliasFor) {
             continue;
@@ -612,13 +612,13 @@ function evaluateArguments(parsed: ParsedArguments, known: KnownOptionMaps, raw:
 
             case "object":
                 if (value) {
-                    let type = <Dict<any>>option.type;
+                    const type = <Dict<any>>option.type;
                     let result = Dict.get(type, value);
                     if (result === undefined) {
-                        let valueLower = (<string>value).toLowerCase();
+                        const valueLower = (<string>value).toLowerCase();
                         result = Dict.get(type, valueLower);
                         if (!result) {
-                            for (let key in type) {
+                            for (const key in type) {
                                 if (key.toLowerCase() === valueLower) {
                                     result = Dict.get(type, key);
                                     break;

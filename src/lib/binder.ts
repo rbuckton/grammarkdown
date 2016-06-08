@@ -164,7 +164,7 @@ export class BindingTable {
         if (this.symbolLocals) {
             while (location) {
                 if (location.kind === SyntaxKind.SourceFile) {
-                    let result = this.globals.resolveSymbol(name, meaning);
+                    const result = this.globals.resolveSymbol(name, meaning);
                     if (result) {
                         return result;
                     }
@@ -172,10 +172,10 @@ export class BindingTable {
                     break;
                 }
 
-                let symbol = this.getSymbol(location);
-                let locals = symbol ? this.symbolLocals[symbol.id] : undefined;
+                const symbol = this.getSymbol(location);
+                const locals = symbol ? this.symbolLocals[symbol.id] : undefined;
                 if (locals) {
-                    let result = locals.resolveSymbol(name, meaning);
+                    const result = locals.resolveSymbol(name, meaning);
                     if (result) {
                         return result;
                     }
@@ -206,25 +206,25 @@ export class Binder {
             return;
         }
 
-        let symbol = this.declareSymbol(file.filename, file, SymbolKind.SourceFile);
+        const symbol = this.declareSymbol(file.filename, file, SymbolKind.SourceFile);
         this.bindChildren(file, symbol, this.scope);
     }
 
     private bindProduction(node: Production): void {
-        let symbol = this.declareSymbol(node.name.text, node, SymbolKind.Production);
-        let scope = this.bindings.getScope(symbol);
+        const symbol = this.declareSymbol(node.name.text, node, SymbolKind.Production);
+        const scope = this.bindings.getScope(symbol);
         this.bindChildren(node, symbol, scope);
     }
 
     private bindParameter(node: Parameter): void {
-        let symbol = this.declareSymbol(node.name.text, node, SymbolKind.Parameter);
+        const symbol = this.declareSymbol(node.name.text, node, SymbolKind.Parameter);
         this.bindChildren(node, this.parentSymbol, this.scope);
     }
 
     private bindChildren(parentNode: Node, parentSymbol: Symbol, scope: SymbolTable): void {
-        let saveParentNode = this.parentNode;
-        let saveParentSymbol = this.parentSymbol;
-        let saveScope = this.scope;
+        const saveParentNode = this.parentNode;
+        const saveParentSymbol = this.parentSymbol;
+        const saveScope = this.scope;
         this.parentNode = parentNode;
         this.parentSymbol = parentSymbol;
         this.scope = scope;
@@ -256,7 +256,7 @@ export class Binder {
     }
 
     private declareSymbol(name: string, declaration: SourceFile | Production | Parameter, kind: SymbolKind): Symbol {
-        let symbol = this.scope.declareSymbol(name, kind, this.parentSymbol);
+        const symbol = this.scope.declareSymbol(name, kind, this.parentSymbol);
         this.bindings.addDeclarationToSymbol(symbol, declaration);
         return symbol;
     }

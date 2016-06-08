@@ -45,8 +45,7 @@ interface ParsedCommandLine extends ParsedArguments, CompilerOptions {
 }
 
 function main(): void {
-
-    let opts = parse<ParsedCommandLine>(knownOptions);
+    const opts = parse<ParsedCommandLine>(knownOptions);
     if (opts.help) {
         printUsage();
     }
@@ -59,7 +58,7 @@ function main(): void {
 }
 
 function printUsage(): void {
-    let node_package = readPackageSync(path.resolve(__dirname, "../package.json"));
+    const node_package = readPackageSync(path.resolve(__dirname, "../package.json"));
     usage(knownOptions, 25, (writer) => {
         writer.writeln(`Version ${node_package.version}`);
         writer.writeOption("Syntax:", "grammarkdown [options] [...files]");
@@ -72,21 +71,22 @@ function printUsage(): void {
 }
 
 function printVersion(): void {
-    let node_package = readPackageSync(path.resolve(__dirname, "../package.json"));
+    const node_package = readPackageSync(path.resolve(__dirname, "../package.json"));
     console.log(node_package.version);
 }
 
 function performCompilation(options: ParsedCommandLine): void {
-    let compilerOptions = getDefaultOptions();
+    const compilerOptions = getDefaultOptions();
     if (options.out) compilerOptions.out = options.out;
     if (options.noChecks) compilerOptions.noChecks = true;
     if (options.noEmit) compilerOptions.noEmit = true;
     if (options.noEmitOnError) compilerOptions.noEmitOnError = true;
+    if (options.noStrictParametricProductions) compilerOptions.noStrictParametricProductions = true;
     if (options.emitLinks) compilerOptions.emitLinks = true;
     compilerOptions.format = options.format || EmitFormat.markdown;
 
-    let inputFiles = options.rest;
-    let grammar = new Grammar(inputFiles, compilerOptions);
+    const inputFiles = options.rest;
+    const grammar = new Grammar(inputFiles, compilerOptions);
     grammar.bind();
     grammar.check();
 
