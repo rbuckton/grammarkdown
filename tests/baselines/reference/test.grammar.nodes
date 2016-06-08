@@ -1,0 +1,163 @@
+/// test.grammar:
+(1,1)SyntaxKind[SourceFile](filename = "test.grammar")
+  (1,1)SyntaxKind[Production]
+    (1,1)SyntaxKind[Identifier](text = "A")
+    (1,5)SyntaxKind[RightHandSide]
+      (1,5)SyntaxKind[SymbolSpan]
+        (1,5)SyntaxKind[Nonterminal]
+          (1,5)SyntaxKind[Identifier](text = "A")
+        (1,7)SyntaxKind[SymbolSpan]
+          (1,7)SyntaxKind[AtToken]
+          (1,9)SyntaxKind[SymbolSpan]
+            (1,9)SyntaxKind[Nonterminal]
+              (1,9)SyntaxKind[Identifier](text = "A")
+  (2,1)SyntaxKind[Production]
+    (2,1)SyntaxKind[Identifier](text = "B")
+    (2,5)SyntaxKind[RightHandSide]
+      (2,5)SyntaxKind[SymbolSpan]
+        (2,5)SyntaxKind[ButNotSymbol]
+          (2,5)SyntaxKind[Nonterminal]
+            (2,5)SyntaxKind[Identifier](text = "A")
+          (2,9)SyntaxKind[ButKeyword]
+          (2,13)SyntaxKind[NotKeyword]
+          (2,17)SyntaxKind[OneOfSymbol]
+            (2,24)SyntaxKind[Terminal](text = """)
+            (2,31)SyntaxKind[Terminal](text = "\")
+            (2,38)SyntaxKind[UnicodeCharacterRange]
+              (2,38)SyntaxKind[UnicodeCharacterLiteral](text = U+0000)
+              (2,45)SyntaxKind[ThroughKeyword]
+              (2,53)SyntaxKind[UnicodeCharacterLiteral](text = U+001F)
+  (4,1)SyntaxKind[Production]
+    (4,1)SyntaxKind[Identifier](text = "C")
+    (4,5)SyntaxKind[RightHandSide]
+      (4,5)SyntaxKind[SymbolSpan]
+        (4,5)SyntaxKind[Nonterminal]
+          (4,5)SyntaxKind[Identifier](text = "A")
+        (4,7)SyntaxKind[SymbolSpan]
+          (4,7)SyntaxKind[ProseAssertion]
+            (4,7)SyntaxKind[OpenBracketGreaterThanToken]
+            (4,9)SyntaxKind[ProseFull](text = "full prose span")
+            (4,24)SyntaxKind[CloseBracketToken]
+  (5,1)SyntaxKind[Production]
+    (5,1)SyntaxKind[Identifier](text = "C")
+    (5,5)SyntaxKind[RightHandSide]
+      (5,5)SyntaxKind[SymbolSpan]
+        (5,5)SyntaxKind[Nonterminal]
+          (5,5)SyntaxKind[Identifier](text = "A")
+        (5,7)SyntaxKind[SymbolSpan]
+          (5,7)SyntaxKind[ProseAssertion]
+            (5,7)SyntaxKind[OpenBracketGreaterThanToken]
+            (5,9)SyntaxKind[ProseHead](text = "head ")
+            (5,14)SyntaxKind[Terminal](text = "terminal")
+            (5,24)SyntaxKind[ProseMiddle](text = " middle ")
+            (5,32)SyntaxKind[Nonterminal]
+              (5,32)SyntaxKind[Identifier](text = "B")
+            (5,35)SyntaxKind[ProseTail](text = " tail")
+            (5,40)SyntaxKind[CloseBracketToken]
+  (7,1)SyntaxKind[Production]
+    (7,1)SyntaxKind[Identifier](text = "D")
+    (7,2)SyntaxKind[ParameterList]
+      (7,2)SyntaxKind[OpenBracketToken]
+      (7,3)SyntaxKind[Parameter]
+        (7,3)SyntaxKind[Identifier](text = "A")
+      (7,4)SyntaxKind[CloseBracketToken]
+    (7,8)SyntaxKind[RightHandSide]
+      (7,8)SyntaxKind[SymbolSpan]
+        (7,8)SyntaxKind[Nonterminal]
+          (7,8)SyntaxKind[Identifier](text = "A")
+  (8,1)SyntaxKind[Production]
+    (8,1)SyntaxKind[Identifier](text = "D")
+    (8,2)SyntaxKind[ParameterList]
+      (8,2)SyntaxKind[OpenBracketToken]
+      (8,3)SyntaxKind[Parameter]
+        (8,3)SyntaxKind[Identifier](text = "B")
+      (8,4)SyntaxKind[CloseBracketToken]
+    (8,8)SyntaxKind[RightHandSide]
+      (8,8)SyntaxKind[SymbolSpan]
+        (8,8)SyntaxKind[Nonterminal]
+          (8,8)SyntaxKind[Identifier](text = "A")
+  (10,1)SyntaxKind[Production]
+    (10,1)SyntaxKind[Identifier](text = "E")
+    (10,2)SyntaxKind[ParameterList]
+      (10,2)SyntaxKind[OpenBracketToken]
+      (10,3)SyntaxKind[Parameter]
+        (10,3)SyntaxKind[Identifier](text = "A")
+      (10,4)SyntaxKind[CloseBracketToken]
+    (10,8)SyntaxKind[RightHandSide]
+      (10,8)SyntaxKind[SymbolSpan]
+        (10,8)SyntaxKind[Nonterminal]
+          (10,8)SyntaxKind[Identifier](text = "A")
+  (11,1)SyntaxKind[Production]
+    (11,1)SyntaxKind[Identifier](text = "F")
+    (11,2)SyntaxKind[ParameterList]
+      (11,2)SyntaxKind[OpenBracketToken]
+      (11,3)SyntaxKind[Parameter]
+        (11,3)SyntaxKind[Identifier](text = "A")
+      (11,4)SyntaxKind[CloseBracketToken]
+    (12,1)SyntaxKind[RightHandSideList]
+      (12,1)SyntaxKind[IndentToken]
+      (12,5)SyntaxKind[RightHandSide]
+        (12,5)SyntaxKind[SymbolSpan]
+          (12,5)SyntaxKind[Nonterminal]
+            (12,5)SyntaxKind[Identifier](text = "E")
+      (13,5)SyntaxKind[RightHandSide]
+        (13,5)SyntaxKind[SymbolSpan]
+          (13,5)SyntaxKind[Nonterminal]
+            (13,5)SyntaxKind[Identifier](text = "E")
+            (13,6)SyntaxKind[ArgumentList]
+              (13,6)SyntaxKind[OpenBracketToken]
+              (13,7)SyntaxKind[Argument]
+                (13,7)SyntaxKind[Identifier](text = "A")
+              (13,8)SyntaxKind[CloseBracketToken]
+      (14,5)SyntaxKind[RightHandSide]
+        (14,5)SyntaxKind[SymbolSpan]
+          (14,5)SyntaxKind[Nonterminal]
+            (14,5)SyntaxKind[Identifier](text = "E")
+            (14,6)SyntaxKind[ArgumentList]
+              (14,6)SyntaxKind[OpenBracketToken]
+              (14,7)SyntaxKind[Argument]
+                (14,7)SyntaxKind[Identifier](text = "A")
+              (14,10)SyntaxKind[Argument]
+                (14,10)SyntaxKind[Identifier](text = "B")
+              (14,11)SyntaxKind[CloseBracketToken]
+      (15,5)SyntaxKind[RightHandSide]
+        (15,5)SyntaxKind[SymbolSpan]
+          (15,5)SyntaxKind[Nonterminal]
+            (15,5)SyntaxKind[Identifier](text = "E")
+            (15,6)SyntaxKind[ArgumentList]
+              (15,6)SyntaxKind[OpenBracketToken]
+              (15,7)SyntaxKind[Argument]?
+                (15,7)SyntaxKind[QuestionToken]
+                (15,8)SyntaxKind[Identifier](text = "B")
+              (15,9)SyntaxKind[CloseBracketToken]
+      (16,5)SyntaxKind[RightHandSide]
+        (16,5)SyntaxKind[SymbolSpan]
+          (16,5)SyntaxKind[Nonterminal]
+            (16,5)SyntaxKind[Identifier](text = "E")
+            (16,6)SyntaxKind[ArgumentList]
+              (16,6)SyntaxKind[OpenBracketToken]
+              (16,7)SyntaxKind[Argument]+
+                (16,7)SyntaxKind[PlusToken]
+                (16,8)SyntaxKind[Identifier](text = "A")
+              (16,9)SyntaxKind[CloseBracketToken]
+      (17,5)SyntaxKind[RightHandSide]
+        (17,5)SyntaxKind[SymbolSpan]
+          (17,5)SyntaxKind[Nonterminal]
+            (17,5)SyntaxKind[Identifier](text = "E")
+            (17,6)SyntaxKind[ArgumentList]
+              (17,6)SyntaxKind[OpenBracketToken]
+              (17,7)SyntaxKind[Argument]~
+                (17,7)SyntaxKind[TildeToken]
+                (17,8)SyntaxKind[Identifier](text = "A")
+              (17,9)SyntaxKind[CloseBracketToken]
+      (18,5)SyntaxKind[RightHandSide]
+        (18,5)SyntaxKind[SymbolSpan]
+          (18,5)SyntaxKind[Nonterminal]
+            (18,5)SyntaxKind[Identifier](text = "E")
+            (18,6)SyntaxKind[ArgumentList]
+              (18,6)SyntaxKind[OpenBracketToken]
+              (18,7)SyntaxKind[Argument]?
+                (18,7)SyntaxKind[QuestionToken]
+                (18,8)SyntaxKind[Identifier](text = "A")
+              (18,9)SyntaxKind[CloseBracketToken]
+      (19,1)SyntaxKind[DedentToken]

@@ -1,7 +1,8 @@
 node_modules
 lib
+tests/*.js
+tests/*.map
+tests/baselines/local
 !src/lib
-tests
-!tests/baselines
 !src/tests
 spec/*.grammar.html
