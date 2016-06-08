@@ -20,6 +20,7 @@ import { SyntaxKind, tokenToString } from "./tokens";
 import { Symbol, SymbolKind, SymbolTable } from "./symbols";
 import { Binder, BindingTable } from "./binder";
 import { StringWriter } from "./stringwriter";
+import { CompilerOptions } from "./options";
 import {
     Node,
     SourceFile,
@@ -54,6 +55,7 @@ import {
     RightHandSideList,
     Production,
     SourceElement,
+    Define,
     forEachChild
 } from "./nodes";
 import { NodeNavigator } from "./navigator";
@@ -69,10 +71,13 @@ export class Checker {
     private binder: Binder;
     private innerResolver: Resolver;
     private sourceFile: SourceFile;
+    private noStrictParametricProductions: boolean;
+    private productionParametersByName: Dict<Dict<boolean>>;
 
-    constructor(bindings: BindingTable, diagnostics: DiagnosticMessages) {
+    constructor(bindings: BindingTable, diagnostics: DiagnosticMessages, options?: CompilerOptions) {
         this.bindings = bindings;
         this.diagnostics = diagnostics;
+        this.noStrictParametricProductions = options && options.noStrictParametricProductions || false;
     }
 
     public get resolver(): Resolver {
@@ -87,15 +92,61 @@ export class Checker {
         if (!Dict.has(this.checkedFileSet, sourceFile.filename)) {
             Dict.set(this.checkedFileSet, sourceFile.filename, true);
             this.sourceFile = sourceFile;
+            this.productionParametersByName = new Dict<Dict<boolean>>();
             this.diagnostics.setSourceFile(this.sourceFile);
+
+            const savedNoStrictParametricProductions = this.noStrictParametricProductions;
+
+            for (let element of sourceFile.elements) {
+                this.preprocessSourceElement(element);
+            }
+
             for (let element of sourceFile.elements) {
                 this.checkSourceElement(element);
             }
+
+            this.noStrictParametricProductions = savedNoStrictParametricProductions;
+            this.sourceFile = undefined;
+            this.productionParametersByName = undefined;
         }
     }
 
     protected createResolver(bindings: BindingTable): Resolver {
         return new Resolver(bindings);
+    }
+
+    private preprocessSourceElement(node: SourceElement): void {
+        switch (node.kind) {
+            case SyntaxKind.Define:
+                this.preprocessDefine(<Define>node);
+                break;
+        }
+    }
+
+    private preprocessDefine(node: Define) {
+        if (!this.checkGrammarDefine(node)) {
+            const nodeKey = node.key;
+            const nodeKeyText = nodeKey.text;
+            switch (nodeKeyText) {
+                case "noStrictParametricProductions":
+                    this.noStrictParametricProductions = node.valueToken.kind === SyntaxKind.TrueKeyword;
+                    break;
+
+                default:
+                    this.diagnostics.reportNode(nodeKey, Diagnostics.Cannot_find_name_0_, nodeKeyText);
+                    break;
+            }
+        }
+    }
+
+    private checkGrammarDefine(node: Define): boolean {
+        if (!node.key || !node.key.text) {
+            return this.reportGrammarError(node.defineKeyword.end, Diagnostics._0_expected, tokenToString(SyntaxKind.Identifier));
+        }
+
+        if (!node.valueToken) {
+            return this.reportGrammarError(node.key.end, Diagnostics._0_expected, formatList([SyntaxKind.TrueKeyword, SyntaxKind.FalseKeyword]));
+        }
     }
 
     private checkSourceElement(node: SourceElement): void {
@@ -112,10 +163,12 @@ export class Checker {
 
     private checkProduction(node: Production): void {
         this.checkGrammarProduction(node);
-        this.checkIdentifier(node.name);
 
-        if (node.parameterList) {
-            this.checkParameterList(node.parameterList);
+        if (this.noStrictParametricProductions) {
+            this.checkProductionNonStrict(node);
+        }
+        else {
+            this.checkProductionStrict(node);
         }
 
         if (node.body) {
@@ -131,6 +184,80 @@ export class Checker {
                 case SyntaxKind.RightHandSide:
                     this.checkRightHandSide(<RightHandSide>node.body);
                     break;
+            }
+        }
+    }
+
+    private checkProductionNonStrict(node: Production) {
+        this.checkIdentifier(node.name);
+
+        if (node.parameterList) {
+            this.checkParameterList(node.parameterList);
+        }
+    }
+
+    private getProductionParametersByName(node: Production) {
+        const id = node.id;
+        const productionParametersByName = this.productionParametersByName;
+        if (Dict.has(productionParametersByName, id)) {
+            return Dict.get(productionParametersByName, id);
+        }
+
+        const parameterList = node.parameterList;
+        const parameters = parameterList ? parameterList.elements : undefined;
+        const parameterCount = parameters ? parameters.length : 0;
+        const parametersByName = new Dict<boolean>();
+        for (let i = 0; i < parameterCount; i++) {
+            const parameter = parameters[i];
+            const parameterName = parameter ? parameter.name : undefined;
+            const parameterNameText = parameterName ? parameterName.text : undefined;
+            if (parameterNameText && !Dict.has(parametersByName, parameterNameText)) {
+                Dict.set(parametersByName, parameterNameText, true);
+            }
+        }
+
+        Dict.set(productionParametersByName, id, parametersByName);
+        return parametersByName;
+    }
+
+    private checkProductionStrict(thisProduction: Production) {
+        const thisProductionName = thisProduction.name;
+        const thisProductionNameText = thisProductionName.text;
+        const thisProductionSymbol = this.checkIdentifier(thisProductionName);
+        const thisProductionParameterList = thisProduction.parameterList;
+        const thisProductionParameters = thisProductionParameterList ? thisProductionParameterList.elements : undefined;
+        const thisProductionParameterCount = thisProductionParameters ? thisProductionParameters.length : 0;
+        const firstProduction = <Production>this.bindings.getDeclarations(thisProductionSymbol)[0];
+        if (thisProductionParameterCount) {
+            this.checkParameterList(thisProduction.parameterList);
+        }
+
+        if (firstProduction === thisProduction) {
+            return;
+        }
+
+        if (/test\.grammar$/.test(this.sourceFile.filename) && thisProductionNameText === "D") debugger;
+
+        const thisProductionParameterNames = this.getProductionParametersByName(thisProduction);
+        const firstProductionParameterList = firstProduction.parameterList;
+        const firstProductionParameters = firstProductionParameterList ? firstProductionParameterList.elements : undefined;
+        const firstProductionParameterCount = firstProductionParameters ? firstProductionParameters.length : 0;
+        const firstProductionParameterNames = this.getProductionParametersByName(firstProduction);
+        for (let i = 0; i < firstProductionParameterCount; i++) {
+            const firstProductionParameter = firstProductionParameters[i];
+            const firstProductionParameterName = firstProductionParameter.name;
+            const firstProductionParameterNameText = firstProductionParameterName.text;
+            if (!Dict.has(thisProductionParameterNames, firstProductionParameterNameText)) {
+                this.diagnostics.reportNode(thisProductionName, Diagnostics.Production_0_is_missing_parameter_1_All_definitions_of_production_0_must_specify_the_same_formal_parameters, thisProductionNameText, firstProductionParameterNameText);
+            }
+        }
+
+        for (let i = 0; i < thisProductionParameterCount; i++) {
+            const thisProductionParameter = thisProductionParameters[i];
+            const thisProductionParameterName = thisProductionParameter.name;
+            const thisProductionParameterNameText = thisProductionParameterName.text;
+            if (!Dict.has(firstProductionParameterNames, thisProductionParameterNameText)) {
+                this.diagnostics.reportNode(firstProduction, Diagnostics.Production_0_is_missing_parameter_1_All_definitions_of_production_0_must_specify_the_same_formal_parameters, thisProductionNameText, thisProductionParameterNameText);
             }
         }
     }
@@ -835,7 +962,59 @@ export class Checker {
 
     private checkNonterminal(node: Nonterminal, allowOptional?: boolean): void {
         this.checkGrammarOptionalSymbol(node, allowOptional);
+
+        if (this.noStrictParametricProductions) {
+            this.checkNonterminalNonStrict(node);
+        }
+        else {
+            this.checkNonterminalStrict(node);
+        }
+    }
+
+    private checkNonterminalNonStrict(node: Nonterminal): void {
         this.checkIdentifier(node.name);
+
+        if (node.argumentList) {
+            this.checkArgumentList(node.argumentList);
+        }
+    }
+
+    private checkNonterminalStrict(node: Nonterminal): void {
+        const nonterminalName = node.name;
+        const productionSymbol = this.checkIdentifier(nonterminalName);
+        if (productionSymbol) {
+            const production = <Production>this.bindings.getDeclarations(productionSymbol)[0];
+            const parameterCount = production.parameterList ? production.parameterList.elements.length : 0;
+            const argumentCount = node.argumentList ? node.argumentList.elements.length : 0;
+            const nameSet = new Dict<boolean>();
+
+            // Check each argument has a matching parameter.
+            for (let i = 0; i < argumentCount; i++) {
+                const argument = node.argumentList.elements[i];
+                const argumentName = argument.name;
+                const argumentNameText = argumentName.text;
+                if (Dict.has(nameSet, argumentNameText)) {
+                    this.diagnostics.reportNode(argumentName, Diagnostics.Argument_0_cannot_be_specified_multiple_times, argumentNameText);
+                }
+                else {
+                    Dict.set(nameSet, argumentNameText, true);
+                    const parameterSymbol = this.resolveSymbol(production, argumentNameText, SymbolKind.Parameter);
+                    if (!parameterSymbol) {
+                        this.diagnostics.reportNode(argumentName, Diagnostics.Production_0_does_not_have_a_parameter_named_1_, productionSymbol.name, argumentNameText);
+                    }
+                }
+            }
+
+            // Check each parameter has a matching argument.
+            for (let i = 0; i < parameterCount; i++) {
+                const parameter = production.parameterList.elements[i];
+                const parameterName = parameter.name;
+                const parameterNameText = parameterName.text;
+                if (!Dict.has(nameSet, parameterNameText)) {
+                    this.diagnostics.reportNode(nonterminalName, Diagnostics.There_is_no_argument_given_for_parameter_0_, parameterNameText);
+                }
+            }
+        }
 
         if (node.argumentList) {
             this.checkArgumentList(node.argumentList);
@@ -897,7 +1076,7 @@ export class Checker {
         ]));
     }
 
-    private checkIdentifier(node: Identifier): void {
+    private checkIdentifier(node: Identifier): Symbol {
         this.checkGrammarIdentifier(node);
 
         if (node.text) {
@@ -913,10 +1092,10 @@ export class Checker {
                             this.diagnostics.reportNode(node, Diagnostics.Duplicate_identifier_0_, node.text);
                         }
 
-                        return;
+                        return symbol;
 
                     case SyntaxKind.Production:
-                        return;
+                        return this.bindings.getSymbol(parent);
 
                     case SyntaxKind.LookaheadAssertion:
                     case SyntaxKind.Nonterminal:
@@ -926,7 +1105,11 @@ export class Checker {
                     case SyntaxKind.Argument:
                         let argument = <Argument>parent;
                         if (argument.operatorToken && argument.operatorToken.kind === SyntaxKind.QuestionToken) {
-                            symbol = this.resolveSymbol(node, node.text, SymbolKind.Parameter, Diagnostics.Cannot_find_name_0_);
+                            symbol = this.resolveSymbol(node, node.text, SymbolKind.Parameter);
+                            if (!symbol) {
+                                const production = <Production>this.bindings.getAncestor(argument, SyntaxKind.Production);
+                                this.diagnostics.reportNode(node, Diagnostics.Production_0_does_not_have_a_parameter_named_1_, production.name.text, node.text);
+                            }
                         }
                         else {
                             // get the symbol of the parameter of the target production
@@ -937,7 +1120,7 @@ export class Checker {
                                     let production = <Production>this.bindings.getDeclarations(productionSymbol)[0];
                                     symbol = this.resolveSymbol(production, node.text, SymbolKind.Parameter);
                                     if (!symbol) {
-                                        this.diagnostics.reportNode(node, Diagnostics.Cannot_find_name_0_, node.text);
+                                        this.diagnostics.reportNode(node, Diagnostics.Production_0_does_not_have_a_parameter_named_1_, production.name.text, node.text);
                                     }
                                 }
                             }
@@ -947,8 +1130,11 @@ export class Checker {
                 }
 
                 this.bindings.setSymbol(node, symbol);
+                return symbol;
             }
         }
+
+        return undefined;
     }
 
     private checkGrammarIdentifier(node: Identifier): boolean {

@@ -33,6 +33,7 @@ const knownOptions: KnownOptions = {
     "noEmit": { type: "boolean", description: "Does not emit output." },
     "noEmitOnError": { type: "boolean", description: "Does not emit output if there are errors." },
     "noChecks": { type: "boolean", description: "Does not perform static checking of the grammar." },
+    "noStrictParametricProductions": { type: "boolean", description: "Does not perform strict checking of parametric productions and nonterminals." },
     "emitLinks": { type: "boolean", hidden: true },
     "usage": { aliasFor: ["--help"], hidden: true },
     "md": { aliasFor: ["--format", "markdown"], hidden: true },
@@ -44,7 +45,7 @@ interface ParsedCommandLine extends ParsedArguments, CompilerOptions {
 }
 
 function main(): void {
-    
+
     let opts = parse<ParsedCommandLine>(knownOptions);
     if (opts.help) {
         printUsage();
@@ -83,18 +84,18 @@ function performCompilation(options: ParsedCommandLine): void {
     if (options.noEmitOnError) compilerOptions.noEmitOnError = true;
     if (options.emitLinks) compilerOptions.emitLinks = true;
     compilerOptions.format = options.format || EmitFormat.markdown;
-    
+
     let inputFiles = options.rest;
     let grammar = new Grammar(inputFiles, compilerOptions);
     grammar.bind();
     grammar.check();
-    
+
     if (!compilerOptions.noEmit) {
         if (!compilerOptions.noEmitOnError || grammar.diagnostics.count() <= 0) {
             grammar.emit();
         }
     }
-    
+
     if (grammar.diagnostics.count() > 0) {
         grammar.diagnostics.forEach(message => console.log(message));
         process.exit(-1);

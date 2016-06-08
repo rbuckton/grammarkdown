@@ -1,3 +1,4 @@
+@define noStrictParametricProductions true
 @import "es6.grammar"
 
 // A.1 Types
@@ -44,7 +45,7 @@ PrimaryType :
 
 ParenthesizedType :
 	`(` Type `)`
-	
+
 PredefinedType :
 	`any`
 	`number`
@@ -82,14 +83,14 @@ TypeMember :
 
 ArrayType :
 	PrimaryType [no LineTerminator here] `[` `]`
-	
+
 TupleType :
 	`[` TupleElementTypes `]`
 
 TupleElementTypes :
 	TupleElementType
 	TupleElementTypes `,` TupleElementType
-	
+
 TupleElementType :
 	Type
 

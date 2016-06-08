@@ -75,20 +75,35 @@ export class Scanner {
     }
 
     public scan(): SyntaxKind {
-        if (this.hasQueuedToken()) {
+        const token = this.dequeueOrScanToken();
+        if (token === SyntaxKind.EndOfFileToken && this.indents.length) {
+            for (let i = 0; i < this.indents.length; i++) {
+                this.enqueueToken(SyntaxKind.DedentToken);
+            }
+
+            this.indents.length = 0;
+            this.enqueueToken(token);
             return this.token = this.dequeueToken();
         }
 
-        let token = this.scanToken();
+        return this.token = token;
+    }
+
+    private dequeueOrScanToken() {
+        if (this.hasQueuedToken()) {
+            return this.dequeueToken();
+        }
+
+        const token = this.scanToken();
         if (this.hasQueuedToken()) {
             if (token !== -1) {
                 this.enqueueToken(token);
             }
 
-            return this.token = this.dequeueToken();
+            return this.dequeueToken();
         }
 
-        return this.token = token;
+        return token;
     }
 
     public speculate<T>(callback: () => T, isLookahead: boolean): T {

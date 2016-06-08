@@ -32,12 +32,12 @@ import {
     forEachChild
 } from "../lib/nodes";
 
-export function writeTokens(test: string, scanner: Scanner, lineMap: LineMap, baselines: string[]) {
+export function writeTokens(test: string, scanner: Scanner, lineMap: LineMap, baselines?: string[]) {
     let text: string = `/// ${test}:` + EOL;
     let token: SyntaxKind;
     do {
         token = scanner.scan();
-        let message = `SyntaxKind[${SyntaxKind[token]}](${lineMap.formatPosition(scanner.getTokenPos()) }): `;
+        let message = `SyntaxKind[${formatKind(token)}](${lineMap.formatPosition(scanner.getTokenPos()) }): `;
         switch (token) {
             case SyntaxKind.ProseFull:
             case SyntaxKind.ProseHead:
@@ -61,10 +61,10 @@ export function writeTokens(test: string, scanner: Scanner, lineMap: LineMap, ba
         text += message + EOL;
     }
     while (token !== SyntaxKind.EndOfFileToken)
-    writeBaseline(test + ".tokens", text, baselines);
+    return writeBaseline(test + ".tokens", text, baselines);
 }
 
-export function writeDiagnostics(test: string, diagnostics: DiagnosticMessages, baselines: string[]) {
+export function writeDiagnostics(test: string, diagnostics: DiagnosticMessages, baselines?: string[]) {
     let text: string = undefined;
     diagnostics.forEach(message => {
         if (!text) {
@@ -72,16 +72,17 @@ export function writeDiagnostics(test: string, diagnostics: DiagnosticMessages, 
         }
         text += message + EOL;
     });
-    writeBaseline(test + ".diagnostics", text, baselines);
+
+    return writeBaseline(test + ".diagnostics", text, baselines);
 }
 
-export function writeNodes(test: string, sourceFile: SourceFile, baselines: string[]) {
+export function writeNodes(test: string, sourceFile: SourceFile, baselines?: string[]) {
     let text = `/// ${test}:` + EOL;
     let indents = ["", "  "];
     let indentDepth = 0;
 
     printNode(sourceFile);
-    writeBaseline(test + ".nodes", text, baselines);
+    return writeBaseline(test + ".nodes", text, baselines);
 
     function getIndent(depth: number) {
         if (depth >= indents.length) {
@@ -98,8 +99,15 @@ export function writeNodes(test: string, sourceFile: SourceFile, baselines: stri
     }
 }
 
-export function writeBaseline(file: string, text: string, baselines: string[]) {
-    baselines.push(file);
+export function writeOutput(test: string, extname: string, text: string, baselines?: string[]) {
+    return writeBaseline(test + extname, text, baselines);
+}
+
+export function writeBaseline(file: string, text: string, baselines?: string[]) {
+    if (baselines) {
+        baselines.push(file);
+    }
+
     let { localFile } = resolveBaseline(file);
     if (text === undefined) {
         if (existsSync(localFile)) {
@@ -109,6 +117,8 @@ export function writeBaseline(file: string, text: string, baselines: string[]) {
     else {
         writeFileSync(localFile, text, { encoding: "utf8" });
     }
+
+    return file;
 }
 
 export function compareBaselines(baselines: string[]) {
@@ -119,6 +129,15 @@ export function compareBaselines(baselines: string[]) {
         if (localText !== referenceText) {
             throw new Error(`The baseline file '${file}' has changed.`);
         }
+    }
+}
+
+export function compareBaseline(file: string) {
+    let { localFile, referenceFile } = resolveBaseline(file);
+    let localText = existsSync(localFile) ? readFileSync(localFile, "utf8") : undefined;
+    let referenceText = existsSync(referenceFile) ? readFileSync(referenceFile, "utf8") : undefined;
+    if (localText !== referenceText) {
+        throw new Error(`The baseline file '${file}' has changed.`);
     }
 }
 

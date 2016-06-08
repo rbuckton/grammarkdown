@@ -194,7 +194,9 @@ export enum SyntaxKind {
 
     // Keywords
     ButKeyword, // FirstKeyword
+    DefineKeyword,
     EmptyKeyword,
+    FalseKeyword,
     GoalKeyword,
     HereKeyword,
     ImportKeyword,
@@ -205,7 +207,8 @@ export enum SyntaxKind {
     OfKeyword,
     OneKeyword,
     OrKeyword,
-    ThroughKeyword, // LastKeyword
+    ThroughKeyword,
+    TrueKeyword, // LastKeyword
 
     // Nodes
     Parameter,                  // Production(Parameter):
@@ -215,6 +218,7 @@ export enum SyntaxKind {
     LinkReference,              // #link
 
     Import,                     // @import "path"
+    Define,                     // @define key value
     Production,                 // Production: ...
     OneOfList,                  // Production: one of ...
     RightHandSideList,          // Production: RightHandSide...
@@ -248,14 +252,16 @@ export enum SyntaxKind {
     FirstProseFragment = ProseHead,
     LastProseFragment = ProseTail,
     FirstKeyword = ButKeyword,
-    LastKeyword = ThroughKeyword,
+    LastKeyword = TrueKeyword,
     FirstPunctuation = AtToken,
     LastPunctuation = LessThanMinusToken,
 }
 
 const textToToken = new Dict({
     "but": SyntaxKind.ButKeyword,
+    "define": SyntaxKind.DefineKeyword,
     "empty": SyntaxKind.EmptyKeyword,
+    "false": SyntaxKind.FalseKeyword,
     "goal": SyntaxKind.GoalKeyword,
     "here": SyntaxKind.HereKeyword,
     "import": SyntaxKind.ImportKeyword,
@@ -267,6 +273,7 @@ const textToToken = new Dict({
     "one": SyntaxKind.OneKeyword,
     "or": SyntaxKind.OrKeyword,
     "through": SyntaxKind.ThroughKeyword,
+    "true": SyntaxKind.TrueKeyword,
     "@": SyntaxKind.AtToken,
     ":": SyntaxKind.ColonToken,
     "::": SyntaxKind.ColonColonToken,

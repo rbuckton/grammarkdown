@@ -12,6 +12,7 @@ export interface CompilerOptions {
     noChecks?: boolean;
     noEmit?: boolean;
     noEmitOnError?: boolean;
+    noStrictParametricProductions?: boolean;
     format?: EmitFormat;
     out?: string;
     emitLinks?: boolean;
@@ -74,7 +75,7 @@ export function parse<T extends ParsedArguments>(options: KnownOptions, args: st
         if (result === ParseResult.Success) {
             Object.freeze(raw.rest);
             Object.freeze(raw.args);
-            Object.freeze(raw);    
+            Object.freeze(raw);
             let parsed: T = <T>{ argv: args.slice(0) };
             result = evaluateArguments(parsed, known, raw, messages);
             if (result === ParseResult.Success) {
@@ -94,7 +95,7 @@ export class UsageWriter {
     private remainder: number;
     private marginText: string;
     private paddingText: string;
-    
+
     constructor(margin: number, padding: number) {
         this.margin = margin;
         this.padding = padding;
@@ -102,7 +103,7 @@ export class UsageWriter {
         this.marginText = padRight("", margin);
         this.paddingText = padRight("", padding);
     }
-    
+
     public writeOption(left: string, right: string) {
         let leftLines = left ? this.fit(left, this.margin) : emptyArray;
         let rightLines = right ? this.fit(right, this.remainder) : emptyArray;
@@ -115,16 +116,16 @@ export class UsageWriter {
             if (i < rightLines.length) {
                 line = padRight(line, this.margin + this.padding);
                 line += rightLines[i];
-            } 
+            }
 
             console.log(line);
         }
     }
-    
-    public writeln(text: string = "") {    
+
+    public writeln(text: string = "") {
         console.log(text);
     }
-    
+
     private fit(text: string, width: number) {
         let lines: string[] = [];
         let pos = 0, len = text.length;
@@ -135,20 +136,20 @@ export class UsageWriter {
                 if (ch === CharacterCodes.CarriageReturn && pos < len && text.charCodeAt(pos) === CharacterCodes.LineFeed) {
                     pos++;
                 }
-                
+
                 lines.push("");
                 continue;
             }
-            
+
             let end = pos + width;
             if (end >= len) {
                 lines.push(text.substr(pos));
                 break;
             }
-            
+
             while (end > pos && !isWhiteSpace(text.charCodeAt(end))) end--;
             while (end > pos && isWhiteSpace(text.charCodeAt(end), true)) end--;
-            
+
             if (end <= pos) {
                 lines.push(text.substr(pos, width));
                 pos += width;
@@ -160,7 +161,7 @@ export class UsageWriter {
 
             while (pos < len && isWhiteSpace(text.charCodeAt(pos), true)) pos++;
         }
-        
+
         return lines;
     }
 }
@@ -174,32 +175,32 @@ export function usage(options: KnownOptions, margin: number = 0, printHeader?: (
             if (option.hidden) {
                 continue;
             }
-            
+
             let size = option.longName.length + 3;
             if (option.shortName) {
                 hasShortNames = true;
                 size += 4;
             }
-            
+
             if (option.param) {
                 size += 1;
             }
-            
+
             if (size > margin) {
                 margin = size;
             }
-            
+
             knownOptions.push(option);
         }
     }
-    
+
     let writer = new UsageWriter(margin, 1);
     if (printHeader) {
         printHeader(writer);
     }
-    
+
     knownOptions.sort(compareKnownOptions);
-    
+
     let descriptionSize = 120 - margin;
     let marginText = padRight("", margin);
     for (let option of knownOptions) {
@@ -210,12 +211,12 @@ export function usage(options: KnownOptions, margin: number = 0, printHeader?: (
         else if (hasShortNames) {
             left += "    ";
         }
-        
+
         left += `--${option.longName}`;
         if (option.param) {
             left += ` ${option.param}`;
         }
-        
+
         left = padRight(left, margin);
         writer.writeOption(left, option.description);
     }
@@ -278,14 +279,14 @@ function createKnownOptionMaps(options: KnownOptions): KnownOptionMaps {
             Dict.set(longNames, knownOption.longName.toLowerCase(), knownOption);
             if (knownOption.shortName) {
                 Dict.set(shortNames, knownOption.shortName, knownOption);
-            }            
+            }
         }
     }
-    
+
     let maps: KnownOptionMaps = { longNames, shortNames };
-    
+
     Object.freeze(longNames);
-    Object.freeze(shortNames);    
+    Object.freeze(shortNames);
     Object.freeze(maps);
     return maps;
 }
@@ -315,19 +316,19 @@ function parseArguments(args: string[], known: KnownOptionMaps, raw: RawArgument
             let match = matchKnownOption(known, rawKey, shortName);
 
             switch (match.cardinality) {
-                case "none": 
+                case "none":
                     messages.push(`Unrecognized option: ${rawKey}.`);
                     return ParseResult.Error;
-                
+
                 case "many":
                     messages.push(`Unrecognized option: ${rawKey}. Did you mean:`);
                     for (let option of match.candidates) {
                         messages.push(`    --${option.longName}`);
                     }
-                    
+
                     return ParseResult.Error;
             }
-            
+
             let option = match.option;
             let formattedKey = shortName ? "-" + option.shortName : "--" + option.longName;
             let valueRequired = optionRequiresValue(option);
@@ -341,7 +342,7 @@ function parseArguments(args: string[], known: KnownOptionMaps, raw: RawArgument
                         messages.push(`Option '${formattedKey}' expects an argument.`);
                         return ParseResult.Error;
                     }
-                    
+
                     value = args[argi++];
                 }
 
@@ -350,10 +351,10 @@ function parseArguments(args: string[], known: KnownOptionMaps, raw: RawArgument
                     if (ch === CharacterCodes.DoubleQuote) {
                         if (value.length > 1 && value.charCodeAt(value.length - 1) === ch) {
                             value = value.substr(1, value.length - 2);
-                        }                    
+                        }
                     }
                 }
-                
+
                 if (valueRequired) {
                     if (value.length === 0 || value === `""` || value === `''`) {
                         messages.push(`Option '${formattedKey}' expects an argument.`);
@@ -361,20 +362,20 @@ function parseArguments(args: string[], known: KnownOptionMaps, raw: RawArgument
                     }
                 }
             }
-            
+
             if (option.type === "boolean") {
                 if (!value) {
                     value = "true";
                 }
             }
-            
+
             let rawArgument: RawArgument = {
                 rawKey,
                 formattedKey,
                 value,
                 option
             };
-            
+
             Object.freeze(rawArgument);
             raw.args.push(rawArgument);
         }
@@ -384,11 +385,11 @@ function parseArguments(args: string[], known: KnownOptionMaps, raw: RawArgument
                     arg = arg.substr(1, arg.length - 2);
                 }
             }
-            
+
             raw.rest.push(arg);
         }
     }
-    
+
     return ParseResult.Success;
 }
 
@@ -401,7 +402,7 @@ function parseResponseFile(file: string, known: KnownOptionMaps, raw: RawArgumen
         messages.push(`File '${file}'' not found.`);
         return ParseResult.Error;
     }
-    
+
     let args: string[] = [];
     let pos = 0;
     let len = text.length;
@@ -411,7 +412,7 @@ function parseResponseFile(file: string, known: KnownOptionMaps, raw: RawArgumen
             pos++;
             continue;
         }
-        
+
         let start = pos;
         if (ch === CharacterCodes.DoubleQuote) {
             pos++;
@@ -420,10 +421,10 @@ function parseResponseFile(file: string, known: KnownOptionMaps, raw: RawArgumen
                 if (ch === CharacterCodes.DoubleQuote) {
                     break;
                 }
-                
+
                 pos++;
             }
-            
+
             args.push(text.substring(start, pos++));
         }
         else {
@@ -432,12 +433,12 @@ function parseResponseFile(file: string, known: KnownOptionMaps, raw: RawArgumen
                 ch = text.charCodeAt(pos);
                 if (!isWhiteSpace(ch)) {
                     pos++;
-                }                
+                }
             }
             args.push(text.substring(start, pos));
         }
     }
-    
+
     return parseArguments(args, known, raw, messages);
 }
 
@@ -446,14 +447,14 @@ function isWhiteSpace(ch: number, excludeLineTerminator?: boolean) {
         case CharacterCodes.LineFeed:
         case CharacterCodes.CarriageReturn:
             return !excludeLineTerminator;
-            
+
         case CharacterCodes.Space:
         case CharacterCodes.Tab:
         case CharacterCodes.VerticalTab:
         case CharacterCodes.FormFeed:
             return true;
     }
-    
+
     return false;
 }
 
@@ -463,7 +464,7 @@ function optionRequiresValue(option: KnownOption) {
         case "":
         case "boolean":
             return false;
-            
+
         default:
             return true;
     }
@@ -472,7 +473,7 @@ function optionRequiresValue(option: KnownOption) {
 interface KnownOptionMatchResult {
     cardinality: string;
     option?: KnownOption;
-    candidates?: KnownOption[]; 
+    candidates?: KnownOption[];
 }
 
 function matchKnownOption(known: KnownOptionMaps, key: string, shortName: boolean): KnownOptionMatchResult {
@@ -495,17 +496,17 @@ function matchKnownOption(known: KnownOptionMaps, key: string, shortName: boolea
             let candidates: KnownOption[];
             let knownKey: string;
             for (knownKey in known.longNames) {
-                if (Dict.has(known.longNames, knownKey) && 
-                    knownKey.length > keyLen && 
+                if (Dict.has(known.longNames, knownKey) &&
+                    knownKey.length > keyLen &&
                     knownKey.substr(0, keyLen) === keyLower) {
                     if (!candidates) {
                         candidates = [];
                     }
-                    
+
                     candidates.push(Dict.get(known.longNames, knownKey));
                 }
             }
-            
+
             if (candidates) {
                 if (candidates.length === 1) {
                     let option = candidates[0];
@@ -517,7 +518,7 @@ function matchKnownOption(known: KnownOptionMaps, key: string, shortName: boolea
             }
         }
     }
-    
+
     return { cardinality: "none" };
 }
 
@@ -530,13 +531,13 @@ function expandArguments(known: KnownOptionMaps, raw: RawArguments, messages: st
             if (arg.value) {
                 args = args.concat([arg.value]);
             }
-            
+
             if (parseArguments(args, known, raw, messages) === ParseResult.Error) {
                 return ParseResult.Error;
             }
         }
     }
-    
+
     return ParseResult.Success;
 }
 
@@ -546,12 +547,12 @@ function evaluateArguments(parsed: ParsedArguments, known: KnownOptionMaps, raw:
         if (option.aliasFor) {
             continue;
         }
-        
+
         let type = typeof option.type;
         if (type === "string") {
             type = <string>option.type;
         }
-        
+
         if (option.validate && !option.validate(option.longName, value, raw)) {
             if (option.error) {
                 messages.push(option.error);
@@ -559,17 +560,17 @@ function evaluateArguments(parsed: ParsedArguments, known: KnownOptionMaps, raw:
             else {
                 messages.push(`Invalid argument for option '${formattedKey}'.`)
             }
-            
+
             return ParseResult.Error;
         }
-        
+
         let booleanValue: boolean;
         let numberValue: number;
         switch (type) {
             case "file":
             case "string":
                 break;
-                
+
             case "boolean":
                 if (value) {
                     value = value.toLowerCase();
@@ -580,16 +581,16 @@ function evaluateArguments(parsed: ParsedArguments, known: KnownOptionMaps, raw:
                         else {
                             messages.push(`Invalid argument for option '${formattedKey}'. Expected either 'true' or 'false'.`);
                         }
-                        
+
                         return ParseResult.Error;
                     }
-                    
+
                     booleanValue = value === "true";
                 }
                 else {
                     booleanValue = true;
                 }
-                
+
                 break;
 
             case "number":
@@ -602,13 +603,13 @@ function evaluateArguments(parsed: ParsedArguments, known: KnownOptionMaps, raw:
                         else {
                             messages.push(`Invalid argument for option '${formattedKey}'. Expected a finite number.`);
                         }
-                        
+
                         return ParseResult.Error;
                     }
                 }
-                
+
                 break;
-            
+
             case "object":
                 if (value) {
                     let type = <Dict<any>>option.type;
@@ -625,7 +626,7 @@ function evaluateArguments(parsed: ParsedArguments, known: KnownOptionMaps, raw:
                             }
                         }
                     }
-                    
+
                     if (result === undefined) {
                         if (option.error) {
                             messages.push(option.error);
@@ -633,33 +634,33 @@ function evaluateArguments(parsed: ParsedArguments, known: KnownOptionMaps, raw:
                         else {
                             messages.push(`Invalid argument for option '${formattedKey}'.`);
                         }
-                        
+
                         return ParseResult.Error;
                     }
-                    
+
                     value = result;
                 }
                 break;
         }
-        
+
         if (option.convert) {
             value = option.convert(option.longName, value, raw);
         }
         else {
             switch (option.type) {
-                case "boolean": 
+                case "boolean":
                     value = booleanValue;
                     break;
-                    
+
                 case "number":
                     value = numberValue;
                     break;
             }
         }
-        
+
         parsed[option.longName] = value;
     }
-    
+
     parsed.rest = raw.rest.slice(0);
     return ParseResult.Success;
 }

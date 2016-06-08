@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { binarySearch, Range, Position } from "./core";
+import { binarySearch, compareStrings, compare, Range, Position, Dict } from "./core";
 import { CharacterCodes, SyntaxKind, tokenToString } from "./tokens";
 import { Node, SourceFile } from "./nodes";
 
@@ -38,6 +38,10 @@ export const Diagnostics = {
     Cannot_find_name_0_: <Diagnostic>{ code: 2000, message: "Cannot find name: '{0}'." },
     Duplicate_identifier_0_: <Diagnostic>{ code: 2001, message: "Duplicate identifier: '{0}'." },
     Duplicate_terminal_0_: <Diagnostic>{ code: 2002, message: "Duplicate terminal: `{0}`." },
+    Argument_0_cannot_be_specified_multiple_times: <Diagnostic>{ code: 2003, message: "Argument '{0}' cannot be specified multiple times." },
+    Production_0_does_not_have_a_parameter_named_1_: <Diagnostic>{ code: 2004, message: "Production '{0}' does not have a parameter named '{1}'." },
+    Production_0_is_missing_parameter_1_All_definitions_of_production_0_must_specify_the_same_formal_parameters: <Diagnostic>{ code: 2006, message: "Production '{0}' is missing parameter '{1}'. All definitions of production '{0}' must specify the same formal parameters." },
+    There_is_no_argument_given_for_parameter_0_: <Diagnostic>{ code: 2007, message: "There is no argument given for parameter '{0}'." },
 };
 
 export interface DiagnosticInfo {
@@ -56,11 +60,15 @@ export interface DiagnosticInfo {
 export class DiagnosticMessages {
     private diagnostics: Diagnostic[];
     private diagnosticsPos: number[];
+    private diagnosticsLength: number[];
     private diagnosticsNode: Node[];
     private diagnosticsArguments: any[][];
+    private detailedDiagnosticMessages: Dict<string>;
+    private simpleDiagnosticMessages: Dict<string>;
     private sourceFiles: SourceFile[];
     private sourceFilesDiagnosticOffset: number[];
     private nextDiagnosticIndex = 0;
+    private sortedAndDeduplicatedDiagnosticIndices: number[];
 
     constructor() {
     }
@@ -87,12 +95,14 @@ export class DiagnosticMessages {
     public reportNode(node: Node, message: Diagnostic, args: any[]): void;
     public reportNode(node: Node, message: Diagnostic, ...args: any[]): void;
     public reportNode(node: Node, message: Diagnostic): void {
-        var pos: number;
+        let pos: number;
+        let length: number;
         if (node) {
             pos = node.pos;
+            length = node.end - node.pos;
         }
 
-        this.reportDiagnostic(message, Array.prototype.slice.call(arguments, 2), pos, node);
+        this.reportDiagnostic(message, Array.prototype.slice.call(arguments, 2), pos, length, node);
     }
 
     public count(): number {
@@ -103,6 +113,14 @@ export class DiagnosticMessages {
         let diagnostic = this.diagnostics && this.diagnostics[diagnosticIndex];
         if (diagnostic) {
             const { detailed = true } = options;
+            const diagnosticMessages = detailed
+                ? this.detailedDiagnosticMessages || (this.detailedDiagnosticMessages = new Dict<string>())
+                : this.simpleDiagnosticMessages || (this.simpleDiagnosticMessages = new Dict<string>());
+
+            if (Dict.has(diagnosticMessages, diagnosticIndex)) {
+                return Dict.get(diagnosticMessages, diagnosticIndex);
+            }
+
             let diagnosticArguments = this.diagnosticsArguments && this.diagnosticsArguments[diagnosticIndex];
             let sourceFile = this.getDiagnosticSourceFile(diagnosticIndex);
             let text = "";
@@ -129,6 +147,8 @@ export class DiagnosticMessages {
             }
 
             text += message;
+
+            Dict.set(diagnosticMessages, diagnosticIndex, text);
             return text;
         }
 
@@ -141,8 +161,8 @@ export class DiagnosticMessages {
 
     public getDiagnosticInfos(options?: { formatMessage?: boolean; detailedMessage?: boolean; }): DiagnosticInfo[] {
         const result: DiagnosticInfo[] = [];
-        for (let i = 0; i < this.count(); i++) {
-            result.push(this.getDiagnosticInfo(i, options));
+        for (const diagnosticIndex of this.getSortedAndDeduplicatedDiagnosticIndices()) {
+            result.push(this.getDiagnosticInfo(diagnosticIndex, options));
         }
 
         return result;
@@ -150,9 +170,9 @@ export class DiagnosticMessages {
 
     public getDiagnosticInfosForSourceFile(sourceFile: SourceFile, options?: { formatMessage?: boolean; detailedMessage?: boolean; }): DiagnosticInfo[] {
         const result: DiagnosticInfo[] = [];
-        for (let i = 0; i < this.count(); i++) {
-            if (this.getDiagnosticSourceFile(i) === sourceFile) {
-                result.push(this.getDiagnosticInfo(i, options));
+        for (const diagnosticIndex of this.getSortedAndDeduplicatedDiagnosticIndices()) {
+            if (this.getDiagnosticSourceFile(diagnosticIndex) === sourceFile) {
+                result.push(this.getDiagnosticInfo(diagnosticIndex, options));
             }
         }
 
@@ -205,18 +225,81 @@ export class DiagnosticMessages {
     }
 
     public forEach(callback: (message: string, diagnosticIndex: number) => void): void {
-        if (this.diagnostics) {
+        if (!this.diagnostics) return;
+        for (const diagnosticIndex of this.getSortedAndDeduplicatedDiagnosticIndices()) {
+            callback(this.getMessage(diagnosticIndex, { detailed: true }), diagnosticIndex);
+        }
+    }
+
+    private getSortedAndDeduplicatedDiagnosticIndices() {
+        if (!this.sortedAndDeduplicatedDiagnosticIndices) {
+            let indices: number[] = [];
             for (let diagnosticIndex = 0, l = this.diagnostics.length; diagnosticIndex < l; diagnosticIndex++) {
-                callback(this.getMessage(diagnosticIndex, { detailed: true }), diagnosticIndex);
+                indices[diagnosticIndex] = diagnosticIndex;
+            }
+
+            indices = this.sortDiagnostics(indices);
+            indices = this.deduplicateDiagnostics(indices);
+            this.sortedAndDeduplicatedDiagnosticIndices = indices;
+        }
+
+        return this.sortedAndDeduplicatedDiagnosticIndices;
+    }
+
+    private sortDiagnostics(indices: number[]) {
+        return indices.sort((left, right) => this.compareDiagnostics(left, right));
+    }
+
+    private compareDiagnostics(diagnosticIndex1: number, diagnosticIndex2: number) {
+        return compareStrings(this.getDiagnosticSourceFile(diagnosticIndex1).filename, this.getDiagnosticSourceFile(diagnosticIndex2).filename)
+            || compare(this.getDiagnosticPos(diagnosticIndex1), this.getDiagnosticPos(diagnosticIndex2))
+            || compare(this.getDiagnosticLength(diagnosticIndex1), this.getDiagnosticLength(diagnosticIndex2))
+            || compare(this.getDiagnosticErrorLevel(diagnosticIndex1), this.getDiagnosticErrorLevel(diagnosticIndex2))
+            || compare(this.getDiagnosticCode(diagnosticIndex1), this.getDiagnosticCode(diagnosticIndex2))
+            || compareStrings(this.getMessage(diagnosticIndex1), this.getMessage(diagnosticIndex2), /*ignoreCase*/ true);
+    }
+
+    private deduplicateDiagnostics(indices: number[]) {
+        if (indices.length <= 1) {
+            return indices;
+        }
+
+        const numIndices = indices.length;
+        const firstDiagnosticIndex = indices[0];
+        const newIndices: number[] = [firstDiagnosticIndex];
+        let previousDiagnosticIndex = firstDiagnosticIndex;
+        for (let i = 1; i < indices.length; i++) {
+            const diagnosticIndex = indices[i];
+            if (this.compareDiagnostics(previousDiagnosticIndex, diagnosticIndex)) {
+                newIndices.push(diagnosticIndex);
+                previousDiagnosticIndex = diagnosticIndex;
             }
         }
+
+        return newIndices;
     }
 
     private getDiagnosticPos(diagnosticIndex: number): number {
         return this.diagnosticsPos && this.diagnosticsPos[diagnosticIndex] || -1;
     }
 
-    private reportDiagnostic(message: Diagnostic, args: any[], pos?: number, node?: Node): void {
+    private getDiagnosticLength(diagnosticIndex: number): number {
+        return this.diagnosticsLength && this.diagnosticsLength[diagnosticIndex] || 0;
+    }
+
+    private getDiagnosticCode(diagnosticIndex: number): number {
+        const diagnostic = this.getDiagnostic(diagnosticIndex);
+        return diagnostic && diagnostic.code || 0;
+    }
+
+    private getDiagnosticErrorLevel(diagnosticIndex: number): number {
+        const diagnostic = this.getDiagnostic(diagnosticIndex);
+        return diagnostic && diagnostic.warning ? 0 : 1;
+    }
+
+    private reportDiagnostic(message: Diagnostic, args: any[], pos?: number, length?: number, node?: Node): void {
+        this.sortedAndDeduplicatedDiagnosticIndices = undefined;
+
         if (!this.diagnostics) {
             this.diagnostics = [];
         }
@@ -242,6 +325,14 @@ export class DiagnosticMessages {
             }
 
             this.diagnosticsPos[diagnosticIndex] = pos;
+        }
+
+        if (length !== undefined) {
+            if (!this.diagnosticsLength) {
+                this.diagnosticsLength = [];
+            }
+
+            this.diagnosticsLength[diagnosticIndex] = length;
         }
 
         if (node !== undefined) {

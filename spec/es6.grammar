@@ -1,3 +1,5 @@
+@define noStrictParametricProductions true
+
 // A.1 - Lexical Grammar
 
 SourceCharacter ::

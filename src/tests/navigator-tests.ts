@@ -8,18 +8,39 @@ import { SyntaxKind } from "../lib/tokens";
 import * as assert from "assert";
 
 describe("Navigator", () => {
-    let es6GrammarText: string;
-    function getES6GrammarText() {
-        if (!es6GrammarText) {
-            es6GrammarText = readFileSync(resolve(__dirname, "../spec/es6.grammar"), "utf8");
-        }
-        return es6GrammarText;
-    }
+    const es6GrammarText: string = `
+// A.1 - Lexical Grammar
+
+SourceCharacter ::
+	> any Unicode code point
+
+InputElementDiv ::
+	WhiteSpace
+	LineTerminator
+	Comment
+	CommonToken
+	DivPunctuator
+	RightBracePunctuator
+
+InputElementRegExp ::
+	WhiteSpace
+	LineTerminator
+	Comment
+	CommonToken
+	RightBracePunctuator
+	RegularExpressionLiteral
+
+// ...
+
+ExportSpecifier :
+	IdentifierName
+	IdentifierName \`as\` IdentifierName
+`.trim();
 
     function getNavigator() {
         const diagnostics = new DiagnosticMessages();
         const parser = new Parser(diagnostics);
-        const sourceFile = parser.parseSourceFile("es6.grammar", getES6GrammarText());
+        const sourceFile = parser.parseSourceFile("es6.grammar", es6GrammarText);
         const navigator = new NodeNavigator(sourceFile);
         return { sourceFile, navigator };
     }
@@ -144,7 +165,6 @@ describe("Navigator", () => {
 
     it("moveToPosition", () => {
         const { sourceFile, navigator } = getNavigator();
-        debugger;
         const moved = navigator.moveToPosition({ line: 14, character: 9 });
         assert.strictEqual(moved, true);
         assert.strictEqual(navigator.getKind(), SyntaxKind.Identifier);

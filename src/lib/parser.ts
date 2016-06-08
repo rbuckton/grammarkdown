@@ -50,6 +50,8 @@ import {
     RightHandSideList,
     Production,
     Import,
+    Define,
+    MetaElement,
     SourceElement
 } from "./nodes";
 import { NodeNavigator } from "./navigator";
@@ -1191,12 +1193,32 @@ export class Parser {
         return undefined;
     }
 
-    private parseImport(): Import {
-        let fullStart = this.scanner.getTokenPos();
-        let atToken = this.parseToken(SyntaxKind.AtToken);
+    private parseMetaElement(): MetaElement {
+        const fullStart = this.scanner.getTokenPos();
+        const atToken = this.parseToken(SyntaxKind.AtToken);
+        switch (this.token) {
+            case SyntaxKind.ImportKeyword:
+                return this.parseImport(fullStart, atToken);
+            case SyntaxKind.DefineKeyword:
+                return this.parseDefine(fullStart, atToken);
+            default:
+                this.diagnostics.report(this.scanner.getTokenPos(), Diagnostics._0_expected, formatList([SyntaxKind.ImportKeyword, SyntaxKind.DefineKeyword]));
+                return;
+        }
+    }
+
+    private parseImport(fullStart: number, atToken: Node): Import {
         let importKeyword = this.parseToken(SyntaxKind.ImportKeyword);
         let path = this.parseStringLiteral();
         let node = new Import(atToken, importKeyword, path);
+        return this.finishNode(node, fullStart);
+    }
+
+    private parseDefine(fullStart: number, atToken: Node): Define {
+        let defineKeyword = this.parseToken(SyntaxKind.DefineKeyword);
+        let key = this.parseIdentifier();
+        let valueToken = this.parseAnyToken(isBooleanLiteralToken);
+        let node = new Define(atToken, defineKeyword, key, valueToken);
         return this.finishNode(node, fullStart);
     }
 
@@ -1224,7 +1246,7 @@ export class Parser {
                 return this.parseProduction();
 
             case SyntaxKind.AtToken:
-                return this.parseImport();
+                return this.parseMetaElement();
 
             default:
                 this.diagnostics.report(this.scanner.getTokenPos(), Diagnostics.Unexpected_token_0_, tokenToString(this.token));
@@ -1342,4 +1364,9 @@ function isLeadingArgumentToken(token: SyntaxKind) {
     return token === SyntaxKind.QuestionToken
         || token === SyntaxKind.PlusToken
         || token === SyntaxKind.TildeToken;
+}
+
+function isBooleanLiteralToken(token: SyntaxKind) {
+    return token === SyntaxKind.TrueKeyword
+        || token === SyntaxKind.FalseKeyword;
 }

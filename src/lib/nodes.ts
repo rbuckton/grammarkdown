@@ -467,16 +467,36 @@ export class Production extends SourceElement {
     }
 }
 
-export class Import extends SourceElement {
+export abstract class MetaElement extends SourceElement {
     @edge atToken: Node;
+
+    constructor(kind: SyntaxKind, atToken: Node) {
+        super(kind);
+        this.atToken = atToken;
+    }
+}
+
+export class Import extends MetaElement {
     @edge importKeyword: Node;
     @edge path: StringLiteral;
 
     constructor(atToken: Node, importKeyword: Node, path: StringLiteral) {
-        super(SyntaxKind.Import);
-        this.atToken = atToken;
+        super(SyntaxKind.Import, atToken);
         this.importKeyword = importKeyword;
         this.path = path;
+    }
+}
+
+export class Define extends MetaElement {
+    @edge defineKeyword: Node;
+    @edge key: Identifier;
+    @edge valueToken: Node;
+
+    constructor(atToken: Node, defineKeyword: Node, key: Identifier, valueToken: Node) {
+        super(SyntaxKind.Define, atToken);
+        this.defineKeyword = defineKeyword;
+        this.key = key;
+        this.valueToken = valueToken;
     }
 }
 

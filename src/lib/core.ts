@@ -299,6 +299,21 @@ export function binarySearch(array: number[], value: number): number {
     return ~low;
 }
 
+export function compareStrings(x: string, y: string, ignoreCase?: boolean) {
+    return ignoreCase
+        ? compare(x && x.toLocaleLowerCase(), y && y.toLocaleLowerCase())
+        : compare(x, y);
+}
+
+export function compare(x: any, y: any) {
+    if (x === y) return 0;
+    if (x === undefined || x === null) return -1;
+    if (y === undefined || y === null) return +1;
+    if (x < y) return -1;
+    if (x > y) return +1;
+    return 0;
+}
+
 export interface Position {
     line: number;
     character: number;
