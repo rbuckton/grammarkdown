@@ -13,6 +13,6 @@ F[A] :
     E[A]
     E[A, B]
     E[?B]
-    E[+A]
-    E[~A]
-    E[?A]
+    <ins class="block">E[+A]</ins>
+    <ins class="block">E[~A]</ins>
+    <ins class="block">E[?A]</ins>
