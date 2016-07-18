@@ -210,10 +210,6 @@ export class Grammar {
     }
 
     private parseSourceFile(file: string): SourceFile {
-        if (!this.parser) {
-            this.parser = new Parser(this.diagnostics);
-        }
-
         const sourceText = this.readFile(file);
         if (sourceText !== undefined) {
             if (this.oldGrammar) {

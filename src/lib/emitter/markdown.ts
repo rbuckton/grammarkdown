@@ -156,6 +156,7 @@ export class MarkdownEmitter extends Emitter {
         const linkId = this.resolver.getRightHandSideLinkId(node, /*includePrefix*/ true);
         this.emitLinkAnchor(linkId);
         super.emitRightHandSide(node);
+        this.emitTrailingHtmlTriviaOfNode(node);
         this.writer.write(`  `);
     }
 

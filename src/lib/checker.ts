@@ -1142,7 +1142,7 @@ export class Checker {
     }
 
     private checkGrammarIdentifier(node: Identifier): boolean {
-        if (typeof node.text === "undefined" && node.text.length <= 0) {
+        if (typeof node.text === "undefined" || node.text.length <= 0) {
             return this.reportGrammarErrorForNode(node, Diagnostics._0_expected, tokenToString(SyntaxKind.Identifier));
         }
 
@@ -1180,6 +1180,10 @@ export class Resolver {
 
     constructor(bindings: BindingTable) {
         this.bindings = bindings;
+    }
+
+    public getParent(node: Node): Node {
+        return this.bindings.getParent(node);
     }
 
     public createNavigator(node: Node): NodeNavigator {

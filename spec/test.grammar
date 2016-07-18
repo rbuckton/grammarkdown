@@ -16,3 +16,7 @@ F[A] :
     E[+A]
     E[~A]
     E[?A]
+
+Z :
+    <del>A</del>
+    <ins>B</ins>

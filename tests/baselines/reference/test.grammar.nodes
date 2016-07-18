@@ -161,3 +161,16 @@
                 (18,8)SyntaxKind[Identifier](text = "A")
               (18,9)SyntaxKind[CloseBracketToken]
       (19,1)SyntaxKind[DedentToken]
+  (20,1)SyntaxKind[Production]
+    (20,1)SyntaxKind[Identifier](text = "Z")
+    (21,1)SyntaxKind[RightHandSideList]
+      (21,1)SyntaxKind[IndentToken]
+      (21,10)SyntaxKind[RightHandSide]
+        (21,10)SyntaxKind[SymbolSpan]
+          (21,10)SyntaxKind[Nonterminal]
+            (21,10)SyntaxKind[Identifier](text = "A")
+      (22,10)SyntaxKind[RightHandSide]
+        (22,10)SyntaxKind[SymbolSpan]
+          (22,10)SyntaxKind[Nonterminal]
+            (22,10)SyntaxKind[Identifier](text = "B")
+      (23,1)SyntaxKind[DedentToken]

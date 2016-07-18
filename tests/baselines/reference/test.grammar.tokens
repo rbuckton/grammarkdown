@@ -108,4 +108,14 @@ SyntaxKind[Identifier](18,8): A
 SyntaxKind[CloseBracketToken](18,9): ]
 SyntaxKind[LineTerminatorToken](19,1): «line terminator»
 SyntaxKind[DedentToken](19,1): «dedent»
-SyntaxKind[EndOfFileToken](19,1): «EndOfFileToken»
+SyntaxKind[LineTerminatorToken](20,1): «line terminator»
+SyntaxKind[Identifier](20,1): Z
+SyntaxKind[ColonToken](20,3): :
+SyntaxKind[LineTerminatorToken](21,1): «line terminator»
+SyntaxKind[IndentToken](21,1): «indent»
+SyntaxKind[Identifier](21,10): A
+SyntaxKind[LineTerminatorToken](22,1): «line terminator»
+SyntaxKind[Identifier](22,10): B
+SyntaxKind[LineTerminatorToken](23,1): «line terminator»
+SyntaxKind[DedentToken](23,1): «dedent»
+SyntaxKind[EndOfFileToken](23,1): «EndOfFileToken»

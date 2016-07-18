@@ -15,6 +15,7 @@
  */
 
 import { EOL } from 'os';
+import { TextRange } from "./core";
 import { CharacterCodes, SyntaxKind, stringToToken } from "./tokens";
 import { Diagnostics, Diagnostic, DiagnosticMessages, NullDiagnosticMessages } from "./diagnostics";
 
@@ -195,11 +196,16 @@ export class Scanner {
                     return this.pos++, this.tokenValue = this.scanString(ch, this.token = SyntaxKind.Identifier), this.token;
 
                 case CharacterCodes.LessThan:
-                    if (this.text.charCodeAt(this.pos + 1) === CharacterCodes.Exclamation) {
+                    ch = this.text.charCodeAt(this.pos + 1);
+                    if (ch === CharacterCodes.Exclamation) {
                         return this.pos += 2, this.token = SyntaxKind.LessThanExclamationToken;
                     }
-                    else if (this.text.charCodeAt(this.pos + 1) === CharacterCodes.Minus) {
+                    else if (ch === CharacterCodes.Minus) {
                         return this.pos += 2, this.token = SyntaxKind.LessThanMinusToken;
+                    }
+                    else if ((ch >= CharacterCodes.LowerA && ch <= CharacterCodes.LowerZ) || ch === CharacterCodes.Slash) {
+                        this.scanHtmlTrivia();
+                        break;
                     }
                     else {
                         return this.pos++, this.tokenValue = this.scanString(CharacterCodes.GreaterThan, this.token = SyntaxKind.UnicodeCharacterLiteral), this.token;
@@ -540,6 +546,16 @@ export class Scanner {
         }, /*isLookahead*/ false);
     }
 
+    private scanHtmlTrivia() {
+        let start = this.pos;
+        while (this.pos < this.len) {
+            let ch = this.text.charCodeAt(this.pos++);
+            if (ch === CharacterCodes.GreaterThan) {
+                break;
+            }
+        }
+    }
+
     private scanString(quote: number, kind: SyntaxKind): string {
         let multiLine = false;
         let consumeQuote = true;
@@ -811,4 +827,85 @@ function isHexDigit(ch: number): boolean {
 function isProseFragment(token: SyntaxKind): boolean {
     return token >= SyntaxKind.FirstProseFragment
         && token <= SyntaxKind.LastProseFragment;
+}
+
+export function scanHtmlTrivia(text: string, pos: number, end: number) {
+    let trivia: TextRange[];
+    scan: while (pos < end) {
+        let start = pos;
+        const ch = text.charCodeAt(pos);
+        switch (ch) {
+            case CharacterCodes.CarriageReturn:
+            case CharacterCodes.LineFeed:
+            case CharacterCodes.Space:
+            case CharacterCodes.Tab:
+            case CharacterCodes.VerticalTab:
+            case CharacterCodes.FormFeed:
+                pos++;
+                continue;
+
+            case CharacterCodes.Slash:
+                if (pos + 1 < end) {
+                    switch (text.charCodeAt(pos + 1)) {
+                        case CharacterCodes.Slash:
+                            pos = findSingleLineCommentTriviaEnd(text, pos + 2, end);
+                            continue;
+
+                        case CharacterCodes.Asterisk:
+                            pos = findMultiLineCommentTriviaEnd(text, pos + 2, end);
+                            continue;
+                    }
+                }
+                break scan;
+
+            case CharacterCodes.LessThan:
+                if (pos + 1 < end) {
+                    const ch = text.charCodeAt(pos + 1);
+                    if (ch === CharacterCodes.Slash || (ch >= CharacterCodes.LowerA && ch <= CharacterCodes.LowerZ)) {
+                        const triviaEnd = findHtmlTriviaEnd(text, pos + 1, end);
+                        if (!trivia) trivia = [];
+                        trivia.push({ pos, end: triviaEnd });
+                        pos = triviaEnd + 1;
+                    }
+                }
+                break scan;
+
+            default:
+                break scan;
+        }
+    }
+
+    return trivia;
+}
+
+function findMultiLineCommentTriviaEnd(text: string, pos: number, end: number) {
+    while (pos < end) {
+        const ch = text.charCodeAt(pos);
+        if (ch === CharacterCodes.Asterisk && pos + 1 < end && text.charCodeAt(pos + 1) === CharacterCodes.Slash) {
+            return pos + 2;
+        }
+        pos++;
+    }
+    return end;
+}
+
+function findSingleLineCommentTriviaEnd(text: string, pos: number, end: number) {
+    while (pos < end) {
+        const ch = text.charCodeAt(pos);
+        if (ch === CharacterCodes.CarriageReturn || ch === CharacterCodes.LineFeed) {
+            return pos;
+        }
+        pos++;
+    }
+    return end;
+}
+
+function findHtmlTriviaEnd(text: string, pos: number, end: number) {
+    while (pos < end) {
+        const ch = text.charCodeAt(pos++);
+        if (ch === CharacterCodes.GreaterThan) {
+            return pos;
+        }
+    }
+    return end;
 }

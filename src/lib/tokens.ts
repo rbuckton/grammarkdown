@@ -16,7 +16,7 @@
 
 import { Dict } from "./core";
 
- export const enum CharacterCodes {
+export const enum CharacterCodes {
     NullCharacter = 0,
     MaxAsciiCharacter = 0x7F,
 

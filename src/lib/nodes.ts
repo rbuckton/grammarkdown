@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { Dict, Range, Position } from "./core";
+import { Dict, Range, Position, TextRange } from "./core";
 import { LineMap } from "./diagnostics";
 import { SyntaxKind } from "./tokens";
 import { SymbolTable } from "./symbols";
@@ -30,11 +30,6 @@ export interface TextContent {
 
 export interface Optional {
     optionalToken: Node;
-}
-
-export interface TextRange {
-    pos: number;
-    end: number;
 }
 
 export interface NodeEdge {

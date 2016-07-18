@@ -5,6 +5,8 @@ import { CompilerOptions } from "../options";
 import { Checker, Resolver } from "../checker";
 import { StringWriter } from "../stringwriter";
 import { SyntaxKind, tokenToString } from "../tokens";
+import { TextRange } from "../core";
+import { scanHtmlTrivia } from "../scanner";
 import {
     Node,
     SourceFile,
@@ -49,6 +51,8 @@ export class Emitter {
     protected extension: string;
 
     private diagnostics: DiagnosticMessages;
+    private sourceFile: SourceFile;
+    private triviaPos: number;
 
     constructor(options: CompilerOptions, resolver: Resolver, diagnostics: DiagnosticMessages) {
         this.options = options;
@@ -58,8 +62,13 @@ export class Emitter {
 
     public emit(node: SourceFile, writeFile?: (file: string, text: string) => void): void {
         const saveWriter = this.writer;
+        const saveSourceFile = this.sourceFile;
+        const saveTriviaPos = this.triviaPos;
         try {
             this.writer = this.createWriter();
+            this.sourceFile = node;
+            this.triviaPos = 0;
+
             this.emitNode(node);
 
             const file = this.getOutputFilename(node);
@@ -68,6 +77,8 @@ export class Emitter {
         }
         finally {
             this.writer = saveWriter;
+            this.sourceFile = saveSourceFile;
+            this.triviaPos = saveTriviaPos;
         }
     }
 
@@ -100,6 +111,8 @@ export class Emitter {
         if (!node) {
             return;
         }
+
+        this.emitLeadingHtmlTriviaOfNode(node);
 
         switch (node.kind) {
             case SyntaxKind.SourceFile: this.emitSourceFile(<SourceFile>node); break;
@@ -136,6 +149,8 @@ export class Emitter {
             case SyntaxKind.ProseMiddle: this.emitProseFragmentLiteral(<ProseFragmentLiteral>node); break;
             case SyntaxKind.ProseTail: this.emitProseFragmentLiteral(<ProseFragmentLiteral>node); break;
         }
+
+        this.emitTrailingHtmlTriviaOfNode(node);
     }
 
     protected emitSourceFile(node: SourceFile) {
@@ -280,6 +295,51 @@ export class Emitter {
                 case '"': return "&quot;";
             }
         });
+    }
+
+    protected emitLeadingHtmlTriviaOfNode(node: Node) {
+        const parent = this.resolver.getParent(node);
+        if (parent && parent.pos === node.pos) {
+            return;
+        }
+
+        if (this.triviaPos >= node.pos) {
+            return;
+        }
+
+        const leadingHtmlTrivia = scanHtmlTrivia(this.sourceFile.text, this.triviaPos, node.pos);
+        if (leadingHtmlTrivia) {
+            for (const range of leadingHtmlTrivia) {
+                this.emitHtmlTrivia(range);
+            }
+        }
+
+        this.triviaPos = node.pos;
+    }
+
+    protected emitTrailingHtmlTriviaOfNode(node: Node) {
+        const parent = this.resolver.getParent(node);
+        if (parent && parent.end === node.end) {
+            return;
+        }
+
+        if (this.triviaPos >= node.end) {
+            return;
+        }
+
+        const trailingHtmlTrivia = scanHtmlTrivia(this.sourceFile.text, node.end, this.sourceFile.text.length);
+
+        this.triviaPos = node.end;
+        if (trailingHtmlTrivia) {
+            for (const range of trailingHtmlTrivia) {
+                this.emitHtmlTrivia(range);
+                this.triviaPos = range.end;
+            }
+        }
+    }
+
+    protected emitHtmlTrivia(range: TextRange) {
+        this.writer.write(this.sourceFile.text.substring(range.pos, range.end));
     }
 }
 

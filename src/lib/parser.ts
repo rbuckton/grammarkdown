@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { Range, Position } from "./core";
+import { Range, Position, TextRange } from "./core";
 import { Diagnostics, DiagnosticMessages, NullDiagnosticMessages, LineMap, formatList } from "./diagnostics";
 import { SyntaxKind, tokenToString } from "./tokens";
 import { Scanner } from "./scanner";

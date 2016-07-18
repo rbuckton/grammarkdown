@@ -314,6 +314,11 @@ export function compare(x: any, y: any) {
     return 0;
 }
 
+export interface TextRange {
+    pos: number;
+    end: number;
+}
+
 export interface Position {
     line: number;
     character: number;

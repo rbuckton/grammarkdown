@@ -4,6 +4,7 @@
         "module": "commonjs",
         "sourceMap": true,
         "experimentalDecorators": true,
-        "emitDecoratorMetadata": true
+        "emitDecoratorMetadata": true,
+        "types": ["node", "mocha"]
     }
 }

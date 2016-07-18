@@ -36,15 +36,22 @@
     "update-pages": "gulp publish"
   },
   "devDependencies": {
+    "@types/chai": "^3.4.28",
+    "@types/mocha": "^2.2.27",
+    "@types/node": "^4.0.29",
+    "@types/source-map-support": "^0.2.27",
     "chai": "^2.3.0",
     "del": "^2.0.2",
+    "ecmarkup": "^3.2.6",
     "gulp": "^3.9.0",
+    "gulp-emu": "^1.0.0",
     "gulp-mocha": "^2.1.0",
     "gulp-sourcemaps": "^1.6.0",
+    "gulp-tsb": "^1.10.4",
     "gulp-typescript": "^2.9.0",
     "merge2": "^0.3.6",
     "mocha": "^2.2.5",
     "source-map-support": "^0.3.1",
-    "typescript": "^1.8.10"
+    "typescript": "^2.1.0-dev.20160715"
   }
 }

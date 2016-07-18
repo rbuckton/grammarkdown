@@ -74,6 +74,7 @@ export class EcmarkupEmitter extends Emitter {
         this.writer.dedent();
         this.writer.writeln();
         this.writer.write(`</emu-production>`);
+        this.emitTrailingHtmlTriviaOfNode(node);
         this.writer.writeln();
     }
 
@@ -104,12 +105,13 @@ export class EcmarkupEmitter extends Emitter {
             this.emitTextContent(node.terminals[i]);
         }
         this.writer.write(`</emu-rhs>`);
+        this.emitTrailingHtmlTriviaOfNode(node);
         this.writer.writeln();
     }
 
     protected emitRightHandSideList(node: RightHandSideList) {
         for (const rhs of node.elements) {
-            this.emitRightHandSide(rhs);
+            this.emitNode(rhs);
         }
     }
 
@@ -144,6 +146,7 @@ export class EcmarkupEmitter extends Emitter {
         }
 
         this.writer.write(`</emu-rhs>`);
+        this.emitTrailingHtmlTriviaOfNode(node);
         this.writer.writeln();
     }
 
