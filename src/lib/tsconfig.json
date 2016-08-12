@@ -4,6 +4,7 @@
         "module": "commonjs",
         "sourceMap": true,
         "declaration": true,
+        "outDir": "../../out/lib",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "types": ["node"]

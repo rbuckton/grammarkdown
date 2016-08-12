@@ -5,6 +5,7 @@
         "sourceMap": true,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "types": ["node", "mocha"]
+        "types": ["node", "mocha"],
+        "rootDirs": ["../out", "../src"]
     }
 }

@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-import { Dict } from "./core";
+import { Dictionary } from "./core";
 
 export const enum CharacterCodes {
     NullCharacter = 0,
@@ -257,7 +257,7 @@ export enum SyntaxKind {
     LastPunctuation = LessThanMinusToken,
 }
 
-const textToToken = new Dict({
+const textToToken = new Dictionary({
     "but": SyntaxKind.ButKeyword,
     "define": SyntaxKind.DefineKeyword,
     "empty": SyntaxKind.EmptyKeyword,
@@ -297,10 +297,10 @@ const textToToken = new Dict({
     "<-": SyntaxKind.LessThanMinusToken,
 });
 
-const tokenToText = Dict.invert(textToToken);
+const tokenToText = Dictionary.invert(textToToken);
 
 export function stringToToken(text: string) {
-    return Dict.get(textToToken, text);
+    return Dictionary.get(textToToken, text);
 }
 
 export function tokenToString(kind: SyntaxKind, quoted?: boolean) {

@@ -1,4 +1,4 @@
-import { Dict } from "./core";
+import { Dictionary } from "./core";
 
 let nextSymbolId = 0;
 
@@ -22,13 +22,13 @@ export class Symbol {
 }
 
 export class SymbolTable {
-    private nameMap: Dict<Symbol>[];
+    private nameMap: Dictionary<Symbol>[];
 
     public resolveSymbol(name: string, kind: SymbolKind): Symbol {
         if (name) {
             const symbols = this.getSymbols(kind, /*create*/ false);
             if (symbols) {
-                return Dict.get(symbols, name);
+                return Dictionary.get(symbols, name);
             }
         }
 
@@ -39,8 +39,8 @@ export class SymbolTable {
         let symbol: Symbol;
         if (name) {
             const symbols = this.getSymbols(kind, /*create*/ true);
-            if (Dict.has(symbols, name)) {
-                symbol = Dict.get(symbols, name);
+            if (Dictionary.has(symbols, name)) {
+                symbol = Dictionary.get(symbols, name);
             }
             else {
                 symbol = new Symbol(kind, name);
@@ -55,7 +55,7 @@ export class SymbolTable {
         return symbol;
     }
 
-    private getSymbols(kind: SymbolKind, create: boolean): Dict<Symbol> {
+    private getSymbols(kind: SymbolKind, create: boolean): Dictionary<Symbol> {
         if (!this.nameMap) {
             if (!create) {
                 return;
@@ -64,7 +64,7 @@ export class SymbolTable {
         }
 
         if (create && !(kind in this.nameMap)) {
-            this.nameMap[kind] = new Dict<Symbol>();
+            this.nameMap[kind] = new Dictionary<Symbol>();
         }
 
         return this.nameMap[kind];

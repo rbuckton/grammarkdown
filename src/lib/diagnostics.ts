@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { binarySearch, compareStrings, compare, Range, Position, Dict } from "./core";
+import { binarySearch, compareStrings, compare, Range, Position, Dictionary } from "./core";
 import { CharacterCodes, SyntaxKind, tokenToString } from "./tokens";
 import { Node, SourceFile } from "./nodes";
 
@@ -63,8 +63,8 @@ export class DiagnosticMessages {
     private diagnosticsLength: number[];
     private diagnosticsNode: Node[];
     private diagnosticsArguments: any[][];
-    private detailedDiagnosticMessages: Dict<string>;
-    private simpleDiagnosticMessages: Dict<string>;
+    private detailedDiagnosticMessages: Dictionary<string>;
+    private simpleDiagnosticMessages: Dictionary<string>;
     private sourceFiles: SourceFile[];
     private sourceFilesDiagnosticOffset: number[];
     private nextDiagnosticIndex = 0;
@@ -114,11 +114,11 @@ export class DiagnosticMessages {
         if (diagnostic) {
             const { detailed = true } = options;
             const diagnosticMessages = detailed
-                ? this.detailedDiagnosticMessages || (this.detailedDiagnosticMessages = new Dict<string>())
-                : this.simpleDiagnosticMessages || (this.simpleDiagnosticMessages = new Dict<string>());
+                ? this.detailedDiagnosticMessages || (this.detailedDiagnosticMessages = new Dictionary<string>())
+                : this.simpleDiagnosticMessages || (this.simpleDiagnosticMessages = new Dictionary<string>());
 
-            if (Dict.has(diagnosticMessages, diagnosticIndex)) {
-                return Dict.get(diagnosticMessages, diagnosticIndex);
+            if (Dictionary.has(diagnosticMessages, diagnosticIndex)) {
+                return Dictionary.get(diagnosticMessages, diagnosticIndex);
             }
 
             const diagnosticArguments = this.diagnosticsArguments && this.diagnosticsArguments[diagnosticIndex];
@@ -148,7 +148,7 @@ export class DiagnosticMessages {
 
             text += message;
 
-            Dict.set(diagnosticMessages, diagnosticIndex, text);
+            Dictionary.set(diagnosticMessages, diagnosticIndex, text);
             return text;
         }
 

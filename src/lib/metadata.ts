@@ -1,21 +1,21 @@
-import { Dict } from "./core";
+import { Dictionary } from "./core";
 
 const metadataProperty = "_metadata@" + Math.random().toString(16);
 
 export function defineMetadata(target: any, key: string, value: any) {
     const view = getObjectMetadataView(target, /*create*/ true);
-    Dict.set(view, key, value);
+    Dictionary.set(view, key, value);
 }
 
 export function definePropertyMetadata(target: any, propertyKey: string, key: string, value: any) {
     const view = getPropertyMetadataView(target, propertyKey, /*create*/ true);
-    Dict.set(view, key, value);
+    Dictionary.set(view, key, value);
 }
 
 export function hasMetadata(target: any, key: string, options: { inherited?: boolean; } = {}) {
     for (let object = target; object; object = Object.getPrototypeOf(object)) {
         const view = getObjectMetadataView(target, /*create*/ false);
-        if (view && Dict.has(view, key)) {
+        if (view && Dictionary.has(view, key)) {
             return true;
         }
 
@@ -30,8 +30,8 @@ export function hasMetadata(target: any, key: string, options: { inherited?: boo
 export function getMetadata(target: any, key: string, options: { inherited?: boolean; } = {}) {
     for (let object = target; object; object = Object.getPrototypeOf(object)) {
         const view = getObjectMetadataView(target, /*create*/ false);
-        if (view && Dict.has(view, key)) {
-            return Dict.get(view, key);
+        if (view && Dictionary.has(view, key)) {
+            return Dictionary.get(view, key);
         }
 
         if (!options.inherited) {
@@ -45,7 +45,7 @@ export function getMetadata(target: any, key: string, options: { inherited?: boo
 export function hasPropertyMetadata(target: any, propertyKey: string, key: string, options: { inherited?: boolean; } = {}) {
     for (let object = target; object; object = Object.getPrototypeOf(object)) {
         const view = getPropertyMetadataView(target, propertyKey, /*create*/ false);
-        if (view && Dict.has(view, key)) {
+        if (view && Dictionary.has(view, key)) {
             return true;
         }
 
@@ -60,8 +60,8 @@ export function hasPropertyMetadata(target: any, propertyKey: string, key: strin
 export function getPropertyMetadata(target: any, propertyKey: string, key: string, options: { inherited?: boolean; } = {}) {
     for (let object = target; object; object = Object.getPrototypeOf(object)) {
         const view = getPropertyMetadataView(target, propertyKey, /*create*/ false);
-        if (view && Dict.has(view, key)) {
-            return Dict.get(view, key);
+        if (view && Dictionary.has(view, key)) {
+            return Dictionary.get(view, key);
         }
 
         if (!options.inherited) {
@@ -84,8 +84,8 @@ export function metadata(key: string, value: any) {
 }
 
 interface MetadataView {
-    properties: Dict<Dict<any>>;
-    metadata: Dict<any>;
+    properties: Dictionary<Dictionary<any>>;
+    metadata: Dictionary<any>;
 }
 
 function getMetadataView(target: any, create: boolean): MetadataView {
@@ -102,28 +102,28 @@ function getMetadataView(target: any, create: boolean): MetadataView {
     return target[metadataProperty];
 }
 
-function getObjectMetadataView(target: any, create: boolean): Dict<any> {
+function getObjectMetadataView(target: any, create: boolean): Dictionary<any> {
     const view = getMetadataView(target, create);
     if (view) {
         if (!view.metadata && create) {
-            view.metadata = new Dict<any>();
+            view.metadata = new Dictionary<any>();
         }
         return view.metadata;
     }
     return undefined;
 }
 
-function getPropertyMetadataView(target: any, name: string, create: boolean): Dict<any> {
+function getPropertyMetadataView(target: any, name: string, create: boolean): Dictionary<any> {
     const view = getMetadataView(target, create);
     if (view) {
         if (!view.properties && create) {
-            view.properties = new Dict<Dict<any>>();
+            view.properties = new Dictionary<Dictionary<any>>();
         }
         if (view.properties) {
-            if (!Dict.has(view.properties, name) && create) {
-                Dict.set(view.properties, name, new Dict<any>());
+            if (!Dictionary.has(view.properties, name) && create) {
+                Dictionary.set(view.properties, name, new Dictionary<any>());
             }
-            return Dict.get(view.properties, name);
+            return Dictionary.get(view.properties, name);
         }
     }
 

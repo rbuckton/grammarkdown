@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { Dict, Range, Position, TextRange } from "./core";
+import { Dictionary, Range, Position, TextRange } from "./core";
 import { LineMap } from "./diagnostics";
 import { SyntaxKind } from "./tokens";
 import { SymbolTable } from "./symbols";
@@ -682,7 +682,7 @@ function addEdge(target: Node, edge: NodeEdge) {
 
 export function edge(target: Node, name: string) {
     const designType = getPropertyMetadata(target, name, "design:type");
-    const read = node => Dict.get<any>(node, name);
+    const read = node => Dictionary.get<any>(node, name);
     const edge = designType === Array
         ? NodeEdge.createArray(name, read)
         : NodeEdge.create(name, read);

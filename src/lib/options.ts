@@ -1,5 +1,5 @@
 import { readFileSync } from "fs";
-import { Dict } from "./core";
+import { Dictionary } from "./core";
 import { CharacterCodes } from "./tokens";
 
 export enum EmitFormat {
@@ -42,8 +42,8 @@ export interface KnownOption {
 }
 
 interface KnownOptionMaps {
-    longNames: Dict<KnownOption>;
-    shortNames: Dict<KnownOption>;
+    longNames: Dictionary<KnownOption>;
+    shortNames: Dictionary<KnownOption>;
 }
 
 export interface RawArgument {
@@ -170,8 +170,8 @@ export function usage(options: KnownOptions, margin: number = 0, printHeader?: (
     const knownOptions: KnownOption[] = [];
     let hasShortNames = false;
     for (const key in options) {
-        if (Dict.has(options, key)) {
-            const option = importKnownOption(key, Dict.get(options, key));
+        if (Dictionary.has(options, key)) {
+            const option = importKnownOption(key, Dictionary.get(options, key));
             if (option.hidden) {
                 continue;
             }
@@ -244,8 +244,8 @@ function compareKnownOptions(x: KnownOption, y: KnownOption) {
     return xName.localeCompare(yName);
 }
 
-function importTypeMap(dict: Dict<any>) {
-    const copy = Dict.turn(dict, (memo, value, key) => Dict.set(memo, String(key), value), new Dict<any>());
+function importTypeMap(dict: Dictionary<any>) {
+    const copy = Dictionary.turn(dict, (memo, value, key) => Dictionary.set(memo, String(key), value), new Dictionary<any>());
     Object.freeze(copy);
     return copy;
 }
@@ -256,7 +256,7 @@ function importKnownOption(key: string, option: KnownOption) {
     if (typeof option.shortName === "string" && option.shortName.length > 0) copy.shortName = option.shortName.substr(0, 1);
     if (typeof option.param === "string") copy.param = option.param;
     if (typeof option.type === "string") copy.type = option.type;
-    if (typeof option.type === "object") copy.type = importTypeMap(<Dict<any>>option.type);
+    if (typeof option.type === "object") copy.type = importTypeMap(<Dictionary<any>>option.type);
     if (typeof option.many === "boolean") copy.many = option.many;
     if (typeof option.description === "string") copy.description = option.description;
     if (typeof option.error === "string") copy.error = option.error;
@@ -270,15 +270,15 @@ function importKnownOption(key: string, option: KnownOption) {
 }
 
 function createKnownOptionMaps(options: KnownOptions): KnownOptionMaps {
-    const longNames = new Dict<KnownOption>();
-    const shortNames = new Dict<KnownOption>();
+    const longNames = new Dictionary<KnownOption>();
+    const shortNames = new Dictionary<KnownOption>();
     for (const key in options) {
-        const rawOption = Dict.get(options, key);
+        const rawOption = Dictionary.get(options, key);
         if (rawOption) {
             const knownOption = importKnownOption(key, rawOption);
-            Dict.set(longNames, knownOption.longName.toLowerCase(), knownOption);
+            Dictionary.set(longNames, knownOption.longName.toLowerCase(), knownOption);
             if (knownOption.shortName) {
-                Dict.set(shortNames, knownOption.shortName, knownOption);
+                Dictionary.set(shortNames, knownOption.shortName, knownOption);
             }
         }
     }
@@ -478,15 +478,15 @@ interface KnownOptionMatchResult {
 
 function matchKnownOption(known: KnownOptionMaps, key: string, shortName: boolean): KnownOptionMatchResult {
     if (shortName) {
-        const option = Dict.get(known.shortNames, key);
+        const option = Dictionary.get(known.shortNames, key);
         if (option) {
             return { cardinality: "one", option };
         }
     }
     else {
         const keyLower = key.toLowerCase();
-        if (Dict.has(known.longNames, keyLower)) {
-            const option = Dict.get(known.longNames, keyLower);
+        if (Dictionary.has(known.longNames, keyLower)) {
+            const option = Dictionary.get(known.longNames, keyLower);
             if (option) {
                 return { cardinality: "one", option };
             }
@@ -496,14 +496,14 @@ function matchKnownOption(known: KnownOptionMaps, key: string, shortName: boolea
             let candidates: KnownOption[];
             let knownKey: string;
             for (knownKey in known.longNames) {
-                if (Dict.has(known.longNames, knownKey) &&
+                if (Dictionary.has(known.longNames, knownKey) &&
                     knownKey.length > keyLen &&
                     knownKey.substr(0, keyLen) === keyLower) {
                     if (!candidates) {
                         candidates = [];
                     }
 
-                    candidates.push(Dict.get(known.longNames, knownKey));
+                    candidates.push(Dictionary.get(known.longNames, knownKey));
                 }
             }
 
@@ -612,15 +612,15 @@ function evaluateArguments(parsed: ParsedArguments, known: KnownOptionMaps, raw:
 
             case "object":
                 if (value) {
-                    const type = <Dict<any>>option.type;
-                    let result = Dict.get(type, value);
+                    const type = <Dictionary<any>>option.type;
+                    let result = Dictionary.get(type, value);
                     if (result === undefined) {
                         const valueLower = (<string>value).toLowerCase();
-                        result = Dict.get(type, valueLower);
+                        result = Dictionary.get(type, valueLower);
                         if (!result) {
                             for (const key in type) {
                                 if (key.toLowerCase() === valueLower) {
-                                    result = Dict.get(type, key);
+                                    result = Dictionary.get(type, key);
                                     break;
                                 }
                             }

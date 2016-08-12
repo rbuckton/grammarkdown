@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { Dict } from "./core";
+import { Dictionary } from "./core";
 import { SyntaxKind } from "./tokens";
 import { Symbol, SymbolKind, SymbolTable } from "./symbols";
 import { SourceFile, Production, Parameter, Node, forEachChild } from "./nodes";

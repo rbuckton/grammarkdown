@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 import { Hash, createHash } from "crypto";
-import { Dict } from "./core";
+import { Dictionary } from "./core";
 import { Diagnostics, DiagnosticMessages, Diagnostic, formatList } from "./diagnostics";
 import { SyntaxKind, tokenToString } from "./tokens";
 import { Symbol, SymbolKind, SymbolTable } from "./symbols";
@@ -65,14 +65,14 @@ import { NodeNavigator } from "./navigator";
 // TODO: Check all Productions to ensure they have the same parameters.
 
 export class Checker {
-    private checkedFileSet = new Dict<boolean>();
+    private checkedFileSet = new Dictionary<boolean>();
     private bindings: BindingTable;
     private diagnostics: DiagnosticMessages;
     private binder: Binder;
     private innerResolver: Resolver;
     private sourceFile: SourceFile;
     private noStrictParametricProductions: boolean;
-    private productionParametersByName: Dict<Dict<boolean>>;
+    private productionParametersByName: Dictionary<Dictionary<boolean>>;
 
     constructor(bindings: BindingTable, diagnostics: DiagnosticMessages, options?: CompilerOptions) {
         this.bindings = bindings;
@@ -89,10 +89,10 @@ export class Checker {
     }
 
     public checkSourceFile(sourceFile: SourceFile): void {
-        if (!Dict.has(this.checkedFileSet, sourceFile.filename)) {
-            Dict.set(this.checkedFileSet, sourceFile.filename, true);
+        if (!Dictionary.has(this.checkedFileSet, sourceFile.filename)) {
+            Dictionary.set(this.checkedFileSet, sourceFile.filename, true);
             this.sourceFile = sourceFile;
-            this.productionParametersByName = new Dict<Dict<boolean>>();
+            this.productionParametersByName = new Dictionary<Dictionary<boolean>>();
             this.diagnostics.setSourceFile(this.sourceFile);
 
             const savedNoStrictParametricProductions = this.noStrictParametricProductions;
@@ -199,24 +199,24 @@ export class Checker {
     private getProductionParametersByName(node: Production) {
         const id = node.id;
         const productionParametersByName = this.productionParametersByName;
-        if (Dict.has(productionParametersByName, id)) {
-            return Dict.get(productionParametersByName, id);
+        if (Dictionary.has(productionParametersByName, id)) {
+            return Dictionary.get(productionParametersByName, id);
         }
 
         const parameterList = node.parameterList;
         const parameters = parameterList ? parameterList.elements : undefined;
         const parameterCount = parameters ? parameters.length : 0;
-        const parametersByName = new Dict<boolean>();
+        const parametersByName = new Dictionary<boolean>();
         for (let i = 0; i < parameterCount; i++) {
             const parameter = parameters[i];
             const parameterName = parameter ? parameter.name : undefined;
             const parameterNameText = parameterName ? parameterName.text : undefined;
-            if (parameterNameText && !Dict.has(parametersByName, parameterNameText)) {
-                Dict.set(parametersByName, parameterNameText, true);
+            if (parameterNameText && !Dictionary.has(parametersByName, parameterNameText)) {
+                Dictionary.set(parametersByName, parameterNameText, true);
             }
         }
 
-        Dict.set(productionParametersByName, id, parametersByName);
+        Dictionary.set(productionParametersByName, id, parametersByName);
         return parametersByName;
     }
 
@@ -247,7 +247,7 @@ export class Checker {
             const firstProductionParameter = firstProductionParameters[i];
             const firstProductionParameterName = firstProductionParameter.name;
             const firstProductionParameterNameText = firstProductionParameterName.text;
-            if (!Dict.has(thisProductionParameterNames, firstProductionParameterNameText)) {
+            if (!Dictionary.has(thisProductionParameterNames, firstProductionParameterNameText)) {
                 this.diagnostics.reportNode(thisProductionName, Diagnostics.Production_0_is_missing_parameter_1_All_definitions_of_production_0_must_specify_the_same_formal_parameters, thisProductionNameText, firstProductionParameterNameText);
             }
         }
@@ -256,7 +256,7 @@ export class Checker {
             const thisProductionParameter = thisProductionParameters[i];
             const thisProductionParameterName = thisProductionParameter.name;
             const thisProductionParameterNameText = thisProductionParameterName.text;
-            if (!Dict.has(firstProductionParameterNames, thisProductionParameterNameText)) {
+            if (!Dictionary.has(firstProductionParameterNames, thisProductionParameterNameText)) {
                 this.diagnostics.reportNode(firstProduction, Diagnostics.Production_0_is_missing_parameter_1_All_definitions_of_production_0_must_specify_the_same_formal_parameters, thisProductionNameText, thisProductionParameterNameText);
             }
         }
@@ -330,14 +330,14 @@ export class Checker {
         this.checkGrammarOneOfList(node);
 
         if (node.terminals) {
-            const terminalSet = new Dict<boolean>();
+            const terminalSet = new Dictionary<boolean>();
             for (const terminal of node.terminals) {
                 const text = terminal.text;
-                if (Dict.has(terminalSet, text)) {
+                if (Dictionary.has(terminalSet, text)) {
                     this.diagnostics.reportNode(terminal, Diagnostics.Duplicate_terminal_0_, text);
                 }
                 else {
-                    Dict.set(terminalSet, text, true);
+                    Dictionary.set(terminalSet, text, true);
                     this.checkTerminal(terminal);
                 }
             }
@@ -986,18 +986,18 @@ export class Checker {
             const production = <Production>this.bindings.getDeclarations(productionSymbol)[0];
             const parameterCount = production.parameterList ? production.parameterList.elements.length : 0;
             const argumentCount = node.argumentList ? node.argumentList.elements.length : 0;
-            const nameSet = new Dict<boolean>();
+            const nameSet = new Dictionary<boolean>();
 
             // Check each argument has a matching parameter.
             for (let i = 0; i < argumentCount; i++) {
                 const argument = node.argumentList.elements[i];
                 const argumentName = argument.name;
                 const argumentNameText = argumentName.text;
-                if (Dict.has(nameSet, argumentNameText)) {
+                if (Dictionary.has(nameSet, argumentNameText)) {
                     this.diagnostics.reportNode(argumentName, Diagnostics.Argument_0_cannot_be_specified_multiple_times, argumentNameText);
                 }
                 else {
-                    Dict.set(nameSet, argumentNameText, true);
+                    Dictionary.set(nameSet, argumentNameText, true);
                     const parameterSymbol = this.resolveSymbol(production, argumentNameText, SymbolKind.Parameter);
                     if (!parameterSymbol) {
                         this.diagnostics.reportNode(argumentName, Diagnostics.Production_0_does_not_have_a_parameter_named_1_, productionSymbol.name, argumentNameText);
@@ -1010,7 +1010,7 @@ export class Checker {
                 const parameter = production.parameterList.elements[i];
                 const parameterName = parameter.name;
                 const parameterNameText = parameterName.text;
-                if (!Dict.has(nameSet, parameterNameText)) {
+                if (!Dictionary.has(nameSet, parameterNameText)) {
                     this.diagnostics.reportNode(nonterminalName, Diagnostics.There_is_no_argument_given_for_parameter_0_, parameterNameText);
                 }
             }

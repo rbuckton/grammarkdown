@@ -16,7 +16,7 @@
 import * as path from "path";
 import { readFileSync, writeFileSync } from "fs";
 import { readPackageSync } from "./read-package";
-import { Dict } from "./core";
+import { Dictionary } from "./core";
 import { CompilerOptions, EmitFormat, getDefaultOptions, KnownOptions, ParsedArguments, parse, usage } from "./options";
 import { Grammar } from "./grammar";
 

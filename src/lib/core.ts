@@ -28,11 +28,11 @@ function createEmptyPrototype() {
     return Object.freeze ? Object.freeze(prototype) : prototype;
 }
 
-export class Dict<T> {
-    constructor(object?: Dict<T>) {
+export class Dictionary<T> {
+    constructor(object?: Dictionary<T>) {
         if (object) {
             for (const key in object) {
-                if (Dict.has(object, key)) {
+                if (Dictionary.has(object, key)) {
                     this[key] = object[key];
                 }
             }
@@ -42,24 +42,24 @@ export class Dict<T> {
     [key: string]: T;
     [key: number]: T;
 
-    static has<T>(object: Dict<T>, key: string | number): boolean {
+    static has<T>(object: Dictionary<T>, key: string | number): boolean {
         return Object.prototype.hasOwnProperty.call(object, key);
     }
 
-    static get<T>(object: Dict<T>, key: string | number): T {
-        return Dict.has(object, key) ? object[key] : undefined;
+    static get<T>(object: Dictionary<T>, key: string | number): T {
+        return Dictionary.has(object, key) ? object[key] : undefined;
     }
 
-    static set<T>(object: Dict<T>, key: string | number, value: T): Dict<T> {
+    static set<T>(object: Dictionary<T>, key: string | number, value: T): Dictionary<T> {
         object[key] = value;
         return object;
     }
 
-    static assign<T>(target: Dict<T>, ...sources: Dict<T>[]): Dict<T> {
+    static assign<T>(target: Dictionary<T>, ...sources: Dictionary<T>[]): Dictionary<T> {
         for (const source of sources) {
             for (const key in source) {
-                if (Dict.has(source, key)) {
-                    Dict.set(target, key, Dict.get(source, key));
+                if (Dictionary.has(source, key)) {
+                    Dictionary.set(target, key, Dictionary.get(source, key));
                 }
             }
         }
@@ -67,11 +67,11 @@ export class Dict<T> {
         return target;
     }
 
-    static merge<T>(target: Dict<T>, ...sources: Dict<T>[]): Dict<T> {
+    static merge<T>(target: Dictionary<T>, ...sources: Dictionary<T>[]): Dictionary<T> {
         for (const source of sources) {
             for (const key in source) {
-                if (Dict.has(source, key) && !Dict.has(target, key)) {
-                    Dict.set(target, key, Dict.get(source, key));
+                if (Dictionary.has(source, key) && !Dictionary.has(target, key)) {
+                    Dictionary.set(target, key, Dictionary.get(source, key));
                 }
             }
         }
@@ -79,19 +79,19 @@ export class Dict<T> {
         return target;
     }
 
-    static forEach<T>(object: Dict<T>, callbackfn: (value: T, key: string, dict: Dict<T>) => void, thisArg?: any): void {
+    static forEach<T>(object: Dictionary<T>, callbackfn: (value: T, key: string, dict: Dictionary<T>) => void, thisArg?: any): void {
         for (const key in object) {
-            if (Dict.has(object, key)) {
+            if (Dictionary.has(object, key)) {
                 const value = object[key];
                 callbackfn.call(thisArg, value, key, object);
             }
         }
     }
 
-    static map<T, U>(object: Dict<T>, callbackfn: (value: T, key: string, dict: Dict<T>) => U, thisArg?: any): Dict<U> {
-        const newObject = new Dict<U>();
+    static map<T, U>(object: Dictionary<T>, callbackfn: (value: T, key: string, dict: Dictionary<T>) => U, thisArg?: any): Dictionary<U> {
+        const newObject = new Dictionary<U>();
         for (const key in object) {
-            if (Dict.has(object, key)) {
+            if (Dictionary.has(object, key)) {
                 const value = object[key];
                 const mappedValue = <U>callbackfn.call(thisArg, value, key, object);
                 newObject[key] = mappedValue;
@@ -101,10 +101,10 @@ export class Dict<T> {
         return newObject;
     }
 
-    static mapPairs<T, U>(object: Dict<T>, callbackfn: (value: T, key: string, dict: Dict<T>) => [string, U], thisArg?: any): Dict<U> {
-        const newObject = new Dict<U>();
+    static mapPairs<T, U>(object: Dictionary<T>, callbackfn: (value: T, key: string, dict: Dictionary<T>) => [string, U], thisArg?: any): Dictionary<U> {
+        const newObject = new Dictionary<U>();
         for (const key in object) {
-            if (Dict.has(object, key)) {
+            if (Dictionary.has(object, key)) {
                 const value = object[key];
                 const [mappedKey, mappedValue] = <[string, U]>callbackfn.call(thisArg, value, key, object);
                 newObject[mappedKey] = mappedValue;
@@ -114,10 +114,10 @@ export class Dict<T> {
         return newObject;
     }
 
-    static filter<T>(object: Dict<T>, callbackfn: (value: T, key: string, dict: Dict<T>) => boolean, thisArg?: any): Dict<T> {
-        const newObject = new Dict<T>();
+    static filter<T>(object: Dictionary<T>, callbackfn: (value: T, key: string, dict: Dictionary<T>) => boolean, thisArg?: any): Dictionary<T> {
+        const newObject = new Dictionary<T>();
         for (const key in object) {
-            if (Dict.has(object, key)) {
+            if (Dictionary.has(object, key)) {
                 const value = object[key];
                 if (callbackfn.call(thisArg, value, key, object)) {
                     newObject[key] = value;
@@ -128,9 +128,9 @@ export class Dict<T> {
         return newObject;
     }
 
-    static some<T>(object: Dict<T>, callbackfn?: (value: T, key: string, dict: Dict<T>) => boolean, thisArg?: any): boolean {
+    static some<T>(object: Dictionary<T>, callbackfn?: (value: T, key: string, dict: Dictionary<T>) => boolean, thisArg?: any): boolean {
         for (const key in object) {
-            if (Dict.has(object, key)) {
+            if (Dictionary.has(object, key)) {
                 const value = object[key];
                 if (!callbackfn || callbackfn.call(thisArg, value, key, object)) {
                     return true;
@@ -141,10 +141,10 @@ export class Dict<T> {
         return false;
     }
 
-    static every<T>(object: Dict<T>, callbackfn: (value: T, key: string, dict: Dict<T>) => boolean, thisArg?: any): boolean {
+    static every<T>(object: Dictionary<T>, callbackfn: (value: T, key: string, dict: Dictionary<T>) => boolean, thisArg?: any): boolean {
         let any = false;
         for (const key in object) {
-            if (Dict.has(object, key)) {
+            if (Dictionary.has(object, key)) {
                 const value = object[key];
                 if (!callbackfn.call(thisArg, value, key, object)) {
                     return false;
@@ -157,9 +157,9 @@ export class Dict<T> {
         return any;
     }
 
-    static find<T>(object: Dict<T>, callbackfn: (value: T, key: string, dict: Dict<T>) => boolean, thisArg?: any): T {
+    static find<T>(object: Dictionary<T>, callbackfn: (value: T, key: string, dict: Dictionary<T>) => boolean, thisArg?: any): T {
         for (const key in object) {
-            if (Dict.has(object, key)) {
+            if (Dictionary.has(object, key)) {
                 const value = object[key];
                 if (callbackfn.call(value, key, object)) {
                     return value;
@@ -170,9 +170,9 @@ export class Dict<T> {
         return undefined;
     }
 
-    static findKey<T>(object: Dict<T>, callbackfn: (value: T, key: string, dict: Dict<T>) => boolean, thisArg?: any): string {
+    static findKey<T>(object: Dictionary<T>, callbackfn: (value: T, key: string, dict: Dictionary<T>) => boolean, thisArg?: any): string {
         for (const key in object) {
-            if (Dict.has(object, key)) {
+            if (Dictionary.has(object, key)) {
                 const value = object[key];
                 if (callbackfn.call(value, key, object)) {
                     return key;
@@ -183,9 +183,9 @@ export class Dict<T> {
         return undefined;
     }
 
-    static keyOf<T>(object: Dict<T>, value: T): string {
+    static keyOf<T>(object: Dictionary<T>, value: T): string {
         for (const key in object) {
-            if (Dict.has(object, key)) {
+            if (Dictionary.has(object, key)) {
                 if (object[key] === value) {
                     return key;
                 }
@@ -195,9 +195,9 @@ export class Dict<T> {
         return undefined;
     }
 
-    static includes<T>(object: Dict<T>, value: T): boolean {
+    static includes<T>(object: Dictionary<T>, value: T): boolean {
         for (const key in object) {
-            if (Dict.has(object, key)) {
+            if (Dictionary.has(object, key)) {
                 if (object[key] === value) {
                     return true;
                 }
@@ -207,12 +207,12 @@ export class Dict<T> {
         return false;
     }
 
-    static reduce<T>(object: Dict<T>, callbackfn: (previousValue: T, value: T, key: string, dict: Dict<T>) => T, initialValue: T): T;
-    static reduce<T, U>(object: Dict<T>, callbackfn: (previousValue: U, value: T, key: string, dict: Dict<T>) => U, initialValue: U): U;
-    static reduce<T, U>(object: Dict<T>, callbackfn: (previousValue: U, value: T, key: string, dict: Dict<T>) => U, initialValue: U): U {
+    static reduce<T>(object: Dictionary<T>, callbackfn: (previousValue: T, value: T, key: string, dict: Dictionary<T>) => T, initialValue: T): T;
+    static reduce<T, U>(object: Dictionary<T>, callbackfn: (previousValue: U, value: T, key: string, dict: Dictionary<T>) => U, initialValue: U): U;
+    static reduce<T, U>(object: Dictionary<T>, callbackfn: (previousValue: U, value: T, key: string, dict: Dictionary<T>) => U, initialValue: U): U {
         let aggregate = initialValue;
         for (const key in object) {
-            if (Dict.has(object, key)) {
+            if (Dictionary.has(object, key)) {
                 const value = object[key];
                 aggregate = callbackfn(aggregate, value, key, object);
             }
@@ -221,34 +221,34 @@ export class Dict<T> {
         return aggregate;
     }
 
-    static turn<T>(object: Dict<T>, callbackfn: (memo: Dict<T>, value: T, key: string, dict: Dict<T>) => void, memo?: Dict<T>): Dict<T>;
-    static turn<T, U>(object: Dict<T>, callbackfn: (memo: Dict<U>, value: T, key: string, dict: Dict<T>) => void, memo: Dict<U>): Dict<U>;
-    static turn<T, U>(object: Dict<T>, callbackfn: (memo: Dict<T | U>, value: T, key: string, dict: Dict<T>) => void, memo: Dict<T | U> = object): Dict<U> {
+    static turn<T>(object: Dictionary<T>, callbackfn: (memo: Dictionary<T>, value: T, key: string, dict: Dictionary<T>) => void, memo?: Dictionary<T>): Dictionary<T>;
+    static turn<T, U>(object: Dictionary<T>, callbackfn: (memo: Dictionary<U>, value: T, key: string, dict: Dictionary<T>) => void, memo: Dictionary<U>): Dictionary<U>;
+    static turn<T, U>(object: Dictionary<T>, callbackfn: (memo: Dictionary<T | U>, value: T, key: string, dict: Dictionary<T>) => void, memo: Dictionary<T | U> = object): Dictionary<U> {
         for (const key in object) {
-            if (Dict.has(object, key)) {
+            if (Dictionary.has(object, key)) {
                 const value = object[key];
                 callbackfn(memo, value, key, object);
             }
         }
 
-        return <Dict<U>>memo;
+        return <Dictionary<U>>memo;
     }
 
-    static invert<T extends string | number>(dict: Dict<T>): Dict<string> {
-        const inverted = new Dict<string>();
+    static invert<T extends string | number>(dict: Dictionary<T>): Dictionary<string> {
+        const inverted = new Dictionary<string>();
         for (const key in dict) {
-            if (Dict.has(dict, key)) {
-                Dict.set(inverted, String(Dict.get(dict, key)), key);
+            if (Dictionary.has(dict, key)) {
+                Dictionary.set(inverted, String(Dictionary.get(dict, key)), key);
             }
         }
 
         return inverted;
     }
 
-    static keys<T>(dict: Dict<T>): string[] {
+    static keys<T>(dict: Dictionary<T>): string[] {
         const result: string[] = [];
         for (const key in dict) {
-            if (Dict.has(dict, key)) {
+            if (Dictionary.has(dict, key)) {
                 result.push(key);
             }
         }
@@ -256,28 +256,28 @@ export class Dict<T> {
         return result;
     }
 
-    static values<T>(dict: Dict<T>): T[] {
+    static values<T>(dict: Dictionary<T>): T[] {
         const result: T[] = [];
         for (const key in dict) {
-            if (Dict.has(dict, key)) {
-                result.push(Dict.get(dict, key));
+            if (Dictionary.has(dict, key)) {
+                result.push(Dictionary.get(dict, key));
             }
         }
         return result;
     }
 
-    static entries<T>(dict: Dict<T>): [string | number, T][] {
+    static entries<T>(dict: Dictionary<T>): [string | number, T][] {
         const result: [string | number, T][] = [];
         for (const key in dict) {
-            if (Dict.has(dict, key)) {
-                result.push([key, Dict.get(dict, key)]);
+            if (Dictionary.has(dict, key)) {
+                result.push([key, Dictionary.get(dict, key)]);
             }
         }
         return result;
     }
 }
 
-Dict.prototype = createEmptyPrototype();
+Dictionary.prototype = createEmptyPrototype();
 
 export function binarySearch(array: number[], value: number): number {
     let low = 0;

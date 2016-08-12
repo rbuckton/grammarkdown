@@ -6,7 +6,7 @@ import {
 import {
     Position,
     Range,
-    Dict,
+    Dictionary,
 } from "./core";
 import {
     SyntaxKind

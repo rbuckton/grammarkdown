@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as os from "os";
-import { Dict } from "./core";
+import { Dictionary } from "./core";
 import { Host, HostLike } from "./host";
 import { DiagnosticMessages, NullDiagnosticMessages } from "./diagnostics";
 import { EmitFormat, CompilerOptions, getDefaultOptions } from "./options";
@@ -19,7 +19,7 @@ export class Grammar {
     public diagnostics: DiagnosticMessages = new DiagnosticMessages();
 
     private bindings: BindingTable = new BindingTable();
-    private fileMap: Dict<SourceFile> = new Dict<SourceFile>();
+    private fileMap: Dictionary<SourceFile> = new Dictionary<SourceFile>();
     private ignoreCase: boolean;
     private innerParser: Parser;
     private innerBinder: Binder;
@@ -83,7 +83,7 @@ export class Grammar {
 
     public getSourceFile(file: string) {
         file = this.resolveFile(file);
-        return Dict.get(this.fileMap, this.normalizeFile(file));
+        return Dictionary.get(this.fileMap, this.normalizeFile(file));
     }
 
     public bind(sourceFile?: SourceFile) {
@@ -188,7 +188,7 @@ export class Grammar {
         else {
             sourceFile = this.parseSourceFile(file);
             if (sourceFile) {
-                Dict.set(this.fileMap, this.normalizeFile(file), sourceFile);
+                Dictionary.set(this.fileMap, this.normalizeFile(file), sourceFile);
                 this.sourceFiles.push(sourceFile);
                 this.processImports(sourceFile, file);
             }
