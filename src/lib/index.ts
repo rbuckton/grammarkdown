@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-export { Dictionary } from "./core";
+export { Dictionary, Position, Range } from "./core";
 export * from "./host";
 export * from "./diagnostics";
 export * from "./options";

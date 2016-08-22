@@ -6,6 +6,7 @@ import * as url from "url";
 export interface HostLike {
     normalizeFile?(file: string): string;
     resolveFile?(file: string, referer?: string): string;
+    writeFile?(file: string, content: string): void;
     readFile(file: string): string;
 }
 
@@ -13,6 +14,7 @@ export interface Host {
     normalizeFile(file: string): string;
     resolveFile(file: string, referer?: string): string;
     readFile(file: string): string;
+    writeFile(file: string, content: string): void;
 }
 
 export namespace Host {
@@ -77,10 +79,15 @@ export namespace Host {
             }
         }
 
+        function writeFile(file: string, text: string): void {
+            fs.writeFileSync(file, text, "utf8");
+        }
+
         return {
             normalizeFile,
             resolveFile,
-            readFile
+            readFile,
+            writeFile
         };
     }
 
@@ -101,9 +108,10 @@ export namespace Host {
             if ("resolveFile" in hostLike) {
                 host.resolveFile = (file, referer) => hostLike.resolveFile(file, referer);
             }
-            if ("readFile" in hostLike) {
-                host.readFile = file => hostLike.readFile(file);
+            if ("writeFile" in hostLike) {
+                host.writeFile = (file, content) => hostLike.writeFile(file, content);
             }
+            host.readFile = file => hostLike.readFile(file);
         }
         return host;
     }

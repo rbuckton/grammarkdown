@@ -164,7 +164,7 @@ export class NodeNavigator {
     }
 
     public moveToPosition(position: Position) {
-        const pos = this.sourceFile.lineMap.getPositionOfLineAndCharacter(position);
+        const pos = this.sourceFile.lineMap.offsetAt(position);
         const currentDepth = this.currentDepth;
         const nodeStack = this.nodeStack;
         const shapeStack = this.shapeStack;

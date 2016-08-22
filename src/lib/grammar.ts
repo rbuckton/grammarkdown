@@ -1,6 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as os from "os";
+import * as performance from "./performance";
 import { Dictionary } from "./core";
 import { Host, HostLike } from "./host";
 import { DiagnosticMessages, NullDiagnosticMessages } from "./diagnostics";
@@ -17,6 +18,14 @@ export class Grammar {
     public sourceFiles: SourceFile[] = [];
     public options: CompilerOptions;
     public diagnostics: DiagnosticMessages = new DiagnosticMessages();
+
+    private static knownGrammars = new Dictionary<string>({
+        "es6": require.resolve("../../grammars/es2015.grammar"),
+        "es2015": require.resolve("../../grammars/es2015.grammar"),
+        // "es2016": require.resolve("../../grammars/es2016.grammar"),
+        "ts": require.resolve("../../grammars/typescript.grammar"),
+        "typescript": require.resolve("../../grammars/typescript.grammar"),
+    });
 
     private bindings: BindingTable = new BindingTable();
     private fileMap: Dictionary<SourceFile> = new Dictionary<SourceFile>();
@@ -35,12 +44,8 @@ export class Grammar {
     constructor(rootNames: string[], options: CompilerOptions = getDefaultOptions(), readFileOrHostLike?: ((file: string) => string) | HostLike, oldGrammar?: Grammar) {
         this.host = Host.getHost(readFileOrHostLike);
         this.options = options;
-
         this.oldGrammar = oldGrammar;
-        for (const rootName of rootNames) {
-            this.processRootFile(this.resolveFile(rootName));
-        }
-
+        this.parse(rootNames);
         this.oldGrammar = undefined;
         Object.freeze(this.sourceFiles);
     }
@@ -81,28 +86,53 @@ export class Grammar {
         return this.innerEmitter;
     }
 
+    public static registerKnownGrammar(name: string, file: string) {
+        Dictionary.set(Grammar.knownGrammars, name, file);
+    }
+
     public getSourceFile(file: string) {
         file = this.resolveFile(file);
         return Dictionary.get(this.fileMap, this.normalizeFile(file));
     }
 
+    private parse(rootNames: string[]) {
+        performance.mark("beforeParse");
+
+        for (const rootName of rootNames) {
+            this.processRootFile(this.resolveFile(rootName));
+        }
+
+        performance.mark("afterParse");
+        performance.measure("parse", "beforeParse", "afterParse");
+    }
+
+    /* @obsolete */ /* @internal */ bind(sourceFile: SourceFile): void;
+
+    public bind(): void;
     public bind(sourceFile?: SourceFile) {
+        if (sourceFile) {
+            console.warn(`Calling 'Grammar#bind' with a SourceFile is an obsolete overload and will be removed in a future version.`);
+        }
+
         const binder = this.binder;
 
-        if (sourceFile) {
+        performance.mark("beforeBind");
+
+        for (const sourceFile of this.sourceFiles) {
             binder.bindSourceFile(sourceFile);
         }
-        else {
-            for (const sourceFile of this.sourceFiles) {
-                binder.bindSourceFile(sourceFile);
-            }
-        }
+
+        performance.mark("afterBind");
+        performance.measure("bind", "beforeBind", "afterBind");
     }
 
     public check(sourceFile?: SourceFile): void {
-        this.bind(sourceFile);
+        this.bind();
 
         const checker = this.checker;
+
+        performance.mark("beforeCheck");
+
         if (sourceFile) {
             checker.checkSourceFile(sourceFile);
         }
@@ -111,17 +141,23 @@ export class Grammar {
                 checker.checkSourceFile(sourceFile);
             }
         }
+
+        performance.mark("afterCheck");
+        performance.measure("check", "beforeCheck", "afterCheck");
     }
 
     public resetEmitter(): void {
         this.innerEmitter = undefined;
     }
 
-    public emit(sourceFile?: SourceFile, writeFile?: (file: string, output: string) => void): void {
+    public emit(sourceFile?: SourceFile, writeFile: (file: string, output: string) => void = (file, content) => this.writeFile(file, content)): void {
         this.bind(sourceFile);
         this.check(sourceFile);
 
         const emitter = this.emitter;
+
+        performance.mark("beforeEmit");
+
         if (sourceFile) {
             emitter.emit(sourceFile, writeFile);
         }
@@ -130,6 +166,9 @@ export class Grammar {
                 emitter.emit(sourceFile, writeFile);
             }
         }
+
+        performance.mark("afterEmit");
+        performance.measure("emit", "beforeEmit", "afterEmit");
     }
 
     protected createParser(options: CompilerOptions): Parser {
@@ -159,10 +198,20 @@ export class Grammar {
     }
 
     protected readFile(file: string): string {
-        return this.host.readFile(file);
+        performance.mark("ioRead");
+        const content = this.host.readFile(file);
+        performance.measure("ioRead", "ioRead");
+        return content;
+    }
+
+    protected writeFile(file: string, content: string) {
+        performance.mark("ioWrite");
+        this.host.writeFile(file, content);
+        performance.measure("ioWrite", "ioWrite");
     }
 
     private resolveFile(file: string, referer?: string) {
+        file = Dictionary.get(Grammar.knownGrammars, file) || file;
         return this.host.resolveFile(file, referer);
     }
 

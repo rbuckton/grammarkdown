@@ -14,8 +14,10 @@
  *  limitations under the License.
  */
 import * as path from "path";
+import * as performance from "./performance";
+import { EOL } from "os";
 import { readFileSync, writeFileSync } from "fs";
-import { readPackageSync } from "./read-package";
+import { Package } from "./read-package";
 import { Dictionary } from "./core";
 import { CompilerOptions, EmitFormat, getDefaultOptions, KnownOptions, ParsedArguments, parse, usage } from "./options";
 import { Grammar } from "./grammar";
@@ -37,6 +39,7 @@ const knownOptions: KnownOptions = {
     "emitLinks": { type: "boolean", hidden: true },
     "usage": { aliasFor: ["--help"], hidden: true },
     "md": { aliasFor: ["--format", "markdown"], hidden: true },
+    "diagnostics": { type: "boolean", description: "Prints diagnostics information." }
 };
 
 interface ParsedCommandLine extends ParsedArguments, CompilerOptions {
@@ -46,7 +49,7 @@ interface ParsedCommandLine extends ParsedArguments, CompilerOptions {
 
 function main(): void {
     const opts = parse<ParsedCommandLine>(knownOptions);
-    if (opts.help) {
+    if (!opts || opts.help) {
         printUsage();
     }
     else if (opts.version) {
@@ -58,8 +61,8 @@ function main(): void {
 }
 
 function printUsage(): void {
-    const node_package = readPackageSync(path.resolve(__dirname, "../package.json"));
-    usage(knownOptions, 25, (writer) => {
+    const node_package = <Package>require("../../package.json");
+    usage(knownOptions, 36, (writer) => {
         writer.writeln(`Version ${node_package.version}`);
         writer.writeOption("Syntax:", "grammarkdown [options] [...files]");
         writer.writeln();
@@ -71,7 +74,7 @@ function printUsage(): void {
 }
 
 function printVersion(): void {
-    const node_package = readPackageSync(path.resolve(__dirname, "../package.json"));
+    const node_package = <Package>require("../../package.json");
     console.log(node_package.version);
 }
 
@@ -83,7 +86,10 @@ function performCompilation(options: ParsedCommandLine): void {
     if (options.noEmitOnError) compilerOptions.noEmitOnError = true;
     if (options.noStrictParametricProductions) compilerOptions.noStrictParametricProductions = true;
     if (options.emitLinks) compilerOptions.emitLinks = true;
+    if (options.diagnostics) compilerOptions.diagnostics = true;
     compilerOptions.format = options.format || EmitFormat.markdown;
+
+    performance.mark("beforeCompile");
 
     const inputFiles = options.rest;
     const grammar = new Grammar(inputFiles, compilerOptions);
@@ -96,8 +102,21 @@ function performCompilation(options: ParsedCommandLine): void {
         }
     }
 
+    performance.mark("afterCompile");
+    performance.measure("compile", "beforeCompile", "afterCompile");
+
+    grammar.diagnostics.forEach(message => console.log(message));
+
+    if (compilerOptions.diagnostics) {
+        process.stderr.write(`ioRead:  ${performance.getDuration("ioRead")}ms${EOL}`);
+        process.stderr.write(`ioWrite: ${performance.getDuration("ioWrite")}ms${EOL}`);
+        process.stderr.write(`parse:   ${performance.getDuration("parse")}ms${EOL}`);
+        process.stderr.write(`bind:    ${performance.getDuration("bind")}ms${EOL}`);
+        process.stderr.write(`check:   ${performance.getDuration("check")}ms${EOL}`);
+        process.stderr.write(`emit:    ${performance.getDuration("emit")}ms${EOL}`);
+    }
+
     if (grammar.diagnostics.count() > 0) {
-        grammar.diagnostics.forEach(message => console.log(message));
         process.exit(-1);
     }
 }

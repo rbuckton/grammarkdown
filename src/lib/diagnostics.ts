@@ -161,21 +161,23 @@ export class DiagnosticMessages {
 
     public getDiagnosticInfos(options?: { formatMessage?: boolean; detailedMessage?: boolean; }): DiagnosticInfo[] {
         const result: DiagnosticInfo[] = [];
-        for (const diagnosticIndex of this.getSortedAndDeduplicatedDiagnosticIndices()) {
-            result.push(this.getDiagnosticInfo(diagnosticIndex, options));
+        if (this.diagnostics) {
+            for (const diagnosticIndex of this.getSortedAndDeduplicatedDiagnosticIndices()) {
+                result.push(this.getDiagnosticInfo(diagnosticIndex, options));
+            }
         }
-
         return result;
     }
 
     public getDiagnosticInfosForSourceFile(sourceFile: SourceFile, options?: { formatMessage?: boolean; detailedMessage?: boolean; }): DiagnosticInfo[] {
         const result: DiagnosticInfo[] = [];
-        for (const diagnosticIndex of this.getSortedAndDeduplicatedDiagnosticIndices()) {
-            if (this.getDiagnosticSourceFile(diagnosticIndex) === sourceFile) {
-                result.push(this.getDiagnosticInfo(diagnosticIndex, options));
+        if (this.diagnostics) {
+            for (const diagnosticIndex of this.getSortedAndDeduplicatedDiagnosticIndices()) {
+                if (this.getDiagnosticSourceFile(diagnosticIndex) === sourceFile) {
+                    result.push(this.getDiagnosticInfo(diagnosticIndex, options));
+                }
             }
         }
-
         return result;
     }
 
@@ -225,9 +227,10 @@ export class DiagnosticMessages {
     }
 
     public forEach(callback: (message: string, diagnosticIndex: number) => void): void {
-        if (!this.diagnostics) return;
-        for (const diagnosticIndex of this.getSortedAndDeduplicatedDiagnosticIndices()) {
-            callback(this.getMessage(diagnosticIndex, { detailed: true }), diagnosticIndex);
+        if (this.diagnostics) {
+            for (const diagnosticIndex of this.getSortedAndDeduplicatedDiagnosticIndices()) {
+                callback(this.getMessage(diagnosticIndex, { detailed: true }), diagnosticIndex);
+            }
         }
     }
 
@@ -263,7 +266,6 @@ export class DiagnosticMessages {
         if (indices.length <= 1) {
             return indices;
         }
-
         const numIndices = indices.length;
         const firstDiagnosticIndex = indices[0];
         const newIndices: number[] = [firstDiagnosticIndex];
@@ -275,7 +277,6 @@ export class DiagnosticMessages {
                 previousDiagnosticIndex = diagnosticIndex;
             }
         }
-
         return newIndices;
     }
 
@@ -387,7 +388,16 @@ export class LineMap {
         this.text = text;
     }
 
-    public formatPosition(pos: number): string {
+    public get lineCount() {
+        this.computeLineStarts();
+        return this.lineStarts.length;
+    }
+
+    /* @obsolete */ /* @internal */ formatPosition(pos: number): string { return this.formatOffset(pos); }
+    /* @obsolete */ /* @internal */ getPositionOfLineAndCharacter(lineAndCharacter: Position) { return this.offsetAt(lineAndCharacter); }
+    /* @obsolete */ /* @internal */ getLineAndCharacterOfPosition(pos: number): Position { return this.positionAt(pos); }
+
+    public formatOffset(pos: number): string {
         this.computeLineStarts();
         var lineNumber = binarySearch(this.lineStarts, pos);
         if (lineNumber < 0) {
@@ -400,17 +410,17 @@ export class LineMap {
         return `${lineNumber + 1},${pos - this.lineStarts[lineNumber] + 1}`;
     }
 
-    public getPositionOfLineAndCharacter(lineAndCharacter: Position) {
+    public offsetAt(position: Position) {
         this.computeLineStarts();
-        if (lineAndCharacter.line < 0 ||
-            lineAndCharacter.character < 0 ||
-            lineAndCharacter.line >= this.lineStarts.length) {
+        if (position.line < 0 ||
+            position.character < 0 ||
+            position.line >= this.lineStarts.length) {
             return -1;
         }
 
-        const pos = this.lineStarts[lineAndCharacter.line] + lineAndCharacter.character;
-        const lineEnd = lineAndCharacter.line + 1 < this.lineStarts.length
-            ? this.lineStarts[lineAndCharacter.line + 1]
+        const pos = this.lineStarts[position.line] + position.character;
+        const lineEnd = position.line + 1 < this.lineStarts.length
+            ? this.lineStarts[position.line + 1]
             : this.text.length;
 
         if (pos >= lineEnd) {
@@ -425,9 +435,9 @@ export class LineMap {
         return pos;
     }
 
-    public getLineAndCharacterOfPosition(pos: number): Position {
+    public positionAt(offset: number): Position {
         this.computeLineStarts();
-        let lineNumber = binarySearch(this.lineStarts, pos);
+        let lineNumber = binarySearch(this.lineStarts, offset);
         if (lineNumber < 0) {
             // If the actual position was not found,
             // the binary search returns the negative value of the next line start
@@ -436,15 +446,16 @@ export class LineMap {
             lineNumber = (~lineNumber) - 1;
         }
 
-        return { line: lineNumber, character: pos - this.lineStarts[lineNumber] };
+        return { line: lineNumber, character: offset - this.lineStarts[lineNumber] };
     }
 
     private computeLineStarts() {
         if (this.lineStarts) {
             return;
         }
-        var lineStarts: number[] = [];
-        var lineStart = 0;
+
+        const lineStarts: number[] = [];
+        let lineStart = 0;
         for (var pos = 0; pos < this.text.length; ) {
             var ch = this.text.charCodeAt(pos++);
             switch (ch) {
@@ -477,22 +488,22 @@ export class LineMap {
 
 function getDiagnosticRange(diagnosticNode: Node, diagnosticPos: number, sourceFile: SourceFile): Range {
     return {
-        start: getLineAndCharacterOfStart(diagnosticNode, diagnosticPos, sourceFile),
-        end: getLineAndCharacterOfEnd(diagnosticNode, diagnosticPos, sourceFile)
+        start: positionOfStart(diagnosticNode, diagnosticPos, sourceFile),
+        end: positionOfEnd(diagnosticNode, diagnosticPos, sourceFile)
     }
 }
 
-function getLineAndCharacterOfStart(diagnosticNode: Node, diagnosticPos: number, sourceFile: SourceFile) {
-    return getLineAndCharacterOfPosition(diagnosticNode ? diagnosticNode.pos : diagnosticPos, sourceFile);
+function positionOfStart(diagnosticNode: Node, diagnosticPos: number, sourceFile: SourceFile) {
+    return positionAt(diagnosticNode ? diagnosticNode.pos : diagnosticPos, sourceFile);
 }
 
-function getLineAndCharacterOfEnd(diagnosticNode: Node, diagnosticPos: number, sourceFile: SourceFile) {
-    return getLineAndCharacterOfPosition(diagnosticNode ? diagnosticNode.end : diagnosticPos, sourceFile);
+function positionOfEnd(diagnosticNode: Node, diagnosticPos: number, sourceFile: SourceFile) {
+    return positionAt(diagnosticNode ? diagnosticNode.end : diagnosticPos, sourceFile);
 }
 
-function getLineAndCharacterOfPosition(diagnosticPos: number, sourceFile: SourceFile) {
+function positionAt(diagnosticPos: number, sourceFile: SourceFile) {
     return sourceFile && sourceFile.lineMap
-        ? sourceFile.lineMap.getLineAndCharacterOfPosition(diagnosticPos)
+        ? sourceFile.lineMap.positionAt(diagnosticPos)
         : { line: 0, character: diagnosticPos };
 }
 

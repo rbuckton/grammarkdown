@@ -1,0 +1,529 @@
+@define noStrictParametricProductions true
+@import "es2015.grammar"
+
+// A.1 Types
+TypeParameters :
+	`<` TypeParameterList `>`
+
+TypeParameterList :
+	TypeParameter
+	TypeParameterList `,` TypeParameter
+
+TypeParameter :
+	Identifier Constraint?
+
+Constraint :
+	`extends` Type
+
+TypeArguments :
+	`<` TypeArgumentList `>`
+
+TypeArgumentList :
+	TypeArgument
+	TypeArgumentList `,` TypeArgument
+
+TypeArgument :
+	Type
+
+Type :
+	PrimaryOrUnionType
+	FunctionType
+	ConstructorType
+
+PrimaryOrUnionType :
+	PrimaryType
+	UnionType
+
+PrimaryType :
+	ParenthesizedType
+	PredefinedType
+	TypeReference
+	ObjectType
+	ArrayType
+	TupleType
+	TypeQuery
+
+ParenthesizedType :
+	`(` Type `)`
+
+PredefinedType :
+	`any`
+	`number`
+	`boolean`
+	`string`
+	`void`
+
+TypeReference :
+	TypeName [no LineTerminator here] TypeArguments?
+
+TypeName :
+	Identifier
+	ModuleName `.` Identifier
+
+ModuleName :
+	Identifier
+	ModuleName `.` Identifier
+
+ObjectType :
+	`{`   TypeBody?   `}`
+
+TypeBody :
+	TypeMemberList `;`?
+
+TypeMemberList :
+	TypeMember
+	TypeMemberList `;` TypeMember
+
+TypeMember :
+	PropertySignature
+	CallSignature
+	ConstructSignature
+	IndexSignature
+	MethodSignature
+
+ArrayType :
+	PrimaryType [no LineTerminator here] `[` `]`
+
+TupleType :
+	`[` TupleElementTypes `]`
+
+TupleElementTypes :
+	TupleElementType
+	TupleElementTypes `,` TupleElementType
+
+TupleElementType :
+	Type
+
+UnionType :
+	PrimaryOrUnionType `|` PrimaryType
+
+FunctionType :
+	TypeParameters? `(` ParameterList? `)` `=>` Type
+
+ConstructorType :
+	`new` TypeParameters? `(` ParameterList? `)` `=>` Type
+
+TypeQuery :
+	`typeof` TypeQueryExpression
+
+TypeQueryExpression :
+	Identifier
+	TypeQueryExpression `.` IdentifierName
+
+PropertySignature :
+	PropertyName `?`? TypeAnnotation?
+
+PropertyName :
+	IdentifierName
+	StringLiteral
+	NumericLiteral
+
+CallSignature :
+	TypeParameters? `(` ParameterList? `)` TypeAnnotation?
+
+ParameterList :
+	RequiredParameterList
+	OptionalParameterList
+	RestParameter
+	RequiredParameterList `,` OptionalParameterList
+	RequiredParameterList `,` RestParameter
+	OptionalParameterList `,` RestParameter
+	RequiredParameterList `,` OptionalParameterList `,` RestParameter
+
+RequiredParameterList :
+	RequiredParameter
+	RequiredParameterList `,` RequiredParameter
+
+RequiredParameter :
+	AccessibilityModifier? Identifier TypeAnnotation?
+	Identifier `:` StringLiteral
+
+AccessibilityModifier :
+	`public`
+	`private`
+	`protected`
+
+OptionalParameterList :
+	OptionalParameter
+	OptionalParameterList `,` OptionalParameter
+
+OptionalParameter :
+	AccessibilityModifier? Identifier `?` TypeAnnotation?
+	AccessibilityModifier? Identifier TypeAnnotation? Initializer
+	Identifier `?` `:` StringLiteral
+
+RestParameter :
+	`...` Identifier TypeAnnotation?
+
+ConstructSignature :
+	`new` TypeParameters? `(` ParameterList? `)` TypeAnnotation?
+
+IndexSignature :
+	`[` Identifier `:` `string` `]` TypeAnnotation
+	`[` Identifier `:` `number` `]` TypeAnnotation
+
+MethodSignature :
+	PropertyName   `?`?   CallSignature
+
+TypeAliasDeclaration :
+	`type` Identifier `=` Type `;`
+
+// A.2 Expressions
+
+PropertyAssignment : // (Modified)
+	PropertyName `:` AssignmentExpression
+	PropertyName CallSignature `{` FunctionBody `}`
+	GetAccessor
+	SetAccessor
+
+GetAccessor :
+	`get` PropertyName `(` `)` TypeAnnotation? `{` FunctionBody `}`
+
+SetAccessor:
+	`set` PropertyName `(` Identifier TypeAnnotation? `)` `{` FunctionBody `}`
+
+ElementList : // (Modified)
+	Elision?  AssignmentExpression
+	Elision?  SpreadElement
+	ElementList `,` Elision? AssignmentExpression
+	ElementList `,` Elision? SpreadElement
+
+SpreadElement :
+	`...` AssignmentExpression
+
+CallExpression : // (Modified)
+	`super` `(` ArgumentList? `)`
+	`super` `.` IdentifierName
+
+FunctionExpression : // (Modified)
+	`function` Identifier? CallSignature `{` FunctionBody `}`
+
+AssignmentExpression : // (Modified)
+	ArrowFunctionExpression
+
+ArrowFunctionExpression :
+	ArrowFormalParameters `=>` Block
+	ArrowFormalParameters `=>` AssignmentExpression
+
+ArrowFormalParameters :
+	CallSignature
+	Identifier
+
+Arguments : // (Modified)
+	TypeArguments? `(` ArgumentList? `)`
+
+UnaryExpression : // (Modified)
+	`<` Type `>` UnaryExpression
+
+// A.3 Statements
+
+VariableDeclaration : // (Modified)
+	SimpleVariableDeclaration
+	DestructuringVariableDeclaration
+
+SimpleVariableDeclaration :
+	Identifier TypeAnnotation? Initializer?
+
+TypeAnnotation :
+	`:` Type
+
+DestructuringVariableDeclaration :
+	BindingPattern TypeAnnotation? Initializer
+
+BindingPattern :
+	ObjectBindingPattern
+	ArrayBindingPattern
+
+ObjectBindingPattern :
+	`{` `}`
+	`{` BindingPropertyList `,`? `}`
+
+BindingPropertyList :
+	BindingProperty
+	BindingPropertyList `,` BindingProperty
+
+BindingProperty :
+	Identifier Initializer?
+	PropertyName `:` Identifier Initializer?
+	PropertyName `:` BindingPattern Initializer?
+
+ArrayBindingPattern :
+	`[` Elision? BindingRestElement? `]`
+	`[` BindingElementList `]`
+	`[` BindingElementList `,` Elision? BindingRestElement? `]`
+
+BindingElementList :
+	Elision? BindingElement
+	BindingElementList `,` Elision? BindingElement
+
+BindingElement :
+	Identifier Initializer?
+	BindingPattern Initializer?
+
+BindingRestElement :
+	`...` Identifier
+
+// A.4 Functions
+FunctionDeclaration : // (Modified)
+	FunctionOverloads? FunctionImplementation
+
+FunctionOverloads :
+	FunctionOverload
+	FunctionOverloads FunctionOverload
+
+FunctionOverload :
+	`function` Identifier CallSignature `;`
+
+FunctionImplementation :
+	`function` Identifier CallSignature `{` FunctionBody `}`
+
+// A.5 Interfaces
+InterfaceDeclaration :
+	`interface` Identifier TypeParameters? InterfaceExtendsClause? ObjectType
+
+InterfaceExtendsClause :
+	`extends` ClassOrInterfaceTypeList
+
+ClassOrInterfaceTypeList :
+	ClassOrInterfaceType
+	ClassOrInterfaceTypeList `,` ClassOrInterfaceType
+
+ClassOrInterfaceType :
+	TypeReference
+
+// A.6 - Classes
+ClassDeclaration :
+	`class` Identifier TypeParameters? ClassHeritage `{` ClassBody `}`
+
+ClassHeritage :
+	ClassExtendsClause? ImplementsClause?
+
+ClassExtendsClause :
+	`extends`  ClassType
+
+ClassType :
+	TypeReference
+
+ImplementsClause :
+	`implements` ClassOrInterfaceTypeList
+
+ClassBody :
+	ClassElements?
+
+ClassElements:
+	ClassElement
+	ClassElements ClassElement
+
+ClassElement:
+	ConstructorDeclaration
+	PropertyMemberDeclaration
+	IndexMemberDeclaration
+
+ConstructorDeclaration:
+	ConstructorOverloads? ConstructorImplementation
+
+ConstructorOverloads:
+	ConstructorOverload
+	ConstructorOverloads ConstructorOverload
+
+ConstructorOverload:
+	AccessibilityModifier? `constructor` `(` ParameterList? `)` `;`
+
+ConstructorImplementation:
+	AccessibilityModifier? `constructor` `(` ParameterList? `)` `{` FunctionBody `}`
+
+PropertyMemberDeclaration:
+	MemberVariableDeclaration
+	MemberFunctionDeclaration
+	MemberAccessorDeclaration
+
+MemberVariableDeclaration:
+	AccessibilityModifier? `static`? PropertyName TypeAnnotation? Initializer? `;`
+
+MemberFunctionDeclaration:
+	MemberFunctionOverloads? MemberFunctionImplementation
+
+MemberFunctionOverloads:
+	MemberFunctionOverload
+	MemberFunctionOverloads MemberFunctionOverload
+
+MemberFunctionOverload:
+	AccessibilityModifier? `static`? PropertyName CallSignature `;`
+
+MemberFunctionImplementation:
+	AccessibilityModifier? `static`? PropertyName CallSignature `{` FunctionBody `}`
+
+MemberAccessorDeclaration:
+	AccessibilityModifier? `static`? GetAccessor
+	AccessibilityModifier? `static`? SetAccessor
+
+IndexMemberDeclaration:
+	IndexSignature `;`
+
+// A.7 Enums
+EnumDeclaration:
+	`const`? `enum` Identifier `{` EnumBody? `}`
+
+EnumBody:
+	EnumMemberList `,`?
+
+EnumMemberList:
+	EnumMember
+	EnumMemberList `,` EnumMember
+
+EnumMember:
+	PropertyName
+	PropertyName `=` EnumValue
+
+EnumValue:
+	AssignmentExpression
+
+// A.8 Internal Modules
+ModuleDeclaration:
+	`module` IdentifierPath `{` ModuleBody `}`
+
+IdentifierPath:
+	Identifier
+	IdentifierPath `.` Identifier
+
+ModuleBody:
+	ModuleElements?
+
+ModuleElements:
+	ModuleElement
+	ModuleElements ModuleElement
+
+ModuleElement:
+	Statement
+	`export`? VariableDeclaration
+	`export`? FunctionDeclaration
+	`export`? ClassDeclaration
+	`export`? InterfaceDeclaration
+	`export`? TypeAliasDeclaration
+	`export`? EnumDeclaration
+	`export`? ModuleDeclaration
+	`export`? ImportDeclaration
+	`export`? AmbientDeclaration
+
+ImportDeclaration:
+	`import` Identifier `=` EntityName `;`
+
+EntityName:
+	ModuleName
+	ModuleName `.` Identifier
+
+// A.9 Source Files and External Modules
+SourceFile:
+	ImplementationSourceFile
+	DeclarationSourceFile
+
+ImplementationSourceFile:
+	ImplementationElements?
+
+ImplementationElements:
+	ImplementationElement
+	ImplementationElements ImplementationElement
+
+ImplementationElement:
+	ModuleElement
+	ExportAssignment
+	AmbientExternalModuleDeclaration
+	`export`? ExternalImportDeclaration
+
+DeclarationSourceFile:
+	DeclarationElements?
+
+DeclarationElements:
+	DeclarationElement
+	DeclarationElements DeclarationElement
+
+DeclarationElement:
+	ExportAssignment
+	AmbientExternalModuleDeclaration
+	`export`? InterfaceDeclaration
+	`export`? TypeAliasDeclaration
+	`export`? ImportDeclaration
+	`export`? AmbientDeclaration
+	`export`? ExternalImportDeclaration
+
+ExternalImportDeclaration:
+	`import` Identifier `=` ExternalModuleReference `;`
+
+ExternalModuleReference:
+	`require` `(` StringLiteral `)`
+
+ExportAssignment:
+	`export` `=` Identifier `;`
+
+// A.10 - Ambients
+AmbientDeclaration:
+	`declare` AmbientVariableDeclaration
+	`declare` AmbientFunctionDeclaration
+	`declare` AmbientClassDeclaration
+	`declare` AmbientEnumDeclaration
+	`declare` AmbientModuleDeclaration
+
+AmbientVariableDeclaration:
+	`var` Identifier TypeAnnotation? `;`
+
+AmbientFunctionDeclaration:
+	`function` Identifier CallSignature `;`
+
+AmbientClassDeclaration:
+	`class` Identifier TypeParameters? ClassHeritage `{` AmbientClassBody `}`
+
+AmbientClassBody:
+	AmbientClassBodyElements?
+
+AmbientClassBodyElements:
+	AmbientClassBodyElement
+	AmbientClassBodyElements AmbientClassBodyElement
+
+AmbientClassBodyElement:
+	AmbientConstructorDeclaration
+	AmbientPropertyMemberDeclaration
+	IndexSignature
+
+AmbientConstructorDeclaration:
+	`constructor` `(` ParameterList? `)` `;`
+
+AmbientPropertyMemberDeclaration:
+	AccessibilityModifier? `static`? PropertyName TypeAnnotation? `;`
+	AccessibilityModifier? `static`? PropertyName CallSignature `;`
+
+AmbientEnumDeclaration:
+	EnumDeclaration
+
+AmbientModuleDeclaration:
+	`module` IdentifierPath `{` AmbientModuleBody `}`
+
+AmbientModuleBody:
+	AmbientModuleElements?
+
+AmbientModuleElements:
+	AmbientModuleElement
+	AmbientModuleElements AmbientModuleElement
+
+AmbientModuleElement:
+	`export`? AmbientVariableDeclaration
+	`export`? AmbientFunctionDeclaration
+	`export`? AmbientClassDeclaration
+	`export`? InterfaceDeclaration
+	`export`? AmbientEnumDeclaration
+	`export`? AmbientModuleDeclaration
+	`export`? ImportDeclaration
+
+AmbientExternalModuleDeclaration:
+	`declare` `module` StringLiteral `{` AmbientExternalModuleBody `}`
+
+AmbientExternalModuleBody:
+	AmbientExternalModuleElements?
+
+AmbientExternalModuleElements:
+	AmbientExternalModuleElement
+	AmbientExternalModuleElements AmbientExternalModuleElement
+
+AmbientExternalModuleElement:
+	AmbientModuleElement
+	ExportAssignment
+	`export`? ExternalImportDeclaration

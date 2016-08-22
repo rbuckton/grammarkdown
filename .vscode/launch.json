@@ -5,7 +5,7 @@
 			"name": "Launch",
 			"type": "node",
 			"request": "launch",
-			"program": "${workspaceRoot}/lib/cli.js",
+			"program": "${workspaceRoot}/out/lib/cli.js",
 			"stopOnEntry": true,
 			"args": [],
 			"cwd": "${workspaceRoot}",
@@ -18,7 +18,8 @@
 			},
 			"externalConsole": false,
 			"sourceMaps": true,
-			"outDir": "${workspaceRoot}/lib"
+			"outDir": "${workspaceRoot}/out",
+			"preLaunchTask": "build:lib"
 		},
         {
             "name": "Launch Tests",
@@ -27,7 +28,7 @@
             "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
             "stopOnEntry": false,
             "args": [
-                "${workspaceRoot}/tests/index.js"
+                "${workspaceRoot}/out/tests/index.js"
             ],
             "cwd": "${workspaceRoot}",
             "preLaunchTask": "build",

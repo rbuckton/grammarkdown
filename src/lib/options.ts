@@ -16,6 +16,7 @@ export interface CompilerOptions {
     format?: EmitFormat;
     out?: string;
     emitLinks?: boolean;
+    diagnostics?: boolean;
 }
 
 export function getDefaultOptions(): CompilerOptions {
@@ -65,7 +66,7 @@ export interface ParsedArguments {
 }
 
 export function parse<T extends ParsedArguments>(options: KnownOptions, args: string[] = process.argv.slice(2)): T {
-    const known = createKnownOptionMaps(options);
+    const known = createKnownOptionMaps(new Dictionary<KnownOption>(options));
     const raw: RawArguments = { args: [], rest: [] };
     const messages: string[] = [];
     let result: ParseResult
@@ -167,31 +168,30 @@ export class UsageWriter {
 }
 
 export function usage(options: KnownOptions, margin: number = 0, printHeader?: (writer: UsageWriter) => void) {
+    const optionsDictionary = new Dictionary<KnownOption>(options);
     const knownOptions: KnownOption[] = [];
     let hasShortNames = false;
-    for (const key in options) {
-        if (Dictionary.has(options, key)) {
-            const option = importKnownOption(key, Dictionary.get(options, key));
-            if (option.hidden) {
-                continue;
-            }
-
-            let size = option.longName.length + 3;
-            if (option.shortName) {
-                hasShortNames = true;
-                size += 4;
-            }
-
-            if (option.param) {
-                size += 1;
-            }
-
-            if (size > margin) {
-                margin = size;
-            }
-
-            knownOptions.push(option);
+    for (const key in optionsDictionary) if (Dictionary.guard(optionsDictionary, key)) {
+        const option = importKnownOption(key, optionsDictionary[key]);
+        if (option.hidden) {
+            continue;
         }
+
+        let size = option.longName.length + 3;
+        if (option.shortName) {
+            hasShortNames = true;
+            size += 4;
+        }
+
+        if (option.param) {
+            size += 1;
+        }
+
+        if (size > margin) {
+            margin = size;
+        }
+
+        knownOptions.push(option);
     }
 
     const writer = new UsageWriter(margin, 1);
@@ -269,11 +269,11 @@ function importKnownOption(key: string, option: KnownOption) {
     return copy;
 }
 
-function createKnownOptionMaps(options: KnownOptions): KnownOptionMaps {
+function createKnownOptionMaps(options: Dictionary<KnownOption>): KnownOptionMaps {
     const longNames = new Dictionary<KnownOption>();
     const shortNames = new Dictionary<KnownOption>();
-    for (const key in options) {
-        const rawOption = Dictionary.get(options, key);
+    for (const key in options) if (Dictionary.guard(options, key)) {
+        const rawOption = options[key];
         if (rawOption) {
             const knownOption = importKnownOption(key, rawOption);
             Dictionary.set(longNames, knownOption.longName.toLowerCase(), knownOption);
@@ -283,8 +283,7 @@ function createKnownOptionMaps(options: KnownOptions): KnownOptionMaps {
         }
     }
 
-    let maps: KnownOptionMaps = { longNames, shortNames };
-
+    const maps: KnownOptionMaps = { longNames, shortNames };
     Object.freeze(longNames);
     Object.freeze(shortNames);
     Object.freeze(maps);

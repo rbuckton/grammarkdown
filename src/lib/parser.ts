@@ -102,8 +102,8 @@ export namespace TextChange {
         }
 
         const lineMap = new LineMap(originalText);
-        const pos = lineMap.getPositionOfLineAndCharacter(change.range.start);
-        const end = lineMap.getPositionOfLineAndCharacter(change.range.end);
+        const pos = lineMap.offsetAt(change.range.start);
+        const end = lineMap.offsetAt(change.range.end);
         return originalText.substr(0, pos) + change.text + originalText.substr(end);
     }
 }
@@ -574,6 +574,8 @@ export class Parser {
                 return this.token === SyntaxKind.CloseBraceToken;
 
             case ParsingContext.OneOfList:
+                return this.token === SyntaxKind.DedentToken || this.token === SyntaxKind.LineTerminatorToken || this.token === SyntaxKind.EndOfFileToken;
+
             case ParsingContext.OneOfListIndented:
                 return this.token === SyntaxKind.DedentToken || this.token === SyntaxKind.EndOfFileToken;
 
@@ -641,7 +643,6 @@ export class Parser {
     private parseList<TNode extends Node>(listContext: ParsingContext): TNode[] {
         const saveContext = this.parsingContext;
         this.parsingContext = listContext;
-
         const hasCloseToken = this.hasCloseToken();
         const hasSeparator = this.hasSeparator();
         const shouldConsumeCloseToken = this.shouldConsumeCloseToken();
