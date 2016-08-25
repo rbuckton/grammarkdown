@@ -662,6 +662,9 @@ export class Parser {
                 if (element) {
                     result.push(element);
                 }
+                else {
+                    this.recover();
+                }
             }
 
             if (hasCloseToken && (shouldConsumeCloseToken ? this.parseCloseToken() : this.isOnCloseToken())) {

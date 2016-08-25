@@ -12,12 +12,12 @@ const tests = tsb.create("src/tests");
 
 gulp.task("clean:lib", () => del(["out/lib/**/*"]));
 gulp.task("clean:tests", () => del(["out/tests/**/*"]));
-gulp.task("clean:baselines", cb => del(["tests/baselines/local"]));
+gulp.task("clean:baselines", cb => del(["baselines/local"]));
 gulp.task("clean", ["clean:lib", "clean:tests", "clean:baselines"]);
 
 gulp.task("accept-baselines", () => gulp
-    .src("tests/baselines/local/**/*")
-    .pipe(gulp.dest("tests/baselines/reference")));
+    .src("baselines/local/**/*")
+    .pipe(gulp.dest("baselines/reference")));
 
 gulp.task("build:lib", () => lib
     .src()
@@ -49,7 +49,7 @@ gulp.task("watch", ["build:tests"], () => gulp.watch(["src/**/*"], ["test:lib"])
 
 gulp.task("default", ["test"]);
 
-gulp.task("diff", () => diff("tests/baselines/reference/", "tests/baselines/local/"));
+gulp.task("diff", () => diff("baselines/reference/", "baselines/local/"));
 
 gulp.task("pages:checkout", () => git(["-C", "./pages", "pull", "--no-stat"]));
 gulp.task("pages:gmd:es6", ["build", "pages:checkout"], () => gmd("./spec/es6.grammar", "./spec/es6.grammar.html", "ecmarkup"));

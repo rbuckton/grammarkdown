@@ -203,7 +203,7 @@ export class Scanner {
                     else if (ch === CharacterCodes.Minus) {
                         return this.pos += 2, this.token = SyntaxKind.LessThanMinusToken;
                     }
-                    else if ((ch >= CharacterCodes.LowerA && ch <= CharacterCodes.LowerZ) || ch === CharacterCodes.Slash) {
+                    else if ((ch >= CharacterCodes.LowerA && ch <= CharacterCodes.LowerZ) || ch === CharacterCodes.Slash || ch === CharacterCodes.GreaterThan) {
                         this.scanHtmlTrivia();
                         break;
                     }

@@ -9,7 +9,7 @@ export function getGrammarFiles() {
     }
 
     grammarFiles = [];
-    collectFilesInPath("../spec", grammarFiles);
+    collectFilesInPath("../../spec", grammarFiles);
     collectFilesInPath("./resources", grammarFiles);
 
     return grammarFiles;
