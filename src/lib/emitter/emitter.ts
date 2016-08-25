@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
+import { CancellationToken } from "prex";
 import { DiagnosticMessages } from "../diagnostics";
 import { CompilerOptions } from "../options";
 import { Checker, Resolver } from "../checker";
@@ -53,14 +54,17 @@ export class Emitter {
     private diagnostics: DiagnosticMessages;
     private sourceFile: SourceFile;
     private triviaPos: number;
+    private cancellationToken: CancellationToken;
 
-    constructor(options: CompilerOptions, resolver: Resolver, diagnostics: DiagnosticMessages) {
+    constructor(options: CompilerOptions, resolver: Resolver, diagnostics: DiagnosticMessages, cancellationToken = CancellationToken.none) {
         this.options = options;
         this.resolver = resolver;
         this.diagnostics = diagnostics;
+        this.cancellationToken = cancellationToken;
     }
 
     public emit(node: SourceFile, writeFile?: (file: string, text: string) => void): void {
+        this.cancellationToken.throwIfCancellationRequested();
         const saveWriter = this.writer;
         const saveSourceFile = this.sourceFile;
         const saveTriviaPos = this.triviaPos;

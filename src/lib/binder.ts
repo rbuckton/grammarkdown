@@ -13,6 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+import { CancellationToken } from "prex";
 import { Dictionary } from "./core";
 import { SyntaxKind } from "./tokens";
 import { Symbol, SymbolKind, SymbolTable } from "./symbols";
@@ -194,13 +195,16 @@ export class Binder {
     private parentSymbol: Symbol;
     private bindings: BindingTable;
     private scope: SymbolTable;
+    private cancellationToken: CancellationToken;
 
-    constructor(bindings: BindingTable) {
+    constructor(bindings: BindingTable, cancellationToken = CancellationToken.none) {
         this.bindings = bindings;
         this.scope = bindings.globals;
+        this.cancellationToken = cancellationToken;
     }
 
     public bindSourceFile(file: SourceFile): void {
+        this.cancellationToken.throwIfCancellationRequested();
         if (this.scope.resolveSymbol(file.filename, SymbolKind.SourceFile)) {
             // skip files that have already been bound.
             return;

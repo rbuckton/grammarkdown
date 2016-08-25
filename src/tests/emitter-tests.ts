@@ -1,11 +1,25 @@
 import { basename } from "path";
 import { Grammar } from "../lib/grammar";
+import { Host } from "../lib/host";
 import { EmitFormat } from "../lib/options";
 import { getGrammarFiles } from "./resources";
 import { writeTokens, writeDiagnostics, writeOutput, compareBaseline } from "./diff";
+import { CancellationTokenSource } from "prex";
+import { assert } from "chai";
 
 describe("Emitter", () => {
     defineTests();
+
+    it("cancelable", () => {
+        const cts = new CancellationTokenSource();
+        const grammar = new Grammar(["cancelable.grammar"], {}, Host.getHost({
+            readFile(file) { return ""; },
+            writeFile(file, content) { }
+        }), /*oldGrammar*/ undefined, cts.token);
+        grammar.check(/*sourceFile*/ undefined);
+        cts.cancel();
+        assert.throws(() => grammar.emit(/*sourceFile*/ undefined));
+    });
 
     function defineTests() {
         for (const file of getGrammarFiles()) {

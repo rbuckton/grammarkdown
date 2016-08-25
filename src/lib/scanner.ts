@@ -15,6 +15,7 @@
  */
 
 import { EOL } from 'os';
+import { CancellationToken } from "prex";
 import { TextRange } from "./core";
 import { CharacterCodes, SyntaxKind, stringToToken } from "./tokens";
 import { Diagnostics, Diagnostic, DiagnosticMessages, NullDiagnosticMessages } from "./diagnostics";
@@ -35,12 +36,14 @@ export class Scanner {
     private filename: string;
     private diagnostics: DiagnosticMessages;
     private proseStartToken: SyntaxKind;
+    private cancellationToken: CancellationToken;
 
-    constructor(filename: string, text: string, diagnostics: DiagnosticMessages) {
+    constructor(filename: string, text: string, diagnostics: DiagnosticMessages, cancellationToken = CancellationToken.none) {
         this.filename = filename;
         this.text = text;
         this.len = text.length;
         this.diagnostics = diagnostics;
+        this.cancellationToken = cancellationToken;
     }
 
     public getPos(): number {
@@ -76,6 +79,7 @@ export class Scanner {
     }
 
     public scan(): SyntaxKind {
+        this.cancellationToken.throwIfCancellationRequested();
         const token = this.dequeueOrScanToken();
         if (token === SyntaxKind.EndOfFileToken && this.indents.length) {
             for (let i = 0; i < this.indents.length; i++) {

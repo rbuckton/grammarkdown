@@ -6,9 +6,18 @@ import { SourceFile } from "../lib/nodes";
 import { Parser } from "../lib/parser";
 import { getGrammarFiles } from "./resources";
 import { writeNodes, writeDiagnostics, compareBaseline } from "./diff";
+import { CancellationTokenSource } from "prex";
+import { assert } from "chai";
 
 describe("Parser", () => {
     defineTests();
+
+    it("cancelable", () => {
+        const cts = new CancellationTokenSource();
+        const parser = new Parser(new DiagnosticMessages(), cts.token);
+        cts.cancel();
+        assert.throws(() => parser.parseSourceFile("cancelable.grammar", ""));
+    });
 
     function defineTests() {
         for (let file of getGrammarFiles()) {
