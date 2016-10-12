@@ -73,6 +73,12 @@ export function writeDiagnostics(test: string, diagnostics: DiagnosticMessages, 
         text += message + EOL;
     });
 
+    if (!!text) {
+        // Remove absolute pathnames from text
+        const root = resolve(".").replace(/\\/g,"/");
+        const re = new RegExp(root.replace(/[.?*+^$[\]\\(){}|-]/g, "\\$&"), "gi");
+        text = text.replace(re, ".");
+    }
     return writeBaseline(test + ".diagnostics", text, baselines);
 }
 

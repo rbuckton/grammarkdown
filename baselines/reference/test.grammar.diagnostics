@@ -1,11 +1,11 @@
 /// test.grammar:
-C:/dev/grammarkdown/spec/test.grammar(7,1): error GM2006: Production 'D' is missing parameter 'B'. All definitions of production 'D' must specify the same formal parameters.
-C:/dev/grammarkdown/spec/test.grammar(8,1): error GM2006: Production 'D' is missing parameter 'A'. All definitions of production 'D' must specify the same formal parameters.
-C:/dev/grammarkdown/spec/test.grammar(12,5): error GM2007: There is no argument given for parameter 'A'.
-C:/dev/grammarkdown/spec/test.grammar(13,7): error GM1001: '?', '+', or '~' expected.
-C:/dev/grammarkdown/spec/test.grammar(14,7): error GM1001: '?', '+', or '~' expected.
-C:/dev/grammarkdown/spec/test.grammar(14,10): error GM1001: '?', '+', or '~' expected.
-C:/dev/grammarkdown/spec/test.grammar(14,10): error GM2004: Production 'E' does not have a parameter named 'B'.
-C:/dev/grammarkdown/spec/test.grammar(15,5): error GM2007: There is no argument given for parameter 'A'.
-C:/dev/grammarkdown/spec/test.grammar(15,8): error GM2004: Production 'E' does not have a parameter named 'B'.
-C:/dev/grammarkdown/spec/test.grammar(15,8): error GM2004: Production 'F' does not have a parameter named 'B'.
+./spec/test.grammar(7,1): error GM2006: Production 'D' is missing parameter 'B'. All definitions of production 'D' must specify the same formal parameters.
+./spec/test.grammar(8,1): error GM2006: Production 'D' is missing parameter 'A'. All definitions of production 'D' must specify the same formal parameters.
+./spec/test.grammar(12,5): error GM2007: There is no argument given for parameter 'A'.
+./spec/test.grammar(13,7): error GM1001: '?', '+', or '~' expected.
+./spec/test.grammar(14,7): error GM1001: '?', '+', or '~' expected.
+./spec/test.grammar(14,10): error GM1001: '?', '+', or '~' expected.
+./spec/test.grammar(14,10): error GM2004: Production 'E' does not have a parameter named 'B'.
+./spec/test.grammar(15,5): error GM2007: There is no argument given for parameter 'A'.
+./spec/test.grammar(15,8): error GM2004: Production 'E' does not have a parameter named 'B'.
+./spec/test.grammar(15,8): error GM2004: Production 'F' does not have a parameter named 'B'.
