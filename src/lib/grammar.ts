@@ -100,6 +100,15 @@ export class Grammar {
         return Dictionary.get(this.fileMap, this.normalizeFile(file));
     }
 
+    /** Adds a synthetic SourceFile to the grammar. */
+    public addSourceFile(sourceFile: SourceFile) {
+        const file = this.normalizeFile(this.resolveFile(sourceFile.filename));
+        if (Dictionary.has(this.fileMap, file)) throw new Error(`A sourceFile for the file name ${file} already exists in the collection.`);
+        Dictionary.set(this.fileMap, file, sourceFile);
+        this.processImports(sourceFile, file);
+        this.rootFiles.push(sourceFile);
+    }
+
     private parse(rootNames: string[]) {
         performance.mark("beforeParse");
 

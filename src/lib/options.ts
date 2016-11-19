@@ -171,7 +171,7 @@ export function usage(options: KnownOptions, margin: number = 0, printHeader?: (
     const optionsDictionary = new Dictionary<KnownOption>(options);
     const knownOptions: KnownOption[] = [];
     let hasShortNames = false;
-    for (const key in optionsDictionary) if (Dictionary.guard(optionsDictionary, key)) {
+    for (const key in optionsDictionary) {
         const option = importKnownOption(key, optionsDictionary[key]);
         if (option.hidden) {
             continue;
@@ -272,7 +272,7 @@ function importKnownOption(key: string, option: KnownOption) {
 function createKnownOptionMaps(options: Dictionary<KnownOption>): KnownOptionMaps {
     const longNames = new Dictionary<KnownOption>();
     const shortNames = new Dictionary<KnownOption>();
-    for (const key in options) if (Dictionary.guard(options, key)) {
+    for (const key in options) {
         const rawOption = options[key];
         if (rawOption) {
             const knownOption = importKnownOption(key, rawOption);
