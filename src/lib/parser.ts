@@ -433,7 +433,7 @@ export class Parser {
                 return this.parsePrimarySymbol(/*allowOptional*/ false);
 
             default:
-                console.error(`Unexpected parsing context: ${ParsingContext[this.parsingContext]}`);
+                console.error(`Unexpected parsing context: ${ParsingContext[<any>this.parsingContext]}`);
                 return undefined;
         }
     }

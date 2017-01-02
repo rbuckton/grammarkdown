@@ -6,7 +6,7 @@ SyntaxKind[TrueKeyword](1,39): true
 SyntaxKind[LineTerminatorToken](2,1): «line terminator»
 SyntaxKind[AtToken](2,1): @
 SyntaxKind[ImportKeyword](2,2): import
-SyntaxKind[StringLiteral](2,9): «StringLiteral»
+SyntaxKind[StringLiteral](2,9): "es6.grammar"
 SyntaxKind[LineTerminatorToken](3,1): «line terminator»
 SyntaxKind[LineTerminatorToken](4,1): «line terminator»
 SyntaxKind[LineTerminatorToken](5,1): «line terminator»

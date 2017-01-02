@@ -45,7 +45,7 @@ gulp.task("test:min", ["build:tests", "clean:baselines"], () => gulp
 
 gulp.task("test", ["test:lib"]);
 
-gulp.task("watch", ["build:tests"], () => gulp.watch(["src/**/*"], ["test:lib"]));
+gulp.task("watch", ["build:tests"], () => gulp.watch(["src/**/*", "spec/*.grammar"], ["test:lib"]));
 
 gulp.task("default", ["test"]);
 

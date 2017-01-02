@@ -44,7 +44,7 @@
     "chai": "^2.3.0",
     "del": "^2.0.2",
     "ecmarkup": "^3.2.6",
-    "gulp": "^3.9.0",
+    "gulp": "^3.9.1",
     "gulp-emu": "^1.0.0",
     "gulp-mocha": "^2.1.0",
     "gulp-sourcemaps": "^2.0.0-alpha",

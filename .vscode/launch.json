@@ -1,26 +1,26 @@
 {
-	"version": "0.2.0",
-	"configurations": [
-		{
-			"name": "Launch",
-			"type": "node",
-			"request": "launch",
-			"program": "${workspaceRoot}/out/lib/cli.js",
-			"stopOnEntry": true,
-			"args": [],
-			"cwd": "${workspaceRoot}",
-			"runtimeExecutable": null,
-			"runtimeArgs": [
-				"--nolazy"
-			],
-			"env": {
-				"NODE_ENV": "development"
-			},
-			"externalConsole": false,
-			"sourceMaps": true,
-			"outDir": "${workspaceRoot}/out",
-			"preLaunchTask": "build:lib"
-		},
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceRoot}/out/lib/cli.js",
+            "stopOnEntry": true,
+            "args": [],
+            "cwd": "${workspaceRoot}",
+            "runtimeExecutable": null,
+            "runtimeArgs": [
+                "--nolazy"
+            ],
+            "env": {
+                "NODE_ENV": "development"
+            },
+            "console": "externalTerminal",
+            "sourceMaps": true,
+            "outDir": "${workspaceRoot}/out",
+            "preLaunchTask": "build:lib"
+        },
         {
             "name": "Launch Tests",
             "type": "node",
@@ -39,15 +39,15 @@
             "env": {
                 "NODE_ENV": "development"
             },
-            "externalConsole": false,
+            "console": "externalTerminal",
             "sourceMaps": true,
             "outDir": "${workspaceRoot}/tests"
         },
-		{
-			"name": "Attach",
-			"type": "node",
-			"request": "attach",
-			"port": 5858
-		}
-	]
+        {
+            "name": "Attach",
+            "type": "node",
+            "request": "attach",
+            "port": 5858
+        }
+    ]
 }

@@ -4,7 +4,7 @@
   (2,1)SyntaxKind[Import]
     (2,1)SyntaxKind[AtToken]
     (2,2)SyntaxKind[ImportKeyword]
-    (2,9)SyntaxKind[StringLiteral]
+    (2,9)SyntaxKind[StringLiteral](text = "es6.grammar")
   (5,1)SyntaxKind[Production]
     (5,1)SyntaxKind[Identifier](text = "TypeParameters")
     (6,1)SyntaxKind[RightHandSideList]

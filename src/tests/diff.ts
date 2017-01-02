@@ -23,6 +23,7 @@ import {
     SourceFile,
     Node,
     Identifier,
+    StringLiteral,
     Nonterminal,
     Argument,
     Prose,
@@ -50,6 +51,9 @@ export function writeTokens(test: string, scanner: Scanner, lineMap: LineMap, ba
                 break;
             case SyntaxKind.Terminal:
                 message += `\`${scanner.getTokenValue()}\``;
+                break;
+            case SyntaxKind.StringLiteral:
+                message += `"${scanner.getTokenValue()}"`;
                 break;
             case SyntaxKind.UnicodeCharacterLiteral:
                 message += scanner.getTokenText();
@@ -142,7 +146,7 @@ export function compareBaseline(file: string) {
 }
 
 function resolveBaseline(file: string) {
-    let baselinePath = resolve(__dirname, "baselines");
+    let baselinePath = resolve(__dirname, "../../tests/baselines");
     let localPath = resolve(baselinePath, "local");
     let localFile = resolve(localPath, file);
     let referencePath = resolve(baselinePath, "reference");
@@ -178,7 +182,8 @@ function formatNode(node: Node, sourceFile: SourceFile) {
         case SyntaxKind.ProseHead:
         case SyntaxKind.ProseMiddle:
         case SyntaxKind.ProseTail:
-            text += `(text = "${(<ProseFragmentLiteral | Identifier | Terminal>node).text}")`;
+        case SyntaxKind.StringLiteral:
+            text += `(text = "${(<ProseFragmentLiteral | Identifier | StringLiteral | Terminal>node).text}")`;
             break;
         case SyntaxKind.UnicodeCharacterLiteral:
             text += `(text = ${sourceFile.text.slice(node.pos, node.end)})`;
