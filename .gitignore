@@ -1,4 +1,4 @@
 node_modules
 out
-tests/baselines/local
+baselines/local
 spec/*.grammar.html

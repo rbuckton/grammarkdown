@@ -6,5 +6,5 @@ node_modules
 pages
 spec
 src
-tests
+baselines
 gulpfile.js

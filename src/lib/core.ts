@@ -14,36 +14,11 @@
  *  limitations under the License.
  */
 
-const dictionaryModeKey = "__DICTIONARY_MODE__";
-const supportsObjectCreate = typeof Object.create === "function";
-const hasOwnProperty = Object.prototype.hasOwnProperty;
-const isPrototypeOf = Object.prototype.isPrototypeOf;
-const toString = Object.prototype.toString;
-const isArray = Array.isArray || ((object: any): object is Array<any> => toString.call(object) === "[object Array]");
+// NOTE: grammarkdown requires a minimum of ES5.
+if (typeof Object.create !== "function") throw new Error("Grammarkdown requires a minimum host engine of ES5.");
 
-const { hasCore, getCore, guardCore, setCore, deleteCore, freezeCore } = (function () {
-    function uplevel() {
-        return {
-            hasCore<T>(object: Dictionary<T>, key: string | number) { return key in object; },
-            getCore<T>(object: Dictionary<T>, key: string | number) { return object[key]; },
-            guardCore<T>(object: Dictionary<T>, key: string | number) { return true; },
-            setCore<T>(object: Dictionary<T>, key: string | number, value: T) { return object[key] = value, object; },
-            deleteCore<T>(object: Dictionary<T>, key: string | number) { return delete object[key] },
-            freezeCore<T>(object: Dictionary<T>) { return <ReadonlyDictionary<T>>Object.freeze(object); }
-        };
-    }
-    function downlevel() {
-        return {
-            hasCore<T>(object: Dictionary<T>, key: string | number) { return hasOwnProperty.call(object, key); },
-            getCore<T>(object: Dictionary<T>, key: string | number) { return hasOwnProperty.call(object, key) ? object[key] : undefined; },
-            guardCore<T>(object: Dictionary<T>, key: string | number) { return hasOwnProperty.call(object, key); },
-            setCore<T>(object: Dictionary<T>, key: string | number, value: T) { return object[key] = value, object; },
-            deleteCore<T>(object: Dictionary<T>, key: string | number) { return delete object[key] },
-            freezeCore<T>(object: Dictionary<T>) { return <ReadonlyDictionary<T>>object; }
-        };
-    }
-    return Object.create ? uplevel() : downlevel();
-})();
+const dictionaryModeKey = "__DICTIONARY_MODE__";
+const hasOwnProperty = Object.prototype.hasOwnProperty;
 
 export interface DictionaryLike<T> {
     [key: string]: T;
@@ -53,18 +28,18 @@ export interface DictionaryLike<T> {
 class ObjectModeHelper {}
 
 export class Dictionary<T> {
-    private "Dictionary<T>";
+    private "Dictionary<T>": never;
 
     constructor(object?: DictionaryLike<T> | [string, T][]) {
         delete (this[dictionaryModeKey] = undefined, this)[dictionaryModeKey];
-        if (isArray(object)) {
+        if (Array.isArray(object)) {
             for (const [key, value] of object) {
-                setCore(this, key, value);
+                this[key] = value;
             }
         }
         else {
             for (const key in object) if (hasOwnProperty.call(object, key)) {
-                setCore(this, key, object[key]);
+                this[key] = object[key];
             }
         }
     }
@@ -73,33 +48,29 @@ export class Dictionary<T> {
     [key: number]: T;
 
     static has<T>(object: Dictionary<T>, key: string | number): boolean {
-        return hasCore(object, key);
-    }
-
-    static guard<T>(object: Dictionary<T>, key: string | number): boolean {
-        return guardCore(object, key);
+        return key in object;
     }
 
     static get<T>(object: Dictionary<T>, key: string | number): T {
-        return getCore(object, key);
+        return object[key];
     }
 
     static getOrUpdate<T>(object: Dictionary<T>, key: string | number, value: T): T {
-        return hasCore(object, key) ? object[key] : object[key] = value;
+        return key in object ? object[key] : object[key] = value;
     }
 
     static getOrCreate<T>(object: Dictionary<T>, key: string | number, factory: (key: string | number) => T): T {
-        return hasCore(object, key) ? object[key] : object[key] = factory(key);
+        return key in object ? object[key] : object[key] = factory(key);
     }
 
     static set<T>(object: Dictionary<T>, key: string | number, value: T): Dictionary<T> {
-        return setCore(object, key, value);
+        return object[key] = value, object;
     }
 
     static pick<T>(object: Dictionary<T>, key: string | number): T {
-        if (hasCore(object, key)) {
+        if (key in object) {
             const value = object[key];
-            deleteCore(object, key);
+            delete object[key];
             return value;
         }
     }
@@ -107,9 +78,9 @@ export class Dictionary<T> {
     static pickRange<T>(object: Dictionary<T>, keys: string[]): Dictionary<T> {
         const result = new Dictionary<T>();
         for (const key of keys) {
-            if (hasCore(object, key)) {
-                setCore(result, key, object[key]);
-                deleteCore(object, key);
+            if (key in object) {
+                result[key] = object[key];
+                delete object[key];
             }
         }
         return result;
@@ -117,38 +88,38 @@ export class Dictionary<T> {
 
     static pickWhere<T>(object: Dictionary<T>, callbackfn: (value: T, key: string, object: Dictionary<T>) => boolean, thisArg?: any): Dictionary<T> {
         const result = new Dictionary<T>();
-        for (const key in object) if (guardCore(object, key)) {
+        for (const key in object) {
             const value = object[key];
             if (callbackfn.call(thisArg, value, key, object)) {
-                setCore(result, key, value);
-                deleteCore(object, key);
+                result[key] = value;
+                delete object[key];
             }
         }
         return result;
     }
 
     static delete<T>(object: Dictionary<T>, key: string | number): boolean {
-        return deleteCore(object, key);
+        return delete object[key];
     }
 
     static deleteWhere<T>(object: Dictionary<T>, callbackfn: (value: T, key: string, object: Dictionary<T>) => boolean, thisArg?: any) {
-        for (const key in object) if (guardCore(object, key)) {
+        for (const key in object) {
             if (callbackfn.call(thisArg, object[key], key, object)) {
-                deleteCore(object, key);
+                delete object[key];
             }
         }
     }
 
     static clear<T>(object: Dictionary<T>) {
-        for (const key in object) if (guardCore(object, key)) {
-            deleteCore(object, key);
+        for (const key in object) {
+            delete object[key];
         }
     }
 
     static assign<T>(target: Dictionary<T>, ...sources: DictionaryLike<T>[]): Dictionary<T> {
         for (const source of sources) {
             for (const key in source) if (hasOwnProperty.call(source, key)) {
-                setCore(target, key, source[key]);
+                target[key] = source[key];
             }
         }
         return target;
@@ -157,8 +128,8 @@ export class Dictionary<T> {
     static merge<T>(target: Dictionary<T>, ...sources: DictionaryLike<T>[]): Dictionary<T> {
         for (const source of sources) {
             for (const key in source) if (hasOwnProperty.call(source, key)) {
-                if (!hasCore(target, key)) {
-                    setCore(target, key, source[key]);
+                if (!(key in target)) {
+                    target[key] = source[key];
                 }
             }
         }
@@ -170,13 +141,13 @@ export class Dictionary<T> {
     static from<T, U>(array: T[], keySelector: (value: T) => string | number, elementSelector?: (value: T) => U): Dictionary<T | U> {
         const dictionary = new Dictionary<T | U>();
         for (const value of array) {
-            setCore(dictionary, keySelector(value), elementSelector ? elementSelector(value) : value);
+            dictionary[keySelector(value)] = elementSelector ? elementSelector(value) : value;
         }
         return dictionary;
     }
 
     static forEach<T>(object: Dictionary<T>, callbackfn: (value: T, key: string, object: Dictionary<T>) => void, thisArg?: any): void {
-        for (const key in object) if (guardCore(object, key)) {
+        for (const key in object) {
             const value = object[key];
             callbackfn.call(thisArg, value, key, object);
         }
@@ -184,7 +155,7 @@ export class Dictionary<T> {
 
     static map<T, U>(object: Dictionary<T>, callbackfn: (value: T, key: string, object: Dictionary<T>) => U, thisArg?: any): Dictionary<U> {
         const result = new Dictionary<U>();
-        for (const key in object) if (guardCore(object, key)) {
+        for (const key in object) {
             const value = object[key];
             const mappedValue = <U>callbackfn.call(thisArg, value, key, object);
             result[key] = mappedValue;
@@ -194,7 +165,7 @@ export class Dictionary<T> {
 
     static mapPairs<T, U>(object: Dictionary<T>, callbackfn: (value: T, key: string, object: Dictionary<T>) => [string, U], thisArg?: any): Dictionary<U> {
         const result = new Dictionary<U>();
-        for (const key in object) if (guardCore(object, key)) {
+        for (const key in object) {
             const value = object[key];
             const [mappedKey, mappedValue] = <[string, U]>callbackfn.call(thisArg, value, key, object);
             result[mappedKey] = mappedValue;
@@ -204,7 +175,7 @@ export class Dictionary<T> {
 
     static mapWith<T, U>(object: Dictionary<T>, callbacks: DictionaryLike<(value: T, key: string, object: Dictionary<T>) => U>): Dictionary<U> {
         const result = new Dictionary<U>();
-        for (const key in object) if (guardCore(object, key)) {
+        for (const key in object) {
             if (hasOwnProperty.call(callbacks, key)) {
                 result[key] = callbacks[key](object[key], key, object);
             }
@@ -214,7 +185,7 @@ export class Dictionary<T> {
 
     static mapPairsWith<T, U>(object: Dictionary<T>, callbacks: DictionaryLike<(value: T, key: string, object: Dictionary<T>) => [string | number, U]>): Dictionary<U> {
         const result = new Dictionary<U>();
-        for (const key in object) if (guardCore(object, key)) {
+        for (const key in object) {
             if (hasOwnProperty.call(callbacks, key)) {
                 const [mappedKey, mappedValue] = callbacks[key](object[key], key, object);
                 result[mappedKey] = mappedValue;
@@ -225,7 +196,7 @@ export class Dictionary<T> {
 
     static filter<T>(object: Dictionary<T>, callbackfn: (value: T, key: string, object: Dictionary<T>) => boolean, thisArg?: any): Dictionary<T> {
         const newObject = new Dictionary<T>();
-        for (const key in object) if (guardCore(object, key)) {
+        for (const key in object) {
             const value = object[key];
             if (callbackfn.call(thisArg, value, key, object)) {
                 newObject[key] = value;
@@ -244,12 +215,13 @@ export class Dictionary<T> {
         ObjectModeHelper.prototype = clone;
         new ObjectModeHelper();
         ObjectModeHelper.prototype = savedPrototype;
-        return freezeCore(clone);
+        Object.freeze(clone);
+        return clone;
     }
 
     static count<T>(object: Dictionary<T>, callbackfn?: (value: T, key: string, object: Dictionary<T>) => boolean, thisArg?: any): number {
         let count = 0;
-        for (const key in object) if (guardCore(object, key)) {
+        for (const key in object) {
             const value = object[key];
             if (!callbackfn || callbackfn.call(thisArg, value, key, object)) {
                 count++;
@@ -259,7 +231,7 @@ export class Dictionary<T> {
     }
 
     static some<T>(object: Dictionary<T>, callbackfn?: (value: T, key: string, object: Dictionary<T>) => boolean, thisArg?: any): boolean {
-        for (const key in object) if (guardCore(object, key)) {
+        for (const key in object) {
             const value = object[key];
             if (!callbackfn || callbackfn.call(thisArg, value, key, object)) {
                 return true;
@@ -270,7 +242,7 @@ export class Dictionary<T> {
 
     static every<T>(object: Dictionary<T>, callbackfn: (value: T, key: string, object: Dictionary<T>) => boolean, thisArg?: any): boolean {
         let any = false;
-        for (const key in object) if (guardCore(object, key)) {
+        for (const key in object) {
             const value = object[key];
             if (!callbackfn.call(thisArg, value, key, object)) {
                 return false;
@@ -282,7 +254,7 @@ export class Dictionary<T> {
     }
 
     static find<T>(object: Dictionary<T>, callbackfn: (value: T, key: string, object: Dictionary<T>) => boolean, thisArg?: any): T {
-        for (const key in object) if (guardCore(object, key)) {
+        for (const key in object) {
             const value = object[key];
             if (callbackfn.call(value, key, object)) {
                 return value;
@@ -292,7 +264,7 @@ export class Dictionary<T> {
     }
 
     static findKey<T>(object: Dictionary<T>, callbackfn: (value: T, key: string, object: Dictionary<T>) => boolean, thisArg?: any): string {
-        for (const key in object) if (guardCore(object, key)) {
+        for (const key in object) {
             const value = object[key];
             if (callbackfn.call(value, key, object)) {
                 return key;
@@ -302,7 +274,7 @@ export class Dictionary<T> {
     }
 
     static first<T>(object: Dictionary<T>, callbackfn?: (value: T, key: string, object: Dictionary<T>) => boolean, thisArg?: any): T {
-        for (const key in object) if (guardCore(object, key)) {
+        for (const key in object) {
             const value = object[key];
             if (!callbackfn || callbackfn.call(value, key, object)) {
                 return value;
@@ -311,7 +283,7 @@ export class Dictionary<T> {
     }
 
     static firstPair<T>(object: Dictionary<T>, callbackfn?: (value: T, key: string, object: Dictionary<T>) => boolean, thisArg?: any): [string, T] {
-        for (const key in object) if (guardCore(object, key)) {
+        for (const key in object) {
             const value = object[key];
             if (!callbackfn || callbackfn.call(value, key, object)) {
                 return [key, value];
@@ -321,7 +293,7 @@ export class Dictionary<T> {
 
     static last<T>(object: Dictionary<T>, callbackfn?: (value: T, key: string, object: Dictionary<T>) => boolean, thisArg?: any): T {
         let result: T;
-        for (const key in object) if (guardCore(object, key)) {
+        for (const key in object) {
             const value = object[key];
             if (!callbackfn || callbackfn.call(value, key, object)) {
                 result = value;
@@ -332,7 +304,7 @@ export class Dictionary<T> {
 
     static lastPair<T>(object: Dictionary<T>, callbackfn?: (value: T, key: string, object: Dictionary<T>) => boolean, thisArg?: any): [string, T] {
         let result: [string, T];
-        for (const key in object) if (guardCore(object, key)) {
+        for (const key in object) {
             const value = object[key];
             if (!callbackfn || callbackfn.call(value, key, object)) {
                 result = [key, value];
@@ -357,7 +329,7 @@ export class Dictionary<T> {
     }
 
     static keyOf<T>(object: Dictionary<T>, value: T): string {
-        for (const key in object) if (guardCore(object, key)) {
+        for (const key in object) {
             if (object[key] === value) {
                 return key;
             }
@@ -366,7 +338,7 @@ export class Dictionary<T> {
     }
 
     static includes<T>(object: Dictionary<T>, value: T): boolean {
-        for (const key in object) if (guardCore(object, key)) {
+        for (const key in object) {
             if (object[key] === value) {
                 return true;
             }
@@ -378,8 +350,8 @@ export class Dictionary<T> {
         if (object === other) return true;
         if (!object || !other) return false;
         for (const key in other) if (hasOwnProperty.call(other, key)) {
-            if (!hasCore(object, key)) return false;
-            if (getCore(object, key) !== other[key]) return false;
+            if (!(key in object)) return false;
+            if (object[key] !== other[key]) return false;
         }
         return true;
     }
@@ -387,19 +359,19 @@ export class Dictionary<T> {
     static equals<T>(object: Dictionary<T>, other: DictionaryLike<T>) {
         if (object === other) return true;
         if (!object || !other) return false;
-        for (const key in object) if (guardCore(object, key)) {
+        for (const key in object) {
             if (!hasOwnProperty.call(other, key)) return false;
-            if (getCore(object, key) !== other[key]) return false;
+            if (object[key] !== other[key]) return false;
         }
         for (const key in other) if (hasOwnProperty.call(other, key)) {
-            if (!hasCore(object, key)) return false;
+            if (!(key in object)) return false;
         }
         return true;
     }
 
     static reduce<T, U>(object: Dictionary<T>, callbackfn: (previousValue: U, value: T, key: string, object: Dictionary<T>) => U, initialValue: U): U {
         let aggregate = initialValue;
-        for (const key in object) if (guardCore(object, key)) {
+        for (const key in object) {
             const value = object[key];
             aggregate = callbackfn(aggregate, value, key, object);
         }
@@ -409,7 +381,7 @@ export class Dictionary<T> {
     static turn<T>(object: Dictionary<T>, callbackfn: (memo: Dictionary<T>, value: T, key: string, object: Dictionary<T>) => void, memo?: Dictionary<T>): Dictionary<T>;
     static turn<T, U>(object: Dictionary<T>, callbackfn: (memo: Dictionary<U>, value: T, key: string, object: Dictionary<T>) => void, memo: Dictionary<U>): Dictionary<U>;
     static turn<T, U>(object: Dictionary<T>, callbackfn: (memo: Dictionary<T | U>, value: T, key: string, object: Dictionary<T>) => void, memo: Dictionary<T | U> = object): Dictionary<T | U> {
-        for (const key in object) if (guardCore(object, key)) {
+        for (const key in object) {
             const value = object[key];
             callbackfn(memo, value, key, object);
         }
@@ -418,15 +390,15 @@ export class Dictionary<T> {
 
     static invert<T extends string | number>(object: Dictionary<T>): Dictionary<string> {
         const inverted = new Dictionary<string>();
-        for (const key in object) if (guardCore(object, key)) {
-            setCore(inverted, String(getCore(object, key)), key);
+        for (const key in object) {
+            inverted["" + object[key]] = key;
         }
         return inverted;
     }
 
     static keys<T>(object: Dictionary<T>): string[] {
         const result: string[] = [];
-        for (const key in object) if (guardCore(object, key)) {
+        for (const key in object) {
             result.push(key);
         }
         return result;
@@ -434,23 +406,23 @@ export class Dictionary<T> {
 
     static values<T>(object: Dictionary<T>): T[] {
         const result: T[] = [];
-        for (const key in object) if (guardCore(object, key)) {
-            result.push(getCore(object, key));
+        for (const key in object) {
+            result.push(object[key]);
         }
         return result;
     }
 
     static entries<T>(object: Dictionary<T>): [string, T][] {
         const result: [string, T][] = [];
-        for (const key in object) if (guardCore(object, key)) {
-            result.push([key, getCore(object, key)]);
+        for (const key in object) {
+            result.push([key, object[key]]);
         }
         return result;
     }
 
     static toObject<T>(object: Dictionary<T>): DictionaryLike<T> {
         const result: DictionaryLike<T> = {};
-        for (const key in object) if (guardCore(object, key)) {
+        for (const key in object) {
             result[key] = object[key];
         }
         return result;
@@ -458,14 +430,14 @@ export class Dictionary<T> {
 
     static toArray<T, U>(object: Dictionary<T>, callbackfn: (value: T, key: string, object: Dictionary<T>) => U, thisArg?: any): U[] {
         const result: U[] = [];
-        for (const key in object) if (guardCore(object, key)) {
+        for (const key in object) {
             result.push(callbackfn.call(thisArg, object[key], key, object));
         }
         return result;
     }
 
     static increment(object: Dictionary<number>, key: string | number, offsetValue?: number) {
-        const value = getCore(object, key) || 0;
+        const value = object[key] || 0;
         object[key] = value + (offsetValue || 1);
         return value;
     }

@@ -146,7 +146,7 @@ export function compareBaseline(file: string) {
 }
 
 function resolveBaseline(file: string) {
-    let baselinePath = resolve(__dirname, "../../tests/baselines");
+    let baselinePath = resolve(__dirname, "../../baselines");
     let localPath = resolve(baselinePath, "local");
     let localFile = resolve(localPath, file);
     let referencePath = resolve(baselinePath, "reference");

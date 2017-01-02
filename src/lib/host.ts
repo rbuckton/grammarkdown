@@ -93,11 +93,16 @@ export namespace Host {
 
     export function getHost(): Host;
     export function getHost(hostLike: HostLike): Host;
+    /*@obsolete*/
+    /*@internal*/
     export function getHost(readFile: (file: string) => string): Host;
+    /*@obsolete*/
+    /*@internal*/
     export function getHost(readFileOrHostLike: ((file: string) => string) | HostLike): Host;
     export function getHost(readFileOrHostLike?: ((file: string) => string) | HostLike): Host {
         const host = getDefaultHost();
         if (typeof readFileOrHostLike === "function") {
+            console.warn(`Calling Host.getHost with a readFile function is an obsolete overload and will be removed in a future version.`);
             host.readFile = <(file: string) => string>readFileOrHostLike;
         }
         else if (typeof readFileOrHostLike === "object") {

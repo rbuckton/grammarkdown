@@ -12,12 +12,14 @@ import { Binder, BindingTable } from "./binder";
 import { Checker, Resolver } from "./checker";
 import { Emitter, EcmarkupEmitter, MarkdownEmitter, HtmlEmitter } from "./emitter/index";
 import { SourceFile, Import } from "./nodes";
+import { CancellationToken } from "prex";
 
 export class Grammar {
     public rootFiles: SourceFile[] = [];
     public sourceFiles: SourceFile[] = [];
     public options: CompilerOptions;
     public diagnostics: DiagnosticMessages = new DiagnosticMessages();
+    public readonly cancellationToken: CancellationToken;
 
     private static knownGrammars = new Dictionary<string>({
         "es6": require.resolve("../../grammars/es2015.grammar"),
@@ -39,12 +41,15 @@ export class Grammar {
 
     constructor(rootNames: string[]);
     constructor(rootNames: string[], options: CompilerOptions);
-    constructor(rootNames: string[], options: CompilerOptions, host: Host, oldGrammar?: Grammar);
+    constructor(rootNames: string[], options: CompilerOptions, host: Host, oldGrammar?: Grammar, token?: CancellationToken);
+    /*@obsolete*/
+    /*@internal*/
     constructor(rootNames: string[], options: CompilerOptions, readFile: (file: string) => string, oldGrammar?: Grammar);
-    constructor(rootNames: string[], options: CompilerOptions = getDefaultOptions(), readFileOrHostLike?: ((file: string) => string) | HostLike, oldGrammar?: Grammar) {
+    constructor(rootNames: string[], options: CompilerOptions = getDefaultOptions(), readFileOrHostLike?: ((file: string) => string) | HostLike, oldGrammar?: Grammar, token = CancellationToken.none) {
         this.host = Host.getHost(readFileOrHostLike);
         this.options = options;
         this.oldGrammar = oldGrammar;
+        this.cancellationToken = token;
         this.parse(rootNames);
         this.oldGrammar = undefined;
         Object.freeze(this.sourceFiles);
@@ -95,6 +100,15 @@ export class Grammar {
         return Dictionary.get(this.fileMap, this.normalizeFile(file));
     }
 
+    /** Adds a synthetic SourceFile to the grammar. */
+    public addSourceFile(sourceFile: SourceFile) {
+        const file = this.normalizeFile(this.resolveFile(sourceFile.filename));
+        if (Dictionary.has(this.fileMap, file)) throw new Error(`A sourceFile for the file name ${file} already exists in the collection.`);
+        Dictionary.set(this.fileMap, file, sourceFile);
+        this.processImports(sourceFile, file);
+        this.rootFiles.push(sourceFile);
+    }
+
     private parse(rootNames: string[]) {
         performance.mark("beforeParse");
 
@@ -106,7 +120,9 @@ export class Grammar {
         performance.measure("parse", "beforeParse", "afterParse");
     }
 
-    /* @obsolete */ /* @internal */ bind(sourceFile: SourceFile): void;
+    /*@obsolete*/
+    /*@internal*/
+    bind(sourceFile: SourceFile): void;
 
     public bind(): void;
     public bind(sourceFile?: SourceFile) {
@@ -172,28 +188,28 @@ export class Grammar {
     }
 
     protected createParser(options: CompilerOptions): Parser {
-        return new Parser(this.diagnostics);
+        return new Parser(this.diagnostics, this.cancellationToken);
     }
 
     protected createBinder(options: CompilerOptions, bindings: BindingTable): Binder {
-        return new Binder(bindings);
+        return new Binder(bindings, this.cancellationToken);
     }
 
     protected createChecker(options: CompilerOptions, bindings: BindingTable): Checker {
-        return new Checker(bindings, options.noChecks ? NullDiagnosticMessages.instance : this.diagnostics);
+        return new Checker(bindings, options.noChecks ? NullDiagnosticMessages.instance : this.diagnostics, options, this.cancellationToken);
     }
 
     protected createEmitter(options: CompilerOptions, resolver: Resolver): Emitter {
         switch (options.format) {
             case EmitFormat.ecmarkup:
-                return new EcmarkupEmitter(options, resolver, this.diagnostics)
+                return new EcmarkupEmitter(options, resolver, this.diagnostics, this.cancellationToken)
 
             case EmitFormat.html:
-                return new HtmlEmitter(options, resolver, this.diagnostics);
+                return new HtmlEmitter(options, resolver, this.diagnostics, this.cancellationToken);
 
             case EmitFormat.markdown:
             default:
-                return new MarkdownEmitter(options, resolver, this.diagnostics);
+                return new MarkdownEmitter(options, resolver, this.diagnostics, this.cancellationToken);
         }
     }
 

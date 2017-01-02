@@ -1,0 +1,85 @@
+.grammar {
+    font-family: Cambria, Palatino Linotype, Palatino, Liberation Serif, serif;
+    font-size: 18px;
+    line-height: 1.5;
+    color: #333;
+}
+.grammar .production {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    padding-left: 50px;
+}
+.grammar .production > .nonterminal {
+    margin-left: -50px;
+}
+.grammar .argument-list {
+    vertical-align: sub;
+    font-size: .85em;
+    color: #2aa198;
+    vertical-align: sub;
+    font-size: .85em;
+}
+.grammar .rhs > .argument-list {
+    margin-right: .5ex;
+}
+.grammar .punctuation {
+    font-weight: bold;
+}
+.grammar .rhs {
+    white-space: nowrap;
+}
+.grammar .terminal {
+    font-family: monospace;
+    font-weight: bold;
+    white-space: nowrap;
+    color: #333;
+}
+.grammar .one-of-list > .terminal {
+    margin-left: .5ex;
+    margin-right: .5ex;
+}
+.grammar .rhs > .terminal {
+    margin-left: .5ex;
+    margin-right: .5ex;
+}
+.grammar .nonterminal {
+    font-style: italic;
+    white-space: nowrap;
+    color: #333;
+}
+.grammar .rhs > .nonterminal {
+    margin-left: .5ex;
+    margin-right: .5ex;
+}
+.grammar .nonterminal a, .grammar .nonterminal a:visited {
+    color: #333;
+    text-decoration: none;
+}
+.grammar .unicode-character-literal {
+    color: #333;
+}
+.grammar .parameter-list {
+    vertical-align: sub;
+    font-size: .85em;
+    font-family: monospace;
+    color: #2aa198;
+    margin-right: .5ex;
+}
+.grammar .opt {
+    vertical-align: sub;
+    font-size: .85em;
+    font-family: monospace;
+    color: #b58900;
+    margin-right: .5ex;
+}
+.grammar .assertion {
+    color: #2aa198;
+}
+.grammar .rhs > .assertion {
+    margin-left: .5ex;
+    margin-right: .5ex;
+}
+.grammar .rhs > .prose {
+    margin-left: .5ex;
+    margin-right: .5ex;
+}

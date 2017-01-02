@@ -17,6 +17,7 @@ import { Range, Position, TextRange } from "./core";
 import { Diagnostics, DiagnosticMessages, NullDiagnosticMessages, LineMap, formatList } from "./diagnostics";
 import { SyntaxKind, tokenToString } from "./tokens";
 import { Scanner } from "./scanner";
+import { CancellationToken } from "prex";
 import {
     Node,
     StringLiteral,
@@ -115,9 +116,11 @@ export class Parser {
     private diagnostics: DiagnosticMessages;
     private parsingContext: ParsingContext;
     private previousSourceFile: SourceFile;
+    private cancellationToken: CancellationToken;
 
-    constructor(diagnostics: DiagnosticMessages) {
+    constructor(diagnostics: DiagnosticMessages, cancellationToken = CancellationToken.none) {
         this.diagnostics = diagnostics;
+        this.cancellationToken = cancellationToken;
     }
 
     // TODO(rbuckton): Incremental parser
@@ -155,7 +158,7 @@ export class Parser {
     private parse(filename: string, text: string, previousSourceFile: SourceFile, changeRange: TextRange) {
         this.sourceFile = new SourceFile(filename, text);
         this.diagnostics.setSourceFile(this.sourceFile);
-        this.scanner = new Scanner(filename, text, this.diagnostics);
+        this.scanner = new Scanner(filename, text, this.diagnostics, this.cancellationToken);
         this.parsingContext = ParsingContext.SourceElements;
 
         this.nextToken();
@@ -649,6 +652,7 @@ export class Parser {
         const whitespaceToSkip = this.shouldSkipWhitespace();
         let result: TNode[];
         while (!this.isEOF()) {
+            this.cancellationToken.throwIfCancellationRequested();
             this.skipWhitespace(whitespaceToSkip);
 
             let parsed = false;
@@ -661,6 +665,9 @@ export class Parser {
                 const element = <TNode>this.parseElement();
                 if (element) {
                     result.push(element);
+                }
+                else {
+                    this.recover();
                 }
             }
 

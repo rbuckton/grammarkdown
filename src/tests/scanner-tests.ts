@@ -6,9 +6,21 @@ import { SourceFile } from "../lib/nodes";
 import { Scanner } from "../lib/scanner";
 import { getGrammarFiles } from "./resources";
 import { writeTokens, writeDiagnostics, compareBaseline } from "./diff";
+import { CancellationTokenSource } from "prex";
+import { assert } from "chai";
 
 describe("Scanner", () => {
     defineTests();
+
+    it("cancelable", () => {
+        const sourceFile = new SourceFile("cancelable.grammar", "");
+        const diagnostics = new DiagnosticMessages();
+        diagnostics.setSourceFile(sourceFile);
+        const cts = new CancellationTokenSource();
+        const scanner = new Scanner(sourceFile.filename, sourceFile.text, diagnostics, cts.token);
+        cts.cancel();
+        assert.throws(() => scanner.scan());
+    });
 
     function defineTests() {
         for (let file of getGrammarFiles()) {

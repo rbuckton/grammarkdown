@@ -14,6 +14,7 @@
  *  limitations under the License.
  */
 import { Hash, createHash } from "crypto";
+import { CancellationToken } from "prex";
 import { Dictionary } from "./core";
 import { Diagnostics, DiagnosticMessages, Diagnostic, formatList } from "./diagnostics";
 import { SyntaxKind, tokenToString } from "./tokens";
@@ -73,11 +74,13 @@ export class Checker {
     private sourceFile: SourceFile;
     private noStrictParametricProductions: boolean;
     private productionParametersByName: Dictionary<Dictionary<boolean>>;
+    private cancellationToken: CancellationToken;
 
-    constructor(bindings: BindingTable, diagnostics: DiagnosticMessages, options?: CompilerOptions) {
+    constructor(bindings: BindingTable, diagnostics: DiagnosticMessages, options?: CompilerOptions, cancellationToken = CancellationToken.none) {
         this.bindings = bindings;
         this.diagnostics = diagnostics;
         this.noStrictParametricProductions = options && options.noStrictParametricProductions || false;
+        this.cancellationToken = cancellationToken;
     }
 
     public get resolver(): Resolver {
@@ -90,12 +93,11 @@ export class Checker {
 
     public checkSourceFile(sourceFile: SourceFile): void {
         if (!Dictionary.has(this.checkedFileSet, sourceFile.filename)) {
-            Dictionary.set(this.checkedFileSet, sourceFile.filename, true);
-            this.sourceFile = sourceFile;
-            this.productionParametersByName = new Dictionary<Dictionary<boolean>>();
-            this.diagnostics.setSourceFile(this.sourceFile);
-
             const savedNoStrictParametricProductions = this.noStrictParametricProductions;
+            this.cancellationToken.throwIfCancellationRequested();
+            this.productionParametersByName = new Dictionary<Dictionary<boolean>>();
+            this.sourceFile = sourceFile;
+            this.diagnostics.setSourceFile(this.sourceFile);
 
             for (const element of sourceFile.elements) {
                 this.preprocessSourceElement(element);
@@ -105,9 +107,10 @@ export class Checker {
                 this.checkSourceElement(element);
             }
 
-            this.noStrictParametricProductions = savedNoStrictParametricProductions;
             this.sourceFile = undefined;
             this.productionParametersByName = undefined;
+            this.noStrictParametricProductions = savedNoStrictParametricProductions;
+            Dictionary.set(this.checkedFileSet, sourceFile.filename, true);
         }
     }
 
