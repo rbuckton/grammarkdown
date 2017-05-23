@@ -235,18 +235,22 @@ export class MarkdownEmitter extends Emitter {
     protected emitLookaheadAssertion(node: LookaheadAssertion) {
         switch (node.operatorToken.kind) {
             case SyntaxKind.ExclamationEqualsToken:
+            case SyntaxKind.NotEqualToToken:
                 this.writer.write(`\[lookahead ≠ `);
                 break;
 
+            case SyntaxKind.EqualsToken:
             case SyntaxKind.EqualsEqualsToken:
                 this.writer.write(`\[lookahead = `);
                 break;
 
             case SyntaxKind.LessThanMinusToken:
+            case SyntaxKind.ElementOfToken:
                 this.writer.write(`\[lookahead ∈ `);
                 break;
 
             case SyntaxKind.LessThanExclamationToken:
+            case SyntaxKind.NotAnElementOfToken:
                 this.writer.write(`\[lookahead ∉ `);
                 break;
         }

@@ -792,10 +792,14 @@ export class Parser {
 
     private parseAnyLookaheadOperator(): Node {
         switch (this.token) {
+            case SyntaxKind.EqualsToken:
             case SyntaxKind.EqualsEqualsToken:
             case SyntaxKind.ExclamationEqualsToken:
+            case SyntaxKind.NotEqualToToken:
             case SyntaxKind.LessThanMinusToken:
+            case SyntaxKind.ElementOfToken:
             case SyntaxKind.LessThanExclamationToken:
+            case SyntaxKind.NotAnElementOfToken:
                 return this.parseToken(this.token);
 
             default:

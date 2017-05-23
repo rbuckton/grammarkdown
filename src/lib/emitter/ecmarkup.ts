@@ -253,17 +253,21 @@ export class EcmarkupEmitter extends Emitter {
         this.writer.write(`<emu-gann>`);
         switch (node.operatorToken.kind) {
             case SyntaxKind.ExclamationEqualsToken:
+            case SyntaxKind.NotEqualToToken:
                 this.writer.write(`lookahead ≠ `);
                 break;
 
+            case SyntaxKind.EqualsToken:
             case SyntaxKind.EqualsEqualsToken:
                 this.writer.write(`lookahead = `);
                 break;
 
+            case SyntaxKind.ElementOfToken:
             case SyntaxKind.LessThanMinusToken:
                 this.writer.write(`lookahead ∈ `);
                 break;
 
+            case SyntaxKind.NotAnElementOfToken:
             case SyntaxKind.LessThanExclamationToken:
                 this.writer.write(`lookahead ∉ `);
                 break;

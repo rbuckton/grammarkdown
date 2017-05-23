@@ -547,7 +547,7 @@ function evaluateArguments(parsed: ParsedArguments, known: KnownOptionMaps, raw:
             continue;
         }
 
-        let type = typeof option.type;
+        let type: string = typeof option.type;
         if (type === "string") {
             type = <string>option.type;
         }

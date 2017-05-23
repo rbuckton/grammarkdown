@@ -578,6 +578,7 @@ export class Checker {
 
         if (!node.operatorToken) {
             return this.reportGrammarErrorForNode(node, Diagnostics._0_expected, formatList([
+                SyntaxKind.EqualsToken,
                 SyntaxKind.EqualsEqualsToken,
                 SyntaxKind.ExclamationEqualsToken,
                 SyntaxKind.LessThanMinusToken,
@@ -586,14 +587,19 @@ export class Checker {
         }
 
         switch (node.operatorToken.kind) {
+            case SyntaxKind.EqualsToken:
             case SyntaxKind.EqualsEqualsToken:
             case SyntaxKind.ExclamationEqualsToken:
+            case SyntaxKind.NotEqualToToken:
             case SyntaxKind.LessThanMinusToken:
+            case SyntaxKind.ElementOfToken:
             case SyntaxKind.LessThanExclamationToken:
+            case SyntaxKind.NotAnElementOfToken:
                 break;
 
             default:
                 return this.reportGrammarErrorForNode(node, Diagnostics._0_expected, formatList([
+                    SyntaxKind.EqualsToken,
                     SyntaxKind.EqualsEqualsToken,
                     SyntaxKind.ExclamationEqualsToken,
                     SyntaxKind.LessThanMinusToken,
@@ -603,19 +609,25 @@ export class Checker {
 
         if (!node.lookahead) {
             switch (node.operatorToken.kind) {
+                case SyntaxKind.EqualsToken:
                 case SyntaxKind.EqualsEqualsToken:
                 case SyntaxKind.ExclamationEqualsToken:
+                case SyntaxKind.NotEqualToToken:
                     return this.reportGrammarError(node.operatorToken.end, Diagnostics._0_expected, tokenToString(SyntaxKind.Terminal));
 
                 case SyntaxKind.LessThanMinusToken:
+                case SyntaxKind.ElementOfToken:
                 case SyntaxKind.LessThanExclamationToken:
+                case SyntaxKind.NotAnElementOfToken:
                     return this.reportGrammarError(node.operatorToken.end, Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBraceToken));
             }
         }
 
         switch (node.operatorToken.kind) {
+            case SyntaxKind.EqualsToken:
             case SyntaxKind.EqualsEqualsToken:
             case SyntaxKind.ExclamationEqualsToken:
+            case SyntaxKind.NotEqualToToken:
                 if (node.lookahead.kind !== SyntaxKind.SymbolSpan) {
                     return this.reportGrammarErrorForNode(node, Diagnostics._0_expected, formatList([
                         SyntaxKind.Terminal,
@@ -627,7 +639,9 @@ export class Checker {
                 break;
 
             case SyntaxKind.LessThanMinusToken:
+            case SyntaxKind.ElementOfToken:
             case SyntaxKind.LessThanExclamationToken:
+            case SyntaxKind.NotAnElementOfToken:
                 if (node.lookahead.kind !== SyntaxKind.SymbolSet) {
                     return this.reportGrammarErrorForNode(node, Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBraceToken));
                 }

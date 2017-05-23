@@ -215,6 +215,15 @@ export class Scanner {
                         return this.pos++, this.tokenValue = this.scanString(CharacterCodes.GreaterThan, this.token = SyntaxKind.UnicodeCharacterLiteral), this.token;
                     }
 
+                case CharacterCodes.NotEqualTo:
+                    return this.pos++, this.token = SyntaxKind.NotEqualToToken;
+
+                case CharacterCodes.ElementOf:
+                    return this.pos++, this.token = SyntaxKind.ElementOfToken;
+
+                case CharacterCodes.NotAnElementOf:
+                    return this.pos++, this.token = SyntaxKind.NotAnElementOfToken;
+
                 case CharacterCodes.GreaterThan:
                     return this.pos++, this.skipWhiteSpace(), this.proseStartToken = this.token = SyntaxKind.GreaterThanToken;
 

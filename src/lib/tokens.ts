@@ -27,8 +27,8 @@ export const enum CharacterCodes {
     NextLine = 0x0085,
 
     // Unicode 3.0 space characters
-    Space = 0x0020,   // " "
-    NonBreakingSpace = 0x00A0,   //
+    Space = 0x0020,               // " "
+    NonBreakingSpace = 0x00A0,    //
     EnQuad = 0x2000,
     EmQuad = 0x2001,
     EnSpace = 0x2002,
@@ -141,9 +141,13 @@ export const enum CharacterCodes {
     NumberSign = 0x23,            // #
     Backspace = 0x08,             // \b
     FormFeed = 0x0C,              // \f
-    ByteOrderMark = 0xFEFF,
     Tab = 0x09,                   // \t
     VerticalTab = 0x0B,           // \v
+
+    NotEqualTo = 0x2260,          // ≠
+    ElementOf = 0x2208,           // ∈
+    NotAnElementOf = 0x2209,      // ∉
+    ByteOrderMark = 0xFEFF,
 }
 
 export enum SyntaxKind {
@@ -188,6 +192,9 @@ export enum SyntaxKind {
     ExclamationEqualsToken,     // !=
     LessThanExclamationToken,   // <!
     LessThanMinusToken,         // <-
+    NotEqualToToken,            // ≠
+    ElementOfToken,             // ∈
+    NotAnElementOfToken,        // ∉
 
     // Identifiers
     Identifier,
@@ -293,8 +300,11 @@ const textToToken = new Dictionary({
     "=": SyntaxKind.EqualsToken,
     "==": SyntaxKind.EqualsEqualsToken,
     "!=": SyntaxKind.ExclamationEqualsToken,
-    "<!": SyntaxKind.LessThanExclamationToken,
+    "≠": SyntaxKind.NotEqualToToken,
     "<-": SyntaxKind.LessThanMinusToken,
+    "∈": SyntaxKind.ElementOfToken,
+    "<!": SyntaxKind.LessThanExclamationToken,
+    "∉": SyntaxKind.NotAnElementOfToken,
 });
 
 const tokenToText = Dictionary.invert(textToToken);

@@ -261,18 +261,22 @@ export class HtmlEmitter extends Emitter {
         this.writer.write(`<span class="assertion">[`);
         switch (node.operatorToken.kind) {
             case SyntaxKind.ExclamationEqualsToken:
+            case SyntaxKind.NotEqualToToken:
                 this.writer.write(`<span class="keyword">lookahead</span> ≠ `);
                 break;
 
+            case SyntaxKind.EqualsToken:
             case SyntaxKind.EqualsEqualsToken:
                 this.writer.write(`<span class="keyword">lookahead</span> = `);
                 break;
 
             case SyntaxKind.LessThanMinusToken:
+            case SyntaxKind.ElementOfToken:
                 this.writer.write(`<span class="keyword">lookahead</span> ∈ `);
                 break;
 
             case SyntaxKind.LessThanExclamationToken:
+            case SyntaxKind.NotAnElementOfToken:
                 this.writer.write(`<span class="keyword">lookahead</span> ∉ `);
                 break;
         }
