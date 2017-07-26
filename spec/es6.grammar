@@ -262,7 +262,7 @@ LineContinuation ::
 
 EscapeSequence ::
 	CharacterEscapeSequence
-	`0` [lookahead != DecimalDigit]
+	`0` [lookahead <! DecimalDigit]
 	HexEscapeSequence
 	UnicodeEscapeSequence
 

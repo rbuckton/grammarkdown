@@ -118,4 +118,15 @@ SyntaxKind[LineTerminatorToken](22,1): «line terminator»
 SyntaxKind[Identifier](22,10): B
 SyntaxKind[LineTerminatorToken](23,1): «line terminator»
 SyntaxKind[DedentToken](23,1): «dedent»
-SyntaxKind[EndOfFileToken](23,1): «EndOfFileToken»
+SyntaxKind[LineTerminatorToken](24,1): «line terminator»
+SyntaxKind[Identifier](24,1): LookaheadRestriction
+SyntaxKind[ColonToken](24,21): :
+SyntaxKind[LineTerminatorToken](25,1): «line terminator»
+SyntaxKind[IndentToken](25,1): «indent»
+SyntaxKind[OpenBracketToken](25,5): [
+SyntaxKind[LookaheadKeyword](25,6): lookahead
+SyntaxKind[LessThanExclamationToken](25,16): <!
+SyntaxKind[Identifier](25,19): A
+SyntaxKind[CloseBracketToken](25,20): ]
+SyntaxKind[DedentToken](25,21): «dedent»
+SyntaxKind[EndOfFileToken](25,21): «EndOfFileToken»

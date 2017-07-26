@@ -873,7 +873,7 @@ SyntaxKind[LineTerminatorToken](265,1): «line terminator»
 SyntaxKind[Terminal](265,2): `0`
 SyntaxKind[OpenBracketToken](265,6): [
 SyntaxKind[LookaheadKeyword](265,7): lookahead
-SyntaxKind[ExclamationEqualsToken](265,17): !=
+SyntaxKind[LessThanExclamationToken](265,17): <!
 SyntaxKind[Identifier](265,20): DecimalDigit
 SyntaxKind[CloseBracketToken](265,32): ]
 SyntaxKind[LineTerminatorToken](266,1): «line terminator»

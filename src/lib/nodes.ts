@@ -15,7 +15,7 @@
  */
 import { Dictionary, Range, Position, TextRange } from "./core";
 import { LineMap } from "./diagnostics";
-import { SyntaxKind } from "./tokens";
+import { SyntaxKind, ProseFragmentLiteralKinds, MetaKinds } from "./tokens";
 import { SymbolTable } from "./symbols";
 import { metadata, getPropertyMetadata } from "./metadata";
 
@@ -49,14 +49,14 @@ export namespace NodeEdge {
     }
 }
 
-export class Node implements TextRange {
-    public kind: SyntaxKind;
+export class Node<TKind extends SyntaxKind = SyntaxKind> implements TextRange {
+    public kind: TKind;
     public id: number = ++nextNodeId;
     public pos: number;
     public end: number;
     private _edges: NodeEdge[];
 
-    constructor(kind: SyntaxKind) {
+    constructor(kind: TKind) {
         this.kind = kind;
     }
 
@@ -65,7 +65,7 @@ export class Node implements TextRange {
     }
 }
 
-export class StringLiteral extends Node implements TextContent {
+export class StringLiteral extends Node<SyntaxKind.StringLiteral> implements TextContent {
     public text: string;
 
     constructor(text: string) {
@@ -75,7 +75,7 @@ export class StringLiteral extends Node implements TextContent {
     }
 }
 
-export class Identifier extends Node implements TextContent {
+export class Identifier extends Node<SyntaxKind.Identifier> implements TextContent {
     public text: string;
 
     constructor(text: string) {
@@ -85,16 +85,16 @@ export class Identifier extends Node implements TextContent {
     }
 }
 
-export class LexicalSymbol extends Node {
+export class LexicalSymbol<TKind extends SyntaxKind = SyntaxKind> extends Node<TKind> {
 }
 
-export class PrimarySymbol extends LexicalSymbol {
+export class PrimarySymbol<TKind extends SyntaxKind = SyntaxKind> extends LexicalSymbol<TKind> {
 }
 
-export class OptionalSymbol extends PrimarySymbol {
+export class OptionalSymbol<TKind extends SyntaxKind = SyntaxKind> extends PrimarySymbol<TKind> {
     @edge questionToken: Node;
 
-    constructor(kind: SyntaxKind, questionToken: Node) {
+    constructor(kind: TKind, questionToken: Node) {
         super(kind);
 
         this.questionToken = questionToken;
@@ -109,7 +109,7 @@ export class OptionalSymbol extends PrimarySymbol {
     }
 }
 
-export class UnicodeCharacterLiteral extends OptionalSymbol implements TextContent {
+export class UnicodeCharacterLiteral extends OptionalSymbol<SyntaxKind.UnicodeCharacterLiteral> implements TextContent {
     public text: string;
 
     constructor(text: string, questionToken: Node) {
@@ -119,7 +119,7 @@ export class UnicodeCharacterLiteral extends OptionalSymbol implements TextConte
     }
 }
 
-export class UnicodeCharacterRange extends LexicalSymbol {
+export class UnicodeCharacterRange extends LexicalSymbol<SyntaxKind.UnicodeCharacterRange> {
     @edge left: UnicodeCharacterLiteral;
     @edge throughKeyword: Node;
     @edge right: UnicodeCharacterLiteral;
@@ -132,7 +132,7 @@ export class UnicodeCharacterRange extends LexicalSymbol {
     }
 }
 
-export class ButNotSymbol extends LexicalSymbol {
+export class ButNotSymbol extends LexicalSymbol<SyntaxKind.ButNotSymbol> {
     @edge left: LexicalSymbol;
     @edge butKeyword: Node;
     @edge notKeyword: Node;
@@ -147,7 +147,7 @@ export class ButNotSymbol extends LexicalSymbol {
     }
 }
 
-export class Terminal extends OptionalSymbol implements TextContent {
+export class Terminal extends OptionalSymbol<SyntaxKind.Terminal> implements TextContent {
     public text: string;
 
     constructor(text: string, questionToken: Node) {
@@ -157,7 +157,7 @@ export class Terminal extends OptionalSymbol implements TextContent {
     }
 }
 
-export class TerminalList extends Node {
+export class TerminalList extends Node<SyntaxKind.TerminalList> {
     @edge terminals: Terminal[];
 
     constructor(terminals: Terminal[] = []) {
@@ -167,7 +167,7 @@ export class TerminalList extends Node {
     }
 }
 
-export class SymbolSet extends Node {
+export class SymbolSet extends Node<SyntaxKind.SymbolSet> {
     @edge openBraceToken: Node;
     @edge elements: SymbolSpan[];
     @edge closeBraceToken: Node;
@@ -181,11 +181,11 @@ export class SymbolSet extends Node {
     }
 }
 
-export class Assertion extends LexicalSymbol {
+export class Assertion<TKind extends SyntaxKind = SyntaxKind> extends LexicalSymbol<TKind> {
     @edge openBracketToken: Node;
     @edge closeBracketToken: Node;
 
-    constructor(kind: SyntaxKind, openBracketToken: Node, closeBracketToken: Node) {
+    constructor(kind: TKind, openBracketToken: Node, closeBracketToken: Node) {
         super(kind);
 
         this.openBracketToken = openBracketToken;
@@ -193,7 +193,7 @@ export class Assertion extends LexicalSymbol {
     }
 }
 
-export class EmptyAssertion extends Assertion {
+export class EmptyAssertion extends Assertion<SyntaxKind.EmptyAssertion> {
     @edge openBracketToken: Node;
     @edge emptyKeyword: Node;
     @edge closeBracketToken: Node;
@@ -205,7 +205,7 @@ export class EmptyAssertion extends Assertion {
     }
 }
 
-export class LookaheadAssertion extends Assertion {
+export class LookaheadAssertion extends Assertion<SyntaxKind.LookaheadAssertion> {
     @edge openBracketToken: Node;
     @edge lookaheadKeyword: Node;
     @edge operatorToken: Node;
@@ -221,7 +221,7 @@ export class LookaheadAssertion extends Assertion {
     }
 }
 
-export class LexicalGoalAssertion extends Assertion {
+export class LexicalGoalAssertion extends Assertion<SyntaxKind.LexicalGoalAssertion> {
     @edge openBracketToken: Node;
     @edge lexicalKeyword: Node;
     @edge goalKeyword: Node;
@@ -237,7 +237,7 @@ export class LexicalGoalAssertion extends Assertion {
     }
 }
 
-export class NoSymbolHereAssertion extends Assertion {
+export class NoSymbolHereAssertion extends Assertion<SyntaxKind.NoSymbolHereAssertion> {
     @edge openBracketToken: Node;
     @edge noKeyword: Node;
     @edge symbols: PrimarySymbol[];
@@ -253,7 +253,7 @@ export class NoSymbolHereAssertion extends Assertion {
     }
 }
 
-export class ParameterValueAssertion extends Assertion {
+export class ParameterValueAssertion extends Assertion<SyntaxKind.ParameterValueAssertion> {
     @edge openBracketToken: Node;
     @edge operatorToken: Node;
     @edge name: Identifier;
@@ -267,7 +267,7 @@ export class ParameterValueAssertion extends Assertion {
     }
 }
 
-export class ProseAssertion extends Assertion {
+export class ProseAssertion extends Assertion<SyntaxKind.ProseAssertion> {
     @edge openBracketToken: Node;
     @edge fragments: ProseFragment[];
     @edge closeBracketToken: Node;
@@ -278,7 +278,7 @@ export class ProseAssertion extends Assertion {
     }
 }
 
-export class ProseFragmentLiteral extends Node implements TextContent {
+export class ProseFragmentLiteral<TKind extends ProseFragmentLiteralKinds = ProseFragmentLiteralKinds> extends Node<SyntaxKind> implements TextContent {
     text: string;
 
     constructor(kind: SyntaxKind, text: string) {
@@ -289,7 +289,7 @@ export class ProseFragmentLiteral extends Node implements TextContent {
 
 export type ProseFragment = ProseFragmentLiteral | Terminal | Nonterminal;
 
-export class Argument extends Node {
+export class Argument extends Node<SyntaxKind.Argument> {
     @edge operatorToken: Node;
     @edge name: Identifier;
 
@@ -301,7 +301,7 @@ export class Argument extends Node {
     }
 }
 
-export class ArgumentList extends Node {
+export class ArgumentList extends Node<SyntaxKind.ArgumentList> {
     @edge openParenToken: Node;
     @edge elements: Argument[];
     @edge closeParenToken: Node;
@@ -315,7 +315,7 @@ export class ArgumentList extends Node {
     }
 }
 
-export class Nonterminal extends OptionalSymbol {
+export class Nonterminal extends OptionalSymbol<SyntaxKind.Nonterminal> {
     @edge name: Identifier;
     @edge argumentList: ArgumentList;
 
@@ -327,7 +327,7 @@ export class Nonterminal extends OptionalSymbol {
     }
 }
 
-export class Prose extends LexicalSymbol {
+export class Prose extends LexicalSymbol<SyntaxKind.Prose> {
     @edge greaterThanToken: Node;
     @edge fragments: ProseFragment[];
 
@@ -339,7 +339,7 @@ export class Prose extends LexicalSymbol {
     }
 }
 
-export class OneOfSymbol extends LexicalSymbol {
+export class OneOfSymbol extends LexicalSymbol<SyntaxKind.OneOfSymbol> {
     @edge oneKeyword: Node;
     @edge ofKeyword: Node;
     @edge symbols: LexicalSymbol[];
@@ -353,7 +353,7 @@ export class OneOfSymbol extends LexicalSymbol {
     }
 }
 
-export class SymbolSpan extends Node {
+export class SymbolSpan extends Node<SyntaxKind.SymbolSpan> {
     @edge symbol: LexicalSymbol;
     @edge next: SymbolSpan;
 
@@ -365,7 +365,7 @@ export class SymbolSpan extends Node {
     }
 }
 
-export class LinkReference extends Node {
+export class LinkReference extends Node<SyntaxKind.LinkReference> {
     public text: string;
 
     constructor(text: string) {
@@ -375,7 +375,7 @@ export class LinkReference extends Node {
     }
 }
 
-export class RightHandSide extends Node {
+export class RightHandSide extends Node<SyntaxKind.RightHandSide> {
     @edge head: SymbolSpan;
     @edge reference: LinkReference;
 
@@ -387,7 +387,7 @@ export class RightHandSide extends Node {
     }
 }
 
-export class RightHandSideList extends Node {
+export class RightHandSideList extends Node<SyntaxKind.RightHandSideList> {
     @edge openIndentToken: Node;
     @edge elements: RightHandSide[];
     @edge closeIndentToken: Node;
@@ -401,7 +401,7 @@ export class RightHandSideList extends Node {
     }
 }
 
-export class OneOfList extends Node {
+export class OneOfList extends Node<SyntaxKind.OneOfList> {
     @edge openIndentToken: Node;
     @edge oneKeyword: Node;
     @edge ofKeyword: Node;
@@ -419,7 +419,7 @@ export class OneOfList extends Node {
     }
 }
 
-export class Parameter extends Node {
+export class Parameter extends Node<SyntaxKind.Parameter> {
     @edge name: Identifier;
 
     constructor(name: Identifier) {
@@ -429,7 +429,7 @@ export class Parameter extends Node {
     }
 }
 
-export class ParameterList extends Node {
+export class ParameterList extends Node<SyntaxKind.ParameterList> {
     @edge openParenToken: Node;
     @edge elements: Parameter[];
     @edge closeParenToken: Node;
@@ -443,10 +443,10 @@ export class ParameterList extends Node {
     }
 }
 
-export class SourceElement extends Node {
+export class SourceElement<TKind extends SyntaxKind = SyntaxKind> extends Node<TKind> {
 }
 
-export class Production extends SourceElement {
+export class Production extends SourceElement<SyntaxKind.Production> {
     @edge name: Identifier;
     @edge colonToken: Node;
     @edge parameterList: ParameterList;
@@ -462,16 +462,16 @@ export class Production extends SourceElement {
     }
 }
 
-export abstract class MetaElement extends SourceElement {
+export abstract class MetaElement<TKind extends MetaKinds = MetaKinds> extends SourceElement<TKind> {
     @edge atToken: Node;
 
-    constructor(kind: SyntaxKind, atToken: Node) {
+    constructor(kind: TKind, atToken: Node) {
         super(kind);
         this.atToken = atToken;
     }
 }
 
-export class Import extends MetaElement {
+export class Import extends MetaElement<SyntaxKind.Import> {
     @edge importKeyword: Node;
     @edge path: StringLiteral;
 
@@ -482,7 +482,7 @@ export class Import extends MetaElement {
     }
 }
 
-export class Define extends MetaElement {
+export class Define extends MetaElement<SyntaxKind.Define> {
     @edge defineKeyword: Node;
     @edge key: Identifier;
     @edge valueToken: Node;
@@ -495,7 +495,7 @@ export class Define extends MetaElement {
     }
 }
 
-export class SourceFile extends Node {
+export class SourceFile extends Node<SyntaxKind.SourceFile> {
     public filename: string;
     public text: string;
     @edge elements: SourceElement[];

@@ -174,3 +174,18 @@
           (22,10)SyntaxKind[Nonterminal]
             (22,10)SyntaxKind[Identifier](text = "B")
       (23,1)SyntaxKind[DedentToken]
+  (24,1)SyntaxKind[Production]
+    (24,1)SyntaxKind[Identifier](text = "LookaheadRestriction")
+    (25,1)SyntaxKind[RightHandSideList]
+      (25,1)SyntaxKind[IndentToken]
+      (25,5)SyntaxKind[RightHandSide]
+        (25,5)SyntaxKind[SymbolSpan]
+          (25,5)SyntaxKind[LookaheadAssertion]
+            (25,5)SyntaxKind[OpenBracketToken]
+            (25,6)SyntaxKind[LookaheadKeyword]
+            (25,16)SyntaxKind[LessThanExclamationToken]
+            (25,19)SyntaxKind[SymbolSpan]
+              (25,19)SyntaxKind[Nonterminal]
+                (25,19)SyntaxKind[Identifier](text = "A")
+            (25,20)SyntaxKind[CloseBracketToken]
+      (25,21)SyntaxKind[DedentToken]

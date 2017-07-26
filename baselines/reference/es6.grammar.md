@@ -251,7 +251,7 @@
   
 &emsp;&emsp;<a name="EscapeSequence"></a>*EscapeSequence* **::**  
 &emsp;&emsp;&emsp;<a name="EscapeSequence-e9e86f07"></a>*[CharacterEscapeSequence](#CharacterEscapeSequence)*  
-&emsp;&emsp;&emsp;<a name="EscapeSequence-3651e0da"></a>`` 0 ``&emsp;[lookahead ≠ *[DecimalDigit](#DecimalDigit)*]  
+&emsp;&emsp;&emsp;<a name="EscapeSequence-6964a19d"></a>`` 0 ``&emsp;[lookahead ∉ *[DecimalDigit](#DecimalDigit)*]  
 &emsp;&emsp;&emsp;<a name="EscapeSequence-a8071b85"></a>*[HexEscapeSequence](#HexEscapeSequence)*  
 &emsp;&emsp;&emsp;<a name="EscapeSequence-44bd6f55"></a>*[UnicodeEscapeSequence](#UnicodeEscapeSequence)*  
   

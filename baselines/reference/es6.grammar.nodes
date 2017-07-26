@@ -1055,7 +1055,7 @@
             (265,6)SyntaxKind[LookaheadAssertion]
               (265,6)SyntaxKind[OpenBracketToken]
               (265,7)SyntaxKind[LookaheadKeyword]
-              (265,17)SyntaxKind[ExclamationEqualsToken]
+              (265,17)SyntaxKind[LessThanExclamationToken]
               (265,20)SyntaxKind[SymbolSpan]
                 (265,20)SyntaxKind[Nonterminal]
                   (265,20)SyntaxKind[Identifier](text = "DecimalDigit")

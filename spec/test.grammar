@@ -20,3 +20,6 @@ F[A] :
 Z :
     <del>A</del>
     <ins>B</ins>
+
+LookaheadRestriction:
+    [lookahead <! A]

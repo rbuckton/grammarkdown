@@ -484,7 +484,7 @@ export class Checker {
             return this.reportGrammarError(node.symbol.pos, Diagnostics._0_expected, tokenToString(SyntaxKind.LineTerminatorToken));
         }
 
-        if (node.next && node.next.kind === SyntaxKind.Prose) {
+        if (node.next && node.next.symbol.kind === SyntaxKind.Prose) {
             return this.reportGrammarError(node.next.pos, Diagnostics._0_expected, tokenToString(SyntaxKind.LineTerminatorToken));
         }
 
@@ -619,7 +619,7 @@ export class Checker {
                 case SyntaxKind.ElementOfToken:
                 case SyntaxKind.LessThanExclamationToken:
                 case SyntaxKind.NotAnElementOfToken:
-                    return this.reportGrammarError(node.operatorToken.end, Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBraceToken));
+                    return this.reportGrammarError(node.operatorToken.end, Diagnostics._0_expected, formatList([SyntaxKind.OpenBraceToken, SyntaxKind.Nonterminal]));
             }
         }
 
@@ -628,10 +628,9 @@ export class Checker {
             case SyntaxKind.EqualsEqualsToken:
             case SyntaxKind.ExclamationEqualsToken:
             case SyntaxKind.NotEqualToToken:
-                if (node.lookahead.kind !== SyntaxKind.SymbolSpan) {
+                if (!isTerminal(node.lookahead)) {
                     return this.reportGrammarErrorForNode(node, Diagnostics._0_expected, formatList([
                         SyntaxKind.Terminal,
-                        SyntaxKind.Identifier,
                         SyntaxKind.UnicodeCharacterLiteral
                     ]));
                 }
@@ -642,14 +641,33 @@ export class Checker {
             case SyntaxKind.ElementOfToken:
             case SyntaxKind.LessThanExclamationToken:
             case SyntaxKind.NotAnElementOfToken:
-                if (node.lookahead.kind !== SyntaxKind.SymbolSet) {
-                    return this.reportGrammarErrorForNode(node, Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBraceToken));
+                if (!isNonterminalOrSymbolSet(node.lookahead)) {
+                    return this.reportGrammarErrorForNode(node, Diagnostics._0_expected, formatList([
+                        SyntaxKind.OpenBraceToken,
+                        SyntaxKind.Nonterminal
+                    ]));
                 }
 
                 break;
         }
 
         return false;
+
+        function isTerminal(node: SymbolSpan | SymbolSet) {
+            if (node.kind !== SyntaxKind.SymbolSpan) return false;
+            switch (node.symbol.kind) {
+                case SyntaxKind.Terminal:
+                case SyntaxKind.UnicodeCharacterLiteral:
+                    return true;
+            }
+            return false;
+        }
+
+        function isNonterminalOrSymbolSet(node: SymbolSpan | SymbolSet) {
+            return node.kind === SyntaxKind.SymbolSpan
+                ? node.symbol.kind === SyntaxKind.Nonterminal
+                : node.kind === SyntaxKind.SymbolSet;
+        }
     }
 
     private checkSymbolSet(node: SymbolSet): void {

@@ -264,6 +264,16 @@ export enum SyntaxKind {
     LastPunctuation = LessThanMinusToken,
 }
 
+export type ProseFragmentLiteralKinds =
+    | SyntaxKind.ProseFull
+    | SyntaxKind.ProseHead
+    | SyntaxKind.ProseMiddle
+    | SyntaxKind.ProseTail;
+
+export type MetaKinds =
+    | SyntaxKind.Import
+    | SyntaxKind.Define;
+
 const textToToken = new Dictionary({
     "but": SyntaxKind.ButKeyword,
     "define": SyntaxKind.DefineKeyword,

@@ -25,3 +25,6 @@
 &emsp;&emsp;&emsp;<del><a name="Z-6dcd4ce2"></a>*[A](#A)*</del>  
 &emsp;&emsp;&emsp;<ins><a name="Z-ae4f281d"></a>*[B](#B)*</ins>  
   
+&emsp;&emsp;<a name="LookaheadRestriction"></a>*LookaheadRestriction* **:**  
+&emsp;&emsp;&emsp;<a name="LookaheadRestriction-5c1008f6"></a>[lookahead ∉ *[A](#A)*]  
+  
