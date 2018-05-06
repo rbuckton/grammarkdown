@@ -16,9 +16,9 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync, statSync, unlinkSync } from "fs";
 import { EOL } from "os";
 import { resolve, basename } from "path";
-import { Scanner } from "../lib/scanner";
-import { SyntaxKind, tokenToString, CharacterCodes } from "../lib/tokens";
-import { DiagnosticMessages, LineMap } from "../lib/diagnostics";
+import { Scanner } from "../scanner";
+import { SyntaxKind, tokenToString, CharacterCodes } from "../tokens";
+import { DiagnosticMessages, LineMap } from "../diagnostics";
 import {
     SourceFile,
     Node,
@@ -30,8 +30,7 @@ import {
     ProseFragmentLiteral,
     Terminal,
     UnicodeCharacterLiteral,
-    forEachChild
-} from "../lib/nodes";
+} from "../nodes";
 
 export function writeTokens(test: string, scanner: Scanner, lineMap: LineMap, baselines?: string[]) {
     let text: string = `/// ${test}:` + EOL;
@@ -69,7 +68,7 @@ export function writeTokens(test: string, scanner: Scanner, lineMap: LineMap, ba
 }
 
 export function writeDiagnostics(test: string, diagnostics: DiagnosticMessages, baselines?: string[]) {
-    let text: string = undefined;
+    let text: string | undefined = undefined;
     diagnostics.forEach(message => {
         if (!text) {
             text = `/// ${test}:` + EOL;
@@ -98,16 +97,18 @@ export function writeNodes(test: string, sourceFile: SourceFile, baselines?: str
     function printNode(node: Node) {
         text += getIndent(indentDepth) + formatNode(node, sourceFile) + EOL;
         indentDepth++;
-        forEachChild(node, printNode);
+        for (const child of node.children()) {
+            printNode(child);
+        }
         indentDepth--;
     }
 }
 
-export function writeOutput(test: string, extname: string, text: string, baselines?: string[]) {
+export function writeOutput(test: string, extname: string, text: string | undefined, baselines?: string[]) {
     return writeBaseline(test + extname, text, baselines);
 }
 
-export function writeBaseline(file: string, text: string, baselines?: string[]) {
+export function writeBaseline(file: string, text: string | undefined, baselines?: string[]) {
     if (baselines) {
         baselines.push(file);
     }
@@ -165,7 +166,7 @@ function ensureDirectory(path: string) {
 
 function formatKind(kind: SyntaxKind) {
     for (var p in SyntaxKind) {
-        if (SyntaxKind[<string>p] === kind) {
+        if ((<any>SyntaxKind)[p] === kind) {
             return p;
         }
     }
@@ -173,7 +174,7 @@ function formatKind(kind: SyntaxKind) {
 }
 
 function formatNode(node: Node, sourceFile: SourceFile) {
-    var text = `(${sourceFile.lineMap.formatPosition(node.pos) })`;
+    var text = `(${sourceFile.lineMap.formatPosition(node.getStart(sourceFile))})`;
     text += `SyntaxKind[${formatKind(node.kind)}]`;
     switch (node.kind) {
         case SyntaxKind.Identifier:
@@ -186,7 +187,7 @@ function formatNode(node: Node, sourceFile: SourceFile) {
             text += `(text = "${(<ProseFragmentLiteral | Identifier | StringLiteral | Terminal>node).text}")`;
             break;
         case SyntaxKind.UnicodeCharacterLiteral:
-            text += `(text = ${sourceFile.text.slice(node.pos, node.end)})`;
+            text += `(text = ${sourceFile.text.slice(node.getStart(sourceFile), node.end)})`;
             break;
         case SyntaxKind.SourceFile:
             text += `(filename = "${basename((<SourceFile>node).filename)}")`;
@@ -202,7 +203,7 @@ function formatNode(node: Node, sourceFile: SourceFile) {
             break;
         case SyntaxKind.Argument:
             if ((<Argument>node).operatorToken) {
-                switch ((<Argument>node).operatorToken.kind) {
+                switch ((<Argument>node).operatorToken!.kind) {
                     case SyntaxKind.QuestionToken:
                         text += "?";
                         break;

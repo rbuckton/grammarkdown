@@ -1,10 +1,15 @@
 /// es6.grammar:
 (1,1)SyntaxKind[SourceFile](filename = "es6.grammar")
   (1,1)SyntaxKind[Define]
+    (1,1)SyntaxKind[AtToken]
+    (1,2)SyntaxKind[DefineKeyword]
+    (1,9)SyntaxKind[Identifier](text = "noStrictParametricProductions")
+    (1,39)SyntaxKind[TrueKeyword]
   (5,1)SyntaxKind[Production]
     (5,1)SyntaxKind[Identifier](text = "SourceCharacter")
-    (6,1)SyntaxKind[RightHandSideList]
-      (6,1)SyntaxKind[IndentToken]
+    (5,17)SyntaxKind[ColonColonToken]
+    (6,2)SyntaxKind[RightHandSideList]
+      (6,2)SyntaxKind[IndentToken]
       (6,2)SyntaxKind[RightHandSide]
         (6,2)SyntaxKind[SymbolSpan]
           (6,2)SyntaxKind[Prose]
@@ -13,8 +18,9 @@
       (7,1)SyntaxKind[DedentToken]
   (8,1)SyntaxKind[Production]
     (8,1)SyntaxKind[Identifier](text = "InputElementDiv")
-    (9,1)SyntaxKind[RightHandSideList]
-      (9,1)SyntaxKind[IndentToken]
+    (8,17)SyntaxKind[ColonColonToken]
+    (9,2)SyntaxKind[RightHandSideList]
+      (9,2)SyntaxKind[IndentToken]
       (9,2)SyntaxKind[RightHandSide]
         (9,2)SyntaxKind[SymbolSpan]
           (9,2)SyntaxKind[Nonterminal]
@@ -42,8 +48,9 @@
       (15,1)SyntaxKind[DedentToken]
   (16,1)SyntaxKind[Production]
     (16,1)SyntaxKind[Identifier](text = "InputElementRegExp")
-    (17,1)SyntaxKind[RightHandSideList]
-      (17,1)SyntaxKind[IndentToken]
+    (16,20)SyntaxKind[ColonColonToken]
+    (17,2)SyntaxKind[RightHandSideList]
+      (17,2)SyntaxKind[IndentToken]
       (17,2)SyntaxKind[RightHandSide]
         (17,2)SyntaxKind[SymbolSpan]
           (17,2)SyntaxKind[Nonterminal]
@@ -71,8 +78,9 @@
       (23,1)SyntaxKind[DedentToken]
   (24,1)SyntaxKind[Production]
     (24,1)SyntaxKind[Identifier](text = "InputElementRegExpOrTemplateTail")
-    (25,1)SyntaxKind[RightHandSideList]
-      (25,1)SyntaxKind[IndentToken]
+    (24,34)SyntaxKind[ColonColonToken]
+    (25,2)SyntaxKind[RightHandSideList]
+      (25,2)SyntaxKind[IndentToken]
       (25,2)SyntaxKind[RightHandSide]
         (25,2)SyntaxKind[SymbolSpan]
           (25,2)SyntaxKind[Nonterminal]
@@ -100,8 +108,9 @@
       (31,1)SyntaxKind[DedentToken]
   (32,1)SyntaxKind[Production]
     (32,1)SyntaxKind[Identifier](text = "InputElementTemplateTail")
-    (33,1)SyntaxKind[RightHandSideList]
-      (33,1)SyntaxKind[IndentToken]
+    (32,26)SyntaxKind[ColonColonToken]
+    (33,2)SyntaxKind[RightHandSideList]
+      (33,2)SyntaxKind[IndentToken]
       (33,2)SyntaxKind[RightHandSide]
         (33,2)SyntaxKind[SymbolSpan]
           (33,2)SyntaxKind[Nonterminal]
@@ -129,8 +138,9 @@
       (39,1)SyntaxKind[DedentToken]
   (40,1)SyntaxKind[Production]
     (40,1)SyntaxKind[Identifier](text = "WhiteSpace")
-    (41,1)SyntaxKind[RightHandSideList]
-      (41,1)SyntaxKind[IndentToken]
+    (40,12)SyntaxKind[ColonColonToken]
+    (41,2)SyntaxKind[RightHandSideList]
+      (41,2)SyntaxKind[IndentToken]
       (41,2)SyntaxKind[RightHandSide]
         (41,2)SyntaxKind[SymbolSpan]
           (41,2)SyntaxKind[UnicodeCharacterLiteral](text = <TAB>)
@@ -155,8 +165,9 @@
       (48,1)SyntaxKind[DedentToken]
   (49,1)SyntaxKind[Production]
     (49,1)SyntaxKind[Identifier](text = "LineTerminator")
-    (50,1)SyntaxKind[RightHandSideList]
-      (50,1)SyntaxKind[IndentToken]
+    (49,16)SyntaxKind[ColonColonToken]
+    (50,2)SyntaxKind[RightHandSideList]
+      (50,2)SyntaxKind[IndentToken]
       (50,2)SyntaxKind[RightHandSide]
         (50,2)SyntaxKind[SymbolSpan]
           (50,2)SyntaxKind[UnicodeCharacterLiteral](text = <LF>)
@@ -172,8 +183,9 @@
       (54,1)SyntaxKind[DedentToken]
   (55,1)SyntaxKind[Production]
     (55,1)SyntaxKind[Identifier](text = "LineTerminatorSequence")
-    (56,1)SyntaxKind[RightHandSideList]
-      (56,1)SyntaxKind[IndentToken]
+    (55,24)SyntaxKind[ColonColonToken]
+    (56,2)SyntaxKind[RightHandSideList]
+      (56,2)SyntaxKind[IndentToken]
       (56,2)SyntaxKind[RightHandSide]
         (56,2)SyntaxKind[SymbolSpan]
           (56,2)SyntaxKind[UnicodeCharacterLiteral](text = <LF>)
@@ -202,8 +214,9 @@
       (61,1)SyntaxKind[DedentToken]
   (62,1)SyntaxKind[Production]
     (62,1)SyntaxKind[Identifier](text = "Comment")
-    (63,1)SyntaxKind[RightHandSideList]
-      (63,1)SyntaxKind[IndentToken]
+    (62,9)SyntaxKind[ColonColonToken]
+    (63,2)SyntaxKind[RightHandSideList]
+      (63,2)SyntaxKind[IndentToken]
       (63,2)SyntaxKind[RightHandSide]
         (63,2)SyntaxKind[SymbolSpan]
           (63,2)SyntaxKind[Nonterminal]
@@ -215,8 +228,9 @@
       (65,1)SyntaxKind[DedentToken]
   (66,1)SyntaxKind[Production]
     (66,1)SyntaxKind[Identifier](text = "MultiLineComment")
-    (67,1)SyntaxKind[RightHandSideList]
-      (67,1)SyntaxKind[IndentToken]
+    (66,18)SyntaxKind[ColonColonToken]
+    (67,2)SyntaxKind[RightHandSideList]
+      (67,2)SyntaxKind[IndentToken]
       (67,2)SyntaxKind[RightHandSide]
         (67,2)SyntaxKind[SymbolSpan]
           (67,2)SyntaxKind[Terminal](text = "/*")
@@ -229,8 +243,9 @@
       (68,1)SyntaxKind[DedentToken]
   (69,1)SyntaxKind[Production]
     (69,1)SyntaxKind[Identifier](text = "MultiLineCommentChars")
-    (70,1)SyntaxKind[RightHandSideList]
-      (70,1)SyntaxKind[IndentToken]
+    (69,23)SyntaxKind[ColonColonToken]
+    (70,2)SyntaxKind[RightHandSideList]
+      (70,2)SyntaxKind[IndentToken]
       (70,2)SyntaxKind[RightHandSide]
         (70,2)SyntaxKind[SymbolSpan]
           (70,2)SyntaxKind[Nonterminal]
@@ -249,8 +264,9 @@
       (72,1)SyntaxKind[DedentToken]
   (73,1)SyntaxKind[Production]
     (73,1)SyntaxKind[Identifier](text = "PostAsteriskCommentChars")
-    (74,1)SyntaxKind[RightHandSideList]
-      (74,1)SyntaxKind[IndentToken]
+    (73,26)SyntaxKind[ColonColonToken]
+    (74,2)SyntaxKind[RightHandSideList]
+      (74,2)SyntaxKind[IndentToken]
       (74,2)SyntaxKind[RightHandSide]
         (74,2)SyntaxKind[SymbolSpan]
           (74,2)SyntaxKind[Nonterminal]
@@ -269,8 +285,9 @@
       (76,1)SyntaxKind[DedentToken]
   (77,1)SyntaxKind[Production]
     (77,1)SyntaxKind[Identifier](text = "MultiLineNotAsteriskChar")
-    (78,1)SyntaxKind[RightHandSideList]
-      (78,1)SyntaxKind[IndentToken]
+    (77,26)SyntaxKind[ColonColonToken]
+    (78,2)SyntaxKind[RightHandSideList]
+      (78,2)SyntaxKind[IndentToken]
       (78,2)SyntaxKind[RightHandSide]
         (78,2)SyntaxKind[SymbolSpan]
           (78,2)SyntaxKind[ButNotSymbol]
@@ -282,8 +299,9 @@
       (79,1)SyntaxKind[DedentToken]
   (80,1)SyntaxKind[Production]
     (80,1)SyntaxKind[Identifier](text = "MultiLineNotForwardSlashOrAsteriskChar")
-    (81,1)SyntaxKind[RightHandSideList]
-      (81,1)SyntaxKind[IndentToken]
+    (80,40)SyntaxKind[ColonColonToken]
+    (81,2)SyntaxKind[RightHandSideList]
+      (81,2)SyntaxKind[IndentToken]
       (81,2)SyntaxKind[RightHandSide]
         (81,2)SyntaxKind[SymbolSpan]
           (81,2)SyntaxKind[ButNotSymbol]
@@ -292,13 +310,16 @@
             (81,18)SyntaxKind[ButKeyword]
             (81,22)SyntaxKind[NotKeyword]
             (81,26)SyntaxKind[OneOfSymbol]
+              (81,26)SyntaxKind[OneKeyword]
+              (81,30)SyntaxKind[OfKeyword]
               (81,33)SyntaxKind[Terminal](text = "/")
               (81,40)SyntaxKind[Terminal](text = "*")
       (82,1)SyntaxKind[DedentToken]
   (83,1)SyntaxKind[Production]
     (83,1)SyntaxKind[Identifier](text = "SingleLineComment")
-    (84,1)SyntaxKind[RightHandSideList]
-      (84,1)SyntaxKind[IndentToken]
+    (83,19)SyntaxKind[ColonColonToken]
+    (84,2)SyntaxKind[RightHandSideList]
+      (84,2)SyntaxKind[IndentToken]
       (84,2)SyntaxKind[RightHandSide]
         (84,2)SyntaxKind[SymbolSpan]
           (84,2)SyntaxKind[Terminal](text = "//")
@@ -309,8 +330,9 @@
       (85,1)SyntaxKind[DedentToken]
   (86,1)SyntaxKind[Production]
     (86,1)SyntaxKind[Identifier](text = "SingleLineCommentChars")
-    (87,1)SyntaxKind[RightHandSideList]
-      (87,1)SyntaxKind[IndentToken]
+    (86,24)SyntaxKind[ColonColonToken]
+    (87,2)SyntaxKind[RightHandSideList]
+      (87,2)SyntaxKind[IndentToken]
       (87,2)SyntaxKind[RightHandSide]
         (87,2)SyntaxKind[SymbolSpan]
           (87,2)SyntaxKind[Nonterminal]
@@ -322,8 +344,9 @@
       (88,1)SyntaxKind[DedentToken]
   (89,1)SyntaxKind[Production]
     (89,1)SyntaxKind[Identifier](text = "SingleLineCommentChar")
-    (90,1)SyntaxKind[RightHandSideList]
-      (90,1)SyntaxKind[IndentToken]
+    (89,23)SyntaxKind[ColonColonToken]
+    (90,2)SyntaxKind[RightHandSideList]
+      (90,2)SyntaxKind[IndentToken]
       (90,2)SyntaxKind[RightHandSide]
         (90,2)SyntaxKind[SymbolSpan]
           (90,2)SyntaxKind[ButNotSymbol]
@@ -336,8 +359,9 @@
       (91,1)SyntaxKind[DedentToken]
   (92,1)SyntaxKind[Production]
     (92,1)SyntaxKind[Identifier](text = "CommonToken")
-    (93,1)SyntaxKind[RightHandSideList]
-      (93,1)SyntaxKind[IndentToken]
+    (92,13)SyntaxKind[ColonColonToken]
+    (93,2)SyntaxKind[RightHandSideList]
+      (93,2)SyntaxKind[IndentToken]
       (93,2)SyntaxKind[RightHandSide]
         (93,2)SyntaxKind[SymbolSpan]
           (93,2)SyntaxKind[Nonterminal]
@@ -361,8 +385,9 @@
       (98,1)SyntaxKind[DedentToken]
   (99,1)SyntaxKind[Production]
     (99,1)SyntaxKind[Identifier](text = "IdentifierName")
-    (100,1)SyntaxKind[RightHandSideList]
-      (100,1)SyntaxKind[IndentToken]
+    (99,16)SyntaxKind[ColonColonToken]
+    (100,2)SyntaxKind[RightHandSideList]
+      (100,2)SyntaxKind[IndentToken]
       (100,2)SyntaxKind[RightHandSide]
         (100,2)SyntaxKind[SymbolSpan]
           (100,2)SyntaxKind[Nonterminal]
@@ -377,8 +402,9 @@
       (102,1)SyntaxKind[DedentToken]
   (103,1)SyntaxKind[Production]
     (103,1)SyntaxKind[Identifier](text = "IdentifierStart")
-    (104,1)SyntaxKind[RightHandSideList]
-      (104,1)SyntaxKind[IndentToken]
+    (103,17)SyntaxKind[ColonColonToken]
+    (104,2)SyntaxKind[RightHandSideList]
+      (104,2)SyntaxKind[IndentToken]
       (104,2)SyntaxKind[RightHandSide]
         (104,2)SyntaxKind[SymbolSpan]
           (104,2)SyntaxKind[Nonterminal]
@@ -398,8 +424,9 @@
       (108,1)SyntaxKind[DedentToken]
   (109,1)SyntaxKind[Production]
     (109,1)SyntaxKind[Identifier](text = "IdentifierPart")
-    (110,1)SyntaxKind[RightHandSideList]
-      (110,1)SyntaxKind[IndentToken]
+    (109,16)SyntaxKind[ColonColonToken]
+    (110,2)SyntaxKind[RightHandSideList]
+      (110,2)SyntaxKind[IndentToken]
       (110,2)SyntaxKind[RightHandSide]
         (110,2)SyntaxKind[SymbolSpan]
           (110,2)SyntaxKind[Nonterminal]
@@ -425,8 +452,9 @@
       (116,1)SyntaxKind[DedentToken]
   (117,1)SyntaxKind[Production]
     (117,1)SyntaxKind[Identifier](text = "UnicodeIDStart")
-    (118,1)SyntaxKind[RightHandSideList]
-      (118,1)SyntaxKind[IndentToken]
+    (117,16)SyntaxKind[ColonColonToken]
+    (118,2)SyntaxKind[RightHandSideList]
+      (118,2)SyntaxKind[IndentToken]
       (118,2)SyntaxKind[RightHandSide]
         (118,2)SyntaxKind[SymbolSpan]
           (118,2)SyntaxKind[Prose]
@@ -435,8 +463,9 @@
       (119,1)SyntaxKind[DedentToken]
   (120,1)SyntaxKind[Production]
     (120,1)SyntaxKind[Identifier](text = "UnicodeIDContinue")
-    (121,1)SyntaxKind[RightHandSideList]
-      (121,1)SyntaxKind[IndentToken]
+    (120,19)SyntaxKind[ColonColonToken]
+    (121,2)SyntaxKind[RightHandSideList]
+      (121,2)SyntaxKind[IndentToken]
       (121,2)SyntaxKind[RightHandSide]
         (121,2)SyntaxKind[SymbolSpan]
           (121,2)SyntaxKind[Prose]
@@ -445,8 +474,9 @@
       (122,1)SyntaxKind[DedentToken]
   (123,1)SyntaxKind[Production]
     (123,1)SyntaxKind[Identifier](text = "ReservedWord")
-    (124,1)SyntaxKind[RightHandSideList]
-      (124,1)SyntaxKind[IndentToken]
+    (123,14)SyntaxKind[ColonColonToken]
+    (124,2)SyntaxKind[RightHandSideList]
+      (124,2)SyntaxKind[IndentToken]
       (124,2)SyntaxKind[RightHandSide]
         (124,2)SyntaxKind[SymbolSpan]
           (124,2)SyntaxKind[Nonterminal]
@@ -466,10 +496,11 @@
       (128,1)SyntaxKind[DedentToken]
   (129,1)SyntaxKind[Production]
     (129,1)SyntaxKind[Identifier](text = "Keyword")
+    (129,9)SyntaxKind[ColonColonToken]
     (129,12)SyntaxKind[OneOfList]
       (129,12)SyntaxKind[OneKeyword]
       (129,16)SyntaxKind[OfKeyword]
-      (130,1)SyntaxKind[IndentToken]
+      (130,2)SyntaxKind[IndentToken]
       (130,2)SyntaxKind[Terminal](text = "break")
       (130,11)SyntaxKind[Terminal](text = "do")
       (130,17)SyntaxKind[Terminal](text = "in")
@@ -506,10 +537,11 @@
       (139,1)SyntaxKind[DedentToken]
   (140,1)SyntaxKind[Production]
     (140,1)SyntaxKind[Identifier](text = "FutureReservedWord")
+    (140,20)SyntaxKind[ColonColonToken]
     (140,23)SyntaxKind[OneOfList]
       (140,23)SyntaxKind[OneKeyword]
       (140,27)SyntaxKind[OfKeyword]
-      (141,1)SyntaxKind[IndentToken]
+      (141,2)SyntaxKind[IndentToken]
       (141,2)SyntaxKind[Terminal](text = "enum")
       (143,2)SyntaxKind[Terminal](text = "await")
       (145,2)SyntaxKind[Terminal](text = "implements")
@@ -521,10 +553,11 @@
       (147,1)SyntaxKind[DedentToken]
   (148,1)SyntaxKind[Production]
     (148,1)SyntaxKind[Identifier](text = "Punctuator")
+    (148,12)SyntaxKind[ColonColonToken]
     (148,15)SyntaxKind[OneOfList]
       (148,15)SyntaxKind[OneKeyword]
       (148,19)SyntaxKind[OfKeyword]
-      (149,1)SyntaxKind[IndentToken]
+      (149,2)SyntaxKind[IndentToken]
       (149,2)SyntaxKind[Terminal](text = "{")
       (149,7)SyntaxKind[Terminal](text = "}")
       (149,12)SyntaxKind[Terminal](text = "(")
@@ -575,33 +608,37 @@
       (157,1)SyntaxKind[DedentToken]
   (158,1)SyntaxKind[Production]
     (158,1)SyntaxKind[Identifier](text = "DivPunctuator")
+    (158,15)SyntaxKind[ColonColonToken]
     (158,18)SyntaxKind[OneOfList]
       (158,18)SyntaxKind[OneKeyword]
       (158,22)SyntaxKind[OfKeyword]
-      (159,1)SyntaxKind[IndentToken]
+      (159,2)SyntaxKind[IndentToken]
       (159,2)SyntaxKind[Terminal](text = "/")
       (159,7)SyntaxKind[Terminal](text = "/=")
       (160,1)SyntaxKind[DedentToken]
   (161,1)SyntaxKind[Production]
     (161,1)SyntaxKind[Identifier](text = "RightBracePunctuator")
+    (161,22)SyntaxKind[ColonColonToken]
     (161,25)SyntaxKind[OneOfList]
       (161,25)SyntaxKind[OneKeyword]
       (161,29)SyntaxKind[OfKeyword]
-      (162,1)SyntaxKind[IndentToken]
+      (162,2)SyntaxKind[IndentToken]
       (162,2)SyntaxKind[Terminal](text = ")")
       (163,1)SyntaxKind[DedentToken]
   (164,1)SyntaxKind[Production]
     (164,1)SyntaxKind[Identifier](text = "NullLiteral")
-    (165,1)SyntaxKind[RightHandSideList]
-      (165,1)SyntaxKind[IndentToken]
+    (164,13)SyntaxKind[ColonColonToken]
+    (165,2)SyntaxKind[RightHandSideList]
+      (165,2)SyntaxKind[IndentToken]
       (165,2)SyntaxKind[RightHandSide]
         (165,2)SyntaxKind[SymbolSpan]
           (165,2)SyntaxKind[Terminal](text = "null")
       (166,1)SyntaxKind[DedentToken]
   (167,1)SyntaxKind[Production]
     (167,1)SyntaxKind[Identifier](text = "BooleanLiteral")
-    (168,1)SyntaxKind[RightHandSideList]
-      (168,1)SyntaxKind[IndentToken]
+    (167,16)SyntaxKind[ColonColonToken]
+    (168,2)SyntaxKind[RightHandSideList]
+      (168,2)SyntaxKind[IndentToken]
       (168,2)SyntaxKind[RightHandSide]
         (168,2)SyntaxKind[SymbolSpan]
           (168,2)SyntaxKind[Terminal](text = "true")
@@ -611,8 +648,9 @@
       (170,1)SyntaxKind[DedentToken]
   (171,1)SyntaxKind[Production]
     (171,1)SyntaxKind[Identifier](text = "NumericLiteral")
-    (172,1)SyntaxKind[RightHandSideList]
-      (172,1)SyntaxKind[IndentToken]
+    (171,16)SyntaxKind[ColonColonToken]
+    (172,2)SyntaxKind[RightHandSideList]
+      (172,2)SyntaxKind[IndentToken]
       (172,2)SyntaxKind[RightHandSide]
         (172,2)SyntaxKind[SymbolSpan]
           (172,2)SyntaxKind[Nonterminal]
@@ -632,8 +670,9 @@
       (176,1)SyntaxKind[DedentToken]
   (177,1)SyntaxKind[Production]
     (177,1)SyntaxKind[Identifier](text = "DecimalLiteral")
-    (178,1)SyntaxKind[RightHandSideList]
-      (178,1)SyntaxKind[IndentToken]
+    (177,16)SyntaxKind[ColonColonToken]
+    (178,2)SyntaxKind[RightHandSideList]
+      (178,2)SyntaxKind[IndentToken]
       (178,2)SyntaxKind[RightHandSide]
         (178,2)SyntaxKind[SymbolSpan]
           (178,2)SyntaxKind[Nonterminal]
@@ -669,8 +708,9 @@
       (181,1)SyntaxKind[DedentToken]
   (182,1)SyntaxKind[Production]
     (182,1)SyntaxKind[Identifier](text = "DecimalIntegerLiteral")
-    (183,1)SyntaxKind[RightHandSideList]
-      (183,1)SyntaxKind[IndentToken]
+    (182,23)SyntaxKind[ColonColonToken]
+    (183,2)SyntaxKind[RightHandSideList]
+      (183,2)SyntaxKind[IndentToken]
       (183,2)SyntaxKind[RightHandSide]
         (183,2)SyntaxKind[SymbolSpan]
           (183,2)SyntaxKind[Terminal](text = "0")
@@ -685,8 +725,9 @@
       (185,1)SyntaxKind[DedentToken]
   (186,1)SyntaxKind[Production]
     (186,1)SyntaxKind[Identifier](text = "DecimalDigits")
-    (187,1)SyntaxKind[RightHandSideList]
-      (187,1)SyntaxKind[IndentToken]
+    (186,15)SyntaxKind[ColonColonToken]
+    (187,2)SyntaxKind[RightHandSideList]
+      (187,2)SyntaxKind[IndentToken]
       (187,2)SyntaxKind[RightHandSide]
         (187,2)SyntaxKind[SymbolSpan]
           (187,2)SyntaxKind[Nonterminal]
@@ -701,10 +742,11 @@
       (189,1)SyntaxKind[DedentToken]
   (190,1)SyntaxKind[Production]
     (190,1)SyntaxKind[Identifier](text = "DecimalDigit")
+    (190,14)SyntaxKind[ColonColonToken]
     (190,17)SyntaxKind[OneOfList]
       (190,17)SyntaxKind[OneKeyword]
       (190,21)SyntaxKind[OfKeyword]
-      (191,1)SyntaxKind[IndentToken]
+      (191,2)SyntaxKind[IndentToken]
       (191,2)SyntaxKind[Terminal](text = "0")
       (191,6)SyntaxKind[Terminal](text = "1")
       (191,10)SyntaxKind[Terminal](text = "2")
@@ -718,10 +760,11 @@
       (192,1)SyntaxKind[DedentToken]
   (193,1)SyntaxKind[Production]
     (193,1)SyntaxKind[Identifier](text = "NonZeroDigit")
+    (193,14)SyntaxKind[ColonColonToken]
     (193,17)SyntaxKind[OneOfList]
       (193,17)SyntaxKind[OneKeyword]
       (193,21)SyntaxKind[OfKeyword]
-      (194,1)SyntaxKind[IndentToken]
+      (194,2)SyntaxKind[IndentToken]
       (194,2)SyntaxKind[Terminal](text = "1")
       (194,6)SyntaxKind[Terminal](text = "2")
       (194,10)SyntaxKind[Terminal](text = "3")
@@ -734,8 +777,9 @@
       (195,1)SyntaxKind[DedentToken]
   (196,1)SyntaxKind[Production]
     (196,1)SyntaxKind[Identifier](text = "ExponentPart")
-    (197,1)SyntaxKind[RightHandSideList]
-      (197,1)SyntaxKind[IndentToken]
+    (196,14)SyntaxKind[ColonColonToken]
+    (197,2)SyntaxKind[RightHandSideList]
+      (197,2)SyntaxKind[IndentToken]
       (197,2)SyntaxKind[RightHandSide]
         (197,2)SyntaxKind[SymbolSpan]
           (197,2)SyntaxKind[Nonterminal]
@@ -746,17 +790,19 @@
       (198,1)SyntaxKind[DedentToken]
   (199,1)SyntaxKind[Production]
     (199,1)SyntaxKind[Identifier](text = "ExponentIndicator")
+    (199,19)SyntaxKind[ColonColonToken]
     (199,22)SyntaxKind[OneOfList]
       (199,22)SyntaxKind[OneKeyword]
       (199,26)SyntaxKind[OfKeyword]
-      (200,1)SyntaxKind[IndentToken]
+      (200,2)SyntaxKind[IndentToken]
       (200,2)SyntaxKind[Terminal](text = "e")
       (200,6)SyntaxKind[Terminal](text = "E")
       (201,1)SyntaxKind[DedentToken]
   (202,1)SyntaxKind[Production]
     (202,1)SyntaxKind[Identifier](text = "SignedInteger")
-    (203,1)SyntaxKind[RightHandSideList]
-      (203,1)SyntaxKind[IndentToken]
+    (202,15)SyntaxKind[ColonColonToken]
+    (203,2)SyntaxKind[RightHandSideList]
+      (203,2)SyntaxKind[IndentToken]
       (203,2)SyntaxKind[RightHandSide]
         (203,2)SyntaxKind[SymbolSpan]
           (203,2)SyntaxKind[Nonterminal]
@@ -776,8 +822,9 @@
       (206,1)SyntaxKind[DedentToken]
   (207,1)SyntaxKind[Production]
     (207,1)SyntaxKind[Identifier](text = "BinaryIntegerLiteral")
-    (208,1)SyntaxKind[RightHandSideList]
-      (208,1)SyntaxKind[IndentToken]
+    (207,22)SyntaxKind[ColonColonToken]
+    (208,2)SyntaxKind[RightHandSideList]
+      (208,2)SyntaxKind[IndentToken]
       (208,2)SyntaxKind[RightHandSide]
         (208,2)SyntaxKind[SymbolSpan]
           (208,2)SyntaxKind[Terminal](text = "0b")
@@ -793,8 +840,9 @@
       (210,1)SyntaxKind[DedentToken]
   (211,1)SyntaxKind[Production]
     (211,1)SyntaxKind[Identifier](text = "BinaryDigits")
-    (212,1)SyntaxKind[RightHandSideList]
-      (212,1)SyntaxKind[IndentToken]
+    (211,14)SyntaxKind[ColonColonToken]
+    (212,2)SyntaxKind[RightHandSideList]
+      (212,2)SyntaxKind[IndentToken]
       (212,2)SyntaxKind[RightHandSide]
         (212,2)SyntaxKind[SymbolSpan]
           (212,2)SyntaxKind[Nonterminal]
@@ -809,17 +857,19 @@
       (214,1)SyntaxKind[DedentToken]
   (215,1)SyntaxKind[Production]
     (215,1)SyntaxKind[Identifier](text = "BinaryDigit")
+    (215,13)SyntaxKind[ColonColonToken]
     (215,16)SyntaxKind[OneOfList]
       (215,16)SyntaxKind[OneKeyword]
       (215,20)SyntaxKind[OfKeyword]
-      (216,1)SyntaxKind[IndentToken]
+      (216,2)SyntaxKind[IndentToken]
       (216,2)SyntaxKind[Terminal](text = "0")
       (216,6)SyntaxKind[Terminal](text = "1")
       (217,1)SyntaxKind[DedentToken]
   (218,1)SyntaxKind[Production]
     (218,1)SyntaxKind[Identifier](text = "OctalIntegerLiteral")
-    (219,1)SyntaxKind[RightHandSideList]
-      (219,1)SyntaxKind[IndentToken]
+    (218,21)SyntaxKind[ColonColonToken]
+    (219,2)SyntaxKind[RightHandSideList]
+      (219,2)SyntaxKind[IndentToken]
       (219,2)SyntaxKind[RightHandSide]
         (219,2)SyntaxKind[SymbolSpan]
           (219,2)SyntaxKind[Terminal](text = "0o")
@@ -835,8 +885,9 @@
       (221,1)SyntaxKind[DedentToken]
   (222,1)SyntaxKind[Production]
     (222,1)SyntaxKind[Identifier](text = "OctalDigits")
-    (223,1)SyntaxKind[RightHandSideList]
-      (223,1)SyntaxKind[IndentToken]
+    (222,13)SyntaxKind[ColonColonToken]
+    (223,2)SyntaxKind[RightHandSideList]
+      (223,2)SyntaxKind[IndentToken]
       (223,2)SyntaxKind[RightHandSide]
         (223,2)SyntaxKind[SymbolSpan]
           (223,2)SyntaxKind[Nonterminal]
@@ -851,10 +902,11 @@
       (225,1)SyntaxKind[DedentToken]
   (226,1)SyntaxKind[Production]
     (226,1)SyntaxKind[Identifier](text = "OctalDigit")
+    (226,12)SyntaxKind[ColonColonToken]
     (226,15)SyntaxKind[OneOfList]
       (226,15)SyntaxKind[OneKeyword]
       (226,19)SyntaxKind[OfKeyword]
-      (227,1)SyntaxKind[IndentToken]
+      (227,2)SyntaxKind[IndentToken]
       (227,2)SyntaxKind[Terminal](text = "0")
       (227,6)SyntaxKind[Terminal](text = "1")
       (227,10)SyntaxKind[Terminal](text = "2")
@@ -866,8 +918,9 @@
       (228,1)SyntaxKind[DedentToken]
   (229,1)SyntaxKind[Production]
     (229,1)SyntaxKind[Identifier](text = "HexIntegerLiteral")
-    (230,1)SyntaxKind[RightHandSideList]
-      (230,1)SyntaxKind[IndentToken]
+    (229,19)SyntaxKind[ColonColonToken]
+    (230,2)SyntaxKind[RightHandSideList]
+      (230,2)SyntaxKind[IndentToken]
       (230,2)SyntaxKind[RightHandSide]
         (230,2)SyntaxKind[SymbolSpan]
           (230,2)SyntaxKind[Terminal](text = "0x")
@@ -883,8 +936,9 @@
       (232,1)SyntaxKind[DedentToken]
   (233,1)SyntaxKind[Production]
     (233,1)SyntaxKind[Identifier](text = "HexDigits")
-    (234,1)SyntaxKind[RightHandSideList]
-      (234,1)SyntaxKind[IndentToken]
+    (233,11)SyntaxKind[ColonColonToken]
+    (234,2)SyntaxKind[RightHandSideList]
+      (234,2)SyntaxKind[IndentToken]
       (234,2)SyntaxKind[RightHandSide]
         (234,2)SyntaxKind[SymbolSpan]
           (234,2)SyntaxKind[Nonterminal]
@@ -899,10 +953,11 @@
       (236,1)SyntaxKind[DedentToken]
   (237,1)SyntaxKind[Production]
     (237,1)SyntaxKind[Identifier](text = "HexDigit")
+    (237,10)SyntaxKind[ColonColonToken]
     (237,13)SyntaxKind[OneOfList]
       (237,13)SyntaxKind[OneKeyword]
       (237,17)SyntaxKind[OfKeyword]
-      (238,1)SyntaxKind[IndentToken]
+      (238,2)SyntaxKind[IndentToken]
       (238,2)SyntaxKind[Terminal](text = "0")
       (238,6)SyntaxKind[Terminal](text = "1")
       (238,10)SyntaxKind[Terminal](text = "2")
@@ -928,8 +983,9 @@
       (239,1)SyntaxKind[DedentToken]
   (240,1)SyntaxKind[Production]
     (240,1)SyntaxKind[Identifier](text = "StringLiteral")
-    (241,1)SyntaxKind[RightHandSideList]
-      (241,1)SyntaxKind[IndentToken]
+    (240,15)SyntaxKind[ColonColonToken]
+    (241,2)SyntaxKind[RightHandSideList]
+      (241,2)SyntaxKind[IndentToken]
       (241,2)SyntaxKind[RightHandSide]
         (241,2)SyntaxKind[SymbolSpan]
           (241,2)SyntaxKind[Terminal](text = """)
@@ -951,8 +1007,9 @@
       (243,1)SyntaxKind[DedentToken]
   (244,1)SyntaxKind[Production]
     (244,1)SyntaxKind[Identifier](text = "DoubleStringCharacters")
-    (245,1)SyntaxKind[RightHandSideList]
-      (245,1)SyntaxKind[IndentToken]
+    (244,24)SyntaxKind[ColonColonToken]
+    (245,2)SyntaxKind[RightHandSideList]
+      (245,2)SyntaxKind[IndentToken]
       (245,2)SyntaxKind[RightHandSide]
         (245,2)SyntaxKind[SymbolSpan]
           (245,2)SyntaxKind[Nonterminal]
@@ -964,8 +1021,9 @@
       (246,1)SyntaxKind[DedentToken]
   (247,1)SyntaxKind[Production]
     (247,1)SyntaxKind[Identifier](text = "SingleStringCharacters")
-    (248,1)SyntaxKind[RightHandSideList]
-      (248,1)SyntaxKind[IndentToken]
+    (247,24)SyntaxKind[ColonColonToken]
+    (248,2)SyntaxKind[RightHandSideList]
+      (248,2)SyntaxKind[IndentToken]
       (248,2)SyntaxKind[RightHandSide]
         (248,2)SyntaxKind[SymbolSpan]
           (248,2)SyntaxKind[Nonterminal]
@@ -977,8 +1035,9 @@
       (249,1)SyntaxKind[DedentToken]
   (250,1)SyntaxKind[Production]
     (250,1)SyntaxKind[Identifier](text = "DoubleStringCharacter")
-    (251,1)SyntaxKind[RightHandSideList]
-      (251,1)SyntaxKind[IndentToken]
+    (250,23)SyntaxKind[ColonColonToken]
+    (251,2)SyntaxKind[RightHandSideList]
+      (251,2)SyntaxKind[IndentToken]
       (251,2)SyntaxKind[RightHandSide]
         (251,2)SyntaxKind[SymbolSpan]
           (251,2)SyntaxKind[ButNotSymbol]
@@ -987,6 +1046,8 @@
             (251,18)SyntaxKind[ButKeyword]
             (251,22)SyntaxKind[NotKeyword]
             (251,26)SyntaxKind[OneOfSymbol]
+              (251,26)SyntaxKind[OneKeyword]
+              (251,30)SyntaxKind[OfKeyword]
               (251,33)SyntaxKind[Terminal](text = """)
               (251,40)SyntaxKind[Terminal](text = "\")
               (251,47)SyntaxKind[Nonterminal]
@@ -1004,8 +1065,9 @@
       (254,1)SyntaxKind[DedentToken]
   (255,1)SyntaxKind[Production]
     (255,1)SyntaxKind[Identifier](text = "SingleStringCharacter")
-    (256,1)SyntaxKind[RightHandSideList]
-      (256,1)SyntaxKind[IndentToken]
+    (255,23)SyntaxKind[ColonColonToken]
+    (256,2)SyntaxKind[RightHandSideList]
+      (256,2)SyntaxKind[IndentToken]
       (256,2)SyntaxKind[RightHandSide]
         (256,2)SyntaxKind[SymbolSpan]
           (256,2)SyntaxKind[ButNotSymbol]
@@ -1014,6 +1076,8 @@
             (256,18)SyntaxKind[ButKeyword]
             (256,22)SyntaxKind[NotKeyword]
             (256,26)SyntaxKind[OneOfSymbol]
+              (256,26)SyntaxKind[OneKeyword]
+              (256,30)SyntaxKind[OfKeyword]
               (256,33)SyntaxKind[Terminal](text = "'")
               (256,40)SyntaxKind[Terminal](text = "\")
               (256,47)SyntaxKind[Nonterminal]
@@ -1031,8 +1095,9 @@
       (259,1)SyntaxKind[DedentToken]
   (260,1)SyntaxKind[Production]
     (260,1)SyntaxKind[Identifier](text = "LineContinuation")
-    (261,1)SyntaxKind[RightHandSideList]
-      (261,1)SyntaxKind[IndentToken]
+    (260,18)SyntaxKind[ColonColonToken]
+    (261,2)SyntaxKind[RightHandSideList]
+      (261,2)SyntaxKind[IndentToken]
       (261,2)SyntaxKind[RightHandSide]
         (261,2)SyntaxKind[SymbolSpan]
           (261,2)SyntaxKind[Terminal](text = "\")
@@ -1042,8 +1107,9 @@
       (262,1)SyntaxKind[DedentToken]
   (263,1)SyntaxKind[Production]
     (263,1)SyntaxKind[Identifier](text = "EscapeSequence")
-    (264,1)SyntaxKind[RightHandSideList]
-      (264,1)SyntaxKind[IndentToken]
+    (263,16)SyntaxKind[ColonColonToken]
+    (264,2)SyntaxKind[RightHandSideList]
+      (264,2)SyntaxKind[IndentToken]
       (264,2)SyntaxKind[RightHandSide]
         (264,2)SyntaxKind[SymbolSpan]
           (264,2)SyntaxKind[Nonterminal]
@@ -1071,8 +1137,9 @@
       (268,1)SyntaxKind[DedentToken]
   (269,1)SyntaxKind[Production]
     (269,1)SyntaxKind[Identifier](text = "CharacterEscapeSequence")
-    (270,1)SyntaxKind[RightHandSideList]
-      (270,1)SyntaxKind[IndentToken]
+    (269,25)SyntaxKind[ColonColonToken]
+    (270,2)SyntaxKind[RightHandSideList]
+      (270,2)SyntaxKind[IndentToken]
       (270,2)SyntaxKind[RightHandSide]
         (270,2)SyntaxKind[SymbolSpan]
           (270,2)SyntaxKind[Nonterminal]
@@ -1084,10 +1151,11 @@
       (272,1)SyntaxKind[DedentToken]
   (273,1)SyntaxKind[Production]
     (273,1)SyntaxKind[Identifier](text = "SingleEscapeCharacter")
+    (273,23)SyntaxKind[ColonColonToken]
     (273,26)SyntaxKind[OneOfList]
       (273,26)SyntaxKind[OneKeyword]
       (273,30)SyntaxKind[OfKeyword]
-      (274,1)SyntaxKind[IndentToken]
+      (274,2)SyntaxKind[IndentToken]
       (274,2)SyntaxKind[Terminal](text = "'")
       (274,6)SyntaxKind[Terminal](text = """)
       (274,10)SyntaxKind[Terminal](text = "\")
@@ -1100,8 +1168,9 @@
       (275,1)SyntaxKind[DedentToken]
   (276,1)SyntaxKind[Production]
     (276,1)SyntaxKind[Identifier](text = "NonEscapeCharacter")
-    (277,1)SyntaxKind[RightHandSideList]
-      (277,1)SyntaxKind[IndentToken]
+    (276,20)SyntaxKind[ColonColonToken]
+    (277,2)SyntaxKind[RightHandSideList]
+      (277,2)SyntaxKind[IndentToken]
       (277,2)SyntaxKind[RightHandSide]
         (277,2)SyntaxKind[SymbolSpan]
           (277,2)SyntaxKind[ButNotSymbol]
@@ -1110,6 +1179,8 @@
             (277,18)SyntaxKind[ButKeyword]
             (277,22)SyntaxKind[NotKeyword]
             (277,26)SyntaxKind[OneOfSymbol]
+              (277,26)SyntaxKind[OneKeyword]
+              (277,30)SyntaxKind[OfKeyword]
               (277,33)SyntaxKind[Nonterminal]
                 (277,33)SyntaxKind[Identifier](text = "EscapeCharacter")
               (277,52)SyntaxKind[Nonterminal]
@@ -1117,8 +1188,9 @@
       (278,1)SyntaxKind[DedentToken]
   (279,1)SyntaxKind[Production]
     (279,1)SyntaxKind[Identifier](text = "EscapeCharacter")
-    (280,1)SyntaxKind[RightHandSideList]
-      (280,1)SyntaxKind[IndentToken]
+    (279,17)SyntaxKind[ColonColonToken]
+    (280,2)SyntaxKind[RightHandSideList]
+      (280,2)SyntaxKind[IndentToken]
       (280,2)SyntaxKind[RightHandSide]
         (280,2)SyntaxKind[SymbolSpan]
           (280,2)SyntaxKind[Nonterminal]
@@ -1136,8 +1208,9 @@
       (284,1)SyntaxKind[DedentToken]
   (285,1)SyntaxKind[Production]
     (285,1)SyntaxKind[Identifier](text = "HexEscapeSequence")
-    (286,1)SyntaxKind[RightHandSideList]
-      (286,1)SyntaxKind[IndentToken]
+    (285,19)SyntaxKind[ColonColonToken]
+    (286,2)SyntaxKind[RightHandSideList]
+      (286,2)SyntaxKind[IndentToken]
       (286,2)SyntaxKind[RightHandSide]
         (286,2)SyntaxKind[SymbolSpan]
           (286,2)SyntaxKind[Terminal](text = "x")
@@ -1150,8 +1223,9 @@
       (287,1)SyntaxKind[DedentToken]
   (288,1)SyntaxKind[Production]
     (288,1)SyntaxKind[Identifier](text = "UnicodeEscapeSequence")
-    (289,1)SyntaxKind[RightHandSideList]
-      (289,1)SyntaxKind[IndentToken]
+    (288,23)SyntaxKind[ColonColonToken]
+    (289,2)SyntaxKind[RightHandSideList]
+      (289,2)SyntaxKind[IndentToken]
       (289,2)SyntaxKind[RightHandSide]
         (289,2)SyntaxKind[SymbolSpan]
           (289,2)SyntaxKind[Terminal](text = "u")
@@ -1169,8 +1243,9 @@
       (291,1)SyntaxKind[DedentToken]
   (292,1)SyntaxKind[Production]
     (292,1)SyntaxKind[Identifier](text = "Hex4Digits")
-    (293,1)SyntaxKind[RightHandSideList]
-      (293,1)SyntaxKind[IndentToken]
+    (292,12)SyntaxKind[ColonColonToken]
+    (293,2)SyntaxKind[RightHandSideList]
+      (293,2)SyntaxKind[IndentToken]
       (293,2)SyntaxKind[RightHandSide]
         (293,2)SyntaxKind[SymbolSpan]
           (293,2)SyntaxKind[Nonterminal]
@@ -1187,8 +1262,9 @@
       (294,1)SyntaxKind[DedentToken]
   (295,1)SyntaxKind[Production]
     (295,1)SyntaxKind[Identifier](text = "RegularExpressionLiteral")
-    (296,1)SyntaxKind[RightHandSideList]
-      (296,1)SyntaxKind[IndentToken]
+    (295,26)SyntaxKind[ColonColonToken]
+    (296,2)SyntaxKind[RightHandSideList]
+      (296,2)SyntaxKind[IndentToken]
       (296,2)SyntaxKind[RightHandSide]
         (296,2)SyntaxKind[SymbolSpan]
           (296,2)SyntaxKind[Terminal](text = "/")
@@ -1203,8 +1279,9 @@
       (297,1)SyntaxKind[DedentToken]
   (298,1)SyntaxKind[Production]
     (298,1)SyntaxKind[Identifier](text = "RegularExpressionBody")
-    (299,1)SyntaxKind[RightHandSideList]
-      (299,1)SyntaxKind[IndentToken]
+    (298,23)SyntaxKind[ColonColonToken]
+    (299,2)SyntaxKind[RightHandSideList]
+      (299,2)SyntaxKind[IndentToken]
       (299,2)SyntaxKind[RightHandSide]
         (299,2)SyntaxKind[SymbolSpan]
           (299,2)SyntaxKind[Nonterminal]
@@ -1215,8 +1292,9 @@
       (300,1)SyntaxKind[DedentToken]
   (301,1)SyntaxKind[Production]
     (301,1)SyntaxKind[Identifier](text = "RegularExpressionChars")
-    (302,1)SyntaxKind[RightHandSideList]
-      (302,1)SyntaxKind[IndentToken]
+    (301,24)SyntaxKind[ColonColonToken]
+    (302,2)SyntaxKind[RightHandSideList]
+      (302,2)SyntaxKind[IndentToken]
       (302,2)SyntaxKind[RightHandSide]
         (302,2)SyntaxKind[SymbolSpan]
           (302,2)SyntaxKind[EmptyAssertion]
@@ -1233,8 +1311,9 @@
       (304,1)SyntaxKind[DedentToken]
   (305,1)SyntaxKind[Production]
     (305,1)SyntaxKind[Identifier](text = "RegularExpressionFirstChar")
-    (306,1)SyntaxKind[RightHandSideList]
-      (306,1)SyntaxKind[IndentToken]
+    (305,28)SyntaxKind[ColonColonToken]
+    (306,2)SyntaxKind[RightHandSideList]
+      (306,2)SyntaxKind[IndentToken]
       (306,2)SyntaxKind[RightHandSide]
         (306,2)SyntaxKind[SymbolSpan]
           (306,2)SyntaxKind[ButNotSymbol]
@@ -1243,6 +1322,8 @@
             (306,33)SyntaxKind[ButKeyword]
             (306,37)SyntaxKind[NotKeyword]
             (306,41)SyntaxKind[OneOfSymbol]
+              (306,41)SyntaxKind[OneKeyword]
+              (306,45)SyntaxKind[OfKeyword]
               (306,48)SyntaxKind[Terminal](text = "*")
               (306,55)SyntaxKind[Terminal](text = "\")
               (306,62)SyntaxKind[Terminal](text = "/")
@@ -1258,8 +1339,9 @@
       (309,1)SyntaxKind[DedentToken]
   (310,1)SyntaxKind[Production]
     (310,1)SyntaxKind[Identifier](text = "RegularExpressionChar")
-    (311,1)SyntaxKind[RightHandSideList]
-      (311,1)SyntaxKind[IndentToken]
+    (310,23)SyntaxKind[ColonColonToken]
+    (311,2)SyntaxKind[RightHandSideList]
+      (311,2)SyntaxKind[IndentToken]
       (311,2)SyntaxKind[RightHandSide]
         (311,2)SyntaxKind[SymbolSpan]
           (311,2)SyntaxKind[ButNotSymbol]
@@ -1268,6 +1350,8 @@
             (311,33)SyntaxKind[ButKeyword]
             (311,37)SyntaxKind[NotKeyword]
             (311,41)SyntaxKind[OneOfSymbol]
+              (311,41)SyntaxKind[OneKeyword]
+              (311,45)SyntaxKind[OfKeyword]
               (311,48)SyntaxKind[Terminal](text = "\")
               (311,55)SyntaxKind[Terminal](text = "/")
               (311,62)SyntaxKind[Terminal](text = "[")
@@ -1282,8 +1366,9 @@
       (314,1)SyntaxKind[DedentToken]
   (315,1)SyntaxKind[Production]
     (315,1)SyntaxKind[Identifier](text = "RegularExpressionBackslashSequence")
-    (316,1)SyntaxKind[RightHandSideList]
-      (316,1)SyntaxKind[IndentToken]
+    (315,36)SyntaxKind[ColonColonToken]
+    (316,2)SyntaxKind[RightHandSideList]
+      (316,2)SyntaxKind[IndentToken]
       (316,2)SyntaxKind[RightHandSide]
         (316,2)SyntaxKind[SymbolSpan]
           (316,2)SyntaxKind[Terminal](text = "\")
@@ -1293,8 +1378,9 @@
       (317,1)SyntaxKind[DedentToken]
   (318,1)SyntaxKind[Production]
     (318,1)SyntaxKind[Identifier](text = "RegularExpressionNonTerminator")
-    (319,1)SyntaxKind[RightHandSideList]
-      (319,1)SyntaxKind[IndentToken]
+    (318,32)SyntaxKind[ColonColonToken]
+    (319,2)SyntaxKind[RightHandSideList]
+      (319,2)SyntaxKind[IndentToken]
       (319,2)SyntaxKind[RightHandSide]
         (319,2)SyntaxKind[SymbolSpan]
           (319,2)SyntaxKind[ButNotSymbol]
@@ -1307,8 +1393,9 @@
       (320,1)SyntaxKind[DedentToken]
   (321,1)SyntaxKind[Production]
     (321,1)SyntaxKind[Identifier](text = "RegularExpressionClass")
-    (322,1)SyntaxKind[RightHandSideList]
-      (322,1)SyntaxKind[IndentToken]
+    (321,24)SyntaxKind[ColonColonToken]
+    (322,2)SyntaxKind[RightHandSideList]
+      (322,2)SyntaxKind[IndentToken]
       (322,2)SyntaxKind[RightHandSide]
         (322,2)SyntaxKind[SymbolSpan]
           (322,2)SyntaxKind[Terminal](text = "[")
@@ -1320,8 +1407,9 @@
       (323,1)SyntaxKind[DedentToken]
   (324,1)SyntaxKind[Production]
     (324,1)SyntaxKind[Identifier](text = "RegularExpressionClassChars")
-    (325,1)SyntaxKind[RightHandSideList]
-      (325,1)SyntaxKind[IndentToken]
+    (324,29)SyntaxKind[ColonColonToken]
+    (325,2)SyntaxKind[RightHandSideList]
+      (325,2)SyntaxKind[IndentToken]
       (325,2)SyntaxKind[RightHandSide]
         (325,2)SyntaxKind[SymbolSpan]
           (325,2)SyntaxKind[EmptyAssertion]
@@ -1338,8 +1426,9 @@
       (327,1)SyntaxKind[DedentToken]
   (328,1)SyntaxKind[Production]
     (328,1)SyntaxKind[Identifier](text = "RegularExpressionClassChar")
-    (329,1)SyntaxKind[RightHandSideList]
-      (329,1)SyntaxKind[IndentToken]
+    (328,28)SyntaxKind[ColonColonToken]
+    (329,2)SyntaxKind[RightHandSideList]
+      (329,2)SyntaxKind[IndentToken]
       (329,2)SyntaxKind[RightHandSide]
         (329,2)SyntaxKind[SymbolSpan]
           (329,2)SyntaxKind[ButNotSymbol]
@@ -1348,6 +1437,8 @@
             (329,33)SyntaxKind[ButKeyword]
             (329,37)SyntaxKind[NotKeyword]
             (329,41)SyntaxKind[OneOfSymbol]
+              (329,41)SyntaxKind[OneKeyword]
+              (329,45)SyntaxKind[OfKeyword]
               (329,48)SyntaxKind[Terminal](text = "]")
               (329,55)SyntaxKind[Terminal](text = "\")
       (330,2)SyntaxKind[RightHandSide]
@@ -1357,8 +1448,9 @@
       (331,1)SyntaxKind[DedentToken]
   (332,1)SyntaxKind[Production]
     (332,1)SyntaxKind[Identifier](text = "RegularExpressionFlags")
-    (333,1)SyntaxKind[RightHandSideList]
-      (333,1)SyntaxKind[IndentToken]
+    (332,24)SyntaxKind[ColonColonToken]
+    (333,2)SyntaxKind[RightHandSideList]
+      (333,2)SyntaxKind[IndentToken]
       (333,2)SyntaxKind[RightHandSide]
         (333,2)SyntaxKind[SymbolSpan]
           (333,2)SyntaxKind[EmptyAssertion]
@@ -1375,8 +1467,9 @@
       (335,1)SyntaxKind[DedentToken]
   (336,1)SyntaxKind[Production]
     (336,1)SyntaxKind[Identifier](text = "Template")
-    (337,1)SyntaxKind[RightHandSideList]
-      (337,1)SyntaxKind[IndentToken]
+    (336,10)SyntaxKind[ColonColonToken]
+    (337,2)SyntaxKind[RightHandSideList]
+      (337,2)SyntaxKind[IndentToken]
       (337,2)SyntaxKind[RightHandSide]
         (337,2)SyntaxKind[SymbolSpan]
           (337,2)SyntaxKind[Nonterminal]
@@ -1388,8 +1481,9 @@
       (339,1)SyntaxKind[DedentToken]
   (340,1)SyntaxKind[Production]
     (340,1)SyntaxKind[Identifier](text = "NoSubstitutionTemplate")
-    (341,1)SyntaxKind[RightHandSideList]
-      (341,1)SyntaxKind[IndentToken]
+    (340,24)SyntaxKind[ColonColonToken]
+    (341,2)SyntaxKind[RightHandSideList]
+      (341,2)SyntaxKind[IndentToken]
       (341,2)SyntaxKind[RightHandSide]
         (341,2)SyntaxKind[SymbolSpan]
           (341,2)SyntaxKind[Terminal](text = "`")
@@ -1402,8 +1496,9 @@
       (342,1)SyntaxKind[DedentToken]
   (343,1)SyntaxKind[Production]
     (343,1)SyntaxKind[Identifier](text = "TemplateHead")
-    (344,1)SyntaxKind[RightHandSideList]
-      (344,1)SyntaxKind[IndentToken]
+    (343,14)SyntaxKind[ColonColonToken]
+    (344,2)SyntaxKind[RightHandSideList]
+      (344,2)SyntaxKind[IndentToken]
       (344,2)SyntaxKind[RightHandSide]
         (344,2)SyntaxKind[SymbolSpan]
           (344,2)SyntaxKind[Terminal](text = "`")
@@ -1416,8 +1511,9 @@
       (345,1)SyntaxKind[DedentToken]
   (346,1)SyntaxKind[Production]
     (346,1)SyntaxKind[Identifier](text = "TemplateSubstitutionTail")
-    (347,1)SyntaxKind[RightHandSideList]
-      (347,1)SyntaxKind[IndentToken]
+    (346,26)SyntaxKind[ColonColonToken]
+    (347,2)SyntaxKind[RightHandSideList]
+      (347,2)SyntaxKind[IndentToken]
       (347,2)SyntaxKind[RightHandSide]
         (347,2)SyntaxKind[SymbolSpan]
           (347,2)SyntaxKind[Nonterminal]
@@ -1429,8 +1525,9 @@
       (349,1)SyntaxKind[DedentToken]
   (350,1)SyntaxKind[Production]
     (350,1)SyntaxKind[Identifier](text = "TemplateMiddle")
-    (351,1)SyntaxKind[RightHandSideList]
-      (351,1)SyntaxKind[IndentToken]
+    (350,16)SyntaxKind[ColonColonToken]
+    (351,2)SyntaxKind[RightHandSideList]
+      (351,2)SyntaxKind[IndentToken]
       (351,2)SyntaxKind[RightHandSide]
         (351,2)SyntaxKind[SymbolSpan]
           (351,2)SyntaxKind[Terminal](text = "}")
@@ -1443,8 +1540,9 @@
       (352,1)SyntaxKind[DedentToken]
   (353,1)SyntaxKind[Production]
     (353,1)SyntaxKind[Identifier](text = "TemplateTail")
-    (354,1)SyntaxKind[RightHandSideList]
-      (354,1)SyntaxKind[IndentToken]
+    (353,14)SyntaxKind[ColonColonToken]
+    (354,2)SyntaxKind[RightHandSideList]
+      (354,2)SyntaxKind[IndentToken]
       (354,2)SyntaxKind[RightHandSide]
         (354,2)SyntaxKind[SymbolSpan]
           (354,2)SyntaxKind[Terminal](text = "}")
@@ -1457,8 +1555,9 @@
       (355,1)SyntaxKind[DedentToken]
   (356,1)SyntaxKind[Production]
     (356,1)SyntaxKind[Identifier](text = "TemplateCharacters")
-    (357,1)SyntaxKind[RightHandSideList]
-      (357,1)SyntaxKind[IndentToken]
+    (356,20)SyntaxKind[ColonColonToken]
+    (357,2)SyntaxKind[RightHandSideList]
+      (357,2)SyntaxKind[IndentToken]
       (357,2)SyntaxKind[RightHandSide]
         (357,2)SyntaxKind[SymbolSpan]
           (357,2)SyntaxKind[Nonterminal]
@@ -1470,8 +1569,9 @@
       (358,1)SyntaxKind[DedentToken]
   (359,1)SyntaxKind[Production]
     (359,1)SyntaxKind[Identifier](text = "TemplateCharacter")
-    (360,1)SyntaxKind[RightHandSideList]
-      (360,1)SyntaxKind[IndentToken]
+    (359,19)SyntaxKind[ColonColonToken]
+    (360,2)SyntaxKind[RightHandSideList]
+      (360,2)SyntaxKind[IndentToken]
       (360,2)SyntaxKind[RightHandSide]
         (360,2)SyntaxKind[SymbolSpan]
           (360,2)SyntaxKind[Terminal](text = "$")
@@ -1505,6 +1605,8 @@
             (364,18)SyntaxKind[ButKeyword]
             (364,22)SyntaxKind[NotKeyword]
             (364,26)SyntaxKind[OneOfSymbol]
+              (364,26)SyntaxKind[OneKeyword]
+              (364,30)SyntaxKind[OfKeyword]
               (364,33)SyntaxKind[Terminal](text = "`")
               (364,40)SyntaxKind[Terminal](text = "\")
               (364,47)SyntaxKind[Terminal](text = "$")
@@ -1513,13 +1615,14 @@
       (365,1)SyntaxKind[DedentToken]
   (367,1)SyntaxKind[Production]
     (367,1)SyntaxKind[Identifier](text = "IdentifierReference")
+    (367,28)SyntaxKind[ColonToken]
     (367,20)SyntaxKind[ParameterList]
       (367,20)SyntaxKind[OpenBracketToken]
       (367,21)SyntaxKind[Parameter]
         (367,21)SyntaxKind[Identifier](text = "Yield")
       (367,26)SyntaxKind[CloseBracketToken]
-    (368,1)SyntaxKind[RightHandSideList]
-      (368,1)SyntaxKind[IndentToken]
+    (368,2)SyntaxKind[RightHandSideList]
+      (368,2)SyntaxKind[IndentToken]
       (368,2)SyntaxKind[RightHandSide]
         (368,2)SyntaxKind[SymbolSpan]
           (368,2)SyntaxKind[Nonterminal]
@@ -1536,13 +1639,14 @@
       (370,1)SyntaxKind[DedentToken]
   (371,1)SyntaxKind[Production]
     (371,1)SyntaxKind[Identifier](text = "BindingIdentifier")
+    (371,26)SyntaxKind[ColonToken]
     (371,18)SyntaxKind[ParameterList]
       (371,18)SyntaxKind[OpenBracketToken]
       (371,19)SyntaxKind[Parameter]
         (371,19)SyntaxKind[Identifier](text = "Yield")
       (371,24)SyntaxKind[CloseBracketToken]
-    (372,1)SyntaxKind[RightHandSideList]
-      (372,1)SyntaxKind[IndentToken]
+    (372,2)SyntaxKind[RightHandSideList]
+      (372,2)SyntaxKind[IndentToken]
       (372,2)SyntaxKind[RightHandSide]
         (372,2)SyntaxKind[SymbolSpan]
           (372,2)SyntaxKind[Nonterminal]
@@ -1559,13 +1663,14 @@
       (374,1)SyntaxKind[DedentToken]
   (375,1)SyntaxKind[Production]
     (375,1)SyntaxKind[Identifier](text = "LabelIdentifier")
+    (375,24)SyntaxKind[ColonToken]
     (375,16)SyntaxKind[ParameterList]
       (375,16)SyntaxKind[OpenBracketToken]
       (375,17)SyntaxKind[Parameter]
         (375,17)SyntaxKind[Identifier](text = "Yield")
       (375,22)SyntaxKind[CloseBracketToken]
-    (376,1)SyntaxKind[RightHandSideList]
-      (376,1)SyntaxKind[IndentToken]
+    (376,2)SyntaxKind[RightHandSideList]
+      (376,2)SyntaxKind[IndentToken]
       (376,2)SyntaxKind[RightHandSide]
         (376,2)SyntaxKind[SymbolSpan]
           (376,2)SyntaxKind[Nonterminal]
@@ -1582,8 +1687,9 @@
       (378,1)SyntaxKind[DedentToken]
   (379,1)SyntaxKind[Production]
     (379,1)SyntaxKind[Identifier](text = "Identifier")
-    (380,1)SyntaxKind[RightHandSideList]
-      (380,1)SyntaxKind[IndentToken]
+    (379,12)SyntaxKind[ColonToken]
+    (380,2)SyntaxKind[RightHandSideList]
+      (380,2)SyntaxKind[IndentToken]
       (380,2)SyntaxKind[RightHandSide]
         (380,2)SyntaxKind[SymbolSpan]
           (380,2)SyntaxKind[ButNotSymbol]
@@ -1596,13 +1702,14 @@
       (381,1)SyntaxKind[DedentToken]
   (382,1)SyntaxKind[Production]
     (382,1)SyntaxKind[Identifier](text = "PrimaryExpression")
+    (382,26)SyntaxKind[ColonToken]
     (382,18)SyntaxKind[ParameterList]
       (382,18)SyntaxKind[OpenBracketToken]
       (382,19)SyntaxKind[Parameter]
         (382,19)SyntaxKind[Identifier](text = "Yield")
       (382,24)SyntaxKind[CloseBracketToken]
-    (383,1)SyntaxKind[RightHandSideList]
-      (383,1)SyntaxKind[IndentToken]
+    (383,2)SyntaxKind[RightHandSideList]
+      (383,2)SyntaxKind[IndentToken]
       (383,2)SyntaxKind[RightHandSide]
         (383,2)SyntaxKind[SymbolSpan]
           (383,2)SyntaxKind[Terminal](text = "this")
@@ -1685,13 +1792,14 @@
       (394,1)SyntaxKind[DedentToken]
   (395,1)SyntaxKind[Production]
     (395,1)SyntaxKind[Identifier](text = "CoverParenthesizedExpressionAndArrowParameterList")
+    (395,58)SyntaxKind[ColonToken]
     (395,50)SyntaxKind[ParameterList]
       (395,50)SyntaxKind[OpenBracketToken]
       (395,51)SyntaxKind[Parameter]
         (395,51)SyntaxKind[Identifier](text = "Yield")
       (395,56)SyntaxKind[CloseBracketToken]
-    (396,1)SyntaxKind[RightHandSideList]
-      (396,1)SyntaxKind[IndentToken]
+    (396,2)SyntaxKind[RightHandSideList]
+      (396,2)SyntaxKind[IndentToken]
       (396,2)SyntaxKind[RightHandSide]
         (396,2)SyntaxKind[SymbolSpan]
           (396,2)SyntaxKind[Terminal](text = "(")
@@ -1763,8 +1871,9 @@
       (400,1)SyntaxKind[DedentToken]
   (401,1)SyntaxKind[Production]
     (401,1)SyntaxKind[Identifier](text = "Literal")
-    (402,1)SyntaxKind[RightHandSideList]
-      (402,1)SyntaxKind[IndentToken]
+    (401,9)SyntaxKind[ColonToken]
+    (402,2)SyntaxKind[RightHandSideList]
+      (402,2)SyntaxKind[IndentToken]
       (402,2)SyntaxKind[RightHandSide]
         (402,2)SyntaxKind[SymbolSpan]
           (402,2)SyntaxKind[Nonterminal]
@@ -1784,13 +1893,14 @@
       (406,1)SyntaxKind[DedentToken]
   (407,1)SyntaxKind[Production]
     (407,1)SyntaxKind[Identifier](text = "ArrayLiteral")
+    (407,21)SyntaxKind[ColonToken]
     (407,13)SyntaxKind[ParameterList]
       (407,13)SyntaxKind[OpenBracketToken]
       (407,14)SyntaxKind[Parameter]
         (407,14)SyntaxKind[Identifier](text = "Yield")
       (407,19)SyntaxKind[CloseBracketToken]
-    (408,1)SyntaxKind[RightHandSideList]
-      (408,1)SyntaxKind[IndentToken]
+    (408,2)SyntaxKind[RightHandSideList]
+      (408,2)SyntaxKind[IndentToken]
       (408,2)SyntaxKind[RightHandSide]
         (408,2)SyntaxKind[SymbolSpan]
           (408,2)SyntaxKind[Terminal](text = "[")
@@ -1837,13 +1947,14 @@
       (411,1)SyntaxKind[DedentToken]
   (412,1)SyntaxKind[Production]
     (412,1)SyntaxKind[Identifier](text = "ElementList")
+    (412,20)SyntaxKind[ColonToken]
     (412,12)SyntaxKind[ParameterList]
       (412,12)SyntaxKind[OpenBracketToken]
       (412,13)SyntaxKind[Parameter]
         (412,13)SyntaxKind[Identifier](text = "Yield")
       (412,18)SyntaxKind[CloseBracketToken]
-    (413,1)SyntaxKind[RightHandSideList]
-      (413,1)SyntaxKind[IndentToken]
+    (413,2)SyntaxKind[RightHandSideList]
+      (413,2)SyntaxKind[IndentToken]
       (413,2)SyntaxKind[RightHandSide]
         (413,2)SyntaxKind[SymbolSpan]
           (413,2)SyntaxKind[Nonterminal]?
@@ -1929,8 +2040,9 @@
       (417,1)SyntaxKind[DedentToken]
   (418,1)SyntaxKind[Production]
     (418,1)SyntaxKind[Identifier](text = "Elision")
-    (419,1)SyntaxKind[RightHandSideList]
-      (419,1)SyntaxKind[IndentToken]
+    (418,9)SyntaxKind[ColonToken]
+    (419,2)SyntaxKind[RightHandSideList]
+      (419,2)SyntaxKind[IndentToken]
       (419,2)SyntaxKind[RightHandSide]
         (419,2)SyntaxKind[SymbolSpan]
           (419,2)SyntaxKind[Terminal](text = ",")
@@ -1943,13 +2055,14 @@
       (421,1)SyntaxKind[DedentToken]
   (422,1)SyntaxKind[Production]
     (422,1)SyntaxKind[Identifier](text = "SpreadElement")
+    (422,22)SyntaxKind[ColonToken]
     (422,14)SyntaxKind[ParameterList]
       (422,14)SyntaxKind[OpenBracketToken]
       (422,15)SyntaxKind[Parameter]
         (422,15)SyntaxKind[Identifier](text = "Yield")
       (422,20)SyntaxKind[CloseBracketToken]
-    (423,1)SyntaxKind[RightHandSideList]
-      (423,1)SyntaxKind[IndentToken]
+    (423,2)SyntaxKind[RightHandSideList]
+      (423,2)SyntaxKind[IndentToken]
       (423,2)SyntaxKind[RightHandSide]
         (423,2)SyntaxKind[SymbolSpan]
           (423,2)SyntaxKind[Terminal](text = "...")
@@ -1967,13 +2080,14 @@
       (424,1)SyntaxKind[DedentToken]
   (425,1)SyntaxKind[Production]
     (425,1)SyntaxKind[Identifier](text = "ObjectLiteral")
+    (425,22)SyntaxKind[ColonToken]
     (425,14)SyntaxKind[ParameterList]
       (425,14)SyntaxKind[OpenBracketToken]
       (425,15)SyntaxKind[Parameter]
         (425,15)SyntaxKind[Identifier](text = "Yield")
       (425,20)SyntaxKind[CloseBracketToken]
-    (426,1)SyntaxKind[RightHandSideList]
-      (426,1)SyntaxKind[IndentToken]
+    (426,2)SyntaxKind[RightHandSideList]
+      (426,2)SyntaxKind[IndentToken]
       (426,2)SyntaxKind[RightHandSide]
         (426,2)SyntaxKind[SymbolSpan]
           (426,2)SyntaxKind[Terminal](text = "{")
@@ -2012,13 +2126,14 @@
       (429,1)SyntaxKind[DedentToken]
   (430,1)SyntaxKind[Production]
     (430,1)SyntaxKind[Identifier](text = "PropertyDefinitionList")
+    (430,31)SyntaxKind[ColonToken]
     (430,23)SyntaxKind[ParameterList]
       (430,23)SyntaxKind[OpenBracketToken]
       (430,24)SyntaxKind[Parameter]
         (430,24)SyntaxKind[Identifier](text = "Yield")
       (430,29)SyntaxKind[CloseBracketToken]
-    (431,1)SyntaxKind[RightHandSideList]
-      (431,1)SyntaxKind[IndentToken]
+    (431,2)SyntaxKind[RightHandSideList]
+      (431,2)SyntaxKind[IndentToken]
       (431,2)SyntaxKind[RightHandSide]
         (431,2)SyntaxKind[SymbolSpan]
           (431,2)SyntaxKind[Nonterminal]
@@ -2053,13 +2168,14 @@
       (433,1)SyntaxKind[DedentToken]
   (434,1)SyntaxKind[Production]
     (434,1)SyntaxKind[Identifier](text = "PropertyDefinition")
+    (434,27)SyntaxKind[ColonToken]
     (434,19)SyntaxKind[ParameterList]
       (434,19)SyntaxKind[OpenBracketToken]
       (434,20)SyntaxKind[Parameter]
         (434,20)SyntaxKind[Identifier](text = "Yield")
       (434,25)SyntaxKind[CloseBracketToken]
-    (435,1)SyntaxKind[RightHandSideList]
-      (435,1)SyntaxKind[IndentToken]
+    (435,2)SyntaxKind[RightHandSideList]
+      (435,2)SyntaxKind[IndentToken]
       (435,2)SyntaxKind[RightHandSide]
         (435,2)SyntaxKind[SymbolSpan]
           (435,2)SyntaxKind[Nonterminal]
@@ -2116,13 +2232,14 @@
       (439,1)SyntaxKind[DedentToken]
   (440,1)SyntaxKind[Production]
     (440,1)SyntaxKind[Identifier](text = "PropertyName")
+    (440,21)SyntaxKind[ColonToken]
     (440,13)SyntaxKind[ParameterList]
       (440,13)SyntaxKind[OpenBracketToken]
       (440,14)SyntaxKind[Parameter]
         (440,14)SyntaxKind[Identifier](text = "Yield")
       (440,19)SyntaxKind[CloseBracketToken]
-    (441,1)SyntaxKind[RightHandSideList]
-      (441,1)SyntaxKind[IndentToken]
+    (441,2)SyntaxKind[RightHandSideList]
+      (441,2)SyntaxKind[IndentToken]
       (441,2)SyntaxKind[RightHandSide]
         (441,2)SyntaxKind[SymbolSpan]
           (441,2)SyntaxKind[Nonterminal]
@@ -2140,8 +2257,9 @@
       (443,1)SyntaxKind[DedentToken]
   (444,1)SyntaxKind[Production]
     (444,1)SyntaxKind[Identifier](text = "LiteralPropertyName")
-    (445,1)SyntaxKind[RightHandSideList]
-      (445,1)SyntaxKind[IndentToken]
+    (444,21)SyntaxKind[ColonToken]
+    (445,2)SyntaxKind[RightHandSideList]
+      (445,2)SyntaxKind[IndentToken]
       (445,2)SyntaxKind[RightHandSide]
         (445,2)SyntaxKind[SymbolSpan]
           (445,2)SyntaxKind[Nonterminal]
@@ -2157,13 +2275,14 @@
       (448,1)SyntaxKind[DedentToken]
   (449,1)SyntaxKind[Production]
     (449,1)SyntaxKind[Identifier](text = "ComputedPropertyName")
+    (449,29)SyntaxKind[ColonToken]
     (449,21)SyntaxKind[ParameterList]
       (449,21)SyntaxKind[OpenBracketToken]
       (449,22)SyntaxKind[Parameter]
         (449,22)SyntaxKind[Identifier](text = "Yield")
       (449,27)SyntaxKind[CloseBracketToken]
-    (450,1)SyntaxKind[RightHandSideList]
-      (450,1)SyntaxKind[IndentToken]
+    (450,2)SyntaxKind[RightHandSideList]
+      (450,2)SyntaxKind[IndentToken]
       (450,2)SyntaxKind[RightHandSide]
         (450,2)SyntaxKind[SymbolSpan]
           (450,2)SyntaxKind[Terminal](text = "[")
@@ -2183,13 +2302,14 @@
       (451,1)SyntaxKind[DedentToken]
   (452,1)SyntaxKind[Production]
     (452,1)SyntaxKind[Identifier](text = "CoverInitializedName")
+    (452,29)SyntaxKind[ColonToken]
     (452,21)SyntaxKind[ParameterList]
       (452,21)SyntaxKind[OpenBracketToken]
       (452,22)SyntaxKind[Parameter]
         (452,22)SyntaxKind[Identifier](text = "Yield")
       (452,27)SyntaxKind[CloseBracketToken]
-    (453,1)SyntaxKind[RightHandSideList]
-      (453,1)SyntaxKind[IndentToken]
+    (453,2)SyntaxKind[RightHandSideList]
+      (453,2)SyntaxKind[IndentToken]
       (453,2)SyntaxKind[RightHandSide]
         (453,2)SyntaxKind[SymbolSpan]
           (453,2)SyntaxKind[Nonterminal]
@@ -2214,6 +2334,7 @@
       (454,1)SyntaxKind[DedentToken]
   (455,1)SyntaxKind[Production]
     (455,1)SyntaxKind[Identifier](text = "Initializer")
+    (455,24)SyntaxKind[ColonToken]
     (455,12)SyntaxKind[ParameterList]
       (455,12)SyntaxKind[OpenBracketToken]
       (455,13)SyntaxKind[Parameter]
@@ -2221,8 +2342,8 @@
       (455,17)SyntaxKind[Parameter]
         (455,17)SyntaxKind[Identifier](text = "Yield")
       (455,22)SyntaxKind[CloseBracketToken]
-    (456,1)SyntaxKind[RightHandSideList]
-      (456,1)SyntaxKind[IndentToken]
+    (456,2)SyntaxKind[RightHandSideList]
+      (456,2)SyntaxKind[IndentToken]
       (456,2)SyntaxKind[RightHandSide]
         (456,2)SyntaxKind[SymbolSpan]
           (456,2)SyntaxKind[Terminal](text = "=")
@@ -2241,13 +2362,14 @@
       (457,1)SyntaxKind[DedentToken]
   (458,1)SyntaxKind[Production]
     (458,1)SyntaxKind[Identifier](text = "TemplateLiteral")
+    (458,24)SyntaxKind[ColonToken]
     (458,16)SyntaxKind[ParameterList]
       (458,16)SyntaxKind[OpenBracketToken]
       (458,17)SyntaxKind[Parameter]
         (458,17)SyntaxKind[Identifier](text = "Yield")
       (458,22)SyntaxKind[CloseBracketToken]
-    (459,1)SyntaxKind[RightHandSideList]
-      (459,1)SyntaxKind[IndentToken]
+    (459,2)SyntaxKind[RightHandSideList]
+      (459,2)SyntaxKind[IndentToken]
       (459,2)SyntaxKind[RightHandSide]
         (459,2)SyntaxKind[SymbolSpan]
           (459,2)SyntaxKind[Nonterminal]
@@ -2279,13 +2401,14 @@
       (461,1)SyntaxKind[DedentToken]
   (462,1)SyntaxKind[Production]
     (462,1)SyntaxKind[Identifier](text = "TemplateSpans")
+    (462,22)SyntaxKind[ColonToken]
     (462,14)SyntaxKind[ParameterList]
       (462,14)SyntaxKind[OpenBracketToken]
       (462,15)SyntaxKind[Parameter]
         (462,15)SyntaxKind[Identifier](text = "Yield")
       (462,20)SyntaxKind[CloseBracketToken]
-    (463,1)SyntaxKind[RightHandSideList]
-      (463,1)SyntaxKind[IndentToken]
+    (463,2)SyntaxKind[RightHandSideList]
+      (463,2)SyntaxKind[IndentToken]
       (463,2)SyntaxKind[RightHandSide]
         (463,2)SyntaxKind[SymbolSpan]
           (463,2)SyntaxKind[Nonterminal]
@@ -2306,13 +2429,14 @@
       (465,1)SyntaxKind[DedentToken]
   (466,1)SyntaxKind[Production]
     (466,1)SyntaxKind[Identifier](text = "TemplateMiddleList")
+    (466,27)SyntaxKind[ColonToken]
     (466,19)SyntaxKind[ParameterList]
       (466,19)SyntaxKind[OpenBracketToken]
       (466,20)SyntaxKind[Parameter]
         (466,20)SyntaxKind[Identifier](text = "Yield")
       (466,25)SyntaxKind[CloseBracketToken]
-    (467,1)SyntaxKind[RightHandSideList]
-      (467,1)SyntaxKind[IndentToken]
+    (467,2)SyntaxKind[RightHandSideList]
+      (467,2)SyntaxKind[IndentToken]
       (467,2)SyntaxKind[RightHandSide]
         (467,2)SyntaxKind[SymbolSpan]
           (467,2)SyntaxKind[Nonterminal]
@@ -2355,13 +2479,14 @@
       (469,1)SyntaxKind[DedentToken]
   (470,1)SyntaxKind[Production]
     (470,1)SyntaxKind[Identifier](text = "MemberExpression")
+    (470,25)SyntaxKind[ColonToken]
     (470,17)SyntaxKind[ParameterList]
       (470,17)SyntaxKind[OpenBracketToken]
       (470,18)SyntaxKind[Parameter]
         (470,18)SyntaxKind[Identifier](text = "Yield")
       (470,23)SyntaxKind[CloseBracketToken]
-    (471,1)SyntaxKind[RightHandSideList]
-      (471,1)SyntaxKind[IndentToken]
+    (471,2)SyntaxKind[RightHandSideList]
+      (471,2)SyntaxKind[IndentToken]
       (471,2)SyntaxKind[RightHandSide]
         (471,2)SyntaxKind[SymbolSpan]
           (471,2)SyntaxKind[Nonterminal]
@@ -2469,13 +2594,14 @@
       (478,1)SyntaxKind[DedentToken]
   (479,1)SyntaxKind[Production]
     (479,1)SyntaxKind[Identifier](text = "SuperProperty")
+    (479,22)SyntaxKind[ColonToken]
     (479,14)SyntaxKind[ParameterList]
       (479,14)SyntaxKind[OpenBracketToken]
       (479,15)SyntaxKind[Parameter]
         (479,15)SyntaxKind[Identifier](text = "Yield")
       (479,20)SyntaxKind[CloseBracketToken]
-    (480,1)SyntaxKind[RightHandSideList]
-      (480,1)SyntaxKind[IndentToken]
+    (480,2)SyntaxKind[RightHandSideList]
+      (480,2)SyntaxKind[IndentToken]
       (480,2)SyntaxKind[RightHandSide]
         (480,2)SyntaxKind[SymbolSpan]
           (480,2)SyntaxKind[Terminal](text = "super")
@@ -2505,8 +2631,9 @@
       (482,1)SyntaxKind[DedentToken]
   (483,1)SyntaxKind[Production]
     (483,1)SyntaxKind[Identifier](text = "MetaProperty")
-    (484,1)SyntaxKind[RightHandSideList]
-      (484,1)SyntaxKind[IndentToken]
+    (483,14)SyntaxKind[ColonToken]
+    (484,2)SyntaxKind[RightHandSideList]
+      (484,2)SyntaxKind[IndentToken]
       (484,2)SyntaxKind[RightHandSide]
         (484,2)SyntaxKind[SymbolSpan]
           (484,2)SyntaxKind[Nonterminal]
@@ -2514,8 +2641,9 @@
       (485,1)SyntaxKind[DedentToken]
   (486,1)SyntaxKind[Production]
     (486,1)SyntaxKind[Identifier](text = "NewTarget")
-    (487,1)SyntaxKind[RightHandSideList]
-      (487,1)SyntaxKind[IndentToken]
+    (486,11)SyntaxKind[ColonToken]
+    (487,2)SyntaxKind[RightHandSideList]
+      (487,2)SyntaxKind[IndentToken]
       (487,2)SyntaxKind[RightHandSide]
         (487,2)SyntaxKind[SymbolSpan]
           (487,2)SyntaxKind[Terminal](text = "new")
@@ -2526,13 +2654,14 @@
       (488,1)SyntaxKind[DedentToken]
   (489,1)SyntaxKind[Production]
     (489,1)SyntaxKind[Identifier](text = "NewExpression")
+    (489,22)SyntaxKind[ColonToken]
     (489,14)SyntaxKind[ParameterList]
       (489,14)SyntaxKind[OpenBracketToken]
       (489,15)SyntaxKind[Parameter]
         (489,15)SyntaxKind[Identifier](text = "Yield")
       (489,20)SyntaxKind[CloseBracketToken]
-    (490,1)SyntaxKind[RightHandSideList]
-      (490,1)SyntaxKind[IndentToken]
+    (490,2)SyntaxKind[RightHandSideList]
+      (490,2)SyntaxKind[IndentToken]
       (490,2)SyntaxKind[RightHandSide]
         (490,2)SyntaxKind[SymbolSpan]
           (490,2)SyntaxKind[Nonterminal]
@@ -2558,13 +2687,14 @@
       (492,1)SyntaxKind[DedentToken]
   (493,1)SyntaxKind[Production]
     (493,1)SyntaxKind[Identifier](text = "CallExpression")
+    (493,23)SyntaxKind[ColonToken]
     (493,15)SyntaxKind[ParameterList]
       (493,15)SyntaxKind[OpenBracketToken]
       (493,16)SyntaxKind[Parameter]
         (493,16)SyntaxKind[Identifier](text = "Yield")
       (493,21)SyntaxKind[CloseBracketToken]
-    (494,1)SyntaxKind[RightHandSideList]
-      (494,1)SyntaxKind[IndentToken]
+    (494,2)SyntaxKind[RightHandSideList]
+      (494,2)SyntaxKind[IndentToken]
       (494,2)SyntaxKind[RightHandSide]
         (494,2)SyntaxKind[SymbolSpan]
           (494,2)SyntaxKind[Nonterminal]
@@ -2675,13 +2805,14 @@
       (500,1)SyntaxKind[DedentToken]
   (501,1)SyntaxKind[Production]
     (501,1)SyntaxKind[Identifier](text = "SuperCall")
+    (501,18)SyntaxKind[ColonToken]
     (501,10)SyntaxKind[ParameterList]
       (501,10)SyntaxKind[OpenBracketToken]
       (501,11)SyntaxKind[Parameter]
         (501,11)SyntaxKind[Identifier](text = "Yield")
       (501,16)SyntaxKind[CloseBracketToken]
-    (502,1)SyntaxKind[RightHandSideList]
-      (502,1)SyntaxKind[IndentToken]
+    (502,2)SyntaxKind[RightHandSideList]
+      (502,2)SyntaxKind[IndentToken]
       (502,2)SyntaxKind[RightHandSide]
         (502,2)SyntaxKind[SymbolSpan]
           (502,2)SyntaxKind[Terminal](text = "super")
@@ -2697,13 +2828,14 @@
       (503,1)SyntaxKind[DedentToken]
   (504,1)SyntaxKind[Production]
     (504,1)SyntaxKind[Identifier](text = "Arguments")
+    (504,18)SyntaxKind[ColonToken]
     (504,10)SyntaxKind[ParameterList]
       (504,10)SyntaxKind[OpenBracketToken]
       (504,11)SyntaxKind[Parameter]
         (504,11)SyntaxKind[Identifier](text = "Yield")
       (504,16)SyntaxKind[CloseBracketToken]
-    (505,1)SyntaxKind[RightHandSideList]
-      (505,1)SyntaxKind[IndentToken]
+    (505,2)SyntaxKind[RightHandSideList]
+      (505,2)SyntaxKind[IndentToken]
       (505,2)SyntaxKind[RightHandSide]
         (505,2)SyntaxKind[SymbolSpan]
           (505,2)SyntaxKind[Terminal](text = "(")
@@ -2726,13 +2858,14 @@
       (507,1)SyntaxKind[DedentToken]
   (508,1)SyntaxKind[Production]
     (508,1)SyntaxKind[Identifier](text = "ArgumentList")
+    (508,21)SyntaxKind[ColonToken]
     (508,13)SyntaxKind[ParameterList]
       (508,13)SyntaxKind[OpenBracketToken]
       (508,14)SyntaxKind[Parameter]
         (508,14)SyntaxKind[Identifier](text = "Yield")
       (508,19)SyntaxKind[CloseBracketToken]
-    (509,1)SyntaxKind[RightHandSideList]
-      (509,1)SyntaxKind[IndentToken]
+    (509,2)SyntaxKind[RightHandSideList]
+      (509,2)SyntaxKind[IndentToken]
       (509,2)SyntaxKind[RightHandSide]
         (509,2)SyntaxKind[SymbolSpan]
           (509,2)SyntaxKind[Nonterminal]
@@ -2810,13 +2943,14 @@
       (513,1)SyntaxKind[DedentToken]
   (514,1)SyntaxKind[Production]
     (514,1)SyntaxKind[Identifier](text = "LeftHandSideExpression")
+    (514,31)SyntaxKind[ColonToken]
     (514,23)SyntaxKind[ParameterList]
       (514,23)SyntaxKind[OpenBracketToken]
       (514,24)SyntaxKind[Parameter]
         (514,24)SyntaxKind[Identifier](text = "Yield")
       (514,29)SyntaxKind[CloseBracketToken]
-    (515,1)SyntaxKind[RightHandSideList]
-      (515,1)SyntaxKind[IndentToken]
+    (515,2)SyntaxKind[RightHandSideList]
+      (515,2)SyntaxKind[IndentToken]
       (515,2)SyntaxKind[RightHandSide]
         (515,2)SyntaxKind[SymbolSpan]
           (515,2)SyntaxKind[Nonterminal]
@@ -2840,13 +2974,14 @@
       (517,1)SyntaxKind[DedentToken]
   (518,1)SyntaxKind[Production]
     (518,1)SyntaxKind[Identifier](text = "PostfixExpression")
+    (518,26)SyntaxKind[ColonToken]
     (518,18)SyntaxKind[ParameterList]
       (518,18)SyntaxKind[OpenBracketToken]
       (518,19)SyntaxKind[Parameter]
         (518,19)SyntaxKind[Identifier](text = "Yield")
       (518,24)SyntaxKind[CloseBracketToken]
-    (519,1)SyntaxKind[RightHandSideList]
-      (519,1)SyntaxKind[IndentToken]
+    (519,2)SyntaxKind[RightHandSideList]
+      (519,2)SyntaxKind[IndentToken]
       (519,2)SyntaxKind[RightHandSide]
         (519,2)SyntaxKind[SymbolSpan]
           (519,2)SyntaxKind[Nonterminal]
@@ -2900,13 +3035,14 @@
       (522,1)SyntaxKind[DedentToken]
   (523,1)SyntaxKind[Production]
     (523,1)SyntaxKind[Identifier](text = "UnaryExpression")
+    (523,24)SyntaxKind[ColonToken]
     (523,16)SyntaxKind[ParameterList]
       (523,16)SyntaxKind[OpenBracketToken]
       (523,17)SyntaxKind[Parameter]
         (523,17)SyntaxKind[Identifier](text = "Yield")
       (523,22)SyntaxKind[CloseBracketToken]
-    (524,1)SyntaxKind[RightHandSideList]
-      (524,1)SyntaxKind[IndentToken]
+    (524,2)SyntaxKind[RightHandSideList]
+      (524,2)SyntaxKind[IndentToken]
       (524,2)SyntaxKind[RightHandSide]
         (524,2)SyntaxKind[SymbolSpan]
           (524,2)SyntaxKind[Nonterminal]
@@ -3028,13 +3164,14 @@
       (534,1)SyntaxKind[DedentToken]
   (535,1)SyntaxKind[Production]
     (535,1)SyntaxKind[Identifier](text = "MultiplicativeExpression")
+    (535,33)SyntaxKind[ColonToken]
     (535,25)SyntaxKind[ParameterList]
       (535,25)SyntaxKind[OpenBracketToken]
       (535,26)SyntaxKind[Parameter]
         (535,26)SyntaxKind[Identifier](text = "Yield")
       (535,31)SyntaxKind[CloseBracketToken]
-    (536,1)SyntaxKind[RightHandSideList]
-      (536,1)SyntaxKind[IndentToken]
+    (536,2)SyntaxKind[RightHandSideList]
+      (536,2)SyntaxKind[IndentToken]
       (536,2)SyntaxKind[RightHandSide]
         (536,2)SyntaxKind[SymbolSpan]
           (536,2)SyntaxKind[Nonterminal]
@@ -3070,23 +3207,25 @@
       (538,1)SyntaxKind[DedentToken]
   (539,1)SyntaxKind[Production]
     (539,1)SyntaxKind[Identifier](text = "MultiplicativeOperator")
+    (539,24)SyntaxKind[ColonToken]
     (539,26)SyntaxKind[OneOfList]
       (539,26)SyntaxKind[OneKeyword]
       (539,30)SyntaxKind[OfKeyword]
-      (540,1)SyntaxKind[IndentToken]
+      (540,2)SyntaxKind[IndentToken]
       (540,2)SyntaxKind[Terminal](text = "*")
       (540,6)SyntaxKind[Terminal](text = "/")
       (540,10)SyntaxKind[Terminal](text = "%")
       (541,1)SyntaxKind[DedentToken]
   (542,1)SyntaxKind[Production]
     (542,1)SyntaxKind[Identifier](text = "AdditiveExpression")
+    (542,27)SyntaxKind[ColonToken]
     (542,19)SyntaxKind[ParameterList]
       (542,19)SyntaxKind[OpenBracketToken]
       (542,20)SyntaxKind[Parameter]
         (542,20)SyntaxKind[Identifier](text = "Yield")
       (542,25)SyntaxKind[CloseBracketToken]
-    (543,1)SyntaxKind[RightHandSideList]
-      (543,1)SyntaxKind[IndentToken]
+    (543,2)SyntaxKind[RightHandSideList]
+      (543,2)SyntaxKind[IndentToken]
       (543,2)SyntaxKind[RightHandSide]
         (543,2)SyntaxKind[SymbolSpan]
           (543,2)SyntaxKind[Nonterminal]
@@ -3142,13 +3281,14 @@
       (546,1)SyntaxKind[DedentToken]
   (547,1)SyntaxKind[Production]
     (547,1)SyntaxKind[Identifier](text = "ShiftExpression")
+    (547,24)SyntaxKind[ColonToken]
     (547,16)SyntaxKind[ParameterList]
       (547,16)SyntaxKind[OpenBracketToken]
       (547,17)SyntaxKind[Parameter]
         (547,17)SyntaxKind[Identifier](text = "Yield")
       (547,22)SyntaxKind[CloseBracketToken]
-    (548,1)SyntaxKind[RightHandSideList]
-      (548,1)SyntaxKind[IndentToken]
+    (548,2)SyntaxKind[RightHandSideList]
+      (548,2)SyntaxKind[IndentToken]
       (548,2)SyntaxKind[RightHandSide]
         (548,2)SyntaxKind[SymbolSpan]
           (548,2)SyntaxKind[Nonterminal]
@@ -3225,6 +3365,7 @@
       (552,1)SyntaxKind[DedentToken]
   (553,1)SyntaxKind[Production]
     (553,1)SyntaxKind[Identifier](text = "RelationalExpression")
+    (553,33)SyntaxKind[ColonToken]
     (553,21)SyntaxKind[ParameterList]
       (553,21)SyntaxKind[OpenBracketToken]
       (553,22)SyntaxKind[Parameter]
@@ -3232,8 +3373,8 @@
       (553,26)SyntaxKind[Parameter]
         (553,26)SyntaxKind[Identifier](text = "Yield")
       (553,31)SyntaxKind[CloseBracketToken]
-    (554,1)SyntaxKind[RightHandSideList]
-      (554,1)SyntaxKind[IndentToken]
+    (554,2)SyntaxKind[RightHandSideList]
+      (554,2)SyntaxKind[IndentToken]
       (554,2)SyntaxKind[RightHandSide]
         (554,2)SyntaxKind[SymbolSpan]
           (554,2)SyntaxKind[Nonterminal]
@@ -3396,6 +3537,7 @@
       (561,1)SyntaxKind[DedentToken]
   (562,1)SyntaxKind[Production]
     (562,1)SyntaxKind[Identifier](text = "EqualityExpression")
+    (562,31)SyntaxKind[ColonToken]
     (562,19)SyntaxKind[ParameterList]
       (562,19)SyntaxKind[OpenBracketToken]
       (562,20)SyntaxKind[Parameter]
@@ -3403,8 +3545,8 @@
       (562,24)SyntaxKind[Parameter]
         (562,24)SyntaxKind[Identifier](text = "Yield")
       (562,29)SyntaxKind[CloseBracketToken]
-    (563,1)SyntaxKind[RightHandSideList]
-      (563,1)SyntaxKind[IndentToken]
+    (563,2)SyntaxKind[RightHandSideList]
+      (563,2)SyntaxKind[IndentToken]
       (563,2)SyntaxKind[RightHandSide]
         (563,2)SyntaxKind[SymbolSpan]
           (563,2)SyntaxKind[Nonterminal]
@@ -3529,6 +3671,7 @@
       (568,1)SyntaxKind[DedentToken]
   (569,1)SyntaxKind[Production]
     (569,1)SyntaxKind[Identifier](text = "BitwiseANDExpression")
+    (569,33)SyntaxKind[ColonToken]
     (569,21)SyntaxKind[ParameterList]
       (569,21)SyntaxKind[OpenBracketToken]
       (569,22)SyntaxKind[Parameter]
@@ -3536,8 +3679,8 @@
       (569,26)SyntaxKind[Parameter]
         (569,26)SyntaxKind[Identifier](text = "Yield")
       (569,31)SyntaxKind[CloseBracketToken]
-    (570,1)SyntaxKind[RightHandSideList]
-      (570,1)SyntaxKind[IndentToken]
+    (570,2)SyntaxKind[RightHandSideList]
+      (570,2)SyntaxKind[IndentToken]
       (570,2)SyntaxKind[RightHandSide]
         (570,2)SyntaxKind[SymbolSpan]
           (570,2)SyntaxKind[Nonterminal]
@@ -3581,6 +3724,7 @@
       (572,1)SyntaxKind[DedentToken]
   (573,1)SyntaxKind[Production]
     (573,1)SyntaxKind[Identifier](text = "BitwiseXORExpression")
+    (573,33)SyntaxKind[ColonToken]
     (573,21)SyntaxKind[ParameterList]
       (573,21)SyntaxKind[OpenBracketToken]
       (573,22)SyntaxKind[Parameter]
@@ -3588,8 +3732,8 @@
       (573,26)SyntaxKind[Parameter]
         (573,26)SyntaxKind[Identifier](text = "Yield")
       (573,31)SyntaxKind[CloseBracketToken]
-    (574,1)SyntaxKind[RightHandSideList]
-      (574,1)SyntaxKind[IndentToken]
+    (574,2)SyntaxKind[RightHandSideList]
+      (574,2)SyntaxKind[IndentToken]
       (574,2)SyntaxKind[RightHandSide]
         (574,2)SyntaxKind[SymbolSpan]
           (574,2)SyntaxKind[Nonterminal]
@@ -3633,6 +3777,7 @@
       (576,1)SyntaxKind[DedentToken]
   (577,1)SyntaxKind[Production]
     (577,1)SyntaxKind[Identifier](text = "BitwiseORExpression")
+    (577,32)SyntaxKind[ColonToken]
     (577,20)SyntaxKind[ParameterList]
       (577,20)SyntaxKind[OpenBracketToken]
       (577,21)SyntaxKind[Parameter]
@@ -3640,8 +3785,8 @@
       (577,25)SyntaxKind[Parameter]
         (577,25)SyntaxKind[Identifier](text = "Yield")
       (577,30)SyntaxKind[CloseBracketToken]
-    (578,1)SyntaxKind[RightHandSideList]
-      (578,1)SyntaxKind[IndentToken]
+    (578,2)SyntaxKind[RightHandSideList]
+      (578,2)SyntaxKind[IndentToken]
       (578,2)SyntaxKind[RightHandSide]
         (578,2)SyntaxKind[SymbolSpan]
           (578,2)SyntaxKind[Nonterminal]
@@ -3685,6 +3830,7 @@
       (580,1)SyntaxKind[DedentToken]
   (581,1)SyntaxKind[Production]
     (581,1)SyntaxKind[Identifier](text = "LogicalANDExpression")
+    (581,33)SyntaxKind[ColonToken]
     (581,21)SyntaxKind[ParameterList]
       (581,21)SyntaxKind[OpenBracketToken]
       (581,22)SyntaxKind[Parameter]
@@ -3692,8 +3838,8 @@
       (581,26)SyntaxKind[Parameter]
         (581,26)SyntaxKind[Identifier](text = "Yield")
       (581,31)SyntaxKind[CloseBracketToken]
-    (582,1)SyntaxKind[RightHandSideList]
-      (582,1)SyntaxKind[IndentToken]
+    (582,2)SyntaxKind[RightHandSideList]
+      (582,2)SyntaxKind[IndentToken]
       (582,2)SyntaxKind[RightHandSide]
         (582,2)SyntaxKind[SymbolSpan]
           (582,2)SyntaxKind[Nonterminal]
@@ -3737,6 +3883,7 @@
       (584,1)SyntaxKind[DedentToken]
   (585,1)SyntaxKind[Production]
     (585,1)SyntaxKind[Identifier](text = "LogicalORExpression")
+    (585,32)SyntaxKind[ColonToken]
     (585,20)SyntaxKind[ParameterList]
       (585,20)SyntaxKind[OpenBracketToken]
       (585,21)SyntaxKind[Parameter]
@@ -3744,8 +3891,8 @@
       (585,25)SyntaxKind[Parameter]
         (585,25)SyntaxKind[Identifier](text = "Yield")
       (585,30)SyntaxKind[CloseBracketToken]
-    (586,1)SyntaxKind[RightHandSideList]
-      (586,1)SyntaxKind[IndentToken]
+    (586,2)SyntaxKind[RightHandSideList]
+      (586,2)SyntaxKind[IndentToken]
       (586,2)SyntaxKind[RightHandSide]
         (586,2)SyntaxKind[SymbolSpan]
           (586,2)SyntaxKind[Nonterminal]
@@ -3789,6 +3936,7 @@
       (588,1)SyntaxKind[DedentToken]
   (589,1)SyntaxKind[Production]
     (589,1)SyntaxKind[Identifier](text = "ConditionalExpression")
+    (589,34)SyntaxKind[ColonToken]
     (589,22)SyntaxKind[ParameterList]
       (589,22)SyntaxKind[OpenBracketToken]
       (589,23)SyntaxKind[Parameter]
@@ -3796,8 +3944,8 @@
       (589,27)SyntaxKind[Parameter]
         (589,27)SyntaxKind[Identifier](text = "Yield")
       (589,32)SyntaxKind[CloseBracketToken]
-    (590,1)SyntaxKind[RightHandSideList]
-      (590,1)SyntaxKind[IndentToken]
+    (590,2)SyntaxKind[RightHandSideList]
+      (590,2)SyntaxKind[IndentToken]
       (590,2)SyntaxKind[RightHandSide]
         (590,2)SyntaxKind[SymbolSpan]
           (590,2)SyntaxKind[Nonterminal]
@@ -3854,6 +4002,7 @@
       (592,1)SyntaxKind[DedentToken]
   (593,1)SyntaxKind[Production]
     (593,1)SyntaxKind[Identifier](text = "AssignmentExpression")
+    (593,33)SyntaxKind[ColonToken]
     (593,21)SyntaxKind[ParameterList]
       (593,21)SyntaxKind[OpenBracketToken]
       (593,22)SyntaxKind[Parameter]
@@ -3861,8 +4010,8 @@
       (593,26)SyntaxKind[Parameter]
         (593,26)SyntaxKind[Identifier](text = "Yield")
       (593,31)SyntaxKind[CloseBracketToken]
-    (594,1)SyntaxKind[RightHandSideList]
-      (594,1)SyntaxKind[IndentToken]
+    (594,2)SyntaxKind[RightHandSideList]
+      (594,2)SyntaxKind[IndentToken]
       (594,2)SyntaxKind[RightHandSide]
         (594,2)SyntaxKind[SymbolSpan]
           (594,2)SyntaxKind[Nonterminal]
@@ -3957,10 +4106,11 @@
       (599,1)SyntaxKind[DedentToken]
   (600,1)SyntaxKind[Production]
     (600,1)SyntaxKind[Identifier](text = "AssignmentOperator")
+    (600,20)SyntaxKind[ColonToken]
     (600,22)SyntaxKind[OneOfList]
       (600,22)SyntaxKind[OneKeyword]
       (600,26)SyntaxKind[OfKeyword]
-      (601,1)SyntaxKind[IndentToken]
+      (601,2)SyntaxKind[IndentToken]
       (601,2)SyntaxKind[Terminal](text = "*=")
       (601,7)SyntaxKind[Terminal](text = "/=")
       (601,12)SyntaxKind[Terminal](text = "%=")
@@ -3975,6 +4125,7 @@
       (602,1)SyntaxKind[DedentToken]
   (603,1)SyntaxKind[Production]
     (603,1)SyntaxKind[Identifier](text = "Expression")
+    (603,23)SyntaxKind[ColonToken]
     (603,11)SyntaxKind[ParameterList]
       (603,11)SyntaxKind[OpenBracketToken]
       (603,12)SyntaxKind[Parameter]
@@ -3982,8 +4133,8 @@
       (603,16)SyntaxKind[Parameter]
         (603,16)SyntaxKind[Identifier](text = "Yield")
       (603,21)SyntaxKind[CloseBracketToken]
-    (604,1)SyntaxKind[RightHandSideList]
-      (604,1)SyntaxKind[IndentToken]
+    (604,2)SyntaxKind[RightHandSideList]
+      (604,2)SyntaxKind[IndentToken]
       (604,2)SyntaxKind[RightHandSide]
         (604,2)SyntaxKind[SymbolSpan]
           (604,2)SyntaxKind[Nonterminal]
@@ -4027,6 +4178,7 @@
       (606,1)SyntaxKind[DedentToken]
   (609,1)SyntaxKind[Production]
     (609,1)SyntaxKind[Identifier](text = "Statement")
+    (609,26)SyntaxKind[ColonToken]
     (609,10)SyntaxKind[ParameterList]
       (609,10)SyntaxKind[OpenBracketToken]
       (609,11)SyntaxKind[Parameter]
@@ -4034,8 +4186,8 @@
       (609,18)SyntaxKind[Parameter]
         (609,18)SyntaxKind[Identifier](text = "Return")
       (609,24)SyntaxKind[CloseBracketToken]
-    (610,1)SyntaxKind[RightHandSideList]
-      (610,1)SyntaxKind[IndentToken]
+    (610,2)SyntaxKind[RightHandSideList]
+      (610,2)SyntaxKind[IndentToken]
       (610,2)SyntaxKind[RightHandSide]
         (610,2)SyntaxKind[SymbolSpan]
           (610,2)SyntaxKind[Nonterminal]
@@ -4191,13 +4343,14 @@
       (624,1)SyntaxKind[DedentToken]
   (625,1)SyntaxKind[Production]
     (625,1)SyntaxKind[Identifier](text = "Declaration")
+    (625,20)SyntaxKind[ColonToken]
     (625,12)SyntaxKind[ParameterList]
       (625,12)SyntaxKind[OpenBracketToken]
       (625,13)SyntaxKind[Parameter]
         (625,13)SyntaxKind[Identifier](text = "Yield")
       (625,18)SyntaxKind[CloseBracketToken]
-    (626,1)SyntaxKind[RightHandSideList]
-      (626,1)SyntaxKind[IndentToken]
+    (626,2)SyntaxKind[RightHandSideList]
+      (626,2)SyntaxKind[IndentToken]
       (626,2)SyntaxKind[RightHandSide]
         (626,2)SyntaxKind[SymbolSpan]
           (626,2)SyntaxKind[Nonterminal]
@@ -4233,6 +4386,7 @@
       (629,1)SyntaxKind[DedentToken]
   (630,1)SyntaxKind[Production]
     (630,1)SyntaxKind[Identifier](text = "HoistableDeclaration")
+    (630,38)SyntaxKind[ColonToken]
     (630,21)SyntaxKind[ParameterList]
       (630,21)SyntaxKind[OpenBracketToken]
       (630,22)SyntaxKind[Parameter]
@@ -4240,8 +4394,8 @@
       (630,29)SyntaxKind[Parameter]
         (630,29)SyntaxKind[Identifier](text = "Default")
       (630,36)SyntaxKind[CloseBracketToken]
-    (631,1)SyntaxKind[RightHandSideList]
-      (631,1)SyntaxKind[IndentToken]
+    (631,2)SyntaxKind[RightHandSideList]
+      (631,2)SyntaxKind[IndentToken]
       (631,2)SyntaxKind[RightHandSide]
         (631,2)SyntaxKind[SymbolSpan]
           (631,2)SyntaxKind[Nonterminal]
@@ -4271,6 +4425,7 @@
       (633,1)SyntaxKind[DedentToken]
   (634,1)SyntaxKind[Production]
     (634,1)SyntaxKind[Identifier](text = "BreakableStatement")
+    (634,35)SyntaxKind[ColonToken]
     (634,19)SyntaxKind[ParameterList]
       (634,19)SyntaxKind[OpenBracketToken]
       (634,20)SyntaxKind[Parameter]
@@ -4278,8 +4433,8 @@
       (634,27)SyntaxKind[Parameter]
         (634,27)SyntaxKind[Identifier](text = "Return")
       (634,33)SyntaxKind[CloseBracketToken]
-    (635,1)SyntaxKind[RightHandSideList]
-      (635,1)SyntaxKind[IndentToken]
+    (635,2)SyntaxKind[RightHandSideList]
+      (635,2)SyntaxKind[IndentToken]
       (635,2)SyntaxKind[RightHandSide]
         (635,2)SyntaxKind[SymbolSpan]
           (635,2)SyntaxKind[Nonterminal]
@@ -4309,6 +4464,7 @@
       (637,1)SyntaxKind[DedentToken]
   (638,1)SyntaxKind[Production]
     (638,1)SyntaxKind[Identifier](text = "BlockStatement")
+    (638,31)SyntaxKind[ColonToken]
     (638,15)SyntaxKind[ParameterList]
       (638,15)SyntaxKind[OpenBracketToken]
       (638,16)SyntaxKind[Parameter]
@@ -4316,8 +4472,8 @@
       (638,23)SyntaxKind[Parameter]
         (638,23)SyntaxKind[Identifier](text = "Return")
       (638,29)SyntaxKind[CloseBracketToken]
-    (639,1)SyntaxKind[RightHandSideList]
-      (639,1)SyntaxKind[IndentToken]
+    (639,2)SyntaxKind[RightHandSideList]
+      (639,2)SyntaxKind[IndentToken]
       (639,2)SyntaxKind[RightHandSide]
         (639,2)SyntaxKind[SymbolSpan]
           (639,2)SyntaxKind[Nonterminal]
@@ -4334,6 +4490,7 @@
       (640,1)SyntaxKind[DedentToken]
   (641,1)SyntaxKind[Production]
     (641,1)SyntaxKind[Identifier](text = "Block")
+    (641,22)SyntaxKind[ColonToken]
     (641,6)SyntaxKind[ParameterList]
       (641,6)SyntaxKind[OpenBracketToken]
       (641,7)SyntaxKind[Parameter]
@@ -4341,8 +4498,8 @@
       (641,14)SyntaxKind[Parameter]
         (641,14)SyntaxKind[Identifier](text = "Return")
       (641,20)SyntaxKind[CloseBracketToken]
-    (642,1)SyntaxKind[RightHandSideList]
-      (642,1)SyntaxKind[IndentToken]
+    (642,2)SyntaxKind[RightHandSideList]
+      (642,2)SyntaxKind[IndentToken]
       (642,2)SyntaxKind[RightHandSide]
         (642,2)SyntaxKind[SymbolSpan]
           (642,2)SyntaxKind[Terminal](text = "{")
@@ -4364,6 +4521,7 @@
       (643,1)SyntaxKind[DedentToken]
   (644,1)SyntaxKind[Production]
     (644,1)SyntaxKind[Identifier](text = "StatementList")
+    (644,30)SyntaxKind[ColonToken]
     (644,14)SyntaxKind[ParameterList]
       (644,14)SyntaxKind[OpenBracketToken]
       (644,15)SyntaxKind[Parameter]
@@ -4371,8 +4529,8 @@
       (644,22)SyntaxKind[Parameter]
         (644,22)SyntaxKind[Identifier](text = "Return")
       (644,28)SyntaxKind[CloseBracketToken]
-    (645,1)SyntaxKind[RightHandSideList]
-      (645,1)SyntaxKind[IndentToken]
+    (645,2)SyntaxKind[RightHandSideList]
+      (645,2)SyntaxKind[IndentToken]
       (645,2)SyntaxKind[RightHandSide]
         (645,2)SyntaxKind[SymbolSpan]
           (645,2)SyntaxKind[Nonterminal]
@@ -4414,6 +4572,7 @@
       (647,1)SyntaxKind[DedentToken]
   (648,1)SyntaxKind[Production]
     (648,1)SyntaxKind[Identifier](text = "StatementListItem")
+    (648,34)SyntaxKind[ColonToken]
     (648,18)SyntaxKind[ParameterList]
       (648,18)SyntaxKind[OpenBracketToken]
       (648,19)SyntaxKind[Parameter]
@@ -4421,8 +4580,8 @@
       (648,26)SyntaxKind[Parameter]
         (648,26)SyntaxKind[Identifier](text = "Return")
       (648,32)SyntaxKind[CloseBracketToken]
-    (649,1)SyntaxKind[RightHandSideList]
-      (649,1)SyntaxKind[IndentToken]
+    (649,2)SyntaxKind[RightHandSideList]
+      (649,2)SyntaxKind[IndentToken]
       (649,2)SyntaxKind[RightHandSide]
         (649,2)SyntaxKind[SymbolSpan]
           (649,2)SyntaxKind[Nonterminal]
@@ -4449,6 +4608,7 @@
       (651,1)SyntaxKind[DedentToken]
   (652,1)SyntaxKind[Production]
     (652,1)SyntaxKind[Identifier](text = "LexicalDeclaration")
+    (652,31)SyntaxKind[ColonToken]
     (652,19)SyntaxKind[ParameterList]
       (652,19)SyntaxKind[OpenBracketToken]
       (652,20)SyntaxKind[Parameter]
@@ -4456,8 +4616,8 @@
       (652,24)SyntaxKind[Parameter]
         (652,24)SyntaxKind[Identifier](text = "Yield")
       (652,29)SyntaxKind[CloseBracketToken]
-    (653,1)SyntaxKind[RightHandSideList]
-      (653,1)SyntaxKind[IndentToken]
+    (653,2)SyntaxKind[RightHandSideList]
+      (653,2)SyntaxKind[IndentToken]
       (653,2)SyntaxKind[RightHandSide]
         (653,2)SyntaxKind[SymbolSpan]
           (653,2)SyntaxKind[Nonterminal]
@@ -4479,8 +4639,9 @@
       (654,1)SyntaxKind[DedentToken]
   (655,1)SyntaxKind[Production]
     (655,1)SyntaxKind[Identifier](text = "LetOrConst")
-    (656,1)SyntaxKind[RightHandSideList]
-      (656,1)SyntaxKind[IndentToken]
+    (655,12)SyntaxKind[ColonToken]
+    (656,2)SyntaxKind[RightHandSideList]
+      (656,2)SyntaxKind[IndentToken]
       (656,2)SyntaxKind[RightHandSide]
         (656,2)SyntaxKind[SymbolSpan]
           (656,2)SyntaxKind[Terminal](text = "let")
@@ -4490,6 +4651,7 @@
       (658,1)SyntaxKind[DedentToken]
   (659,1)SyntaxKind[Production]
     (659,1)SyntaxKind[Identifier](text = "BindingList")
+    (659,24)SyntaxKind[ColonToken]
     (659,12)SyntaxKind[ParameterList]
       (659,12)SyntaxKind[OpenBracketToken]
       (659,13)SyntaxKind[Parameter]
@@ -4497,8 +4659,8 @@
       (659,17)SyntaxKind[Parameter]
         (659,17)SyntaxKind[Identifier](text = "Yield")
       (659,22)SyntaxKind[CloseBracketToken]
-    (660,1)SyntaxKind[RightHandSideList]
-      (660,1)SyntaxKind[IndentToken]
+    (660,2)SyntaxKind[RightHandSideList]
+      (660,2)SyntaxKind[IndentToken]
       (660,2)SyntaxKind[RightHandSide]
         (660,2)SyntaxKind[SymbolSpan]
           (660,2)SyntaxKind[Nonterminal]
@@ -4542,6 +4704,7 @@
       (662,1)SyntaxKind[DedentToken]
   (663,1)SyntaxKind[Production]
     (663,1)SyntaxKind[Identifier](text = "LexicalBinding")
+    (663,28)SyntaxKind[ColonToken]
     (663,15)SyntaxKind[ParameterList]
       (663,15)SyntaxKind[OpenBracketToken]
       (663,16)SyntaxKind[Parameter]
@@ -4549,8 +4712,8 @@
       (663,20)SyntaxKind[Parameter]
         (663,20)SyntaxKind[Identifier](text = "Yield")
       (663,25)SyntaxKind[CloseBracketToken]
-    (664,1)SyntaxKind[RightHandSideList]
-      (664,1)SyntaxKind[IndentToken]
+    (664,2)SyntaxKind[RightHandSideList]
+      (664,2)SyntaxKind[IndentToken]
       (664,2)SyntaxKind[RightHandSide]
         (664,2)SyntaxKind[SymbolSpan]
           (664,2)SyntaxKind[Nonterminal]
@@ -4599,13 +4762,14 @@
       (666,1)SyntaxKind[DedentToken]
   (667,1)SyntaxKind[Production]
     (667,1)SyntaxKind[Identifier](text = "VariableStatement")
+    (667,26)SyntaxKind[ColonToken]
     (667,18)SyntaxKind[ParameterList]
       (667,18)SyntaxKind[OpenBracketToken]
       (667,19)SyntaxKind[Parameter]
         (667,19)SyntaxKind[Identifier](text = "Yield")
       (667,24)SyntaxKind[CloseBracketToken]
-    (668,1)SyntaxKind[RightHandSideList]
-      (668,1)SyntaxKind[IndentToken]
+    (668,2)SyntaxKind[RightHandSideList]
+      (668,2)SyntaxKind[IndentToken]
       (668,2)SyntaxKind[RightHandSide]
         (668,2)SyntaxKind[SymbolSpan]
           (668,2)SyntaxKind[Terminal](text = "var")
@@ -4625,6 +4789,7 @@
       (669,1)SyntaxKind[DedentToken]
   (670,1)SyntaxKind[Production]
     (670,1)SyntaxKind[Identifier](text = "VariableDeclarationList")
+    (670,36)SyntaxKind[ColonToken]
     (670,24)SyntaxKind[ParameterList]
       (670,24)SyntaxKind[OpenBracketToken]
       (670,25)SyntaxKind[Parameter]
@@ -4632,8 +4797,8 @@
       (670,29)SyntaxKind[Parameter]
         (670,29)SyntaxKind[Identifier](text = "Yield")
       (670,34)SyntaxKind[CloseBracketToken]
-    (671,1)SyntaxKind[RightHandSideList]
-      (671,1)SyntaxKind[IndentToken]
+    (671,2)SyntaxKind[RightHandSideList]
+      (671,2)SyntaxKind[IndentToken]
       (671,2)SyntaxKind[RightHandSide]
         (671,2)SyntaxKind[SymbolSpan]
           (671,2)SyntaxKind[Nonterminal]
@@ -4677,6 +4842,7 @@
       (673,1)SyntaxKind[DedentToken]
   (674,1)SyntaxKind[Production]
     (674,1)SyntaxKind[Identifier](text = "VariableDeclaration")
+    (674,32)SyntaxKind[ColonToken]
     (674,20)SyntaxKind[ParameterList]
       (674,20)SyntaxKind[OpenBracketToken]
       (674,21)SyntaxKind[Parameter]
@@ -4684,8 +4850,8 @@
       (674,25)SyntaxKind[Parameter]
         (674,25)SyntaxKind[Identifier](text = "Yield")
       (674,30)SyntaxKind[CloseBracketToken]
-    (675,1)SyntaxKind[RightHandSideList]
-      (675,1)SyntaxKind[IndentToken]
+    (675,2)SyntaxKind[RightHandSideList]
+      (675,2)SyntaxKind[IndentToken]
       (675,2)SyntaxKind[RightHandSide]
         (675,2)SyntaxKind[SymbolSpan]
           (675,2)SyntaxKind[Nonterminal]
@@ -4734,13 +4900,14 @@
       (677,1)SyntaxKind[DedentToken]
   (678,1)SyntaxKind[Production]
     (678,1)SyntaxKind[Identifier](text = "BindingPattern")
+    (678,23)SyntaxKind[ColonToken]
     (678,15)SyntaxKind[ParameterList]
       (678,15)SyntaxKind[OpenBracketToken]
       (678,16)SyntaxKind[Parameter]
         (678,16)SyntaxKind[Identifier](text = "Yield")
       (678,21)SyntaxKind[CloseBracketToken]
-    (679,1)SyntaxKind[RightHandSideList]
-      (679,1)SyntaxKind[IndentToken]
+    (679,2)SyntaxKind[RightHandSideList]
+      (679,2)SyntaxKind[IndentToken]
       (679,2)SyntaxKind[RightHandSide]
         (679,2)SyntaxKind[SymbolSpan]
           (679,2)SyntaxKind[Nonterminal]
@@ -4764,13 +4931,14 @@
       (681,1)SyntaxKind[DedentToken]
   (682,1)SyntaxKind[Production]
     (682,1)SyntaxKind[Identifier](text = "ObjectBindingPattern")
+    (682,29)SyntaxKind[ColonToken]
     (682,21)SyntaxKind[ParameterList]
       (682,21)SyntaxKind[OpenBracketToken]
       (682,22)SyntaxKind[Parameter]
         (682,22)SyntaxKind[Identifier](text = "Yield")
       (682,27)SyntaxKind[CloseBracketToken]
-    (683,1)SyntaxKind[RightHandSideList]
-      (683,1)SyntaxKind[IndentToken]
+    (683,2)SyntaxKind[RightHandSideList]
+      (683,2)SyntaxKind[IndentToken]
       (683,2)SyntaxKind[RightHandSide]
         (683,2)SyntaxKind[SymbolSpan]
           (683,2)SyntaxKind[Terminal](text = "{")
@@ -4809,13 +4977,14 @@
       (686,1)SyntaxKind[DedentToken]
   (687,1)SyntaxKind[Production]
     (687,1)SyntaxKind[Identifier](text = "ArrayBindingPattern")
+    (687,28)SyntaxKind[ColonToken]
     (687,20)SyntaxKind[ParameterList]
       (687,20)SyntaxKind[OpenBracketToken]
       (687,21)SyntaxKind[Parameter]
         (687,21)SyntaxKind[Identifier](text = "Yield")
       (687,26)SyntaxKind[CloseBracketToken]
-    (688,1)SyntaxKind[RightHandSideList]
-      (688,1)SyntaxKind[IndentToken]
+    (688,2)SyntaxKind[RightHandSideList]
+      (688,2)SyntaxKind[IndentToken]
       (688,2)SyntaxKind[RightHandSide]
         (688,2)SyntaxKind[SymbolSpan]
           (688,2)SyntaxKind[Terminal](text = "[")
@@ -4882,13 +5051,14 @@
       (691,1)SyntaxKind[DedentToken]
   (692,1)SyntaxKind[Production]
     (692,1)SyntaxKind[Identifier](text = "BindingPropertyList")
+    (692,28)SyntaxKind[ColonToken]
     (692,20)SyntaxKind[ParameterList]
       (692,20)SyntaxKind[OpenBracketToken]
       (692,21)SyntaxKind[Parameter]
         (692,21)SyntaxKind[Identifier](text = "Yield")
       (692,26)SyntaxKind[CloseBracketToken]
-    (693,1)SyntaxKind[RightHandSideList]
-      (693,1)SyntaxKind[IndentToken]
+    (693,2)SyntaxKind[RightHandSideList]
+      (693,2)SyntaxKind[IndentToken]
       (693,2)SyntaxKind[RightHandSide]
         (693,2)SyntaxKind[SymbolSpan]
           (693,2)SyntaxKind[Nonterminal]
@@ -4923,13 +5093,14 @@
       (695,1)SyntaxKind[DedentToken]
   (696,1)SyntaxKind[Production]
     (696,1)SyntaxKind[Identifier](text = "BindingElementList")
+    (696,27)SyntaxKind[ColonToken]
     (696,19)SyntaxKind[ParameterList]
       (696,19)SyntaxKind[OpenBracketToken]
       (696,20)SyntaxKind[Parameter]
         (696,20)SyntaxKind[Identifier](text = "Yield")
       (696,25)SyntaxKind[CloseBracketToken]
-    (697,1)SyntaxKind[RightHandSideList]
-      (697,1)SyntaxKind[IndentToken]
+    (697,2)SyntaxKind[RightHandSideList]
+      (697,2)SyntaxKind[IndentToken]
       (697,2)SyntaxKind[RightHandSide]
         (697,2)SyntaxKind[SymbolSpan]
           (697,2)SyntaxKind[Nonterminal]
@@ -4964,13 +5135,14 @@
       (699,1)SyntaxKind[DedentToken]
   (700,1)SyntaxKind[Production]
     (700,1)SyntaxKind[Identifier](text = "BindingElisionElement")
+    (700,30)SyntaxKind[ColonToken]
     (700,22)SyntaxKind[ParameterList]
       (700,22)SyntaxKind[OpenBracketToken]
       (700,23)SyntaxKind[Parameter]
         (700,23)SyntaxKind[Identifier](text = "Yield")
       (700,28)SyntaxKind[CloseBracketToken]
-    (701,1)SyntaxKind[RightHandSideList]
-      (701,1)SyntaxKind[IndentToken]
+    (701,2)SyntaxKind[RightHandSideList]
+      (701,2)SyntaxKind[IndentToken]
       (701,2)SyntaxKind[RightHandSide]
         (701,2)SyntaxKind[SymbolSpan]
           (701,2)SyntaxKind[Nonterminal]?
@@ -4988,13 +5160,14 @@
       (702,1)SyntaxKind[DedentToken]
   (703,1)SyntaxKind[Production]
     (703,1)SyntaxKind[Identifier](text = "BindingProperty")
+    (703,24)SyntaxKind[ColonToken]
     (703,16)SyntaxKind[ParameterList]
       (703,16)SyntaxKind[OpenBracketToken]
       (703,17)SyntaxKind[Parameter]
         (703,17)SyntaxKind[Identifier](text = "Yield")
       (703,22)SyntaxKind[CloseBracketToken]
-    (704,1)SyntaxKind[RightHandSideList]
-      (704,1)SyntaxKind[IndentToken]
+    (704,2)SyntaxKind[RightHandSideList]
+      (704,2)SyntaxKind[IndentToken]
       (704,2)SyntaxKind[RightHandSide]
         (704,2)SyntaxKind[SymbolSpan]
           (704,2)SyntaxKind[Nonterminal]
@@ -5029,13 +5202,14 @@
       (706,1)SyntaxKind[DedentToken]
   (707,1)SyntaxKind[Production]
     (707,1)SyntaxKind[Identifier](text = "BindingElement")
+    (707,23)SyntaxKind[ColonToken]
     (707,15)SyntaxKind[ParameterList]
       (707,15)SyntaxKind[OpenBracketToken]
       (707,16)SyntaxKind[Parameter]
         (707,16)SyntaxKind[Identifier](text = "Yield")
       (707,21)SyntaxKind[CloseBracketToken]
-    (708,1)SyntaxKind[RightHandSideList]
-      (708,1)SyntaxKind[IndentToken]
+    (708,2)SyntaxKind[RightHandSideList]
+      (708,2)SyntaxKind[IndentToken]
       (708,2)SyntaxKind[RightHandSide]
         (708,2)SyntaxKind[SymbolSpan]
           (708,2)SyntaxKind[Nonterminal]
@@ -5071,13 +5245,14 @@
       (710,1)SyntaxKind[DedentToken]
   (711,1)SyntaxKind[Production]
     (711,1)SyntaxKind[Identifier](text = "SingleNameBinding")
+    (711,26)SyntaxKind[ColonToken]
     (711,18)SyntaxKind[ParameterList]
       (711,18)SyntaxKind[OpenBracketToken]
       (711,19)SyntaxKind[Parameter]
         (711,19)SyntaxKind[Identifier](text = "Yield")
       (711,24)SyntaxKind[CloseBracketToken]
-    (712,1)SyntaxKind[RightHandSideList]
-      (712,1)SyntaxKind[IndentToken]
+    (712,2)SyntaxKind[RightHandSideList]
+      (712,2)SyntaxKind[IndentToken]
       (712,2)SyntaxKind[RightHandSide]
         (712,2)SyntaxKind[SymbolSpan]
           (712,2)SyntaxKind[Nonterminal]
@@ -5103,13 +5278,14 @@
       (713,1)SyntaxKind[DedentToken]
   (714,1)SyntaxKind[Production]
     (714,1)SyntaxKind[Identifier](text = "BindingRestElement")
+    (714,27)SyntaxKind[ColonToken]
     (714,19)SyntaxKind[ParameterList]
       (714,19)SyntaxKind[OpenBracketToken]
       (714,20)SyntaxKind[Parameter]
         (714,20)SyntaxKind[Identifier](text = "Yield")
       (714,25)SyntaxKind[CloseBracketToken]
-    (715,1)SyntaxKind[RightHandSideList]
-      (715,1)SyntaxKind[IndentToken]
+    (715,2)SyntaxKind[RightHandSideList]
+      (715,2)SyntaxKind[IndentToken]
       (715,2)SyntaxKind[RightHandSide]
         (715,2)SyntaxKind[SymbolSpan]
           (715,2)SyntaxKind[Terminal](text = "...")
@@ -5125,21 +5301,23 @@
       (716,1)SyntaxKind[DedentToken]
   (717,1)SyntaxKind[Production]
     (717,1)SyntaxKind[Identifier](text = "EmptyStatement")
-    (718,1)SyntaxKind[RightHandSideList]
-      (718,1)SyntaxKind[IndentToken]
+    (717,16)SyntaxKind[ColonToken]
+    (718,2)SyntaxKind[RightHandSideList]
+      (718,2)SyntaxKind[IndentToken]
       (718,2)SyntaxKind[RightHandSide]
         (718,2)SyntaxKind[SymbolSpan]
           (718,2)SyntaxKind[Terminal](text = ";")
       (719,1)SyntaxKind[DedentToken]
   (720,1)SyntaxKind[Production]
     (720,1)SyntaxKind[Identifier](text = "ExpressionStatement")
+    (720,28)SyntaxKind[ColonToken]
     (720,20)SyntaxKind[ParameterList]
       (720,20)SyntaxKind[OpenBracketToken]
       (720,21)SyntaxKind[Parameter]
         (720,21)SyntaxKind[Identifier](text = "Yield")
       (720,26)SyntaxKind[CloseBracketToken]
-    (721,1)SyntaxKind[RightHandSideList]
-      (721,1)SyntaxKind[IndentToken]
+    (721,2)SyntaxKind[RightHandSideList]
+      (721,2)SyntaxKind[IndentToken]
       (721,2)SyntaxKind[RightHandSide]
         (721,2)SyntaxKind[SymbolSpan]
           (721,2)SyntaxKind[LookaheadAssertion]
@@ -5176,6 +5354,7 @@
       (722,1)SyntaxKind[DedentToken]
   (723,1)SyntaxKind[Production]
     (723,1)SyntaxKind[Identifier](text = "IfStatement")
+    (723,28)SyntaxKind[ColonToken]
     (723,12)SyntaxKind[ParameterList]
       (723,12)SyntaxKind[OpenBracketToken]
       (723,13)SyntaxKind[Parameter]
@@ -5183,8 +5362,8 @@
       (723,20)SyntaxKind[Parameter]
         (723,20)SyntaxKind[Identifier](text = "Return")
       (723,26)SyntaxKind[CloseBracketToken]
-    (724,1)SyntaxKind[RightHandSideList]
-      (724,1)SyntaxKind[IndentToken]
+    (724,2)SyntaxKind[RightHandSideList]
+      (724,2)SyntaxKind[IndentToken]
       (724,2)SyntaxKind[RightHandSide]
         (724,2)SyntaxKind[SymbolSpan]
           (724,2)SyntaxKind[Terminal](text = "if")
@@ -5262,6 +5441,7 @@
       (726,1)SyntaxKind[DedentToken]
   (727,1)SyntaxKind[Production]
     (727,1)SyntaxKind[Identifier](text = "IterationStatement")
+    (727,35)SyntaxKind[ColonToken]
     (727,19)SyntaxKind[ParameterList]
       (727,19)SyntaxKind[OpenBracketToken]
       (727,20)SyntaxKind[Parameter]
@@ -5269,8 +5449,8 @@
       (727,27)SyntaxKind[Parameter]
         (727,27)SyntaxKind[Identifier](text = "Return")
       (727,33)SyntaxKind[CloseBracketToken]
-    (728,1)SyntaxKind[RightHandSideList]
-      (728,1)SyntaxKind[IndentToken]
+    (728,2)SyntaxKind[RightHandSideList]
+      (728,2)SyntaxKind[IndentToken]
       (728,2)SyntaxKind[RightHandSide]
         (728,2)SyntaxKind[SymbolSpan]
           (728,2)SyntaxKind[Terminal](text = "do")
@@ -5791,13 +5971,14 @@
       (739,1)SyntaxKind[DedentToken]
   (740,1)SyntaxKind[Production]
     (740,1)SyntaxKind[Identifier](text = "ForDeclaration")
+    (740,23)SyntaxKind[ColonToken]
     (740,15)SyntaxKind[ParameterList]
       (740,15)SyntaxKind[OpenBracketToken]
       (740,16)SyntaxKind[Parameter]
         (740,16)SyntaxKind[Identifier](text = "Yield")
       (740,21)SyntaxKind[CloseBracketToken]
-    (741,1)SyntaxKind[RightHandSideList]
-      (741,1)SyntaxKind[IndentToken]
+    (741,2)SyntaxKind[RightHandSideList]
+      (741,2)SyntaxKind[IndentToken]
       (741,2)SyntaxKind[RightHandSide]
         (741,2)SyntaxKind[SymbolSpan]
           (741,2)SyntaxKind[Nonterminal]
@@ -5814,13 +5995,14 @@
       (742,1)SyntaxKind[DedentToken]
   (743,1)SyntaxKind[Production]
     (743,1)SyntaxKind[Identifier](text = "ForBinding")
+    (743,19)SyntaxKind[ColonToken]
     (743,11)SyntaxKind[ParameterList]
       (743,11)SyntaxKind[OpenBracketToken]
       (743,12)SyntaxKind[Parameter]
         (743,12)SyntaxKind[Identifier](text = "Yield")
       (743,17)SyntaxKind[CloseBracketToken]
-    (744,1)SyntaxKind[RightHandSideList]
-      (744,1)SyntaxKind[IndentToken]
+    (744,2)SyntaxKind[RightHandSideList]
+      (744,2)SyntaxKind[IndentToken]
       (744,2)SyntaxKind[RightHandSide]
         (744,2)SyntaxKind[SymbolSpan]
           (744,2)SyntaxKind[Nonterminal]
@@ -5844,13 +6026,14 @@
       (746,1)SyntaxKind[DedentToken]
   (747,1)SyntaxKind[Production]
     (747,1)SyntaxKind[Identifier](text = "ContinueStatement")
+    (747,26)SyntaxKind[ColonToken]
     (747,18)SyntaxKind[ParameterList]
       (747,18)SyntaxKind[OpenBracketToken]
       (747,19)SyntaxKind[Parameter]
         (747,19)SyntaxKind[Identifier](text = "Yield")
       (747,24)SyntaxKind[CloseBracketToken]
-    (748,1)SyntaxKind[RightHandSideList]
-      (748,1)SyntaxKind[IndentToken]
+    (748,2)SyntaxKind[RightHandSideList]
+      (748,2)SyntaxKind[IndentToken]
       (748,2)SyntaxKind[RightHandSide]
         (748,2)SyntaxKind[SymbolSpan]
           (748,2)SyntaxKind[Terminal](text = "continue")
@@ -5881,13 +6064,14 @@
       (750,1)SyntaxKind[DedentToken]
   (751,1)SyntaxKind[Production]
     (751,1)SyntaxKind[Identifier](text = "BreakStatement")
+    (751,24)SyntaxKind[ColonToken]
     (751,15)SyntaxKind[ParameterList]
       (751,15)SyntaxKind[OpenBracketToken]
       (751,16)SyntaxKind[Parameter]
         (751,16)SyntaxKind[Identifier](text = "Yield")
       (751,21)SyntaxKind[CloseBracketToken]
-    (752,1)SyntaxKind[RightHandSideList]
-      (752,1)SyntaxKind[IndentToken]
+    (752,2)SyntaxKind[RightHandSideList]
+      (752,2)SyntaxKind[IndentToken]
       (752,2)SyntaxKind[RightHandSide]
         (752,2)SyntaxKind[SymbolSpan]
           (752,2)SyntaxKind[Terminal](text = "break")
@@ -5918,13 +6102,14 @@
       (754,1)SyntaxKind[DedentToken]
   (755,1)SyntaxKind[Production]
     (755,1)SyntaxKind[Identifier](text = "ReturnStatement")
+    (755,24)SyntaxKind[ColonToken]
     (755,16)SyntaxKind[ParameterList]
       (755,16)SyntaxKind[OpenBracketToken]
       (755,17)SyntaxKind[Parameter]
         (755,17)SyntaxKind[Identifier](text = "Yield")
       (755,22)SyntaxKind[CloseBracketToken]
-    (756,1)SyntaxKind[RightHandSideList]
-      (756,1)SyntaxKind[IndentToken]
+    (756,2)SyntaxKind[RightHandSideList]
+      (756,2)SyntaxKind[IndentToken]
       (756,2)SyntaxKind[RightHandSide]
         (756,2)SyntaxKind[SymbolSpan]
           (756,2)SyntaxKind[Terminal](text = "return")
@@ -5957,6 +6142,7 @@
       (758,1)SyntaxKind[DedentToken]
   (759,1)SyntaxKind[Production]
     (759,1)SyntaxKind[Identifier](text = "WithStatement")
+    (759,30)SyntaxKind[ColonToken]
     (759,14)SyntaxKind[ParameterList]
       (759,14)SyntaxKind[OpenBracketToken]
       (759,15)SyntaxKind[Parameter]
@@ -5964,8 +6150,8 @@
       (759,22)SyntaxKind[Parameter]
         (759,22)SyntaxKind[Identifier](text = "Return")
       (759,28)SyntaxKind[CloseBracketToken]
-    (760,1)SyntaxKind[RightHandSideList]
-      (760,1)SyntaxKind[IndentToken]
+    (760,2)SyntaxKind[RightHandSideList]
+      (760,2)SyntaxKind[IndentToken]
       (760,2)SyntaxKind[RightHandSide]
         (760,2)SyntaxKind[SymbolSpan]
           (760,2)SyntaxKind[Terminal](text = "with")
@@ -5999,6 +6185,7 @@
       (761,1)SyntaxKind[DedentToken]
   (762,1)SyntaxKind[Production]
     (762,1)SyntaxKind[Identifier](text = "SwitchStatement")
+    (762,32)SyntaxKind[ColonToken]
     (762,16)SyntaxKind[ParameterList]
       (762,16)SyntaxKind[OpenBracketToken]
       (762,17)SyntaxKind[Parameter]
@@ -6006,8 +6193,8 @@
       (762,24)SyntaxKind[Parameter]
         (762,24)SyntaxKind[Identifier](text = "Return")
       (762,30)SyntaxKind[CloseBracketToken]
-    (763,1)SyntaxKind[RightHandSideList]
-      (763,1)SyntaxKind[IndentToken]
+    (763,2)SyntaxKind[RightHandSideList]
+      (763,2)SyntaxKind[IndentToken]
       (763,2)SyntaxKind[RightHandSide]
         (763,2)SyntaxKind[SymbolSpan]
           (763,2)SyntaxKind[Terminal](text = "switch")
@@ -6041,6 +6228,7 @@
       (764,1)SyntaxKind[DedentToken]
   (765,1)SyntaxKind[Production]
     (765,1)SyntaxKind[Identifier](text = "CaseBlock")
+    (765,26)SyntaxKind[ColonToken]
     (765,10)SyntaxKind[ParameterList]
       (765,10)SyntaxKind[OpenBracketToken]
       (765,11)SyntaxKind[Parameter]
@@ -6048,8 +6236,8 @@
       (765,18)SyntaxKind[Parameter]
         (765,18)SyntaxKind[Identifier](text = "Return")
       (765,24)SyntaxKind[CloseBracketToken]
-    (766,1)SyntaxKind[RightHandSideList]
-      (766,1)SyntaxKind[IndentToken]
+    (766,2)SyntaxKind[RightHandSideList]
+      (766,2)SyntaxKind[IndentToken]
       (766,2)SyntaxKind[RightHandSide]
         (766,2)SyntaxKind[SymbolSpan]
           (766,2)SyntaxKind[Terminal](text = "{")
@@ -6114,6 +6302,7 @@
       (768,1)SyntaxKind[DedentToken]
   (769,1)SyntaxKind[Production]
     (769,1)SyntaxKind[Identifier](text = "CaseClauses")
+    (769,28)SyntaxKind[ColonToken]
     (769,12)SyntaxKind[ParameterList]
       (769,12)SyntaxKind[OpenBracketToken]
       (769,13)SyntaxKind[Parameter]
@@ -6121,8 +6310,8 @@
       (769,20)SyntaxKind[Parameter]
         (769,20)SyntaxKind[Identifier](text = "Return")
       (769,26)SyntaxKind[CloseBracketToken]
-    (770,1)SyntaxKind[RightHandSideList]
-      (770,1)SyntaxKind[IndentToken]
+    (770,2)SyntaxKind[RightHandSideList]
+      (770,2)SyntaxKind[IndentToken]
       (770,2)SyntaxKind[RightHandSide]
         (770,2)SyntaxKind[SymbolSpan]
           (770,2)SyntaxKind[Nonterminal]
@@ -6164,6 +6353,7 @@
       (772,1)SyntaxKind[DedentToken]
   (773,1)SyntaxKind[Production]
     (773,1)SyntaxKind[Identifier](text = "CaseClause")
+    (773,27)SyntaxKind[ColonToken]
     (773,11)SyntaxKind[ParameterList]
       (773,11)SyntaxKind[OpenBracketToken]
       (773,12)SyntaxKind[Parameter]
@@ -6171,8 +6361,8 @@
       (773,19)SyntaxKind[Parameter]
         (773,19)SyntaxKind[Identifier](text = "Return")
       (773,25)SyntaxKind[CloseBracketToken]
-    (774,1)SyntaxKind[RightHandSideList]
-      (774,1)SyntaxKind[IndentToken]
+    (774,2)SyntaxKind[RightHandSideList]
+      (774,2)SyntaxKind[IndentToken]
       (774,2)SyntaxKind[RightHandSide]
         (774,2)SyntaxKind[SymbolSpan]
           (774,2)SyntaxKind[Terminal](text = "case")
@@ -6205,6 +6395,7 @@
       (775,1)SyntaxKind[DedentToken]
   (776,1)SyntaxKind[Production]
     (776,1)SyntaxKind[Identifier](text = "DefaultClause")
+    (776,30)SyntaxKind[ColonToken]
     (776,14)SyntaxKind[ParameterList]
       (776,14)SyntaxKind[OpenBracketToken]
       (776,15)SyntaxKind[Parameter]
@@ -6212,8 +6403,8 @@
       (776,22)SyntaxKind[Parameter]
         (776,22)SyntaxKind[Identifier](text = "Return")
       (776,28)SyntaxKind[CloseBracketToken]
-    (777,1)SyntaxKind[RightHandSideList]
-      (777,1)SyntaxKind[IndentToken]
+    (777,2)SyntaxKind[RightHandSideList]
+      (777,2)SyntaxKind[IndentToken]
       (777,2)SyntaxKind[RightHandSide]
         (777,2)SyntaxKind[SymbolSpan]
           (777,2)SyntaxKind[Terminal](text = "default")
@@ -6235,6 +6426,7 @@
       (778,1)SyntaxKind[DedentToken]
   (779,1)SyntaxKind[Production]
     (779,1)SyntaxKind[Identifier](text = "LabelledStatement")
+    (779,34)SyntaxKind[ColonToken]
     (779,18)SyntaxKind[ParameterList]
       (779,18)SyntaxKind[OpenBracketToken]
       (779,19)SyntaxKind[Parameter]
@@ -6242,8 +6434,8 @@
       (779,26)SyntaxKind[Parameter]
         (779,26)SyntaxKind[Identifier](text = "Return")
       (779,32)SyntaxKind[CloseBracketToken]
-    (780,1)SyntaxKind[RightHandSideList]
-      (780,1)SyntaxKind[IndentToken]
+    (780,2)SyntaxKind[RightHandSideList]
+      (780,2)SyntaxKind[IndentToken]
       (780,2)SyntaxKind[RightHandSide]
         (780,2)SyntaxKind[SymbolSpan]
           (780,2)SyntaxKind[Nonterminal]
@@ -6271,6 +6463,7 @@
       (781,1)SyntaxKind[DedentToken]
   (782,1)SyntaxKind[Production]
     (782,1)SyntaxKind[Identifier](text = "LabelledItem")
+    (782,29)SyntaxKind[ColonToken]
     (782,13)SyntaxKind[ParameterList]
       (782,13)SyntaxKind[OpenBracketToken]
       (782,14)SyntaxKind[Parameter]
@@ -6278,8 +6471,8 @@
       (782,21)SyntaxKind[Parameter]
         (782,21)SyntaxKind[Identifier](text = "Return")
       (782,27)SyntaxKind[CloseBracketToken]
-    (783,1)SyntaxKind[RightHandSideList]
-      (783,1)SyntaxKind[IndentToken]
+    (783,2)SyntaxKind[RightHandSideList]
+      (783,2)SyntaxKind[IndentToken]
       (783,2)SyntaxKind[RightHandSide]
         (783,2)SyntaxKind[SymbolSpan]
           (783,2)SyntaxKind[Nonterminal]
@@ -6306,13 +6499,14 @@
       (785,1)SyntaxKind[DedentToken]
   (786,1)SyntaxKind[Production]
     (786,1)SyntaxKind[Identifier](text = "ThrowStatement")
+    (786,23)SyntaxKind[ColonToken]
     (786,15)SyntaxKind[ParameterList]
       (786,15)SyntaxKind[OpenBracketToken]
       (786,16)SyntaxKind[Parameter]
         (786,16)SyntaxKind[Identifier](text = "Yield")
       (786,21)SyntaxKind[CloseBracketToken]
-    (787,1)SyntaxKind[RightHandSideList]
-      (787,1)SyntaxKind[IndentToken]
+    (787,2)SyntaxKind[RightHandSideList]
+      (787,2)SyntaxKind[IndentToken]
       (787,2)SyntaxKind[RightHandSide]
         (787,2)SyntaxKind[SymbolSpan]
           (787,2)SyntaxKind[Terminal](text = "throw")
@@ -6340,6 +6534,7 @@
       (788,1)SyntaxKind[DedentToken]
   (789,1)SyntaxKind[Production]
     (789,1)SyntaxKind[Identifier](text = "TryStatement")
+    (789,29)SyntaxKind[ColonToken]
     (789,13)SyntaxKind[ParameterList]
       (789,13)SyntaxKind[OpenBracketToken]
       (789,14)SyntaxKind[Parameter]
@@ -6347,8 +6542,8 @@
       (789,21)SyntaxKind[Parameter]
         (789,21)SyntaxKind[Identifier](text = "Return")
       (789,27)SyntaxKind[CloseBracketToken]
-    (790,1)SyntaxKind[RightHandSideList]
-      (790,1)SyntaxKind[IndentToken]
+    (790,2)SyntaxKind[RightHandSideList]
+      (790,2)SyntaxKind[IndentToken]
       (790,2)SyntaxKind[RightHandSide]
         (790,2)SyntaxKind[SymbolSpan]
           (790,2)SyntaxKind[Terminal](text = "try")
@@ -6445,6 +6640,7 @@
       (793,1)SyntaxKind[DedentToken]
   (794,1)SyntaxKind[Production]
     (794,1)SyntaxKind[Identifier](text = "Catch")
+    (794,22)SyntaxKind[ColonToken]
     (794,6)SyntaxKind[ParameterList]
       (794,6)SyntaxKind[OpenBracketToken]
       (794,7)SyntaxKind[Parameter]
@@ -6452,8 +6648,8 @@
       (794,14)SyntaxKind[Parameter]
         (794,14)SyntaxKind[Identifier](text = "Return")
       (794,20)SyntaxKind[CloseBracketToken]
-    (795,1)SyntaxKind[RightHandSideList]
-      (795,1)SyntaxKind[IndentToken]
+    (795,2)SyntaxKind[RightHandSideList]
+      (795,2)SyntaxKind[IndentToken]
       (795,2)SyntaxKind[RightHandSide]
         (795,2)SyntaxKind[SymbolSpan]
           (795,2)SyntaxKind[Terminal](text = "catch")
@@ -6485,6 +6681,7 @@
       (796,1)SyntaxKind[DedentToken]
   (797,1)SyntaxKind[Production]
     (797,1)SyntaxKind[Identifier](text = "Finally")
+    (797,24)SyntaxKind[ColonToken]
     (797,8)SyntaxKind[ParameterList]
       (797,8)SyntaxKind[OpenBracketToken]
       (797,9)SyntaxKind[Parameter]
@@ -6492,8 +6689,8 @@
       (797,16)SyntaxKind[Parameter]
         (797,16)SyntaxKind[Identifier](text = "Return")
       (797,22)SyntaxKind[CloseBracketToken]
-    (798,1)SyntaxKind[RightHandSideList]
-      (798,1)SyntaxKind[IndentToken]
+    (798,2)SyntaxKind[RightHandSideList]
+      (798,2)SyntaxKind[IndentToken]
       (798,2)SyntaxKind[RightHandSide]
         (798,2)SyntaxKind[SymbolSpan]
           (798,2)SyntaxKind[Terminal](text = "finally")
@@ -6512,13 +6709,14 @@
       (799,1)SyntaxKind[DedentToken]
   (800,1)SyntaxKind[Production]
     (800,1)SyntaxKind[Identifier](text = "CatchParameter")
+    (800,23)SyntaxKind[ColonToken]
     (800,15)SyntaxKind[ParameterList]
       (800,15)SyntaxKind[OpenBracketToken]
       (800,16)SyntaxKind[Parameter]
         (800,16)SyntaxKind[Identifier](text = "Yield")
       (800,21)SyntaxKind[CloseBracketToken]
-    (801,1)SyntaxKind[RightHandSideList]
-      (801,1)SyntaxKind[IndentToken]
+    (801,2)SyntaxKind[RightHandSideList]
+      (801,2)SyntaxKind[IndentToken]
       (801,2)SyntaxKind[RightHandSide]
         (801,2)SyntaxKind[SymbolSpan]
           (801,2)SyntaxKind[Nonterminal]
@@ -6542,8 +6740,9 @@
       (803,1)SyntaxKind[DedentToken]
   (804,1)SyntaxKind[Production]
     (804,1)SyntaxKind[Identifier](text = "DebuggerStatement")
-    (805,1)SyntaxKind[RightHandSideList]
-      (805,1)SyntaxKind[IndentToken]
+    (804,19)SyntaxKind[ColonToken]
+    (805,2)SyntaxKind[RightHandSideList]
+      (805,2)SyntaxKind[IndentToken]
       (805,2)SyntaxKind[RightHandSide]
         (805,2)SyntaxKind[SymbolSpan]
           (805,2)SyntaxKind[Terminal](text = "debugger")
@@ -6552,6 +6751,7 @@
       (806,1)SyntaxKind[DedentToken]
   (809,1)SyntaxKind[Production]
     (809,1)SyntaxKind[Identifier](text = "FunctionDeclaration")
+    (809,38)SyntaxKind[ColonToken]
     (809,20)SyntaxKind[ParameterList]
       (809,20)SyntaxKind[OpenBracketToken]
       (809,21)SyntaxKind[Parameter]
@@ -6559,8 +6759,8 @@
       (809,28)SyntaxKind[Parameter]
         (809,28)SyntaxKind[Identifier](text = "Default")
       (809,35)SyntaxKind[CloseBracketToken]
-    (810,1)SyntaxKind[RightHandSideList]
-      (810,1)SyntaxKind[IndentToken]
+    (810,2)SyntaxKind[RightHandSideList]
+      (810,2)SyntaxKind[IndentToken]
       (810,2)SyntaxKind[RightHandSide]
         (810,2)SyntaxKind[SymbolSpan]
           (810,2)SyntaxKind[Terminal](text = "function")
@@ -6613,8 +6813,9 @@
       (812,1)SyntaxKind[DedentToken]
   (813,1)SyntaxKind[Production]
     (813,1)SyntaxKind[Identifier](text = "FunctionExpression")
-    (814,1)SyntaxKind[RightHandSideList]
-      (814,1)SyntaxKind[IndentToken]
+    (813,20)SyntaxKind[ColonToken]
+    (814,2)SyntaxKind[RightHandSideList]
+      (814,2)SyntaxKind[IndentToken]
       (814,2)SyntaxKind[RightHandSide]
         (814,2)SyntaxKind[SymbolSpan]
           (814,2)SyntaxKind[Terminal](text = "function")
@@ -6639,13 +6840,14 @@
       (815,1)SyntaxKind[DedentToken]
   (816,1)SyntaxKind[Production]
     (816,1)SyntaxKind[Identifier](text = "StrictFormalParameters")
+    (816,31)SyntaxKind[ColonToken]
     (816,23)SyntaxKind[ParameterList]
       (816,23)SyntaxKind[OpenBracketToken]
       (816,24)SyntaxKind[Parameter]
         (816,24)SyntaxKind[Identifier](text = "Yield")
       (816,29)SyntaxKind[CloseBracketToken]
-    (817,1)SyntaxKind[RightHandSideList]
-      (817,1)SyntaxKind[IndentToken]
+    (817,2)SyntaxKind[RightHandSideList]
+      (817,2)SyntaxKind[IndentToken]
       (817,2)SyntaxKind[RightHandSide]
         (817,2)SyntaxKind[SymbolSpan]
           (817,2)SyntaxKind[Nonterminal]
@@ -6659,13 +6861,14 @@
       (818,1)SyntaxKind[DedentToken]
   (819,1)SyntaxKind[Production]
     (819,1)SyntaxKind[Identifier](text = "FormalParameters")
+    (819,25)SyntaxKind[ColonToken]
     (819,17)SyntaxKind[ParameterList]
       (819,17)SyntaxKind[OpenBracketToken]
       (819,18)SyntaxKind[Parameter]
         (819,18)SyntaxKind[Identifier](text = "Yield")
       (819,23)SyntaxKind[CloseBracketToken]
-    (820,1)SyntaxKind[RightHandSideList]
-      (820,1)SyntaxKind[IndentToken]
+    (820,2)SyntaxKind[RightHandSideList]
+      (820,2)SyntaxKind[IndentToken]
       (820,2)SyntaxKind[RightHandSide]
         (820,2)SyntaxKind[SymbolSpan]
           (820,2)SyntaxKind[EmptyAssertion]
@@ -6685,13 +6888,14 @@
       (822,1)SyntaxKind[DedentToken]
   (823,1)SyntaxKind[Production]
     (823,1)SyntaxKind[Identifier](text = "FormalParameterList")
+    (823,29)SyntaxKind[ColonToken]
     (823,20)SyntaxKind[ParameterList]
       (823,20)SyntaxKind[OpenBracketToken]
       (823,21)SyntaxKind[Parameter]
         (823,21)SyntaxKind[Identifier](text = "Yield")
       (823,26)SyntaxKind[CloseBracketToken]
-    (824,1)SyntaxKind[RightHandSideList]
-      (824,1)SyntaxKind[IndentToken]
+    (824,2)SyntaxKind[RightHandSideList]
+      (824,2)SyntaxKind[IndentToken]
       (824,2)SyntaxKind[RightHandSide]
         (824,2)SyntaxKind[SymbolSpan]
           (824,2)SyntaxKind[Nonterminal]
@@ -6736,13 +6940,14 @@
       (827,1)SyntaxKind[DedentToken]
   (828,1)SyntaxKind[Production]
     (828,1)SyntaxKind[Identifier](text = "FormalsList")
+    (828,20)SyntaxKind[ColonToken]
     (828,12)SyntaxKind[ParameterList]
       (828,12)SyntaxKind[OpenBracketToken]
       (828,13)SyntaxKind[Parameter]
         (828,13)SyntaxKind[Identifier](text = "Yield")
       (828,18)SyntaxKind[CloseBracketToken]
-    (829,1)SyntaxKind[RightHandSideList]
-      (829,1)SyntaxKind[IndentToken]
+    (829,2)SyntaxKind[RightHandSideList]
+      (829,2)SyntaxKind[IndentToken]
       (829,2)SyntaxKind[RightHandSide]
         (829,2)SyntaxKind[SymbolSpan]
           (829,2)SyntaxKind[Nonterminal]
@@ -6777,13 +6982,14 @@
       (831,1)SyntaxKind[DedentToken]
   (832,1)SyntaxKind[Production]
     (832,1)SyntaxKind[Identifier](text = "FunctionRestParameter")
+    (832,30)SyntaxKind[ColonToken]
     (832,22)SyntaxKind[ParameterList]
       (832,22)SyntaxKind[OpenBracketToken]
       (832,23)SyntaxKind[Parameter]
         (832,23)SyntaxKind[Identifier](text = "Yield")
       (832,28)SyntaxKind[CloseBracketToken]
-    (833,1)SyntaxKind[RightHandSideList]
-      (833,1)SyntaxKind[IndentToken]
+    (833,2)SyntaxKind[RightHandSideList]
+      (833,2)SyntaxKind[IndentToken]
       (833,2)SyntaxKind[RightHandSide]
         (833,2)SyntaxKind[SymbolSpan]
           (833,2)SyntaxKind[Nonterminal]
@@ -6797,13 +7003,14 @@
       (834,1)SyntaxKind[DedentToken]
   (835,1)SyntaxKind[Production]
     (835,1)SyntaxKind[Identifier](text = "FormalParameter")
+    (835,24)SyntaxKind[ColonToken]
     (835,16)SyntaxKind[ParameterList]
       (835,16)SyntaxKind[OpenBracketToken]
       (835,17)SyntaxKind[Parameter]
         (835,17)SyntaxKind[Identifier](text = "Yield")
       (835,22)SyntaxKind[CloseBracketToken]
-    (836,1)SyntaxKind[RightHandSideList]
-      (836,1)SyntaxKind[IndentToken]
+    (836,2)SyntaxKind[RightHandSideList]
+      (836,2)SyntaxKind[IndentToken]
       (836,2)SyntaxKind[RightHandSide]
         (836,2)SyntaxKind[SymbolSpan]
           (836,2)SyntaxKind[Nonterminal]
@@ -6817,13 +7024,14 @@
       (837,1)SyntaxKind[DedentToken]
   (838,1)SyntaxKind[Production]
     (838,1)SyntaxKind[Identifier](text = "FunctionBody")
+    (838,21)SyntaxKind[ColonToken]
     (838,13)SyntaxKind[ParameterList]
       (838,13)SyntaxKind[OpenBracketToken]
       (838,14)SyntaxKind[Parameter]
         (838,14)SyntaxKind[Identifier](text = "Yield")
       (838,19)SyntaxKind[CloseBracketToken]
-    (839,1)SyntaxKind[RightHandSideList]
-      (839,1)SyntaxKind[IndentToken]
+    (839,2)SyntaxKind[RightHandSideList]
+      (839,2)SyntaxKind[IndentToken]
       (839,2)SyntaxKind[RightHandSide]
         (839,2)SyntaxKind[SymbolSpan]
           (839,2)SyntaxKind[Nonterminal]
@@ -6837,13 +7045,14 @@
       (840,1)SyntaxKind[DedentToken]
   (841,1)SyntaxKind[Production]
     (841,1)SyntaxKind[Identifier](text = "FunctionStatementList")
+    (841,30)SyntaxKind[ColonToken]
     (841,22)SyntaxKind[ParameterList]
       (841,22)SyntaxKind[OpenBracketToken]
       (841,23)SyntaxKind[Parameter]
         (841,23)SyntaxKind[Identifier](text = "Yield")
       (841,28)SyntaxKind[CloseBracketToken]
-    (842,1)SyntaxKind[RightHandSideList]
-      (842,1)SyntaxKind[IndentToken]
+    (842,2)SyntaxKind[RightHandSideList]
+      (842,2)SyntaxKind[IndentToken]
       (842,2)SyntaxKind[RightHandSide]
         (842,2)SyntaxKind[SymbolSpan]
           (842,2)SyntaxKind[Nonterminal]?
@@ -6860,6 +7069,7 @@
       (843,1)SyntaxKind[DedentToken]
   (844,1)SyntaxKind[Production]
     (844,1)SyntaxKind[Identifier](text = "ArrowFunction")
+    (844,27)SyntaxKind[ColonToken]
     (844,14)SyntaxKind[ParameterList]
       (844,14)SyntaxKind[OpenBracketToken]
       (844,15)SyntaxKind[Parameter]
@@ -6867,8 +7077,8 @@
       (844,19)SyntaxKind[Parameter]
         (844,19)SyntaxKind[Identifier](text = "Yield")
       (844,24)SyntaxKind[CloseBracketToken]
-    (845,1)SyntaxKind[RightHandSideList]
-      (845,1)SyntaxKind[IndentToken]
+    (845,2)SyntaxKind[RightHandSideList]
+      (845,2)SyntaxKind[IndentToken]
       (845,2)SyntaxKind[RightHandSide]
         (845,2)SyntaxKind[SymbolSpan]
           (845,2)SyntaxKind[Nonterminal]
@@ -6901,13 +7111,14 @@
       (846,1)SyntaxKind[DedentToken]
   (847,1)SyntaxKind[Production]
     (847,1)SyntaxKind[Identifier](text = "ArrowParameters")
+    (847,25)SyntaxKind[ColonToken]
     (847,16)SyntaxKind[ParameterList]
       (847,16)SyntaxKind[OpenBracketToken]
       (847,17)SyntaxKind[Parameter]
         (847,17)SyntaxKind[Identifier](text = "Yield")
       (847,22)SyntaxKind[CloseBracketToken]
-    (848,1)SyntaxKind[RightHandSideList]
-      (848,1)SyntaxKind[IndentToken]
+    (848,2)SyntaxKind[RightHandSideList]
+      (848,2)SyntaxKind[IndentToken]
       (848,2)SyntaxKind[RightHandSide]
         (848,2)SyntaxKind[SymbolSpan]
           (848,2)SyntaxKind[Nonterminal]
@@ -6931,13 +7142,14 @@
       (850,1)SyntaxKind[DedentToken]
   (851,1)SyntaxKind[Production]
     (851,1)SyntaxKind[Identifier](text = "ConciseBody")
+    (851,17)SyntaxKind[ColonToken]
     (851,12)SyntaxKind[ParameterList]
       (851,12)SyntaxKind[OpenBracketToken]
       (851,13)SyntaxKind[Parameter]
         (851,13)SyntaxKind[Identifier](text = "In")
       (851,15)SyntaxKind[CloseBracketToken]
-    (852,1)SyntaxKind[RightHandSideList]
-      (852,1)SyntaxKind[IndentToken]
+    (852,2)SyntaxKind[RightHandSideList]
+      (852,2)SyntaxKind[IndentToken]
       (852,2)SyntaxKind[RightHandSide]
         (852,2)SyntaxKind[SymbolSpan]
           (852,2)SyntaxKind[LookaheadAssertion]
@@ -6967,13 +7179,14 @@
       (854,1)SyntaxKind[DedentToken]
   (855,1)SyntaxKind[Production]
     (855,1)SyntaxKind[Identifier](text = "MethodDefinition")
+    (855,25)SyntaxKind[ColonToken]
     (855,17)SyntaxKind[ParameterList]
       (855,17)SyntaxKind[OpenBracketToken]
       (855,18)SyntaxKind[Parameter]
         (855,18)SyntaxKind[Identifier](text = "Yield")
       (855,23)SyntaxKind[CloseBracketToken]
-    (856,1)SyntaxKind[RightHandSideList]
-      (856,1)SyntaxKind[IndentToken]
+    (856,2)SyntaxKind[RightHandSideList]
+      (856,2)SyntaxKind[IndentToken]
       (856,2)SyntaxKind[RightHandSide]
         (856,2)SyntaxKind[SymbolSpan]
           (856,2)SyntaxKind[Nonterminal]
@@ -7060,8 +7273,9 @@
       (860,1)SyntaxKind[DedentToken]
   (861,1)SyntaxKind[Production]
     (861,1)SyntaxKind[Identifier](text = "PropertySetParameterList")
-    (862,1)SyntaxKind[RightHandSideList]
-      (862,1)SyntaxKind[IndentToken]
+    (861,26)SyntaxKind[ColonToken]
+    (862,2)SyntaxKind[RightHandSideList]
+      (862,2)SyntaxKind[IndentToken]
       (862,2)SyntaxKind[RightHandSide]
         (862,2)SyntaxKind[SymbolSpan]
           (862,2)SyntaxKind[Nonterminal]
@@ -7069,13 +7283,14 @@
       (863,1)SyntaxKind[DedentToken]
   (864,1)SyntaxKind[Production]
     (864,1)SyntaxKind[Identifier](text = "GeneratorMethod")
+    (864,24)SyntaxKind[ColonToken]
     (864,16)SyntaxKind[ParameterList]
       (864,16)SyntaxKind[OpenBracketToken]
       (864,17)SyntaxKind[Parameter]
         (864,17)SyntaxKind[Identifier](text = "Yield")
       (864,22)SyntaxKind[CloseBracketToken]
-    (865,1)SyntaxKind[RightHandSideList]
-      (865,1)SyntaxKind[IndentToken]
+    (865,2)SyntaxKind[RightHandSideList]
+      (865,2)SyntaxKind[IndentToken]
       (865,2)SyntaxKind[RightHandSide]
         (865,2)SyntaxKind[SymbolSpan]
           (865,2)SyntaxKind[Terminal](text = "*")
@@ -7110,6 +7325,7 @@
       (866,1)SyntaxKind[DedentToken]
   (867,1)SyntaxKind[Production]
     (867,1)SyntaxKind[Identifier](text = "GeneratorDeclaration")
+    (867,38)SyntaxKind[ColonToken]
     (867,21)SyntaxKind[ParameterList]
       (867,21)SyntaxKind[OpenBracketToken]
       (867,22)SyntaxKind[Parameter]
@@ -7117,8 +7333,8 @@
       (867,29)SyntaxKind[Parameter]
         (867,29)SyntaxKind[Identifier](text = "Default")
       (867,36)SyntaxKind[CloseBracketToken]
-    (868,1)SyntaxKind[RightHandSideList]
-      (868,1)SyntaxKind[IndentToken]
+    (868,2)SyntaxKind[RightHandSideList]
+      (868,2)SyntaxKind[IndentToken]
       (868,2)SyntaxKind[RightHandSide]
         (868,2)SyntaxKind[SymbolSpan]
           (868,2)SyntaxKind[Terminal](text = "function")
@@ -7185,8 +7401,9 @@
       (870,1)SyntaxKind[DedentToken]
   (871,1)SyntaxKind[Production]
     (871,1)SyntaxKind[Identifier](text = "GeneratorExpression")
-    (872,1)SyntaxKind[RightHandSideList]
-      (872,1)SyntaxKind[IndentToken]
+    (871,21)SyntaxKind[ColonToken]
+    (872,2)SyntaxKind[RightHandSideList]
+      (872,2)SyntaxKind[IndentToken]
       (872,2)SyntaxKind[RightHandSide]
         (872,2)SyntaxKind[SymbolSpan]
           (872,2)SyntaxKind[Terminal](text = "function")
@@ -7223,8 +7440,9 @@
       (873,1)SyntaxKind[DedentToken]
   (874,1)SyntaxKind[Production]
     (874,1)SyntaxKind[Identifier](text = "GeneratorBody")
-    (875,1)SyntaxKind[RightHandSideList]
-      (875,1)SyntaxKind[IndentToken]
+    (874,15)SyntaxKind[ColonToken]
+    (875,2)SyntaxKind[RightHandSideList]
+      (875,2)SyntaxKind[IndentToken]
       (875,2)SyntaxKind[RightHandSide]
         (875,2)SyntaxKind[SymbolSpan]
           (875,2)SyntaxKind[Nonterminal]
@@ -7237,13 +7455,14 @@
       (876,1)SyntaxKind[DedentToken]
   (877,1)SyntaxKind[Production]
     (877,1)SyntaxKind[Identifier](text = "YieldExpression")
+    (877,21)SyntaxKind[ColonToken]
     (877,16)SyntaxKind[ParameterList]
       (877,16)SyntaxKind[OpenBracketToken]
       (877,17)SyntaxKind[Parameter]
         (877,17)SyntaxKind[Identifier](text = "In")
       (877,19)SyntaxKind[CloseBracketToken]
-    (878,1)SyntaxKind[RightHandSideList]
-      (878,1)SyntaxKind[IndentToken]
+    (878,2)SyntaxKind[RightHandSideList]
+      (878,2)SyntaxKind[IndentToken]
       (878,2)SyntaxKind[RightHandSide]
         (878,2)SyntaxKind[SymbolSpan]
           (878,2)SyntaxKind[Terminal](text = "yield")
@@ -7296,6 +7515,7 @@
       (881,1)SyntaxKind[DedentToken]
   (882,1)SyntaxKind[Production]
     (882,1)SyntaxKind[Identifier](text = "ClassDeclaration")
+    (882,34)SyntaxKind[ColonToken]
     (882,17)SyntaxKind[ParameterList]
       (882,17)SyntaxKind[OpenBracketToken]
       (882,18)SyntaxKind[Parameter]
@@ -7303,8 +7523,8 @@
       (882,25)SyntaxKind[Parameter]
         (882,25)SyntaxKind[Identifier](text = "Default")
       (882,32)SyntaxKind[CloseBracketToken]
-    (883,1)SyntaxKind[RightHandSideList]
-      (883,1)SyntaxKind[IndentToken]
+    (883,2)SyntaxKind[RightHandSideList]
+      (883,2)SyntaxKind[IndentToken]
       (883,2)SyntaxKind[RightHandSide]
         (883,2)SyntaxKind[SymbolSpan]
           (883,2)SyntaxKind[Terminal](text = "class")
@@ -7347,13 +7567,14 @@
       (885,1)SyntaxKind[DedentToken]
   (886,1)SyntaxKind[Production]
     (886,1)SyntaxKind[Identifier](text = "ClassExpression")
+    (886,24)SyntaxKind[ColonToken]
     (886,16)SyntaxKind[ParameterList]
       (886,16)SyntaxKind[OpenBracketToken]
       (886,17)SyntaxKind[Parameter]
         (886,17)SyntaxKind[Identifier](text = "Yield")
       (886,22)SyntaxKind[CloseBracketToken]
-    (887,1)SyntaxKind[RightHandSideList]
-      (887,1)SyntaxKind[IndentToken]
+    (887,2)SyntaxKind[RightHandSideList]
+      (887,2)SyntaxKind[IndentToken]
       (887,2)SyntaxKind[RightHandSide]
         (887,2)SyntaxKind[SymbolSpan]
           (887,2)SyntaxKind[Terminal](text = "class")
@@ -7379,13 +7600,14 @@
       (888,1)SyntaxKind[DedentToken]
   (889,1)SyntaxKind[Production]
     (889,1)SyntaxKind[Identifier](text = "ClassTail")
+    (889,18)SyntaxKind[ColonToken]
     (889,10)SyntaxKind[ParameterList]
       (889,10)SyntaxKind[OpenBracketToken]
       (889,11)SyntaxKind[Parameter]
         (889,11)SyntaxKind[Identifier](text = "Yield")
       (889,16)SyntaxKind[CloseBracketToken]
-    (890,1)SyntaxKind[RightHandSideList]
-      (890,1)SyntaxKind[IndentToken]
+    (890,2)SyntaxKind[RightHandSideList]
+      (890,2)SyntaxKind[IndentToken]
       (890,2)SyntaxKind[RightHandSide]
         (890,2)SyntaxKind[SymbolSpan]
           (890,2)SyntaxKind[Nonterminal]?
@@ -7414,13 +7636,14 @@
       (891,1)SyntaxKind[DedentToken]
   (892,1)SyntaxKind[Production]
     (892,1)SyntaxKind[Identifier](text = "ClassHeritage")
+    (892,22)SyntaxKind[ColonToken]
     (892,14)SyntaxKind[ParameterList]
       (892,14)SyntaxKind[OpenBracketToken]
       (892,15)SyntaxKind[Parameter]
         (892,15)SyntaxKind[Identifier](text = "Yield")
       (892,20)SyntaxKind[CloseBracketToken]
-    (893,1)SyntaxKind[RightHandSideList]
-      (893,1)SyntaxKind[IndentToken]
+    (893,2)SyntaxKind[RightHandSideList]
+      (893,2)SyntaxKind[IndentToken]
       (893,2)SyntaxKind[RightHandSide]
         (893,2)SyntaxKind[SymbolSpan]
           (893,2)SyntaxKind[Terminal](text = "extends")
@@ -7436,13 +7659,14 @@
       (894,1)SyntaxKind[DedentToken]
   (895,1)SyntaxKind[Production]
     (895,1)SyntaxKind[Identifier](text = "ClassBody")
+    (895,18)SyntaxKind[ColonToken]
     (895,10)SyntaxKind[ParameterList]
       (895,10)SyntaxKind[OpenBracketToken]
       (895,11)SyntaxKind[Parameter]
         (895,11)SyntaxKind[Identifier](text = "Yield")
       (895,16)SyntaxKind[CloseBracketToken]
-    (896,1)SyntaxKind[RightHandSideList]
-      (896,1)SyntaxKind[IndentToken]
+    (896,2)SyntaxKind[RightHandSideList]
+      (896,2)SyntaxKind[IndentToken]
       (896,2)SyntaxKind[RightHandSide]
         (896,2)SyntaxKind[SymbolSpan]
           (896,2)SyntaxKind[Nonterminal]
@@ -7456,13 +7680,14 @@
       (897,1)SyntaxKind[DedentToken]
   (898,1)SyntaxKind[Production]
     (898,1)SyntaxKind[Identifier](text = "ClassElementList")
+    (898,25)SyntaxKind[ColonToken]
     (898,17)SyntaxKind[ParameterList]
       (898,17)SyntaxKind[OpenBracketToken]
       (898,18)SyntaxKind[Parameter]
         (898,18)SyntaxKind[Identifier](text = "Yield")
       (898,23)SyntaxKind[CloseBracketToken]
-    (899,1)SyntaxKind[RightHandSideList]
-      (899,1)SyntaxKind[IndentToken]
+    (899,2)SyntaxKind[RightHandSideList]
+      (899,2)SyntaxKind[IndentToken]
       (899,2)SyntaxKind[RightHandSide]
         (899,2)SyntaxKind[SymbolSpan]
           (899,2)SyntaxKind[Nonterminal]
@@ -7495,13 +7720,14 @@
       (901,1)SyntaxKind[DedentToken]
   (902,1)SyntaxKind[Production]
     (902,1)SyntaxKind[Identifier](text = "ClassElement")
+    (902,21)SyntaxKind[ColonToken]
     (902,13)SyntaxKind[ParameterList]
       (902,13)SyntaxKind[OpenBracketToken]
       (902,14)SyntaxKind[Parameter]
         (902,14)SyntaxKind[Identifier](text = "Yield")
       (902,19)SyntaxKind[CloseBracketToken]
-    (903,1)SyntaxKind[RightHandSideList]
-      (903,1)SyntaxKind[IndentToken]
+    (903,2)SyntaxKind[RightHandSideList]
+      (903,2)SyntaxKind[IndentToken]
       (903,2)SyntaxKind[RightHandSide]
         (903,2)SyntaxKind[SymbolSpan]
           (903,2)SyntaxKind[Nonterminal]
@@ -7530,8 +7756,9 @@
       (906,1)SyntaxKind[DedentToken]
   (908,1)SyntaxKind[Production]
     (908,1)SyntaxKind[Identifier](text = "Script")
-    (909,1)SyntaxKind[RightHandSideList]
-      (909,1)SyntaxKind[IndentToken]
+    (908,8)SyntaxKind[ColonToken]
+    (909,2)SyntaxKind[RightHandSideList]
+      (909,2)SyntaxKind[IndentToken]
       (909,2)SyntaxKind[RightHandSide]
         (909,2)SyntaxKind[SymbolSpan]
           (909,2)SyntaxKind[Nonterminal]?
@@ -7540,8 +7767,9 @@
       (910,1)SyntaxKind[DedentToken]
   (911,1)SyntaxKind[Production]
     (911,1)SyntaxKind[Identifier](text = "ScriptBody")
-    (912,1)SyntaxKind[RightHandSideList]
-      (912,1)SyntaxKind[IndentToken]
+    (911,12)SyntaxKind[ColonToken]
+    (912,2)SyntaxKind[RightHandSideList]
+      (912,2)SyntaxKind[IndentToken]
       (912,2)SyntaxKind[RightHandSide]
         (912,2)SyntaxKind[SymbolSpan]
           (912,2)SyntaxKind[Nonterminal]
@@ -7549,8 +7777,9 @@
       (913,1)SyntaxKind[DedentToken]
   (914,1)SyntaxKind[Production]
     (914,1)SyntaxKind[Identifier](text = "Module")
-    (915,1)SyntaxKind[RightHandSideList]
-      (915,1)SyntaxKind[IndentToken]
+    (914,8)SyntaxKind[ColonToken]
+    (915,2)SyntaxKind[RightHandSideList]
+      (915,2)SyntaxKind[IndentToken]
       (915,2)SyntaxKind[RightHandSide]
         (915,2)SyntaxKind[SymbolSpan]
           (915,2)SyntaxKind[Nonterminal]?
@@ -7559,8 +7788,9 @@
       (916,1)SyntaxKind[DedentToken]
   (917,1)SyntaxKind[Production]
     (917,1)SyntaxKind[Identifier](text = "ModuleBody")
-    (918,1)SyntaxKind[RightHandSideList]
-      (918,1)SyntaxKind[IndentToken]
+    (917,12)SyntaxKind[ColonToken]
+    (918,2)SyntaxKind[RightHandSideList]
+      (918,2)SyntaxKind[IndentToken]
       (918,2)SyntaxKind[RightHandSide]
         (918,2)SyntaxKind[SymbolSpan]
           (918,2)SyntaxKind[Nonterminal]
@@ -7568,8 +7798,9 @@
       (919,1)SyntaxKind[DedentToken]
   (920,1)SyntaxKind[Production]
     (920,1)SyntaxKind[Identifier](text = "ModuleItemList")
-    (921,1)SyntaxKind[RightHandSideList]
-      (921,1)SyntaxKind[IndentToken]
+    (920,16)SyntaxKind[ColonToken]
+    (921,2)SyntaxKind[RightHandSideList]
+      (921,2)SyntaxKind[IndentToken]
       (921,2)SyntaxKind[RightHandSide]
         (921,2)SyntaxKind[SymbolSpan]
           (921,2)SyntaxKind[Nonterminal]
@@ -7584,8 +7815,9 @@
       (923,1)SyntaxKind[DedentToken]
   (924,1)SyntaxKind[Production]
     (924,1)SyntaxKind[Identifier](text = "ModuleItem")
-    (925,1)SyntaxKind[RightHandSideList]
-      (925,1)SyntaxKind[IndentToken]
+    (924,12)SyntaxKind[ColonToken]
+    (925,2)SyntaxKind[RightHandSideList]
+      (925,2)SyntaxKind[IndentToken]
       (925,2)SyntaxKind[RightHandSide]
         (925,2)SyntaxKind[SymbolSpan]
           (925,2)SyntaxKind[Nonterminal]
@@ -7601,8 +7833,9 @@
       (928,1)SyntaxKind[DedentToken]
   (929,1)SyntaxKind[Production]
     (929,1)SyntaxKind[Identifier](text = "ImportDeclaration")
-    (930,1)SyntaxKind[RightHandSideList]
-      (930,1)SyntaxKind[IndentToken]
+    (929,19)SyntaxKind[ColonToken]
+    (930,2)SyntaxKind[RightHandSideList]
+      (930,2)SyntaxKind[IndentToken]
       (930,2)SyntaxKind[RightHandSide]
         (930,2)SyntaxKind[SymbolSpan]
           (930,2)SyntaxKind[Terminal](text = "import")
@@ -7625,8 +7858,9 @@
       (932,1)SyntaxKind[DedentToken]
   (933,1)SyntaxKind[Production]
     (933,1)SyntaxKind[Identifier](text = "ImportClause")
-    (934,1)SyntaxKind[RightHandSideList]
-      (934,1)SyntaxKind[IndentToken]
+    (933,14)SyntaxKind[ColonToken]
+    (934,2)SyntaxKind[RightHandSideList]
+      (934,2)SyntaxKind[IndentToken]
       (934,2)SyntaxKind[RightHandSide]
         (934,2)SyntaxKind[SymbolSpan]
           (934,2)SyntaxKind[Nonterminal]
@@ -7660,8 +7894,9 @@
       (939,1)SyntaxKind[DedentToken]
   (940,1)SyntaxKind[Production]
     (940,1)SyntaxKind[Identifier](text = "ImportedDefaultBinding")
-    (941,1)SyntaxKind[RightHandSideList]
-      (941,1)SyntaxKind[IndentToken]
+    (940,24)SyntaxKind[ColonToken]
+    (941,2)SyntaxKind[RightHandSideList]
+      (941,2)SyntaxKind[IndentToken]
       (941,2)SyntaxKind[RightHandSide]
         (941,2)SyntaxKind[SymbolSpan]
           (941,2)SyntaxKind[Nonterminal]
@@ -7669,8 +7904,9 @@
       (942,1)SyntaxKind[DedentToken]
   (943,1)SyntaxKind[Production]
     (943,1)SyntaxKind[Identifier](text = "NameSpaceImport")
-    (944,1)SyntaxKind[RightHandSideList]
-      (944,1)SyntaxKind[IndentToken]
+    (943,17)SyntaxKind[ColonToken]
+    (944,2)SyntaxKind[RightHandSideList]
+      (944,2)SyntaxKind[IndentToken]
       (944,2)SyntaxKind[RightHandSide]
         (944,2)SyntaxKind[SymbolSpan]
           (944,2)SyntaxKind[Terminal](text = "*")
@@ -7682,8 +7918,9 @@
       (945,1)SyntaxKind[DedentToken]
   (946,1)SyntaxKind[Production]
     (946,1)SyntaxKind[Identifier](text = "NamedImports")
-    (947,1)SyntaxKind[RightHandSideList]
-      (947,1)SyntaxKind[IndentToken]
+    (946,14)SyntaxKind[ColonToken]
+    (947,2)SyntaxKind[RightHandSideList]
+      (947,2)SyntaxKind[IndentToken]
       (947,2)SyntaxKind[RightHandSide]
         (947,2)SyntaxKind[SymbolSpan]
           (947,2)SyntaxKind[Terminal](text = "{")
@@ -7710,8 +7947,9 @@
       (950,1)SyntaxKind[DedentToken]
   (951,1)SyntaxKind[Production]
     (951,1)SyntaxKind[Identifier](text = "FromClause")
-    (952,1)SyntaxKind[RightHandSideList]
-      (952,1)SyntaxKind[IndentToken]
+    (951,12)SyntaxKind[ColonToken]
+    (952,2)SyntaxKind[RightHandSideList]
+      (952,2)SyntaxKind[IndentToken]
       (952,2)SyntaxKind[RightHandSide]
         (952,2)SyntaxKind[SymbolSpan]
           (952,2)SyntaxKind[Terminal](text = "from")
@@ -7721,8 +7959,9 @@
       (953,1)SyntaxKind[DedentToken]
   (954,1)SyntaxKind[Production]
     (954,1)SyntaxKind[Identifier](text = "ImportsList")
-    (955,1)SyntaxKind[RightHandSideList]
-      (955,1)SyntaxKind[IndentToken]
+    (954,13)SyntaxKind[ColonToken]
+    (955,2)SyntaxKind[RightHandSideList]
+      (955,2)SyntaxKind[IndentToken]
       (955,2)SyntaxKind[RightHandSide]
         (955,2)SyntaxKind[SymbolSpan]
           (955,2)SyntaxKind[Nonterminal]
@@ -7739,8 +7978,9 @@
       (957,1)SyntaxKind[DedentToken]
   (958,1)SyntaxKind[Production]
     (958,1)SyntaxKind[Identifier](text = "ImportSpecifier")
-    (959,1)SyntaxKind[RightHandSideList]
-      (959,1)SyntaxKind[IndentToken]
+    (958,17)SyntaxKind[ColonToken]
+    (959,2)SyntaxKind[RightHandSideList]
+      (959,2)SyntaxKind[IndentToken]
       (959,2)SyntaxKind[RightHandSide]
         (959,2)SyntaxKind[SymbolSpan]
           (959,2)SyntaxKind[Nonterminal]
@@ -7757,8 +7997,9 @@
       (961,1)SyntaxKind[DedentToken]
   (962,1)SyntaxKind[Production]
     (962,1)SyntaxKind[Identifier](text = "ModuleSpecifier")
-    (963,1)SyntaxKind[RightHandSideList]
-      (963,1)SyntaxKind[IndentToken]
+    (962,17)SyntaxKind[ColonToken]
+    (963,2)SyntaxKind[RightHandSideList]
+      (963,2)SyntaxKind[IndentToken]
       (963,2)SyntaxKind[RightHandSide]
         (963,2)SyntaxKind[SymbolSpan]
           (963,2)SyntaxKind[Nonterminal]
@@ -7766,8 +8007,9 @@
       (964,1)SyntaxKind[DedentToken]
   (965,1)SyntaxKind[Production]
     (965,1)SyntaxKind[Identifier](text = "ImportedBinding")
-    (966,1)SyntaxKind[RightHandSideList]
-      (966,1)SyntaxKind[IndentToken]
+    (965,17)SyntaxKind[ColonToken]
+    (966,2)SyntaxKind[RightHandSideList]
+      (966,2)SyntaxKind[IndentToken]
       (966,2)SyntaxKind[RightHandSide]
         (966,2)SyntaxKind[SymbolSpan]
           (966,2)SyntaxKind[Nonterminal]
@@ -7775,8 +8017,9 @@
       (967,1)SyntaxKind[DedentToken]
   (968,1)SyntaxKind[Production]
     (968,1)SyntaxKind[Identifier](text = "ExportDeclaration")
-    (969,1)SyntaxKind[RightHandSideList]
-      (969,1)SyntaxKind[IndentToken]
+    (968,19)SyntaxKind[ColonToken]
+    (969,2)SyntaxKind[RightHandSideList]
+      (969,2)SyntaxKind[IndentToken]
       (969,2)SyntaxKind[RightHandSide]
         (969,2)SyntaxKind[SymbolSpan]
           (969,2)SyntaxKind[Terminal](text = "export")
@@ -7875,8 +8118,9 @@
       (977,1)SyntaxKind[DedentToken]
   (978,1)SyntaxKind[Production]
     (978,1)SyntaxKind[Identifier](text = "ExportClause")
-    (979,1)SyntaxKind[RightHandSideList]
-      (979,1)SyntaxKind[IndentToken]
+    (978,14)SyntaxKind[ColonToken]
+    (979,2)SyntaxKind[RightHandSideList]
+      (979,2)SyntaxKind[IndentToken]
       (979,2)SyntaxKind[RightHandSide]
         (979,2)SyntaxKind[SymbolSpan]
           (979,2)SyntaxKind[Terminal](text = "{")
@@ -7903,8 +8147,9 @@
       (982,1)SyntaxKind[DedentToken]
   (983,1)SyntaxKind[Production]
     (983,1)SyntaxKind[Identifier](text = "ExportsList")
-    (984,1)SyntaxKind[RightHandSideList]
-      (984,1)SyntaxKind[IndentToken]
+    (983,13)SyntaxKind[ColonToken]
+    (984,2)SyntaxKind[RightHandSideList]
+      (984,2)SyntaxKind[IndentToken]
       (984,2)SyntaxKind[RightHandSide]
         (984,2)SyntaxKind[SymbolSpan]
           (984,2)SyntaxKind[Nonterminal]
@@ -7921,8 +8166,9 @@
       (986,1)SyntaxKind[DedentToken]
   (987,1)SyntaxKind[Production]
     (987,1)SyntaxKind[Identifier](text = "ExportSpecifier")
-    (988,1)SyntaxKind[RightHandSideList]
-      (988,1)SyntaxKind[IndentToken]
+    (987,17)SyntaxKind[ColonToken]
+    (988,2)SyntaxKind[RightHandSideList]
+      (988,2)SyntaxKind[IndentToken]
       (988,2)SyntaxKind[RightHandSide]
         (988,2)SyntaxKind[SymbolSpan]
           (988,2)SyntaxKind[Nonterminal]

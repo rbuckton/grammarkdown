@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-export { Dictionary, Position, Range } from "./core";
+export { Position, Range } from "./core";
 export * from "./host";
 export * from "./diagnostics";
 export * from "./options";
@@ -28,3 +28,4 @@ export * from "./emitter/index";
 export * from "./stringwriter";
 export * from "./grammar";
 export * from "./navigator";
+export * from "./visitor";

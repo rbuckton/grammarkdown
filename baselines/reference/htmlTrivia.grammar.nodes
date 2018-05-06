@@ -1,0 +1,79 @@
+/// htmlTrivia.grammar:
+(1,6)SyntaxKind[SourceFile](filename = "htmlTrivia.grammar")
+  (1,6)SyntaxKind[Production]
+    (1,6)SyntaxKind[Identifier](text = "A")
+    (1,7)SyntaxKind[ColonToken]
+    (1,9)SyntaxKind[RightHandSide]
+      (1,9)SyntaxKind[SymbolSpan]
+        (1,9)SyntaxKind[Terminal](text = "a")
+  (3,6)SyntaxKind[Production]
+    (3,6)SyntaxKind[Identifier](text = "A")
+    (3,7)SyntaxKind[ColonToken]
+    (4,5)SyntaxKind[RightHandSideList]
+      (4,5)SyntaxKind[IndentToken]
+      (4,5)SyntaxKind[RightHandSide]
+        (4,5)SyntaxKind[SymbolSpan]
+          (4,5)SyntaxKind[Terminal](text = "a")
+      (5,1)SyntaxKind[DedentToken]
+  (6,1)SyntaxKind[Production]
+    (6,1)SyntaxKind[Identifier](text = "A")
+    (6,2)SyntaxKind[ColonToken]
+    (7,10)SyntaxKind[RightHandSideList]
+      (7,5)SyntaxKind[IndentToken]
+      (7,10)SyntaxKind[RightHandSide]
+        (7,10)SyntaxKind[SymbolSpan]
+          (7,10)SyntaxKind[Terminal](text = "a")
+      (8,10)SyntaxKind[RightHandSide]
+        (8,10)SyntaxKind[SymbolSpan]
+          (8,10)SyntaxKind[Terminal](text = "a")
+          (8,20)SyntaxKind[SymbolSpan]
+            (8,20)SyntaxKind[Terminal](text = "b")
+      (9,5)SyntaxKind[RightHandSide]
+        (9,5)SyntaxKind[SymbolSpan]
+          (9,5)SyntaxKind[Terminal](text = "a")
+          (9,14)SyntaxKind[SymbolSpan]
+            (9,14)SyntaxKind[Terminal](text = "b")
+      (10,5)SyntaxKind[RightHandSide]
+        (10,5)SyntaxKind[SymbolSpan]
+          (10,5)SyntaxKind[Terminal](text = "a")
+          (10,14)SyntaxKind[SymbolSpan]
+            (10,14)SyntaxKind[Terminal](text = "b")
+            (10,24)SyntaxKind[SymbolSpan]
+              (10,24)SyntaxKind[Terminal](text = "c")
+      (11,5)SyntaxKind[RightHandSide]
+        (11,5)SyntaxKind[SymbolSpan]
+          (11,5)SyntaxKind[Terminal](text = "a")
+          (11,14)SyntaxKind[SymbolSpan]
+            (11,14)SyntaxKind[Terminal](text = "b")?
+              (11,17)SyntaxKind[QuestionToken]
+            (11,25)SyntaxKind[SymbolSpan]
+              (11,25)SyntaxKind[Terminal](text = "c")
+      (12,5)SyntaxKind[RightHandSide]
+        (12,5)SyntaxKind[SymbolSpan]
+          (12,5)SyntaxKind[Terminal](text = "a")
+          (12,14)SyntaxKind[SymbolSpan]
+            (12,14)SyntaxKind[Nonterminal]
+              (12,14)SyntaxKind[Identifier](text = "A")
+            (12,22)SyntaxKind[SymbolSpan]
+              (12,22)SyntaxKind[Terminal](text = "c")
+      (13,1)SyntaxKind[DedentToken]
+  (14,1)SyntaxKind[Production]
+    (14,1)SyntaxKind[Identifier](text = "B")
+    (14,5)SyntaxKind[ColonToken]
+    (14,2)SyntaxKind[ParameterList]
+      (14,2)SyntaxKind[OpenBracketToken]
+      (14,3)SyntaxKind[Parameter]
+        (14,3)SyntaxKind[Identifier](text = "U")
+      (14,4)SyntaxKind[CloseBracketToken]
+    (15,5)SyntaxKind[RightHandSideList]
+      (15,5)SyntaxKind[IndentToken]
+      (15,5)SyntaxKind[RightHandSide]
+        (15,5)SyntaxKind[SymbolSpan]
+          (15,5)SyntaxKind[ParameterValueAssertion]
+            (15,5)SyntaxKind[OpenBracketToken]
+            (15,6)SyntaxKind[TildeToken]
+            (15,7)SyntaxKind[Identifier](text = "U")
+            (15,8)SyntaxKind[CloseBracketToken]
+          (15,15)SyntaxKind[SymbolSpan]
+            (15,15)SyntaxKind[Terminal](text = "a")
+      (15,18)SyntaxKind[DedentToken]

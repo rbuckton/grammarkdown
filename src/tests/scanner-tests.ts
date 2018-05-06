@@ -1,9 +1,9 @@
 import { readFileSync } from "fs";
 import { basename } from "path";
-import { DiagnosticMessages, LineMap } from "../lib/diagnostics";
-import { SyntaxKind } from "../lib/tokens";
-import { SourceFile } from "../lib/nodes";
-import { Scanner } from "../lib/scanner";
+import { DiagnosticMessages, LineMap } from "../diagnostics";
+import { SyntaxKind } from "../tokens";
+import { SourceFile } from "../nodes";
+import { Scanner } from "../scanner";
 import { getGrammarFiles } from "./resources";
 import { writeTokens, writeDiagnostics, compareBaseline } from "./diff";
 import { CancellationTokenSource } from "prex";
@@ -13,7 +13,7 @@ describe("Scanner", () => {
     defineTests();
 
     it("cancelable", () => {
-        const sourceFile = new SourceFile("cancelable.grammar", "");
+        const sourceFile = new SourceFile("cancelable.grammar", "", []);
         const diagnostics = new DiagnosticMessages();
         diagnostics.setSourceFile(sourceFile);
         const cts = new CancellationTokenSource();
@@ -31,7 +31,7 @@ describe("Scanner", () => {
     function defineTest(name: string, file: string) {
         it(name + " tokens", () => {
             const text = readFileSync(file, "utf8");
-            const sourceFile = new SourceFile(file, text);
+            const sourceFile = new SourceFile(file, text, []);
             const diagnostics = new DiagnosticMessages();
             diagnostics.setSourceFile(sourceFile);
             const scanner = new Scanner(file, text, diagnostics);

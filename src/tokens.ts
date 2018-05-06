@@ -14,8 +14,6 @@
  *  limitations under the License.
  */
 
-import { Dictionary } from "./core";
-
 export const enum CharacterCodes {
     NullCharacter = 0,
     MaxAsciiCharacter = 0x7F,
@@ -236,8 +234,8 @@ export enum SyntaxKind {
     ButNotSymbol,               // x but not y
     UnicodeCharacterRange,      // x through y
     OneOfSymbol,                // one of OrClause
+    PlaceholderSymbol,          // @
     Nonterminal,
-    TerminalList,
     SymbolSet,
 
     // Zero-width Assertions
@@ -251,10 +249,16 @@ export enum SyntaxKind {
     // error nodes
     InvalidSymbol,
     InvalidAssertion,
-    InvalidSourceElement,
+    // InvalidSourceElement,
 
     // top nodes
     SourceFile,
+
+    // Trivia
+    SingleLineCommentTrivia,
+    MultiLineCommentTrivia,
+    HtmlOpenTagTrivia,
+    HtmlCloseTagTrivia,
 
     FirstProseFragment = ProseHead,
     LastProseFragment = ProseTail,
@@ -264,68 +268,146 @@ export enum SyntaxKind {
     LastPunctuation = LessThanMinusToken,
 }
 
-export type ProseFragmentLiteralKinds =
+export type IndentationKind =
+    | SyntaxKind.IndentToken
+    | SyntaxKind.DedentToken;
+
+export type PunctuationKind =
+    | SyntaxKind.AtToken
+    | SyntaxKind.OpenBraceToken
+    | SyntaxKind.CloseBraceToken
+    | SyntaxKind.OpenBracketToken
+    | SyntaxKind.OpenBracketGreaterThanToken
+    | SyntaxKind.CloseBracketToken
+    | SyntaxKind.GreaterThanToken
+    | SyntaxKind.OpenParenToken
+    | SyntaxKind.CloseParenToken
+    | SyntaxKind.ColonToken
+    | SyntaxKind.ColonColonToken
+    | SyntaxKind.ColonColonColonToken
+    | SyntaxKind.CommaToken
+    | SyntaxKind.PlusToken
+    | SyntaxKind.TildeToken
+    | SyntaxKind.QuestionToken
+    | SyntaxKind.EqualsToken
+    | SyntaxKind.EqualsEqualsToken
+    | SyntaxKind.ExclamationEqualsToken
+    | SyntaxKind.LessThanExclamationToken
+    | SyntaxKind.LessThanMinusToken
+    | SyntaxKind.NotEqualToToken
+    | SyntaxKind.ElementOfToken
+    | SyntaxKind.NotAnElementOfToken
+    | IndentationKind;
+
+export type KeywordKind =
+    | SyntaxKind.ButKeyword
+    | SyntaxKind.DefineKeyword
+    | SyntaxKind.EmptyKeyword
+    | SyntaxKind.FalseKeyword
+    | SyntaxKind.GoalKeyword
+    | SyntaxKind.HereKeyword
+    | SyntaxKind.ImportKeyword
+    | SyntaxKind.LexicalKeyword
+    | SyntaxKind.LookaheadKeyword
+    | SyntaxKind.NoKeyword
+    | SyntaxKind.NotKeyword
+    | SyntaxKind.OfKeyword
+    | SyntaxKind.OneKeyword
+    | SyntaxKind.OrKeyword
+    | SyntaxKind.ThroughKeyword
+    | SyntaxKind.TrueKeyword;
+
+export type TokenKind =
+    | PunctuationKind
+    | KeywordKind;
+
+export type ProseFragmentLiteralKind =
     | SyntaxKind.ProseFull
     | SyntaxKind.ProseHead
     | SyntaxKind.ProseMiddle
     | SyntaxKind.ProseTail;
 
-export type MetaKinds =
-    | SyntaxKind.Import
-    | SyntaxKind.Define;
+export type LookaheadOperatorKind =
+    | SyntaxKind.EqualsToken
+    | SyntaxKind.EqualsEqualsToken
+    | SyntaxKind.ExclamationEqualsToken
+    | SyntaxKind.NotEqualToToken
+    | SyntaxKind.LessThanMinusToken
+    | SyntaxKind.ElementOfToken
+    | SyntaxKind.LessThanExclamationToken
+    | SyntaxKind.NotAnElementOfToken;
 
-const textToToken = new Dictionary({
-    "but": SyntaxKind.ButKeyword,
-    "define": SyntaxKind.DefineKeyword,
-    "empty": SyntaxKind.EmptyKeyword,
-    "false": SyntaxKind.FalseKeyword,
-    "goal": SyntaxKind.GoalKeyword,
-    "here": SyntaxKind.HereKeyword,
-    "import": SyntaxKind.ImportKeyword,
-    "lexical": SyntaxKind.LexicalKeyword,
-    "lookahead": SyntaxKind.LookaheadKeyword,
-    "no": SyntaxKind.NoKeyword,
-    "not": SyntaxKind.NotKeyword,
-    "of": SyntaxKind.OfKeyword,
-    "one": SyntaxKind.OneKeyword,
-    "or": SyntaxKind.OrKeyword,
-    "through": SyntaxKind.ThroughKeyword,
-    "true": SyntaxKind.TrueKeyword,
-    "@": SyntaxKind.AtToken,
-    ":": SyntaxKind.ColonToken,
-    "::": SyntaxKind.ColonColonToken,
-    ":::": SyntaxKind.ColonColonColonToken,
-    "{": SyntaxKind.OpenBraceToken,
-    "}": SyntaxKind.CloseBraceToken,
-    "(": SyntaxKind.OpenParenToken,
-    ")": SyntaxKind.CloseParenToken,
-    "[": SyntaxKind.OpenBracketToken,
-    "[>": SyntaxKind.OpenBracketGreaterThanToken,
-    "]": SyntaxKind.CloseBracketToken,
-    ">": SyntaxKind.GreaterThanToken,
-    ",": SyntaxKind.CommaToken,
-    "+": SyntaxKind.PlusToken,
-    "~": SyntaxKind.TildeToken,
-    "?": SyntaxKind.QuestionToken,
-    "=": SyntaxKind.EqualsToken,
-    "==": SyntaxKind.EqualsEqualsToken,
-    "!=": SyntaxKind.ExclamationEqualsToken,
-    "≠": SyntaxKind.NotEqualToToken,
-    "<-": SyntaxKind.LessThanMinusToken,
-    "∈": SyntaxKind.ElementOfToken,
-    "<!": SyntaxKind.LessThanExclamationToken,
-    "∉": SyntaxKind.NotAnElementOfToken,
-});
+export type ProductionSeperatorKind =
+    | SyntaxKind.ColonToken
+    | SyntaxKind.ColonColonToken
+    | SyntaxKind.ColonColonColonToken;
 
-const tokenToText = Dictionary.invert(textToToken);
+export type ParameterOperatorKind =
+    | SyntaxKind.PlusToken
+    | SyntaxKind.TildeToken;
+
+export type ArgumentOperatorKind =
+    | SyntaxKind.QuestionToken
+    | SyntaxKind.PlusToken
+    | SyntaxKind.TildeToken;
+
+export type BooleanKind =
+    | SyntaxKind.TrueKeyword
+    | SyntaxKind.FalseKeyword;
+
+const textToToken = new Map<string, SyntaxKind>([
+    ["but", SyntaxKind.ButKeyword],
+    ["define", SyntaxKind.DefineKeyword],
+    ["empty", SyntaxKind.EmptyKeyword],
+    ["false", SyntaxKind.FalseKeyword],
+    ["goal", SyntaxKind.GoalKeyword],
+    ["here", SyntaxKind.HereKeyword],
+    ["import", SyntaxKind.ImportKeyword],
+    ["lexical", SyntaxKind.LexicalKeyword],
+    ["lookahead", SyntaxKind.LookaheadKeyword],
+    ["no", SyntaxKind.NoKeyword],
+    ["not", SyntaxKind.NotKeyword],
+    ["of", SyntaxKind.OfKeyword],
+    ["one", SyntaxKind.OneKeyword],
+    ["or", SyntaxKind.OrKeyword],
+    ["through", SyntaxKind.ThroughKeyword],
+    ["true", SyntaxKind.TrueKeyword],
+    ["@", SyntaxKind.AtToken],
+    [":", SyntaxKind.ColonToken],
+    ["::", SyntaxKind.ColonColonToken],
+    [":::", SyntaxKind.ColonColonColonToken],
+    ["{", SyntaxKind.OpenBraceToken],
+    ["}", SyntaxKind.CloseBraceToken],
+    ["(", SyntaxKind.OpenParenToken],
+    [")", SyntaxKind.CloseParenToken],
+    ["[", SyntaxKind.OpenBracketToken],
+    ["[>", SyntaxKind.OpenBracketGreaterThanToken],
+    ["]", SyntaxKind.CloseBracketToken],
+    [">", SyntaxKind.GreaterThanToken],
+    [",", SyntaxKind.CommaToken],
+    ["+", SyntaxKind.PlusToken],
+    ["~", SyntaxKind.TildeToken],
+    ["?", SyntaxKind.QuestionToken],
+    ["=", SyntaxKind.EqualsToken],
+    ["==", SyntaxKind.EqualsEqualsToken],
+    ["!=", SyntaxKind.ExclamationEqualsToken],
+    ["≠", SyntaxKind.NotEqualToToken],
+    ["<-", SyntaxKind.LessThanMinusToken],
+    ["∈", SyntaxKind.ElementOfToken],
+    ["<!", SyntaxKind.LessThanExclamationToken],
+    ["∉", SyntaxKind.NotAnElementOfToken],
+]);
+
+const tokenToText = new Map<SyntaxKind, string>([...textToToken]
+    .map(([key, value]) => [value, key] as [SyntaxKind, string]));
 
 export function stringToToken(text: string) {
-    return Dictionary.get(textToToken, text);
+    return textToToken.get(text);
 }
 
 export function tokenToString(kind: SyntaxKind, quoted?: boolean) {
-    if (kind in tokenToText) {
-        var text = tokenToText[kind];
+    const text = tokenToText.get(kind);
+    if (text) {
         return quoted ? `'${text}'` : text;
     }
 

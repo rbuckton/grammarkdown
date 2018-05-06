@@ -14,7 +14,6 @@ import {
     ParameterList,
     OneOfList,
     Terminal,
-    TerminalList,
     SymbolSet,
     Assertion,
     EmptyAssertion,
@@ -71,12 +70,14 @@ export class MarkdownEmitter extends Emitter {
 
     protected emitParameterList(node: ParameterList) {
         this.writer.write(`<sub>\[`);
-        for (let i = 0; i < node.elements.length; ++i) {
-            if (i > 0) {
-                this.writer.write(`, `);
-            }
+        if (node.elements) {
+            for (let i = 0; i < node.elements.length; ++i) {
+                if (i > 0) {
+                    this.writer.write(`, `);
+                }
 
-            this.emitNode(node.elements[i]);
+                this.emitNode(node.elements[i]);
+            }
         }
 
         this.writer.write(`]</sub>`);
@@ -94,7 +95,7 @@ export class MarkdownEmitter extends Emitter {
                 // get the maximum size for a terminal
                 let width = 5;
                 for (const terminal of terminals) {
-                    if (terminal.text.length > width) {
+                    if (terminal.text && terminal.text.length > width) {
                         width = terminal.text.length;
                     }
                 }
@@ -120,22 +121,26 @@ export class MarkdownEmitter extends Emitter {
                         }
                     }
 
-                    this.writer.write(`<code>`);
-                    this.writer.write(this.encode(terminal.text));
-                    this.writer.write(`</code>`);
-                    pad = width - terminal.text.length;
+                    if (terminal.text) {
+                        this.writer.write(`<code>`);
+                        this.writer.write(this.encode(terminal.text));
+                        this.writer.write(`</code>`);
+                        pad = width - terminal.text.length;
+                    }
                 }
 
                 this.writer.write(`</pre>`);
             }
             else {
                 this.writer.write(` `);
-                for (let i = 0; i < node.terminals.length; ++i) {
-                    if (i > 0) {
-                        this.writer.write(`&emsp;`);
-                    }
+                if (node.terminals) {
+                    for (let i = 0; i < node.terminals.length; ++i) {
+                        if (i > 0) {
+                            this.writer.write(`&emsp;`);
+                        }
 
-                    this.emitNode(node.terminals[i]);
+                        this.emitNode(node.terminals[i]);
+                    }
                 }
 
                 this.writer.write(`  `);
@@ -145,10 +150,12 @@ export class MarkdownEmitter extends Emitter {
 
     protected emitRightHandSideList(node: RightHandSideList) {
         this.writer.write(`  `);
-        for (const rhs of node.elements) {
-            this.writer.writeln();
-            this.writer.write(`&emsp;&emsp;&emsp;`);
-            this.emitNode(rhs);
+        if (node.elements) {
+            for (const rhs of node.elements) {
+                this.writer.writeln();
+                this.writer.write(`&emsp;&emsp;&emsp;`);
+                this.emitNode(rhs);
+            }
         }
     }
 
@@ -156,8 +163,6 @@ export class MarkdownEmitter extends Emitter {
         const linkId = this.resolver.getRightHandSideLinkId(node, /*includePrefix*/ true);
         this.emitLinkAnchor(linkId);
         super.emitRightHandSide(node);
-        this.emitTrailingHtmlTriviaOfNode(node);
-        this.writer.write(`  `);
     }
 
     protected emitSymbolSpan(node: SymbolSpan) {
@@ -191,12 +196,14 @@ export class MarkdownEmitter extends Emitter {
 
     protected emitArgumentList(node: ArgumentList) {
         this.writer.write(`<sub>\[`);
-        for (let i = 0; i < node.elements.length; ++i) {
-            if (i > 0) {
-                this.writer.write(`, `);
-            }
+        if (node.elements) {
+            for (let i = 0; i < node.elements.length; ++i) {
+                if (i > 0) {
+                    this.writer.write(`, `);
+                }
 
-            this.emitNode(node.elements[i]);
+                this.emitNode(node.elements[i]);
+            }
         }
 
         this.writer.write(`]</sub>`);
@@ -208,7 +215,9 @@ export class MarkdownEmitter extends Emitter {
     }
 
     protected emitUnicodeCharacterLiteral(node: UnicodeCharacterLiteral) {
-        this.writer.write(this.encode(node.text));
+        if (node.text) {
+            this.writer.write(this.encode(node.text));
+        }
         if (node.questionToken) {
             this.writer.write(`<sub>opt</sub>`);
         }
@@ -220,39 +229,43 @@ export class MarkdownEmitter extends Emitter {
 
     protected emitSymbolSet(node: SymbolSet) {
         this.writer.write(`{`);
-        for (let i = 0; i < node.elements.length; ++i) {
-            if (i > 0) {
-                this.writer.write(`,`);
-            }
+        if (node.elements) {
+            for (let i = 0; i < node.elements.length; ++i) {
+                if (i > 0) {
+                    this.writer.write(`,`);
+                }
 
-            this.writer.write(` `);
-            this.emitNode(node.elements[i]);
+                this.writer.write(` `);
+                this.emitNode(node.elements[i]);
+            }
         }
 
         this.writer.write(` }`);
     }
 
     protected emitLookaheadAssertion(node: LookaheadAssertion) {
-        switch (node.operatorToken.kind) {
-            case SyntaxKind.ExclamationEqualsToken:
-            case SyntaxKind.NotEqualToToken:
-                this.writer.write(`\[lookahead ≠ `);
-                break;
+        if (node.operatorToken) {
+            switch (node.operatorToken.kind) {
+                case SyntaxKind.ExclamationEqualsToken:
+                case SyntaxKind.NotEqualToToken:
+                    this.writer.write(`\[lookahead ≠ `);
+                    break;
 
-            case SyntaxKind.EqualsToken:
-            case SyntaxKind.EqualsEqualsToken:
-                this.writer.write(`\[lookahead = `);
-                break;
+                case SyntaxKind.EqualsToken:
+                case SyntaxKind.EqualsEqualsToken:
+                    this.writer.write(`\[lookahead = `);
+                    break;
 
-            case SyntaxKind.LessThanMinusToken:
-            case SyntaxKind.ElementOfToken:
-                this.writer.write(`\[lookahead ∈ `);
-                break;
+                case SyntaxKind.LessThanMinusToken:
+                case SyntaxKind.ElementOfToken:
+                    this.writer.write(`\[lookahead ∈ `);
+                    break;
 
-            case SyntaxKind.LessThanExclamationToken:
-            case SyntaxKind.NotAnElementOfToken:
-                this.writer.write(`\[lookahead ∉ `);
-                break;
+                case SyntaxKind.LessThanExclamationToken:
+                case SyntaxKind.NotAnElementOfToken:
+                    this.writer.write(`\[lookahead ∉ `);
+                    break;
+            }
         }
 
         this.emitNode(node.lookahead);
@@ -260,7 +273,7 @@ export class MarkdownEmitter extends Emitter {
     }
 
     protected emitLexicalGoalAssertion(node: LexicalGoalAssertion): void {
-        const linkId = this.resolver.getProductionLinkId(node.symbol);
+        const linkId = node.symbol && this.resolver.getProductionLinkId(node.symbol);
         this.writer.write(`\[lexical goal `);
         this.emitNodeWithLink(node.symbol, linkId);
         this.writer.write(`]`);
@@ -289,8 +302,10 @@ export class MarkdownEmitter extends Emitter {
     }
 
     protected emitProseAssertion(node: ProseAssertion): void {
-        for (const fragment of node.fragments) {
-            this.emitNode(fragment);
+        if (node.fragments) {
+            for (const fragment of node.fragments) {
+                this.emitNode(fragment);
+            }
         }
     }
 
@@ -308,27 +323,42 @@ export class MarkdownEmitter extends Emitter {
 
     protected emitOneOfSymbol(node: OneOfSymbol) {
         this.writer.write(`**one of** `);
-        for (let i = 0; i < node.symbols.length; ++i) {
-            if (i > 0) {
-                this.writer.write(` **or** `);
-            }
+        if (node.symbols) {
+            for (let i = 0; i < node.symbols.length; ++i) {
+                if (i > 0) {
+                    this.writer.write(` **or** `);
+                }
 
-            this.emitNode(node.symbols[i]);
+                this.emitNode(node.symbols[i]);
+            }
         }
     }
 
     protected emitTextContent(node: TextContent) {
-        const text = node.text;
-        this.writer.write(text);
+        this.writer.write(node.text);
     }
 
-    private emitLinkAnchor(linkId: string) {
+    protected afterEmitNode(node: Node) {
+        super.afterEmitNode(node);
+        switch (node.kind) {
+            case SyntaxKind.RightHandSide:
+                this.writer.writeln(`  `);
+                break;
+            case SyntaxKind.RightHandSideList:
+            case SyntaxKind.OneOfList:
+            case SyntaxKind.Production:
+                this.writer.writeln();
+                break;
+        }
+    }
+
+    private emitLinkAnchor(linkId: string | undefined) {
         if (linkId) {
             this.writer.write(`<a name="${linkId}"></a>`);
         }
     }
 
-    private emitNodeWithLink(node: Node, linkId: string) {
+    private emitNodeWithLink(node: Node | undefined, linkId: string | undefined) {
         if (linkId) {
             this.writer.write(`[`);
             this.emitNode(node);

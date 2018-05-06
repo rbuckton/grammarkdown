@@ -2,6 +2,6 @@
 {
     "editor.insertSpaces": true,
     "files.trimTrailingWhitespace": true,
-    "editor.renderWhitespace": true,
+    "editor.renderWhitespace": "boundary",
     "typescript.tsdk": "node_modules/typescript/lib"
 }

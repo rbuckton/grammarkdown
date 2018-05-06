@@ -1,10 +1,10 @@
 import { readFileSync } from "fs";
 import { resolve } from "path";
-import { Production, RightHandSideList, RightHandSide, Nonterminal } from "../lib/nodes";
-import { DiagnosticMessages } from "../lib/diagnostics";
-import { Parser } from "../lib/parser";
-import { NodeNavigator } from "../lib/navigator";
-import { SyntaxKind } from "../lib/tokens";
+import { Production, RightHandSideList, RightHandSide, Nonterminal } from "../nodes";
+import { DiagnosticMessages } from "../diagnostics";
+import { Parser } from "../parser";
+import { NodeNavigator } from "../navigator";
+import { SyntaxKind } from "../tokens";
 import * as assert from "assert";
 
 describe("Navigator", () => {
@@ -38,8 +38,7 @@ ExportSpecifier :
 `.trim();
 
     function getNavigator() {
-        const diagnostics = new DiagnosticMessages();
-        const parser = new Parser(diagnostics);
+        const parser = new Parser();
         const sourceFile = parser.parseSourceFile("es6.grammar", es6GrammarText);
         const navigator = new NodeNavigator(sourceFile);
         return { sourceFile, navigator };
@@ -171,7 +170,7 @@ ExportSpecifier :
         assert.strictEqual(navigator.getName(), "name");
         const production = <Production>sourceFile.elements[2];
         const list = <RightHandSideList>production.body;
-        const rhs = <RightHandSide>list.elements[0];
+        const rhs = <RightHandSide>(list.elements && list.elements[0]);
         const symbol = <Nonterminal>rhs.head.symbol;
         assert.strictEqual(navigator.getNode(), symbol.name);
     });

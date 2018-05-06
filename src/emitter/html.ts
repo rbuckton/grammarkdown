@@ -13,7 +13,6 @@ import {
     ParameterList,
     OneOfList,
     Terminal,
-    TerminalList,
     SymbolSet,
     Assertion,
     EmptyAssertion,
@@ -85,20 +84,19 @@ export class HtmlEmitter extends Emitter {
         this.writer.dedent();
         this.writer.writeln();
         this.writer.write(`</div>`);
-
-        this.emitTrailingHtmlTriviaOfNode(node);
-        this.writer.writeln();
     }
 
     protected emitParameterList(node: ParameterList) {
         this.writer.write(`<span class="parameter-list">`);
         this.writer.write(`[`);
-        for (let i = 0; i < node.elements.length; ++i) {
-            if (i > 0) {
-                this.writer.write(`, `);
-            }
+        if (node.elements) {
+            for (let i = 0; i < node.elements.length; ++i) {
+                if (i > 0) {
+                    this.writer.write(`, `);
+                }
 
-            this.emitNode(node.elements[i]);
+                this.emitNode(node.elements[i]);
+            }
         }
 
         this.writer.write(`]`);
@@ -115,33 +113,35 @@ export class HtmlEmitter extends Emitter {
         this.writer.write(`<span class="keyword">one</span> <span class="keyword">of</span>`);
         this.writer.writeln();
         this.writer.write(`<div class="one-of-list">`)
-        for (let i = 0; i < node.terminals.length; ++i) {
-            if (i > 0) {
-                this.writer.write(` `);
-            }
+        if (node.terminals) {
+            for (let i = 0; i < node.terminals.length; ++i) {
+                if (i > 0) {
+                    this.writer.write(` `);
+                }
 
-            this.writer.write(`<span class="terminal">`);
-            this.emitTextContent(node.terminals[i]);
-            this.writer.write(`</span>`);
+                this.writer.write(`<span class="terminal">`);
+                this.emitTextContent(node.terminals[i]);
+                this.writer.write(`</span>`);
+            }
         }
 
         this.writer.write(`</div>`);
-        this.emitTrailingHtmlTriviaOfNode(node);
-        this.writer.writeln();
     }
 
     protected emitRightHandSideList(node: RightHandSideList) {
         this.writer.write(`<div class="rhs-list">`);
         this.writer.indent();
-        for (const rhs of node.elements) {
-            this.writer.writeln();
-            this.writer.write(`<div class="rhs-list-item">`);
-            this.writer.indent();
-            this.writer.writeln();
-            this.emitNode(rhs);
-            this.writer.dedent();
-            this.writer.writeln();
-            this.writer.write(`</div>`);
+        if (node.elements) {
+            for (const rhs of node.elements) {
+                this.writer.writeln();
+                this.writer.write(`<div class="rhs-list-item">`);
+                this.writer.indent();
+                this.writer.writeln();
+                this.emitNode(rhs);
+                this.writer.dedent();
+                this.writer.writeln();
+                this.writer.write(`</div>`);
+            }
         }
 
         this.writer.dedent();
@@ -156,8 +156,6 @@ export class HtmlEmitter extends Emitter {
         this.writer.write(`<span class="rhs">`);
         this.emitNode(node.head);
         this.writer.write(`</span>`);
-        this.emitTrailingHtmlTriviaOfNode(node);
-        this.writer.writeln();
     }
 
     protected emitSymbolSpan(node: SymbolSpan) {
@@ -195,12 +193,14 @@ export class HtmlEmitter extends Emitter {
     protected emitArgumentList(node: ArgumentList) {
         this.writer.write(`<span class="argument-list">`);
         this.writer.write(`[`);
-        for (let i = 0; i < node.elements.length; ++i) {
-            if (i > 0) {
-                this.writer.write(`, `);
-            }
+        if (node.elements) {
+            for (let i = 0; i < node.elements.length; ++i) {
+                if (i > 0) {
+                    this.writer.write(`, `);
+                }
 
-            this.emitNode(node.elements[i]);
+                this.emitNode(node.elements[i]);
+            }
         }
 
         this.writer.write(`]`);
@@ -233,8 +233,10 @@ export class HtmlEmitter extends Emitter {
 
     protected emitProse(node: Prose) {
         this.writer.write(`<span class="prose">`);
-        for (const fragment of node.fragments) {
-            this.emitNode(fragment);
+        if (node.fragments) {
+            for (const fragment of node.fragments) {
+                this.emitNode(fragment);
+            }
         }
         this.writer.write(`</span>`);
     }
@@ -245,13 +247,15 @@ export class HtmlEmitter extends Emitter {
 
     protected emitSymbolSet(node: SymbolSet) {
         this.writer.write(`{`);
-        for (let i = 0; i < node.elements.length; ++i) {
-            if (i > 0) {
-                this.writer.write(`,`);
-            }
+        if (node.elements) {
+            for (let i = 0; i < node.elements.length; ++i) {
+                if (i > 0) {
+                    this.writer.write(`,`);
+                }
 
-            this.writer.write(` `);
-            this.emitNode(node.elements[i]);
+                this.writer.write(` `);
+                this.emitNode(node.elements[i]);
+            }
         }
 
         this.writer.write(` }`);
@@ -259,26 +263,28 @@ export class HtmlEmitter extends Emitter {
 
     protected emitLookaheadAssertion(node: LookaheadAssertion) {
         this.writer.write(`<span class="assertion">[`);
-        switch (node.operatorToken.kind) {
-            case SyntaxKind.ExclamationEqualsToken:
-            case SyntaxKind.NotEqualToToken:
-                this.writer.write(`<span class="keyword">lookahead</span> ≠ `);
-                break;
+        if (node.operatorToken) {
+            switch (node.operatorToken.kind) {
+                case SyntaxKind.ExclamationEqualsToken:
+                case SyntaxKind.NotEqualToToken:
+                    this.writer.write(`<span class="keyword">lookahead</span> ≠ `);
+                    break;
 
-            case SyntaxKind.EqualsToken:
-            case SyntaxKind.EqualsEqualsToken:
-                this.writer.write(`<span class="keyword">lookahead</span> = `);
-                break;
+                case SyntaxKind.EqualsToken:
+                case SyntaxKind.EqualsEqualsToken:
+                    this.writer.write(`<span class="keyword">lookahead</span> = `);
+                    break;
 
-            case SyntaxKind.LessThanMinusToken:
-            case SyntaxKind.ElementOfToken:
-                this.writer.write(`<span class="keyword">lookahead</span> ∈ `);
-                break;
+                case SyntaxKind.LessThanMinusToken:
+                case SyntaxKind.ElementOfToken:
+                    this.writer.write(`<span class="keyword">lookahead</span> ∈ `);
+                    break;
 
-            case SyntaxKind.LessThanExclamationToken:
-            case SyntaxKind.NotAnElementOfToken:
-                this.writer.write(`<span class="keyword">lookahead</span> ∉ `);
-                break;
+                case SyntaxKind.LessThanExclamationToken:
+                case SyntaxKind.NotAnElementOfToken:
+                    this.writer.write(`<span class="keyword">lookahead</span> ∉ `);
+                    break;
+            }
         }
 
         this.emitNode(node.lookahead);
@@ -287,7 +293,7 @@ export class HtmlEmitter extends Emitter {
 
     protected emitLexicalGoalAssertion(node: LexicalGoalAssertion): void {
         this.writer.write(`<span class="assertion">[<span class="keyword">lexical</span> </span>goal</span>`);
-        const linkId = this.resolver.getProductionLinkId(node.symbol);
+        const linkId = node.symbol && this.resolver.getProductionLinkId(node.symbol);
         this.emitNodeWithLink(node.symbol, linkId);
         this.writer.write(`</span>`);
     }
@@ -318,8 +324,10 @@ export class HtmlEmitter extends Emitter {
 
     protected emitProseAssertion(node: ProseAssertion): void {
         this.writer.write(`<span class="assertion">[`);
-        for (const fragment of node.fragments) {
-            this.emitNode(fragment);
+        if (node.fragments) {
+            for (const fragment of node.fragments) {
+                this.emitNode(fragment);
+            }
         }
 
         this.writer.write(`]</span>`);
@@ -345,19 +353,30 @@ export class HtmlEmitter extends Emitter {
     }
 
     protected emitTextContent(node: TextContent) {
-        if (node) {
-            const text = node.text;
-            this.writer.write(this.encode(text));
+        if (node && node.text) {
+            this.writer.write(this.encode(node.text));
         }
     }
 
-    private emitLinkAnchor(linkId: string) {
+    protected afterEmitNode(node: Node) {
+        super.afterEmitNode(node);
+        switch (node.kind) {
+            case SyntaxKind.RightHandSideList:
+            case SyntaxKind.RightHandSide:
+            case SyntaxKind.OneOfList:
+            case SyntaxKind.Production:
+                this.writer.writeln();
+                break;
+        }
+    }
+
+    private emitLinkAnchor(linkId: string | undefined) {
         if (linkId && this.options.emitLinks) {
             this.writer.write(`<a name="${linkId}"></a>`);
         }
     }
 
-    private emitNodeWithLink(node: Node, linkId: string) {
+    private emitNodeWithLink(node: Node | undefined, linkId: string | undefined) {
         if (linkId && this.options.emitLinks) {
             this.writer.write(`<a href="#${linkId}">`);
             this.emitNode(node);

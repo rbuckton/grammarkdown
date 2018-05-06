@@ -18,9 +18,9 @@ import * as performance from "./performance";
 import { EOL } from "os";
 import { readFileSync, writeFileSync } from "fs";
 import { Package } from "./read-package";
-import { Dictionary } from "./core";
 import { CompilerOptions, EmitFormat, getDefaultOptions, KnownOptions, ParsedArguments, parse, usage } from "./options";
 import { Grammar } from "./grammar";
+import { mapFromObject } from "./core";
 
 try {
     require("source-map-support").install();
@@ -31,7 +31,11 @@ const knownOptions: KnownOptions = {
     "help": { shortName: "h", type: "boolean", description: "Prints this message." },
     "version": { shortName: "v", type: "boolean", description: "Prints the version." },
     "out": { shortName: "o", param: "FILE", type: "file", description: "Specify the output file." },
-    "format": { shortName: "f", param: "FORMAT", type: { "markdown": EmitFormat.markdown, "ecmarkup": EmitFormat.ecmarkup, "html": EmitFormat.html }, description: "The output format." },
+    "format": { shortName: "f", param: "FORMAT", type: mapFromObject({
+        "markdown": EmitFormat.markdown,
+        "ecmarkup": EmitFormat.ecmarkup,
+        "html": EmitFormat.html
+    }), description: "The output format." },
     "noEmit": { type: "boolean", description: "Does not emit output." },
     "noEmitOnError": { type: "boolean", description: "Does not emit output if there are errors." },
     "noChecks": { type: "boolean", description: "Does not perform static checking of the grammar." },
@@ -97,7 +101,7 @@ function performCompilation(options: ParsedCommandLine): void {
     grammar.check();
 
     if (!compilerOptions.noEmit) {
-        if (!compilerOptions.noEmitOnError || grammar.diagnostics.count() <= 0) {
+        if (!compilerOptions.noEmitOnError || grammar.diagnostics.size <= 0) {
             grammar.emit();
         }
     }
@@ -116,7 +120,7 @@ function performCompilation(options: ParsedCommandLine): void {
         process.stderr.write(`emit:    ${performance.getDuration("emit")}ms${EOL}`);
     }
 
-    if (grammar.diagnostics.count() > 0) {
+    if (grammar.diagnostics.size > 0) {
         process.exit(-1);
     }
 }

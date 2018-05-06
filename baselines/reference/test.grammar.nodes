@@ -2,17 +2,20 @@
 (1,1)SyntaxKind[SourceFile](filename = "test.grammar")
   (1,1)SyntaxKind[Production]
     (1,1)SyntaxKind[Identifier](text = "A")
+    (1,3)SyntaxKind[ColonToken]
     (1,5)SyntaxKind[RightHandSide]
       (1,5)SyntaxKind[SymbolSpan]
         (1,5)SyntaxKind[Nonterminal]
           (1,5)SyntaxKind[Identifier](text = "A")
         (1,7)SyntaxKind[SymbolSpan]
-          (1,7)SyntaxKind[AtToken]
+          (1,7)SyntaxKind[PlaceholderSymbol]
+            (1,7)SyntaxKind[AtToken]
           (1,9)SyntaxKind[SymbolSpan]
             (1,9)SyntaxKind[Nonterminal]
               (1,9)SyntaxKind[Identifier](text = "A")
   (2,1)SyntaxKind[Production]
     (2,1)SyntaxKind[Identifier](text = "B")
+    (2,3)SyntaxKind[ColonToken]
     (2,5)SyntaxKind[RightHandSide]
       (2,5)SyntaxKind[SymbolSpan]
         (2,5)SyntaxKind[ButNotSymbol]
@@ -21,6 +24,8 @@
           (2,9)SyntaxKind[ButKeyword]
           (2,13)SyntaxKind[NotKeyword]
           (2,17)SyntaxKind[OneOfSymbol]
+            (2,17)SyntaxKind[OneKeyword]
+            (2,21)SyntaxKind[OfKeyword]
             (2,24)SyntaxKind[Terminal](text = """)
             (2,31)SyntaxKind[Terminal](text = "\")
             (2,38)SyntaxKind[UnicodeCharacterRange]
@@ -29,6 +34,7 @@
               (2,53)SyntaxKind[UnicodeCharacterLiteral](text = U+001F)
   (4,1)SyntaxKind[Production]
     (4,1)SyntaxKind[Identifier](text = "C")
+    (4,3)SyntaxKind[ColonToken]
     (4,5)SyntaxKind[RightHandSide]
       (4,5)SyntaxKind[SymbolSpan]
         (4,5)SyntaxKind[Nonterminal]
@@ -40,6 +46,7 @@
             (4,24)SyntaxKind[CloseBracketToken]
   (5,1)SyntaxKind[Production]
     (5,1)SyntaxKind[Identifier](text = "C")
+    (5,3)SyntaxKind[ColonToken]
     (5,5)SyntaxKind[RightHandSide]
       (5,5)SyntaxKind[SymbolSpan]
         (5,5)SyntaxKind[Nonterminal]
@@ -49,13 +56,14 @@
             (5,7)SyntaxKind[OpenBracketGreaterThanToken]
             (5,9)SyntaxKind[ProseHead](text = "head ")
             (5,14)SyntaxKind[Terminal](text = "terminal")
-            (5,24)SyntaxKind[ProseMiddle](text = " middle ")
+            (5,25)SyntaxKind[ProseMiddle](text = " middle ")
             (5,32)SyntaxKind[Nonterminal]
               (5,32)SyntaxKind[Identifier](text = "B")
-            (5,35)SyntaxKind[ProseTail](text = " tail")
+            (5,36)SyntaxKind[ProseTail](text = " tail")
             (5,40)SyntaxKind[CloseBracketToken]
   (7,1)SyntaxKind[Production]
     (7,1)SyntaxKind[Identifier](text = "D")
+    (7,6)SyntaxKind[ColonToken]
     (7,2)SyntaxKind[ParameterList]
       (7,2)SyntaxKind[OpenBracketToken]
       (7,3)SyntaxKind[Parameter]
@@ -67,6 +75,7 @@
           (7,8)SyntaxKind[Identifier](text = "A")
   (8,1)SyntaxKind[Production]
     (8,1)SyntaxKind[Identifier](text = "D")
+    (8,6)SyntaxKind[ColonToken]
     (8,2)SyntaxKind[ParameterList]
       (8,2)SyntaxKind[OpenBracketToken]
       (8,3)SyntaxKind[Parameter]
@@ -78,6 +87,7 @@
           (8,8)SyntaxKind[Identifier](text = "A")
   (10,1)SyntaxKind[Production]
     (10,1)SyntaxKind[Identifier](text = "E")
+    (10,6)SyntaxKind[ColonToken]
     (10,2)SyntaxKind[ParameterList]
       (10,2)SyntaxKind[OpenBracketToken]
       (10,3)SyntaxKind[Parameter]
@@ -89,13 +99,14 @@
           (10,8)SyntaxKind[Identifier](text = "A")
   (11,1)SyntaxKind[Production]
     (11,1)SyntaxKind[Identifier](text = "F")
+    (11,6)SyntaxKind[ColonToken]
     (11,2)SyntaxKind[ParameterList]
       (11,2)SyntaxKind[OpenBracketToken]
       (11,3)SyntaxKind[Parameter]
         (11,3)SyntaxKind[Identifier](text = "A")
       (11,4)SyntaxKind[CloseBracketToken]
-    (12,1)SyntaxKind[RightHandSideList]
-      (12,1)SyntaxKind[IndentToken]
+    (12,5)SyntaxKind[RightHandSideList]
+      (12,5)SyntaxKind[IndentToken]
       (12,5)SyntaxKind[RightHandSide]
         (12,5)SyntaxKind[SymbolSpan]
           (12,5)SyntaxKind[Nonterminal]
@@ -163,8 +174,9 @@
       (19,1)SyntaxKind[DedentToken]
   (20,1)SyntaxKind[Production]
     (20,1)SyntaxKind[Identifier](text = "Z")
-    (21,1)SyntaxKind[RightHandSideList]
-      (21,1)SyntaxKind[IndentToken]
+    (20,3)SyntaxKind[ColonToken]
+    (21,10)SyntaxKind[RightHandSideList]
+      (21,5)SyntaxKind[IndentToken]
       (21,10)SyntaxKind[RightHandSide]
         (21,10)SyntaxKind[SymbolSpan]
           (21,10)SyntaxKind[Nonterminal]
@@ -176,8 +188,9 @@
       (23,1)SyntaxKind[DedentToken]
   (24,1)SyntaxKind[Production]
     (24,1)SyntaxKind[Identifier](text = "LookaheadRestriction")
-    (25,1)SyntaxKind[RightHandSideList]
-      (25,1)SyntaxKind[IndentToken]
+    (24,21)SyntaxKind[ColonToken]
+    (25,5)SyntaxKind[RightHandSideList]
+      (25,5)SyntaxKind[IndentToken]
       (25,5)SyntaxKind[RightHandSide]
         (25,5)SyntaxKind[SymbolSpan]
           (25,5)SyntaxKind[LookaheadAssertion]

@@ -13,9 +13,10 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { binarySearch, compareStrings, compare, Range, Position, Dictionary } from "./core";
+import { binarySearch, compareStrings, compare, Range, Position } from "./core";
 import { CharacterCodes, SyntaxKind, tokenToString } from "./tokens";
 import { Node, SourceFile } from "./nodes";
+import { skipTrivia } from "./scanner";
 
 export interface Diagnostic {
     code: number;
@@ -48,61 +49,111 @@ export interface DiagnosticInfo {
     diagnosticIndex: number;
     code: number;
     message: string;
-    messageArguments: any[];
+    messageArguments: any[] | undefined;
     warning: boolean;
-    range: Range;
-    sourceFile: SourceFile;
-    node: Node;
+    range: Range | undefined;
+    sourceFile: SourceFile | undefined;
+    node: Node | undefined;
     pos: number;
     formattedMessage?: string;
 }
 
 export class DiagnosticMessages {
-    private diagnostics: Diagnostic[];
-    private diagnosticsPos: number[];
-    private diagnosticsLength: number[];
-    private diagnosticsNode: Node[];
-    private diagnosticsArguments: any[][];
-    private detailedDiagnosticMessages: Dictionary<string>;
-    private simpleDiagnosticMessages: Dictionary<string>;
-    private sourceFiles: SourceFile[];
-    private sourceFilesDiagnosticOffset: number[];
-    private nextDiagnosticIndex = 0;
-    private sortedAndDeduplicatedDiagnosticIndices: number[];
+    private diagnostics: Diagnostic[] | undefined;
+    private diagnosticsArguments: any[][] | undefined;
+    private diagnosticsPos: number[] | undefined;
+    private diagnosticsLength: number[] | undefined;
+    private diagnosticsNode: Node[] | undefined;
+    private detailedDiagnosticMessages: Map<number, string> | undefined;
+    private simpleDiagnosticMessages: Map<number, string> | undefined;
+    private sourceFiles: SourceFile[] | undefined;
+    private sourceFilesDiagnosticOffset: number[] | undefined;
+    private sortedAndDeduplicatedDiagnosticIndices: number[] | undefined;
 
-    constructor() {
+    public get size() {
+        return this.diagnostics ? this.diagnostics.length : 0;
+    }
+
+    public copyFrom(other: DiagnosticMessages) {
+        if (other === this || !(other.diagnostics || other.sourceFiles)) {
+            return;
+        }
+
+        if (!this.diagnostics && !this.sourceFiles) {
+            this.diagnostics = other.diagnostics && other.diagnostics.slice();
+            this.diagnosticsArguments = other.diagnosticsArguments && other.diagnosticsArguments.slice();
+            this.diagnosticsPos = other.diagnosticsPos && other.diagnosticsPos.slice();
+            this.diagnosticsLength = other.diagnosticsLength && other.diagnosticsLength.slice();
+            this.diagnosticsNode = other.diagnosticsNode && other.diagnosticsNode.slice();
+            this.sourceFiles = other.sourceFiles && other.sourceFiles.slice();
+            this.sourceFilesDiagnosticOffset = other.sourceFilesDiagnosticOffset && other.sourceFilesDiagnosticOffset.slice();
+            this.sortedAndDeduplicatedDiagnosticIndices = other.sortedAndDeduplicatedDiagnosticIndices && other.sortedAndDeduplicatedDiagnosticIndices.slice();
+            this.detailedDiagnosticMessages = other.detailedDiagnosticMessages && new Map(other.detailedDiagnosticMessages);
+            this.simpleDiagnosticMessages = other.simpleDiagnosticMessages && new Map(other.simpleDiagnosticMessages);
+            return;
+        }
+
+        // copy source files
+        if (other.sourceFiles && other.sourceFilesDiagnosticOffset) {
+            if (!this.sourceFiles || !this.sourceFilesDiagnosticOffset) {
+                this.sourceFiles = [];
+                this.sourceFilesDiagnosticOffset = [];
+            }
+
+            const diagnosticOffset = this.size;
+            const sourceFileOffset = this.sourceFiles.length;
+            const continueFromExistingFile = sourceFileOffset > 0
+                && other.sourceFiles[0] === this.sourceFiles[sourceFileOffset - 1];
+
+            for (let i = continueFromExistingFile ? 1 : 0; i < other.sourceFiles.length; i++) {
+                this.sourceFiles[sourceFileOffset + i] = other.sourceFiles[i];
+                this.sourceFilesDiagnosticOffset[sourceFileOffset + i] = other.sourceFilesDiagnosticOffset[i] + diagnosticOffset;
+            }
+        }
+
+        // copy diagnostics
+        if (other.diagnostics) {
+            for (let i = 0; i < other.diagnostics.length; i++) {
+                this.reportDiagnostic(
+                    other.diagnostics[i],
+                    other.diagnosticsArguments && other.diagnosticsArguments[i],
+                    other.diagnosticsPos && other.diagnosticsPos[i],
+                    other.diagnosticsLength && other.diagnosticsLength[i],
+                    other.diagnosticsNode && other.diagnosticsNode[i]
+                );
+            }
+        }
     }
 
     public setSourceFile(sourceFile: SourceFile): void {
-        if (!this.sourceFiles) {
+        if (!this.sourceFiles || !this.sourceFilesDiagnosticOffset) {
             this.sourceFiles = [];
             this.sourceFilesDiagnosticOffset = [];
         }
 
-        const diagnosticOffset = this.count();
         const sourceFileIndex = this.sourceFiles.length;
+        if (sourceFileIndex > 0 && this.sourceFiles[sourceFileIndex - 1] === sourceFile) {
+            return;
+        }
+
+        const diagnosticOffset = this.size;
         this.sourceFiles[sourceFileIndex] = sourceFile;
         this.sourceFilesDiagnosticOffset[sourceFileIndex] = diagnosticOffset;
     }
 
-    public report(pos: number, message: Diagnostic, args: any[]): void;
-    public report(pos: number, message: Diagnostic, ...args: any[]): void;
-    public report(pos: number, message: Diagnostic): void {
-        this.reportDiagnostic(message, Array.prototype.slice.call(arguments, 2), pos);
+    public report(pos: number, message: Diagnostic, ...args: any[]): void {
+        this.reportDiagnostic(message, args, pos);
     }
 
-
-    public reportNode(node: Node, message: Diagnostic, args: any[]): void;
-    public reportNode(node: Node, message: Diagnostic, ...args: any[]): void;
-    public reportNode(node: Node, message: Diagnostic): void {
-        let pos: number;
-        let length: number;
+    public reportNode(sourceFile: SourceFile | undefined, node: Node, message: Diagnostic, ...args: any[]): void {
+        let pos: number | undefined;
+        let length: number | undefined;
         if (node) {
-            pos = node.pos;
-            length = node.end - node.pos;
+            pos = node.getStart(sourceFile);
+            length = node.getWidth(sourceFile);
         }
 
-        this.reportDiagnostic(message, Array.prototype.slice.call(arguments, 2), pos, length, node);
+        this.reportDiagnostic(message, args, pos, length, node);
     }
 
     public count(): number {
@@ -114,11 +165,12 @@ export class DiagnosticMessages {
         if (diagnostic) {
             const { detailed = true } = options;
             const diagnosticMessages = detailed
-                ? this.detailedDiagnosticMessages || (this.detailedDiagnosticMessages = new Dictionary<string>())
-                : this.simpleDiagnosticMessages || (this.simpleDiagnosticMessages = new Dictionary<string>());
+                ? this.detailedDiagnosticMessages || (this.detailedDiagnosticMessages = new Map<number, string>())
+                : this.simpleDiagnosticMessages || (this.simpleDiagnosticMessages = new Map<number, string>());
 
-            if (Dictionary.has(diagnosticMessages, diagnosticIndex)) {
-                return Dictionary.get(diagnosticMessages, diagnosticIndex);
+            const diagnosticMessage = diagnosticMessages.get(diagnosticIndex);
+            if (diagnosticMessage !== undefined) {
+                return diagnosticMessage;
             }
 
             const diagnosticArguments = this.diagnosticsArguments && this.diagnosticsArguments[diagnosticIndex];
@@ -129,7 +181,7 @@ export class DiagnosticMessages {
                 if (this.diagnosticsPos && diagnosticIndex in this.diagnosticsPos) {
                     const diagnosticPos = this.diagnosticsPos[diagnosticIndex];
                     if (sourceFile && sourceFile.lineMap) {
-                        text += `(${sourceFile.lineMap.formatPosition(diagnosticPos) })`;
+                        text += `(${sourceFile.lineMap.formatPosition(diagnosticPos)})`;
                     }
                     else {
                         text += `(${diagnosticPos})`;
@@ -148,14 +200,14 @@ export class DiagnosticMessages {
 
             text += message;
 
-            Dictionary.set(diagnosticMessages, diagnosticIndex, text);
+            diagnosticMessages.set(diagnosticIndex, text);
             return text;
         }
 
         return "";
     }
 
-    public getDiagnostic(diagnosticIndex: number): Diagnostic {
+    public getDiagnostic(diagnosticIndex: number): Diagnostic | undefined {
         return this.diagnostics && this.diagnostics[diagnosticIndex];
     }
 
@@ -163,7 +215,10 @@ export class DiagnosticMessages {
         const result: DiagnosticInfo[] = [];
         if (this.diagnostics) {
             for (const diagnosticIndex of this.getSortedAndDeduplicatedDiagnosticIndices()) {
-                result.push(this.getDiagnosticInfo(diagnosticIndex, options));
+                const diagnosticInfo = this.getDiagnosticInfo(diagnosticIndex, options);
+                if (diagnosticInfo) {
+                    result.push(diagnosticInfo);
+                }
             }
         }
         return result;
@@ -174,14 +229,17 @@ export class DiagnosticMessages {
         if (this.diagnostics) {
             for (const diagnosticIndex of this.getSortedAndDeduplicatedDiagnosticIndices()) {
                 if (this.getDiagnosticSourceFile(diagnosticIndex) === sourceFile) {
-                    result.push(this.getDiagnosticInfo(diagnosticIndex, options));
+                    const diagnosticInfo = this.getDiagnosticInfo(diagnosticIndex, options);
+                    if (diagnosticInfo) {
+                        result.push(diagnosticInfo);
+                    }
                 }
             }
         }
         return result;
     }
 
-    public getDiagnosticInfo(diagnosticIndex: number, options: { formatMessage?: boolean; detailedMessage?: boolean; } = {}): DiagnosticInfo {
+    public getDiagnosticInfo(diagnosticIndex: number, options: { formatMessage?: boolean; detailedMessage?: boolean; } = {}): DiagnosticInfo | undefined {
         const diagnostic = this.getDiagnostic(diagnosticIndex);
         if (diagnostic) {
             const info: DiagnosticInfo = {
@@ -206,7 +264,7 @@ export class DiagnosticMessages {
         return undefined;
     }
 
-    public getDiagnosticArguments(diagnosticIndex: number): any[] {
+    public getDiagnosticArguments(diagnosticIndex: number): any[] | undefined {
         return this.diagnosticsArguments && this.diagnosticsArguments[diagnosticIndex];
     }
 
@@ -222,8 +280,25 @@ export class DiagnosticMessages {
         return undefined;
     }
 
-    public getDiagnosticNode(diagnosticIndex: number): Node {
+    public getDiagnosticNode(diagnosticIndex: number): Node | undefined {
         return this.diagnosticsNode && this.diagnosticsNode[diagnosticIndex];
+    }
+
+    public getDiagnosticSourceFile(diagnosticIndex: number): SourceFile | undefined {
+        if (this.sourceFiles && this.sourceFilesDiagnosticOffset) {
+            let offset = binarySearch(this.sourceFilesDiagnosticOffset, diagnosticIndex);
+            if (offset < 0) {
+                offset = (~offset) - 1;
+            }
+
+            while (offset + 1 < this.sourceFiles.length && this.sourceFilesDiagnosticOffset[offset + 1] === diagnosticIndex) {
+                offset++;
+            }
+
+            return this.sourceFiles[offset];
+        }
+
+        return undefined;
     }
 
     public forEach(callback: (message: string, diagnosticIndex: number) => void): void {
@@ -234,11 +309,23 @@ export class DiagnosticMessages {
         }
     }
 
+    public * values() {
+        for (let i = 0; i < this.size; i++) {
+            yield this.getDiagnosticInfo(i);
+        }
+    }
+
+    public [Symbol.iterator]() {
+        return this.values();
+    }
+
     private getSortedAndDeduplicatedDiagnosticIndices() {
         if (!this.sortedAndDeduplicatedDiagnosticIndices) {
             let indices: number[] = [];
-            for (let diagnosticIndex = 0, l = this.diagnostics.length; diagnosticIndex < l; diagnosticIndex++) {
-                indices[diagnosticIndex] = diagnosticIndex;
+            if (this.diagnostics) {
+                for (let diagnosticIndex = 0, l = this.diagnostics.length; diagnosticIndex < l; diagnosticIndex++) {
+                    indices[diagnosticIndex] = diagnosticIndex;
+                }
             }
 
             indices = this.sortDiagnostics(indices);
@@ -254,7 +341,9 @@ export class DiagnosticMessages {
     }
 
     private compareDiagnostics(diagnosticIndex1: number, diagnosticIndex2: number) {
-        return compareStrings(this.getDiagnosticSourceFile(diagnosticIndex1).filename, this.getDiagnosticSourceFile(diagnosticIndex2).filename)
+        const file1 = this.getDiagnosticSourceFile(diagnosticIndex1);
+        const file2 = this.getDiagnosticSourceFile(diagnosticIndex2);
+        return compareStrings(file1 && file1.filename, file2 && file2.filename)
             || compare(this.getDiagnosticPos(diagnosticIndex1), this.getDiagnosticPos(diagnosticIndex2))
             || compare(this.getDiagnosticLength(diagnosticIndex1), this.getDiagnosticLength(diagnosticIndex2))
             || compare(this.getDiagnosticErrorLevel(diagnosticIndex1), this.getDiagnosticErrorLevel(diagnosticIndex2))
@@ -298,7 +387,7 @@ export class DiagnosticMessages {
         return diagnostic && diagnostic.warning ? 0 : 1;
     }
 
-    private reportDiagnostic(message: Diagnostic, args: any[], pos?: number, length?: number, node?: Node): void {
+    private reportDiagnostic(message: Diagnostic, args: any[] | undefined, pos?: number, length?: number, node?: Node): void {
         this.sortedAndDeduplicatedDiagnosticIndices = undefined;
 
         if (!this.diagnostics) {
@@ -308,11 +397,7 @@ export class DiagnosticMessages {
         const diagnosticIndex = this.diagnostics.length;
         this.diagnostics[diagnosticIndex] = message;
 
-        if (args.length === 1 && args[0] instanceof Array) {
-            args = args[0];
-        }
-
-        if (args.length > 0) {
+        if (args && args.length > 0) {
             if (!this.diagnosticsArguments) {
                 this.diagnosticsArguments = [];
             }
@@ -344,23 +429,6 @@ export class DiagnosticMessages {
             this.diagnosticsNode[diagnosticIndex] = node;
         }
     }
-
-    public getDiagnosticSourceFile(diagnosticIndex: number): SourceFile {
-        if (this.sourceFiles) {
-            let offset = binarySearch(this.sourceFilesDiagnosticOffset, diagnosticIndex);
-            if (offset < 0) {
-                offset = (~offset) - 1;
-            }
-
-            while (offset + 1 < this.sourceFiles.length && this.sourceFilesDiagnosticOffset[offset + 1] === diagnosticIndex) {
-                offset++;
-            }
-
-            return this.sourceFiles[offset];
-        }
-
-        return undefined;
-    }
 }
 
 export class NullDiagnosticMessages extends DiagnosticMessages {
@@ -370,19 +438,17 @@ export class NullDiagnosticMessages extends DiagnosticMessages {
         return this._instance || (this._instance = new NullDiagnosticMessages());
     }
 
-    public reportCore(message: Diagnostic, arg0?: any, arg1?: any): number { return 0; }
-    public report(pos: number, message: Diagnostic, arg0?: any, arg1?: any): number { return 0; }
-    public reportNode(node: Node, message: Diagnostic, arg0?: any, arg1?: any): number { return 0; }
-    public count(): number { return 0; }
-    public getMessage(diagnosticIndex: number): string { return ""; }
-    public getDiagnostic(diagnosticIndex: number): Diagnostic { return undefined; }
-    public getDiagnosticNode(diagnosticIndex: number): Node { return undefined; }
-    public forEach(callback: (message: string, diagnosticIndex: number) => void): void { }
+    get size() { return 0; }
+
+    public copyFrom(other: DiagnosticMessages): void { }
+    public setSourceFile(sourceFile: SourceFile): void { }
+    public report(pos: number, message: Diagnostic, ...args: any[]): void { }
+    public reportNode(sourceFile: SourceFile | undefined, node: Node, message: Diagnostic, ...args: any[]): void { }
 }
 
 export class LineMap {
     private text: string;
-    private lineStarts: number[];
+    private lineStarts!: number[];
 
     constructor(text: string) {
         this.text = text;
@@ -456,7 +522,7 @@ export class LineMap {
 
         const lineStarts: number[] = [];
         let lineStart = 0;
-        for (var pos = 0; pos < this.text.length; ) {
+        for (var pos = 0; pos < this.text.length;) {
             var ch = this.text.charCodeAt(pos++);
             switch (ch) {
                 case CharacterCodes.CarriageReturn:
@@ -486,22 +552,22 @@ export class LineMap {
     }
 }
 
-function getDiagnosticRange(diagnosticNode: Node, diagnosticPos: number, sourceFile: SourceFile): Range {
+function getDiagnosticRange(diagnosticNode: Node | undefined, diagnosticPos: number, sourceFile: SourceFile | undefined): Range {
     return {
         start: positionOfStart(diagnosticNode, diagnosticPos, sourceFile),
         end: positionOfEnd(diagnosticNode, diagnosticPos, sourceFile)
     }
 }
 
-function positionOfStart(diagnosticNode: Node, diagnosticPos: number, sourceFile: SourceFile) {
-    return positionAt(diagnosticNode ? diagnosticNode.pos : diagnosticPos, sourceFile);
+function positionOfStart(diagnosticNode: Node | undefined, diagnosticPos: number, sourceFile: SourceFile | undefined) {
+    return positionAt(diagnosticNode ? diagnosticNode.getStart(sourceFile) : diagnosticPos, sourceFile);
 }
 
-function positionOfEnd(diagnosticNode: Node, diagnosticPos: number, sourceFile: SourceFile) {
-    return positionAt(diagnosticNode ? diagnosticNode.end : diagnosticPos, sourceFile);
+function positionOfEnd(diagnosticNode: Node | undefined, diagnosticPos: number, sourceFile: SourceFile | undefined) {
+    return positionAt(diagnosticNode ? diagnosticNode.getEnd() : diagnosticPos, sourceFile);
 }
 
-function positionAt(diagnosticPos: number, sourceFile: SourceFile) {
+function positionAt(diagnosticPos: number, sourceFile: SourceFile | undefined) {
     return sourceFile && sourceFile.lineMap
         ? sourceFile.lineMap.positionAt(diagnosticPos)
         : { line: 0, character: diagnosticPos };

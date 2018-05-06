@@ -1,6 +1,6 @@
 {
   "name": "grammarkdown",
-  "version": "1.0.8",
+  "version": "2.0.0-alpha.9",
   "description": "Markdown-like DSL for defining syntactic grammars for programming languages.",
   "license": "Apache-2.0",
   "keywords": [
@@ -25,36 +25,34 @@
     "url": "https://github.com/rbuckton/grammarkdown/issues"
   },
   "homepage": "https://github.com/rbuckton/grammarkdown",
-  "main": "./out/lib/index.js",
-  "typings": "./out/lib/index.d.ts",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
   "bin": {
     "grammarkdown": "./bin/grammarkdown"
   },
   "scripts": {
     "test": "gulp test",
     "build": "gulp build",
-    "prepublish": "gulp test",
-    "update-pages": "gulp publish"
+    "prepare": "gulp test"
   },
   "devDependencies": {
     "@types/chai": "^3.4.28",
-    "@types/mocha": "^2.2.27",
-    "@types/node": "^4.0.29",
+    "@types/mocha": "^2.2.48",
+    "@types/node": "^8.0.20",
     "@types/source-map-support": "^0.2.27",
     "chai": "^2.3.0",
     "del": "^2.0.2",
-    "ecmarkup": "^3.2.6",
+    "ecmarkup": "^3.13.0",
     "gulp": "^3.9.1",
-    "gulp-emu": "^1.0.0",
     "gulp-mocha": "^2.1.0",
-    "gulp-sourcemaps": "^2.0.0-alpha",
-    "gulp-tsb": "git://github.com/rbuckton/gulp-tsb.git#srcDestMethods",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-tsb": "^2.0.5",
     "merge2": "^0.3.6",
     "mocha": "^2.2.5",
     "source-map-support": "^0.3.1",
-    "typescript": "next"
+    "typescript": "^2.9.0-dev.20180505"
   },
   "dependencies": {
-    "prex": "^0.2.0"
+    "prex": "^0.3.0"
   }
 }

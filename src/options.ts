@@ -1,5 +1,5 @@
 import { readFileSync } from "fs";
-import { Dictionary } from "./core";
+import { DictionaryLike, mapFromObject } from "./core";
 import { CharacterCodes } from "./tokens";
 
 export enum EmitFormat {
@@ -24,14 +24,14 @@ export function getDefaultOptions(): CompilerOptions {
 }
 
 export interface KnownOptions {
-    [name: string]: KnownOption;
+    [name: string]: Partial<KnownOption>;
 }
 
 export interface KnownOption {
     shortName?: string;
-    longName?: string;
+    longName: string;
     param?: string;
-    type?: string | { [key: string]: any; };
+    type?: string | Map<string, any>;
     many?: boolean;
     description?: string;
     error?: string;
@@ -43,8 +43,8 @@ export interface KnownOption {
 }
 
 interface KnownOptionMaps {
-    longNames: Dictionary<KnownOption>;
-    shortNames: Dictionary<KnownOption>;
+    longNames: Map<string, KnownOption>;
+    shortNames: Map<string, KnownOption>;
 }
 
 export interface RawArgument {
@@ -65,8 +65,8 @@ export interface ParsedArguments {
     rest: string[];
 }
 
-export function parse<T extends ParsedArguments>(options: KnownOptions, args: string[] = process.argv.slice(2)): T {
-    const known = createKnownOptionMaps(new Dictionary<KnownOption>(options));
+export function parse<T extends ParsedArguments>(options: KnownOptions, args: string[] = process.argv.slice(2)): T | undefined {
+    const known = createKnownOptionMaps(mapFromObject(options));
     const raw: RawArguments = { args: [], rest: [] };
     const messages: string[] = [];
     let result: ParseResult
@@ -105,7 +105,7 @@ export class UsageWriter {
         this.paddingText = padRight("", padding);
     }
 
-    public writeOption(left: string, right: string) {
+    public writeOption(left: string | undefined, right: string | undefined) {
         const leftLines = left ? this.fit(left, this.margin) : emptyArray;
         const rightLines = right ? this.fit(right, this.remainder) : emptyArray;
         const lineCount = Math.max(leftLines.length, rightLines.length);
@@ -168,11 +168,11 @@ export class UsageWriter {
 }
 
 export function usage(options: KnownOptions, margin: number = 0, printHeader?: (writer: UsageWriter) => void) {
-    const optionsDictionary = new Dictionary<KnownOption>(options);
-    const knownOptions: KnownOption[] = [];
+    const optionsDictionary = mapFromObject(options);
+    const knownOptions: (KnownOption)[] = [];
     let hasShortNames = false;
-    for (const key in optionsDictionary) {
-        const option = importKnownOption(key, optionsDictionary[key]);
+    for (const [key, value] of optionsDictionary) {
+        const option = importKnownOption(key, value);
         if (option.hidden) {
             continue;
         }
@@ -244,19 +244,19 @@ function compareKnownOptions(x: KnownOption, y: KnownOption) {
     return xName.localeCompare(yName);
 }
 
-function importTypeMap(dict: Dictionary<any>) {
-    const copy = Dictionary.turn(dict, (memo, value, key) => Dictionary.set(memo, String(key), value), new Dictionary<any>());
+function importTypeMap(dict: Map<string, any>) {
+    const copy = new Map(dict);
     Object.freeze(copy);
     return copy;
 }
 
-function importKnownOption(key: string, option: KnownOption) {
+function importKnownOption(key: string, option: Partial<KnownOption>) {
     const copy: KnownOption = { longName: key };
     if (typeof option.longName === "string") copy.longName = option.longName;
     if (typeof option.shortName === "string" && option.shortName.length > 0) copy.shortName = option.shortName.substr(0, 1);
     if (typeof option.param === "string") copy.param = option.param;
     if (typeof option.type === "string") copy.type = option.type;
-    if (typeof option.type === "object") copy.type = importTypeMap(<Dictionary<any>>option.type);
+    if (typeof option.type === "object") copy.type = importTypeMap(option.type);
     if (typeof option.many === "boolean") copy.many = option.many;
     if (typeof option.description === "string") copy.description = option.description;
     if (typeof option.error === "string") copy.error = option.error;
@@ -269,16 +269,15 @@ function importKnownOption(key: string, option: KnownOption) {
     return copy;
 }
 
-function createKnownOptionMaps(options: Dictionary<KnownOption>): KnownOptionMaps {
-    const longNames = new Dictionary<KnownOption>();
-    const shortNames = new Dictionary<KnownOption>();
-    for (const key in options) {
-        const rawOption = options[key];
+function createKnownOptionMaps(options: Map<string, Partial<KnownOption>>): KnownOptionMaps {
+    const longNames = new Map<string, KnownOption>();
+    const shortNames = new Map<string, KnownOption>();
+    for (const [key, rawOption] of options) {
         if (rawOption) {
             const knownOption = importKnownOption(key, rawOption);
-            Dictionary.set(longNames, knownOption.longName.toLowerCase(), knownOption);
+            longNames.set(knownOption.longName.toLowerCase(), knownOption);
             if (knownOption.shortName) {
-                Dictionary.set(shortNames, knownOption.shortName, knownOption);
+                shortNames.set(knownOption.shortName, knownOption);
             }
         }
     }
@@ -295,7 +294,7 @@ enum ParseResult {
     Error
 }
 
-function parseArguments(args: string[], known: KnownOptionMaps, raw: RawArguments, messages: string[]) {
+function parseArguments(args: string[], known: KnownOptionMaps, raw: RawArguments, messages: string[]): ParseResult {
     let argc = args.length, argi = 0;
     while (argi < argc) {
         let arg = args[argi++];
@@ -331,7 +330,7 @@ function parseArguments(args: string[], known: KnownOptionMaps, raw: RawArgument
             const option = match.option;
             const formattedKey = shortName ? "-" + option.shortName : "--" + option.longName;
             const valueRequired = optionRequiresValue(option);
-            let value: string;
+            let value: string | undefined;
             if (valueRequired || hasInlineValue) {
                 if (hasInlineValue) {
                     value = arg.substr(colonIndex + 1);
@@ -392,7 +391,7 @@ function parseArguments(args: string[], known: KnownOptionMaps, raw: RawArgument
     return ParseResult.Success;
 }
 
-function parseResponseFile(file: string, known: KnownOptionMaps, raw: RawArguments, messages: string[]) {
+function parseResponseFile(file: string, known: KnownOptionMaps, raw: RawArguments, messages: string[]): ParseResult {
     let text: string;
     try {
         text = readFileSync(file, "utf8");
@@ -469,51 +468,41 @@ function optionRequiresValue(option: KnownOption) {
     }
 }
 
-interface KnownOptionMatchResult {
-    cardinality: string;
-    option?: KnownOption;
-    candidates?: KnownOption[];
-}
+type KnownOptionMatchResult =
+    | { cardinality: "one", option: KnownOption }
+    | { cardinality: "many", candidates: KnownOption[] }
+    | { cardinality: "none" };
 
 function matchKnownOption(known: KnownOptionMaps, key: string, shortName: boolean): KnownOptionMatchResult {
     if (shortName) {
-        const option = Dictionary.get(known.shortNames, key);
-        if (option) {
-            return { cardinality: "one", option };
-        }
+        const option = known.shortNames.get(key);
+        if (option) return { cardinality: "one", option };
     }
     else {
         const keyLower = key.toLowerCase();
-        if (Dictionary.has(known.longNames, keyLower)) {
-            const option = Dictionary.get(known.longNames, keyLower);
-            if (option) {
-                return { cardinality: "one", option };
+        let option = known.longNames.get(keyLower);
+        if (option) return { cardinality: "one", option };
+        const keyLen = keyLower.length;
+        let candidates: KnownOption[] | undefined;
+        for (const [knownKey, option] of known.longNames) {
+            if (option &&
+                knownKey.length > keyLen &&
+                knownKey.substr(0, keyLen) === keyLower) {
+                if (!candidates) {
+                    candidates = [];
+                }
+
+                candidates.push(option);
             }
         }
-        else {
-            const keyLen = keyLower.length;
-            let candidates: KnownOption[];
-            let knownKey: string;
-            for (knownKey in known.longNames) {
-                if (Dictionary.has(known.longNames, knownKey) &&
-                    knownKey.length > keyLen &&
-                    knownKey.substr(0, keyLen) === keyLower) {
-                    if (!candidates) {
-                        candidates = [];
-                    }
 
-                    candidates.push(Dictionary.get(known.longNames, knownKey));
-                }
+        if (candidates) {
+            if (candidates.length === 1) {
+                const option = candidates[0];
+                return { cardinality: "one", option };
             }
-
-            if (candidates) {
-                if (candidates.length === 1) {
-                    const option = candidates[0];
-                    return { cardinality: "one", option };
-                }
-                else if (candidates.length > 1) {
-                    return { cardinality: "many", candidates };
-                }
+            else if (candidates.length > 1) {
+                return { cardinality: "many", candidates };
             }
         }
     }
@@ -563,8 +552,8 @@ function evaluateArguments(parsed: ParsedArguments, known: KnownOptionMaps, raw:
             return ParseResult.Error;
         }
 
-        let booleanValue: boolean;
-        let numberValue: number;
+        let booleanValue: boolean | undefined;
+        let numberValue: number | undefined;
         switch (type) {
             case "file":
             case "string":
@@ -611,15 +600,15 @@ function evaluateArguments(parsed: ParsedArguments, known: KnownOptionMaps, raw:
 
             case "object":
                 if (value) {
-                    const type = <Dictionary<any>>option.type;
-                    let result = Dictionary.get(type, value);
+                    const type = <Map<string, any>>option.type;
+                    let result = type.get(value);
                     if (result === undefined) {
                         const valueLower = (<string>value).toLowerCase();
-                        result = Dictionary.get(type, valueLower);
+                        result = type.get(valueLower);
                         if (!result) {
                             for (const key in type) {
                                 if (key.toLowerCase() === valueLower) {
-                                    result = Dictionary.get(type, key);
+                                    result = type.get(key);
                                     break;
                                 }
                             }

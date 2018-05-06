@@ -15,8 +15,7 @@
  */
 import { Hash, createHash } from "crypto";
 import { CancellationToken } from "prex";
-import { Dictionary } from "./core";
-import { Diagnostics, DiagnosticMessages, Diagnostic, formatList } from "./diagnostics";
+import { Diagnostics, DiagnosticMessages, Diagnostic, formatList, NullDiagnosticMessages } from "./diagnostics";
 import { SyntaxKind, tokenToString } from "./tokens";
 import { Symbol, SymbolKind, SymbolTable } from "./symbols";
 import { Binder, BindingTable } from "./binder";
@@ -57,65 +56,75 @@ import {
     Production,
     SourceElement,
     Define,
-    forEachChild
+    PlaceholderSymbol
 } from "./nodes";
 import { NodeNavigator } from "./navigator";
+import { skipTrivia } from "./scanner";
 
 
 // TODO: Check a Nonterminal as a call
 // TODO: Check all Productions to ensure they have the same parameters.
 
 export class Checker {
-    private checkedFileSet = new Dictionary<boolean>();
-    private bindings: BindingTable;
-    private diagnostics: DiagnosticMessages;
-    private binder: Binder;
-    private innerResolver: Resolver;
-    private sourceFile: SourceFile;
-    private noStrictParametricProductions: boolean;
-    private productionParametersByName: Dictionary<Dictionary<boolean>>;
-    private cancellationToken: CancellationToken;
+    private options: CompilerOptions | undefined;
+    private checkedFileSet = new Set<string>();
+    private bindings!: BindingTable;
+    private diagnostics!: DiagnosticMessages;
+    private sourceFile!: SourceFile;
+    private noChecks!: boolean;
+    private noStrictParametricProductions!: boolean;
+    private productionParametersByName!: Map<Production, Set<string>>;
+    private cancellationToken!: CancellationToken;
 
-    constructor(bindings: BindingTable, diagnostics: DiagnosticMessages, options?: CompilerOptions, cancellationToken = CancellationToken.none) {
-        this.bindings = bindings;
-        this.diagnostics = diagnostics;
-        this.noStrictParametricProductions = options && options.noStrictParametricProductions || false;
-        this.cancellationToken = cancellationToken;
+    constructor(options?: CompilerOptions) {
+        this.options = options;
     }
 
-    public get resolver(): Resolver {
-        if (!this.innerResolver) {
-            this.innerResolver = this.createResolver(this.bindings);
-        }
-
-        return this.innerResolver;
-    }
-
-    public checkSourceFile(sourceFile: SourceFile): void {
-        if (!Dictionary.has(this.checkedFileSet, sourceFile.filename)) {
+    public checkSourceFile(sourceFile: SourceFile, bindings: BindingTable, diagnostics: DiagnosticMessages, cancellationToken = CancellationToken.none): void {
+        cancellationToken.throwIfCancellationRequested();
+        if (!this.checkedFileSet.has(sourceFile.filename)) {
             const savedNoStrictParametricProductions = this.noStrictParametricProductions;
-            this.cancellationToken.throwIfCancellationRequested();
-            this.productionParametersByName = new Dictionary<Dictionary<boolean>>();
-            this.sourceFile = sourceFile;
-            this.diagnostics.setSourceFile(this.sourceFile);
+            const savedNoChecks = this.noChecks;
+            const savedCancellationToken = this.cancellationToken;
+            const savedSourceFile = this.sourceFile;
+            const savedProductionParametersByName = this.productionParametersByName;
+            const savedBindings = this.bindings;
+            const savedDiagnostics = this.diagnostics;
+            try {
+                this.cancellationToken = cancellationToken;
+                this.sourceFile = sourceFile;
+                this.productionParametersByName = new Map<Production, Set<string>>();
+                this.noStrictParametricProductions = this.options && this.options.noStrictParametricProductions || false;
+                this.noChecks = this.options && this.options.noChecks || false;
 
-            for (const element of sourceFile.elements) {
-                this.preprocessSourceElement(element);
+                this.bindings = new BindingTable();
+                this.bindings.copyFrom(bindings);
+
+                this.diagnostics = this.noChecks ? NullDiagnosticMessages.instance : new DiagnosticMessages();
+                this.diagnostics.setSourceFile(this.sourceFile);
+
+                for (const element of sourceFile.elements) {
+                    this.preprocessSourceElement(element);
+                }
+
+                for (const element of sourceFile.elements) {
+                    this.checkSourceElement(element);
+                }
+
+                diagnostics.copyFrom(this.diagnostics);
+                bindings.copyFrom(this.bindings);
+                this.checkedFileSet.add(sourceFile.filename);
             }
-
-            for (const element of sourceFile.elements) {
-                this.checkSourceElement(element);
+            finally {
+                this.noStrictParametricProductions = savedNoStrictParametricProductions;
+                this.noChecks = savedNoChecks;
+                this.cancellationToken = savedCancellationToken;
+                this.sourceFile = savedSourceFile;
+                this.productionParametersByName = savedProductionParametersByName;
+                this.bindings = savedBindings;
+                this.diagnostics = savedDiagnostics;
             }
-
-            this.sourceFile = undefined;
-            this.productionParametersByName = undefined;
-            this.noStrictParametricProductions = savedNoStrictParametricProductions;
-            Dictionary.set(this.checkedFileSet, sourceFile.filename, true);
         }
-    }
-
-    protected createResolver(bindings: BindingTable): Resolver {
-        return new Resolver(bindings);
     }
 
     private preprocessSourceElement(node: SourceElement): void {
@@ -132,17 +141,17 @@ export class Checker {
             const nodeKeyText = nodeKey.text;
             switch (nodeKeyText) {
                 case "noStrictParametricProductions":
-                    this.noStrictParametricProductions = node.valueToken.kind === SyntaxKind.TrueKeyword;
+                    this.noStrictParametricProductions = node.valueToken ? node.valueToken.kind === SyntaxKind.TrueKeyword : false;
                     break;
 
                 default:
-                    this.diagnostics.reportNode(nodeKey, Diagnostics.Cannot_find_name_0_, nodeKeyText);
+                    this.diagnostics.reportNode(this.sourceFile, nodeKey, Diagnostics.Cannot_find_name_0_, nodeKeyText);
                     break;
             }
         }
     }
 
-    private checkGrammarDefine(node: Define): boolean {
+    private checkGrammarDefine(node: Define) {
         if (!node.key || !node.key.text) {
             return this.reportGrammarError(node.defineKeyword.end, Diagnostics._0_expected, tokenToString(SyntaxKind.Identifier));
         }
@@ -158,9 +167,9 @@ export class Checker {
                 this.checkProduction(<Production>node);
                 break;
 
-            case SyntaxKind.InvalidSourceElement:
-                this.reportInvalidSourceElement(<SourceElement>node);
-                break;
+            // case SyntaxKind.InvalidSourceElement:
+            //     this.reportInvalidSourceElement(<SourceElement>node);
+            //     break;
         }
     }
 
@@ -200,26 +209,21 @@ export class Checker {
     }
 
     private getProductionParametersByName(node: Production) {
-        const id = node.id;
-        const productionParametersByName = this.productionParametersByName;
-        if (Dictionary.has(productionParametersByName, id)) {
-            return Dictionary.get(productionParametersByName, id);
-        }
-
+        let parametersByName = this.productionParametersByName.get(node);
+        if (parametersByName) return parametersByName;
+        this.productionParametersByName.set(node, parametersByName = new Set<string>());
         const parameterList = node.parameterList;
         const parameters = parameterList ? parameterList.elements : undefined;
-        const parameterCount = parameters ? parameters.length : 0;
-        const parametersByName = new Dictionary<boolean>();
-        for (let i = 0; i < parameterCount; i++) {
-            const parameter = parameters[i];
-            const parameterName = parameter ? parameter.name : undefined;
-            const parameterNameText = parameterName ? parameterName.text : undefined;
-            if (parameterNameText && !Dictionary.has(parametersByName, parameterNameText)) {
-                Dictionary.set(parametersByName, parameterNameText, true);
+        if (parameters) {
+            for (let i = 0; i < parameters.length; i++) {
+                const parameter = parameters[i];
+                const parameterName = parameter ? parameter.name : undefined;
+                const parameterNameText = parameterName ? parameterName.text : undefined;
+                if (parameterNameText) {
+                    parametersByName.add(parameterNameText);
+                }
             }
         }
-
-        Dictionary.set(productionParametersByName, id, parametersByName);
         return parametersByName;
     }
 
@@ -231,53 +235,49 @@ export class Checker {
         const thisProductionParameters = thisProductionParameterList ? thisProductionParameterList.elements : undefined;
         const thisProductionParameterCount = thisProductionParameters ? thisProductionParameters.length : 0;
         const firstProduction = <Production>this.bindings.getDeclarations(thisProductionSymbol)[0];
-        if (thisProductionParameterCount) {
-            this.checkParameterList(thisProduction.parameterList);
+        if (thisProductionParameterList && thisProductionParameters) {
+            this.checkParameterList(thisProductionParameterList);
         }
 
         if (firstProduction === thisProduction) {
             return;
         }
 
-        if (/test\.grammar$/.test(this.sourceFile.filename) && thisProductionNameText === "D") debugger;
-
         const thisProductionParameterNames = this.getProductionParametersByName(thisProduction);
         const firstProductionParameterList = firstProduction.parameterList;
         const firstProductionParameters = firstProductionParameterList ? firstProductionParameterList.elements : undefined;
         const firstProductionParameterCount = firstProductionParameters ? firstProductionParameters.length : 0;
         const firstProductionParameterNames = this.getProductionParametersByName(firstProduction);
-        for (let i = 0; i < firstProductionParameterCount; i++) {
-            const firstProductionParameter = firstProductionParameters[i];
-            const firstProductionParameterName = firstProductionParameter.name;
-            const firstProductionParameterNameText = firstProductionParameterName.text;
-            if (!Dictionary.has(thisProductionParameterNames, firstProductionParameterNameText)) {
-                this.diagnostics.reportNode(thisProductionName, Diagnostics.Production_0_is_missing_parameter_1_All_definitions_of_production_0_must_specify_the_same_formal_parameters, thisProductionNameText, firstProductionParameterNameText);
+        if (firstProductionParameters) {
+            for (let i = 0; i < firstProductionParameterCount; i++) {
+                const firstProductionParameter = firstProductionParameters[i];
+                const firstProductionParameterName = firstProductionParameter.name;
+                const firstProductionParameterNameText = firstProductionParameterName.text;
+                if (firstProductionParameterNameText && !thisProductionParameterNames.has(firstProductionParameterNameText)) {
+                    this.diagnostics.reportNode(this.sourceFile, thisProductionName, Diagnostics.Production_0_is_missing_parameter_1_All_definitions_of_production_0_must_specify_the_same_formal_parameters, thisProductionNameText, firstProductionParameterNameText);
+                }
             }
         }
 
-        for (let i = 0; i < thisProductionParameterCount; i++) {
-            const thisProductionParameter = thisProductionParameters[i];
-            const thisProductionParameterName = thisProductionParameter.name;
-            const thisProductionParameterNameText = thisProductionParameterName.text;
-            if (!Dictionary.has(firstProductionParameterNames, thisProductionParameterNameText)) {
-                this.diagnostics.reportNode(firstProduction, Diagnostics.Production_0_is_missing_parameter_1_All_definitions_of_production_0_must_specify_the_same_formal_parameters, thisProductionNameText, thisProductionParameterNameText);
+        if (thisProductionParameters) {
+            for (let i = 0; i < thisProductionParameterCount; i++) {
+                const thisProductionParameter = thisProductionParameters[i];
+                const thisProductionParameterName = thisProductionParameter.name;
+                const thisProductionParameterNameText = thisProductionParameterName.text;
+                if (thisProductionParameterNameText && !firstProductionParameterNames.has(thisProductionParameterNameText)) {
+                    this.diagnostics.reportNode(this.sourceFile, firstProduction, Diagnostics.Production_0_is_missing_parameter_1_All_definitions_of_production_0_must_specify_the_same_formal_parameters, thisProductionNameText, thisProductionParameterNameText);
+                }
             }
         }
     }
 
     private checkGrammarProduction(node: Production): boolean {
-        let pos = node.name.end;
-        if (node.parameterList) {
-            pos = node.parameterList.end;
-        }
-
         if (!node.colonToken) {
-            return this.reportGrammarError(pos, Diagnostics._0_expected, tokenToString(SyntaxKind.ColonToken));
+            return this.reportGrammarError(node.parameterList ? node.parameterList.end : node.name.end, Diagnostics._0_expected, tokenToString(SyntaxKind.ColonToken));
         }
 
-        pos += node.colonToken.end;
         if (!node.body) {
-            return this.reportGrammarError(pos, Diagnostics._0_expected, formatList([
+            return this.reportGrammarError(node.colonToken.end, Diagnostics._0_expected, formatList([
                 SyntaxKind.OneOfList,
                 SyntaxKind.RightHandSide,
             ]));
@@ -290,7 +290,7 @@ export class Checker {
                 break;
 
             default:
-                return this.reportGrammarError(pos, Diagnostics._0_expected, formatList([
+                return this.reportGrammarError(node.colonToken.end, Diagnostics._0_expected, formatList([
                     SyntaxKind.OneOfList,
                     SyntaxKind.RightHandSide,
                 ]));
@@ -302,14 +302,16 @@ export class Checker {
     private checkParameterList(node: ParameterList): void {
         this.checkGrammarParameterList(node);
 
-        for (const element of node.elements) {
-            this.checkParameter(element);
+        if (node.elements) {
+            for (const element of node.elements) {
+                this.checkParameter(element);
+            }
         }
     }
 
-    private checkGrammarParameterList(node: ParameterList): boolean {
+    private checkGrammarParameterList(node: ParameterList) {
         if (!node.openParenToken) {
-            return this.reportGrammarError(node.pos, Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBracketToken));
+            return this.reportGrammarError(node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBracketToken));
         }
 
         if (node.openParenToken.kind === SyntaxKind.OpenParenToken) {
@@ -317,11 +319,11 @@ export class Checker {
         }
 
         if (!node.elements) {
-            return this.reportGrammarError(node.pos, Diagnostics._0_expected, tokenToString(SyntaxKind.Identifier));
+            return this.reportGrammarError(node.openParenToken.end, Diagnostics._0_expected, tokenToString(SyntaxKind.Identifier));
         }
 
         if (!node.closeParenToken) {
-            return this.reportGrammarError(node.pos, Diagnostics._0_expected, tokenToString(SyntaxKind.CloseBracketToken));
+            return this.reportGrammarError(node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.CloseBracketToken));
         }
     }
 
@@ -333,15 +335,17 @@ export class Checker {
         this.checkGrammarOneOfList(node);
 
         if (node.terminals) {
-            const terminalSet = new Dictionary<boolean>();
+            const terminalSet = new Set<string>();
             for (const terminal of node.terminals) {
                 const text = terminal.text;
-                if (Dictionary.has(terminalSet, text)) {
-                    this.diagnostics.reportNode(terminal, Diagnostics.Duplicate_terminal_0_, text);
-                }
-                else {
-                    Dictionary.set(terminalSet, text, true);
-                    this.checkTerminal(terminal);
+                if (text) {
+                    if (terminalSet.has(text)) {
+                        this.diagnostics.reportNode(this.sourceFile, terminal, Diagnostics.Duplicate_terminal_0_, text);
+                    }
+                    else {
+                        terminalSet.add(text);
+                        this.checkTerminal(terminal);
+                    }
                 }
             }
         }
@@ -349,7 +353,7 @@ export class Checker {
 
     private checkGrammarOneOfList(node: OneOfList): boolean {
         if (!node.oneKeyword) {
-            return this.reportGrammarError(node.pos, Diagnostics._0_expected, tokenToString(SyntaxKind.OneKeyword));
+            return this.reportGrammarError(node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OneKeyword));
         }
 
         if (!node.ofKeyword) {
@@ -427,7 +431,7 @@ export class Checker {
 
     private checkGrammarSymbolSpan(node: SymbolSpan): boolean {
         if (!node.symbol) {
-            return this.reportGrammarError(node.pos, Diagnostics._0_expected, formatList([
+            return this.reportGrammarError(node.getStart(this.sourceFile), Diagnostics._0_expected, formatList([
                 SyntaxKind.UnicodeCharacterLiteral,
                 SyntaxKind.Terminal,
                 SyntaxKind.Identifier,
@@ -455,8 +459,10 @@ export class Checker {
     }
 
     private checkProse(node: Prose): void {
-        for (const fragment of node.fragments) {
-            this.checkProseFragment(fragment);
+        if (node.fragments) {
+            for (const fragment of node.fragments) {
+                this.checkProseFragment(fragment);
+            }
         }
     }
 
@@ -471,7 +477,7 @@ export class Checker {
 
     private checkGrammarSymbolSpanRest(node: SymbolSpan): boolean {
         if (!node.symbol) {
-            return this.reportGrammarError(node.pos, Diagnostics._0_expected, formatList([
+            return this.reportGrammarError(node.getStart(this.sourceFile), Diagnostics._0_expected, formatList([
                 SyntaxKind.UnicodeCharacterLiteral,
                 SyntaxKind.Terminal,
                 SyntaxKind.Identifier,
@@ -481,11 +487,11 @@ export class Checker {
         }
 
         if (node.symbol.kind === SyntaxKind.Prose) {
-            return this.reportGrammarError(node.symbol.pos, Diagnostics._0_expected, tokenToString(SyntaxKind.LineTerminatorToken));
+            return this.reportGrammarError(node.symbol.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.LineTerminatorToken));
         }
 
         if (node.next && node.next.symbol.kind === SyntaxKind.Prose) {
-            return this.reportGrammarError(node.next.pos, Diagnostics._0_expected, tokenToString(SyntaxKind.LineTerminatorToken));
+            return this.reportGrammarError(node.symbol.end, Diagnostics._0_expected, tokenToString(SyntaxKind.LineTerminatorToken));
         }
 
         return false;
@@ -534,7 +540,7 @@ export class Checker {
 
     private checkGrammarAssertionHead(node: Assertion): boolean {
         if (!node.openBracketToken) {
-            return this.reportGrammarError(node.pos, Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBracketToken));
+            return this.reportGrammarError(node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBracketToken));
         }
 
         return false;
@@ -552,7 +558,7 @@ export class Checker {
         this.checkGrammarAssertionHead(node) || this.checkGrammarEmptyAssertion(node) || this.checkGrammarAssertionTail(node);
     }
 
-    private checkGrammarEmptyAssertion(node: EmptyAssertion): boolean {
+    private checkGrammarEmptyAssertion(node: EmptyAssertion) {
         if (!node.emptyKeyword) {
             return this.reportGrammarError(node.openBracketToken.end, Diagnostics._0_expected, tokenToString(SyntaxKind.EmptyKeyword, /*quoted*/ true));
         }
@@ -628,7 +634,7 @@ export class Checker {
             case SyntaxKind.EqualsEqualsToken:
             case SyntaxKind.ExclamationEqualsToken:
             case SyntaxKind.NotEqualToToken:
-                if (!isTerminal(node.lookahead)) {
+                if (!node.lookahead || !isTerminal(node.lookahead)) {
                     return this.reportGrammarErrorForNode(node, Diagnostics._0_expected, formatList([
                         SyntaxKind.Terminal,
                         SyntaxKind.UnicodeCharacterLiteral
@@ -641,7 +647,7 @@ export class Checker {
             case SyntaxKind.ElementOfToken:
             case SyntaxKind.LessThanExclamationToken:
             case SyntaxKind.NotAnElementOfToken:
-                if (!isNonterminalOrSymbolSet(node.lookahead)) {
+                if (!node.lookahead || !isNonterminalOrSymbolSet(node.lookahead)) {
                     return this.reportGrammarErrorForNode(node, Diagnostics._0_expected, formatList([
                         SyntaxKind.OpenBraceToken,
                         SyntaxKind.Nonterminal
@@ -682,7 +688,7 @@ export class Checker {
 
     private checkGrammarSymbolSet(node: SymbolSet): boolean {
         if (!node.openBraceToken) {
-            return this.reportGrammarError(node.pos, Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBraceToken));
+            return this.reportGrammarError(node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBraceToken));
         }
 
         if (!node.elements) {
@@ -710,7 +716,7 @@ export class Checker {
 
     private checkGrammarLexicalGoalAssertion(node: LexicalGoalAssertion): boolean {
         if (!node.lexicalKeyword) {
-            return this.reportGrammarError(node.pos, Diagnostics._0_expected, tokenToString(SyntaxKind.LexicalKeyword));
+            return this.reportGrammarError(node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.LexicalKeyword));
         }
 
         if (!node.goalKeyword) {
@@ -736,7 +742,7 @@ export class Checker {
 
     private checkGrammarNoSymbolHereAssertion(node: NoSymbolHereAssertion): boolean {
         if (!node.noKeyword) {
-            return this.reportGrammarError(node.pos, Diagnostics._0_expected, tokenToString(SyntaxKind.NoKeyword));
+            return this.reportGrammarError(node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.NoKeyword));
         }
 
         if (!node.symbols || node.symbols.length <= 0) {
@@ -780,14 +786,16 @@ export class Checker {
     private checkProseAssertion(node: ProseAssertion): void {
         this.checkGrammarProseAssertionHead(node) || this.checkGrammarAssertionTail(node);
 
-        for (const fragment of node.fragments) {
-            this.checkProseFragment(fragment);
+        if (node.fragments) {
+            for (const fragment of node.fragments) {
+                this.checkProseFragment(fragment);
+            }
         }
     }
 
     private checkGrammarProseAssertionHead(node: Assertion): boolean {
         if (!node.openBracketToken) {
-            return this.reportGrammarError(node.pos, Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBracketGreaterThanToken));
+            return this.reportGrammarError(node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBracketGreaterThanToken));
         }
 
         return false;
@@ -843,17 +851,17 @@ export class Checker {
 
     private checkButNotSymbol(node: ButNotSymbol): void {
         this.checkGrammarButNotSymbol(node);
-        this.checkUnarySymbolOrHigher(node.left);
-        this.checkUnarySymbolOrHigher(node.right);
+        if (node.left) this.checkUnarySymbolOrHigher(node.left);
+        if (node.right) this.checkUnarySymbolOrHigher(node.right);
     }
 
     private checkGrammarButNotSymbol(node: ButNotSymbol): boolean {
         if (!node.butKeyword) {
-            return this.reportGrammarErrorForNode(node.notKeyword || node.right, Diagnostics._0_expected, tokenToString(SyntaxKind.ButKeyword));
+            return this.reportGrammarErrorForNodeOrPos(node.notKeyword || node.right, node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.ButKeyword));
         }
 
         if (!node.notKeyword) {
-            return this.reportGrammarErrorForNode(node.right, Diagnostics._0_expected, tokenToString(SyntaxKind.NotKeyword));
+            return this.reportGrammarErrorForNodeOrPos(node.right, node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.NotKeyword));
         }
 
         if (!node.right) {
@@ -889,7 +897,7 @@ export class Checker {
 
     private checkGrammarOneOfSymbol(node: OneOfSymbol): boolean {
         if (!node.oneKeyword) {
-            return this.reportGrammarError(node.pos, Diagnostics._0_expected, tokenToString(SyntaxKind.OneKeyword));
+            return this.reportGrammarError(node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OneKeyword));
         }
 
         if (!node.ofKeyword) {
@@ -929,8 +937,8 @@ export class Checker {
                 this.checkNonterminal(<Nonterminal>node, allowOptional);
                 break;
 
-            case SyntaxKind.AtToken:
-                this.checkPlaceholder(<LexicalSymbol>node);
+            case SyntaxKind.PlaceholderSymbol:
+                this.checkPlaceholder(<PlaceholderSymbol>node);
                 break;
 
             default:
@@ -949,7 +957,7 @@ export class Checker {
         return false;
     }
 
-    private checkTerminal(node: Terminal, allowOptional?: boolean): void {
+    private checkTerminal(node: Terminal, allowOptional: boolean = false): void {
         this.checkGrammarOptionalSymbol(node, allowOptional) || this.checkGrammarTerminal(node);
     }
 
@@ -980,7 +988,7 @@ export class Checker {
         this.checkUnicodeCharacterLiteral(node.right);
     }
 
-    private checkUnicodeCharacterLiteral(node: UnicodeCharacterLiteral, allowOptional?: boolean): void {
+    private checkUnicodeCharacterLiteral(node: UnicodeCharacterLiteral, allowOptional: boolean = false): void {
         this.checkGrammarOptionalSymbol(node, allowOptional) || this.checkGrammarUnicodeCharacterLiteral(node);
     }
 
@@ -992,10 +1000,10 @@ export class Checker {
         return false;
     }
 
-    private checkPlaceholder(node: LexicalSymbol): void {
+    private checkPlaceholder(node: PlaceholderSymbol): void {
     }
 
-    private checkNonterminal(node: Nonterminal, allowOptional?: boolean): void {
+    private checkNonterminal(node: Nonterminal, allowOptional: boolean = false): void {
         this.checkGrammarOptionalSymbol(node, allowOptional);
 
         if (this.noStrictParametricProductions) {
@@ -1019,34 +1027,47 @@ export class Checker {
         const productionSymbol = this.checkIdentifier(nonterminalName);
         if (productionSymbol) {
             const production = <Production>this.bindings.getDeclarations(productionSymbol)[0];
-            const parameterCount = production.parameterList ? production.parameterList.elements.length : 0;
-            const argumentCount = node.argumentList ? node.argumentList.elements.length : 0;
-            const nameSet = new Dictionary<boolean>();
+            const parameterList = production.parameterList;
+            const parameterListElements = parameterList && parameterList.elements;
+            const parameterCount = parameterListElements ? parameterListElements.length : 0;
+            const argumentList = node.argumentList;
+            const argumentListElements = argumentList && argumentList.elements;
+            const nameSet = new Set<string>();
 
             // Check each argument has a matching parameter.
-            for (let i = 0; i < argumentCount; i++) {
-                const argument = node.argumentList.elements[i];
-                const argumentName = argument.name;
-                const argumentNameText = argumentName.text;
-                if (Dictionary.has(nameSet, argumentNameText)) {
-                    this.diagnostics.reportNode(argumentName, Diagnostics.Argument_0_cannot_be_specified_multiple_times, argumentNameText);
-                }
-                else {
-                    Dictionary.set(nameSet, argumentNameText, true);
-                    const parameterSymbol = this.resolveSymbol(production, argumentNameText, SymbolKind.Parameter);
-                    if (!parameterSymbol) {
-                        this.diagnostics.reportNode(argumentName, Diagnostics.Production_0_does_not_have_a_parameter_named_1_, productionSymbol.name, argumentNameText);
+            if (argumentListElements) {
+                for (let i = 0; i < argumentListElements.length; i++) {
+                    const argument = argumentListElements[i];
+                    const argumentName = argument.name;
+                    if (argumentName) {
+                        const argumentNameText = argumentName.text;
+                        if (argumentNameText) {
+                            if (nameSet.has(argumentNameText)) {
+                                this.diagnostics.reportNode(this.sourceFile, argumentName, Diagnostics.Argument_0_cannot_be_specified_multiple_times, argumentNameText);
+                            }
+                            else {
+                                nameSet.add(argumentNameText);
+                                const parameterSymbol = this.resolveSymbol(production, argumentNameText, SymbolKind.Parameter);
+                                if (!parameterSymbol) {
+                                    this.diagnostics.reportNode(this.sourceFile, argumentName, Diagnostics.Production_0_does_not_have_a_parameter_named_1_, productionSymbol.name, argumentNameText);
+                                }
+                            }
+                        }
                     }
                 }
             }
 
             // Check each parameter has a matching argument.
-            for (let i = 0; i < parameterCount; i++) {
-                const parameter = production.parameterList.elements[i];
-                const parameterName = parameter.name;
-                const parameterNameText = parameterName.text;
-                if (!Dictionary.has(nameSet, parameterNameText)) {
-                    this.diagnostics.reportNode(nonterminalName, Diagnostics.There_is_no_argument_given_for_parameter_0_, parameterNameText);
+            if (parameterListElements) {
+                for (let i = 0; i < parameterListElements.length; i++) {
+                    const parameter = parameterListElements[i];
+                    const parameterName = parameter.name;
+                    if (parameterName) {
+                        const parameterNameText = parameterName.text;
+                        if (parameterNameText && !nameSet.has(parameterNameText)) {
+                            this.diagnostics.reportNode(this.sourceFile, nonterminalName, Diagnostics.There_is_no_argument_given_for_parameter_0_, parameterNameText);
+                        }
+                    }
                 }
             }
         }
@@ -1068,7 +1089,7 @@ export class Checker {
 
     private checkGrammarArgumentList(node: ArgumentList): boolean {
         if (!node.openParenToken) {
-            return this.reportGrammarError(node.pos, Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBracketToken));
+            return this.reportGrammarError(node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBracketToken));
         }
 
         if (node.openParenToken.kind === SyntaxKind.OpenParenToken) {
@@ -1076,11 +1097,11 @@ export class Checker {
         }
 
         if (!node.elements) {
-            return this.reportGrammarError(node.pos, Diagnostics._0_expected, tokenToString(SyntaxKind.Identifier));
+            return this.reportGrammarError(node.openParenToken.end, Diagnostics._0_expected, tokenToString(SyntaxKind.Identifier));
         }
 
         if (!node.closeParenToken) {
-            return this.reportGrammarError(node.pos, Diagnostics._0_expected, tokenToString(SyntaxKind.CloseBracketToken));
+            return this.reportGrammarError(node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.CloseBracketToken));
         }
 
         return false;
@@ -1088,7 +1109,7 @@ export class Checker {
 
     private checkArgument(node: Argument): void {
         this.checkGrammarArgument(node);
-        this.checkIdentifier(node.name);
+        if (node.name) this.checkIdentifier(node.name);
     }
 
     private checkGrammarArgument(node: Argument): boolean {
@@ -1100,7 +1121,7 @@ export class Checker {
         }
 
         if (!node.operatorToken && !this.noStrictParametricProductions) {
-            return this.reportGrammarError(node.pos, Diagnostics._0_expected, formatList([SyntaxKind.QuestionToken, SyntaxKind.PlusToken, SyntaxKind.TildeToken]));
+            return this.reportGrammarError(node.getStart(this.sourceFile), Diagnostics._0_expected, formatList([SyntaxKind.QuestionToken, SyntaxKind.PlusToken, SyntaxKind.TildeToken]));
         }
 
         return false;
@@ -1115,20 +1136,20 @@ export class Checker {
         ]));
     }
 
-    private checkIdentifier(node: Identifier): Symbol {
+    private checkIdentifier(node: Identifier): Symbol | undefined {
         this.checkGrammarIdentifier(node);
 
         if (node.text) {
             const parent = this.bindings.getParent(node);
             if (parent) {
-                let symbol: Symbol;
+                let symbol: Symbol | undefined;
                 switch (parent.kind) {
                     case SyntaxKind.Parameter:
                         symbol = this.resolveSymbol(node, node.text, SymbolKind.Parameter);
 
                         let declarationSymbol = this.bindings.getSymbol(parent);
                         if (declarationSymbol !== symbol) {
-                            this.diagnostics.reportNode(node, Diagnostics.Duplicate_identifier_0_, node.text);
+                            this.diagnostics.reportNode(this.sourceFile, node, Diagnostics.Duplicate_identifier_0_, node.text);
                         }
 
                         return symbol;
@@ -1147,7 +1168,7 @@ export class Checker {
                             symbol = this.resolveSymbol(node, node.text, SymbolKind.Parameter);
                             if (!symbol) {
                                 const production = <Production>this.bindings.getAncestor(argument, SyntaxKind.Production);
-                                this.diagnostics.reportNode(node, Diagnostics.Production_0_does_not_have_a_parameter_named_1_, production.name.text, node.text);
+                                this.diagnostics.reportNode(this.sourceFile, node, Diagnostics.Production_0_does_not_have_a_parameter_named_1_, production.name.text, node.text);
                             }
                         }
                         else {
@@ -1159,7 +1180,7 @@ export class Checker {
                                     const production = <Production>this.bindings.getDeclarations(productionSymbol)[0];
                                     symbol = this.resolveSymbol(production, node.text, SymbolKind.Parameter);
                                     if (!symbol) {
-                                        this.diagnostics.reportNode(node, Diagnostics.Production_0_does_not_have_a_parameter_named_1_, production.name.text, node.text);
+                                        this.diagnostics.reportNode(this.sourceFile, node, Diagnostics.Production_0_does_not_have_a_parameter_named_1_, production.name.text, node.text);
                                     }
                                 }
                             }
@@ -1184,16 +1205,16 @@ export class Checker {
         return false;
     }
 
-    private reportInvalidSourceElement(node: SourceElement): void {
-        this.reportGrammarErrorForNode(node, Diagnostics._0_expected, formatList([
-            SyntaxKind.Production
-        ]));
-    }
+    // private reportInvalidSourceElement(node: SourceElement): void {
+    //     this.reportGrammarErrorForNode(node, Diagnostics._0_expected, formatList([
+    //         SyntaxKind.Production
+    //     ]));
+    // }
 
-    private resolveSymbol(location: Node, name: string, meaning: SymbolKind, diagnosticMessage?: Diagnostic): Symbol {
+    private resolveSymbol(location: Node, name: string, meaning: SymbolKind, diagnosticMessage?: Diagnostic): Symbol | undefined {
         const result = this.bindings.resolveSymbol(location, name, meaning);
         if (!result && diagnosticMessage) {
-            this.diagnostics.reportNode(location, diagnosticMessage, name);
+            this.diagnostics.reportNode(this.sourceFile, location, diagnosticMessage, name);
         }
 
         return result;
@@ -1205,8 +1226,14 @@ export class Checker {
     }
 
     private reportGrammarErrorForNode(location: Node, diagnosticMessage: Diagnostic, arg0?: any, arg1?: any, arg2?: any) {
-        this.diagnostics.reportNode(location, diagnosticMessage, arg0, arg1, arg2);
+        this.diagnostics.reportNode(this.sourceFile, location, diagnosticMessage, arg0, arg1, arg2);
         return true;
+    }
+
+    private reportGrammarErrorForNodeOrPos(location: Node | undefined, pos: number, diagnosticMessage: Diagnostic, arg0?: any, arg1?: any, arg2?: any) {
+        return location
+            ? this.reportGrammarErrorForNode(location, diagnosticMessage, arg0, arg1, arg2)
+            : this.reportGrammarError(pos, diagnosticMessage, arg0, arg1, arg2);
     }
 }
 
@@ -1217,11 +1244,11 @@ export class Resolver {
         this.bindings = bindings;
     }
 
-    public getParent(node: Node): Node {
+    public getParent(node: Node): Node | undefined {
         return this.bindings.getParent(node);
     }
 
-    public createNavigator(node: Node): NodeNavigator {
+    public createNavigator(node: Node): NodeNavigator | undefined {
         if (node.kind === SyntaxKind.SourceFile) {
             return new NodeNavigator(<SourceFile>node);
         }
@@ -1246,7 +1273,7 @@ export class Resolver {
         const parent = this.bindings.getParent(node);
 
         let symbol = this.bindings.getSymbol(node);
-        if (!symbol) {
+        if (!symbol && node.text) {
             symbol = this.bindings.resolveSymbol(node, node.text, getSymbolMeaning(parent));
         }
 
@@ -1258,18 +1285,21 @@ export class Resolver {
     }
 
     public getReferences(node: Identifier) {
-        const symbol = this.bindings.getParent(node).kind === SyntaxKind.Parameter
-            ? this.bindings.resolveSymbol(node, node.text, SymbolKind.Parameter)
-            : this.bindings.resolveSymbol(node, node.text, SymbolKind.Production);
+        const parent = this.bindings.getParent(node);
+        if (parent) {
+            const symbol = parent.kind === SyntaxKind.Parameter
+                ? this.bindings.resolveSymbol(node, node.text, SymbolKind.Parameter)
+                : this.bindings.resolveSymbol(node, node.text, SymbolKind.Production);
 
-        if (symbol) {
-            return this.bindings.getReferences(symbol);
+            if (symbol) {
+                return this.bindings.getReferences(symbol);
+            }
         }
 
         return [];
     }
 
-    public getProductionLinkId(node: Identifier): string {
+    public getProductionLinkId(node: Identifier): string | undefined {
         const symbol = this.bindings.resolveSymbol(node, node.text, SymbolKind.Production);
         if (symbol) {
             return symbol.name;
@@ -1299,8 +1329,8 @@ export class Resolver {
 }
 
 class RightHandSideDigest {
-    private spaceRequested: boolean;
-    private writer: StringWriter;
+    private spaceRequested: boolean = false;
+    private writer!: StringWriter;
 
     public computeHash(node: RightHandSide): string {
         this.writer = new StringWriter();
@@ -1313,7 +1343,7 @@ class RightHandSideDigest {
         return digest.substr(0, 8);
     }
 
-    private writeNode(node: Node) {
+    private writeNode(node: Node | undefined) {
         if (!node) {
             return;
         }
@@ -1348,13 +1378,15 @@ class RightHandSideDigest {
                     break;
                 }
                 else {
-                    forEachChild(node, child => this.writeNode(child));
+                    for (const child of node.children()) {
+                        this.writeNode(child);
+                    }
                     break;
                 }
         }
     }
 
-    private write(text: string) {
+    private write(text: string | undefined) {
         if (text) {
             if (this.spaceRequested && this.writer.size > 0) {
                 this.spaceRequested = false;
@@ -1365,9 +1397,11 @@ class RightHandSideDigest {
         }
     }
 
-    private writeToken(node: Node) {
-        this.write(tokenToString(node.kind));
-        this.spaceRequested = true;
+    private writeToken(node: Node | undefined) {
+        if (node) {
+            this.write(tokenToString(node.kind));
+            this.spaceRequested = true;
+        }
     }
 
     private writeTerminal(node: Terminal) {
@@ -1388,8 +1422,10 @@ class RightHandSideDigest {
 
     private writeProse(node: Prose) {
         this.write("> ");
-        for (const fragment of node.fragments) {
-            this.writeNode(fragment);
+        if (node.fragments) {
+            for (const fragment of node.fragments) {
+                this.writeNode(fragment);
+            }
         }
     }
 
@@ -1402,12 +1438,14 @@ class RightHandSideDigest {
 
     private writeArgumentList(node: ArgumentList) {
         this.write("[");
-        for (let i = 0; i < node.elements.length; ++i) {
-            if (i > 0) {
-                this.write(", ");
-            }
+        if (node.elements) {
+            for (let i = 0; i < node.elements.length; ++i) {
+                if (i > 0) {
+                    this.write(", ");
+                }
 
-            this.writeNode(node.elements[i]);
+                this.writeNode(node.elements[i]);
+            }
         }
 
         this.write("]");
@@ -1442,13 +1480,15 @@ class RightHandSideDigest {
 
     private writeNoSymbolHereAssertion(node: NoSymbolHereAssertion) {
         this.write("[no ");
-        for (let i = 0; i < node.symbols.length; ++i) {
-            if (i > 0) {
-                this.write(" or ");
-            }
+        if (node.symbols) {
+            for (let i = 0; i < node.symbols.length; ++i) {
+                if (i > 0) {
+                    this.write(" or ");
+                }
 
-            this.writeNode(node.symbols[i]);
-            this.spaceRequested = false;
+                this.writeNode(node.symbols[i]);
+                this.spaceRequested = false;
+            }
         }
 
         this.write(" here]");
@@ -1466,15 +1506,17 @@ class RightHandSideDigest {
     private writeProseAssertion(node: ProseAssertion) {
         this.write("[>");
         this.spaceRequested = false;
-        for (const fragment of node.fragments) {
-            if (fragment.kind === SyntaxKind.Identifier) {
-                this.write("|");
-                this.writeNode(fragment);
-                this.spaceRequested = false;
-                this.write("|");
-            }
-            else {
-                this.writeNode(fragment);
+        if (node.fragments) {
+            for (const fragment of node.fragments) {
+                if (fragment.kind === SyntaxKind.Identifier) {
+                    this.write("|");
+                    this.writeNode(fragment);
+                    this.spaceRequested = false;
+                    this.write("|");
+                }
+                else {
+                    this.writeNode(fragment);
+                }
             }
         }
         this.write("]");
@@ -1502,16 +1544,18 @@ class RightHandSideDigest {
 
     private writeOneOfSymbol(node: OneOfSymbol) {
         this.write("one of ");
-        for (let i = 0; i < node.symbols.length; ++i) {
-            if (i > 0) {
-                this.write(" or ");
+        if (node.symbols) {
+            for (let i = 0; i < node.symbols.length; ++i) {
+                if (i > 0) {
+                    this.write(" or ");
+                }
+
+                this.writeNode(node.symbols[i]);
+                this.spaceRequested = false;
             }
 
-            this.writeNode(node.symbols[i]);
-            this.spaceRequested = false;
+            this.spaceRequested = true;
         }
-
-        this.spaceRequested = true;
     }
 
     private writeSymbolSpan(node: SymbolSpan) {
@@ -1521,13 +1565,15 @@ class RightHandSideDigest {
 
     private writeSymbolSet(node: SymbolSet) {
         this.write("{ ");
-        for (let i = 0; i < node.elements.length; ++i) {
-            if (i > 0) {
-                this.write(", ");
-            }
+        if (node.elements) {
+            for (let i = 0; i < node.elements.length; ++i) {
+                if (i > 0) {
+                    this.write(", ");
+                }
 
-            this.writeNode(node.elements[i]);
-            this.spaceRequested = false;
+                this.writeNode(node.elements[i]);
+                this.spaceRequested = false;
+            }
         }
 
         this.write(" }");
@@ -1556,12 +1602,14 @@ function isAssertion(node: LexicalSymbol) {
     return false;
 }
 
-function getSymbolMeaning(node: Node) {
-    switch (node.kind) {
-        case SyntaxKind.Parameter:
-        case SyntaxKind.Argument:
-        case SyntaxKind.ParameterValueAssertion:
-            return SymbolKind.Parameter;
+function getSymbolMeaning(node: Node | undefined) {
+    if (node) {
+        switch (node.kind) {
+            case SyntaxKind.Parameter:
+            case SyntaxKind.Argument:
+            case SyntaxKind.ParameterValueAssertion:
+                return SymbolKind.Parameter;
+        }
     }
 
     return SymbolKind.Production;

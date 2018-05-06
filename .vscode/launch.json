@@ -22,32 +22,44 @@
             "preLaunchTask": "build:lib"
         },
         {
-            "name": "Launch Tests",
+            "name": "Launch Mocha",
             "type": "node",
             "request": "launch",
             "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
             "stopOnEntry": false,
             "args": [
-                "${workspaceRoot}/out/tests/index.js"
+                "--no-timeouts",
+                "--colors",
+                "${workspaceRoot}/dist/tests/index.js"
             ],
             "cwd": "${workspaceRoot}",
-            "preLaunchTask": "build",
             "runtimeExecutable": null,
-            "runtimeArgs": [
-                "--nolazy"
-            ],
-            "env": {
-                "NODE_ENV": "development"
-            },
-            "console": "externalTerminal",
+            "runtimeArgs": ["--nolazy"],
+            "env": { "NODE_ENV": "development" },
+            "outFiles": ["${workspaceRoot}/dist"],
             "sourceMaps": true,
-            "outDir": "${workspaceRoot}/tests"
+            "smartStep": true
         },
         {
-            "name": "Attach",
+            "name": "Launch Mocha (current file)",
             "type": "node",
-            "request": "attach",
-            "port": 5858
+            "request": "launch",
+            "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
+            "stopOnEntry": false,
+            "args": [
+                "--no-timeouts",
+                "--colors",
+                "-g", "${fileBasenameNoExtension}",
+                "${workspaceRoot}/dist/tests/index.js"
+            ],
+            "cwd": "${workspaceRoot}",
+            "runtimeExecutable": null,
+            "runtimeArgs": ["--nolazy"],
+            "env": { "NODE_ENV": "development" },
+            "outFiles": ["${workspaceRoot}/dist"],
+            "sourceMaps": true,
+            "smartStep": true,
+            "preLaunchTask": "gulp: build"
         }
     ]
 }

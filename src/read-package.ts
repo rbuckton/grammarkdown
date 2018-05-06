@@ -19,7 +19,7 @@ export interface Package {
     devDependencies?: { [name: string]: string; };
 }
 
-export function readPackage(packagePath: string, done: (err: any, pkg: Package) => void): void {
+export function readPackage(packagePath: string, done: (err: any, pkg: Package | undefined) => void): void {
     readFile(packagePath, "utf8", (err, data) => {
         try {
             if (err) throw err;

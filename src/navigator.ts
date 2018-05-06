@@ -1,34 +1,29 @@
 import {
     SourceFile,
-    NodeEdge,
     Node,
 } from "./nodes";
 import {
     Position,
     Range,
-    Dictionary,
 } from "./core";
 import {
     SyntaxKind
 } from "./tokens";
 
 export class NodeNavigator {
-    private sourceFile: SourceFile;
-    private nodeStack: Node[];
-    private shapeStack: NodeEdge[][];
-    private edgeStack: number[];
-    private arrayStack: Node[][];
-    private offsetStack: number[];
-    private currentDepth: number;
-    private currentNode: Node;
-    private currentEdge: number;
-    private currentShape: NodeEdge[];
-    private currentOffset: number;
-    private currentArray: Node[];
-    private parentNode: Node;
-    private parentShape: NodeEdge[];
-    private hasAnyChildren: boolean;
-    private copyOnNavigate: boolean;
+    private sourceFile!: SourceFile;
+    private nodeStack!: (Node | undefined)[];
+    private edgeStack!: (number | undefined)[];
+    private arrayStack!: (ReadonlyArray<Node> | undefined)[];
+    private offsetStack!: (number | undefined)[];
+    private currentDepth!: number;
+    private currentNode!: Node;
+    private currentEdge!: number;
+    private currentOffset!: number;
+    private currentArray: ReadonlyArray<Node> | undefined;
+    private parentNode: Node | undefined;
+    private hasAnyChildren: boolean | undefined;
+    private copyOnNavigate: boolean = false;
 
     constructor(sourceFile: SourceFile);
     constructor(other: NodeNavigator);
@@ -38,21 +33,19 @@ export class NodeNavigator {
             this.initialize(
                 navigator.sourceFile,
                 navigator.nodeStack.slice(),
-                navigator.shapeStack.slice(),
                 navigator.edgeStack.slice(),
                 navigator.arrayStack.slice(),
                 navigator.offsetStack.slice());
         }
         else {
             const sourceFile = <SourceFile>sourceFileOrNavigator;
-            this.initialize(sourceFile, [sourceFile], [sourceFile.getEdges()], [-1], [undefined], [0]);
+            this.initialize(sourceFile, [sourceFile], [-1], [undefined], [0]);
         }
     }
 
-    private initialize(sourceFile: SourceFile, nodeStack: Node[], shapeStack: NodeEdge[][], edgeStack: number[], arrayStack: Node[][], offsetStack: number[]) {
+    private initialize(sourceFile: SourceFile, nodeStack: (Node | undefined)[], edgeStack: (number | undefined)[], arrayStack: (ReadonlyArray<Node> | undefined)[], offsetStack: (number | undefined)[]) {
         this.sourceFile = sourceFile;
         this.nodeStack = nodeStack;
-        this.shapeStack = shapeStack;
         this.edgeStack = edgeStack;
         this.arrayStack = arrayStack;
         this.offsetStack = offsetStack;
@@ -60,15 +53,15 @@ export class NodeNavigator {
         this.afterNavigate();
     }
 
-    public clone(): NodeNavigator {
+    public clone() {
         return new NodeNavigator(this);
     }
 
-    public getRoot(): SourceFile {
+    public getRoot() {
         return this.sourceFile;
     }
 
-    public getParent(): Node {
+    public getParent() {
         return this.parentNode;
     }
 
@@ -80,20 +73,19 @@ export class NodeNavigator {
         return this.currentNode.kind;
     }
 
-    public getName(): string {
-        const edge = this.getEdge();
-        return edge ? edge.name : undefined;
+    public getName() {
+        return this.parentNode && this.parentNode.edgeName(this.currentEdge);
     }
 
-    public getArray(): Node[] {
+    public getArray() {
         return this.currentArray;
     }
 
-    public getOffset(): number {
+    public getOffset() {
         return this.currentOffset;
     }
 
-    public getDepth(): number {
+    public getDepth() {
         return this.currentDepth;
     }
 
@@ -110,30 +102,22 @@ export class NodeNavigator {
     }
 
     private hasChild(predicate: (node: Node) => boolean): boolean {
-        if (this.hasAnyChildren === false) {
+        if (this.hasAnyChildren === false || this.currentNode.edgeCount === 0) {
             return false;
         }
 
-        for (let nextEdge = 0; nextEdge < this.currentShape.length; nextEdge++) {
-            const edge = this.currentShape[nextEdge];
-            if (edge) {
-                if (edge.isArray) {
-                    const nextArray = edge.readArray(this.currentNode);
-                    if (nextArray) {
-                        for (let nextOffset = 0; nextOffset < nextArray.length; nextOffset++) {
-                            const nextNode = nextArray[nextOffset];
-                            if (nextNode && predicate(nextNode)) {
-                                return this.hasAnyChildren = true;
-                            }
-                        }
-                    }
-                }
-                else {
-                    const nextNode = edge.read(this.currentNode);
+        for (let nextEdge = 0; nextEdge < this.currentNode.edgeCount; nextEdge++) {
+            const next = this.currentNode.edgeValue(nextEdge);
+            if (isNodeArray(next)) {
+                for (let nextOffset = 0; nextOffset < next.length; nextOffset++) {
+                    const nextNode = next[nextOffset];
                     if (nextNode && predicate(nextNode)) {
                         return this.hasAnyChildren = true;
                     }
                 }
+            }
+            else if (next && predicate(next)) {
+                return this.hasAnyChildren = true;
             }
         }
 
@@ -142,7 +126,7 @@ export class NodeNavigator {
 
     public hasAncestor(predicate?: (node: Node) => boolean): boolean {
         for (let nextDepth = this.currentDepth - 1; nextDepth >= 0; nextDepth--) {
-            const nextNode = this.nodeStack[nextDepth];
+            const nextNode = this.nodeStack[nextDepth]!;
             if (!predicate || predicate(nextNode)) {
                 return true;
             }
@@ -167,7 +151,6 @@ export class NodeNavigator {
         const pos = this.sourceFile.lineMap.offsetAt(position);
         const currentDepth = this.currentDepth;
         const nodeStack = this.nodeStack;
-        const shapeStack = this.shapeStack;
         const edgeStack = this.edgeStack;
         const arrayStack = this.arrayStack;
         const offsetStack = this.offsetStack;
@@ -181,7 +164,6 @@ export class NodeNavigator {
 
         this.currentDepth = currentDepth;
         this.nodeStack = nodeStack;
-        this.shapeStack = shapeStack;
         this.edgeStack = edgeStack;
         this.arrayStack = arrayStack;
         this.offsetStack = offsetStack;
@@ -219,7 +201,6 @@ export class NodeNavigator {
 
         this.currentDepth = other.currentDepth;
         this.nodeStack = other.nodeStack.slice();
-        this.shapeStack = other.shapeStack.slice();
         this.edgeStack = other.edgeStack.slice();
         this.arrayStack = other.arrayStack.slice();
         this.offsetStack = other.offsetStack.slice();
@@ -239,7 +220,7 @@ export class NodeNavigator {
 
     public moveToParent(predicate?: (node: Node) => boolean): boolean {
         if (this.currentDepth > 0) {
-            if (!predicate || predicate(this.parentNode)) {
+            if (!predicate || predicate(this.parentNode!)) {
                 this.beforeNavigate();
                 this.popEdge();
                 this.afterNavigate();
@@ -257,7 +238,7 @@ export class NodeNavigator {
 
     public moveToAncestor(predicate: (node: Node) => boolean): boolean {
         for (let nextDepth = this.currentDepth - 1; nextDepth >= 0; nextDepth--) {
-            const nextNode = this.nodeStack[nextDepth];
+            const nextNode = this.nodeStack[nextDepth]!;
             if (predicate(nextNode)) {
                 this.beforeNavigate();
                 while (this.currentDepth !== nextDepth) {
@@ -354,38 +335,33 @@ export class NodeNavigator {
     public moveToFirstSibling(name: string): boolean;
     public moveToFirstSibling(predicate: (node: Node) => boolean): boolean;
     public moveToFirstSibling(predicateOrName?: string | ((node: Node) => boolean)): boolean {
-        return this.moveToSibling(Navigation.first, undefined, Navigation.first, Navigation.next, predicateOrName);
+        return this.moveToSibling(Navigation.first, undefined, Navigation.first, Navigation.next, this.parentNode, predicateOrName);
     }
 
     public moveToPreviousSibling(): boolean;
     public moveToPreviousSibling(name: string): boolean;
     public moveToPreviousSibling(predicate: (node: Node) => boolean): boolean;
     public moveToPreviousSibling(predicateOrName?: string | ((node: Node) => boolean)): boolean {
-        return this.moveToSibling(Navigation.previous, Navigation.previous, Navigation.last, Navigation.previous, predicateOrName);
+        return this.moveToSibling(Navigation.previous, Navigation.previous, Navigation.last, Navigation.previous, this.parentNode, predicateOrName);
     }
 
     public moveToNextSibling(): boolean;
     public moveToNextSibling(name: string): boolean;
     public moveToNextSibling(predicate: (node: Node) => boolean): boolean;
     public moveToNextSibling(predicateOrName?: string | ((node: Node) => boolean)): boolean {
-        return this.moveToSibling(Navigation.next, Navigation.next, Navigation.first, Navigation.next, predicateOrName);
+        return this.moveToSibling(Navigation.next, Navigation.next, Navigation.first, Navigation.next, this.parentNode, predicateOrName);
     }
 
     public moveToLastSibling(): boolean;
     public moveToLastSibling(name: string): boolean;
     public moveToLastSibling(predicate: (node: Node) => boolean): boolean;
     public moveToLastSibling(predicateOrName?: string | ((node: Node) => boolean)): boolean {
-        return this.moveToSibling(Navigation.last, undefined, Navigation.last, Navigation.previous, predicateOrName);
-    }
-
-    private getEdge() {
-        return this.parentShape ? this.parentShape[this.currentEdge] : undefined;
+        return this.moveToSibling(Navigation.last, undefined, Navigation.last, Navigation.previous, this.parentNode, predicateOrName);
     }
 
     private beforeNavigate() {
         if (this.copyOnNavigate) {
             this.nodeStack = this.nodeStack.slice();
-            this.shapeStack = this.shapeStack.slice();
             this.edgeStack = this.edgeStack.slice();
             this.arrayStack = this.arrayStack.slice();
             this.offsetStack = this.offsetStack.slice();
@@ -394,19 +370,16 @@ export class NodeNavigator {
     }
 
     private afterNavigate() {
-        this.currentNode = this.nodeStack[this.currentDepth];
-        this.currentShape = this.shapeStack[this.currentDepth];
-        this.currentEdge = this.edgeStack[this.currentDepth];
+        this.currentNode = this.nodeStack[this.currentDepth]!;
+        this.currentEdge = this.edgeStack[this.currentDepth]!;
         this.currentArray = this.arrayStack[this.currentDepth];
-        this.currentOffset = this.offsetStack[this.currentDepth];
-        this.parentNode = this.currentDepth > 0 ? this.nodeStack[this.currentDepth - 1]: undefined;
-        this.parentShape = this.currentDepth > 0 ? this.shapeStack[this.currentDepth - 1]: undefined;
+        this.currentOffset = this.offsetStack[this.currentDepth]!;
+        this.parentNode = this.currentDepth > 0 ? this.nodeStack[this.currentDepth - 1] : undefined;
         this.copyOnNavigate = false;
     }
 
     private pushEdge() {
         this.nodeStack.push(undefined);
-        this.shapeStack.push(undefined);
         this.edgeStack.push(undefined);
         this.arrayStack.push(undefined);
         this.offsetStack.push(1);
@@ -414,123 +387,122 @@ export class NodeNavigator {
         this.currentDepth++;
     }
 
-    private setEdge(node: Node, edge: number, array: Node[], offset: number) {
-        this.nodeStack[this.currentDepth] = node;
-        this.shapeStack[this.currentDepth] = node.getEdges();
-        this.edgeStack[this.currentDepth] = edge;
-        this.arrayStack[this.currentDepth] = array;
-        this.offsetStack[this.currentDepth] = offset;
-        this.hasAnyChildren = undefined;
+    private setEdge(node: Node, edge: number, array: ReadonlyArray<Node> | undefined, offset: number | undefined) {
+        try {
+            this.nodeStack[this.currentDepth] = node;
+            this.edgeStack[this.currentDepth] = edge;
+            this.arrayStack[this.currentDepth] = array;
+            this.offsetStack[this.currentDepth] = offset;
+            this.hasAnyChildren = undefined;
+        }
+        catch (e) {
+            console.log("foo");
+            debugger;
+            throw e;
+        }
     }
 
     private popEdge() {
         this.currentDepth--;
         this.nodeStack.pop();
-        this.shapeStack.pop();
         this.edgeStack.pop();
         this.arrayStack.pop();
         this.offsetStack.pop();
         this.hasAnyChildren = this.currentNode !== undefined;
     }
 
-    private moveToChild(initializer: SeekOperation, seekDirection: SeekOperation, predicateOrName: string | ((node: Node) => boolean)) {
-        const predicate: (node: Node) => boolean = typeof predicateOrName === "function" ? predicateOrName : undefined;
-        const name: string = typeof predicateOrName === "string" ? predicateOrName : undefined;
+    private moveToChild(initializer: SeekOperation, seekDirection: SeekOperation, predicateOrName: string | ((node: Node) => boolean) | undefined) {
+        const predicate = typeof predicateOrName === "function" ? predicateOrName : matchAny;
+        const name = typeof predicateOrName === "string" ? predicateOrName : undefined;
         const offset = this.currentEdge;
-        const length = this.currentShape.length;
+        const length = this.currentNode.edgeCount;
         for (let nextEdge = initializer(offset, length); bounded(nextEdge, length); nextEdge = seekDirection(nextEdge, length)) {
-            const edge = this.currentShape[nextEdge];
-            if (edge && (!name || edge.name === name)) {
-                if (edge.isArray) {
-                    const nextArray = edge.readArray(this.currentNode);
-                    if (nextArray) {
-                        const length = nextArray.length;
-                        for (let nextOffset = initializer(0, length); bounded(nextOffset, length); nextOffset = seekDirection(nextOffset, length)) {
-                            const nextNode = nextArray[nextOffset];
-                            if (nextNode && (!predicate || predicate(nextNode))) {
-                                this.beforeNavigate();
-                                this.pushEdge();
-                                this.setEdge(nextNode, nextEdge, nextArray, nextOffset);
-                                this.afterNavigate();
-                                return true;
-                            }
+            if (!name || this.currentNode.edgeName(nextEdge) === name) {
+                const next = this.currentNode.edgeValue(nextEdge);
+                if (isNodeArray(next)) {
+                    const length = next.length;
+                    for (let nextOffset = initializer(0, length); bounded(nextOffset, length); nextOffset = seekDirection(nextOffset, length)) {
+                        const nextNode = next[nextOffset];
+                        if (nextNode && predicate(nextNode)) {
+                            this.beforeNavigate();
+                            this.pushEdge();
+                            this.setEdge(nextNode, nextEdge, next, nextOffset);
+                            this.afterNavigate();
+                            return true;
                         }
                     }
                 }
+                else if (next && predicate(next)) {
+                    this.beforeNavigate();
+                    this.pushEdge();
+                    this.setEdge(next, nextEdge, /*array*/ undefined, /*offset*/ undefined);
+                    this.afterNavigate();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private moveToElement(currentArrayInitializer: SeekOperation, seekDirection: SeekOperation, currentArray: ReadonlyArray<Node> | undefined, currentOffset: number, predicateOrName: string | ((node: Node) => boolean) | undefined) {
+        if (!currentArray) {
+            return false;
+        }
+
+        const predicate = typeof predicateOrName === "function" ? predicateOrName : matchAny;
+        const offset = currentOffset;
+        const length = currentArray.length;
+        for (let nextOffset = currentArrayInitializer(offset, length); bounded(nextOffset, length); nextOffset = seekDirection(nextOffset, length)) {
+            const nextNode = currentArray[nextOffset];
+            if (nextNode && predicate(nextNode)) {
+                this.beforeNavigate();
+                this.setEdge(nextNode, this.currentEdge, currentArray, nextOffset);
+                this.afterNavigate();
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private moveToSibling(currentEdgeInitializer: SeekOperation, currentArrayInitializer: SeekOperation | undefined, nextArrayInitializer: SeekOperation, seekDirection: SeekOperation, parentNode: Node | undefined, predicateOrName: string | ((node: Node) => boolean) | undefined) {
+        if (!parentNode) {
+            return false;
+        }
+
+        if (currentArrayInitializer && this.moveToElement(currentArrayInitializer, seekDirection, this.currentArray, this.currentOffset, predicateOrName)) {
+            return true;
+        }
+
+        const predicate = typeof predicateOrName === "function" ? predicateOrName : matchAny;
+        const name = typeof predicateOrName === "string" ? predicateOrName : undefined;
+        const offset = this.currentEdge;
+        const length = parentNode.edgeCount;
+        for (let nextEdge = currentEdgeInitializer(offset, length); bounded(nextEdge, length); nextEdge = seekDirection(nextEdge, length)) {
+            if (!name || parentNode.edgeName(nextEdge) === name) {
+                const next = parentNode.edgeValue(nextEdge);
+                if (isNodeArray(next)) {
+                    if (this.moveToElement(nextArrayInitializer, seekDirection, next, 0, predicateOrName)) {
+                        return true;
+                    }
+                }
                 else {
-                    const nextNode = edge.read(this.currentNode);
-                    if (nextNode && (!predicate || predicate(nextNode))) {
+                    if (next && predicate(next)) {
                         this.beforeNavigate();
-                        this.pushEdge();
-                        this.setEdge(nextNode, nextEdge, /*array*/ undefined, /*offset*/ undefined);
+                        this.setEdge(next, nextEdge, /*array*/ undefined, /*offset*/ undefined);
                         this.afterNavigate();
                         return true;
                     }
                 }
             }
         }
-        return false;
-    }
 
-    private moveToElement(currentArrayInitializer: SeekOperation, seekDirection: SeekOperation, currentArray: Node[], currentOffset: number, predicateOrName: string | ((node: Node) => boolean)) {
-        const predicate: (node: Node) => boolean = typeof predicateOrName === "function" ? predicateOrName : undefined;
-        if (currentArray) {
-            const offset = currentOffset;
-            const length = currentArray.length;
-            for (let nextOffset = currentArrayInitializer(offset, length); bounded(nextOffset, length); nextOffset = seekDirection(nextOffset, length)) {
-                const nextNode = currentArray[nextOffset];
-                if (nextNode && (!predicate || predicate(nextNode))) {
-                    this.beforeNavigate();
-                    this.setEdge(nextNode, this.currentEdge, currentArray, nextOffset);
-                    this.afterNavigate();
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    private moveToSibling(currentEdgeInitializer: SeekOperation, currentArrayInitializer: SeekOperation, nextArrayInitializer: SeekOperation, seekDirection: SeekOperation, predicateOrName: string | ((node: Node) => boolean)) {
-        const predicate: (node: Node) => boolean = typeof predicateOrName === "function" ? predicateOrName : undefined;
-        const name: string = typeof predicateOrName === "string" ? predicateOrName : undefined;
-        if (this.currentDepth > 0) {
-            if (currentArrayInitializer && this.moveToElement(currentArrayInitializer, seekDirection, this.currentArray, this.currentOffset, predicateOrName)) {
-                return true;
-            }
-
-            const offset = this.currentEdge;
-            const length = this.parentShape.length;
-            for (let nextEdge = currentEdgeInitializer(offset, length); bounded(nextEdge, length); nextEdge = seekDirection(nextEdge, length)) {
-                const edge = this.parentShape[nextEdge];
-                if (edge && (!name || edge.name === name)) {
-                    if (edge.isArray) {
-                        const nextArray = edge.readArray(this.parentNode);
-                        if (nextArray) {
-                            if (this.moveToElement(nextArrayInitializer, seekDirection, nextArray, 0, predicateOrName)) {
-                                return true;
-                            }
-                        }
-                    }
-                    else {
-                        const nextNode = edge.read(this.parentNode);
-                        if (nextNode && (!predicate || predicate(nextNode))) {
-                            this.beforeNavigate();
-                            this.setEdge(nextNode, nextEdge, /*array*/ undefined, /*offset*/ undefined);
-                            this.afterNavigate();
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
         return false;
     }
 
     private reset() {
         this.currentDepth = 0;
         this.nodeStack.length = 1;
-        this.shapeStack.length = 1;
         this.edgeStack.length = 1;
         this.arrayStack.length = 1;
         this.offsetStack.length = 1;
@@ -683,4 +655,8 @@ function matchParameterValueAssertion(node: Node) {
 function matchSourceElement(node: Node) {
     return node.kind === SyntaxKind.Import
         || node.kind === SyntaxKind.Production;
+}
+
+function isNodeArray(value: any): value is ReadonlyArray<Node> {
+    return Array.isArray(value);
 }

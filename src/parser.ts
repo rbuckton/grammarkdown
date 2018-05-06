@@ -13,13 +13,14 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { Range, Position, TextRange } from "./core";
+import { Range, TextRange, last, stableSort } from "./core";
 import { Diagnostics, DiagnosticMessages, NullDiagnosticMessages, LineMap, formatList } from "./diagnostics";
-import { SyntaxKind, tokenToString } from "./tokens";
+import { SyntaxKind, tokenToString, ProductionSeperatorKind, ArgumentOperatorKind, LookaheadOperatorKind, ParameterOperatorKind, TokenKind } from "./tokens";
 import { Scanner } from "./scanner";
 import { CancellationToken } from "prex";
 import {
     Node,
+    Token,
     StringLiteral,
     SourceFile,
     UnicodeCharacterLiteral,
@@ -31,6 +32,7 @@ import {
     Terminal,
     SymbolSet,
     Assertion,
+    InvalidAssertion,
     EmptyAssertion,
     LookaheadAssertion,
     NoSymbolHereAssertion,
@@ -43,6 +45,8 @@ import {
     Nonterminal,
     OneOfSymbol,
     LexicalSymbol,
+    PlaceholderSymbol,
+    InvalidSymbol,
     ButNotSymbol,
     UnicodeCharacterRange,
     SymbolSpan,
@@ -53,11 +57,12 @@ import {
     Import,
     Define,
     MetaElement,
-    SourceElement
+    SourceElement,
+    PrimarySymbol,
+    HtmlTrivia
 } from "./nodes";
-import { NodeNavigator } from "./navigator";
 
-enum ParsingContext {
+const enum ParsingContext {
     SourceElements,
     Parameters,
     BracketedParameters,
@@ -71,6 +76,20 @@ enum ParsingContext {
     NoSymbolHere
 }
 
+interface ListTypes {
+    [ParsingContext.SourceElements]: SourceElement;
+    [ParsingContext.Parameters]: Parameter;
+    [ParsingContext.BracketedParameters]: Parameter;
+    [ParsingContext.Arguments]: Argument;
+    [ParsingContext.BracketedArguments]: Argument;
+    [ParsingContext.RightHandSideListIndented]: RightHandSide;
+    [ParsingContext.SymbolSet]: SymbolSpan;
+    [ParsingContext.OneOfList]: Terminal;
+    [ParsingContext.OneOfListIndented]: Terminal;
+    [ParsingContext.OneOfSymbolList]: LexicalSymbol;
+    [ParsingContext.NoSymbolHere]: PrimarySymbol;
+}
+
 enum SkipWhitespace {
     None = 0,
     LineTerminator = 0x1,
@@ -78,7 +97,7 @@ enum SkipWhitespace {
     All = LineTerminator | Indentation,
 }
 
-export class TextChange {
+export interface TextChange {
     range: Range;
     text: string;
 }
@@ -110,18 +129,14 @@ export namespace TextChange {
 }
 
 export class Parser {
-    private scanner: Scanner;
-    private token: SyntaxKind;
-    private sourceFile: SourceFile;
-    private diagnostics: DiagnosticMessages;
-    private parsingContext: ParsingContext;
-    private previousSourceFile: SourceFile;
-    private cancellationToken: CancellationToken;
-
-    constructor(diagnostics: DiagnosticMessages, cancellationToken = CancellationToken.none) {
-        this.diagnostics = diagnostics;
-        this.cancellationToken = cancellationToken;
-    }
+    private scanner!: Scanner;
+    /* @internal */ token!: SyntaxKind;
+    private imports!: string[];
+    private diagnostics!: DiagnosticMessages;
+    private parsingContext!: ParsingContext;
+    private cancellationToken!: CancellationToken;
+    private tags: Map<number, HtmlTrivia[]> | undefined;
+    private tagsOffset!: number;
 
     // TODO(rbuckton): Incremental parser
     // public updateSourceFile(sourceFile: SourceFile, change: TextChange) {
@@ -151,35 +166,55 @@ export class Parser {
     //     // with new positions
     // }
 
-    public parseSourceFile(filename: string, text: string): SourceFile {
-        return this.parse(filename, text, /*previousSourceFile*/ undefined, /*changeRange*/ undefined);
+    public parseSourceFile(filename: string, text: string, cancellationToken = CancellationToken.none): SourceFile {
+        cancellationToken.throwIfCancellationRequested();
+        const savedImports = this.imports;
+        const savedDiagnostics = this.diagnostics;
+        const savedCancellationToken = this.cancellationToken;
+        const savedScanner = this.scanner;
+        const savedParsingContext = this.parsingContext;
+        const savedTags = this.tags;
+        const savedTagsOffset = this.tagsOffset;
+        try {
+            return this.parse(filename, text, /*previousSourceFile*/ undefined, /*changeRange*/ undefined, cancellationToken);
+        }
+        finally {
+            this.imports = savedImports;
+            this.diagnostics = savedDiagnostics;
+            this.cancellationToken = savedCancellationToken;
+            this.scanner = savedScanner;
+            this.parsingContext = savedParsingContext;
+            this.tags = savedTags;
+            this.tagsOffset = savedTagsOffset;
+        }
     }
 
-    private parse(filename: string, text: string, previousSourceFile: SourceFile, changeRange: TextRange) {
-        this.sourceFile = new SourceFile(filename, text);
-        this.diagnostics.setSourceFile(this.sourceFile);
-        this.scanner = new Scanner(filename, text, this.diagnostics, this.cancellationToken);
+    private parse(filename: string, text: string, previousSourceFile: SourceFile | undefined, changeRange: TextRange | undefined, cancellationToken: CancellationToken) {
+        const elements: SourceElement[] = [];
+        const sourceFile = new SourceFile(filename, text, elements);
+        this.imports = [];
+        this.diagnostics = new DiagnosticMessages();
+        this.diagnostics.setSourceFile(sourceFile);
+        this.cancellationToken = cancellationToken;
         this.parsingContext = ParsingContext.SourceElements;
+        this.tagsOffset = 0;
+        this.scanner = new Scanner(filename, text, this.diagnostics, this.cancellationToken);
 
         this.nextToken();
-        this.sourceFile.elements = this.parseSourceElementList() || [];
-
-        const imports: string[] = [];
-        for (const element of this.sourceFile.elements) {
-            if (element.kind === SyntaxKind.Import) {
-                const importNode = <Import>element;
-                if (importNode.path) {
-                    imports.push(importNode.path.text);
-                }
-            }
-        }
-
-        this.sourceFile.imports = imports;
-        return this.sourceFile;
+        this.parseSourceElementList(elements);
+        sourceFile.imports = this.imports;
+        sourceFile.parseDiagnostics = this.diagnostics;
+        return sourceFile;
     }
 
     private nextToken(): SyntaxKind {
-        return this.token = this.scanner.scan();
+        this.token = this.scanner.scan();
+        const htmlTrivia = trimTrivia(this.scanner.getHtmlTrivia());
+        if (htmlTrivia) {
+            if (!this.tags) this.tags = new Map<number, HtmlTrivia[]>();
+            this.tags.set(this.scanner.getStartPos(), htmlTrivia);
+        }
+        return this.token;
     }
 
     private lookahead<T>(callback: () => T): T {
@@ -237,7 +272,7 @@ export class Parser {
         }
     }
 
-    private readTokenValue(token: SyntaxKind): string {
+    private readTokenValue(token: SyntaxKind): string | undefined {
         if (this.token === token) {
             const text = this.scanner.getTokenValue();
             this.nextToken();
@@ -247,7 +282,7 @@ export class Parser {
         return undefined;
     }
 
-    private readTokenText(token: SyntaxKind): string {
+    private readTokenText(token: SyntaxKind): string | undefined {
         if (this.token === token) {
             const text = this.scanner.getTokenText();
             this.nextToken();
@@ -261,27 +296,30 @@ export class Parser {
         if (node) {
             node.pos = fullStart;
             node.end = this.scanner.getStartPos();
+            if (this.tags) {
+                attachHtmlTrivia(node, this.tags.get(node.pos), this.tags.get(node.end));
+            }
+            promoteHtmlTrivia(node, node.firstChild, node.lastChild);
         }
-
         return node;
     }
 
-    private parseToken(token: SyntaxKind): Node {
+    private parseToken<TKind extends TokenKind>(token: TKind): Token<TKind> | undefined {
         if (this.token === token) {
-            const fullStart = this.scanner.getTokenPos();
+            const fullStart = this.scanner.getStartPos();
             this.nextToken();
-            return this.finishNode(new Node(token), fullStart);
+            return this.finishNode(new Token(token), fullStart);
         }
 
         return undefined;
     }
 
-    private parseAnyToken(predicate: (token: SyntaxKind) => boolean): Node {
-        if (predicate(this.token)) {
-            const fullStart = this.scanner.getTokenPos();
-            const node = new Node(this.token);
+    private parseAnyToken<TKind extends TokenKind>(predicate: (token: SyntaxKind) => token is TKind): Token<TKind> | undefined {
+        const token = this.token;
+        if (predicate(token)) {
+            const fullStart = this.scanner.getStartPos();
             this.nextToken();
-            return this.finishNode(node, fullStart);
+            return this.finishNode(new Token(token), fullStart);
         }
 
         return undefined;
@@ -297,24 +335,23 @@ export class Parser {
         }
     }
 
-    private parseExpected(token: SyntaxKind): boolean {
-        if (this.token === token) {
-            this.nextToken();
-            return true;
-        }
-        else {
-            this.diagnostics.report(this.scanner.getTokenPos(), Diagnostics._0_expected, tokenToString(token));
-            return false;
-        }
-    }
+    // private parseExpected(token: SyntaxKind): boolean {
+    //     if (this.token === token) {
+    //         this.nextToken();
+    //         return true;
+    //     }
+    //     else {
+    //         this.diagnostics.report(this.scanner.getTokenPos(), Diagnostics._0_expected, tokenToString(token));
+    //         return false;
+    //     }
+    // }
 
-    private parseExpectedOrEndOfFile(token: SyntaxKind): boolean {
-        if (this.isEOF()) {
-            return true;
-        }
-
-        return this.parseExpected(token);
-    }
+    // private parseExpectedOrEndOfFile(token: SyntaxKind): boolean {
+    //     if (this.isEOF()) {
+    //         return true;
+    //     }
+    //     return this.parseExpected(token);
+    // }
 
     // list parsing
     private shouldParseElement(): boolean {
@@ -408,8 +445,8 @@ export class Parser {
         }
     }
 
-    private parseElement(): Node {
-        switch (this.parsingContext) {
+    private parseElement<TParsingContext extends ParsingContext>(listContext: TParsingContext): ListTypes[TParsingContext] | undefined {
+        switch (listContext) {
             case ParsingContext.SourceElements:
                 return this.parseSourceElement();
 
@@ -436,7 +473,7 @@ export class Parser {
                 return this.parsePrimarySymbol(/*allowOptional*/ false);
 
             default:
-                console.error(`Unexpected parsing context: ${ParsingContext[<any>this.parsingContext]}`);
+                console.error(`Unexpected parsing context: ${this.parsingContext}`);
                 return undefined;
         }
     }
@@ -592,7 +629,7 @@ export class Parser {
 
     private parseCloseToken() {
         if (this.isOnCloseToken()) {
-            this.parseToken(this.token);
+            this.nextToken();
             return true;
         }
 
@@ -636,21 +673,20 @@ export class Parser {
 
     private parseSeparator() {
         if (this.isOnSeparator()) {
-            this.parseToken(this.token);
+            this.nextToken();
             return true;
         }
 
         return false;
     }
 
-    private parseList<TNode extends Node>(listContext: ParsingContext): TNode[] {
+    private parseList<TParsingContext extends ParsingContext>(listContext: TParsingContext, result?: ListTypes[TParsingContext][]): ListTypes[TParsingContext][] | undefined {
         const saveContext = this.parsingContext;
         this.parsingContext = listContext;
         const hasCloseToken = this.hasCloseToken();
         const hasSeparator = this.hasSeparator();
         const shouldConsumeCloseToken = this.shouldConsumeCloseToken();
         const whitespaceToSkip = this.shouldSkipWhitespace();
-        let result: TNode[];
         while (!this.isEOF()) {
             this.cancellationToken.throwIfCancellationRequested();
             this.skipWhitespace(whitespaceToSkip);
@@ -662,7 +698,7 @@ export class Parser {
                     result = [];
                 }
 
-                const element = <TNode>this.parseElement();
+                const element = this.parseElement(listContext);
                 if (element) {
                     result.push(element);
                 }
@@ -699,26 +735,25 @@ export class Parser {
     }
 
     private parseIdentifier(): Identifier {
-        const fullStart = this.scanner.getTokenPos();
-        const text = this.canBeIdentifier(this.token) && this.readTokenValue(this.token);
+        const fullStart = this.scanner.getStartPos();
+        const text = this.canBeIdentifier(this.token) ? this.readTokenValue(this.token) : undefined;
         const node = new Identifier(text);
         return this.finishNode(node, fullStart);
     }
 
     private parseUnicodeCharacterLiteral(allowOptional: boolean): UnicodeCharacterLiteral {
-        const fullStart = this.scanner.getTokenPos();
+        const fullStart = this.scanner.getStartPos();
         const text = this.readTokenText(SyntaxKind.UnicodeCharacterLiteral);
         const questionToken = allowOptional ? this.parseToken(SyntaxKind.QuestionToken) : undefined;
         const node = new UnicodeCharacterLiteral(text, questionToken);
         return this.finishNode(node, fullStart);
     }
 
-    private parseProse(): Prose {
-        const fullStart = this.scanner.getTokenPos();
-        const greaterThanToken = this.parseToken(SyntaxKind.GreaterThanToken);
+    private parseProse(greaterThanToken: Token<SyntaxKind.GreaterThanToken>): Prose {
         const fragments = this.parseProseFragments();
         const node = new Prose(greaterThanToken, fragments);
-        return this.finishNode(node, fullStart);
+        this.finishNode(node, greaterThanToken.pos);
+        return node;
     }
 
     private isStartOfParameter(): boolean {
@@ -726,48 +761,47 @@ export class Parser {
     }
 
     private parseParameter(): Parameter {
-        const fullStart = this.scanner.getTokenPos();
+        const fullStart = this.scanner.getStartPos();
         const name = this.parseIdentifier();
         const node = new Parameter(name);
-        return this.finishNode(node, fullStart);
+        this.finishNode(node, fullStart);
+        return node;
     }
 
-    private parseParameterListTail(openToken: Node, parsingContext: ParsingContext, closeTokenKind: SyntaxKind): ParameterList {
-        const elements = this.parseList<Parameter>(parsingContext);
+    private parseParameterListTail(openToken: Token<SyntaxKind.OpenParenToken | SyntaxKind.OpenBracketToken>, parsingContext: ParsingContext.Parameters | ParsingContext.BracketedParameters, closeTokenKind: SyntaxKind.CloseParenToken | SyntaxKind.CloseBracketToken): ParameterList {
+        const elements = this.parseList(parsingContext);
         const closeToken = this.parseToken(closeTokenKind);
         const node = new ParameterList(openToken, elements, closeToken);
         return this.finishNode(node, openToken.pos);
     }
 
-    private tryParseParameterList(): ParameterList {
-        let openToken = this.parseToken(SyntaxKind.OpenParenToken);
-        if (openToken) {
-            return this.parseParameterListTail(openToken, ParsingContext.Parameters, SyntaxKind.CloseParenToken);
+    private tryParseParameterList(): ParameterList | undefined {
+        const openParenToken = this.parseToken(SyntaxKind.OpenParenToken);
+        if (openParenToken) {
+            return this.parseParameterListTail(openParenToken, ParsingContext.Parameters, SyntaxKind.CloseParenToken);
         }
-        else {
-            openToken = this.parseToken(SyntaxKind.OpenBracketToken);
-            if (openToken) {
-                return this.parseParameterListTail(openToken, ParsingContext.BracketedParameters, SyntaxKind.CloseBracketToken);
-            }
+
+        const openBracketToken = this.parseToken(SyntaxKind.OpenBracketToken);
+        if (openBracketToken) {
+            return this.parseParameterListTail(openBracketToken, ParsingContext.BracketedParameters, SyntaxKind.CloseBracketToken);
         }
 
         return undefined;
     }
 
-    private parseOneOfList(): OneOfList {
-        const oneKeyword = this.parseToken(SyntaxKind.OneKeyword);
+    private parseOneOfList(oneKeyword: Token<SyntaxKind.OneKeyword>): OneOfList {
         const ofKeyword = this.parseToken(SyntaxKind.OfKeyword);
         this.parseOptional(SyntaxKind.LineTerminatorToken);
 
         const openIndentToken = this.parseToken(SyntaxKind.IndentToken);
-        const terminals = this.parseList<Terminal>(openIndentToken ? ParsingContext.OneOfListIndented : ParsingContext.OneOfList);
+        const terminals = this.parseList(openIndentToken ? ParsingContext.OneOfListIndented : ParsingContext.OneOfList);
         const closeIndentToken = this.parseToken(SyntaxKind.DedentToken);
         const node = new OneOfList(oneKeyword, ofKeyword, openIndentToken, terminals, closeIndentToken);
         return this.finishNode(node, oneKeyword.pos);
     }
 
-    private parseSymbolSetTail(openBraceToken: Node): SymbolSet {
-        const terminals = this.parseList<SymbolSpan>(ParsingContext.SymbolSet);
+    private parseSymbolSetTail(openBraceToken: Token<SyntaxKind.OpenBraceToken>): SymbolSet {
+        const terminals = this.parseList(ParsingContext.SymbolSet);
         const closeBraceToken = this.parseToken(SyntaxKind.CloseBraceToken);
         const node = new SymbolSet(openBraceToken, terminals, closeBraceToken);
         return this.finishNode(node, openBraceToken.pos);
@@ -783,50 +817,29 @@ export class Parser {
         }
     }
 
-    private parseEmptyAssertionTail(openBracketToken: Node): EmptyAssertion {
-        const emptyKeyword = this.parseToken(SyntaxKind.EmptyKeyword);
+    private parseEmptyAssertionTail(openBracketToken: Token<SyntaxKind.OpenBracketToken>, emptyKeyword: Token<SyntaxKind.EmptyKeyword>): EmptyAssertion {
         const closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
         const node = new EmptyAssertion(openBracketToken, emptyKeyword, closeBracketToken);
         return this.finishNode(node, openBracketToken.pos);
     }
 
-    private parseAnyLookaheadOperator(): Node {
-        switch (this.token) {
-            case SyntaxKind.EqualsToken:
-            case SyntaxKind.EqualsEqualsToken:
-            case SyntaxKind.ExclamationEqualsToken:
-            case SyntaxKind.NotEqualToToken:
-            case SyntaxKind.LessThanMinusToken:
-            case SyntaxKind.ElementOfToken:
-            case SyntaxKind.LessThanExclamationToken:
-            case SyntaxKind.NotAnElementOfToken:
-                return this.parseToken(this.token);
-
-            default:
-                return undefined;
-        }
-    }
-
-    private parseLookaheadAssertionTail(openBracketToken: Node): LookaheadAssertion {
-        const lookaheadKeyword = this.parseToken(SyntaxKind.LookaheadKeyword);
-        const operatorToken = this.parseAnyLookaheadOperator();
+    private parseLookaheadAssertionTail(openBracketToken: Token<SyntaxKind.OpenBracketToken>, lookaheadKeyword: Token<SyntaxKind.LookaheadKeyword>): LookaheadAssertion {
+        const operatorToken = this.parseAnyToken(isLookaheadOperatorToken);
         const lookahead = this.parseSymbolSpanRestOrSymbolSet();
         const closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
         const node = new LookaheadAssertion(openBracketToken, lookaheadKeyword, operatorToken, lookahead, closeBracketToken);
         return this.finishNode(node, openBracketToken.pos);
     }
 
-    private parseNoSymbolHereAssertionTail(openBracketToken: Node): NoSymbolHereAssertion {
-        const noKeyword = this.parseToken(SyntaxKind.NoKeyword);
-        const symbols = this.parseList<LexicalSymbol>(ParsingContext.NoSymbolHere);
+    private parseNoSymbolHereAssertionTail(openBracketToken: Token<SyntaxKind.OpenBracketToken>, noKeyword: Token<SyntaxKind.NoKeyword>): NoSymbolHereAssertion {
+        const symbols = this.parseList(ParsingContext.NoSymbolHere);
         const hereKeyword = this.parseToken(SyntaxKind.HereKeyword);
         const closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
         const node = new NoSymbolHereAssertion(openBracketToken, noKeyword, symbols, hereKeyword, closeBracketToken);
         return this.finishNode(node, openBracketToken.pos);
     }
 
-    private parseLexicalGoalAssertionTail(openBracketToken: Node): LexicalGoalAssertion {
-        const lexicalKeyword = this.parseToken(SyntaxKind.LexicalKeyword);
+    private parseLexicalGoalAssertionTail(openBracketToken: Token<SyntaxKind.OpenBracketToken>, lexicalKeyword: Token<SyntaxKind.LexicalKeyword>): LexicalGoalAssertion {
         const goalKeyword = this.parseToken(SyntaxKind.GoalKeyword);
         const symbol = this.parseIdentifier();
         const closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
@@ -834,60 +847,52 @@ export class Parser {
         return this.finishNode(node, openBracketToken.pos);
     }
 
-    private parseAnyParameterValueOperator(): Node {
-        switch (this.token) {
-            case SyntaxKind.PlusToken:
-            case SyntaxKind.TildeToken:
-                return this.parseToken(this.token);
-
-            default:
-                return undefined;
-        }
-    }
-
-    private parseParameterValueAssertionTail(openBracketToken: Node): ParameterValueAssertion {
-        const operatorToken = this.parseAnyParameterValueOperator();
+    private parseParameterValueAssertionTail(openBracketToken: Token<SyntaxKind.OpenBracketToken>, operatorToken: Token<ParameterOperatorKind>): ParameterValueAssertion {
         const name = this.parseIdentifier();
         const closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
         const node = new ParameterValueAssertion(openBracketToken, operatorToken, name, closeBracketToken);
         return this.finishNode(node, openBracketToken.pos);
     }
 
-    private parseInvalidAssertionTail(openBracketToken: Node): Assertion {
-        const fullStart = this.scanner.getTokenPos();
+    private parseInvalidAssertionTail(openBracketToken: Token<SyntaxKind.OpenBracketToken>): Assertion {
+        const fullStart = this.scanner.getStartPos();
         this.skipUntil(isInvalidConstraintTailRecoveryToken);
         const closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
-        const node = new Assertion(SyntaxKind.InvalidAssertion, openBracketToken, closeBracketToken);
+        const node = new InvalidAssertion(openBracketToken, closeBracketToken);
         this.finishNode(node, fullStart);
         return node;
     }
 
-    private parseAssertion(): Assertion {
-        const openBracketToken = this.parseToken(SyntaxKind.OpenBracketToken);
-        switch (this.token) {
-            case SyntaxKind.EmptyKeyword:
-                return this.parseEmptyAssertionTail(openBracketToken);
-
-            case SyntaxKind.LookaheadKeyword:
-                return this.parseLookaheadAssertionTail(openBracketToken);
-
-            case SyntaxKind.NoKeyword:
-                return this.parseNoSymbolHereAssertionTail(openBracketToken);
-
-            case SyntaxKind.LexicalKeyword:
-                return this.parseLexicalGoalAssertionTail(openBracketToken);
-
-            case SyntaxKind.TildeToken:
-            case SyntaxKind.PlusToken:
-                return this.parseParameterValueAssertionTail(openBracketToken);
-
-            default:
-                return this.parseInvalidAssertionTail(openBracketToken);
+    private parseAssertion(openBracketToken: Token<SyntaxKind.OpenBracketToken>): Assertion {
+        const emptyKeyword = this.parseToken(SyntaxKind.EmptyKeyword);
+        if (emptyKeyword) {
+            return this.parseEmptyAssertionTail(openBracketToken, emptyKeyword);
         }
+
+        const lookaheadKeyword = this.parseToken(SyntaxKind.LookaheadKeyword);
+        if (lookaheadKeyword) {
+            return this.parseLookaheadAssertionTail(openBracketToken, lookaheadKeyword);
+        }
+
+        const noKeyword = this.parseToken(SyntaxKind.NoKeyword);
+        if (noKeyword) {
+            return this.parseNoSymbolHereAssertionTail(openBracketToken, noKeyword);
+        }
+
+        const lexicalKeyword = this.parseToken(SyntaxKind.LexicalKeyword);
+        if (lexicalKeyword) {
+            return this.parseLexicalGoalAssertionTail(openBracketToken, lexicalKeyword);
+        }
+
+        const operatorToken = this.parseAnyToken(isParameterOperatorToken);
+        if (operatorToken) {
+            return this.parseParameterValueAssertionTail(openBracketToken, operatorToken);
+        }
+
+        return this.parseInvalidAssertionTail(openBracketToken);
     }
 
-    private parseProseAssertion(): ProseAssertion {
-        const openBracketToken = this.parseToken(SyntaxKind.OpenBracketGreaterThanToken);
+    private parseProseAssertion(openBracketToken: Token<SyntaxKind.OpenBracketGreaterThanToken>): ProseAssertion {
         const fragments = this.parseProseFragments();
         const closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
         const node = new ProseAssertion(openBracketToken, fragments, closeBracketToken);
@@ -895,19 +900,23 @@ export class Parser {
     }
 
     private parseProseFragments() {
-        const fragments: (ProseFragmentLiteral | Terminal | Nonterminal)[] = [];
-        while (true) {
+        let fragments: (ProseFragmentLiteral | Terminal | Nonterminal)[] | undefined;
+        while (this.token) {
             if (this.token === SyntaxKind.ProseFull) {
+                if (!fragments) fragments = [];
                 fragments.push(this.parseProseFragmentLiteral(this.token));
                 break;
             }
             else if (this.token >= SyntaxKind.FirstProseFragment && this.token <= SyntaxKind.LastProseFragment) {
+                if (!fragments) fragments = [];
                 fragments.push(this.parseProseFragmentLiteral(this.token));
             }
             else if (this.token === SyntaxKind.Terminal) {
+                if (!fragments) fragments = [];
                 fragments.push(this.parseTerminal(/*allowOptional*/ false));
             }
             else if (this.token === SyntaxKind.Identifier) {
+                if (!fragments) fragments = [];
                 fragments.push(this.parseNonterminal(/*allowArgumentList*/ false, /*allowOptional*/ false));
             }
             else {
@@ -919,18 +928,19 @@ export class Parser {
     }
 
     private parseProseFragmentLiteral(token: SyntaxKind) {
-        const fullStart = this.scanner.getTokenPos();
+        const fullStart = this.scanner.getStartPos();
         const text = this.readTokenValue(token);
         const node = new ProseFragmentLiteral(token, text);
         return this.finishNode(node, fullStart);
     }
 
     private parseTerminal(allowOptional: boolean): Terminal {
-        const fullStart = this.scanner.getTokenPos();
+        const fullStart = this.scanner.getStartPos();
         const text = this.readTokenValue(SyntaxKind.Terminal);
         const questionToken = allowOptional ? this.parseToken(SyntaxKind.QuestionToken) : undefined;
         const node = new Terminal(text, questionToken);
-        return this.finishNode(node, fullStart);
+        this.finishNode(node, fullStart);
+        return node;
     }
 
     private isStartOfArgument(): boolean {
@@ -939,28 +949,33 @@ export class Parser {
     }
 
     private parseArgument(): Argument {
-        const fullStart = this.scanner.getTokenPos();
+        const fullStart = this.scanner.getStartPos();
         const operatorToken = this.parseAnyToken(isLeadingArgumentToken);
         const name = this.parseIdentifier();
         const node = new Argument(operatorToken, name);
-        return this.finishNode(node, fullStart);
+        this.finishNode(node, fullStart);
+        return node;
     }
 
-    private parseArgumentListTail(openToken: Node, parsingContext: ParsingContext, closeTokenKind: SyntaxKind): ArgumentList {
-        const elements = this.parseList<Argument>(parsingContext);
+    private parseArgumentListTail(openToken: Token<SyntaxKind.OpenParenToken | SyntaxKind.OpenBracketToken>, parsingContext: ParsingContext.Arguments | ParsingContext.BracketedArguments, closeTokenKind: SyntaxKind.CloseParenToken | SyntaxKind.CloseBracketToken): ArgumentList {
+        const elements = this.parseList(parsingContext);
         const closeToken = this.parseToken(closeTokenKind);
         const node = new ArgumentList(openToken, elements, closeToken);
-        return this.finishNode(node, openToken.pos);
+        this.finishNode(node, openToken.pos);
+        return node;
     }
 
-    private tryParseArgumentList(): ArgumentList {
-        let openToken = this.parseToken(SyntaxKind.OpenParenToken);
-        if (openToken) {
-            return this.parseArgumentListTail(openToken, ParsingContext.Arguments, SyntaxKind.CloseParenToken);
+    private tryParseArgumentList(): ArgumentList | undefined {
+        const openParenToken = this.parseToken(SyntaxKind.OpenParenToken);
+        if (openParenToken) {
+            return this.parseArgumentListTail(openParenToken, ParsingContext.Arguments, SyntaxKind.CloseParenToken);
         }
-        else if (this.isStartOfArgumentList()) {
-            openToken = this.parseToken(SyntaxKind.OpenBracketToken);
-            return this.parseArgumentListTail(openToken, ParsingContext.BracketedArguments, SyntaxKind.CloseBracketToken);
+
+        if (this.isStartOfArgumentList()) {
+            const openBracketToken = this.parseToken(SyntaxKind.OpenBracketToken);
+            if (openBracketToken) {
+                return this.parseArgumentListTail(openBracketToken, ParsingContext.BracketedArguments, SyntaxKind.CloseBracketToken);
+            }
         }
 
         return undefined;
@@ -981,33 +996,32 @@ export class Parser {
     }
 
     private parseNonterminal(allowArgumentList: boolean, allowOptional: boolean): Nonterminal {
-        const fullStart = this.scanner.getTokenPos();
+        const fullStart = this.scanner.getStartPos();
         const name = this.parseIdentifier();
         const argumentList = allowArgumentList ? this.tryParseArgumentList() : undefined;
         const questionToken = allowOptional ? this.parseToken(SyntaxKind.QuestionToken) : undefined;
         const node = new Nonterminal(name, argumentList, questionToken);
-        return this.finishNode(node, fullStart);
+        this.finishNode(node, fullStart);
+        return node;
     }
 
-    private parseOneOfSymbol(): OneOfSymbol {
-        const fullStart = this.scanner.getTokenPos();
-        const oneKeyword = this.parseToken(SyntaxKind.OneKeyword);
+    private parseOneOfSymbol(oneKeyword: Token<SyntaxKind.OneKeyword>): OneOfSymbol {
         const ofKeyword = this.parseToken(SyntaxKind.OfKeyword);
-        const symbols = this.parseList<LexicalSymbol>(ParsingContext.OneOfSymbolList);
+        const symbols = this.parseList(ParsingContext.OneOfSymbolList);
         const node = new OneOfSymbol(oneKeyword, ofKeyword, symbols);
-        return this.finishNode(node, fullStart);
+        this.finishNode(node, oneKeyword.pos);
+        return node;
     }
 
-    private parsePlaceholderSymbol(): LexicalSymbol {
-        const fullStart = this.scanner.getTokenPos();
-        const node = new LexicalSymbol(this.token);
-        this.nextToken();
-        return this.finishNode(node, fullStart);
+    private parsePlaceholderSymbol(placeholderToken: Token<SyntaxKind.AtToken>): LexicalSymbol {
+        const node = new PlaceholderSymbol(placeholderToken);
+        this.finishNode(node, placeholderToken.pos);
+        return node;
     }
 
     private parseInvalidSymbol(): LexicalSymbol {
-        const fullStart = this.scanner.getTokenPos();
-        const node = new LexicalSymbol(SyntaxKind.InvalidSymbol);
+        const fullStart = this.scanner.getStartPos();
+        const node = new InvalidSymbol();
         this.skipUntil(isInvalidSymbolRecoveryToken);
         return this.finishNode(node, fullStart);
     }
@@ -1023,10 +1037,11 @@ export class Parser {
         return symbol;
     }
 
-    private parseUnicodeCharacterRangeTail(left: UnicodeCharacterLiteral, throughKeyword: Node): UnicodeCharacterRange {
+    private parseUnicodeCharacterRangeTail(left: UnicodeCharacterLiteral, throughKeyword: Token<SyntaxKind.ThroughKeyword>): UnicodeCharacterRange {
         const right = this.parseUnicodeCharacterLiteral(/*allowOptional*/ false);
         const node = new UnicodeCharacterRange(left, throughKeyword, right);
-        return this.finishNode(node, left.pos);
+        this.finishNode(node, left.pos);
+        return node;
     }
 
     private parsePrimarySymbol(allowOptional: boolean): LexicalSymbol {
@@ -1039,45 +1054,41 @@ export class Parser {
 
             case SyntaxKind.Identifier:
                 return this.parseNonterminal(/*allowArgumentList*/ true, allowOptional);
-
-            case SyntaxKind.AtToken:
-                return this.parsePlaceholderSymbol();
-
-            default:
-                return this.parseInvalidSymbol();
         }
+
+        const placeholderToken = this.parseToken(SyntaxKind.AtToken);
+        if (placeholderToken) {
+            return this.parsePlaceholderSymbol(placeholderToken);
+        }
+
+        return this.parseInvalidSymbol();
     }
 
     private parseUnarySymbol(): LexicalSymbol {
-        switch (this.token) {
-            case SyntaxKind.OneKeyword:
-                return this.parseOneOfSymbol();
-
-            default:
-                return this.parsePrimarySymbol(/*allowOptional*/ true);
-        }
-    }
-
-    private tryParseThroughOperator(): Node {
-        if (this.token === SyntaxKind.ThroughKeyword) {
-            return this.parseToken(SyntaxKind.ThroughKeyword);
+        const oneKeyword = this.parseToken(SyntaxKind.OneKeyword);
+        if (oneKeyword) {
+            return this.parseOneOfSymbol(oneKeyword);
         }
 
-        return undefined;
+        return this.parsePrimarySymbol(/*allowOptional*/ true);
     }
 
-    private parseButNotSymbolTail(left: LexicalSymbol, butKeyword: Node, notKeyword: Node): ButNotSymbol {
+    private parseButNotSymbolTail(left: LexicalSymbol, butKeyword: Token<SyntaxKind.ButKeyword> | undefined, notKeyword: Token<SyntaxKind.NotKeyword> | undefined): ButNotSymbol {
         const right = this.parseSymbol();
         const node = new ButNotSymbol(left, butKeyword, notKeyword, right);
-        return this.finishNode(node, left.pos);
+        this.finishNode(node, left.pos);
+        return node;
     }
 
     private parseSymbol(): LexicalSymbol {
-        if (this.token === SyntaxKind.OpenBracketToken) {
-            return this.parseAssertion();
+        const openBracketToken = this.parseToken(SyntaxKind.OpenBracketToken);
+        if (openBracketToken) {
+            return this.parseAssertion(openBracketToken);
         }
-        else if (this.token === SyntaxKind.OpenBracketGreaterThanToken) {
-            return this.parseProseAssertion();
+
+        const openBracketGreaterThanToken = this.parseToken(SyntaxKind.OpenBracketGreaterThanToken);
+        if (openBracketGreaterThanToken) {
+            return this.parseProseAssertion(openBracketGreaterThanToken);
         }
 
         const symbol = this.parseUnarySymbol();
@@ -1090,7 +1101,7 @@ export class Parser {
         return symbol;
     }
 
-    private tryParseSymbolSpan(): SymbolSpan {
+    private tryParseSymbolSpan(): SymbolSpan | undefined {
         if (this.isStartOfSymbolSpan()) {
             return this.parseSymbolSpanRest();
         }
@@ -1099,19 +1110,21 @@ export class Parser {
     }
 
     private parseSymbolSpanRest(): SymbolSpan {
-        const fullStart = this.scanner.getTokenPos();
+        const fullStart = this.scanner.getStartPos();
         const symbol = this.parseSymbol();
         const next = this.tryParseSymbolSpan();
         const node = new SymbolSpan(symbol, next);
-        return this.finishNode(node, fullStart);
+        this.finishNode(node, fullStart);
+        return node;
     }
 
     private parseSymbolSpan(): SymbolSpan {
-        const fullStart = this.scanner.getTokenPos();
-        if (this.token === SyntaxKind.GreaterThanToken) {
-            const symbol = this.parseProse();
+        const greaterThanToken = this.parseToken(SyntaxKind.GreaterThanToken);
+        if (greaterThanToken) {
+            const symbol = this.parseProse(greaterThanToken);
             const node = new SymbolSpan(symbol, /*next*/ undefined);
-            return this.finishNode(node, fullStart);
+            this.finishNode(node, greaterThanToken.pos);
+            return node;
         }
         else {
             return this.parseSymbolSpanRest();
@@ -1138,9 +1151,9 @@ export class Parser {
         return this.isStartOfSymbolSpan();
     }
 
-    private parseLinkReference(): LinkReference {
+    private parseLinkReference(): LinkReference | undefined {
         if (this.token === SyntaxKind.LinkReference) {
-            const fullStart = this.scanner.getTokenPos();
+            const fullStart = this.scanner.getStartPos();
             const text = this.readTokenValue(SyntaxKind.LinkReference);
             const node = new LinkReference(text);
             return this.finishNode(node, fullStart);
@@ -1150,31 +1163,40 @@ export class Parser {
     }
 
     private parseRightHandSide(): RightHandSide {
-        const fullStart = this.scanner.getTokenPos();
+        const fullStart = this.scanner.getStartPos();
         const head = this.parseSymbolSpan();
         const reference = this.parseLinkReference();
         const node = new RightHandSide(head, reference);
+
+        let parsedLineTerminator = false;
         if (this.parsingContext !== ParsingContext.RightHandSideListIndented) {
-            this.parseOptional(SyntaxKind.LineTerminatorToken);
+            parsedLineTerminator = this.parseOptional(SyntaxKind.LineTerminatorToken);
         }
 
-        return this.finishNode(node, fullStart);
+        this.finishNode(node, fullStart);
+        // Fix order due to newline
+        if (parsedLineTerminator && node.trailingHtmlTrivia) {
+            node.trailingHtmlTrivia = stableSort(node.trailingHtmlTrivia, trivia => trivia.pos);
+        }
+        return node;
     }
 
     private parseRightHandSideList(): RightHandSideList {
-        const fullStart = this.scanner.getTokenPos();
+        const fullStart = this.scanner.getStartPos();
         const openIndentToken = this.parseToken(SyntaxKind.IndentToken);
-        const elements = openIndentToken && this.parseList<RightHandSide>(ParsingContext.RightHandSideListIndented) || [];
+        const elements = openIndentToken && this.parseList(ParsingContext.RightHandSideListIndented) || [];
         const closeIndentToken = this.parseToken(SyntaxKind.DedentToken);
         const node = new RightHandSideList(openIndentToken, elements, closeIndentToken);
         return this.finishNode(node, fullStart);
     }
 
     private parseBody(): OneOfList | RightHandSide | RightHandSideList {
-        if (this.token === SyntaxKind.OneKeyword) {
-            return this.parseOneOfList();
+        const oneKeyword = this.parseToken(SyntaxKind.OneKeyword);
+        if (oneKeyword) {
+            return this.parseOneOfList(oneKeyword);
         }
-        else if (this.token === SyntaxKind.LineTerminatorToken) {
+
+        if (this.token === SyntaxKind.LineTerminatorToken) {
             this.nextToken();
             return this.parseRightHandSideList();
         }
@@ -1184,18 +1206,19 @@ export class Parser {
     }
 
     private parseProduction(): Production {
-        const fullStart = this.scanner.getTokenPos();
+        const fullStart = this.scanner.getStartPos();
         const name = this.parseIdentifier();
         const parameters = this.tryParseParameterList();
         const colonToken = this.parseAnyToken(isProductionSeparatorToken);
         const body = this.parseBody();
         const node = new Production(name, parameters, colonToken, body);
-        return this.finishNode(node, fullStart);
+        this.finishNode(node, fullStart);
+        return node;
     }
 
-    private parseStringLiteral(): StringLiteral {
+    private parseStringLiteral(): StringLiteral | undefined {
         if (this.token === SyntaxKind.StringLiteral) {
-            const fullStart = this.scanner.getTokenPos();
+            const fullStart = this.scanner.getStartPos();
             const text = this.scanner.getTokenValue();
             const node = new StringLiteral(text);
             this.nextToken();
@@ -1205,33 +1228,35 @@ export class Parser {
         return undefined;
     }
 
-    private parseMetaElement(): MetaElement {
-        const fullStart = this.scanner.getTokenPos();
-        const atToken = this.parseToken(SyntaxKind.AtToken);
-        switch (this.token) {
-            case SyntaxKind.ImportKeyword:
-                return this.parseImport(fullStart, atToken);
-            case SyntaxKind.DefineKeyword:
-                return this.parseDefine(fullStart, atToken);
-            default:
-                this.diagnostics.report(this.scanner.getTokenPos(), Diagnostics._0_expected, formatList([SyntaxKind.ImportKeyword, SyntaxKind.DefineKeyword]));
-                return;
+    private parseMetaElement(atToken: Token<SyntaxKind.AtToken>): MetaElement | undefined {
+        const importKeyword = this.parseToken(SyntaxKind.ImportKeyword);
+        if (importKeyword) {
+            return this.parseImport(atToken, importKeyword);
         }
+
+        const defineKeyword = this.parseToken(SyntaxKind.DefineKeyword);
+        if (defineKeyword) {
+            return this.parseDefine(atToken, defineKeyword);
+        }
+
+        this.diagnostics.report(this.scanner.getTokenPos(), Diagnostics._0_expected, formatList([SyntaxKind.ImportKeyword, SyntaxKind.DefineKeyword]));
+        return undefined;
     }
 
-    private parseImport(fullStart: number, atToken: Node): Import {
-        const importKeyword = this.parseToken(SyntaxKind.ImportKeyword);
+    private parseImport(atToken: Token<SyntaxKind.AtToken>, importKeyword: Token<SyntaxKind.ImportKeyword>): Import {
         const path = this.parseStringLiteral();
         const node = new Import(atToken, importKeyword, path);
-        return this.finishNode(node, fullStart);
+        this.finishNode(node, atToken.pos);
+        if (node.path && node.path.text) this.imports.push(node.path.text);
+        return node;
     }
 
-    private parseDefine(fullStart: number, atToken: Node): Define {
-        const defineKeyword = this.parseToken(SyntaxKind.DefineKeyword);
+    private parseDefine(atToken: Token<SyntaxKind.AtToken>, defineKeyword: Token<SyntaxKind.DefineKeyword>): Define {
         const key = this.parseIdentifier();
         const valueToken = this.parseAnyToken(isBooleanLiteralToken);
         const node = new Define(atToken, defineKeyword, key, valueToken);
-        return this.finishNode(node, fullStart);
+        this.finishNode(node, atToken.pos);
+        return node;
     }
 
     private isStartOfSourceElement(): boolean {
@@ -1252,22 +1277,22 @@ export class Parser {
         }
     }
 
-    private parseSourceElement(): SourceElement {
-        switch (this.token) {
-            case SyntaxKind.Identifier:
-                return this.parseProduction();
-
-            case SyntaxKind.AtToken:
-                return this.parseMetaElement();
-
-            default:
-                this.diagnostics.report(this.scanner.getTokenPos(), Diagnostics.Unexpected_token_0_, tokenToString(this.token));
-                return;
+    private parseSourceElement(): SourceElement | undefined {
+        if (this.token === SyntaxKind.Identifier) {
+            return this.parseProduction();
         }
+
+        const atToken = this.parseToken(SyntaxKind.AtToken);
+        if (atToken) {
+            return this.parseMetaElement(atToken);
+        }
+
+        this.diagnostics.report(this.scanner.getTokenPos(), Diagnostics.Unexpected_token_0_, tokenToString(this.token));
+        return undefined;
     }
 
-    private parseSourceElementList(): SourceElement[] {
-        return this.parseList<SourceElement>(ParsingContext.SourceElements);
+    private parseSourceElementList(elements?: SourceElement[]): SourceElement[] | undefined {
+        return this.parseList(ParsingContext.SourceElements, elements);
     }
 }
 
@@ -1366,19 +1391,134 @@ function isInvalidConstraintTailRecoveryToken(token: SyntaxKind) {
         || token === SyntaxKind.Identifier;
 }
 
-function isProductionSeparatorToken(token: SyntaxKind) {
+function isProductionSeparatorToken(token: SyntaxKind): token is ProductionSeperatorKind {
     return token === SyntaxKind.ColonToken
         || token === SyntaxKind.ColonColonToken
         || token === SyntaxKind.ColonColonColonToken;
 }
 
-function isLeadingArgumentToken(token: SyntaxKind) {
+function isLeadingArgumentToken(token: SyntaxKind): token is ArgumentOperatorKind {
     return token === SyntaxKind.QuestionToken
         || token === SyntaxKind.PlusToken
         || token === SyntaxKind.TildeToken;
 }
 
-function isBooleanLiteralToken(token: SyntaxKind) {
+function isParameterOperatorToken(token: SyntaxKind): token is ParameterOperatorKind {
+    return token === SyntaxKind.PlusToken
+        || token === SyntaxKind.TildeToken;
+}
+
+function isBooleanLiteralToken(token: SyntaxKind): token is SyntaxKind.TrueKeyword | SyntaxKind.FalseKeyword {
     return token === SyntaxKind.TrueKeyword
         || token === SyntaxKind.FalseKeyword;
+}
+
+function isLookaheadOperatorToken(token: SyntaxKind): token is LookaheadOperatorKind {
+    return token === SyntaxKind.EqualsToken
+        || token === SyntaxKind.EqualsEqualsToken
+        || token === SyntaxKind.ExclamationEqualsToken
+        || token === SyntaxKind.NotEqualToToken
+        || token === SyntaxKind.LessThanMinusToken
+        || token === SyntaxKind.ElementOfToken
+        || token === SyntaxKind.LessThanExclamationToken
+        || token === SyntaxKind.NotAnElementOfToken;
+}
+
+function matched(possibleOpenTag: HtmlTrivia, possibleCloseTag: HtmlTrivia) {
+    return possibleOpenTag.kind === SyntaxKind.HtmlOpenTagTrivia
+        && possibleCloseTag.kind === SyntaxKind.HtmlCloseTagTrivia
+        && possibleOpenTag.tagName === possibleCloseTag.tagName;
+}
+
+function trimTrivia(trivia: HtmlTrivia[] | undefined) {
+    let result: HtmlTrivia[] | undefined;
+    if (trivia) {
+        for (let i = 0; i < trivia.length - 1; i++) {
+            if (matched(trivia[i], trivia[i + 1])) {
+                if (!result) result = trivia.slice(0, i);
+            }
+            else if (result) {
+                result.push(trivia[i]);
+            }
+        }
+    }
+    return result || trivia;
+}
+
+function attachHtmlTrivia(node: Node, leadingTags: HtmlTrivia[] | undefined, trailingTags: HtmlTrivia[] | undefined) {
+    if (leadingTags) {
+        let leadingTag = leadingTags.pop();
+        while (leadingTag && leadingTag.kind === SyntaxKind.HtmlOpenTagTrivia) {
+            (node.leadingHtmlTrivia || (node.leadingHtmlTrivia = [])).unshift(leadingTag);
+            leadingTag = leadingTags.pop();
+        }
+        if (leadingTag) leadingTags.push(leadingTag);
+    }
+    if (trailingTags) {
+        let trailingTag = trailingTags.shift();
+        while (trailingTag && trailingTag.kind === SyntaxKind.HtmlCloseTagTrivia) {
+            (node.trailingHtmlTrivia || (node.trailingHtmlTrivia = [])).push(trailingTag);
+            trailingTag = trailingTags.shift();
+        }
+        if (trailingTag) trailingTags.unshift(trailingTag);
+    }
+}
+
+function promoteHtmlTrivia(parent: Node, firstChild: Node | undefined, lastChild: Node | undefined) {
+    if (firstChild && firstChild === lastChild) {
+        promoteAllHtmlTrivia(parent, firstChild);
+    }
+    else {
+        if (firstChild) promoteLeadingHtmlTrivia(parent, firstChild);
+        if (lastChild) promoteTrailingHtmlTrivia(parent, lastChild);
+    }
+}
+
+function promoteLeadingHtmlTrivia(parent: Node, firstChild: Node) {
+    if (firstChild.leadingHtmlTrivia) {
+        if (firstChild.trailingHtmlTrivia) {
+            let leadingTag = firstChild.leadingHtmlTrivia.shift();
+            let trailingTag = firstChild.trailingHtmlTrivia.pop();
+            while (leadingTag && (!trailingTag || !matched(leadingTag, trailingTag))) {
+                (parent.leadingHtmlTrivia || (parent.leadingHtmlTrivia = [])).push(leadingTag);
+                leadingTag = firstChild.leadingHtmlTrivia.shift();
+            }
+            if (leadingTag) firstChild.leadingHtmlTrivia.unshift(leadingTag);
+            if (trailingTag) firstChild.trailingHtmlTrivia.unshift(trailingTag);
+        }
+        else {
+            parent.leadingHtmlTrivia = parent.leadingHtmlTrivia ? parent.leadingHtmlTrivia.concat(firstChild.leadingHtmlTrivia) : firstChild.leadingHtmlTrivia;
+            firstChild.leadingHtmlTrivia = undefined;
+        }
+    }
+}
+
+function promoteTrailingHtmlTrivia(parent: Node, lastChild: Node) {
+    if (lastChild.trailingHtmlTrivia) {
+        if (lastChild.leadingHtmlTrivia) {
+            let leadingTag = lastChild.leadingHtmlTrivia.shift();
+            let trailingTag = lastChild.trailingHtmlTrivia.pop();
+            while (trailingTag && (!leadingTag || !matched(leadingTag, trailingTag))) {
+                (parent.trailingHtmlTrivia || (parent.trailingHtmlTrivia = [])).unshift(trailingTag);
+                trailingTag = lastChild.trailingHtmlTrivia.pop();
+            }
+            if (leadingTag) lastChild.leadingHtmlTrivia.unshift(leadingTag);
+            if (trailingTag) lastChild.trailingHtmlTrivia.unshift(trailingTag);
+        }
+        else {
+            parent.trailingHtmlTrivia = parent.trailingHtmlTrivia ? lastChild.trailingHtmlTrivia.concat(parent.trailingHtmlTrivia) : lastChild.trailingHtmlTrivia;
+            lastChild.trailingHtmlTrivia = undefined;
+        }
+    }
+}
+
+function promoteAllHtmlTrivia(parent: Node, onlyChild: Node) {
+    if (onlyChild.leadingHtmlTrivia) {
+        parent.leadingHtmlTrivia = parent.leadingHtmlTrivia ? parent.leadingHtmlTrivia.concat(onlyChild.leadingHtmlTrivia) : onlyChild.leadingHtmlTrivia;
+        onlyChild.leadingHtmlTrivia = undefined;
+    }
+    if (onlyChild.trailingHtmlTrivia) {
+        parent.trailingHtmlTrivia = parent.trailingHtmlTrivia ? onlyChild.trailingHtmlTrivia.concat(parent.trailingHtmlTrivia) : onlyChild.trailingHtmlTrivia;
+        onlyChild.trailingHtmlTrivia = undefined;
+    }
 }
