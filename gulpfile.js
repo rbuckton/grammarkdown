@@ -25,13 +25,14 @@ gulp.task("pre-test", ["build", "clean:baselines"]);
 
 gulp.task("test", ["pre-test"], () => gulp
     .src(["dist/tests/index.js"], { read: false })
-    .pipe(mocha({ reporter: "dot" })));
+    .pipe(mocha({ })));
+    // .pipe(mocha({ reporter: "dot" })));
 
 gulp.task("accept-baselines", () => gulp
     .src("baselines/local/**/*")
     .pipe(gulp.dest("baselines/reference")));
 
-gulp.task("watch", ["test"], () => gulp.watch(["src/**/*", "spec/*.grammar"], ["test"]));
+gulp.task("watch", () => gulp.watch(["src/**/*", "spec/*.grammar"], ["test"]));
 
 gulp.task("default", ["test"]);
 

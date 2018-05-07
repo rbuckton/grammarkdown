@@ -91,7 +91,7 @@ export class MarkdownEmitter extends Emitter {
         this.writer.write(`**one of**`);
         const terminals = node.terminals;
         if (terminals && terminals.length > 0) {
-            if (node.openIndentToken) {
+            if (node.indented) {
                 // get the maximum size for a terminal
                 let width = 5;
                 for (const terminal of terminals) {

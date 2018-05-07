@@ -1,0 +1,9 @@
+A: `b`
+D[U]:
+    <ins>`a`</ins>
+    <ins>`a`</ins> `b`
+    `a` <ins>`b`</ins>
+    `a` <ins>`b`</ins> `c`
+    `a` <ins>`b`?</ins> `c`
+    `a` <ins>A</ins> `c`
+    [~U] <ins>`a`</ins>

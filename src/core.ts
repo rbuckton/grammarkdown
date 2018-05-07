@@ -69,10 +69,12 @@ export function compare(x: any, y: any) {
     return 0;
 }
 
-export function forEach<T, U>(array: ReadonlyArray<T>, cb: (value: T) => U | undefined): U | undefined {
-    for (const item of array) {
-        const result = cb(item);
-        if (result) return result;
+export function forEach<T, U>(array: ReadonlyArray<T> | undefined, cb: (value: T) => U | undefined): U | undefined {
+    if (array !== undefined) {
+        for (const item of array) {
+            const result = cb(item);
+            if (result) return result;
+        }
     }
 }
 
@@ -194,4 +196,11 @@ export function stableSort<T>(array: ReadonlyArray<T>, comparer: (a: T, b: T) =>
     const indices = array.map((_, i) => i);
     indices.sort((x, y) => comparer(array[x], array[y]) || x - y);
     return indices.map(i => array[i]);
+}
+
+export function concat<T>(a: T[], b: T[] | undefined): T[];
+export function concat<T>(a: T[] | undefined, b: T[]): T[];
+export function concat<T>(a: T[] | undefined, b: T[] | undefined): T[] | undefined;
+export function concat<T>(a: T[] | undefined, b: T[] | undefined) {
+    return a ? b ? a.concat(b) : a : b;
 }

@@ -1,0 +1,9 @@
+/// nonterminals/withArguments.grammar:
+nonterminals/withArguments.grammar(4,5): error GM2007: There is no argument given for parameter 'A'.
+nonterminals/withArguments.grammar(5,7): error GM1001: '?', '+', or '~' expected.
+nonterminals/withArguments.grammar(6,7): error GM1001: '?', '+', or '~' expected.
+nonterminals/withArguments.grammar(6,10): error GM1001: '?', '+', or '~' expected.
+nonterminals/withArguments.grammar(6,10): error GM2004: Production 'E' does not have a parameter named 'B'.
+nonterminals/withArguments.grammar(7,5): error GM2007: There is no argument given for parameter 'A'.
+nonterminals/withArguments.grammar(7,8): error GM2004: Production 'E' does not have a parameter named 'B'.
+nonterminals/withArguments.grammar(7,8): error GM2004: Production 'F' does not have a parameter named 'B'.

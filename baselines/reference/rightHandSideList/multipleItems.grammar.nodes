@@ -1,0 +1,12 @@
+/// rightHandSideList/multipleItems.grammar:
+(1,1)SyntaxKind[SourceFile](filename = "multipleItems.grammar")
+  (1,1)SyntaxKind[Production]
+    (1,1)SyntaxKind[Identifier](text = "A")
+    (1,2)SyntaxKind[ColonToken]
+    (2,5)SyntaxKind[RightHandSideList]
+      (2,5)SyntaxKind[RightHandSide]
+        (2,5)SyntaxKind[SymbolSpan]
+          (2,5)SyntaxKind[Terminal](text = "a")
+      (3,5)SyntaxKind[RightHandSide]
+        (3,5)SyntaxKind[SymbolSpan]
+          (3,5)SyntaxKind[Terminal](text = "b")

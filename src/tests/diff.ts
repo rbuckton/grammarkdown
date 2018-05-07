@@ -13,9 +13,9 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { readFileSync, writeFileSync, mkdirSync, existsSync, statSync, unlinkSync } from "fs";
+import { readFileSync, writeFileSync, mkdirSync, existsSync, statSync, unlinkSync, mkdir } from "fs";
 import { EOL } from "os";
-import { resolve, basename } from "path";
+import { resolve, basename, dirname } from "path";
 import { Scanner } from "../scanner";
 import { SyntaxKind, tokenToString, CharacterCodes } from "../tokens";
 import { DiagnosticMessages, LineMap } from "../diagnostics";
@@ -152,15 +152,26 @@ function resolveBaseline(file: string) {
     let localFile = resolve(localPath, file);
     let referencePath = resolve(baselinePath, "reference");
     let referenceFile = resolve(referencePath, file);
-    ensureDirectory(baselinePath);
-    ensureDirectory(localPath);
-    ensureDirectory(referencePath);
+    ensureDirectory(dirname(localFile));
+    ensureDirectory(dirname(referenceFile));
     return { localFile, referenceFile };
 }
 
 function ensureDirectory(path: string) {
-    if (!existsSync(path)) {
+    try {
         mkdirSync(path);
+    }
+    catch (e) {
+        if (e.code === "EEXIST") return;
+        if (e.code === "ENOENT") {
+            const parent = dirname(path);
+            if (parent !== "" && parent !== path) {
+                ensureDirectory(parent);
+                mkdirSync(path);
+                return;
+            }
+        }
+        throw e;
     }
 }
 

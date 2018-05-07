@@ -9,5 +9,8 @@
         "emitDecoratorMetadata": true,
         "declaration": true,
         "strict": true
-    }
+    },
+    "include": [
+        "**/*.ts"
+    ]
 }

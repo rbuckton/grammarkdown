@@ -1,0 +1,23 @@
+// @emit: ecmarkup, html, markdown
+// <ins> wrapping collapsed production
+<ins>A: `a`</ins>
+
+// <ins> wrapping expanded production on same lines
+<ins>B:
+    `a`</ins>
+
+// <ins> wrapping expanded production on different lines
+<ins>
+C:
+    `a`
+</ins>
+
+// <ins> on right-hand-side
+D[U]:
+    <ins>`a`</ins>
+    <ins>`a`</ins> `b`
+    `a` <ins>`b`</ins>
+    `a` <ins>`b`</ins> `c`
+    `a` <ins>`b`?</ins> `c`
+    `a` <ins>A</ins> `c`
+    [~U] <ins>`a`</ins>

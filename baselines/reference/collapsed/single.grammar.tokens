@@ -1,0 +1,5 @@
+/// collapsed/single.grammar:
+SyntaxKind[Identifier](1,1): A
+SyntaxKind[ColonToken](1,2): :
+SyntaxKind[Terminal](1,4): `a`
+SyntaxKind[EndOfFileToken](1,7): «EndOfFileToken»

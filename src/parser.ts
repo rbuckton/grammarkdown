@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { Range, TextRange, last, stableSort } from "./core";
+import { Range, TextRange, last, stableSort, concat } from "./core";
 import { Diagnostics, DiagnosticMessages, NullDiagnosticMessages, LineMap, formatList } from "./diagnostics";
 import { SyntaxKind, tokenToString, ProductionSeperatorKind, ArgumentOperatorKind, LookaheadOperatorKind, ParameterOperatorKind, TokenKind } from "./tokens";
 import { Scanner } from "./scanner";
@@ -136,7 +136,6 @@ export class Parser {
     private parsingContext!: ParsingContext;
     private cancellationToken!: CancellationToken;
     private tags: Map<number, HtmlTrivia[]> | undefined;
-    private tagsOffset!: number;
 
     // TODO(rbuckton): Incremental parser
     // public updateSourceFile(sourceFile: SourceFile, change: TextChange) {
@@ -174,7 +173,6 @@ export class Parser {
         const savedScanner = this.scanner;
         const savedParsingContext = this.parsingContext;
         const savedTags = this.tags;
-        const savedTagsOffset = this.tagsOffset;
         try {
             return this.parse(filename, text, /*previousSourceFile*/ undefined, /*changeRange*/ undefined, cancellationToken);
         }
@@ -185,7 +183,6 @@ export class Parser {
             this.scanner = savedScanner;
             this.parsingContext = savedParsingContext;
             this.tags = savedTags;
-            this.tagsOffset = savedTagsOffset;
         }
     }
 
@@ -197,7 +194,6 @@ export class Parser {
         this.diagnostics.setSourceFile(sourceFile);
         this.cancellationToken = cancellationToken;
         this.parsingContext = ParsingContext.SourceElements;
-        this.tagsOffset = 0;
         this.scanner = new Scanner(filename, text, this.diagnostics, this.cancellationToken);
 
         this.nextToken();
@@ -260,14 +256,8 @@ export class Parser {
         return this.token === SyntaxKind.EndOfFileToken;
     }
 
-    private skipUntil(isRecoveryToken: (token: SyntaxKind) => boolean): void {
-        while (!isRecoveryToken(this.token) && !this.isEOF()) {
-            this.nextToken();
-        }
-    }
-
-    private skipWhitespace(skip: SkipWhitespace = SkipWhitespace.All): void {
-        while (this.isWhitespace(skip)) {
+    private skipUntil(isRecoveryToken: (scanner: Scanner) => boolean): void {
+        while (!isRecoveryToken(this.scanner) && !this.isEOF()) {
             this.nextToken();
         }
     }
@@ -335,26 +325,8 @@ export class Parser {
         }
     }
 
-    // private parseExpected(token: SyntaxKind): boolean {
-    //     if (this.token === token) {
-    //         this.nextToken();
-    //         return true;
-    //     }
-    //     else {
-    //         this.diagnostics.report(this.scanner.getTokenPos(), Diagnostics._0_expected, tokenToString(token));
-    //         return false;
-    //     }
-    // }
-
-    // private parseExpectedOrEndOfFile(token: SyntaxKind): boolean {
-    //     if (this.isEOF()) {
-    //         return true;
-    //     }
-    //     return this.parseExpected(token);
-    // }
-
     // list parsing
-    private shouldParseElement(): boolean {
+    private isStartOfListElement(): boolean {
         switch (this.parsingContext) {
             case ParsingContext.SourceElements:
                 return this.isStartOfSourceElement();
@@ -486,34 +458,18 @@ export class Parser {
 
             case ParsingContext.Parameters:
                 this.skipUntil(isParametersRecoveryToken);
-                if (this.token === SyntaxKind.LineTerminatorToken) {
-                    this.nextToken();
-                }
-
                 break;
 
             case ParsingContext.BracketedParameters:
                 this.skipUntil(isBracketedParametersRecoveryToken);
-                if (this.token === SyntaxKind.LineTerminatorToken) {
-                    this.nextToken();
-                }
-
                 break;
 
             case ParsingContext.Arguments:
                 this.skipUntil(isArgumentsRecoveryToken);
-                if (this.token === SyntaxKind.LineTerminatorToken) {
-                    this.nextToken();
-                }
-
                 break;
 
             case ParsingContext.BracketedArguments:
                 this.skipUntil(isBracketedArgumentsRecoveryToken);
-                if (this.token === SyntaxKind.LineTerminatorToken) {
-                    this.nextToken();
-                }
-
                 break;
 
             case ParsingContext.RightHandSideListIndented:
@@ -522,10 +478,6 @@ export class Parser {
 
             case ParsingContext.SymbolSet:
                 this.skipUntil(isSymbolSetRecoveryToken);
-                if (this.token === SyntaxKind.LineTerminatorToken) {
-                    this.nextToken();
-                }
-
                 break;
 
             case ParsingContext.OneOfList:
@@ -534,10 +486,6 @@ export class Parser {
 
             case ParsingContext.OneOfListIndented:
                 this.skipUntil(isOneOfListIndentedRecoveryToken);
-                if (this.token === SyntaxKind.LineTerminatorToken) {
-                    this.nextToken();
-                }
-
                 break;
 
             case ParsingContext.OneOfSymbolList:
@@ -608,16 +556,20 @@ export class Parser {
                 return this.token === SyntaxKind.CloseBracketToken;
 
             case ParsingContext.RightHandSideListIndented:
-                return this.token === SyntaxKind.DedentToken || this.token === SyntaxKind.EndOfFileToken;
+                return this.scanner.hasPrecedingDedent()
+                    || this.token === SyntaxKind.EndOfFileToken;
 
             case ParsingContext.SymbolSet:
                 return this.token === SyntaxKind.CloseBraceToken;
 
             case ParsingContext.OneOfList:
-                return this.token === SyntaxKind.DedentToken || this.token === SyntaxKind.LineTerminatorToken || this.token === SyntaxKind.EndOfFileToken;
+                return this.scanner.hasPrecedingLineTerminator()
+                    || this.scanner.hasPrecedingDedent()
+                    || this.token === SyntaxKind.EndOfFileToken;
 
             case ParsingContext.OneOfListIndented:
-                return this.token === SyntaxKind.DedentToken || this.token === SyntaxKind.EndOfFileToken;
+                return this.scanner.hasPrecedingDedent()
+                    || this.token === SyntaxKind.EndOfFileToken;
 
             case ParsingContext.OneOfSymbolList:
                 return false;
@@ -641,6 +593,7 @@ export class Parser {
             case ParsingContext.SourceElements:
             case ParsingContext.OneOfList:
             case ParsingContext.OneOfListIndented:
+            case ParsingContext.RightHandSideListIndented:
                 return false;
 
             default:
@@ -657,9 +610,6 @@ export class Parser {
             case ParsingContext.SymbolSet:
                 return this.token === SyntaxKind.CommaToken;
 
-            case ParsingContext.RightHandSideListIndented:
-                return this.token === SyntaxKind.LineTerminatorToken;
-
             case ParsingContext.OneOfSymbolList:
             case ParsingContext.NoSymbolHere:
                 return this.token === SyntaxKind.OrKeyword;
@@ -667,6 +617,7 @@ export class Parser {
             case ParsingContext.SourceElements:
             case ParsingContext.OneOfList:
             case ParsingContext.OneOfListIndented:
+            case ParsingContext.RightHandSideListIndented:
                 return false;
         }
     }
@@ -680,19 +631,90 @@ export class Parser {
         return false;
     }
 
+    private tryStopParsingList() {
+        switch (this.parsingContext) {
+            case ParsingContext.SourceElements:
+                // parsing SourceElements consumes the EOF token
+                if (this.token === SyntaxKind.EndOfFileToken) {
+                    this.nextToken();
+                    return true;
+                }
+                return false;
+
+            case ParsingContext.Parameters:
+            case ParsingContext.Arguments:
+                // Parsing params/args does *not* consume the close paren token.
+                return this.token === SyntaxKind.CloseParenToken;
+
+            case ParsingContext.BracketedParameters:
+            case ParsingContext.BracketedArguments:
+                // Parsing params/args does *not* consume the close bracket token.
+                return this.token === SyntaxKind.CloseBracketToken;
+
+            case ParsingContext.RightHandSideListIndented:
+                // An indented RHS list does not consume the next token
+                return this.scanner.hasPrecedingDedent()
+                    || this.token === SyntaxKind.EndOfFileToken;
+
+            case ParsingContext.SymbolSet:
+                // SymbolSet does not consume the closing token
+                return this.token === SyntaxKind.CloseBraceToken;
+
+            case ParsingContext.OneOfList:
+                // OneOfList does not consume the closing token
+                return this.scanner.hasPrecedingLineTerminator()
+                    || this.scanner.hasPrecedingDedent()
+                    || this.token === SyntaxKind.EndOfFileToken;
+
+            case ParsingContext.OneOfListIndented:
+                // OneOfListIndented does not consume the closing token
+                return this.scanner.hasPrecedingDedent()
+                    || this.token === SyntaxKind.EndOfFileToken;
+
+            case ParsingContext.OneOfSymbolList:
+                return this.token !== SyntaxKind.OrKeyword;
+
+            case ParsingContext.NoSymbolHere:
+                // NoSymbolHere does not consume the closing token
+                return this.token === SyntaxKind.HereKeyword;
+
+            default:
+                return failUnhandled(this.parsingContext);
+        }
+    }
+
+    private tryMoveToNextElement(parsedPreviousElement: boolean) {
+        switch (this.parsingContext) {
+            case ParsingContext.Parameters:
+            case ParsingContext.BracketedParameters:
+            case ParsingContext.Arguments:
+            case ParsingContext.BracketedArguments:
+            case ParsingContext.SymbolSet:
+                return this.parseOptional(SyntaxKind.CommaToken);
+
+            case ParsingContext.OneOfSymbolList:
+            case ParsingContext.NoSymbolHere:
+                return this.parseOptional(SyntaxKind.OrKeyword);
+
+            case ParsingContext.SourceElements:
+            case ParsingContext.OneOfList:
+            case ParsingContext.OneOfListIndented:
+            case ParsingContext.RightHandSideListIndented:
+                return parsedPreviousElement;
+
+            default:
+                return failUnhandled(this.parsingContext);
+        }
+    }
+
     private parseList<TParsingContext extends ParsingContext>(listContext: TParsingContext, result?: ListTypes[TParsingContext][]): ListTypes[TParsingContext][] | undefined {
         const saveContext = this.parsingContext;
         this.parsingContext = listContext;
-        const hasCloseToken = this.hasCloseToken();
-        const hasSeparator = this.hasSeparator();
-        const shouldConsumeCloseToken = this.shouldConsumeCloseToken();
-        const whitespaceToSkip = this.shouldSkipWhitespace();
         while (!this.isEOF()) {
             this.cancellationToken.throwIfCancellationRequested();
-            this.skipWhitespace(whitespaceToSkip);
 
             let parsed = false;
-            if (this.shouldParseElement()) {
+            if (this.isStartOfListElement()) {
                 parsed = true;
                 if (!result) {
                     result = [];
@@ -707,18 +729,10 @@ export class Parser {
                 }
             }
 
-            if (hasCloseToken && (shouldConsumeCloseToken ? this.parseCloseToken() : this.isOnCloseToken())) {
-                break;
-            }
-
-            if (!(hasSeparator ? this.parseSeparator() : parsed)) {
-                if (!hasCloseToken) {
-                    break;
-                }
-                else {
-                    this.reportDiagnostics();
-                    this.recover();
-                }
+            if (this.tryStopParsingList()) break;
+            if (!this.tryMoveToNextElement(parsed)) {
+                this.reportDiagnostics();
+                this.recover();
             }
         }
 
@@ -764,8 +778,7 @@ export class Parser {
         const fullStart = this.scanner.getStartPos();
         const name = this.parseIdentifier();
         const node = new Parameter(name);
-        this.finishNode(node, fullStart);
-        return node;
+        return this.finishNode(node, fullStart);
     }
 
     private parseParameterListTail(openToken: Token<SyntaxKind.OpenParenToken | SyntaxKind.OpenBracketToken>, parsingContext: ParsingContext.Parameters | ParsingContext.BracketedParameters, closeTokenKind: SyntaxKind.CloseParenToken | SyntaxKind.CloseBracketToken): ParameterList {
@@ -791,12 +804,12 @@ export class Parser {
 
     private parseOneOfList(oneKeyword: Token<SyntaxKind.OneKeyword>): OneOfList {
         const ofKeyword = this.parseToken(SyntaxKind.OfKeyword);
-        this.parseOptional(SyntaxKind.LineTerminatorToken);
-
-        const openIndentToken = this.parseToken(SyntaxKind.IndentToken);
-        const terminals = this.parseList(openIndentToken ? ParsingContext.OneOfListIndented : ParsingContext.OneOfList);
-        const closeIndentToken = this.parseToken(SyntaxKind.DedentToken);
-        const node = new OneOfList(oneKeyword, ofKeyword, openIndentToken, terminals, closeIndentToken);
+        const indented = this.scanner.hasPrecedingIndent();
+        const terminals = this.parseList(indented ? ParsingContext.OneOfListIndented : ParsingContext.OneOfList);
+        if (indented && !this.scanner.hasPrecedingDedent()) {
+            this.diagnostics.report(this.scanner.getTokenPos(), Diagnostics._0_expected, tokenToString(SyntaxKind.DedentToken));
+        }
+        const node = new OneOfList(oneKeyword, ofKeyword, indented, terminals);
         return this.finishNode(node, oneKeyword.pos);
     }
 
@@ -859,8 +872,7 @@ export class Parser {
         this.skipUntil(isInvalidConstraintTailRecoveryToken);
         const closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
         const node = new InvalidAssertion(openBracketToken, closeBracketToken);
-        this.finishNode(node, fullStart);
-        return node;
+        return this.finishNode(node, fullStart);
     }
 
     private parseAssertion(openBracketToken: Token<SyntaxKind.OpenBracketToken>): Assertion {
@@ -939,8 +951,7 @@ export class Parser {
         const text = this.readTokenValue(SyntaxKind.Terminal);
         const questionToken = allowOptional ? this.parseToken(SyntaxKind.QuestionToken) : undefined;
         const node = new Terminal(text, questionToken);
-        this.finishNode(node, fullStart);
-        return node;
+        return this.finishNode(node, fullStart);
     }
 
     private isStartOfArgument(): boolean {
@@ -953,8 +964,7 @@ export class Parser {
         const operatorToken = this.parseAnyToken(isLeadingArgumentToken);
         const name = this.parseIdentifier();
         const node = new Argument(operatorToken, name);
-        this.finishNode(node, fullStart);
-        return node;
+        return this.finishNode(node, fullStart);
     }
 
     private parseArgumentListTail(openToken: Token<SyntaxKind.OpenParenToken | SyntaxKind.OpenBracketToken>, parsingContext: ParsingContext.Arguments | ParsingContext.BracketedArguments, closeTokenKind: SyntaxKind.CloseParenToken | SyntaxKind.CloseBracketToken): ArgumentList {
@@ -966,6 +976,7 @@ export class Parser {
     }
 
     private tryParseArgumentList(): ArgumentList | undefined {
+        if (this.scanner.hasPrecedingLineTerminator() && !this.scanner.isLineContinuation()) return undefined;
         const openParenToken = this.parseToken(SyntaxKind.OpenParenToken);
         if (openParenToken) {
             return this.parseArgumentListTail(openParenToken, ParsingContext.Arguments, SyntaxKind.CloseParenToken);
@@ -1001,8 +1012,7 @@ export class Parser {
         const argumentList = allowArgumentList ? this.tryParseArgumentList() : undefined;
         const questionToken = allowOptional ? this.parseToken(SyntaxKind.QuestionToken) : undefined;
         const node = new Nonterminal(name, argumentList, questionToken);
-        this.finishNode(node, fullStart);
-        return node;
+        return this.finishNode(node, fullStart);
     }
 
     private parseOneOfSymbol(oneKeyword: Token<SyntaxKind.OneKeyword>): OneOfSymbol {
@@ -1102,7 +1112,8 @@ export class Parser {
     }
 
     private tryParseSymbolSpan(): SymbolSpan | undefined {
-        if (this.isStartOfSymbolSpan()) {
+        if ((!this.scanner.hasPrecedingLineTerminator() || this.scanner.isLineContinuation())
+            && this.isStartOfSymbolSpan()) {
             return this.parseSymbolSpanRest();
         }
 
@@ -1114,8 +1125,7 @@ export class Parser {
         const symbol = this.parseSymbol();
         const next = this.tryParseSymbolSpan();
         const node = new SymbolSpan(symbol, next);
-        this.finishNode(node, fullStart);
-        return node;
+        return this.finishNode(node, fullStart);
     }
 
     private parseSymbolSpan(): SymbolSpan {
@@ -1132,6 +1142,7 @@ export class Parser {
     }
 
     private isStartOfSymbolSpan(): boolean {
+        if (this.scanner.hasPrecedingLineTerminator() && !this.scanner.isIndented()) return false;
         switch (this.token) {
             case SyntaxKind.UnicodeCharacterLiteral:
             case SyntaxKind.Terminal:
@@ -1167,26 +1178,13 @@ export class Parser {
         const head = this.parseSymbolSpan();
         const reference = this.parseLinkReference();
         const node = new RightHandSide(head, reference);
-
-        let parsedLineTerminator = false;
-        if (this.parsingContext !== ParsingContext.RightHandSideListIndented) {
-            parsedLineTerminator = this.parseOptional(SyntaxKind.LineTerminatorToken);
-        }
-
-        this.finishNode(node, fullStart);
-        // Fix order due to newline
-        if (parsedLineTerminator && node.trailingHtmlTrivia) {
-            node.trailingHtmlTrivia = stableSort(node.trailingHtmlTrivia, trivia => trivia.pos);
-        }
-        return node;
+        return this.finishNode(node, fullStart);
     }
 
     private parseRightHandSideList(): RightHandSideList {
         const fullStart = this.scanner.getStartPos();
-        const openIndentToken = this.parseToken(SyntaxKind.IndentToken);
-        const elements = openIndentToken && this.parseList(ParsingContext.RightHandSideListIndented) || [];
-        const closeIndentToken = this.parseToken(SyntaxKind.DedentToken);
-        const node = new RightHandSideList(openIndentToken, elements, closeIndentToken);
+        const elements = this.scanner.hasPrecedingIndent() && this.parseList(ParsingContext.RightHandSideListIndented) || [];
+        const node = new RightHandSideList(elements);
         return this.finishNode(node, fullStart);
     }
 
@@ -1195,9 +1193,7 @@ export class Parser {
         if (oneKeyword) {
             return this.parseOneOfList(oneKeyword);
         }
-
-        if (this.token === SyntaxKind.LineTerminatorToken) {
-            this.nextToken();
+        if (this.scanner.hasPrecedingLineTerminator()) {
             return this.parseRightHandSideList();
         }
         else {
@@ -1212,8 +1208,7 @@ export class Parser {
         const colonToken = this.parseAnyToken(isProductionSeparatorToken);
         const body = this.parseBody();
         const node = new Production(name, parameters, colonToken, body);
-        this.finishNode(node, fullStart);
-        return node;
+        return this.finishNode(node, fullStart);
     }
 
     private parseStringLiteral(): StringLiteral | undefined {
@@ -1260,6 +1255,7 @@ export class Parser {
     }
 
     private isStartOfSourceElement(): boolean {
+        if (this.scanner.isIndented()) return false;
         switch (this.token) {
             case SyntaxKind.AtToken: // Import
             case SyntaxKind.Identifier: // Production
@@ -1296,99 +1292,109 @@ export class Parser {
     }
 }
 
-function isSourceElementsRecoveryToken(token: SyntaxKind) {
-    return token === SyntaxKind.LineTerminatorToken;
+function isSourceElementsRecoveryToken(scanner: Scanner) {
+    return scanner.hasPrecedingLineTerminator();
 }
 
-function isParametersRecoveryToken(token: SyntaxKind) {
+function isParametersRecoveryToken(scanner: Scanner) {
+    const token = scanner.getToken();
     return token === SyntaxKind.CommaToken
         || token === SyntaxKind.Identifier
         || token === SyntaxKind.CloseParenToken
         || token === SyntaxKind.ColonToken
         || token === SyntaxKind.ColonColonToken
         || token === SyntaxKind.ColonColonColonToken
-        || token === SyntaxKind.LineTerminatorToken;
+        || scanner.hasPrecedingLineTerminator();
 }
 
-function isBracketedParametersRecoveryToken(token: SyntaxKind) {
+function isBracketedParametersRecoveryToken(scanner: Scanner) {
+    const token = scanner.getToken();
     return token === SyntaxKind.CommaToken
         || token === SyntaxKind.Identifier
         || token === SyntaxKind.CloseBracketToken
         || token === SyntaxKind.ColonToken
         || token === SyntaxKind.ColonColonToken
         || token === SyntaxKind.ColonColonColonToken
-        || token === SyntaxKind.LineTerminatorToken;
+        || scanner.hasPrecedingLineTerminator();
 }
 
-function isArgumentsRecoveryToken(token: SyntaxKind) {
+function isArgumentsRecoveryToken(scanner: Scanner) {
+    const token = scanner.getToken();
     return token === SyntaxKind.CommaToken
         || token === SyntaxKind.QuestionToken
         || token === SyntaxKind.Identifier
         || token === SyntaxKind.CloseParenToken
-        || token === SyntaxKind.LineTerminatorToken;
+        || scanner.hasPrecedingLineTerminator();
 }
 
-function isBracketedArgumentsRecoveryToken(token: SyntaxKind) {
+function isBracketedArgumentsRecoveryToken(scanner: Scanner) {
+    const token = scanner.getToken();
     return token === SyntaxKind.CommaToken
         || token === SyntaxKind.QuestionToken
         || token === SyntaxKind.Identifier
         || token === SyntaxKind.CloseBracketToken
-        || token === SyntaxKind.LineTerminatorToken;
+        || scanner.hasPrecedingLineTerminator();
 }
 
-function isRightHandSideListIndentedRecoveryToken(token: SyntaxKind) {
-    return token === SyntaxKind.DedentToken
-        || token === SyntaxKind.LineTerminatorToken
+function isRightHandSideListIndentedRecoveryToken(scanner: Scanner) {
+    return scanner.hasPrecedingDedent()
+        || scanner.hasPrecedingLineTerminator();
 }
 
-function isSymbolSetRecoveryToken(token: SyntaxKind) {
+function isSymbolSetRecoveryToken(scanner: Scanner) {
+    const token = scanner.getToken();
     return token === SyntaxKind.CommaToken
         || token === SyntaxKind.Terminal
         || token === SyntaxKind.CloseBraceToken
-        || token === SyntaxKind.LineTerminatorToken
+        || scanner.hasPrecedingLineTerminator();
 }
 
-function isOneOfListRecoveryToken(token: SyntaxKind) {
+function isOneOfListRecoveryToken(scanner: Scanner) {
+    const token = scanner.getToken();
     return token === SyntaxKind.Terminal
-        || token === SyntaxKind.LineTerminatorToken
+        || scanner.hasPrecedingLineTerminator();
 }
 
-function isOneOfListIndentedRecoveryToken(token: SyntaxKind) {
+function isOneOfListIndentedRecoveryToken(scanner: Scanner) {
+    const token = scanner.getToken();
     return token === SyntaxKind.Terminal
-        || token === SyntaxKind.LineTerminatorToken
+        || scanner.hasPrecedingLineTerminator();
 }
 
-function isOneOfSymbolListRecoveryToken(token: SyntaxKind) {
+function isOneOfSymbolListRecoveryToken(scanner: Scanner) {
+    const token = scanner.getToken();
     return token === SyntaxKind.OrKeyword
         || token === SyntaxKind.Terminal
         || token === SyntaxKind.Identifier
         || token === SyntaxKind.OpenBracketToken
         || token === SyntaxKind.QuestionToken
-        || token === SyntaxKind.LineTerminatorToken
+        || scanner.hasPrecedingLineTerminator();
 }
 
-function isNoSymbolHereRecoveryToken(token: SyntaxKind) {
+function isNoSymbolHereRecoveryToken(scanner: Scanner) {
+    const token = scanner.getToken();
     return token === SyntaxKind.OrKeyword
         || token === SyntaxKind.HereKeyword
         || token === SyntaxKind.Terminal
         || token === SyntaxKind.Identifier
         || token === SyntaxKind.CloseBracketToken
         || token === SyntaxKind.QuestionToken
-        || token === SyntaxKind.LineTerminatorToken
+        || scanner.hasPrecedingLineTerminator();
 }
 
-function isInvalidSymbolRecoveryToken(token: SyntaxKind) {
+function isInvalidSymbolRecoveryToken(scanner: Scanner) {
+    const token = scanner.getToken();
     return token === SyntaxKind.OpenBracketToken
         || token === SyntaxKind.Terminal
         || token === SyntaxKind.Identifier
-        || token === SyntaxKind.LineTerminatorToken;
+        || scanner.hasPrecedingLineTerminator();
 }
 
-function isInvalidConstraintTailRecoveryToken(token: SyntaxKind) {
+function isInvalidConstraintTailRecoveryToken(scanner: Scanner) {
+    const token = scanner.getToken();
     return token === SyntaxKind.CloseBracketToken
-        || token === SyntaxKind.LineTerminatorToken
         || token === SyntaxKind.Terminal
-        || token === SyntaxKind.Identifier;
+        || scanner.hasPrecedingLineTerminator();
 }
 
 function isProductionSeparatorToken(token: SyntaxKind): token is ProductionSeperatorKind {
@@ -1487,7 +1493,7 @@ function promoteLeadingHtmlTrivia(parent: Node, firstChild: Node) {
             if (trailingTag) firstChild.trailingHtmlTrivia.unshift(trailingTag);
         }
         else {
-            parent.leadingHtmlTrivia = parent.leadingHtmlTrivia ? parent.leadingHtmlTrivia.concat(firstChild.leadingHtmlTrivia) : firstChild.leadingHtmlTrivia;
+            parent.leadingHtmlTrivia = concat(parent.leadingHtmlTrivia, firstChild.leadingHtmlTrivia);
             firstChild.leadingHtmlTrivia = undefined;
         }
     }
@@ -1506,7 +1512,7 @@ function promoteTrailingHtmlTrivia(parent: Node, lastChild: Node) {
             if (trailingTag) lastChild.trailingHtmlTrivia.unshift(trailingTag);
         }
         else {
-            parent.trailingHtmlTrivia = parent.trailingHtmlTrivia ? lastChild.trailingHtmlTrivia.concat(parent.trailingHtmlTrivia) : lastChild.trailingHtmlTrivia;
+            parent.trailingHtmlTrivia = concat(lastChild.trailingHtmlTrivia, parent.trailingHtmlTrivia);
             lastChild.trailingHtmlTrivia = undefined;
         }
     }
@@ -1514,11 +1520,15 @@ function promoteTrailingHtmlTrivia(parent: Node, lastChild: Node) {
 
 function promoteAllHtmlTrivia(parent: Node, onlyChild: Node) {
     if (onlyChild.leadingHtmlTrivia) {
-        parent.leadingHtmlTrivia = parent.leadingHtmlTrivia ? parent.leadingHtmlTrivia.concat(onlyChild.leadingHtmlTrivia) : onlyChild.leadingHtmlTrivia;
+        parent.leadingHtmlTrivia = concat(parent.leadingHtmlTrivia, onlyChild.leadingHtmlTrivia);
         onlyChild.leadingHtmlTrivia = undefined;
     }
     if (onlyChild.trailingHtmlTrivia) {
-        parent.trailingHtmlTrivia = parent.trailingHtmlTrivia ? onlyChild.trailingHtmlTrivia.concat(parent.trailingHtmlTrivia) : onlyChild.trailingHtmlTrivia;
+        parent.trailingHtmlTrivia = concat(onlyChild.trailingHtmlTrivia, parent.trailingHtmlTrivia);
         onlyChild.trailingHtmlTrivia = undefined;
     }
+}
+
+function failUnhandled(value: never): never {
+    throw new Error("Unhandled case: " + value);
 }
