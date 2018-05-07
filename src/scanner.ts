@@ -16,14 +16,13 @@
 
 import { EOL } from 'os';
 import { CancellationToken } from "prex";
-import { TextRange } from "./core";
 import { CharacterCodes, SyntaxKind, stringToToken } from "./tokens";
-import { Diagnostics, Diagnostic, DiagnosticMessages, NullDiagnosticMessages } from "./diagnostics";
-import { HtmlTrivia, HtmlCloseTagTrivia, HtmlOpenTagTrivia, Trivia, SingleLineCommentTrivia, MultiLineCommentTrivia, HtmlTriviaBase, CommentTrivia } from './nodes';
+import { Diagnostics, DiagnosticMessages, NullDiagnosticMessages } from "./diagnostics";
+import { HtmlTrivia, HtmlCloseTagTrivia, HtmlOpenTagTrivia, SingleLineCommentTrivia, MultiLineCommentTrivia, HtmlTriviaBase, CommentTrivia } from './nodes';
 
 export class Scanner {
     public readonly text: string;
-    private filename: string;
+    public readonly filename: string;
     private pos: number = 0;
     private len: number = 0;
     private startPos: number = 0;
@@ -32,13 +31,14 @@ export class Scanner {
     private tokenValue: string = "";
     private tokenIsUnterminated: boolean = false;
     private indents: number[] = [];
-    private queue: SyntaxKind[] | undefined;
     private htmlTrivia: HtmlTrivia[] | undefined;
-    private copyQueueOnWrite: boolean = false;
     private copyIndentsOnWrite: boolean = false;
     private diagnostics: DiagnosticMessages;
     private proseStartToken: SyntaxKind | undefined;
     private cancellationToken: CancellationToken;
+    private precedingLineTerminator: boolean = false;
+    private precedingIndent: "indent" | "dedent" | "none" = "none";
+    private initialIndent: boolean = false;
 
     constructor(filename: string, text: string, diagnostics: DiagnosticMessages, cancellationToken = CancellationToken.none) {
         this.filename = filename;
@@ -76,6 +76,10 @@ export class Scanner {
         return this.tokenValue;
     }
 
+    public getTokenIsUnterminated() {
+        return this.tokenIsUnterminated;
+    }
+
     public getDiagnostics(): DiagnosticMessages {
         return this.diagnostics;
     }
@@ -84,37 +88,30 @@ export class Scanner {
         return this.htmlTrivia;
     }
 
-    public scan(): SyntaxKind {
-        this.cancellationToken.throwIfCancellationRequested();
-        const token = this.dequeueOrScanToken();
-        if (token === SyntaxKind.EndOfFileToken && this.indents.length) {
-            for (let i = 0; i < this.indents.length; i++) {
-                this.enqueueToken(SyntaxKind.DedentToken);
-            }
-
-            this.indents.length = 0;
-            this.enqueueToken(token);
-            return this.token = this.dequeueToken()!;
-        }
-
-        return this.token = token;
+    public getIndentDepth() {
+        let depth = this.indents.length;
+        if (this.initialIndent && depth > 0) depth--;
+        return depth;
     }
 
-    private dequeueOrScanToken() {
-        if (this.hasQueuedToken()) {
-            return this.dequeueToken()!;
-        }
+    public isIndented() {
+        return this.getIndentDepth() > 0;
+    }
 
-        const token = this.scanToken();
-        if (this.hasQueuedToken()) {
-            if (token !== -1) {
-                this.enqueueToken(token);
-            }
+    public isLineContinuation() {
+        return this.hasPrecedingLineTerminator() && this.getIndentDepth() > 1;
+    }
 
-            return this.dequeueToken()!;
-        }
+    public hasPrecedingIndent() {
+        return this.precedingIndent === "indent";
+    }
 
-        return token;
+    public hasPrecedingDedent() {
+        return this.precedingIndent === "dedent";
+    }
+
+    public hasPrecedingLineTerminator() {
+        return this.precedingLineTerminator;
     }
 
     public speculate<T>(callback: () => T, isLookahead: boolean): T {
@@ -123,14 +120,14 @@ export class Scanner {
         const saveTokenPos = this.tokenPos;
         const saveToken = this.token;
         const saveTokenValue = this.tokenValue;
-        const saveQueue = this.queue;
         const saveIndents = this.indents;
         const saveHtmlTrivia = this.htmlTrivia;
         const saveDiagnostics = this.diagnostics;
-        const saveCopyQueueOnWrite = this.copyQueueOnWrite;
         const saveCopyIndentsOnWrite = this.copyIndentsOnWrite;
+        const savePrecedingIndent = this.precedingIndent;
+        const savePrecedingLineTerminator = this.precedingLineTerminator;
+
         this.diagnostics = NullDiagnosticMessages.instance;
-        this.copyQueueOnWrite = true;
         this.copyIndentsOnWrite = true;
 
         const result = callback();
@@ -141,23 +138,27 @@ export class Scanner {
             this.tokenPos = saveTokenPos;
             this.token = saveToken;
             this.tokenValue = saveTokenValue;
-            this.queue = saveQueue;
             this.indents = saveIndents;
             this.htmlTrivia = saveHtmlTrivia;
-            this.copyQueueOnWrite = saveCopyQueueOnWrite;
             this.copyIndentsOnWrite = saveCopyIndentsOnWrite;
+            this.precedingIndent = savePrecedingIndent;
+            this.precedingLineTerminator = savePrecedingLineTerminator;
         }
         return result;
     }
 
-    private scanToken(): SyntaxKind {
+    public scan(): SyntaxKind {
+        this.cancellationToken.throwIfCancellationRequested();
         this.startPos = this.pos;
         this.htmlTrivia = undefined;
         this.tokenIsUnterminated = false;
         this.tokenValue = "";
+        this.precedingIndent = "none";
+        this.precedingLineTerminator = false;
         while (true) {
             this.tokenPos = this.pos;
             if (this.pos >= this.len) {
+                this.scanIndent();
                 return this.token = SyntaxKind.EndOfFileToken;
             }
 
@@ -176,9 +177,9 @@ export class Scanner {
                         this.pos++;
                     }
 
-                    this.enqueueToken(SyntaxKind.LineTerminatorToken);
+                    this.precedingLineTerminator = true;
                     this.scanIndent();
-                    return -1;
+                    continue;
 
                 case CharacterCodes.Space:
                     if (this.pos === 0) {
@@ -389,14 +390,15 @@ export class Scanner {
     private scanIndent(): void {
         this.tokenPos = this.pos;
         if (this.pos >= this.len) {
-            while (this.indents.length) {
-                this.indents.pop();
-                this.enqueueToken(SyntaxKind.DedentToken);
+            if (this.indents.length) {
+                this.precedingIndent = "dedent";
+                this.indents.length = 0;
             }
-
             return;
         }
 
+        const initialIndent = this.pos === 0;
+        const previousIndentCount = this.indents.length;
         let ch = this.text.charCodeAt(this.pos);
         while (ch === CharacterCodes.Space || ch === CharacterCodes.Tab) {
             this.pos++;
@@ -417,9 +419,10 @@ export class Scanner {
                 this.indents = this.indents.slice(0);
                 this.copyIndentsOnWrite = false;
             }
-
             this.indents.push(tokenLen);
-            this.enqueueToken(SyntaxKind.IndentToken);
+            if (initialIndent) {
+                this.initialIndent = true;
+            }
         }
         else {
             for (let i = 0; i < dedentCount; i++) {
@@ -427,10 +430,19 @@ export class Scanner {
                     this.indents = this.indents.slice(0);
                     this.copyIndentsOnWrite = false;
                 }
-
                 this.indents.pop();
-                this.enqueueToken(SyntaxKind.DedentToken);
             }
+            if (this.indents.length === 0 && this.initialIndent) {
+                this.initialIndent = false;
+            }
+        }
+
+        const initialIndentCount = this.initialIndent ? 1 : 0;
+        if (this.indents.length > previousIndentCount && previousIndentCount === initialIndentCount) {
+            this.precedingIndent = "indent";
+        }
+        else if (this.indents.length < previousIndentCount && this.indents.length === initialIndentCount) {
+            this.precedingIndent = "dedent";
         }
     }
 
@@ -458,19 +470,6 @@ export class Scanner {
                 this.pos++;
             }
         }
-    }
-
-    private scanLineTerminator(): string {
-        const start = this.pos;
-        const ch = this.text.charCodeAt(start);
-        if (ch === CharacterCodes.CarriageReturn && this.text.charCodeAt(start + 1) === CharacterCodes.LineFeed) {
-            this.pos += 2;
-        }
-        else {
-            this.pos++;
-        }
-
-        return this.text.substring(start, this.pos);
     }
 
     private skipWhiteSpace(): void {
@@ -796,33 +795,6 @@ export class Scanner {
 
         return this.token = SyntaxKind.Identifier;
     }
-
-    private hasQueuedToken(): boolean {
-        return this.queue !== undefined && this.queue.length > 0;
-    }
-
-    private enqueueToken(token: SyntaxKind): void {
-        if (!this.queue) {
-            this.queue = [];
-        }
-        else if (this.copyQueueOnWrite) {
-            this.queue = this.queue.slice(0);
-            this.copyQueueOnWrite = false;
-        }
-
-        this.queue.push(token);
-    }
-
-    private dequeueToken(): SyntaxKind | undefined {
-        if (this.queue && this.queue.length) {
-            if (this.copyQueueOnWrite) {
-                this.queue = this.queue.slice(0);
-                this.copyQueueOnWrite = false;
-            }
-
-            return this.queue.shift();
-        }
-    }
 }
 
 function isIdentifierStart(ch: number): boolean {
@@ -959,62 +931,6 @@ export function scanHtmlTrivia(text: string, pos: number, end: number): HtmlTriv
     const trivia: HtmlTrivia[] = [];
     skipTrivia(text, pos, end, trivia);
     return trivia.length > 0 ? trivia : undefined;
-
-    // let trivia: HtmlTrivia[] | undefined;
-    // scan: while (pos < end) {
-    //     let start = pos;
-    //     const ch = text.charCodeAt(pos);
-    //     switch (ch) {
-    //         case CharacterCodes.CarriageReturn:
-    //         case CharacterCodes.LineFeed:
-    //         case CharacterCodes.Space:
-    //         case CharacterCodes.Tab:
-    //         case CharacterCodes.VerticalTab:
-    //         case CharacterCodes.FormFeed:
-    //             pos++;
-    //             continue;
-
-    //         case CharacterCodes.Slash:
-    //             if (pos + 1 < end) {
-    //                 switch (text.charCodeAt(pos + 1)) {
-    //                     case CharacterCodes.Slash:
-    //                         pos = findSingleLineCommentTriviaEnd(text, pos + 2, end);
-    //                         continue;
-
-    //                     case CharacterCodes.Asterisk:
-    //                         pos = findMultiLineCommentTriviaEnd(text, pos + 2, end);
-    //                         continue;
-    //                 }
-    //             }
-    //             break scan;
-
-    //         case CharacterCodes.LessThan:
-    //             if (pos + 1 < end) {
-    //                 const ch = text.charCodeAt(pos + 1);
-    //                 if (ch === CharacterCodes.Slash || (ch >= CharacterCodes.LowerA && ch <= CharacterCodes.LowerZ)) {
-    //                     const triviaEnd = findHtmlTriviaEnd(text, pos + 1, end);
-    //                     const tagNamePos = ch === CharacterCodes.Slash ? pos + 2 : pos + 1;
-    //                     const tagNameEnd = findHtmlTagNameEnd(text, tagNamePos, triviaEnd);
-    //                     if (tagNameEnd !== -1) {
-    //                         const tagName = text.slice(tagNamePos, tagNameEnd);
-    //                         const tag = ch === CharacterCodes.Slash ? new HtmlCloseTagTrivia(tagName) : new HtmlOpenTagTrivia(tagName);
-    //                         tag.pos = pos;
-    //                         tag.end = triviaEnd;
-    //                         if (!trivia) trivia = [];
-    //                         trivia.push(tag);
-    //                     }
-    //                     pos = triviaEnd + 1;
-    //                     continue;
-    //                 }
-    //             }
-    //             break scan;
-
-    //         default:
-    //             break scan;
-    //     }
-    // }
-
-    // return trivia;
 }
 
 function findMultiLineCommentTriviaEnd(text: string, pos: number, end: number) {

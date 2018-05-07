@@ -1,0 +1,26 @@
+// @full: true
+A : A @ A
+B : |A| but not one of `"` or `\` or U+0000 through U+001F
+
+C : A [>full prose span]
+C : A [>head `terminal` middle |B| tail]
+
+D[A] : A
+D[B] : A
+
+E[A] : A
+F[A] :
+    E
+    E[A]
+    E[A, B]
+    E[?B]
+    E[+A]
+    E[~A]
+    E[?A]
+
+Z :
+    <del>A</del>
+    <ins>B</ins>
+
+LookaheadRestriction:
+    [lookahead <! A]

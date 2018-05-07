@@ -152,11 +152,6 @@ export enum SyntaxKind {
     Unknown,
     EndOfFileToken,
 
-    // Significant Whitespace
-    LineTerminatorToken,
-    IndentToken,
-    DedentToken,
-
     // Literals
     StringLiteral,
     Terminal,
@@ -268,10 +263,6 @@ export enum SyntaxKind {
     LastPunctuation = LessThanMinusToken,
 }
 
-export type IndentationKind =
-    | SyntaxKind.IndentToken
-    | SyntaxKind.DedentToken;
-
 export type PunctuationKind =
     | SyntaxKind.AtToken
     | SyntaxKind.OpenBraceToken
@@ -296,8 +287,7 @@ export type PunctuationKind =
     | SyntaxKind.LessThanMinusToken
     | SyntaxKind.NotEqualToToken
     | SyntaxKind.ElementOfToken
-    | SyntaxKind.NotAnElementOfToken
-    | IndentationKind;
+    | SyntaxKind.NotAnElementOfToken;
 
 export type KeywordKind =
     | SyntaxKind.ButKeyword
@@ -405,19 +395,17 @@ export function stringToToken(text: string) {
     return textToToken.get(text);
 }
 
-export function tokenToString(kind: SyntaxKind, quoted?: boolean) {
+export function tokenToString(kind: SyntaxKind | string, quoted?: boolean) {
+    if (typeof kind === "string") {
+        return kind;
+    }
+
     const text = tokenToText.get(kind);
     if (text) {
         return quoted ? `'${text}'` : text;
     }
 
     switch (kind) {
-        case SyntaxKind.LineTerminatorToken:
-            return "«line terminator»";
-        case SyntaxKind.IndentToken:
-            return "«indent»";
-        case SyntaxKind.DedentToken:
-            return "«dedent»";
         case SyntaxKind.Identifier:
             return "«identifier»";
         case SyntaxKind.Terminal:

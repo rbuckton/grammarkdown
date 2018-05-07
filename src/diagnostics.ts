@@ -584,7 +584,7 @@ export function formatString(format: string): string {
     return format.replace(/{(\d+)}/g, (_, index) => args[index]);
 }
 
-export function formatList(tokens: SyntaxKind[]): string {
+export function formatList(tokens: (SyntaxKind | string)[]): string {
     if (tokens.length <= 0) {
         return "";
     }

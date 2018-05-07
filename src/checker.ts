@@ -364,9 +364,9 @@ export class Checker {
             return this.reportGrammarError(node.ofKeyword.end, Diagnostics._0_expected, tokenToString(SyntaxKind.Terminal));
         }
 
-        if (node.openIndentToken && !node.closeIndentToken) {
-            return this.reportGrammarError(node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.DedentToken));
-        }
+        // if (node.openIndentToken && !node.closeIndentToken) {
+        //     return this.reportGrammarError(node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.DedentToken));
+        // }
 
         return false;
     }
@@ -382,9 +382,9 @@ export class Checker {
     }
 
     private checkGrammarRightHandSideList(node: RightHandSideList): boolean {
-        if (!node.openIndentToken) {
-            return this.reportGrammarErrorForNode(node, Diagnostics._0_expected, tokenToString(SyntaxKind.IndentToken));
-        }
+        // if (!node.openIndentToken) {
+        //     return this.reportGrammarErrorForNode(node, Diagnostics._0_expected, tokenToString(SyntaxKind.IndentToken));
+        // }
 
         if (!node.elements || node.elements.length === 0) {
             return this.reportGrammarErrorForNode(node, Diagnostics._0_expected, formatList([
@@ -394,9 +394,9 @@ export class Checker {
             ]));
         }
 
-        if (!node.closeIndentToken) {
-            return this.reportGrammarError(node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.DedentToken));
-        }
+        // if (!node.closeIndentToken) {
+        //     return this.reportGrammarError(node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.DedentToken));
+        // }
 
         return false;
     }
@@ -442,7 +442,7 @@ export class Checker {
 
         if (node.next) {
             if (node.symbol.kind === SyntaxKind.Prose) {
-                return this.reportGrammarError(node.symbol.end, Diagnostics._0_expected, tokenToString(SyntaxKind.LineTerminatorToken));
+                return this.reportGrammarError(node.symbol.end, Diagnostics._0_expected, "«line terminator»");
             }
         }
 
@@ -482,16 +482,16 @@ export class Checker {
                 SyntaxKind.Terminal,
                 SyntaxKind.Identifier,
                 SyntaxKind.OpenBracketToken,
-                SyntaxKind.LineTerminatorToken
+                "«line terminator»"
             ]));
         }
 
         if (node.symbol.kind === SyntaxKind.Prose) {
-            return this.reportGrammarError(node.symbol.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.LineTerminatorToken));
+            return this.reportGrammarError(node.symbol.getStart(this.sourceFile), Diagnostics._0_expected, "«line terminator»");
         }
 
         if (node.next && node.next.symbol.kind === SyntaxKind.Prose) {
-            return this.reportGrammarError(node.symbol.end, Diagnostics._0_expected, tokenToString(SyntaxKind.LineTerminatorToken));
+            return this.reportGrammarError(node.symbol.end, Diagnostics._0_expected, "«line terminator»");
         }
 
         return false;

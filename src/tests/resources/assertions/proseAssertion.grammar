@@ -1,0 +1,3 @@
+// @diagnostics: false
+C : A [>full prose span]
+C : A [>head `terminal` middle |B| tail]

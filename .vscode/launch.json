@@ -2,26 +2,6 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch",
-            "type": "node",
-            "request": "launch",
-            "program": "${workspaceRoot}/out/lib/cli.js",
-            "stopOnEntry": true,
-            "args": [],
-            "cwd": "${workspaceRoot}",
-            "runtimeExecutable": null,
-            "runtimeArgs": [
-                "--nolazy"
-            ],
-            "env": {
-                "NODE_ENV": "development"
-            },
-            "console": "externalTerminal",
-            "sourceMaps": true,
-            "outDir": "${workspaceRoot}/out",
-            "preLaunchTask": "build:lib"
-        },
-        {
             "name": "Launch Mocha",
             "type": "node",
             "request": "launch",
@@ -30,6 +10,7 @@
             "args": [
                 "--no-timeouts",
                 "--colors",
+                "-g", "test.grammar",
                 "${workspaceRoot}/dist/tests/index.js"
             ],
             "cwd": "${workspaceRoot}",
@@ -38,7 +19,8 @@
             "env": { "NODE_ENV": "development" },
             "outFiles": ["${workspaceRoot}/dist"],
             "sourceMaps": true,
-            "smartStep": true
+            "smartStep": true,
+            "preLaunchTask": "gulp: build"
         },
         {
             "name": "Launch Mocha (current file)",

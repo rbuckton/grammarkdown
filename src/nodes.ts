@@ -1253,54 +1253,42 @@ export class RightHandSide extends Node<SyntaxKind.RightHandSide> {
 
 export interface ProductionBodyTypes { [SyntaxKind.RightHandSideList]: RightHandSideList }
 export class RightHandSideList extends Node<SyntaxKind.RightHandSideList> {
-    public readonly openIndentToken: Token<SyntaxKind.IndentToken> | undefined;
     public readonly elements: ReadonlyArray<RightHandSide> | undefined;
-    public readonly closeIndentToken: Token<SyntaxKind.DedentToken> | undefined;
 
-    constructor(openIndentToken: Token<SyntaxKind.IndentToken> | undefined, elements: ReadonlyArray<RightHandSide> | undefined, closeIndentToken: Token<SyntaxKind.DedentToken> | undefined) {
+    constructor(elements: ReadonlyArray<RightHandSide> | undefined) {
         super(SyntaxKind.RightHandSideList);
-        this.openIndentToken = openIndentToken;
         this.elements = elements;
-        this.closeIndentToken = closeIndentToken;
     }
 
-    get firstChild(): Node | undefined { return this.openIndentToken || first(this.elements) || this.closeIndentToken; }
-    get lastChild(): Node | undefined { return this.closeIndentToken || last(this.elements) || this.openIndentToken; }
+    get firstChild(): Node | undefined { return first(this.elements); }
+    get lastChild(): Node | undefined { return last(this.elements); }
 
     public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
-        return (this.openIndentToken && cbNode(this.openIndentToken))
-            || (this.elements && forEach(this.elements, cbNode))
-            || (this.closeIndentToken && cbNode(this.closeIndentToken));
+        return forEach(this.elements, cbNode);
     }
 
     public * children(): IterableIterator<Node> {
-        if (this.openIndentToken) yield this.openIndentToken;
         if (this.elements) yield* this.elements;
-        if (this.closeIndentToken) yield this.closeIndentToken;
     }
 
     public update(elements: ReadonlyArray<RightHandSide> | undefined) {
         return elements !== this.elements
-            ? setTextRange(new RightHandSideList(this.openIndentToken, elements, this.closeIndentToken), this.pos, this.end)
+            ? setTextRange(new RightHandSideList(elements), this.pos, this.end)
             : this;
     }
 
-    /*@internal*/ get edgeCount() { return 3; }
-    /*@internal*/ edgeIsArray(offset: number) { return offset === 1; }
+    /*@internal*/ get edgeCount() { return 1; }
+    /*@internal*/ edgeIsArray(offset: number) { return offset === 0; }
     /*@internal*/ edgeName(offset: number): string | undefined {
         switch (offset) {
-            case 0: return "openIndentToken";
-            case 1: return "elements";
-            case 2: return "closeIndentToken";
+            case 0: return "elements";
         }
         return undefined;
     }
 
     /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
         switch (offset) {
-            case 0: return this.openIndentToken;
-            case 1: return this.elements;
-            case 2: return this.closeIndentToken;
+            case 0: return this.elements;
         }
         return undefined;
     }
@@ -1312,53 +1300,45 @@ export interface ProductionBodyTypes { [SyntaxKind.OneOfList]: OneOfList }
 export class OneOfList extends Node<SyntaxKind.OneOfList> {
     public readonly oneKeyword: Token<SyntaxKind.OneKeyword>;
     public readonly ofKeyword: Token<SyntaxKind.OfKeyword> | undefined;
-    public readonly openIndentToken: Token<SyntaxKind.IndentToken> | undefined;
+    public readonly indented: boolean;
     public readonly terminals: ReadonlyArray<Terminal> | undefined;
-    public readonly closeIndentToken: Token<SyntaxKind.DedentToken> | undefined;
 
-    constructor(oneKeyword: Token<SyntaxKind.OneKeyword>, ofKeyword: Token<SyntaxKind.OfKeyword> | undefined, openIndentToken: Token<SyntaxKind.IndentToken> | undefined, terminals: ReadonlyArray<Terminal> | undefined, closeIndentToken: Token<SyntaxKind.DedentToken> | undefined) {
+    constructor(oneKeyword: Token<SyntaxKind.OneKeyword>, ofKeyword: Token<SyntaxKind.OfKeyword> | undefined, indented: boolean, terminals: ReadonlyArray<Terminal> | undefined) {
         super(SyntaxKind.OneOfList);
         this.oneKeyword = oneKeyword;
         this.ofKeyword = ofKeyword;
-        this.openIndentToken = openIndentToken;
+        this.indented = indented;
         this.terminals = terminals;
-        this.closeIndentToken = closeIndentToken;
     }
 
     get firstChild(): Node | undefined { return this.oneKeyword; }
-    get lastChild(): Node | undefined { return this.closeIndentToken || last(this.terminals) || this.openIndentToken || this.ofKeyword || this.oneKeyword; }
+    get lastChild(): Node | undefined { return last(this.terminals) || this.ofKeyword || this.oneKeyword; }
 
     public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
         return cbNode(this.oneKeyword)
             || (this.ofKeyword && cbNode(this.ofKeyword))
-            || (this.openIndentToken && cbNode(this.openIndentToken))
-            || (this.terminals && forEach(this.terminals, cbNode))
-            || (this.closeIndentToken && cbNode(this.closeIndentToken));
+            || (this.terminals && forEach(this.terminals, cbNode));
     }
 
     public * children(): IterableIterator<Node> {
         yield this.oneKeyword;
         if (this.ofKeyword) yield this.ofKeyword;
-        if (this.openIndentToken) yield this.openIndentToken;
         if (this.terminals) yield* this.terminals;
-        if (this.closeIndentToken) yield this.closeIndentToken;
     }
 
     public update(terminals: ReadonlyArray<Terminal> | undefined) {
         return terminals !== this.terminals
-            ? setTextRange(new OneOfList(this.oneKeyword, this.ofKeyword, this.openIndentToken, terminals, this.closeIndentToken), this.pos, this.end)
+            ? setTextRange(new OneOfList(this.oneKeyword, this.ofKeyword, this.indented, terminals), this.pos, this.end)
             : this;
     }
 
-    /*@internal*/ get edgeCount() { return 5; }
+    /*@internal*/ get edgeCount() { return 3; }
     /*@internal*/ edgeIsArray(offset: number) { return offset === 3; }
     /*@internal*/ edgeName(offset: number): string | undefined {
         switch (offset) {
             case 0: return "oneKeyword";
             case 1: return "ofKeyword";
-            case 2: return "openIndentToken";
-            case 3: return "terminals";
-            case 4: return "closeIndentToken";
+            case 2: return "terminals";
         }
         return undefined;
     }
@@ -1367,9 +1347,7 @@ export class OneOfList extends Node<SyntaxKind.OneOfList> {
         switch (offset) {
             case 0: return this.oneKeyword;
             case 1: return this.ofKeyword;
-            case 2: return this.openIndentToken;
-            case 3: return this.terminals;
-            case 4: return this.closeIndentToken;
+            case 2: return this.terminals;
         }
         return undefined;
     }
