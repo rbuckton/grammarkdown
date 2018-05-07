@@ -1,0 +1,34 @@
+<emu-production name="FooTerminal">
+    <ins><emu-rhs a="5422ad14">
+        <emu-nt>Inserting</emu-nt>
+        <emu-t>anRHS</emu-t>
+    </emu-rhs></ins>
+    <del><emu-rhs a="34727095">
+        <emu-nt>Deleting</emu-nt>
+        <emu-t>anRHS</emu-t>
+    </emu-rhs></del>
+    <emu-rhs a="18458a59">
+        <emu-nt>Modifying</emu-nt>
+        <ins><emu-nt>Existing</emu-nt></ins>
+        <del><emu-nt>Old</emu-nt></del>
+        <emu-nt>Production</emu-nt>
+    </emu-rhs>
+    <ins><emu-rhs a="692c50e1"><emu-nt>NewTerminal</emu-nt></emu-rhs>
+    <emu-rhs a="b1b8622b"><emu-t>t</emu-t></emu-rhs>
+</emu-production></ins>
+<emu-production name="LookaheadExample" type="lexical">
+    <emu-rhs a="4840951d">
+        <emu-t>&amp;&amp;</emu-t>
+        <emu-t>n</emu-t>
+        <emu-gann>
+        <emu-nt>lt</emu-nt></emu-gann>
+    </emu-rhs>
+    <emu-rhs a="f89d6cfa">
+        <emu-nt>DecimalDigit</emu-nt>
+        <emu-gann>
+        <emu-nt>lt</emu-nt></emu-gann>
+    </emu-rhs>
+</emu-production>
+<emu-production name="HTMLEntitiesExample" type="lexical">
+    <emu-rhs a="56e2860e"><emu-gprose>This is technically a &amp;ldquo;production&amp;rdquo;</emu-gprose></emu-rhs>
+</emu-production>

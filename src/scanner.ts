@@ -20,25 +20,32 @@ import { CharacterCodes, SyntaxKind, stringToToken } from "./tokens";
 import { Diagnostics, DiagnosticMessages, NullDiagnosticMessages } from "./diagnostics";
 import { HtmlTrivia, HtmlCloseTagTrivia, HtmlOpenTagTrivia, SingleLineCommentTrivia, MultiLineCommentTrivia, HtmlTriviaBase, CommentTrivia } from './nodes';
 
+const enum TokenFlags {
+    None = 0,
+    Unterminated = 1 << 0,
+    PrecedingLineTerminator = 1 << 1,
+    PrecedingIndent = 1 << 2,
+    PrecedingDedent = 1 << 3,
+    AnyPrecedingIndent = PrecedingIndent | PrecedingDedent,
+}
+
 export class Scanner {
     public readonly text: string;
     public readonly filename: string;
+    private readonly cancellationToken: CancellationToken;
+    private readonly len: number = 0;
     private pos: number = 0;
-    private len: number = 0;
     private startPos: number = 0;
     private tokenPos: number = 0;
     private token: SyntaxKind = SyntaxKind.Unknown;
     private tokenValue: string = "";
-    private tokenIsUnterminated: boolean = false;
-    private indents: number[] = [];
+    private tokenFlags: TokenFlags = TokenFlags.None;
     private htmlTrivia: HtmlTrivia[] | undefined;
-    private copyIndentsOnWrite: boolean = false;
     private diagnostics: DiagnosticMessages;
+    private initialIndentLength: number = 0;
+    private significantIndentLength: number = 0;
+    private currentIndentLength: number = 0;
     private proseStartToken: SyntaxKind | undefined;
-    private cancellationToken: CancellationToken;
-    private precedingLineTerminator: boolean = false;
-    private precedingIndent: "indent" | "dedent" | "none" = "none";
-    private initialIndent: boolean = false;
 
     constructor(filename: string, text: string, diagnostics: DiagnosticMessages, cancellationToken = CancellationToken.none) {
         this.filename = filename;
@@ -77,7 +84,7 @@ export class Scanner {
     }
 
     public getTokenIsUnterminated() {
-        return this.tokenIsUnterminated;
+        return (this.tokenFlags & TokenFlags.Unterminated) === TokenFlags.Unterminated;
     }
 
     public getDiagnostics(): DiagnosticMessages {
@@ -88,30 +95,26 @@ export class Scanner {
         return this.htmlTrivia;
     }
 
-    public getIndentDepth() {
-        let depth = this.indents.length;
-        if (this.initialIndent && depth > 0) depth--;
-        return depth;
-    }
-
     public isIndented() {
-        return this.getIndentDepth() > 0;
+        return this.significantIndentLength > 0;
     }
 
     public isLineContinuation() {
-        return this.hasPrecedingLineTerminator() && this.getIndentDepth() > 1;
+        return this.hasPrecedingLineTerminator()
+            && this.isIndented()
+            && this.currentIndentLength > this.significantIndentLength;
     }
 
     public hasPrecedingIndent() {
-        return this.precedingIndent === "indent";
+        return (this.tokenFlags & TokenFlags.AnyPrecedingIndent) === TokenFlags.PrecedingIndent;
     }
 
     public hasPrecedingDedent() {
-        return this.precedingIndent === "dedent";
+        return (this.tokenFlags & TokenFlags.AnyPrecedingIndent) === TokenFlags.PrecedingDedent;
     }
 
     public hasPrecedingLineTerminator() {
-        return this.precedingLineTerminator;
+        return (this.tokenFlags & TokenFlags.PrecedingLineTerminator) === TokenFlags.PrecedingLineTerminator;
     }
 
     public speculate<T>(callback: () => T, isLookahead: boolean): T {
@@ -120,16 +123,14 @@ export class Scanner {
         const saveTokenPos = this.tokenPos;
         const saveToken = this.token;
         const saveTokenValue = this.tokenValue;
-        const saveIndents = this.indents;
+        const saveTokenFlags = this.tokenFlags;
         const saveHtmlTrivia = this.htmlTrivia;
         const saveDiagnostics = this.diagnostics;
-        const saveCopyIndentsOnWrite = this.copyIndentsOnWrite;
-        const savePrecedingIndent = this.precedingIndent;
-        const savePrecedingLineTerminator = this.precedingLineTerminator;
+        const saveInitialIndentLength = this.initialIndentLength;
+        const saveSignificantIndentLength = this.significantIndentLength;
+        const saveCurrentIndentLength = this.currentIndentLength;
 
         this.diagnostics = NullDiagnosticMessages.instance;
-        this.copyIndentsOnWrite = true;
-
         const result = callback();
         this.diagnostics = saveDiagnostics;
         if (!result || isLookahead) {
@@ -138,11 +139,11 @@ export class Scanner {
             this.tokenPos = saveTokenPos;
             this.token = saveToken;
             this.tokenValue = saveTokenValue;
-            this.indents = saveIndents;
+            this.tokenFlags = saveTokenFlags;
             this.htmlTrivia = saveHtmlTrivia;
-            this.copyIndentsOnWrite = saveCopyIndentsOnWrite;
-            this.precedingIndent = savePrecedingIndent;
-            this.precedingLineTerminator = savePrecedingLineTerminator;
+            this.initialIndentLength = saveInitialIndentLength;
+            this.significantIndentLength = saveSignificantIndentLength;
+            this.currentIndentLength = saveCurrentIndentLength;
         }
         return result;
     }
@@ -150,11 +151,9 @@ export class Scanner {
     public scan(): SyntaxKind {
         this.cancellationToken.throwIfCancellationRequested();
         this.startPos = this.pos;
-        this.htmlTrivia = undefined;
-        this.tokenIsUnterminated = false;
         this.tokenValue = "";
-        this.precedingIndent = "none";
-        this.precedingLineTerminator = false;
+        this.tokenFlags = 0;
+        this.htmlTrivia = undefined;
         while (true) {
             this.tokenPos = this.pos;
             if (this.pos >= this.len) {
@@ -177,7 +176,7 @@ export class Scanner {
                         this.pos++;
                     }
 
-                    this.precedingLineTerminator = true;
+                    this.tokenFlags |= TokenFlags.PrecedingLineTerminator;
                     this.scanIndent();
                     continue;
 
@@ -388,61 +387,38 @@ export class Scanner {
     }
 
     private scanIndent(): void {
-        this.tokenPos = this.pos;
         if (this.pos >= this.len) {
-            if (this.indents.length) {
-                this.precedingIndent = "dedent";
-                this.indents.length = 0;
+            if (this.significantIndentLength > 0) {
+                this.tokenFlags = this.tokenFlags & ~TokenFlags.AnyPrecedingIndent | TokenFlags.PrecedingDedent;
             }
+            this.initialIndentLength = 0;
+            this.significantIndentLength = 0;
+            this.currentIndentLength = 0;
             return;
         }
 
-        const initialIndent = this.pos === 0;
-        const previousIndentCount = this.indents.length;
+        const indentPos = this.pos;
         let ch = this.text.charCodeAt(this.pos);
         while (ch === CharacterCodes.Space || ch === CharacterCodes.Tab) {
             this.pos++;
             ch = this.text.charCodeAt(this.pos);
         }
 
-        let tokenLen = this.pos - this.tokenPos;
-        let dedentCount = 0;
-        for (let i = 0; i < this.indents.length; i++) {
-            tokenLen -= this.indents[i];
-            if (tokenLen < 0) {
-                dedentCount++;
-            }
-        }
+        if (isLineTerminator(ch)) return;
 
-        if (tokenLen > 0) {
-            if (this.copyIndentsOnWrite) {
-                this.indents = this.indents.slice(0);
-                this.copyIndentsOnWrite = false;
-            }
-            this.indents.push(tokenLen);
-            if (initialIndent) {
-                this.initialIndent = true;
+        this.currentIndentLength = this.pos - indentPos;
+        if (this.startPos === 0) {
+            this.initialIndentLength = this.currentIndentLength;
+        }
+        else if (this.currentIndentLength <= this.initialIndentLength) {
+            if (this.significantIndentLength > 0) {
+                this.significantIndentLength = 0;
+                this.tokenFlags = this.tokenFlags & ~TokenFlags.PrecedingIndent | TokenFlags.PrecedingDedent;
             }
         }
-        else {
-            for (let i = 0; i < dedentCount; i++) {
-                if (this.copyIndentsOnWrite) {
-                    this.indents = this.indents.slice(0);
-                    this.copyIndentsOnWrite = false;
-                }
-                this.indents.pop();
-            }
-            if (this.indents.length === 0 && this.initialIndent) {
-                this.initialIndent = false;
-            }
-        }
-
-        const initialIndentCount = this.initialIndent ? 1 : 0;
-        if (this.indents.length > previousIndentCount && previousIndentCount === initialIndentCount) {
-            this.precedingIndent = "indent";
-        }
-        else if (this.indents.length < previousIndentCount && this.indents.length === initialIndentCount) {
-            this.precedingIndent = "dedent";
+        else if (this.significantIndentLength === 0) {
+            this.significantIndentLength = this.currentIndentLength;
+            this.tokenFlags = this.tokenFlags & ~TokenFlags.PrecedingDedent | TokenFlags.PrecedingIndent;
         }
     }
 
@@ -496,7 +472,6 @@ export class Scanner {
         const previousTokenWasFragment = isProseFragment(previousToken);
 
         const start = this.pos;
-        let token: SyntaxKind;
         let tokenValue: string = "";
         while (true) {
             if (this.pos >= this.len) {
@@ -504,7 +479,7 @@ export class Scanner {
                 this.tokenValue = tokenValue;
                 this.proseStartToken = undefined;
                 if (!isMultiLine) {
-                    this.tokenIsUnterminated = true;
+                    this.tokenFlags |= TokenFlags.Unterminated;
                     this.getDiagnostics().report(this.pos, Diagnostics._0_expected, "]");
                 }
                 return atStartOfProse ? SyntaxKind.ProseFull : SyntaxKind.ProseTail;
@@ -604,7 +579,7 @@ export class Scanner {
         while (true) {
             if (this.pos >= this.len) {
                 result += this.text.substring(start, this.pos);
-                this.tokenIsUnterminated = true;
+                this.tokenFlags |= TokenFlags.Unterminated;
                 this.getDiagnostics().report(this.pos, diagnostic || Diagnostics.Unterminated_string_literal);
                 break;
             }
@@ -638,7 +613,7 @@ export class Scanner {
             }
             else if (!multiLine && isLineTerminator(ch)) {
                 result += this.text.substring(start, this.pos);
-                this.tokenIsUnterminated = true;
+                this.tokenFlags |= TokenFlags.Unterminated;
                 this.getDiagnostics().report(this.pos, diagnostic || Diagnostics.Unterminated_string_literal);
                 break;
             }
