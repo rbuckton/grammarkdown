@@ -49,8 +49,6 @@ export class Scanner {
     private significantIndentLength: number = 0;
     private currentIndentLength: number = 0;
     private proseStartToken: SyntaxKind | undefined;
-    private char: number = 0;
-    private charSize: number = 0;
 
     constructor(filename: string, text: string, diagnostics: DiagnosticMessages, cancellationToken = CancellationToken.none) {
         this.filename = filename;
@@ -511,7 +509,7 @@ export class Scanner {
         const atStartOfProse = previousToken === this.proseStartToken;
         const previousTokenWasFragment = isProseFragment(previousToken);
 
-        const start = this.pos;
+        let start = this.pos;
         let tokenValue: string = "";
         while (true) {
             if (this.pos >= this.len) {
@@ -561,6 +559,14 @@ export class Scanner {
                 tokenValue += this.text.substring(start, this.pos);
                 this.tokenValue = tokenValue;
                 return atStartOfProse ? SyntaxKind.ProseHead : SyntaxKind.ProseMiddle;
+            }
+
+            if (ch === CharacterCodes.Ampersand) {
+                tokenValue += this.text.substring(start, this.pos);
+                this.pos++;
+                tokenValue += String.fromCharCode(this.scanCharacterEntity());
+                start = this.pos;
+                continue;
             }
 
             this.pos++;
@@ -629,24 +635,12 @@ export class Scanner {
             this.pos = pos + 1;
             return value;
         }
-        return -1;
+        return CharacterCodes.Ampersand;
     }
 
-    private scanString(quote: number, kind: SyntaxKind): string {
-        let multiLine = false;
-        let consumeQuote = true;
-        let diagnostic = Diagnostics.Unterminated_string_literal;
-        let decodeEscapeSequences = true;
-        if (kind === SyntaxKind.Identifier) {
-            diagnostic = Diagnostics.Unterminated_identifier_literal;
-        }
-        else if (kind === SyntaxKind.Prose) {
-            multiLine = true;
-            consumeQuote = false;
-        }
-        else if (kind === SyntaxKind.Terminal) {
-            decodeEscapeSequences = false;
-        }
+    private scanString(quote: number, kind: SyntaxKind.StringLiteral | SyntaxKind.Terminal | SyntaxKind.Identifier | SyntaxKind.UnicodeCharacterLiteral): string {
+        const diagnostic = kind === SyntaxKind.Identifier ? Diagnostics.Unterminated_identifier_literal : Diagnostics.Unterminated_string_literal;
+        const decodeEscapeSequences = kind !== SyntaxKind.Terminal;
 
         let result = "";
         let start = this.pos;
@@ -672,10 +666,7 @@ export class Scanner {
                 }
 
                 result += this.text.substring(start, this.pos);
-                if (consumeQuote) {
-                    this.pos++;
-                }
-
+                this.pos++;
                 break;
             }
             else if (decodeEscapeSequences && ch === CharacterCodes.Backslash) {
@@ -685,7 +676,13 @@ export class Scanner {
                 start = this.pos;
                 continue;
             }
-            else if (!multiLine && isLineTerminator(ch)) {
+            else if (decodeEscapeSequences && ch === CharacterCodes.Ampersand) {
+                result += this.text.substring(start, this.pos);
+                result += String.fromCharCode(this.scanCharacterEntity());
+                start = this.pos;
+                continue;
+            }
+            else if (isLineTerminator(ch)) {
                 result += this.text.substring(start, this.pos);
                 this.setTokenAsUnterminated();
                 this.getDiagnostics().report(this.pos, diagnostic || Diagnostics.Unterminated_string_literal);
