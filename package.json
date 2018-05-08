@@ -1,6 +1,6 @@
 {
   "name": "grammarkdown",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "Markdown-like DSL for defining syntactic grammars for programming languages.",
   "license": "Apache-2.0",
   "keywords": [
@@ -53,6 +53,6 @@
     "typescript": "^2.9.0-dev.20180505"
   },
   "dependencies": {
-    "prex": "^0.3.0"
+    "prex": "^0.4.2"
   }
 }
