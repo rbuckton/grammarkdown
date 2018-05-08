@@ -338,7 +338,7 @@ export class Emitter {
     }
 
     protected encode(text: string) {
-        return text.replace(/[&<>'"]/g, ch => {
+        return text.replace(/&(?!(?:#(?:[xX][a-fA-F\d]+|\d+)|[a-zA-Z\d]+);)|[<>'"]/g, ch => {
             switch (ch) {
                 case "&": return "&amp;";
                 case "<": return "&lt;";

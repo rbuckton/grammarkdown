@@ -111,6 +111,8 @@ export const enum CharacterCodes {
     UpperY = 0x59,
     UpperZ = 0x5a,
 
+    Hash = 0x23,                  // #
+    Ampersand = 0x26,             // &
     Asterisk = 0x2A,              // *
     At = 0x40,                    // @
     Backslash = 0x5C,             // \
@@ -120,6 +122,7 @@ export const enum CharacterCodes {
     CloseBracket = 0x5D,          // ]
     CloseParen = 0x29,            // )
     Colon = 0x3A,                 // :
+    Semicolon = 0x3b,             // ;
     Comma = 0x2C,                 // ,
     Dot = 0x2E,                   // .
     DoubleQuote = 0x22,           // "

@@ -13,22 +13,22 @@
         <del><emu-nt>Old</emu-nt></del>
         <emu-nt>Production</emu-nt>
     </emu-rhs>
-    <ins><emu-rhs a="692c50e1"><emu-nt>NewTerminal</emu-nt></emu-rhs>
+</emu-production>
+<ins><emu-production name="NewTerminal">
     <emu-rhs a="b1b8622b"><emu-t>t</emu-t></emu-rhs>
 </emu-production></ins>
 <emu-production name="LookaheadExample" type="lexical">
-    <emu-rhs a="4840951d">
+    <emu-rhs a="d9a654c9">
         <emu-t>&amp;&amp;</emu-t>
         <emu-t>n</emu-t>
-        <emu-gann>
-        <emu-nt>lt</emu-nt></emu-gann>
+        <emu-gann>lookahead ∉ { <emu-t>1</emu-t>, <emu-t>3</emu-t>, <emu-t>5</emu-t>, <emu-t>7</emu-t>, <emu-t>9</emu-t> }</emu-gann>
+        <emu-nt>DecimalDigits</emu-nt>
     </emu-rhs>
-    <emu-rhs a="f89d6cfa">
+    <emu-rhs a="195cbc6c">
         <emu-nt>DecimalDigit</emu-nt>
-        <emu-gann>
-        <emu-nt>lt</emu-nt></emu-gann>
+        <emu-gann>lookahead ∉ <emu-nt>DecimalDigit</emu-nt></emu-gann>
     </emu-rhs>
 </emu-production>
 <emu-production name="HTMLEntitiesExample" type="lexical">
-    <emu-rhs a="56e2860e"><emu-gprose>This is technically a &amp;ldquo;production&amp;rdquo;</emu-gprose></emu-rhs>
+    <emu-rhs a="56e2860e"><emu-gprose>This is technically a &ldquo;production&rdquo;</emu-gprose></emu-rhs>
 </emu-production>

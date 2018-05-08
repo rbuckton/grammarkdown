@@ -10,7 +10,6 @@
             "args": [
                 "--no-timeouts",
                 "--colors",
-                "-g", "test.grammar",
                 "${workspaceRoot}/dist/tests/index.js"
             ],
             "cwd": "${workspaceRoot}",

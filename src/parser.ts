@@ -62,7 +62,7 @@ import {
     HtmlTrivia
 } from "./nodes";
 
-const enum ParsingContext {
+enum ParsingContext {
     SourceElements,
     Parameters,
     BracketedParameters,
@@ -386,19 +386,19 @@ export class Parser {
                 break;
 
             case ParsingContext.Parameters:
-                this.skipUntil(isParametersRecoveryToken);
+                this.skipUntil(isAnyParametersRecoveryToken);
                 break;
 
             case ParsingContext.BracketedParameters:
-                this.skipUntil(isBracketedParametersRecoveryToken);
+                this.skipUntil(isAnyParametersRecoveryToken);
                 break;
 
             case ParsingContext.Arguments:
-                this.skipUntil(isArgumentsRecoveryToken);
+                this.skipUntil(isAnyArgumentsRecoveryToken);
                 break;
 
             case ParsingContext.BracketedArguments:
-                this.skipUntil(isBracketedArgumentsRecoveryToken);
+                this.skipUntil(isAnyArgumentsRecoveryToken);
                 break;
 
             case ParsingContext.RightHandSideListIndented:
@@ -464,42 +464,33 @@ export class Parser {
     private tryStopParsingList() {
         switch (this.parsingContext) {
             case ParsingContext.SourceElements:
-                // parsing SourceElements consumes the EOF token
-                if (this.token === SyntaxKind.EndOfFileToken) {
-                    this.nextToken();
-                    return true;
-                }
-                return false;
+                return this.token === SyntaxKind.EndOfFileToken;
 
             case ParsingContext.Parameters:
             case ParsingContext.Arguments:
-                // Parsing params/args does *not* consume the close paren token.
                 return this.token === SyntaxKind.CloseParenToken;
 
             case ParsingContext.BracketedParameters:
             case ParsingContext.BracketedArguments:
-                // Parsing params/args does *not* consume the close bracket token.
                 return this.token === SyntaxKind.CloseBracketToken;
 
             case ParsingContext.RightHandSideListIndented:
-                // An indented RHS list does not consume the next token
-                return this.scanner.hasPrecedingDedent()
-                    || this.token === SyntaxKind.EndOfFileToken;
+                return this.token === SyntaxKind.EndOfFileToken
+                    || this.scanner.hasPrecedingDedent()
+                    || this.scanner.hasPrecedingBlankLine();
 
             case ParsingContext.SymbolSet:
-                // SymbolSet does not consume the closing token
                 return this.token === SyntaxKind.CloseBraceToken;
 
             case ParsingContext.OneOfList:
-                // OneOfList does not consume the closing token
-                return this.scanner.hasPrecedingLineTerminator()
-                    || this.scanner.hasPrecedingDedent()
-                    || this.token === SyntaxKind.EndOfFileToken;
+                return this.token === SyntaxKind.EndOfFileToken
+                    || this.scanner.hasPrecedingLineTerminator();
 
             case ParsingContext.OneOfListIndented:
                 // OneOfListIndented does not consume the closing token
-                return this.scanner.hasPrecedingDedent()
-                    || this.token === SyntaxKind.EndOfFileToken;
+                return this.token === SyntaxKind.EndOfFileToken
+                    || this.scanner.hasPrecedingDedent()
+                    || this.scanner.hasPrecedingBlankLine();
 
             case ParsingContext.OneOfSymbolList:
                 return this.token !== SyntaxKind.OrKeyword;
@@ -561,8 +552,10 @@ export class Parser {
 
             if (this.tryStopParsingList()) break;
             if (!this.tryMoveToNextElement(parsed)) {
+                const startPos = this.scanner.getStartPos();
                 this.reportDiagnostics();
                 this.recover();
+                if (this.scanner.getStartPos() === startPos) throw new Error("Recovery failed to advance.");
             }
         }
 
@@ -972,7 +965,6 @@ export class Parser {
     }
 
     private isStartOfSymbolSpan(): boolean {
-        if (this.scanner.hasPrecedingLineTerminator() && !this.scanner.isIndented()) return false;
         switch (this.token) {
             case SyntaxKind.UnicodeCharacterLiteral:
             case SyntaxKind.Terminal:
@@ -1123,52 +1115,40 @@ export class Parser {
 }
 
 function isSourceElementsRecoveryToken(scanner: Scanner) {
-    return scanner.hasPrecedingLineTerminator();
+    return scanner.hasPrecedingDedent()
+        || scanner.hasPrecedingBlankLine();
 }
 
-function isParametersRecoveryToken(scanner: Scanner) {
+function isAnyParametersRecoveryToken(scanner: Scanner) {
     const token = scanner.getToken();
     return token === SyntaxKind.CommaToken
         || token === SyntaxKind.Identifier
         || token === SyntaxKind.CloseParenToken
-        || token === SyntaxKind.ColonToken
-        || token === SyntaxKind.ColonColonToken
-        || token === SyntaxKind.ColonColonColonToken
-        || scanner.hasPrecedingLineTerminator();
-}
-
-function isBracketedParametersRecoveryToken(scanner: Scanner) {
-    const token = scanner.getToken();
-    return token === SyntaxKind.CommaToken
-        || token === SyntaxKind.Identifier
         || token === SyntaxKind.CloseBracketToken
         || token === SyntaxKind.ColonToken
         || token === SyntaxKind.ColonColonToken
         || token === SyntaxKind.ColonColonColonToken
-        || scanner.hasPrecedingLineTerminator();
+        || scanner.hasPrecedingDedent()
+        || scanner.hasPrecedingBlankLine()
+        || scanner.hasPrecedingLineTerminator() && !scanner.isLineContinuation();
 }
 
-function isArgumentsRecoveryToken(scanner: Scanner) {
+function isAnyArgumentsRecoveryToken(scanner: Scanner) {
     const token = scanner.getToken();
     return token === SyntaxKind.CommaToken
         || token === SyntaxKind.QuestionToken
         || token === SyntaxKind.Identifier
         || token === SyntaxKind.CloseParenToken
-        || scanner.hasPrecedingLineTerminator();
-}
-
-function isBracketedArgumentsRecoveryToken(scanner: Scanner) {
-    const token = scanner.getToken();
-    return token === SyntaxKind.CommaToken
-        || token === SyntaxKind.QuestionToken
-        || token === SyntaxKind.Identifier
         || token === SyntaxKind.CloseBracketToken
-        || scanner.hasPrecedingLineTerminator();
+        || scanner.hasPrecedingDedent()
+        || scanner.hasPrecedingBlankLine()
+        || (scanner.hasPrecedingLineTerminator() && !scanner.isLineContinuation());
 }
 
 function isRightHandSideListIndentedRecoveryToken(scanner: Scanner) {
     return scanner.hasPrecedingDedent()
-        || scanner.hasPrecedingLineTerminator();
+        || scanner.hasPrecedingBlankLine()
+        || scanner.hasPrecedingLineTerminator() && !scanner.isLineContinuation();
 }
 
 function isSymbolSetRecoveryToken(scanner: Scanner) {
@@ -1176,7 +1156,7 @@ function isSymbolSetRecoveryToken(scanner: Scanner) {
     return token === SyntaxKind.CommaToken
         || token === SyntaxKind.Terminal
         || token === SyntaxKind.CloseBraceToken
-        || scanner.hasPrecedingLineTerminator();
+        || scanner.hasPrecedingLineTerminator() && !scanner.isLineContinuation();
 }
 
 function isOneOfListRecoveryToken(scanner: Scanner) {
