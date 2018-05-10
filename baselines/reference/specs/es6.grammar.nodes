@@ -1466,8 +1466,9 @@
         (369,2)SyntaxKind[SymbolSpan]
           (369,2)SyntaxKind[ParameterValueAssertion]
             (369,2)SyntaxKind[OpenBracketToken]
-            (369,3)SyntaxKind[TildeToken]
-            (369,4)SyntaxKind[Identifier](text = "Yield")
+            (369,3)SyntaxKind[Argument]~
+              (369,3)SyntaxKind[TildeToken]
+              (369,4)SyntaxKind[Identifier](text = "Yield")
             (369,9)SyntaxKind[CloseBracketToken]
           (369,11)SyntaxKind[SymbolSpan]
             (369,11)SyntaxKind[Terminal](text = "yield")
@@ -1488,8 +1489,9 @@
         (373,2)SyntaxKind[SymbolSpan]
           (373,2)SyntaxKind[ParameterValueAssertion]
             (373,2)SyntaxKind[OpenBracketToken]
-            (373,3)SyntaxKind[TildeToken]
-            (373,4)SyntaxKind[Identifier](text = "Yield")
+            (373,3)SyntaxKind[Argument]~
+              (373,3)SyntaxKind[TildeToken]
+              (373,4)SyntaxKind[Identifier](text = "Yield")
             (373,9)SyntaxKind[CloseBracketToken]
           (373,11)SyntaxKind[SymbolSpan]
             (373,11)SyntaxKind[Terminal](text = "yield")
@@ -1510,8 +1512,9 @@
         (377,2)SyntaxKind[SymbolSpan]
           (377,2)SyntaxKind[ParameterValueAssertion]
             (377,2)SyntaxKind[OpenBracketToken]
-            (377,3)SyntaxKind[TildeToken]
-            (377,4)SyntaxKind[Identifier](text = "Yield")
+            (377,3)SyntaxKind[Argument]~
+              (377,3)SyntaxKind[TildeToken]
+              (377,4)SyntaxKind[Identifier](text = "Yield")
             (377,9)SyntaxKind[CloseBracketToken]
           (377,11)SyntaxKind[SymbolSpan]
             (377,11)SyntaxKind[Terminal](text = "yield")
@@ -3268,8 +3271,9 @@
         (560,2)SyntaxKind[SymbolSpan]
           (560,2)SyntaxKind[ParameterValueAssertion]
             (560,2)SyntaxKind[OpenBracketToken]
-            (560,3)SyntaxKind[PlusToken]
-            (560,4)SyntaxKind[Identifier](text = "In")
+            (560,3)SyntaxKind[Argument]+
+              (560,3)SyntaxKind[PlusToken]
+              (560,4)SyntaxKind[Identifier](text = "In")
             (560,6)SyntaxKind[CloseBracketToken]
           (560,8)SyntaxKind[SymbolSpan]
             (560,8)SyntaxKind[Nonterminal]
@@ -3772,8 +3776,9 @@
         (595,2)SyntaxKind[SymbolSpan]
           (595,2)SyntaxKind[ParameterValueAssertion]
             (595,2)SyntaxKind[OpenBracketToken]
-            (595,3)SyntaxKind[PlusToken]
-            (595,4)SyntaxKind[Identifier](text = "Yield")
+            (595,3)SyntaxKind[Argument]+
+              (595,3)SyntaxKind[PlusToken]
+              (595,4)SyntaxKind[Identifier](text = "Yield")
             (595,9)SyntaxKind[CloseBracketToken]
           (595,11)SyntaxKind[SymbolSpan]
             (595,11)SyntaxKind[Nonterminal]
@@ -4012,8 +4017,9 @@
         (618,2)SyntaxKind[SymbolSpan]
           (618,2)SyntaxKind[ParameterValueAssertion]
             (618,2)SyntaxKind[OpenBracketToken]
-            (618,3)SyntaxKind[PlusToken]
-            (618,4)SyntaxKind[Identifier](text = "Return")
+            (618,3)SyntaxKind[Argument]+
+              (618,3)SyntaxKind[PlusToken]
+              (618,4)SyntaxKind[Identifier](text = "Return")
             (618,10)SyntaxKind[CloseBracketToken]
           (618,12)SyntaxKind[SymbolSpan]
             (618,12)SyntaxKind[Nonterminal]
@@ -6432,8 +6438,9 @@
         (811,2)SyntaxKind[SymbolSpan]
           (811,2)SyntaxKind[ParameterValueAssertion]
             (811,2)SyntaxKind[OpenBracketToken]
-            (811,3)SyntaxKind[PlusToken]
-            (811,4)SyntaxKind[Identifier](text = "Default")
+            (811,3)SyntaxKind[Argument]+
+              (811,3)SyntaxKind[PlusToken]
+              (811,4)SyntaxKind[Identifier](text = "Default")
             (811,11)SyntaxKind[CloseBracketToken]
           (811,13)SyntaxKind[SymbolSpan]
             (811,13)SyntaxKind[Terminal](text = "function")
@@ -6981,8 +6988,9 @@
         (869,2)SyntaxKind[SymbolSpan]
           (869,2)SyntaxKind[ParameterValueAssertion]
             (869,2)SyntaxKind[OpenBracketToken]
-            (869,3)SyntaxKind[PlusToken]
-            (869,4)SyntaxKind[Identifier](text = "Default")
+            (869,3)SyntaxKind[Argument]+
+              (869,3)SyntaxKind[PlusToken]
+              (869,4)SyntaxKind[Identifier](text = "Default")
             (869,11)SyntaxKind[CloseBracketToken]
           (869,13)SyntaxKind[SymbolSpan]
             (869,13)SyntaxKind[Terminal](text = "function")
@@ -7151,8 +7159,9 @@
         (884,2)SyntaxKind[SymbolSpan]
           (884,2)SyntaxKind[ParameterValueAssertion]
             (884,2)SyntaxKind[OpenBracketToken]
-            (884,3)SyntaxKind[PlusToken]
-            (884,4)SyntaxKind[Identifier](text = "Default")
+            (884,3)SyntaxKind[Argument]+
+              (884,3)SyntaxKind[PlusToken]
+              (884,4)SyntaxKind[Identifier](text = "Default")
             (884,11)SyntaxKind[CloseBracketToken]
           (884,13)SyntaxKind[SymbolSpan]
             (884,13)SyntaxKind[Terminal](text = "class")

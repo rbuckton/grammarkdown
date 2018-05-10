@@ -762,22 +762,23 @@ export class Checker {
 
     private checkParameterValueAssertion(node: ParameterValueAssertion): void {
         this.checkGrammarAssertionHead(node) || this.checkGrammarParameterValueAssertion(node) || this.checkGrammarAssertionTail(node);
-
-        if (node.name) {
-            this.checkIdentifier(node.name);
+        if (node.elements) {
+            for (const element of node.elements) {
+                this.checkArgument(element);
+            }
         }
     }
 
     private checkGrammarParameterValueAssertion(node: ParameterValueAssertion): boolean {
-        if (node.operatorToken) {
-            switch (node.operatorToken.kind) {
-                case SyntaxKind.TildeToken:
-                case SyntaxKind.PlusToken:
-                    break;
+        // TODO(rbuckton): Verify we are first entry in RHS
+        const parent = this.bindings.getParent(node);
+        const grandparent = parent && this.bindings.getParent(parent);
+        if (!grandparent || grandparent.kind !== SyntaxKind.RightHandSide) {
+            return this.reportGrammarErrorForNode(node, Diagnostics.Parameter_value_assertions_must_appear_first);
+        }
 
-                default:
-                    return this.reportGrammarErrorForNode(node.operatorToken, Diagnostics.Unexpected_token_0_, tokenToString(node.operatorToken.kind));
-            }
+        if (!node.elements) {
+            return this.reportGrammarError(node.openBracketToken.end, Diagnostics._0_expected, formatList([SyntaxKind.TildeToken, SyntaxKind.PlusToken]));
         }
 
         return false;
@@ -1113,17 +1114,31 @@ export class Checker {
     }
 
     private checkGrammarArgument(node: Argument): boolean {
-        if (node.operatorToken
-            && node.operatorToken.kind !== SyntaxKind.QuestionToken
-            && node.operatorToken.kind !== SyntaxKind.PlusToken
-            && node.operatorToken.kind !== SyntaxKind.TildeToken) {
-            return this.reportGrammarErrorForNode(node.operatorToken, Diagnostics.Unexpected_token_0_, tokenToString(node.operatorToken.kind));
+        const parent = this.bindings.getParent(node);
+        if (parent && parent.kind === SyntaxKind.ParameterValueAssertion) {
+            if (!node.operatorToken) {
+                return this.reportGrammarError(node.getStart(this.sourceFile), Diagnostics._0_expected, formatList([SyntaxKind.PlusToken, SyntaxKind.TildeToken]));
+            }
+            if (node.operatorToken.kind !== SyntaxKind.PlusToken
+                && node.operatorToken.kind !== SyntaxKind.TildeToken) {
+                return this.reportGrammarErrorForNode(node.operatorToken, Diagnostics.Unexpected_token_0_, tokenToString(node.operatorToken.kind));
+            }
         }
+        else {
+            if (node.operatorToken
+                && node.operatorToken.kind !== SyntaxKind.QuestionToken
+                && node.operatorToken.kind !== SyntaxKind.PlusToken
+                && node.operatorToken.kind !== SyntaxKind.TildeToken) {
+                return this.reportGrammarErrorForNode(node.operatorToken, Diagnostics.Unexpected_token_0_, tokenToString(node.operatorToken.kind));
+            }
 
-        if (!node.operatorToken && !this.noStrictParametricProductions) {
-            return this.reportGrammarError(node.getStart(this.sourceFile), Diagnostics._0_expected, formatList([SyntaxKind.QuestionToken, SyntaxKind.PlusToken, SyntaxKind.TildeToken]));
+            if (!node.operatorToken && !this.noStrictParametricProductions) {
+                return this.reportGrammarError(node.getStart(this.sourceFile), Diagnostics._0_expected, formatList([SyntaxKind.QuestionToken, SyntaxKind.PlusToken, SyntaxKind.TildeToken]));
+            }
         }
-
+        if (!node.name) {
+            return this.reportGrammarError(node.operatorToken ? node.operatorToken.end : node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.Identifier));
+        }
         return false;
     }
 
@@ -1496,9 +1511,16 @@ class RightHandSideDigest {
 
     private writeParameterValueAssertion(node: ParameterValueAssertion) {
         this.write("[");
-        this.writeToken(node.operatorToken);
-        this.spaceRequested = false;
-        this.writeNode(node.name);
+        if (node.elements) {
+            for (let i = 0; i < node.elements.length; ++i) {
+                if (i > 0) {
+                    this.write(", ");
+                }
+
+                this.writeNode(node.elements[i]);
+            }
+        }
+
         this.write("]");
         this.spaceRequested = true;
     }

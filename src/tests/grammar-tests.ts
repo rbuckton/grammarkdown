@@ -66,19 +66,18 @@ describe("Grammar", () => {
     function defineEmitterTests(file: TestFile) {
         const { emit = "ecmarkup" } = file.options;
         if (emit === "none") return;
+
         const modes = emit.split(/\s*,\s*|\s+/g);
-        describe("output", () => {
-            for (const mode of modes) {
-                defineEmitterTest(file, mode);
-            }
-        });
+        for (const mode of modes) {
+            defineEmitterTest(file, mode);
+        }
     }
 
     function defineEmitterTest(file: TestFile, mode: string) {
         const format = mode === "html" ? EmitFormat.html : mode === "markdown" ? EmitFormat.markdown : EmitFormat.ecmarkup;
         const extname = mode === "html" ? ".html" : mode === "markdown" ? ".md" : ".emu.html";
         const emitLinks = mode === "html";
-        it(EmitFormat[format], async () => {
+        it(`emit ${EmitFormat[format]}`, async () => {
             let output: string | undefined;
             const grammar = new Grammar([file.relative], { format, emitLinks }, new TestFileHost(file));
             await grammar.emit(/*sourceFile*/ undefined, async (_, _output) => { output = _output; });

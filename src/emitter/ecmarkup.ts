@@ -131,8 +131,8 @@ export class EcmarkupEmitter extends Emitter {
         if (head.symbol.kind === SyntaxKind.ParameterValueAssertion) {
             this.writer.write(` constraints="`);
             this.emitNode(head.symbol);
-            this.writer.write(`"`);
             head = head.next;
+            this.writer.write(`"`);
         }
 
         this.writer.write(`>`);
@@ -320,8 +320,15 @@ export class EcmarkupEmitter extends Emitter {
     }
 
     protected emitParameterValueAssertion(node: ParameterValueAssertion): void {
-        this.emitToken(node.operatorToken);
-        this.emitNode(node.name);
+        if (node.elements) {
+            for (let i = 0; i < node.elements.length; ++i) {
+                if (i > 0) {
+                    this.writer.write(`, `);
+                }
+
+                this.emitNode(node.elements[i]);
+            }
+        }
     }
 
     protected emitProseAssertion(node: ProseAssertion): void {

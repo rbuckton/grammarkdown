@@ -354,15 +354,15 @@
   
 &emsp;&emsp;<a name="IdentifierReference"></a>*IdentifierReference*<sub>[Yield]</sub> **:**  
 &emsp;&emsp;&emsp;<a name="IdentifierReference-06b6ace8"></a>*[Identifier](#Identifier)*  
-&emsp;&emsp;&emsp;<a name="IdentifierReference-481cca15"></a>[~Yield]&emsp;`` yield ``  
+&emsp;&emsp;&emsp;<a name="IdentifierReference-cce6c4d9"></a>[~Yield]&emsp;`` yield ``  
   
 &emsp;&emsp;<a name="BindingIdentifier"></a>*BindingIdentifier*<sub>[Yield]</sub> **:**  
 &emsp;&emsp;&emsp;<a name="BindingIdentifier-06b6ace8"></a>*[Identifier](#Identifier)*  
-&emsp;&emsp;&emsp;<a name="BindingIdentifier-481cca15"></a>[~Yield]&emsp;`` yield ``  
+&emsp;&emsp;&emsp;<a name="BindingIdentifier-cce6c4d9"></a>[~Yield]&emsp;`` yield ``  
   
 &emsp;&emsp;<a name="LabelIdentifier"></a>*LabelIdentifier*<sub>[Yield]</sub> **:**  
 &emsp;&emsp;&emsp;<a name="LabelIdentifier-06b6ace8"></a>*[Identifier](#Identifier)*  
-&emsp;&emsp;&emsp;<a name="LabelIdentifier-481cca15"></a>[~Yield]&emsp;`` yield ``  
+&emsp;&emsp;&emsp;<a name="LabelIdentifier-cce6c4d9"></a>[~Yield]&emsp;`` yield ``  
   
 &emsp;&emsp;<a name="Identifier"></a>*Identifier* **:**  
 &emsp;&emsp;&emsp;<a name="Identifier-bfa5c374"></a>*[IdentifierName](#IdentifierName)* **but not** *[ReservedWord](#ReservedWord)*  
@@ -545,7 +545,7 @@
 &emsp;&emsp;&emsp;<a name="RelationalExpression-707c38bf"></a>*[RelationalExpression](#RelationalExpression)*<sub>[?In, ?Yield]</sub>&emsp;`` <= ``&emsp;*[ShiftExpression](#ShiftExpression)*<sub>[?Yield]</sub>  
 &emsp;&emsp;&emsp;<a name="RelationalExpression-cc6c18fa"></a>*[RelationalExpression](#RelationalExpression)*<sub>[?In, ?Yield]</sub>&emsp;`` >= ``&emsp;*[ShiftExpression](#ShiftExpression)*<sub>[?Yield]</sub>  
 &emsp;&emsp;&emsp;<a name="RelationalExpression-3bd34097"></a>*[RelationalExpression](#RelationalExpression)*<sub>[?In, ?Yield]</sub>&emsp;`` instanceof ``&emsp;*[ShiftExpression](#ShiftExpression)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="RelationalExpression-bf2605bc"></a>[+In]&emsp;*[RelationalExpression](#RelationalExpression)*<sub>[In, ?Yield]</sub>&emsp;`` in ``&emsp;*[ShiftExpression](#ShiftExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="RelationalExpression-29405446"></a>[+In]&emsp;*[RelationalExpression](#RelationalExpression)*<sub>[In, ?Yield]</sub>&emsp;`` in ``&emsp;*[ShiftExpression](#ShiftExpression)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="EqualityExpression"></a>*EqualityExpression*<sub>[In, Yield]</sub> **:**  
 &emsp;&emsp;&emsp;<a name="EqualityExpression-2f008b2b"></a>*[RelationalExpression](#RelationalExpression)*<sub>[?In, ?Yield]</sub>  
@@ -580,7 +580,7 @@
   
 &emsp;&emsp;<a name="AssignmentExpression"></a>*AssignmentExpression*<sub>[In, Yield]</sub> **:**  
 &emsp;&emsp;&emsp;<a name="AssignmentExpression-0e9e3100"></a>*[ConditionalExpression](#ConditionalExpression)*<sub>[?In, ?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="AssignmentExpression-197afb63"></a>[+Yield]&emsp;*[YieldExpression](#YieldExpression)*<sub>[?In]</sub>  
+&emsp;&emsp;&emsp;<a name="AssignmentExpression-3f5f918f"></a>[+Yield]&emsp;*[YieldExpression](#YieldExpression)*<sub>[?In]</sub>  
 &emsp;&emsp;&emsp;<a name="AssignmentExpression-a9fcaed4"></a>*[ArrowFunction](#ArrowFunction)*<sub>[?In, ?Yield]</sub>  
 &emsp;&emsp;&emsp;<a name="AssignmentExpression-4894ae74"></a>*[LeftHandSideExpression](#LeftHandSideExpression)*<sub>[?Yield]</sub>&emsp;`` = ``&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[?In, ?Yield]</sub>  
 &emsp;&emsp;&emsp;<a name="AssignmentExpression-10c3e4bb"></a>*[LeftHandSideExpression](#LeftHandSideExpression)*<sub>[?Yield]</sub>&emsp;*[AssignmentOperator](#AssignmentOperator)*&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[?In, ?Yield]</sub>  
@@ -602,7 +602,7 @@
 &emsp;&emsp;&emsp;<a name="Statement-dc2a2400"></a>*[BreakableStatement](#BreakableStatement)*<sub>[?Yield, ?Return]</sub>  
 &emsp;&emsp;&emsp;<a name="Statement-b9a5a50f"></a>*[ContinueStatement](#ContinueStatement)*<sub>[?Yield]</sub>  
 &emsp;&emsp;&emsp;<a name="Statement-c8c4fc64"></a>*[BreakStatement](#BreakStatement)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="Statement-27633cf7"></a>[+Return]&emsp;*[ReturnStatement](#ReturnStatement)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="Statement-f4786316"></a>[+Return]&emsp;*[ReturnStatement](#ReturnStatement)*<sub>[?Yield]</sub>  
 &emsp;&emsp;&emsp;<a name="Statement-6530a28f"></a>*[WithStatement](#WithStatement)*<sub>[?Yield, ?Return]</sub>  
 &emsp;&emsp;&emsp;<a name="Statement-86b75733"></a>*[LabelledStatement](#LabelledStatement)*<sub>[?Yield, ?Return]</sub>  
 &emsp;&emsp;&emsp;<a name="Statement-6b7b863f"></a>*[ThrowStatement](#ThrowStatement)*<sub>[?Yield]</sub>  
@@ -793,7 +793,7 @@
   
 &emsp;&emsp;<a name="FunctionDeclaration"></a>*FunctionDeclaration*<sub>[Yield, Default]</sub> **:**  
 &emsp;&emsp;&emsp;<a name="FunctionDeclaration-2f85ccbd"></a>`` function ``&emsp;*[BindingIdentifier](#BindingIdentifier)*<sub>[?Yield]</sub>&emsp;`` ( ``&emsp;*[FormalParameters](#FormalParameters)*&emsp;`` ) ``&emsp;`` { ``&emsp;*[FunctionBody](#FunctionBody)*&emsp;`` } ``  
-&emsp;&emsp;&emsp;<a name="FunctionDeclaration-3294d277"></a>[+Default]&emsp;`` function ``&emsp;`` ( ``&emsp;*[FormalParameters](#FormalParameters)*&emsp;`` ) ``&emsp;`` { ``&emsp;*[FunctionBody](#FunctionBody)*&emsp;`` } ``  
+&emsp;&emsp;&emsp;<a name="FunctionDeclaration-3fdd8a64"></a>[+Default]&emsp;`` function ``&emsp;`` ( ``&emsp;*[FormalParameters](#FormalParameters)*&emsp;`` ) ``&emsp;`` { ``&emsp;*[FunctionBody](#FunctionBody)*&emsp;`` } ``  
   
 &emsp;&emsp;<a name="FunctionExpression"></a>*FunctionExpression* **:**  
 &emsp;&emsp;&emsp;<a name="FunctionExpression-8379937e"></a>`` function ``&emsp;*[BindingIdentifier](#BindingIdentifier)*<sub>opt</sub>&emsp;`` ( ``&emsp;*[FormalParameters](#FormalParameters)*&emsp;`` ) ``&emsp;`` { ``&emsp;*[FunctionBody](#FunctionBody)*&emsp;`` } ``  
@@ -851,7 +851,7 @@
   
 &emsp;&emsp;<a name="GeneratorDeclaration"></a>*GeneratorDeclaration*<sub>[Yield, Default]</sub> **:**  
 &emsp;&emsp;&emsp;<a name="GeneratorDeclaration-5b7c9573"></a>`` function ``&emsp;`` * ``&emsp;*[BindingIdentifier](#BindingIdentifier)*<sub>[?Yield]</sub>&emsp;`` ( ``&emsp;*[FormalParameters](#FormalParameters)*<sub>[Yield]</sub>&emsp;`` ) ``&emsp;`` { ``&emsp;*[GeneratorBody](#GeneratorBody)*&emsp;`` } ``  
-&emsp;&emsp;&emsp;<a name="GeneratorDeclaration-d291018a"></a>[+Default]&emsp;`` function ``&emsp;`` * ``&emsp;`` ( ``&emsp;*[FormalParameters](#FormalParameters)*<sub>[Yield]</sub>&emsp;`` ) ``&emsp;`` { ``&emsp;*[GeneratorBody](#GeneratorBody)*&emsp;`` } ``  
+&emsp;&emsp;&emsp;<a name="GeneratorDeclaration-ecd66a36"></a>[+Default]&emsp;`` function ``&emsp;`` * ``&emsp;`` ( ``&emsp;*[FormalParameters](#FormalParameters)*<sub>[Yield]</sub>&emsp;`` ) ``&emsp;`` { ``&emsp;*[GeneratorBody](#GeneratorBody)*&emsp;`` } ``  
   
 &emsp;&emsp;<a name="GeneratorExpression"></a>*GeneratorExpression* **:**  
 &emsp;&emsp;&emsp;<a name="GeneratorExpression-3d1a82cb"></a>`` function ``&emsp;`` * ``&emsp;*[BindingIdentifier](#BindingIdentifier)*<sub>[Yield]</sub><sub>opt</sub>&emsp;`` ( ``&emsp;*[FormalParameters](#FormalParameters)*<sub>[Yield]</sub>&emsp;`` ) ``&emsp;`` { ``&emsp;*[GeneratorBody](#GeneratorBody)*&emsp;`` } ``  
@@ -866,7 +866,7 @@
   
 &emsp;&emsp;<a name="ClassDeclaration"></a>*ClassDeclaration*<sub>[Yield, Default]</sub> **:**  
 &emsp;&emsp;&emsp;<a name="ClassDeclaration-3a47f50b"></a>`` class ``&emsp;*[BindingIdentifier](#BindingIdentifier)*<sub>[?Yield]</sub>&emsp;*[ClassTail](#ClassTail)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="ClassDeclaration-f1909d63"></a>[+Default]&emsp;`` class ``&emsp;*[ClassTail](#ClassTail)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="ClassDeclaration-db46a072"></a>[+Default]&emsp;`` class ``&emsp;*[ClassTail](#ClassTail)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="ClassExpression"></a>*ClassExpression*<sub>[Yield]</sub> **:**  
 &emsp;&emsp;&emsp;<a name="ClassExpression-89a169d4"></a>`` class ``&emsp;*[BindingIdentifier](#BindingIdentifier)*<sub>[?Yield]</sub><sub>opt</sub>&emsp;*[ClassTail](#ClassTail)*<sub>[?Yield]</sub>  

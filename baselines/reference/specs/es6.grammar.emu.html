@@ -523,15 +523,15 @@
 </emu-production>
 <emu-production name="IdentifierReference" params="Yield">
     <emu-rhs a="06b6ace8"><emu-nt>Identifier</emu-nt></emu-rhs>
-    <emu-rhs a="481cca15" constraints="~Yield"><emu-t>yield</emu-t></emu-rhs>
+    <emu-rhs a="cce6c4d9" constraints="~Yield"><emu-t>yield</emu-t></emu-rhs>
 </emu-production>
 <emu-production name="BindingIdentifier" params="Yield">
     <emu-rhs a="06b6ace8"><emu-nt>Identifier</emu-nt></emu-rhs>
-    <emu-rhs a="481cca15" constraints="~Yield"><emu-t>yield</emu-t></emu-rhs>
+    <emu-rhs a="cce6c4d9" constraints="~Yield"><emu-t>yield</emu-t></emu-rhs>
 </emu-production>
 <emu-production name="LabelIdentifier" params="Yield">
     <emu-rhs a="06b6ace8"><emu-nt>Identifier</emu-nt></emu-rhs>
-    <emu-rhs a="481cca15" constraints="~Yield"><emu-t>yield</emu-t></emu-rhs>
+    <emu-rhs a="cce6c4d9" constraints="~Yield"><emu-t>yield</emu-t></emu-rhs>
 </emu-production>
 <emu-production name="Identifier">
     <emu-rhs a="bfa5c374"><emu-nt>IdentifierName</emu-nt> <emu-gmod>but not <emu-nt>ReservedWord</emu-nt></emu-gmod></emu-rhs>
@@ -964,7 +964,7 @@
         <emu-t>instanceof</emu-t>
         <emu-nt params="?Yield">ShiftExpression</emu-nt>
     </emu-rhs>
-    <emu-rhs a="bf2605bc" constraints="+In">
+    <emu-rhs a="29405446" constraints="+In">
         <emu-nt params="In, ?Yield">RelationalExpression</emu-nt>
         <emu-t>in</emu-t>
         <emu-nt params="?Yield">ShiftExpression</emu-nt>
@@ -1045,7 +1045,7 @@
 </emu-production>
 <emu-production name="AssignmentExpression" params="In, Yield">
     <emu-rhs a="0e9e3100"><emu-nt params="?In, ?Yield">ConditionalExpression</emu-nt></emu-rhs>
-    <emu-rhs a="197afb63" constraints="+Yield"><emu-nt params="?In">YieldExpression</emu-nt></emu-rhs>
+    <emu-rhs a="3f5f918f" constraints="+Yield"><emu-nt params="?In">YieldExpression</emu-nt></emu-rhs>
     <emu-rhs a="a9fcaed4"><emu-nt params="?In, ?Yield">ArrowFunction</emu-nt></emu-rhs>
     <emu-rhs a="4894ae74">
         <emu-nt params="?Yield">LeftHandSideExpression</emu-nt>
@@ -1078,7 +1078,7 @@
     <emu-rhs a="dc2a2400"><emu-nt params="?Yield, ?Return">BreakableStatement</emu-nt></emu-rhs>
     <emu-rhs a="b9a5a50f"><emu-nt params="?Yield">ContinueStatement</emu-nt></emu-rhs>
     <emu-rhs a="c8c4fc64"><emu-nt params="?Yield">BreakStatement</emu-nt></emu-rhs>
-    <emu-rhs a="27633cf7" constraints="+Return"><emu-nt params="?Yield">ReturnStatement</emu-nt></emu-rhs>
+    <emu-rhs a="f4786316" constraints="+Return"><emu-nt params="?Yield">ReturnStatement</emu-nt></emu-rhs>
     <emu-rhs a="6530a28f"><emu-nt params="?Yield, ?Return">WithStatement</emu-nt></emu-rhs>
     <emu-rhs a="86b75733"><emu-nt params="?Yield, ?Return">LabelledStatement</emu-nt></emu-rhs>
     <emu-rhs a="6b7b863f"><emu-nt params="?Yield">ThrowStatement</emu-nt></emu-rhs>
@@ -1578,7 +1578,7 @@
         <emu-nt>FunctionBody</emu-nt>
         <emu-t>}</emu-t>
     </emu-rhs>
-    <emu-rhs a="3294d277" constraints="+Default">
+    <emu-rhs a="3fdd8a64" constraints="+Default">
         <emu-t>function</emu-t>
         <emu-t>(</emu-t>
         <emu-nt>FormalParameters</emu-nt>
@@ -1717,7 +1717,7 @@
         <emu-nt>GeneratorBody</emu-nt>
         <emu-t>}</emu-t>
     </emu-rhs>
-    <emu-rhs a="d291018a" constraints="+Default">
+    <emu-rhs a="ecd66a36" constraints="+Default">
         <emu-t>function</emu-t>
         <emu-t>*</emu-t>
         <emu-t>(</emu-t>
@@ -1764,7 +1764,7 @@
         <emu-nt params="?Yield">BindingIdentifier</emu-nt>
         <emu-nt params="?Yield">ClassTail</emu-nt>
     </emu-rhs>
-    <emu-rhs a="f1909d63" constraints="+Default">
+    <emu-rhs a="db46a072" constraints="+Default">
         <emu-t>class</emu-t>
         <emu-nt params="?Yield">ClassTail</emu-nt>
     </emu-rhs>

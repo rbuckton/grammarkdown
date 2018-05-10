@@ -136,7 +136,7 @@ export abstract class NodeVisitor {
     }
 
     public visitParameterValueAssertion(node: ParameterValueAssertion): ParameterValueAssertion {
-        return node.update(this.visit(node.name));
+        return node.update(this.visitEach(node.elements));
     }
 
     public visitProseAssertion(node: ProseAssertion): ProseAssertion {

@@ -1,0 +1,3 @@
+/// assertions/constraints.grammar:
+assertions/constraints.grammar(4,4): error GM1001: 'lookahead', 'lexical', 'no', '~', or '+' expected.
+assertions/constraints.grammar(5,11): error GM1010: Parameter value assertions must appear first.

@@ -208,7 +208,9 @@ export class HtmlEmitter extends Emitter {
     }
 
     protected emitArgument(node: Argument) {
-        this.writer.write(`<span class="argument">`);
+        const parent = this.resolver.getParent(node);
+        const className = parent && parent.kind === SyntaxKind.ParameterValueAssertion ? "parameter" : "argument";
+        this.writer.write(`<span class="${className}">`);
         this.emitToken(node.operatorToken);
         this.emitNode(node.name);
         this.writer.write(`</span>`);
@@ -315,10 +317,16 @@ export class HtmlEmitter extends Emitter {
 
     protected emitParameterValueAssertion(node: ParameterValueAssertion): void {
         this.writer.write(`<span class="assertion">[`)
-        this.emitToken(node.operatorToken);
-        this.writer.write(`<span class="parameter">`);
-        this.emitNode(node.name);
-        this.writer.write(`</span>`);
+        if (node.elements) {
+            for (let i = 0; i < node.elements.length; ++i) {
+                if (i > 0) {
+                    this.writer.write(`, `);
+                }
+
+                this.emitNode(node.elements[i]);
+            }
+        }
+
         this.writer.write(`]</span>`);
     }
 

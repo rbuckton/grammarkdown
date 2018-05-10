@@ -1,0 +1,5 @@
+Prod[A] :
+  [~A] `ok`
+  [+A] `ok`
+  [?A] `error`
+  `error` [~A]

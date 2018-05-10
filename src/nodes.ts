@@ -897,45 +897,40 @@ export class NoSymbolHereAssertion extends AssertionBase<SyntaxKind.NoSymbolHere
 
 export interface AssertionTypes { [SyntaxKind.ParameterValueAssertion]: ParameterValueAssertion; }
 export class ParameterValueAssertion extends AssertionBase<SyntaxKind.ParameterValueAssertion, SyntaxKind.OpenBracketToken> {
-    public readonly operatorToken: Token<ParameterOperatorKind> | undefined;
-    public readonly name: Identifier | undefined;
+    public readonly elements: ReadonlyArray<Argument> | undefined;
 
-    constructor(openBracketToken: Token<SyntaxKind.OpenBracketToken>, operatorToken: Token<ParameterOperatorKind> | undefined, name: Identifier | undefined, closeBracketToken: Token<SyntaxKind.CloseBracketToken> | undefined) {
+    constructor(openBracketToken: Token<SyntaxKind.OpenBracketToken>, elements: ReadonlyArray<Argument> | undefined, closeBracketToken: Token<SyntaxKind.CloseBracketToken> | undefined) {
         super(SyntaxKind.ParameterValueAssertion, openBracketToken, closeBracketToken);
-        this.operatorToken = operatorToken;
-        this.name = name;
+        this.elements = elements;
     }
 
-    get lastChild(): Node | undefined { return this.closeBracketToken || this.name || this.operatorToken; }
+    get lastChild(): Node | undefined { return this.closeBracketToken || last(this.elements); }
 
     public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
         return cbNode(this.openBracketToken)
-            || (this.operatorToken && cbNode(this.operatorToken))
-            || (this.name && cbNode(this.name))
+            || (this.elements && forEach(this.elements, cbNode))
             || (this.closeBracketToken && cbNode(this.closeBracketToken));
     }
 
     public * children(): IterableIterator<Node> {
         yield this.openBracketToken;
-        if (this.operatorToken) yield this.operatorToken;
-        if (this.name) yield this.name;
+        if (this.elements) yield* this.elements;
         if (this.closeBracketToken) yield this.closeBracketToken;
     }
 
-    public update(name: Identifier | undefined) {
-        return name !== this.name
-            ? setTextRange(new ParameterValueAssertion(this.openBracketToken, this.operatorToken, name, this.closeBracketToken), this.pos, this.end)
+    public update(elements: ReadonlyArray<Argument> | undefined) {
+        return elements !== this.elements
+            ? setTextRange(new ParameterValueAssertion(this.openBracketToken, elements, this.closeBracketToken), this.pos, this.end)
             : this;
     }
 
-    /*@internal*/ get edgeCount() { return 4; }
-    /*@internal*/ edgeIsArray(offset: number) { return false; }
+    /*@internal*/ get edgeCount() { return 3; }
+    /*@internal*/ edgeIsArray(offset: number) { return offset === 1; }
     /*@internal*/ edgeName(offset: number): string | undefined {
         switch (offset) {
             case 0: return "openBracketToken";
-            case 1: return "operatorToken";
-            case 2: return "name";
-            case 3: return "closeBracketToken";
+            case 1: return "elements";
+            case 2: return "closeBracketToken";
         }
         return undefined;
     }
@@ -943,9 +938,8 @@ export class ParameterValueAssertion extends AssertionBase<SyntaxKind.ParameterV
     /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
         switch (offset) {
             case 0: return this.openBracketToken;
-            case 1: return this.operatorToken;
-            case 2: return this.name;
-            case 3: return this.closeBracketToken;
+            case 1: return this.elements;
+            case 2: return this.closeBracketToken;
         }
         return undefined;
     }

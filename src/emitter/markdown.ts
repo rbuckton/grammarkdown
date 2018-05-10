@@ -296,8 +296,16 @@ export class MarkdownEmitter extends Emitter {
 
     protected emitParameterValueAssertion(node: ParameterValueAssertion): void {
         this.writer.write(`\[`);
-        this.emitToken(node.operatorToken);
-        this.emitNode(node.name);
+        if (node.elements) {
+            for (let i = 0; i < node.elements.length; ++i) {
+                if (i > 0) {
+                    this.writer.write(`, `);
+                }
+
+                this.emitNode(node.elements[i]);
+            }
+        }
+
         this.writer.write(`]`);
     }
 

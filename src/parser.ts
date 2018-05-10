@@ -683,10 +683,10 @@ export class Parser {
         return this.finishNode(node, openBracketToken.pos);
     }
 
-    private parseParameterValueAssertionTail(openBracketToken: Token<SyntaxKind.OpenBracketToken>, operatorToken: Token<ParameterOperatorKind>): ParameterValueAssertion {
-        const name = this.parseIdentifier();
+    private parseParameterValueAssertionTail(openBracketToken: Token<SyntaxKind.OpenBracketToken>): ParameterValueAssertion {
+        const elements = this.parseList(ParsingContext.BracketedArguments);
         const closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
-        const node = new ParameterValueAssertion(openBracketToken, operatorToken, name, closeBracketToken);
+        const node = new ParameterValueAssertion(openBracketToken, elements, closeBracketToken);
         return this.finishNode(node, openBracketToken.pos);
     }
 
@@ -719,9 +719,8 @@ export class Parser {
             return this.parseLexicalGoalAssertionTail(openBracketToken, lexicalKeyword);
         }
 
-        const operatorToken = this.parseAnyToken(isParameterOperatorToken);
-        if (operatorToken) {
-            return this.parseParameterValueAssertionTail(openBracketToken, operatorToken);
+        if (isParameterOperatorToken(this.token)) {
+            return this.parseParameterValueAssertionTail(openBracketToken);
         }
 
         return this.parseInvalidAssertionTail(openBracketToken);
