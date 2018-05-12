@@ -19,7 +19,7 @@ import {
     LookaheadAssertion,
     NoSymbolHereAssertion,
     LexicalGoalAssertion,
-    ParameterValueAssertion,
+    Constraints,
     ProseAssertion,
     Argument,
     ArgumentList,
@@ -154,8 +154,24 @@ export class HtmlEmitter extends Emitter {
         this.emitLinkAnchor(linkId);
 
         this.writer.write(`<span class="rhs">`);
+        this.emitNode(node.constraints);
         this.emitNode(node.head);
         this.writer.write(`</span>`);
+    }
+
+    protected emitConstraints(node: Constraints): void {
+        this.writer.write(`<span class="constraints">[`)
+        if (node.elements) {
+            for (let i = 0; i < node.elements.length; ++i) {
+                if (i > 0) {
+                    this.writer.write(`, `);
+                }
+
+                this.emitNode(node.elements[i]);
+            }
+        }
+
+        this.writer.write(`]</span>`);
     }
 
     protected emitSymbolSpan(node: SymbolSpan) {
@@ -209,7 +225,7 @@ export class HtmlEmitter extends Emitter {
 
     protected emitArgument(node: Argument) {
         const parent = this.resolver.getParent(node);
-        const className = parent && parent.kind === SyntaxKind.ParameterValueAssertion ? "parameter" : "argument";
+        const className = parent && parent.kind === SyntaxKind.Constraints ? "parameter" : "argument";
         this.writer.write(`<span class="${className}">`);
         this.emitToken(node.operatorToken);
         this.emitNode(node.name);
@@ -313,21 +329,6 @@ export class HtmlEmitter extends Emitter {
         }
 
         this.writer.write(` <span class="keyword">here</span>]</assertion>`);
-    }
-
-    protected emitParameterValueAssertion(node: ParameterValueAssertion): void {
-        this.writer.write(`<span class="assertion">[`)
-        if (node.elements) {
-            for (let i = 0; i < node.elements.length; ++i) {
-                if (i > 0) {
-                    this.writer.write(`, `);
-                }
-
-                this.emitNode(node.elements[i]);
-            }
-        }
-
-        this.writer.write(`]</span>`);
     }
 
     protected emitProseAssertion(node: ProseAssertion): void {

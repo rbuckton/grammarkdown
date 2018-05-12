@@ -1463,15 +1463,14 @@
           (368,2)SyntaxKind[Nonterminal]
             (368,2)SyntaxKind[Identifier](text = "Identifier")
       (369,2)SyntaxKind[RightHandSide]
-        (369,2)SyntaxKind[SymbolSpan]
-          (369,2)SyntaxKind[ParameterValueAssertion]
-            (369,2)SyntaxKind[OpenBracketToken]
-            (369,3)SyntaxKind[Argument]~
-              (369,3)SyntaxKind[TildeToken]
-              (369,4)SyntaxKind[Identifier](text = "Yield")
-            (369,9)SyntaxKind[CloseBracketToken]
-          (369,11)SyntaxKind[SymbolSpan]
-            (369,11)SyntaxKind[Terminal](text = "yield")
+        (369,2)SyntaxKind[Constraints]
+          (369,2)SyntaxKind[OpenBracketToken]
+          (369,3)SyntaxKind[Argument]~
+            (369,3)SyntaxKind[TildeToken]
+            (369,4)SyntaxKind[Identifier](text = "Yield")
+          (369,9)SyntaxKind[CloseBracketToken]
+        (369,11)SyntaxKind[SymbolSpan]
+          (369,11)SyntaxKind[Terminal](text = "yield")
   (371,1)SyntaxKind[Production]
     (371,1)SyntaxKind[Identifier](text = "BindingIdentifier")
     (371,26)SyntaxKind[ColonToken]
@@ -1486,15 +1485,14 @@
           (372,2)SyntaxKind[Nonterminal]
             (372,2)SyntaxKind[Identifier](text = "Identifier")
       (373,2)SyntaxKind[RightHandSide]
-        (373,2)SyntaxKind[SymbolSpan]
-          (373,2)SyntaxKind[ParameterValueAssertion]
-            (373,2)SyntaxKind[OpenBracketToken]
-            (373,3)SyntaxKind[Argument]~
-              (373,3)SyntaxKind[TildeToken]
-              (373,4)SyntaxKind[Identifier](text = "Yield")
-            (373,9)SyntaxKind[CloseBracketToken]
-          (373,11)SyntaxKind[SymbolSpan]
-            (373,11)SyntaxKind[Terminal](text = "yield")
+        (373,2)SyntaxKind[Constraints]
+          (373,2)SyntaxKind[OpenBracketToken]
+          (373,3)SyntaxKind[Argument]~
+            (373,3)SyntaxKind[TildeToken]
+            (373,4)SyntaxKind[Identifier](text = "Yield")
+          (373,9)SyntaxKind[CloseBracketToken]
+        (373,11)SyntaxKind[SymbolSpan]
+          (373,11)SyntaxKind[Terminal](text = "yield")
   (375,1)SyntaxKind[Production]
     (375,1)SyntaxKind[Identifier](text = "LabelIdentifier")
     (375,24)SyntaxKind[ColonToken]
@@ -1509,15 +1507,14 @@
           (376,2)SyntaxKind[Nonterminal]
             (376,2)SyntaxKind[Identifier](text = "Identifier")
       (377,2)SyntaxKind[RightHandSide]
-        (377,2)SyntaxKind[SymbolSpan]
-          (377,2)SyntaxKind[ParameterValueAssertion]
-            (377,2)SyntaxKind[OpenBracketToken]
-            (377,3)SyntaxKind[Argument]~
-              (377,3)SyntaxKind[TildeToken]
-              (377,4)SyntaxKind[Identifier](text = "Yield")
-            (377,9)SyntaxKind[CloseBracketToken]
-          (377,11)SyntaxKind[SymbolSpan]
-            (377,11)SyntaxKind[Terminal](text = "yield")
+        (377,2)SyntaxKind[Constraints]
+          (377,2)SyntaxKind[OpenBracketToken]
+          (377,3)SyntaxKind[Argument]~
+            (377,3)SyntaxKind[TildeToken]
+            (377,4)SyntaxKind[Identifier](text = "Yield")
+          (377,9)SyntaxKind[CloseBracketToken]
+        (377,11)SyntaxKind[SymbolSpan]
+          (377,11)SyntaxKind[Terminal](text = "yield")
   (379,1)SyntaxKind[Production]
     (379,1)SyntaxKind[Identifier](text = "Identifier")
     (379,12)SyntaxKind[ColonToken]
@@ -3268,35 +3265,34 @@
                     (559,66)SyntaxKind[Identifier](text = "Yield")
                   (559,71)SyntaxKind[CloseBracketToken]
       (560,2)SyntaxKind[RightHandSide]
-        (560,2)SyntaxKind[SymbolSpan]
-          (560,2)SyntaxKind[ParameterValueAssertion]
-            (560,2)SyntaxKind[OpenBracketToken]
-            (560,3)SyntaxKind[Argument]+
-              (560,3)SyntaxKind[PlusToken]
-              (560,4)SyntaxKind[Identifier](text = "In")
-            (560,6)SyntaxKind[CloseBracketToken]
-          (560,8)SyntaxKind[SymbolSpan]
-            (560,8)SyntaxKind[Nonterminal]
-              (560,8)SyntaxKind[Identifier](text = "RelationalExpression")
-              (560,28)SyntaxKind[ArgumentList]
-                (560,28)SyntaxKind[OpenBracketToken]
-                (560,29)SyntaxKind[Argument]
-                  (560,29)SyntaxKind[Identifier](text = "In")
-                (560,33)SyntaxKind[Argument]?
-                  (560,33)SyntaxKind[QuestionToken]
-                  (560,34)SyntaxKind[Identifier](text = "Yield")
-                (560,39)SyntaxKind[CloseBracketToken]
-            (560,41)SyntaxKind[SymbolSpan]
-              (560,41)SyntaxKind[Terminal](text = "in")
-              (560,46)SyntaxKind[SymbolSpan]
-                (560,46)SyntaxKind[Nonterminal]
-                  (560,46)SyntaxKind[Identifier](text = "ShiftExpression")
-                  (560,61)SyntaxKind[ArgumentList]
-                    (560,61)SyntaxKind[OpenBracketToken]
-                    (560,62)SyntaxKind[Argument]?
-                      (560,62)SyntaxKind[QuestionToken]
-                      (560,63)SyntaxKind[Identifier](text = "Yield")
-                    (560,68)SyntaxKind[CloseBracketToken]
+        (560,2)SyntaxKind[Constraints]
+          (560,2)SyntaxKind[OpenBracketToken]
+          (560,3)SyntaxKind[Argument]+
+            (560,3)SyntaxKind[PlusToken]
+            (560,4)SyntaxKind[Identifier](text = "In")
+          (560,6)SyntaxKind[CloseBracketToken]
+        (560,8)SyntaxKind[SymbolSpan]
+          (560,8)SyntaxKind[Nonterminal]
+            (560,8)SyntaxKind[Identifier](text = "RelationalExpression")
+            (560,28)SyntaxKind[ArgumentList]
+              (560,28)SyntaxKind[OpenBracketToken]
+              (560,29)SyntaxKind[Argument]
+                (560,29)SyntaxKind[Identifier](text = "In")
+              (560,33)SyntaxKind[Argument]?
+                (560,33)SyntaxKind[QuestionToken]
+                (560,34)SyntaxKind[Identifier](text = "Yield")
+              (560,39)SyntaxKind[CloseBracketToken]
+          (560,41)SyntaxKind[SymbolSpan]
+            (560,41)SyntaxKind[Terminal](text = "in")
+            (560,46)SyntaxKind[SymbolSpan]
+              (560,46)SyntaxKind[Nonterminal]
+                (560,46)SyntaxKind[Identifier](text = "ShiftExpression")
+                (560,61)SyntaxKind[ArgumentList]
+                  (560,61)SyntaxKind[OpenBracketToken]
+                  (560,62)SyntaxKind[Argument]?
+                    (560,62)SyntaxKind[QuestionToken]
+                    (560,63)SyntaxKind[Identifier](text = "Yield")
+                  (560,68)SyntaxKind[CloseBracketToken]
   (562,1)SyntaxKind[Production]
     (562,1)SyntaxKind[Identifier](text = "EqualityExpression")
     (562,31)SyntaxKind[ColonToken]
@@ -3773,22 +3769,21 @@
                 (594,30)SyntaxKind[Identifier](text = "Yield")
               (594,35)SyntaxKind[CloseBracketToken]
       (595,2)SyntaxKind[RightHandSide]
-        (595,2)SyntaxKind[SymbolSpan]
-          (595,2)SyntaxKind[ParameterValueAssertion]
-            (595,2)SyntaxKind[OpenBracketToken]
-            (595,3)SyntaxKind[Argument]+
-              (595,3)SyntaxKind[PlusToken]
-              (595,4)SyntaxKind[Identifier](text = "Yield")
-            (595,9)SyntaxKind[CloseBracketToken]
-          (595,11)SyntaxKind[SymbolSpan]
-            (595,11)SyntaxKind[Nonterminal]
-              (595,11)SyntaxKind[Identifier](text = "YieldExpression")
-              (595,26)SyntaxKind[ArgumentList]
-                (595,26)SyntaxKind[OpenBracketToken]
-                (595,27)SyntaxKind[Argument]?
-                  (595,27)SyntaxKind[QuestionToken]
-                  (595,28)SyntaxKind[Identifier](text = "In")
-                (595,30)SyntaxKind[CloseBracketToken]
+        (595,2)SyntaxKind[Constraints]
+          (595,2)SyntaxKind[OpenBracketToken]
+          (595,3)SyntaxKind[Argument]+
+            (595,3)SyntaxKind[PlusToken]
+            (595,4)SyntaxKind[Identifier](text = "Yield")
+          (595,9)SyntaxKind[CloseBracketToken]
+        (595,11)SyntaxKind[SymbolSpan]
+          (595,11)SyntaxKind[Nonterminal]
+            (595,11)SyntaxKind[Identifier](text = "YieldExpression")
+            (595,26)SyntaxKind[ArgumentList]
+              (595,26)SyntaxKind[OpenBracketToken]
+              (595,27)SyntaxKind[Argument]?
+                (595,27)SyntaxKind[QuestionToken]
+                (595,28)SyntaxKind[Identifier](text = "In")
+              (595,30)SyntaxKind[CloseBracketToken]
       (596,2)SyntaxKind[RightHandSide]
         (596,2)SyntaxKind[SymbolSpan]
           (596,2)SyntaxKind[Nonterminal]
@@ -4014,22 +4009,21 @@
                 (617,18)SyntaxKind[Identifier](text = "Yield")
               (617,23)SyntaxKind[CloseBracketToken]
       (618,2)SyntaxKind[RightHandSide]
-        (618,2)SyntaxKind[SymbolSpan]
-          (618,2)SyntaxKind[ParameterValueAssertion]
-            (618,2)SyntaxKind[OpenBracketToken]
-            (618,3)SyntaxKind[Argument]+
-              (618,3)SyntaxKind[PlusToken]
-              (618,4)SyntaxKind[Identifier](text = "Return")
-            (618,10)SyntaxKind[CloseBracketToken]
-          (618,12)SyntaxKind[SymbolSpan]
-            (618,12)SyntaxKind[Nonterminal]
-              (618,12)SyntaxKind[Identifier](text = "ReturnStatement")
-              (618,27)SyntaxKind[ArgumentList]
-                (618,27)SyntaxKind[OpenBracketToken]
-                (618,28)SyntaxKind[Argument]?
-                  (618,28)SyntaxKind[QuestionToken]
-                  (618,29)SyntaxKind[Identifier](text = "Yield")
-                (618,34)SyntaxKind[CloseBracketToken]
+        (618,2)SyntaxKind[Constraints]
+          (618,2)SyntaxKind[OpenBracketToken]
+          (618,3)SyntaxKind[Argument]+
+            (618,3)SyntaxKind[PlusToken]
+            (618,4)SyntaxKind[Identifier](text = "Return")
+          (618,10)SyntaxKind[CloseBracketToken]
+        (618,12)SyntaxKind[SymbolSpan]
+          (618,12)SyntaxKind[Nonterminal]
+            (618,12)SyntaxKind[Identifier](text = "ReturnStatement")
+            (618,27)SyntaxKind[ArgumentList]
+              (618,27)SyntaxKind[OpenBracketToken]
+              (618,28)SyntaxKind[Argument]?
+                (618,28)SyntaxKind[QuestionToken]
+                (618,29)SyntaxKind[Identifier](text = "Yield")
+              (618,34)SyntaxKind[CloseBracketToken]
       (619,2)SyntaxKind[RightHandSide]
         (619,2)SyntaxKind[SymbolSpan]
           (619,2)SyntaxKind[Nonterminal]
@@ -6435,29 +6429,28 @@
                       (810,81)SyntaxKind[SymbolSpan]
                         (810,81)SyntaxKind[Terminal](text = "}")
       (811,2)SyntaxKind[RightHandSide]
-        (811,2)SyntaxKind[SymbolSpan]
-          (811,2)SyntaxKind[ParameterValueAssertion]
-            (811,2)SyntaxKind[OpenBracketToken]
-            (811,3)SyntaxKind[Argument]+
-              (811,3)SyntaxKind[PlusToken]
-              (811,4)SyntaxKind[Identifier](text = "Default")
-            (811,11)SyntaxKind[CloseBracketToken]
-          (811,13)SyntaxKind[SymbolSpan]
-            (811,13)SyntaxKind[Terminal](text = "function")
-            (811,24)SyntaxKind[SymbolSpan]
-              (811,24)SyntaxKind[Terminal](text = "(")
-              (811,28)SyntaxKind[SymbolSpan]
-                (811,28)SyntaxKind[Nonterminal]
-                  (811,28)SyntaxKind[Identifier](text = "FormalParameters")
-                (811,45)SyntaxKind[SymbolSpan]
-                  (811,45)SyntaxKind[Terminal](text = ")")
-                  (811,49)SyntaxKind[SymbolSpan]
-                    (811,49)SyntaxKind[Terminal](text = "{")
-                    (811,53)SyntaxKind[SymbolSpan]
-                      (811,53)SyntaxKind[Nonterminal]
-                        (811,53)SyntaxKind[Identifier](text = "FunctionBody")
-                      (811,66)SyntaxKind[SymbolSpan]
-                        (811,66)SyntaxKind[Terminal](text = "}")
+        (811,2)SyntaxKind[Constraints]
+          (811,2)SyntaxKind[OpenBracketToken]
+          (811,3)SyntaxKind[Argument]+
+            (811,3)SyntaxKind[PlusToken]
+            (811,4)SyntaxKind[Identifier](text = "Default")
+          (811,11)SyntaxKind[CloseBracketToken]
+        (811,13)SyntaxKind[SymbolSpan]
+          (811,13)SyntaxKind[Terminal](text = "function")
+          (811,24)SyntaxKind[SymbolSpan]
+            (811,24)SyntaxKind[Terminal](text = "(")
+            (811,28)SyntaxKind[SymbolSpan]
+              (811,28)SyntaxKind[Nonterminal]
+                (811,28)SyntaxKind[Identifier](text = "FormalParameters")
+              (811,45)SyntaxKind[SymbolSpan]
+                (811,45)SyntaxKind[Terminal](text = ")")
+                (811,49)SyntaxKind[SymbolSpan]
+                  (811,49)SyntaxKind[Terminal](text = "{")
+                  (811,53)SyntaxKind[SymbolSpan]
+                    (811,53)SyntaxKind[Nonterminal]
+                      (811,53)SyntaxKind[Identifier](text = "FunctionBody")
+                    (811,66)SyntaxKind[SymbolSpan]
+                      (811,66)SyntaxKind[Terminal](text = "}")
   (813,1)SyntaxKind[Production]
     (813,1)SyntaxKind[Identifier](text = "FunctionExpression")
     (813,20)SyntaxKind[ColonToken]
@@ -6985,36 +6978,35 @@
                         (868,93)SyntaxKind[SymbolSpan]
                           (868,93)SyntaxKind[Terminal](text = "}")
       (869,2)SyntaxKind[RightHandSide]
-        (869,2)SyntaxKind[SymbolSpan]
-          (869,2)SyntaxKind[ParameterValueAssertion]
-            (869,2)SyntaxKind[OpenBracketToken]
-            (869,3)SyntaxKind[Argument]+
-              (869,3)SyntaxKind[PlusToken]
-              (869,4)SyntaxKind[Identifier](text = "Default")
-            (869,11)SyntaxKind[CloseBracketToken]
-          (869,13)SyntaxKind[SymbolSpan]
-            (869,13)SyntaxKind[Terminal](text = "function")
-            (869,24)SyntaxKind[SymbolSpan]
-              (869,24)SyntaxKind[Terminal](text = "*")
-              (869,28)SyntaxKind[SymbolSpan]
-                (869,28)SyntaxKind[Terminal](text = "(")
-                (869,32)SyntaxKind[SymbolSpan]
-                  (869,32)SyntaxKind[Nonterminal]
-                    (869,32)SyntaxKind[Identifier](text = "FormalParameters")
-                    (869,48)SyntaxKind[ArgumentList]
-                      (869,48)SyntaxKind[OpenBracketToken]
-                      (869,49)SyntaxKind[Argument]
-                        (869,49)SyntaxKind[Identifier](text = "Yield")
-                      (869,54)SyntaxKind[CloseBracketToken]
-                  (869,56)SyntaxKind[SymbolSpan]
-                    (869,56)SyntaxKind[Terminal](text = ")")
-                    (869,60)SyntaxKind[SymbolSpan]
-                      (869,60)SyntaxKind[Terminal](text = "{")
-                      (869,64)SyntaxKind[SymbolSpan]
-                        (869,64)SyntaxKind[Nonterminal]
-                          (869,64)SyntaxKind[Identifier](text = "GeneratorBody")
-                        (869,78)SyntaxKind[SymbolSpan]
-                          (869,78)SyntaxKind[Terminal](text = "}")
+        (869,2)SyntaxKind[Constraints]
+          (869,2)SyntaxKind[OpenBracketToken]
+          (869,3)SyntaxKind[Argument]+
+            (869,3)SyntaxKind[PlusToken]
+            (869,4)SyntaxKind[Identifier](text = "Default")
+          (869,11)SyntaxKind[CloseBracketToken]
+        (869,13)SyntaxKind[SymbolSpan]
+          (869,13)SyntaxKind[Terminal](text = "function")
+          (869,24)SyntaxKind[SymbolSpan]
+            (869,24)SyntaxKind[Terminal](text = "*")
+            (869,28)SyntaxKind[SymbolSpan]
+              (869,28)SyntaxKind[Terminal](text = "(")
+              (869,32)SyntaxKind[SymbolSpan]
+                (869,32)SyntaxKind[Nonterminal]
+                  (869,32)SyntaxKind[Identifier](text = "FormalParameters")
+                  (869,48)SyntaxKind[ArgumentList]
+                    (869,48)SyntaxKind[OpenBracketToken]
+                    (869,49)SyntaxKind[Argument]
+                      (869,49)SyntaxKind[Identifier](text = "Yield")
+                    (869,54)SyntaxKind[CloseBracketToken]
+                (869,56)SyntaxKind[SymbolSpan]
+                  (869,56)SyntaxKind[Terminal](text = ")")
+                  (869,60)SyntaxKind[SymbolSpan]
+                    (869,60)SyntaxKind[Terminal](text = "{")
+                    (869,64)SyntaxKind[SymbolSpan]
+                      (869,64)SyntaxKind[Nonterminal]
+                        (869,64)SyntaxKind[Identifier](text = "GeneratorBody")
+                      (869,78)SyntaxKind[SymbolSpan]
+                        (869,78)SyntaxKind[Terminal](text = "}")
   (871,1)SyntaxKind[Production]
     (871,1)SyntaxKind[Identifier](text = "GeneratorExpression")
     (871,21)SyntaxKind[ColonToken]
@@ -7156,24 +7148,23 @@
                     (883,47)SyntaxKind[Identifier](text = "Yield")
                   (883,52)SyntaxKind[CloseBracketToken]
       (884,2)SyntaxKind[RightHandSide]
-        (884,2)SyntaxKind[SymbolSpan]
-          (884,2)SyntaxKind[ParameterValueAssertion]
-            (884,2)SyntaxKind[OpenBracketToken]
-            (884,3)SyntaxKind[Argument]+
-              (884,3)SyntaxKind[PlusToken]
-              (884,4)SyntaxKind[Identifier](text = "Default")
-            (884,11)SyntaxKind[CloseBracketToken]
-          (884,13)SyntaxKind[SymbolSpan]
-            (884,13)SyntaxKind[Terminal](text = "class")
-            (884,21)SyntaxKind[SymbolSpan]
-              (884,21)SyntaxKind[Nonterminal]
-                (884,21)SyntaxKind[Identifier](text = "ClassTail")
-                (884,30)SyntaxKind[ArgumentList]
-                  (884,30)SyntaxKind[OpenBracketToken]
-                  (884,31)SyntaxKind[Argument]?
-                    (884,31)SyntaxKind[QuestionToken]
-                    (884,32)SyntaxKind[Identifier](text = "Yield")
-                  (884,37)SyntaxKind[CloseBracketToken]
+        (884,2)SyntaxKind[Constraints]
+          (884,2)SyntaxKind[OpenBracketToken]
+          (884,3)SyntaxKind[Argument]+
+            (884,3)SyntaxKind[PlusToken]
+            (884,4)SyntaxKind[Identifier](text = "Default")
+          (884,11)SyntaxKind[CloseBracketToken]
+        (884,13)SyntaxKind[SymbolSpan]
+          (884,13)SyntaxKind[Terminal](text = "class")
+          (884,21)SyntaxKind[SymbolSpan]
+            (884,21)SyntaxKind[Nonterminal]
+              (884,21)SyntaxKind[Identifier](text = "ClassTail")
+              (884,30)SyntaxKind[ArgumentList]
+                (884,30)SyntaxKind[OpenBracketToken]
+                (884,31)SyntaxKind[Argument]?
+                  (884,31)SyntaxKind[QuestionToken]
+                  (884,32)SyntaxKind[Identifier](text = "Yield")
+                (884,37)SyntaxKind[CloseBracketToken]
   (886,1)SyntaxKind[Production]
     (886,1)SyntaxKind[Identifier](text = "ClassExpression")
     (886,24)SyntaxKind[ColonToken]

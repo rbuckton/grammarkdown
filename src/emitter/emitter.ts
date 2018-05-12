@@ -26,7 +26,7 @@ import {
     LookaheadAssertion,
     NoSymbolHereAssertion,
     LexicalGoalAssertion,
-    ParameterValueAssertion,
+    Constraints,
     ProseAssertion,
     ProseFragmentLiteral,
     Argument,
@@ -147,6 +147,7 @@ export class Emitter {
             case SyntaxKind.OneOfList: this.emitOneOfList(<OneOfList>node); break;
             case SyntaxKind.RightHandSideList: this.emitRightHandSideList(<RightHandSideList>node); break;
             case SyntaxKind.RightHandSide: this.emitRightHandSide(<RightHandSide>node); break;
+            case SyntaxKind.Constraints: this.emitConstraints(<Constraints>node); break;
             case SyntaxKind.SymbolSpan: this.emitSymbolSpan(<SymbolSpan>node); break;
             case SyntaxKind.ThroughKeyword: this.emitKeyword(node); break;
             case SyntaxKind.ButNotSymbol: this.emitButNotSymbol(<ButNotSymbol>node); break;
@@ -158,7 +159,6 @@ export class Emitter {
             case SyntaxKind.LookaheadAssertion: this.emitLookaheadAssertion(<LookaheadAssertion>node); break;
             case SyntaxKind.LexicalGoalAssertion: this.emitLexicalGoalAssertion(<LexicalGoalAssertion>node); break;
             case SyntaxKind.NoSymbolHereAssertion: this.emitNoSymbolHereAssertion(<NoSymbolHereAssertion>node); break;
-            case SyntaxKind.ParameterValueAssertion: this.emitParameterValueAssertion(<ParameterValueAssertion>node); break;
             case SyntaxKind.ProseAssertion: this.emitProseAssertion(<ProseAssertion>node); break;
             case SyntaxKind.ProseFull: this.emitProseFragmentLiteral(<ProseFragmentLiteral>node); break;
             case SyntaxKind.ProseHead: this.emitProseFragmentLiteral(<ProseFragmentLiteral>node); break;
@@ -321,7 +321,7 @@ export class Emitter {
         }
     }
 
-    protected emitParameterValueAssertion(node: ParameterValueAssertion): void {
+    protected emitConstraints(node: Constraints): void {
         for (const child of node.children()) {
             this.emitNode(child);
         }

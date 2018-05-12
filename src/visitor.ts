@@ -18,7 +18,7 @@ import {
     LookaheadAssertion,
     NoSymbolHereAssertion,
     LexicalGoalAssertion,
-    ParameterValueAssertion,
+    Constraints,
     ProseAssertion,
     ProseFragmentLiteral,
     Argument,
@@ -135,7 +135,7 @@ export abstract class NodeVisitor {
         return node.update(this.visitEach(node.symbols));
     }
 
-    public visitParameterValueAssertion(node: ParameterValueAssertion): ParameterValueAssertion {
+    public visitConstraints(node: Constraints): Constraints {
         return node.update(this.visitEach(node.elements));
     }
 
@@ -176,7 +176,7 @@ export abstract class NodeVisitor {
     }
 
     public visitRightHandSide(node: RightHandSide): RightHandSide {
-        return node.update(this.visit(node.head), this.visit(node.reference));
+        return node.update(this.visit(node.constraints), this.visit(node.head), this.visit(node.reference));
     }
 
     public visitRightHandSideList(node: RightHandSideList): RightHandSideList {

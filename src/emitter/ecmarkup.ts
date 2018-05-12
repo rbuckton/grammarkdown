@@ -19,7 +19,7 @@ import {
     LookaheadAssertion,
     NoSymbolHereAssertion,
     LexicalGoalAssertion,
-    ParameterValueAssertion,
+    Constraints,
     ProseAssertion,
     Argument,
     ArgumentList,
@@ -127,24 +127,22 @@ export class EcmarkupEmitter extends Emitter {
             this.writer.write(` a="${linkId}"`);
         }
 
-        let head: SymbolSpan | undefined = node.head;
-        if (head.symbol.kind === SyntaxKind.ParameterValueAssertion) {
+        if (node.constraints) {
             this.writer.write(` constraints="`);
-            this.emitNode(head.symbol);
-            head = head.next;
+            this.emitNode(node.constraints);
             this.writer.write(`"`);
         }
 
         this.writer.write(`>`);
-        if (head && head.next) {
+        if (node.head && node.head.next) {
             this.writer.indent();
             this.writer.writeln();
-            this.emitNode(head);
+            this.emitNode(node.head);
             this.writer.dedent();
             this.writer.writeln();
         }
         else {
-            this.emitNode(head);
+            this.emitNode(node.head);
         }
 
         this.writer.write(`</emu-rhs>`);
@@ -319,7 +317,7 @@ export class EcmarkupEmitter extends Emitter {
         this.writer.write(` here</emu-gann>`);
     }
 
-    protected emitParameterValueAssertion(node: ParameterValueAssertion): void {
+    protected emitConstraints(node: Constraints): void {
         if (node.elements) {
             for (let i = 0; i < node.elements.length; ++i) {
                 if (i > 0) {

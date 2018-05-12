@@ -219,6 +219,7 @@ export enum SyntaxKind {
     Argument,                   // NonTerminal(Argument)
     ArgumentList,
     LinkReference,              // #link
+    Constraints,
 
     Import,                     // @import "path"
     Define,                     // @define key value
@@ -241,7 +242,6 @@ export enum SyntaxKind {
     LookaheadAssertion,
     LexicalGoalAssertion,
     NoSymbolHereAssertion,
-    ParameterValueAssertion,
     ProseAssertion,
 
     // error nodes

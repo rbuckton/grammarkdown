@@ -649,7 +649,7 @@ function matchProductionBody(node: Node) {
 }
 
 function matchParameterValueAssertion(node: Node) {
-    return node.kind === SyntaxKind.ParameterValueAssertion;
+    return node.kind === SyntaxKind.Constraints;
 }
 
 function matchSourceElement(node: Node) {

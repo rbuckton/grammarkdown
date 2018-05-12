@@ -188,6 +188,62 @@ export class SymbolSet extends Node<SyntaxKind.SymbolSet> {
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitSymbolSet(this); }
 }
 
+export class Constraints extends Node<SyntaxKind.Constraints> {
+    public readonly openBracketToken: Token<SyntaxKind.OpenBracketToken>;
+    public readonly elements: ReadonlyArray<Argument> | undefined;
+    public readonly closeBracketToken: Token<SyntaxKind.CloseBracketToken> | undefined;
+
+    constructor(openBracketToken: Token<SyntaxKind.OpenBracketToken>, elements: ReadonlyArray<Argument> | undefined, closeBracketToken: Token<SyntaxKind.CloseBracketToken> | undefined) {
+        super(SyntaxKind.Constraints);
+        this.openBracketToken = openBracketToken;
+        this.elements = elements;
+        this.closeBracketToken = closeBracketToken;
+    }
+
+    get firstChild(): Node | undefined { return this.openBracketToken; }
+    get lastChild(): Node | undefined { return this.closeBracketToken || last(this.elements); }
+
+    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
+        return cbNode(this.openBracketToken)
+            || (this.elements && forEach(this.elements, cbNode))
+            || (this.closeBracketToken && cbNode(this.closeBracketToken));
+    }
+
+    public * children(): IterableIterator<Node> {
+        yield this.openBracketToken;
+        if (this.elements) yield* this.elements;
+        if (this.closeBracketToken) yield this.closeBracketToken;
+    }
+
+    public update(elements: ReadonlyArray<Argument> | undefined) {
+        return elements !== this.elements
+            ? setTextRange(new Constraints(this.openBracketToken, elements, this.closeBracketToken), this.pos, this.end)
+            : this;
+    }
+
+    /*@internal*/ get edgeCount() { return 3; }
+    /*@internal*/ edgeIsArray(offset: number) { return offset === 1; }
+    /*@internal*/ edgeName(offset: number): string | undefined {
+        switch (offset) {
+            case 0: return "openBracketToken";
+            case 1: return "elements";
+            case 2: return "closeBracketToken";
+        }
+        return undefined;
+    }
+
+    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
+        switch (offset) {
+            case 0: return this.openBracketToken;
+            case 1: return this.elements;
+            case 2: return this.closeBracketToken;
+        }
+        return undefined;
+    }
+
+    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitConstraints(this); }
+}
+
 //
 // Symbols
 //
@@ -895,58 +951,6 @@ export class NoSymbolHereAssertion extends AssertionBase<SyntaxKind.NoSymbolHere
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitNoSymbolHereAssertion(this); }
 }
 
-export interface AssertionTypes { [SyntaxKind.ParameterValueAssertion]: ParameterValueAssertion; }
-export class ParameterValueAssertion extends AssertionBase<SyntaxKind.ParameterValueAssertion, SyntaxKind.OpenBracketToken> {
-    public readonly elements: ReadonlyArray<Argument> | undefined;
-
-    constructor(openBracketToken: Token<SyntaxKind.OpenBracketToken>, elements: ReadonlyArray<Argument> | undefined, closeBracketToken: Token<SyntaxKind.CloseBracketToken> | undefined) {
-        super(SyntaxKind.ParameterValueAssertion, openBracketToken, closeBracketToken);
-        this.elements = elements;
-    }
-
-    get lastChild(): Node | undefined { return this.closeBracketToken || last(this.elements); }
-
-    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
-        return cbNode(this.openBracketToken)
-            || (this.elements && forEach(this.elements, cbNode))
-            || (this.closeBracketToken && cbNode(this.closeBracketToken));
-    }
-
-    public * children(): IterableIterator<Node> {
-        yield this.openBracketToken;
-        if (this.elements) yield* this.elements;
-        if (this.closeBracketToken) yield this.closeBracketToken;
-    }
-
-    public update(elements: ReadonlyArray<Argument> | undefined) {
-        return elements !== this.elements
-            ? setTextRange(new ParameterValueAssertion(this.openBracketToken, elements, this.closeBracketToken), this.pos, this.end)
-            : this;
-    }
-
-    /*@internal*/ get edgeCount() { return 3; }
-    /*@internal*/ edgeIsArray(offset: number) { return offset === 1; }
-    /*@internal*/ edgeName(offset: number): string | undefined {
-        switch (offset) {
-            case 0: return "openBracketToken";
-            case 1: return "elements";
-            case 2: return "closeBracketToken";
-        }
-        return undefined;
-    }
-
-    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
-        switch (offset) {
-            case 0: return this.openBracketToken;
-            case 1: return this.elements;
-            case 2: return this.closeBracketToken;
-        }
-        return undefined;
-    }
-
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitParameterValueAssertion(this); }
-}
-
 export interface AssertionTypes { [SyntaxKind.ProseAssertion]: ProseAssertion; }
 export class ProseAssertion extends AssertionBase<SyntaxKind.ProseAssertion, SyntaxKind.OpenBracketGreaterThanToken> {
     public readonly fragments: ReadonlyArray<ProseFragment> | undefined;
@@ -1196,48 +1200,54 @@ export class LinkReference extends Node<SyntaxKind.LinkReference> {
 
 export interface ProductionBodyTypes { [SyntaxKind.RightHandSide]: RightHandSide }
 export class RightHandSide extends Node<SyntaxKind.RightHandSide> {
-    public readonly head: SymbolSpan;
+    public readonly constraints: Constraints | undefined;
+    public readonly head: SymbolSpan | undefined;
     public readonly reference: LinkReference | undefined;
 
-    constructor(head: SymbolSpan, reference: LinkReference | undefined) {
+    constructor(constraints: Constraints | undefined, head: SymbolSpan | undefined, reference: LinkReference | undefined) {
         super(SyntaxKind.RightHandSide);
+        this.constraints = constraints;
         this.head = head;
         this.reference = reference;
     }
 
-    get firstChild(): Node | undefined { return this.head; }
+    get firstChild(): Node | undefined { return this.constraints || this.head; }
     get lastChild(): Node | undefined { return this.reference || this.head; }
 
     public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
-        return cbNode(this.head)
+        return (this.constraints && cbNode(this.constraints))
+            || (this.head && cbNode(this.head))
             || (this.reference && cbNode(this.reference));
     }
 
     public * children(): IterableIterator<Node> {
-        yield this.head;
+        if (this.constraints) yield this.constraints;
+        if (this.head) yield this.head;
         if (this.reference) yield this.reference;
     }
 
-    public update(head: SymbolSpan, reference: LinkReference | undefined) {
-        return head !== this.head || reference !== this.reference
-            ? setTextRange(new RightHandSide(head, reference), this.pos, this.end)
+    public update(constraints: Constraints | undefined, head: SymbolSpan | undefined, reference: LinkReference | undefined) {
+        return constraints !== this.constraints, head !== this.head || reference !== this.reference
+            ? setTextRange(new RightHandSide(constraints, head, reference), this.pos, this.end)
             : this;
     }
 
-    /*@internal*/ get edgeCount() { return 2; }
+    /*@internal*/ get edgeCount() { return 3; }
     /*@internal*/ edgeIsArray(offset: number) { return false; }
     /*@internal*/ edgeName(offset: number): string | undefined {
         switch (offset) {
-            case 0: return "head";
-            case 1: return "reference";
+            case 0: return "constraints";
+            case 1: return "head";
+            case 2: return "reference";
         }
         return undefined;
     }
 
     /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
         switch (offset) {
-            case 0: return this.head;
-            case 1: return this.reference;
+            case 0: return this.constraints;
+            case 1: return this.head;
+            case 2: return this.reference;
         }
         return undefined;
     }

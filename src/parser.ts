@@ -37,7 +37,7 @@ import {
     LookaheadAssertion,
     NoSymbolHereAssertion,
     LexicalGoalAssertion,
-    ParameterValueAssertion,
+    Constraints,
     ProseAssertion,
     ProseFragmentLiteral,
     Argument,
@@ -683,13 +683,6 @@ export class Parser {
         return this.finishNode(node, openBracketToken.pos);
     }
 
-    private parseParameterValueAssertionTail(openBracketToken: Token<SyntaxKind.OpenBracketToken>): ParameterValueAssertion {
-        const elements = this.parseList(ParsingContext.BracketedArguments);
-        const closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
-        const node = new ParameterValueAssertion(openBracketToken, elements, closeBracketToken);
-        return this.finishNode(node, openBracketToken.pos);
-    }
-
     private parseInvalidAssertionTail(openBracketToken: Token<SyntaxKind.OpenBracketToken>): Assertion {
         const fullStart = this.scanner.getStartPos();
         this.skipUntil(isInvalidConstraintTailRecoveryToken);
@@ -717,10 +710,6 @@ export class Parser {
         const lexicalKeyword = this.parseToken(SyntaxKind.LexicalKeyword);
         if (lexicalKeyword) {
             return this.parseLexicalGoalAssertionTail(openBracketToken, lexicalKeyword);
-        }
-
-        if (isParameterOperatorToken(this.token)) {
-            return this.parseParameterValueAssertionTail(openBracketToken);
         }
 
         return this.parseInvalidAssertionTail(openBracketToken);
@@ -934,8 +923,7 @@ export class Parser {
     }
 
     private tryParseSymbolSpan(): SymbolSpan | undefined {
-        if ((!this.scanner.hasPrecedingLineTerminator() || this.scanner.isLineContinuation())
-            && this.isStartOfSymbolSpan()) {
+        if (this.isStartOfSymbolSpanOnSameLine()) {
             return this.parseSymbolSpanRest();
         }
 
@@ -961,6 +949,11 @@ export class Parser {
         else {
             return this.parseSymbolSpanRest();
         }
+    }
+
+    private isStartOfSymbolSpanOnSameLine(): boolean {
+        return (!this.scanner.hasPrecedingLineTerminator() || this.scanner.isLineContinuation())
+            && this.isStartOfSymbolSpan();
     }
 
     private isStartOfSymbolSpan(): boolean {
@@ -994,11 +987,28 @@ export class Parser {
         return undefined;
     }
 
+    private nextTokenIsParameterOperatorToken() {
+        this.nextToken();
+        return isParameterOperatorToken(this.token);
+    }
+
+    private tryParseConstraints(): Constraints | undefined {
+        if (this.token === SyntaxKind.OpenBracketToken &&
+            this.lookahead(() => this.nextTokenIsParameterOperatorToken())) {
+            const openBracketToken = this.parseToken(SyntaxKind.OpenBracketToken)!;
+            const elements = this.parseList(ParsingContext.BracketedArguments);
+            const closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
+            const node = new Constraints(openBracketToken, elements, closeBracketToken);
+            return this.finishNode(node, openBracketToken.pos);
+        }
+    }
+
     private parseRightHandSide(): RightHandSide {
         const fullStart = this.scanner.getStartPos();
-        const head = this.parseSymbolSpan();
+        const constraints = this.tryParseConstraints();
+        const head = constraints ? this.tryParseSymbolSpan() : this.parseSymbolSpan();
         const reference = this.parseLinkReference();
-        const node = new RightHandSide(head, reference);
+        const node = new RightHandSide(constraints, head, reference);
         return this.finishNode(node, fullStart);
     }
 

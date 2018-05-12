@@ -40,7 +40,6 @@ export const Diagnostics = makeDiagnostics({
     Production_expected: { code: 1007, message: "Production expected." },
     Unterminated_identifier_literal: { code: 1008, message: "Unterminated identifier literal." },
     Obsolete_0_: { code: 1009, message: "Obsolete: {0}", warning: true },
-    Parameter_value_assertions_must_appear_first: { code: 1010, message: "Parameter value assertions must appear first." },
 
     Cannot_find_name_0_: { code: 2000, message: "Cannot find name: '{0}'." },
     Duplicate_identifier_0_: { code: 2001, message: "Duplicate identifier: '{0}'." },

@@ -20,7 +20,7 @@ import {
     LookaheadAssertion,
     NoSymbolHereAssertion,
     LexicalGoalAssertion,
-    ParameterValueAssertion,
+    Constraints,
     ProseAssertion,
     Argument,
     ArgumentList,
@@ -294,7 +294,7 @@ export class MarkdownEmitter extends Emitter {
         this.writer.write(` here]`);
     }
 
-    protected emitParameterValueAssertion(node: ParameterValueAssertion): void {
+    protected emitConstraints(node: Constraints): void {
         this.writer.write(`\[`);
         if (node.elements) {
             for (let i = 0; i < node.elements.length; ++i) {
@@ -307,6 +307,7 @@ export class MarkdownEmitter extends Emitter {
         }
 
         this.writer.write(`]`);
+        this.writer.write(`&emsp;`);
     }
 
     protected emitProseAssertion(node: ProseAssertion): void {

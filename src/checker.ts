@@ -38,7 +38,7 @@ import {
     LookaheadAssertion,
     NoSymbolHereAssertion,
     LexicalGoalAssertion,
-    ParameterValueAssertion,
+    Constraints,
     ProseAssertion,
     ProseFragment,
     ProseFragmentLiteral,
@@ -402,10 +402,23 @@ export class Checker {
     }
 
     private checkRightHandSide(node: RightHandSide): void {
-        this.checkSymbolSpan(node.head);
+        this.checkGrammarRightHandSide(node);
+        if (node.constraints) {
+            this.checkConstraints(node.constraints);
+        }
+        if (node.head) {
+            this.checkSymbolSpan(node.head);
+        }
         if (node.reference) {
             this.checkLinkReference(node.reference);
         }
+    }
+
+    private checkGrammarRightHandSide(node: RightHandSide): boolean {
+        if (!node.head) {
+            return this.reportGrammarErrorForNode(node, Diagnostics._0_expected, formatList([SyntaxKind.GreaterThanToken, SyntaxKind.OpenBracketToken, SyntaxKind.Identifier, SyntaxKind.Terminal, SyntaxKind.UnicodeCharacterLiteral]));
+        }
+        return false;
     }
 
     private checkLinkReference(node: LinkReference) {
@@ -415,6 +428,27 @@ export class Checker {
     private checkGrammarLinkReference(node: LinkReference): boolean {
         if (!node.text) {
             return this.reportGrammarErrorForNode(node, Diagnostics._0_expected, "string");
+        }
+
+        return false;
+    }
+
+    private checkConstraints(node: Constraints): void {
+        this.checkGrammarConstraints(node);
+        if (node.elements) {
+            for (const element of node.elements) {
+                this.checkArgument(element);
+            }
+        }
+    }
+
+    private checkGrammarConstraints(node: Constraints): boolean {
+        if (!node.elements) {
+            return this.reportGrammarError(node.openBracketToken.end, Diagnostics._0_expected, formatList([SyntaxKind.TildeToken, SyntaxKind.PlusToken]));
+        }
+
+        if (!node.closeBracketToken) {
+            return this.reportGrammarError(node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.CloseBracketToken));
         }
 
         return false;
@@ -522,10 +556,6 @@ export class Checker {
 
             case SyntaxKind.NoSymbolHereAssertion:
                 this.checkNoSymbolHereAssertion(<NoSymbolHereAssertion>node);
-                break;
-
-            case SyntaxKind.ParameterValueAssertion:
-                this.checkParameterValueAssertion(<ParameterValueAssertion>node);
                 break;
 
             case SyntaxKind.ProseAssertion:
@@ -755,30 +785,6 @@ export class Checker {
 
         if (!node.hereKeyword) {
             return this.reportGrammarError(node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.HereKeyword));
-        }
-
-        return false;
-    }
-
-    private checkParameterValueAssertion(node: ParameterValueAssertion): void {
-        this.checkGrammarAssertionHead(node) || this.checkGrammarParameterValueAssertion(node) || this.checkGrammarAssertionTail(node);
-        if (node.elements) {
-            for (const element of node.elements) {
-                this.checkArgument(element);
-            }
-        }
-    }
-
-    private checkGrammarParameterValueAssertion(node: ParameterValueAssertion): boolean {
-        // TODO(rbuckton): Verify we are first entry in RHS
-        const parent = this.bindings.getParent(node);
-        const grandparent = parent && this.bindings.getParent(parent);
-        if (!grandparent || grandparent.kind !== SyntaxKind.RightHandSide) {
-            return this.reportGrammarErrorForNode(node, Diagnostics.Parameter_value_assertions_must_appear_first);
-        }
-
-        if (!node.elements) {
-            return this.reportGrammarError(node.openBracketToken.end, Diagnostics._0_expected, formatList([SyntaxKind.TildeToken, SyntaxKind.PlusToken]));
         }
 
         return false;
@@ -1115,7 +1121,7 @@ export class Checker {
 
     private checkGrammarArgument(node: Argument): boolean {
         const parent = this.bindings.getParent(node);
-        if (parent && parent.kind === SyntaxKind.ParameterValueAssertion) {
+        if (parent && parent.kind === SyntaxKind.Constraints) {
             if (!node.operatorToken) {
                 return this.reportGrammarError(node.getStart(this.sourceFile), Diagnostics._0_expected, formatList([SyntaxKind.PlusToken, SyntaxKind.TildeToken]));
             }
@@ -1349,6 +1355,7 @@ class RightHandSideDigest {
 
     public computeHash(node: RightHandSide): string {
         this.writer = new StringWriter();
+        this.writeNode(node.constraints);
         this.writeNode(node.head);
 
         const hash = createHash("sha1");
@@ -1364,6 +1371,7 @@ class RightHandSideDigest {
         }
 
         switch (node.kind) {
+            case SyntaxKind.Constraints: this.writeConstraints(<Constraints>node); break;
             case SyntaxKind.Terminal: this.writeTerminal(<Terminal>node); break;
             case SyntaxKind.UnicodeCharacterLiteral: this.writeUnicodeCharacterLiteral(<UnicodeCharacterLiteral>node); break;
             case SyntaxKind.Prose: this.writeProse(<Prose>node); break;
@@ -1372,7 +1380,6 @@ class RightHandSideDigest {
             case SyntaxKind.LexicalGoalAssertion: this.writeLexicalGoalAssertion(<LexicalGoalAssertion>node); break;
             case SyntaxKind.LookaheadAssertion: this.writeLookaheadAssertion(<LookaheadAssertion>node); break;
             case SyntaxKind.NoSymbolHereAssertion: this.writeNoSymbolHereAssertion(<NoSymbolHereAssertion>node); break;
-            case SyntaxKind.ParameterValueAssertion: this.writeParameterValueAssertion(<ParameterValueAssertion>node); break;
             case SyntaxKind.ProseAssertion: this.writeProseAssertion(<ProseAssertion>node); break;
             case SyntaxKind.ProseFull: this.writeProseFragmentLiteral(<ProseFragmentLiteral>node); break;
             case SyntaxKind.ProseHead: this.writeProseFragmentLiteral(<ProseFragmentLiteral>node); break;
@@ -1417,6 +1424,22 @@ class RightHandSideDigest {
             this.write(tokenToString(node.kind));
             this.spaceRequested = true;
         }
+    }
+
+    private writeConstraints(node: Constraints) {
+        this.write("[");
+        if (node.elements) {
+            for (let i = 0; i < node.elements.length; ++i) {
+                if (i > 0) {
+                    this.write(", ");
+                }
+
+                this.writeNode(node.elements[i]);
+            }
+        }
+
+        this.write("]");
+        this.spaceRequested = true;
     }
 
     private writeTerminal(node: Terminal) {
@@ -1509,22 +1532,6 @@ class RightHandSideDigest {
         this.write(" here]");
     }
 
-    private writeParameterValueAssertion(node: ParameterValueAssertion) {
-        this.write("[");
-        if (node.elements) {
-            for (let i = 0; i < node.elements.length; ++i) {
-                if (i > 0) {
-                    this.write(", ");
-                }
-
-                this.writeNode(node.elements[i]);
-            }
-        }
-
-        this.write("]");
-        this.spaceRequested = true;
-    }
-
     private writeProseAssertion(node: ProseAssertion) {
         this.write("[>");
         this.spaceRequested = false;
@@ -1614,7 +1621,6 @@ function isAssertion(node: LexicalSymbol) {
             case SyntaxKind.LookaheadAssertion:
             case SyntaxKind.LexicalGoalAssertion:
             case SyntaxKind.NoSymbolHereAssertion:
-            case SyntaxKind.ParameterValueAssertion:
             case SyntaxKind.ProseAssertion:
             case SyntaxKind.InvalidAssertion:
                 return true;
@@ -1629,7 +1635,7 @@ function getSymbolMeaning(node: Node | undefined) {
         switch (node.kind) {
             case SyntaxKind.Parameter:
             case SyntaxKind.Argument:
-            case SyntaxKind.ParameterValueAssertion:
+            case SyntaxKind.Constraints:
                 return SymbolKind.Parameter;
         }
     }

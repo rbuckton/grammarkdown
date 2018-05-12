@@ -171,7 +171,7 @@ ExportSpecifier :
         const production = <Production>sourceFile.elements[2];
         const list = <RightHandSideList>production.body;
         const rhs = <RightHandSide>(list.elements && list.elements[0]);
-        const symbol = <Nonterminal>rhs.head.symbol;
+        const symbol = <Nonterminal>rhs.head!.symbol;
         assert.strictEqual(navigator.getNode(), symbol.name);
     });
 });
