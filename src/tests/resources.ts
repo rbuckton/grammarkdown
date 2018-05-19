@@ -37,6 +37,10 @@ export class TestFileHost extends Host {
     async readFile(file: string, cancellationToken?: CancellationToken) {
         return this.isTestFile(file) ? this.file.content : super.readFile(file, cancellationToken);
     }
+
+    readFileSync(file: string, cancellationToken?: CancellationToken) {
+        return this.isTestFile(file) ? this.file.content : super.readFileSync(file, cancellationToken);
+    }
 }
 
 export function getGrammarFiles(): ReadonlyArray<TestFile> {

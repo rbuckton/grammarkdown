@@ -9,12 +9,15 @@ import { DiagnosticMessages } from "./diagnostics";
 import { Parser } from "./parser";
 import { CompilerOptions } from "./options";
 import { CancellationToken } from "prex";
+import { promiseFinally, pipe } from "./core";
 
 export interface HostOptions {
     knownGrammars?: Record<string, string>;
     useBuiltinGrammars?: boolean;
     readFile?: (this: never, file: string, cancellationToken?: CancellationToken) => Promise<string>;
+    readFileSync?: (this: never, file: string, cancellationToken?: CancellationToken) => string;
     writeFile?: (this: never, file: string, content: string, cancellationToken?: CancellationToken) => Promise<void>;
+    writeFileSync?: (this: never, file: string, content: string, cancellationToken?: CancellationToken) => void;
 }
 
 export class Host {
@@ -24,13 +27,32 @@ export class Host {
     private useBuiltinGrammars: boolean;
     private innerParser: Parser | undefined;
     private knownGrammars: Map<string, string> | undefined;
-    private readFileCallback: (file: string, cancellationToken?: CancellationToken) => Promise<string>;
-    private writeFileCallback: (file: string, content: string, cancellationToken?: CancellationToken) => Promise<void>;
+    private readFileCallback?: (file: string, cancellationToken?: CancellationToken) => Promise<string> | string | undefined;
+    private readFileSyncCallback?: (file: string, cancellationToken?: CancellationToken) => string;
+    private writeFileCallback?: (file: string, content: string, cancellationToken?: CancellationToken) => Promise<void> | void;
+    private writeFileSyncCallback?: (file: string, content: string, cancellationToken?: CancellationToken) => void;
 
-    constructor({ knownGrammars, useBuiltinGrammars = true, readFile = readFileFallback, writeFile = writeFileFallback }: HostOptions = {}) {
+    constructor({ knownGrammars, useBuiltinGrammars = true, readFile, readFileSync, writeFile, writeFileSync }: HostOptions = {}) {
         this.useBuiltinGrammars = useBuiltinGrammars;
-        this.readFileCallback = readFile;
-        this.writeFileCallback = writeFile;
+
+        if (!readFileSync && !readFile) {
+            this.readFileCallback = readFileFallback;
+            this.readFileSyncCallback = readFileSyncFallback;
+        }
+        else {
+            this.readFileCallback = readFile || readFileSync;
+            this.readFileSyncCallback = readFileSync;
+        }
+
+        if (!writeFileSync && !writeFile) {
+            this.writeFileCallback = writeFileFallback;
+            this.writeFileSyncCallback = writeFileSyncFallback;
+        }
+        else {
+            this.writeFileCallback = writeFile || writeFileSync;
+            this.writeFileSyncCallback = writeFileSync;
+        }
+
         if (knownGrammars) {
             for (const key in knownGrammars) if (Object.prototype.hasOwnProperty.call(knownGrammars, key)) {
                 this.registerKnownGrammar(key, knownGrammars[key]);
@@ -91,27 +113,62 @@ export class Host {
         return result;
     }
 
-    public async readFile(file: string, cancellationToken?: CancellationToken) {
+    public async readFile(file: string, cancellationToken?: CancellationToken): Promise<string | undefined> {
+        return await this.readFilePossiblyAsync(/*sync*/ false, file, cancellationToken);
+    }
+
+    public readFileSync(file: string, cancellationToken?: CancellationToken): string | undefined {
+        return this.readFilePossiblyAsync(/*sync*/ true, file, cancellationToken);
+    }
+
+    private readFilePossiblyAsync(sync: true, file: string, cancellationToken?: CancellationToken): string | undefined;
+    private readFilePossiblyAsync(sync: boolean, file: string, cancellationToken?: CancellationToken): Promise<string | undefined> | string | undefined;
+    private readFilePossiblyAsync(sync: boolean, file: string, cancellationToken?: CancellationToken): Promise<string | undefined> | string | undefined {
+        const readFile = sync ? this.readFileSyncCallback : this.readFileCallback;
+        if (!readFile) throw new Error("Operation cannot be completed synchronously");
+
         performance.mark("ioRead");
         file = getLocalPath(file);
         if (isUri(file)) return undefined; // TODO: support uris?
-        const content = await (void 0, this.readFileCallback)(file, cancellationToken);
-        performance.measure("ioRead", "ioRead");
-        return content;
+        const result = readFile(file, cancellationToken);
+        return typeof result === "object" ? promiseFinally(result, endIORead) : endIORead(result);
     }
 
     public async writeFile(file: string, text: string, cancellationToken?: CancellationToken) {
+        return await this.writeFilePossiblyAsync(/*sync*/ false, file, text, cancellationToken);
+    }
+
+    public writeFileSync(file: string, text: string, cancellationToken?: CancellationToken) {
+        this.writeFilePossiblyAsync(/*sync*/ true, file, text, cancellationToken);
+    }
+
+    private writeFilePossiblyAsync(sync: true, file: string, text: string, cancellationToken?: CancellationToken): void;
+    private writeFilePossiblyAsync(sync: boolean, file: string, text: string, cancellationToken?: CancellationToken): Promise<void> | void;
+    private writeFilePossiblyAsync(sync: boolean, file: string, text: string, cancellationToken?: CancellationToken) {
+        const writeFile = sync ? this.writeFileSyncCallback : this.writeFileCallback;
+        if (!writeFile) throw new Error("Operation cannot be completed synchronously");
+
         performance.mark("ioWrite");
         file = getLocalPath(file);
         if (isUri(file)) throw new Error("Cannot write to a non-file URI.");
-        await (void 0, this.writeFileCallback)(file, text, cancellationToken);
-        performance.measure("ioWrite", "ioWrite");
+        const result = writeFile(file, text, cancellationToken);
+        return typeof result === "object" ? promiseFinally(result, endIOWrite) : endIOWrite();
     }
 
     public async getSourceFile(file: string, cancellationToken?: CancellationToken) {
-        const text = await this.readFile(file, cancellationToken);
-        if (text === undefined) return undefined;
-        return this.parseSourceFile(file, text, cancellationToken);
+        return this.getSourceFilePossiblyAsync(/*sync*/ false, file, cancellationToken);
+    }
+
+    public getSourceFileSync(file: string, cancellationToken?: CancellationToken) {
+        return this.getSourceFilePossiblyAsync(/*sync*/ true, file, cancellationToken);
+    }
+
+    private getSourceFilePossiblyAsync(sync: true, file: string, cancellationToken?: CancellationToken): SourceFile | undefined;
+    private getSourceFilePossiblyAsync(sync: boolean, file: string, cancellationToken?: CancellationToken): Promise<SourceFile | undefined> | SourceFile | undefined;
+    private getSourceFilePossiblyAsync(sync: boolean, file: string, cancellationToken?: CancellationToken) {
+        return pipe(
+            sync ? this.readFileSync(file, cancellationToken) : this.readFile(file, cancellationToken),
+            result => typeof result === "string" ? this.parseSourceFile(file, result, cancellationToken) : undefined);
     }
 
     public parseSourceFile(file: string, text: string, cancellationToken?: CancellationToken) {
@@ -155,6 +212,23 @@ function readFileFallback(file: string) {
     return new Promise<string>((resolve, reject) => fs.readFile(file, "utf8", (error, data) => error ? reject(error) : resolve(data)));
 }
 
+function readFileSyncFallback(file: string) {
+    return fs.readFileSync(file, "utf8");
+}
+
 function writeFileFallback(file: string, content: string) {
     return new Promise<void>((resolve, reject) => fs.writeFile(file, content, "utf8", (error) => error ? reject(error) : resolve()));
+}
+
+function writeFileSyncFallback(file: string, content: string) {
+    return fs.writeFileSync(file, content, "utf8");
+}
+
+function endIORead<T>(value?: T) {
+    performance.measure("ioRead", "ioRead");
+    return value;
+}
+
+function endIOWrite() {
+    performance.measure("ioWrite", "ioWrite");
 }

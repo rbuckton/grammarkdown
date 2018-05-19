@@ -60,12 +60,23 @@ export class Emitter {
         this.options = options;
     }
 
-    public async emit(node: SourceFile, resolver: Resolver, diagnostics: DiagnosticMessages, writeFile: (file: string, text: string, cancellationToken?: CancellationToken) => Promise<void>, cancellationToken = CancellationToken.none) {
+    public emit(node: SourceFile, resolver: Resolver, diagnostics: DiagnosticMessages, writeFile: (file: string, text: string, cancellationToken?: CancellationToken) => void | Promise<void>, cancellationToken = CancellationToken.none) {
+        const file = this.getOutputFilename(node);
+        const text = this.emitString(node, resolver, diagnostics, cancellationToken);
+        return writeFile(file, text, cancellationToken);
+    }
+
+    public emitSync(node: SourceFile, resolver: Resolver, diagnostics: DiagnosticMessages, writeFile: (file: string, text: string, cancellationToken?: CancellationToken) => void, cancellationToken = CancellationToken.none) {
+        const file = this.getOutputFilename(node);
+        const text = this.emitString(node, resolver, diagnostics, cancellationToken);
+        writeFile(file, text, cancellationToken);
+    }
+
+    public emitString(node: SourceFile, resolver: Resolver, diagnostics: DiagnosticMessages, cancellationToken = CancellationToken.none) {
         cancellationToken.throwIfCancellationRequested();
 
         performance.mark("beforeEmit");
 
-        const file = this.getOutputFilename(node);
         const saveWriter = this.writer;
         const saveResolver = this.resolver;
         const saveDiagnostics = this.diagnostics;
@@ -97,7 +108,7 @@ export class Emitter {
         performance.mark("afterEmit");
         performance.measure("emit", "beforeEmit", "afterEmit");
 
-        await writeFile(file, text, cancellationToken);
+        return text;
     }
 
     protected getOutputFilename(node: SourceFile): string {

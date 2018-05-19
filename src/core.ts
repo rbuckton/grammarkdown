@@ -204,3 +204,37 @@ export function concat<T>(a: T[] | undefined, b: T[] | undefined): T[] | undefin
 export function concat<T>(a: T[] | undefined, b: T[] | undefined) {
     return a ? b ? a.concat(b) : a : b;
 }
+
+export function promiseFinally<T>(promise: Promise<T>, onFinally: () => void) {
+    return promise.then(value => {
+        onFinally();
+        return value;
+    }, e => {
+        onFinally();
+        throw e;
+    });
+}
+
+export function pipe<T, U>(result: T | Promise<T>, next: (value: T) => U | Promise<U>): U | Promise<U>;
+export function pipe<T, U>(result: T | Promise<T> | undefined, next: (value: T | undefined) => U | Promise<U>): U | Promise<U>;
+export function pipe<T, U>(result: T | Promise<T> | undefined, next: (value: T | undefined) => U | Promise<U> | undefined): U | Promise<U> | undefined;
+export function pipe<T, U>(result: T | Promise<T>, next: (value: T) => U | Promise<U>) {
+    return isPromise(result) ? result.then(next) : next(result);
+}
+
+export function isPromise<T>(value: T | Promise<T> | undefined): value is Promise<T> {
+    return typeof value === "object" && "then" in (value as object);
+}
+
+export function forEachPossiblyAsync<T, U>(iterable: Iterable<T>, callback: (value: T) => Promise<U> | U | undefined): void | Promise<void> {
+    const iter = iterable[Symbol.iterator]();
+    const next = (): void | Promise<void> => {
+        while (true) {
+            const { value, done } = iter.next();
+            if (done) break;
+            const result = callback(value);
+            if (isPromise(result)) return pipe(result, next);
+        }
+    }
+    return next();
+}
