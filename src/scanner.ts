@@ -653,6 +653,13 @@ export class Scanner {
             }
 
             let ch = this.text.charCodeAt(this.pos);
+            if (decodeEscapeSequences && ch === CharacterCodes.Ampersand) {
+                result += this.text.substring(start, this.pos);
+                this.pos++;
+                ch = this.scanCharacterEntity();
+                start = this.pos;
+            }
+
             if (ch === quote) {
                 // If this is a terminal that consists solely of a single backtick character (e.g. ```),
                 // we capture the backtick.
@@ -673,12 +680,6 @@ export class Scanner {
                 // terminals cannot have escape sequences
                 result += this.text.substring(start, this.pos);
                 result += this.scanEscapeSequence();
-                start = this.pos;
-                continue;
-            }
-            else if (decodeEscapeSequences && ch === CharacterCodes.Ampersand) {
-                result += this.text.substring(start, this.pos);
-                result += String.fromCharCode(this.scanCharacterEntity());
                 start = this.pos;
                 continue;
             }
