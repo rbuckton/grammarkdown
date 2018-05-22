@@ -2,6 +2,7 @@
 .gitignore
 .gitmodules
 .vscode
+.travis.yml
 node_modules
 pages
 spec
