@@ -1354,7 +1354,7 @@ class RightHandSideDigest {
     private writer!: StringWriter;
 
     public computeHash(node: RightHandSide): string {
-        this.writer = new StringWriter();
+        this.writer = new StringWriter("\n");
         this.writeNode(node.constraints);
         this.writeNode(node.head);
 

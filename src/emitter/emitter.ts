@@ -3,7 +3,7 @@ import * as path from "path";
 import * as performance from "../performance";
 import { CancellationToken } from "prex";
 import { DiagnosticMessages } from "../diagnostics";
-import { CompilerOptions } from "../options";
+import { CompilerOptions, NewLineKind } from "../options";
 import { Checker, Resolver } from "../checker";
 import { StringWriter } from "../stringwriter";
 import { SyntaxKind, tokenToString } from "../tokens";
@@ -89,7 +89,7 @@ export class Emitter {
             this.cancellationToken = cancellationToken;
             this.resolver = resolver;
             this.diagnostics = new DiagnosticMessages();
-            this.writer = this.createWriter();
+            this.writer = this.createWriter(this.options);
             this.sourceFile = node;
             this.triviaPos = 0;
             this.emitNode(node);
@@ -123,8 +123,11 @@ export class Emitter {
         }
     }
 
-    protected createWriter(): StringWriter {
-        return new StringWriter();
+    protected createWriter(options: CompilerOptions): StringWriter {
+        return new StringWriter(
+            options.newLine === NewLineKind.LineFeed ? "\n" :
+            options.newLine === NewLineKind.CarriageReturnLineFeed ? "\r\n" :
+            undefined);
     }
 
     protected beforeEmitNode(node: Node): void {

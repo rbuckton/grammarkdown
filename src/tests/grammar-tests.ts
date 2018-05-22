@@ -5,7 +5,7 @@ import { Scanner } from "../scanner";
 import { writeTokens, compareBaseline, writeNodes, writeDiagnostics, writeOutput } from "./diff";
 import { Parser } from "../parser";
 import { Grammar } from "../grammar";
-import { EmitFormat } from "../options";
+import { EmitFormat, NewLineKind } from "../options";
 
 describe.only("Grammar", () => {
     defineSuites();
@@ -57,7 +57,7 @@ describe.only("Grammar", () => {
 
     function defineCheckerTest(file: TestFile) {
         it("diagnostics", async () => {
-            const grammar = new Grammar([file.relative], {}, new TestFileHost(file));
+            const grammar = new Grammar([file.relative], { newLine: NewLineKind.CarriageReturnLineFeed }, new TestFileHost(file));
             await grammar.check(/*sourceFile*/ undefined);
             compareBaseline(writeDiagnostics(file.relative, grammar.diagnostics));
         });
@@ -79,7 +79,7 @@ describe.only("Grammar", () => {
         const emitLinks = mode === "html";
         it(`emit ${EmitFormat[format]}`, async () => {
             let output: string | undefined;
-            const grammar = new Grammar([file.relative], { format, emitLinks }, new TestFileHost(file));
+            const grammar = new Grammar([file.relative], { format, emitLinks, newLine: NewLineKind.CarriageReturnLineFeed }, new TestFileHost(file));
             await grammar.emit(/*sourceFile*/ undefined, async (_, _output) => { output = _output; });
             compareBaseline(writeOutput(file.relative, extname, output));
         });

@@ -18,7 +18,7 @@ import * as performance from "./performance";
 import { EOL } from "os";
 import { readFileSync, writeFileSync } from "fs";
 import { Package } from "./read-package";
-import { CompilerOptions, EmitFormat, getDefaultOptions, KnownOptions, ParsedArguments, parse, usage } from "./options";
+import { CompilerOptions, EmitFormat, getDefaultOptions, KnownOptions, ParsedArguments, parse, usage, NewLineKind } from "./options";
 import { Grammar } from "./grammar";
 import { mapFromObject } from "./core";
 
@@ -36,6 +36,10 @@ const knownOptions: KnownOptions = {
         "ecmarkup": EmitFormat.ecmarkup,
         "html": EmitFormat.html
     }), description: "The output format." },
+    "newLine": { param: "NEWLINE", type: mapFromObject({
+        "lf": NewLineKind.LineFeed,
+        "crlf": NewLineKind.CarriageReturnLineFeed
+    }), description: "The line terminator to use during emit." },
     "noEmit": { type: "boolean", description: "Does not emit output." },
     "noEmitOnError": { type: "boolean", description: "Does not emit output if there are errors." },
     "noChecks": { type: "boolean", description: "Does not perform static checking of the grammar." },

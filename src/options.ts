@@ -2,6 +2,11 @@ import { readFileSync } from "fs";
 import { DictionaryLike, mapFromObject } from "./core";
 import { CharacterCodes } from "./tokens";
 
+export enum NewLineKind {
+    LineFeed,
+    CarriageReturnLineFeed,
+}
+
 export enum EmitFormat {
     markdown,
     html,
@@ -9,6 +14,7 @@ export enum EmitFormat {
 }
 
 export interface CompilerOptions {
+    newLine?: NewLineKind;
     noChecks?: boolean;
     noEmit?: boolean;
     noEmitOnError?: boolean;
