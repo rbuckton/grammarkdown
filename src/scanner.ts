@@ -537,7 +537,7 @@ export class Scanner {
                 if (isLineTerminator(ch)) {
                     tokenValue += this.text.substring(start, this.pos);
                     if (this.nextLineIsProse()) {
-                        tokenValue += EOL;
+                        tokenValue += "\n";
                         continue;
                     }
 

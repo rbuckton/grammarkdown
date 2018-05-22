@@ -33,7 +33,7 @@ import {
 } from "../nodes";
 
 export function writeTokens(test: string, scanner: Scanner, lineMap: LineMap, baselines?: string[]) {
-    let text: string = `/// ${test}:` + EOL;
+    let text: string = `/// ${test}:\r\n`;
     let token: SyntaxKind;
     do {
         token = scanner.scan();
@@ -61,7 +61,7 @@ export function writeTokens(test: string, scanner: Scanner, lineMap: LineMap, ba
                 message += `${tokenToString(token)}`;
         }
 
-        text += message + EOL;
+        text += message + "\r\n";
     }
     while (token !== SyntaxKind.EndOfFileToken)
     return writeBaseline(test + ".tokens", text, baselines);
@@ -71,16 +71,16 @@ export function writeDiagnostics(test: string, diagnostics: DiagnosticMessages, 
     let text: string | undefined = undefined;
     diagnostics.forEach(message => {
         if (!text) {
-            text = `/// ${test}:` + EOL;
+            text = `/// ${test}:\r\n`;
         }
-        text += message + EOL;
+        text += message + "\r\n";
     });
 
     return writeBaseline(test + ".diagnostics", text, baselines);
 }
 
 export function writeNodes(test: string, sourceFile: SourceFile, baselines?: string[]) {
-    let text = `/// ${test}:` + EOL;
+    let text = `/// ${test}:\r\n`;
     let indents = ["", "  "];
     let indentDepth = 0;
 
@@ -95,7 +95,7 @@ export function writeNodes(test: string, sourceFile: SourceFile, baselines?: str
     }
 
     function printNode(node: Node) {
-        text += getIndent(indentDepth) + formatNode(node, sourceFile) + EOL;
+        text += getIndent(indentDepth) + formatNode(node, sourceFile) + "\r\n";
         indentDepth++;
         for (const child of node.children()) {
             printNode(child);
