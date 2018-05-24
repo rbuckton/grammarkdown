@@ -184,6 +184,81 @@ export class Host {
     }
 }
 
+export class SingleFileHost extends Host {
+    public readonly file: string;
+    public readonly content: string;
+    private hostFallback: Host | undefined;
+
+    constructor(content: string, file: string = "file.grammar", hostFallback?: Host) {
+        super({ useBuiltinGrammars: false });
+        this.file = file;
+        this.content = content;
+        this.hostFallback = this.hostFallback;
+    }
+
+    protected get parser() {
+        return this.hostFallback ? this.hostFallback["parser"] : super.parser;
+    }
+
+    public normalizeFile(file: string) {
+        return this.hostFallback ? this.hostFallback.normalizeFile(file) : super.normalizeFile(file);
+    }
+
+    public resolveKnownGrammar(name: string) {
+        return this.hostFallback ? this.hostFallback.resolveKnownGrammar(name) : super.resolveKnownGrammar(name);
+    }
+
+    public registerKnownGrammar(_name: string, _file: string) {
+        throw new Error("Known grammars must be registered on the fallback host.")
+    }
+
+    protected resolveBuiltInGrammar(name: string) {
+        return this.hostFallback ? this.hostFallback["resolveBuiltInGrammar"](name) : super.resolveBuiltInGrammar(name);
+    }
+
+    public resolveFile(file: string, referer?: string) {
+        return file === this.file ? file :
+            this.hostFallback ? this.hostFallback.resolveFile(file, referer) :
+            super.resolveFile(file, referer);
+    }
+
+    public async readFile(file: string, cancellationToken?: CancellationToken): Promise<string | undefined> {
+        if (file === this.file) return this.content;
+        if (this.hostFallback) return this.hostFallback.readFile(file, cancellationToken);
+        throw new Error(`File '${file}' cannot be read without a fallback host.`);
+    }
+
+    public readFileSync(file: string, cancellationToken?: CancellationToken): string | undefined {
+        if (file === this.file) return this.content;
+        if (this.hostFallback) return this.hostFallback.readFileSync(file, cancellationToken);
+        throw new Error(`File '${file}' cannot be read without a fallback host.`);
+    }
+
+    public async writeFile(file: string, text: string, cancellationToken?: CancellationToken) {
+        if (this.hostFallback) return this.hostFallback.writeFile(file, text, cancellationToken);
+        throw new Error(`Cannot write file without a fallback host.`);
+    }
+
+    public writeFileSync(file: string, text: string, cancellationToken?: CancellationToken) {
+        if (this.hostFallback) return this.hostFallback.writeFileSync(file, text, cancellationToken);
+        throw new Error(`Cannot write file without a fallback host.`);
+    }
+
+    public async getSourceFile(file: string, cancellationToken?: CancellationToken) {
+        return file !== this.file && this.hostFallback ? this.hostFallback.getSourceFile(file, cancellationToken) :
+            super.getSourceFile(file, cancellationToken);
+    }
+
+    public getSourceFileSync(file: string, cancellationToken?: CancellationToken) {
+        return file !== this.file && this.hostFallback ? this.hostFallback.getSourceFileSync(file, cancellationToken) :
+            super.getSourceFileSync(file, cancellationToken);
+    }
+
+    protected createParser() {
+        return this.hostFallback ? this.hostFallback["createParser"]() : super.createParser();
+    }
+}
+
 function isUri(file: string) {
     return !path.isAbsolute(file) && !!url.parse(file).protocol;
 }

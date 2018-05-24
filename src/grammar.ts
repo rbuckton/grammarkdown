@@ -2,7 +2,7 @@ import * as fs from "fs";
 import * as path from "path";
 import * as os from "os";
 import * as performance from "./performance";
-import { Host } from "./host";
+import { Host, SingleFileHost } from "./host";
 import { DiagnosticMessages, NullDiagnosticMessages } from "./diagnostics";
 import { EmitFormat, CompilerOptions, getDefaultOptions } from "./options";
 import { SyntaxKind } from "./tokens";
@@ -75,6 +75,17 @@ export class Grammar {
 
     protected get emitter(): Emitter {
         return this.innerEmitter || (this.innerEmitter = this.createEmitter(this.options));
+    }
+
+    public static convert(content: string, options?: CompilerOptions, hostFallback?: Host, cancellationToken?: CancellationToken) {
+        const host = new SingleFileHost(content, /*file*/ undefined, hostFallback);
+        const grammar = new Grammar([host.file], options, host);
+        grammar.parseSync(cancellationToken);
+
+        const sourceFile = grammar.getSourceFile(host.file);
+        if (!sourceFile) throw new Error(`Unable to resolve single file.`);
+
+        return grammar.emitStringSync(sourceFile, cancellationToken);
     }
 
     public getSourceFile(file: string) {
