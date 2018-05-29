@@ -77,8 +77,11 @@ export class Grammar {
         return this.innerEmitter || (this.innerEmitter = this.createEmitter(this.options));
     }
 
-    public static convert(content: string, options?: CompilerOptions, hostFallback?: Host, cancellationToken?: CancellationToken) {
-        const host = new SingleFileHost(content, /*file*/ undefined, hostFallback);
+    public static convert(content: string, options?: CompilerOptions, hostFallback?: Host | SyncHost | AsyncHost, cancellationToken?: CancellationToken) {
+        const host = hostFallback === undefined || !("readFile" in hostFallback) ? SyncHost.forFile(content, /*file*/ undefined, hostFallback) :
+            !("readFileSync" in hostFallback) ? AsyncHost.forFile(content, /*file*/ undefined, hostFallback) :
+            new SingleFileHost(content, /*file*/ undefined, hostFallback);
+
         const grammar = new Grammar([host.file], options, host);
         grammar.parseSync(cancellationToken);
 

@@ -109,7 +109,7 @@ export class SyncHost extends HostBase {
         this.writeFileSyncCallback = writeFileSync;
     }
 
-    public static forFile(content: string, file = "file.grammar", hostFallback?: SyncHost): SyncHost {
+    public static forFile(content: string, file = "file.grammar", hostFallback?: SyncHost) {
         return new SyncSingleFileHost(file, content, hostFallback);
     }
 
@@ -142,10 +142,10 @@ export class SyncHost extends HostBase {
     }
 }
 
-class SyncSingleFileHost extends SyncHost {
+export class SyncSingleFileHost extends SyncHost {
+    public readonly file: string;
+    public readonly content: string;
     private hostFallback?: SyncHost;
-    private file: string;
-    private content: string;
 
     constructor(file: string, content: string, hostFallback?: SyncHost) {
         super({ ignoreCase: hostFallback ? hostFallback.ignoreCase : undefined });
@@ -193,7 +193,7 @@ export class AsyncHost extends HostBase {
         this.writeFileCallback = writeFile;
     }
 
-    public static forFile(content: string, file = "file.grammar", hostFallback?: AsyncHost): AsyncHost {
+    public static forFile(content: string, file = "file.grammar", hostFallback?: AsyncHost) {
         return new AsyncSingleFileHost(file, content, hostFallback);
     }
 
@@ -226,10 +226,10 @@ export class AsyncHost extends HostBase {
     }
 }
 
-class AsyncSingleFileHost extends AsyncHost {
+export class AsyncSingleFileHost extends AsyncHost {
+    public readonly file: string;
+    public readonly content: string;
     private hostFallback?: AsyncHost;
-    private file: string;
-    private content: string;
 
     constructor(file: string, content: string, hostFallback?: AsyncHost) {
         super({ ignoreCase: hostFallback ? hostFallback.ignoreCase : undefined });
