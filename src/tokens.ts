@@ -14,6 +14,8 @@
  *  limitations under the License.
  */
 
+import { formatEnum } from "./core";
+
 export const enum CharacterCodes {
     NullCharacter = 0,
     MaxAsciiCharacter = 0x7F,
@@ -153,49 +155,45 @@ export const enum CharacterCodes {
 
 export enum SyntaxKind {
     Unknown,
-    EndOfFileToken,
 
-    // Literals
-    StringLiteral,
-    Terminal,
-    UnicodeCharacterLiteral,
-    Prose,
+    // Trivia, Comments
+    SingleLineCommentTrivia, // FirstCommentTrivia, FirstTrivia
+    MultiLineCommentTrivia, // LastCommentTrivia
 
-    ProseHead,
-    ProseMiddle,
-    ProseTail,
-    ProseFull,
+    // Trivia, Html
+    HtmlOpenTagTrivia, // FirstHtmlTrivia
+    HtmlCloseTagTrivia, // LastHtmlTrivia, LastTrivia
 
-    // Punctuation
-    AtToken,                    // @
-    OpenBraceToken,             // {
-    CloseBraceToken,            // }
-    OpenBracketToken,           // [
-    OpenBracketGreaterThanToken,// [>
-    CloseBracketToken,          // ]
-    GreaterThanToken,           // >
-    OpenParenToken,             // (
-    CloseParenToken,            // )
-    ColonToken,                 // :
-    ColonColonToken,            // ::
-    ColonColonColonToken,       // :::
-    CommaToken,                 // ,
-    PlusToken,                  // +
-    TildeToken,                 // ~
-    QuestionToken,              // ?
-    EqualsToken,                // =
-    EqualsEqualsToken,          // ==
-    ExclamationEqualsToken,     // !=
-    LessThanExclamationToken,   // <!
-    LessThanMinusToken,         // <-
-    NotEqualToToken,            // ≠
-    ElementOfToken,             // ∈
-    NotAnElementOfToken,        // ∉
+    // Tokens, Other
+    EndOfFileToken, // FirstToken
 
-    // Identifiers
-    Identifier,
+    // Tokens, Punctuation
+    AtToken, // FirstPunctuation, `@`
+    OpenBraceToken, // `{`
+    CloseBraceToken, // `}`
+    OpenBracketToken, // `[`
+    OpenBracketGreaterThanToken, // `[>`
+    CloseBracketToken, // `]`
+    GreaterThanToken, // `>`
+    OpenParenToken, // `(`
+    CloseParenToken, // `)`
+    ColonToken, // `:`
+    ColonColonToken, // `::`
+    ColonColonColonToken, // `:::`
+    CommaToken, // `,`
+    PlusToken, // `+`
+    TildeToken, // `~`
+    QuestionToken, // `?`
+    EqualsToken, // `=`
+    EqualsEqualsToken, // `==`
+    ExclamationEqualsToken, // `!=`
+    LessThanExclamationToken, // `<!`
+    LessThanMinusToken, // `<-`
+    NotEqualToToken, // `≠`
+    ElementOfToken, // `∈`
+    NotAnElementOfToken, // LastPunctuation, `∉`
 
-    // Keywords
+    // Tokens, Keywords
     ButKeyword, // FirstKeyword
     DefineKeyword,
     EmptyKeyword,
@@ -211,59 +209,110 @@ export enum SyntaxKind {
     OneKeyword,
     OrKeyword,
     ThroughKeyword,
-    TrueKeyword, // LastKeyword
+    TrueKeyword, // LastKeyword, LastToken
 
-    // Nodes
-    Parameter,                  // Production(Parameter):
-    ParameterList,
-    Argument,                   // NonTerminal(Argument)
-    ArgumentList,
-    LinkReference,              // #link
-    Constraints,
+    // TextContent, Literals
+    StringLiteral, // FirstLiteral, FirstTextContent
+    Terminal,
+    UnicodeCharacterLiteral, // LastLiteral
 
-    Import,                     // @import "path"
-    Define,                     // @define key value
-    Production,                 // Production: ...
-    OneOfList,                  // Production: one of ...
-    RightHandSideList,          // Production: RightHandSide...
-    RightHandSide,              // ...: SymbolSpan
-    SymbolSpan,                 // Symbol Symbolopt
+    // TextContent, Literals, Prose Fragments
+    ProseHead, // FirstProseFragment
+    ProseMiddle,
+    ProseTail,
+    ProseFull, // LastProseFragment
 
-    // Symbols
-    ButNotSymbol,               // x but not y
-    UnicodeCharacterRange,      // x through y
-    OneOfSymbol,                // one of OrClause
-    PlaceholderSymbol,          // @
-    Nonterminal,
-    SymbolSet,
+    // TextContent, Identifiers
+    Identifier, // LastTextContent
 
-    // Zero-width Assertions
-    EmptyAssertion,             // `[` `empty` `]`
+    // Nodes, File
+    SourceFile,
+
+    // Nodes, Top Level
+    Import, // @import "path"
+    Define, // @define key value
+    Production, // Production: ...
+
+    // Nodes, Elements
+    Parameter,
+    ParameterList, // [In, Yield, Await]
+    Argument,
+    ArgumentList, // [+In, ~Yield, ?Await]
+    LinkReference, // #link
+    OneOfList, // Production: one of ...
+    RightHandSideList, // Production: RightHandSide...
+    RightHandSide, // ...: SymbolSpan
+    Constraints, // [~Default]
+    SymbolSpan, // Symbol Symbolopt
+    SymbolSet, // `{ A, B }`
+
+    // Nodes, Symbols
+    ButNotSymbol, // `x but not y`
+    UnicodeCharacterRange, // `x through y`
+    OneOfSymbol, // `one of OrClause`
+    PlaceholderSymbol, // `@`
+    Nonterminal, // `` `a` ``
+    Prose, // > head |NonTerminal| middle `terminal` tail
+
+    // Nodes, Symbols, Assertions
+    EmptyAssertion, // `[empty]`
     LookaheadAssertion,
     LexicalGoalAssertion,
     NoSymbolHereAssertion,
     ProseAssertion,
 
-    // error nodes
-    InvalidSymbol,
-    InvalidAssertion,
-    // InvalidSourceElement,
+    // Nodes, Error
+    InvalidSymbol, // FirstErrorNode
+    InvalidAssertion, // LastErrorNode
 
-    // top nodes
-    SourceFile,
-
-    // Trivia
-    SingleLineCommentTrivia,
-    MultiLineCommentTrivia,
-    HtmlOpenTagTrivia,
-    HtmlCloseTagTrivia,
-
-    FirstProseFragment = ProseHead,
-    LastProseFragment = ProseTail,
+    // Ranges
+    FirstToken = EndOfFileToken,
+    LastToken = TrueKeyword,
     FirstKeyword = ButKeyword,
     LastKeyword = TrueKeyword,
     FirstPunctuation = AtToken,
-    LastPunctuation = LessThanMinusToken,
+    LastPunctuation = NotAnElementOfToken,
+    FirstLiteral = StringLiteral,
+    LastLiteral = UnicodeCharacterLiteral,
+    FirstProseFragmentLiteral = ProseHead,
+    LastProseFragmentLiteral = ProseFull,
+    FirstTextContent = StringLiteral,
+    LastTextContent = ProseFull,
+    FirstErrorNode = InvalidSymbol,
+    LastErrorNode = InvalidAssertion,
+    FirstTrivia = SingleLineCommentTrivia,
+    LastTrivia = HtmlCloseTagTrivia,
+    FirstCommentTrivia = SingleLineCommentTrivia,
+    LastCommentTrivia = MultiLineCommentTrivia,
+    FirstHtmlTrivia = HtmlOpenTagTrivia,
+    LastHtmlTrivia = HtmlCloseTagTrivia,
+}
+
+export type CommentTriviaKind =
+    | SyntaxKind.SingleLineCommentTrivia
+    | SyntaxKind.MultiLineCommentTrivia;
+
+export function isCommentTriviaKind(kind: SyntaxKind): kind is CommentTriviaKind {
+    return kind >= SyntaxKind.FirstCommentTrivia
+        && kind <= SyntaxKind.LastCommentTrivia;
+}
+
+export type HtmlTriviaKind =
+    | SyntaxKind.HtmlOpenTagTrivia
+    | SyntaxKind.HtmlCloseTagTrivia;
+
+export function isHtmlTriviaKind(kind: SyntaxKind): kind is HtmlTriviaKind {
+    return kind >= SyntaxKind.FirstHtmlTrivia
+        && kind <= SyntaxKind.LastHtmlTrivia;
+}
+
+export type TriviaKind =
+    | CommentTriviaKind
+    | HtmlTriviaKind;
+
+export function isTriviaKind(kind: SyntaxKind): kind is TriviaKind {
+    return kind >= SyntaxKind.FirstTrivia
+        && kind <= SyntaxKind.LastTrivia;
 }
 
 export type PunctuationKind =
@@ -292,33 +341,10 @@ export type PunctuationKind =
     | SyntaxKind.ElementOfToken
     | SyntaxKind.NotAnElementOfToken;
 
-export type KeywordKind =
-    | SyntaxKind.ButKeyword
-    | SyntaxKind.DefineKeyword
-    | SyntaxKind.EmptyKeyword
-    | SyntaxKind.FalseKeyword
-    | SyntaxKind.GoalKeyword
-    | SyntaxKind.HereKeyword
-    | SyntaxKind.ImportKeyword
-    | SyntaxKind.LexicalKeyword
-    | SyntaxKind.LookaheadKeyword
-    | SyntaxKind.NoKeyword
-    | SyntaxKind.NotKeyword
-    | SyntaxKind.OfKeyword
-    | SyntaxKind.OneKeyword
-    | SyntaxKind.OrKeyword
-    | SyntaxKind.ThroughKeyword
-    | SyntaxKind.TrueKeyword;
-
-export type TokenKind =
-    | PunctuationKind
-    | KeywordKind;
-
-export type ProseFragmentLiteralKind =
-    | SyntaxKind.ProseFull
-    | SyntaxKind.ProseHead
-    | SyntaxKind.ProseMiddle
-    | SyntaxKind.ProseTail;
+export function isPunctuationKind(kind: SyntaxKind): kind is PunctuationKind {
+    return kind >= SyntaxKind.FirstPunctuation
+        && kind <= SyntaxKind.LastPunctuation;
+}
 
 export type LookaheadOperatorKind =
     | SyntaxKind.EqualsToken
@@ -344,27 +370,68 @@ export type ArgumentOperatorKind =
     | SyntaxKind.PlusToken
     | SyntaxKind.TildeToken;
 
+export type KeywordKind =
+    | SyntaxKind.ButKeyword
+    | SyntaxKind.DefineKeyword
+    | SyntaxKind.EmptyKeyword
+    | SyntaxKind.FalseKeyword
+    | SyntaxKind.GoalKeyword
+    | SyntaxKind.HereKeyword
+    | SyntaxKind.ImportKeyword
+    | SyntaxKind.LexicalKeyword
+    | SyntaxKind.LookaheadKeyword
+    | SyntaxKind.NoKeyword
+    | SyntaxKind.NotKeyword
+    | SyntaxKind.OfKeyword
+    | SyntaxKind.OneKeyword
+    | SyntaxKind.OrKeyword
+    | SyntaxKind.ThroughKeyword
+    | SyntaxKind.TrueKeyword;
+
+export function isKeywordKind(kind: SyntaxKind): kind is KeywordKind {
+    return kind >= SyntaxKind.FirstKeyword
+        && kind <= SyntaxKind.LastKeyword;
+}
+
 export type BooleanKind =
     | SyntaxKind.TrueKeyword
     | SyntaxKind.FalseKeyword;
 
+export type TokenKind =
+    | SyntaxKind.EndOfFileToken
+    | PunctuationKind
+    | KeywordKind;
+
+export function isTokenKind(kind: SyntaxKind): kind is TokenKind {
+    return kind === SyntaxKind.EndOfFileToken
+        || kind >= SyntaxKind.FirstToken
+        && kind <= SyntaxKind.LastToken;
+}
+
+export type ProseFragmentLiteralKind =
+    | SyntaxKind.ProseFull
+    | SyntaxKind.ProseHead
+    | SyntaxKind.ProseMiddle
+    | SyntaxKind.ProseTail;
+
+export function isProseFragmentLiteralKind(kind: SyntaxKind): kind is ProseFragmentLiteralKind {
+    return kind >= SyntaxKind.FirstProseFragmentLiteral
+        && kind <= SyntaxKind.LastProseFragmentLiteral;
+}
+
+export type TextContentKind =
+    | SyntaxKind.StringLiteral
+    | SyntaxKind.Terminal
+    | SyntaxKind.UnicodeCharacterLiteral
+    | ProseFragmentLiteralKind
+    | SyntaxKind.Identifier;
+
+export function isTextContentKind(kind: SyntaxKind): kind is TextContentKind {
+    return kind >= SyntaxKind.FirstTextContent
+        && kind <= SyntaxKind.LastTextContent;
+}
+
 const textToToken = new Map<string, SyntaxKind>([
-    ["but", SyntaxKind.ButKeyword],
-    ["define", SyntaxKind.DefineKeyword],
-    ["empty", SyntaxKind.EmptyKeyword],
-    ["false", SyntaxKind.FalseKeyword],
-    ["goal", SyntaxKind.GoalKeyword],
-    ["here", SyntaxKind.HereKeyword],
-    ["import", SyntaxKind.ImportKeyword],
-    ["lexical", SyntaxKind.LexicalKeyword],
-    ["lookahead", SyntaxKind.LookaheadKeyword],
-    ["no", SyntaxKind.NoKeyword],
-    ["not", SyntaxKind.NotKeyword],
-    ["of", SyntaxKind.OfKeyword],
-    ["one", SyntaxKind.OneKeyword],
-    ["or", SyntaxKind.OrKeyword],
-    ["through", SyntaxKind.ThroughKeyword],
-    ["true", SyntaxKind.TrueKeyword],
     ["@", SyntaxKind.AtToken],
     [":", SyntaxKind.ColonToken],
     ["::", SyntaxKind.ColonColonToken],
@@ -389,6 +456,22 @@ const textToToken = new Map<string, SyntaxKind>([
     ["∈", SyntaxKind.ElementOfToken],
     ["<!", SyntaxKind.LessThanExclamationToken],
     ["∉", SyntaxKind.NotAnElementOfToken],
+    ["but", SyntaxKind.ButKeyword],
+    ["define", SyntaxKind.DefineKeyword],
+    ["empty", SyntaxKind.EmptyKeyword],
+    ["false", SyntaxKind.FalseKeyword],
+    ["goal", SyntaxKind.GoalKeyword],
+    ["here", SyntaxKind.HereKeyword],
+    ["import", SyntaxKind.ImportKeyword],
+    ["lexical", SyntaxKind.LexicalKeyword],
+    ["lookahead", SyntaxKind.LookaheadKeyword],
+    ["no", SyntaxKind.NoKeyword],
+    ["not", SyntaxKind.NotKeyword],
+    ["of", SyntaxKind.OfKeyword],
+    ["one", SyntaxKind.OneKeyword],
+    ["or", SyntaxKind.OrKeyword],
+    ["through", SyntaxKind.ThroughKeyword],
+    ["true", SyntaxKind.TrueKeyword],
 ]);
 
 const tokenToText = new Map<SyntaxKind, string>([...textToToken]
@@ -396,6 +479,11 @@ const tokenToText = new Map<SyntaxKind, string>([...textToToken]
 
 export function stringToToken(text: string) {
     return textToToken.get(text);
+}
+
+/* @internal */
+export function formatKind(kind: SyntaxKind) {
+    return formatEnum(kind, SyntaxKind, /*isFlags*/ false);
 }
 
 export function tokenToString(kind: SyntaxKind | string, quoted?: boolean) {
@@ -425,5 +513,5 @@ export function tokenToString(kind: SyntaxKind | string, quoted?: boolean) {
             return "«right hand side»";
     }
 
-    return "«" + SyntaxKind[kind] + "»";
+    return "«" + formatKind(kind) + "»";
 }

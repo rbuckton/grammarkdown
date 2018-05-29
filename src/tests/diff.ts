@@ -17,7 +17,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync, statSync, unlinkSyn
 import { EOL } from "os";
 import { resolve, basename, dirname } from "path";
 import { Scanner } from "../scanner";
-import { SyntaxKind, tokenToString, CharacterCodes } from "../tokens";
+import { SyntaxKind, tokenToString, CharacterCodes, formatKind } from "../tokens";
 import { DiagnosticMessages, LineMap } from "../diagnostics";
 import {
     SourceFile,
@@ -173,15 +173,6 @@ function ensureDirectory(path: string) {
         }
         throw e;
     }
-}
-
-function formatKind(kind: SyntaxKind) {
-    for (var p in SyntaxKind) {
-        if ((<any>SyntaxKind)[p] === kind) {
-            return p;
-        }
-    }
-    return SyntaxKind[kind];
 }
 
 function formatNode(node: Node, sourceFile: SourceFile) {

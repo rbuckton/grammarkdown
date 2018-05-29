@@ -16,7 +16,7 @@
 
 import { EOL } from 'os';
 import { CancellationToken } from "prex";
-import { CharacterCodes, SyntaxKind, stringToToken } from "./tokens";
+import { CharacterCodes, SyntaxKind, stringToToken, isProseFragmentLiteralKind } from "./tokens";
 import { Diagnostics, DiagnosticMessages, NullDiagnosticMessages } from "./diagnostics";
 import { HtmlTrivia, HtmlCloseTagTrivia, HtmlOpenTagTrivia, SingleLineCommentTrivia, MultiLineCommentTrivia, HtmlTriviaBase, CommentTrivia, Token } from './nodes';
 
@@ -507,7 +507,7 @@ export class Scanner {
         const previousToken = this.token;
         const isMultiLine = this.proseStartToken === SyntaxKind.GreaterThanToken;
         const atStartOfProse = previousToken === this.proseStartToken;
-        const previousTokenWasFragment = isProseFragment(previousToken);
+        const previousTokenWasFragment = isProseFragmentLiteralKind(previousToken);
 
         let start = this.pos;
         let tokenValue: string = "";
@@ -891,11 +891,6 @@ function isIdentifierPart(ch: number): boolean {
 
 function isLineTerminator(ch: number): boolean {
     return ch === CharacterCodes.CarriageReturn || ch === CharacterCodes.LineFeed;
-}
-
-function isProseFragment(token: SyntaxKind): boolean {
-    return token >= SyntaxKind.FirstProseFragment
-        && token <= SyntaxKind.LastProseFragment;
 }
 
 function isHtmlTagNameStart(ch: number): boolean {

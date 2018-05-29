@@ -238,3 +238,57 @@ export function forEachPossiblyAsync<T, U>(iterable: Iterable<T>, callback: (val
     }
     return next();
 }
+
+export function mapSet<K extends object, V>(map: WeakMap<K, V>, key: K, value: V): V;
+export function mapSet<K, V>(map: Map<K, V>, key: K, value: V): V;
+export function mapSet<K, V>(map: { set(key: K, value: V): any; }, key: K, value: V) {
+    map.set(key, value);
+    return value;
+}
+
+const enumMembers = Symbol();
+
+/**
+ * Formats an enum value as a string for debugging and debug assertions.
+ */
+/*@internal*/
+export function formatEnum(value = 0, enumObject: any, isFlags?: boolean) {
+    const members = getEnumMembers(enumObject);
+    if (value === 0) {
+        return members.length > 0 && members[0][0] === 0 ? members[0][1] : "0";
+    }
+    if (isFlags) {
+        let result = "";
+        let remainingFlags = value;
+        for (let i = members.length - 1; i >= 0 && remainingFlags !== 0; i--) {
+            const [enumValue, enumName] = members[i];
+            if (enumValue !== 0 && (remainingFlags & enumValue) === enumValue) {
+                remainingFlags &= ~enumValue;
+                result = `${enumName}${result ? ", " : ""}${result}`;
+            }
+        }
+        if (remainingFlags === 0) {
+            return result;
+        }
+    }
+    else {
+        for (const [enumValue, enumName] of members) {
+            if (enumValue === value) {
+                return enumName;
+            }
+        }
+    }
+    return value.toString();
+}
+
+function getEnumMembers(enumObject: any): [number, string][] {
+    if (enumObject[enumMembers]) return enumObject[enumMembers];
+    const result: [number, string][] = [];
+    for (const name in enumObject) if (Object.prototype.hasOwnProperty.call(enumObject, name)) {
+        const value = enumObject[name];
+        if (typeof value === "number") {
+            result.push([value, name]);
+        }
+    }
+    return enumObject[enumMembers] = stableSort<[number, string]>(result, (x, y) => compare(x[0], y[0]));
+}

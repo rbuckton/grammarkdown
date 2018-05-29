@@ -2,56 +2,32 @@ import * as path from "path";
 import * as fs from "fs";
 import * as os from "os";
 import * as url from "url";
-import * as util from "util";
 import * as performance from "./performance";
 import { SourceFile } from "./nodes";
-import { DiagnosticMessages } from "./diagnostics";
 import { Parser } from "./parser";
-import { CompilerOptions } from "./options";
 import { CancellationToken } from "prex";
 import { promiseFinally, pipe } from "./core";
 
-export interface HostOptions {
+const ignoreCaseFallback = /^(win32|win64|darwin)$/.test(os.platform());
+
+let builtinGrammars: Map<string, string> | undefined;
+
+export interface HostBaseOptions {
+    ignoreCase?: boolean;
     knownGrammars?: Record<string, string>;
     useBuiltinGrammars?: boolean;
-    readFile?: (this: never, file: string, cancellationToken?: CancellationToken) => Promise<string>;
-    readFileSync?: (this: never, file: string, cancellationToken?: CancellationToken) => string;
-    writeFile?: (this: never, file: string, content: string, cancellationToken?: CancellationToken) => Promise<void>;
-    writeFileSync?: (this: never, file: string, content: string, cancellationToken?: CancellationToken) => void;
 }
 
-export class Host {
-    public readonly ignoreCase = /^(win32|win64|darwin)$/.test(os.platform());
+export abstract class HostBase {
+    public readonly ignoreCase: boolean;
 
-    private static builtinGrammars: Map<string, string> | undefined;
     private useBuiltinGrammars: boolean;
     private innerParser: Parser | undefined;
     private knownGrammars: Map<string, string> | undefined;
-    private readFileCallback?: (file: string, cancellationToken?: CancellationToken) => Promise<string> | string | undefined;
-    private readFileSyncCallback?: (file: string, cancellationToken?: CancellationToken) => string;
-    private writeFileCallback?: (file: string, content: string, cancellationToken?: CancellationToken) => Promise<void> | void;
-    private writeFileSyncCallback?: (file: string, content: string, cancellationToken?: CancellationToken) => void;
 
-    constructor({ knownGrammars, useBuiltinGrammars = true, readFile, readFileSync, writeFile, writeFileSync }: HostOptions = {}) {
+    constructor({ ignoreCase = ignoreCaseFallback, knownGrammars, useBuiltinGrammars = true }: HostBaseOptions = {}) {
+        this.ignoreCase = ignoreCase;
         this.useBuiltinGrammars = useBuiltinGrammars;
-
-        if (!readFileSync && !readFile) {
-            this.readFileCallback = readFileFallback;
-            this.readFileSyncCallback = readFileSyncFallback;
-        }
-        else {
-            this.readFileCallback = readFile || readFileSync;
-            this.readFileSyncCallback = readFileSync;
-        }
-
-        if (!writeFileSync && !writeFile) {
-            this.writeFileCallback = writeFileFallback;
-            this.writeFileSyncCallback = writeFileSyncFallback;
-        }
-        else {
-            this.writeFileCallback = writeFile || writeFileSync;
-            this.writeFileSyncCallback = writeFileSync;
-        }
 
         if (knownGrammars) {
             for (const key in knownGrammars) if (Object.prototype.hasOwnProperty.call(knownGrammars, key)) {
@@ -82,15 +58,7 @@ export class Host {
 
     protected resolveBuiltInGrammar(name: string) {
         if (!this.useBuiltinGrammars) return undefined;
-        if (!Host.builtinGrammars) {
-            Host.builtinGrammars = new Map<string, string>([
-                ["es6", path.resolve(__dirname, "../grammars/es2015.grammar")],
-                ["es2015", path.resolve(__dirname, "../grammars/es2015.grammar")],
-                ["ts", path.resolve(__dirname, "../grammars/typescript.grammar")],
-                ["typescript", path.resolve(__dirname, "../grammars/typescript.grammar")],
-            ]);
-        }
-        return Host.builtinGrammars.get(name.toLowerCase());
+        return resolveBuiltInGrammar(name);
     }
 
     public resolveFile(file: string, referer?: string): string {
@@ -111,6 +79,223 @@ export class Host {
 
         result = result.replace(/\\/g, "/");
         return result;
+    }
+
+    public parseSourceFile(file: string, text: string, cancellationToken?: CancellationToken) {
+        performance.mark("beforeParse");
+        const sourceFile = this.parser.parseSourceFile(file, text, cancellationToken);
+        performance.mark("afterParse");
+        performance.measure("parse", "beforeParse", "afterParse");
+        return sourceFile;
+    }
+
+    protected createParser(): Parser {
+        return new Parser();
+    }
+}
+
+export interface SyncHostOptions extends HostBaseOptions {
+    readFileSync?: ((this: never, file: string, cancellationToken?: CancellationToken) => string) | false;
+    writeFileSync?: ((this: never, file: string, content: string, cancellationToken?: CancellationToken) => void) | false;
+}
+
+export class SyncHost extends HostBase {
+    private readFileSyncCallback?: ((file: string, cancellationToken?: CancellationToken) => string) | false;
+    private writeFileSyncCallback?: ((file: string, content: string, cancellationToken?: CancellationToken) => void) | false;
+
+    constructor({ readFileSync = readFileSyncFallback, writeFileSync = writeFileSyncFallback, ...baseOptions }: SyncHostOptions = {}) {
+        super(baseOptions);
+        this.readFileSyncCallback = readFileSync;
+        this.writeFileSyncCallback = writeFileSync;
+    }
+
+    public static forFile(content: string, file = "file.grammar", hostFallback?: SyncHost): SyncHost {
+        return new SyncSingleFileHost(file, content, hostFallback);
+    }
+
+    public readFileSync(file: string, cancellationToken?: CancellationToken): string | undefined {
+        const readFile = this.readFileSyncCallback;
+        if (!readFile) throw new Error("Operation cannot be completed synchronously");
+
+        performance.mark("ioRead");
+        file = getLocalPath(file);
+        if (isUri(file)) return undefined; // TODO: support uris?
+        const result = readFile(file, cancellationToken);
+        performance.measure("ioRead", "ioRead");
+        return result;
+    }
+
+    public writeFileSync(file: string, text: string, cancellationToken?: CancellationToken) {
+        const writeFile = this.writeFileSyncCallback;
+        if (!writeFile) throw new Error("Operation cannot be completed synchronously");
+
+        performance.mark("ioWrite");
+        file = getLocalPath(file);
+        if (isUri(file)) throw new Error("Cannot write to a non-file URI.");
+        writeFile(file, text, cancellationToken);
+        performance.measure("ioWrite", "ioWrite");
+    }
+
+    public getSourceFileSync(file: string, cancellationToken?: CancellationToken) {
+        const result = this.readFileSync(file, cancellationToken);
+        return typeof result === "string" ? this.parseSourceFile(file, result, cancellationToken) : undefined;
+    }
+}
+
+class SyncSingleFileHost extends SyncHost {
+    private hostFallback?: SyncHost;
+    private file: string;
+    private content: string;
+
+    constructor(file: string, content: string, hostFallback?: SyncHost) {
+        super({ ignoreCase: hostFallback ? hostFallback.ignoreCase : undefined });
+        this.file = file;
+        this.content = content;
+        this.hostFallback = hostFallback;
+    }
+
+    public normalizeFile(file: string) {
+        return file === this.file ? file :
+            this.hostFallback ? this.hostFallback.normalizeFile(file) :
+            super.normalizeFile(file);
+    }
+
+    public resolveFile(file: string, referer?: string): string {
+        return file === this.file ? file :
+            this.hostFallback ? this.hostFallback.resolveFile(file, referer) :
+            super.resolveFile(file);
+    }
+
+    public readFileSync(file: string, cancellationToken?: CancellationToken): string | undefined {
+        if (file === this.file) return this.content;
+        if (this.hostFallback) return this.hostFallback.readFileSync(file, cancellationToken);
+        throw new Error(`File '${file}' cannot be read without a fallback host.`);
+    }
+
+    public writeFileSync(file: string, text: string, cancellationToken?: CancellationToken) {
+        if (this.hostFallback) return this.hostFallback.writeFileSync(file, text, cancellationToken);
+        throw new Error(`Cannot write file without a fallback host.`);
+    }
+}
+
+export interface AsyncHostOptions extends HostBaseOptions {
+    readFile?: ((this: never, file: string, cancellationToken?: CancellationToken) => Promise<string>) | false;
+    writeFile?: ((this: never, file: string, content: string, cancellationToken?: CancellationToken) => Promise<void>) | false;
+}
+
+export class AsyncHost extends HostBase {
+    private readFileCallback?: ((file: string, cancellationToken?: CancellationToken) => Promise<string>) | false;
+    private writeFileCallback?: ((file: string, content: string, cancellationToken?: CancellationToken) => Promise<void>) | false;
+
+    constructor({ readFile = readFileFallback, writeFile = writeFileFallback, ...baseOptions }: AsyncHostOptions = {}) {
+        super(baseOptions);
+        this.readFileCallback = readFile;
+        this.writeFileCallback = writeFile;
+    }
+
+    public static forFile(content: string, file = "file.grammar", hostFallback?: AsyncHost): AsyncHost {
+        return new AsyncSingleFileHost(file, content, hostFallback);
+    }
+
+    public async readFile(file: string, cancellationToken?: CancellationToken): Promise<string | undefined> {
+        const readFile = this.readFileCallback;
+        if (!readFile) throw new Error("Operation cannot be completed asynchronously");
+
+        performance.mark("ioRead");
+        file = getLocalPath(file);
+        if (isUri(file)) return undefined; // TODO: support uris?
+        const result = await readFile(file, cancellationToken);
+        performance.measure("ioRead", "ioRead");
+        return result;
+    }
+
+    public async writeFile(file: string, text: string, cancellationToken?: CancellationToken) {
+        const writeFile = this.writeFileCallback;
+        if (!writeFile) throw new Error("Operation cannot be completed asynchronously");
+
+        performance.mark("ioWrite");
+        file = getLocalPath(file);
+        if (isUri(file)) throw new Error("Cannot write to a non-file URI.");
+        await writeFile(file, text, cancellationToken);
+        performance.measure("ioWrite", "ioWrite");
+    }
+
+    public async getSourceFile(file: string, cancellationToken?: CancellationToken) {
+        const result = await this.readFile(file, cancellationToken);
+        return typeof result === "string" ? this.parseSourceFile(file, result, cancellationToken) : undefined;
+    }
+}
+
+class AsyncSingleFileHost extends AsyncHost {
+    private hostFallback?: AsyncHost;
+    private file: string;
+    private content: string;
+
+    constructor(file: string, content: string, hostFallback?: AsyncHost) {
+        super({ ignoreCase: hostFallback ? hostFallback.ignoreCase : undefined });
+        this.file = file;
+        this.content = content;
+        this.hostFallback = hostFallback;
+    }
+
+    public normalizeFile(file: string) {
+        return file === this.file ? file :
+            this.hostFallback ? this.hostFallback.normalizeFile(file) :
+            super.normalizeFile(file);
+    }
+
+    public resolveFile(file: string, referer?: string): string {
+        return file === this.file ? file :
+            this.hostFallback ? this.hostFallback.resolveFile(file, referer) :
+            super.resolveFile(file);
+    }
+
+    public async readFile(file: string, cancellationToken?: CancellationToken): Promise<string | undefined> {
+        if (file === this.file) return this.content;
+        if (this.hostFallback) return await this.hostFallback.readFile(file, cancellationToken);
+        throw new Error(`File '${file}' cannot be read without a fallback host.`);
+    }
+
+    public async writeFile(file: string, text: string, cancellationToken?: CancellationToken) {
+        if (this.hostFallback) return this.hostFallback.writeFile(file, text, cancellationToken);
+        throw new Error(`Cannot write file without a fallback host.`);
+    }
+}
+
+export interface HostOptions extends HostBaseOptions {
+    readFile?: (this: never, file: string, cancellationToken?: CancellationToken) => Promise<string>;
+    readFileSync?: (this: never, file: string, cancellationToken?: CancellationToken) => string;
+    writeFile?: (this: never, file: string, content: string, cancellationToken?: CancellationToken) => Promise<void>;
+    writeFileSync?: (this: never, file: string, content: string, cancellationToken?: CancellationToken) => void;
+}
+
+/** @deprecated Use `SyncHost` or `AsyncHost` instead */
+export class Host extends HostBase {
+    private readFileCallback?: (file: string, cancellationToken?: CancellationToken) => Promise<string> | string | undefined;
+    private readFileSyncCallback?: (file: string, cancellationToken?: CancellationToken) => string;
+    private writeFileCallback?: (file: string, content: string, cancellationToken?: CancellationToken) => Promise<void> | void;
+    private writeFileSyncCallback?: (file: string, content: string, cancellationToken?: CancellationToken) => void;
+
+    constructor({ readFile, readFileSync, writeFile, writeFileSync, ...baseOptions }: HostOptions = {}) {
+        super(baseOptions);
+
+        if (!readFileSync && !readFile) {
+            this.readFileCallback = readFileFallback;
+            this.readFileSyncCallback = readFileSyncFallback;
+        }
+        else {
+            this.readFileCallback = readFile || readFileSync;
+            this.readFileSyncCallback = readFileSync;
+        }
+
+        if (!writeFileSync && !writeFile) {
+            this.writeFileCallback = writeFileFallback;
+            this.writeFileSyncCallback = writeFileSyncFallback;
+        }
+        else {
+            this.writeFileCallback = writeFile || writeFileSync;
+            this.writeFileSyncCallback = writeFileSync;
+        }
     }
 
     public async readFile(file: string, cancellationToken?: CancellationToken): Promise<string | undefined> {
@@ -170,20 +355,9 @@ export class Host {
             sync ? this.readFileSync(file, cancellationToken) : this.readFile(file, cancellationToken),
             result => typeof result === "string" ? this.parseSourceFile(file, result, cancellationToken) : undefined);
     }
-
-    public parseSourceFile(file: string, text: string, cancellationToken?: CancellationToken) {
-        performance.mark("beforeParse");
-        const sourceFile = this.parser.parseSourceFile(file, text, cancellationToken);
-        performance.mark("afterParse");
-        performance.measure("parse", "beforeParse", "afterParse");
-        return sourceFile;
-    }
-
-    protected createParser(): Parser {
-        return new Parser();
-    }
 }
 
+/** @deprecated Use `SyncHost.forFile` or `AsyncHost.forFile` instead */
 export class SingleFileHost extends Host {
     public readonly file: string;
     public readonly content: string;
@@ -306,4 +480,16 @@ function endIORead<T>(value?: T) {
 
 function endIOWrite() {
     performance.measure("ioWrite", "ioWrite");
+}
+
+function resolveBuiltInGrammar(name: string) {
+    if (!builtinGrammars) {
+        builtinGrammars = new Map<string, string>([
+            ["es6", path.resolve(__dirname, "../grammars/es2015.grammar")],
+            ["es2015", path.resolve(__dirname, "../grammars/es2015.grammar")],
+            ["ts", path.resolve(__dirname, "../grammars/typescript.grammar")],
+            ["typescript", path.resolve(__dirname, "../grammars/typescript.grammar")],
+        ]);
+    }
+    return builtinGrammars.get(name.toLowerCase());
 }

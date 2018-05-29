@@ -730,7 +730,7 @@ export class Parser {
                 fragments.push(this.parseProseFragmentLiteral(this.token));
                 break;
             }
-            else if (this.token >= SyntaxKind.FirstProseFragment && this.token <= SyntaxKind.LastProseFragment) {
+            else if (this.token >= SyntaxKind.FirstProseFragmentLiteral && this.token <= SyntaxKind.LastProseFragmentLiteral) {
                 if (!fragments) fragments = [];
                 fragments.push(this.parseProseFragmentLiteral(this.token));
             }

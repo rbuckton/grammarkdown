@@ -15,7 +15,7 @@
  */
 import { Range, Position, TextRange, emptyIterable, forEach, first, last } from "./core";
 import { LineMap, DiagnosticMessages } from "./diagnostics";
-import { SyntaxKind, ProseFragmentLiteralKind, LookaheadOperatorKind, ArgumentOperatorKind, ParameterOperatorKind, BooleanKind, ProductionSeperatorKind, TokenKind } from "./tokens";
+import { SyntaxKind, ProseFragmentLiteralKind, LookaheadOperatorKind, ArgumentOperatorKind, ParameterOperatorKind, BooleanKind, ProductionSeperatorKind, TokenKind, CommentTriviaKind, HtmlTriviaKind, TriviaKind } from "./tokens";
 import { SymbolTable } from "./symbols";
 import { NodeVisitor } from "./visitor";
 import { skipTrivia } from "./scanner";
@@ -56,13 +56,11 @@ export abstract class Node<TKind extends SyntaxKind = SyntaxKind> implements Tex
 }
 
 export interface TriviaTypes extends HtmlTriviaTypes, CommentTriviaTypes {}
-export type TriviaKind = keyof TriviaTypes;
 export type Trivia = TriviaTypes[TriviaKind];
 export abstract class TriviaBase<TKind extends TriviaKind> extends Node<TKind> {
 }
 
 export interface CommentTriviaTypes {}
-export type CommentTriviaKind = keyof CommentTriviaTypes;
 export type CommentTrivia = CommentTriviaTypes[CommentTriviaKind];
 export abstract class CommentTriviaBase<TKind extends CommentTriviaKind> extends TriviaBase<TKind> {
 }
@@ -82,7 +80,6 @@ export class MultiLineCommentTrivia extends CommentTriviaBase<SyntaxKind.MultiLi
 }
 
 export interface HtmlTriviaTypes {}
-export type HtmlTriviaKind = keyof HtmlTriviaTypes;
 export type HtmlTrivia = HtmlTriviaTypes[HtmlTriviaKind];
 export abstract class HtmlTriviaBase<TKind extends HtmlTriviaKind> extends TriviaBase<TKind> {
     public readonly tagName: string;

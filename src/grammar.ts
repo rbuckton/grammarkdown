@@ -2,7 +2,7 @@ import * as fs from "fs";
 import * as path from "path";
 import * as os from "os";
 import * as performance from "./performance";
-import { Host, SingleFileHost } from "./host";
+import { Host, SingleFileHost, SyncHost, AsyncHost } from "./host";
 import { DiagnosticMessages, NullDiagnosticMessages } from "./diagnostics";
 import { EmitFormat, CompilerOptions, getDefaultOptions } from "./options";
 import { SyntaxKind } from "./tokens";
@@ -15,7 +15,7 @@ import { CancellationToken, CancellationTokenCountdown } from "prex";
 import { pipe, isPromise, forEachPossiblyAsync } from "./core";
 
 export class Grammar {
-    public readonly host: Host;
+    public readonly host: Host | SyncHost | AsyncHost;
     public options: CompilerOptions;
     public diagnostics: DiagnosticMessages = new DiagnosticMessages();
 
@@ -30,7 +30,7 @@ export class Grammar {
     private writeFileFallback = (file: string, content: string, cancellationToken?: CancellationToken) => this.writeFile(file, content, cancellationToken);
     private writeFileSyncFallback = (file: string, content: string) => this.writeFileSync(file, content);
 
-    constructor(rootNames: Iterable<string>, options: CompilerOptions = getDefaultOptions(), host = new Host()) {
+    constructor(rootNames: Iterable<string>, options: CompilerOptions = getDefaultOptions(), host: Host | SyncHost | AsyncHost = new Host()) {
         this.rootNames = rootNames;
         this.options = options;
         this.host = host;
@@ -277,18 +277,22 @@ export class Grammar {
     }
 
     protected readFile(file: string, cancellationToken?: CancellationToken): Promise<string | undefined> | string | undefined {
-        return this.host.readFile(file, cancellationToken);
+        return "readFile" in this.host ? this.host.readFile(file, cancellationToken) :
+            this.host.readFileSync(file, cancellationToken);
     }
 
     protected readFileSync(file: string): Promise<string | undefined> | string | undefined {
+        if (!("readFileSync" in this.host)) throw new Error("Operation cannot be completed synchronously.");
         return this.host.readFileSync(file);
     }
 
     protected writeFile(file: string, content: string, cancellationToken?: CancellationToken) {
-        return this.host.writeFile(file, content, cancellationToken);
+        return "writeFile" in this.host ? this.host.writeFile(file, content, cancellationToken) :
+            this.host.writeFileSync(file, content, cancellationToken);
     }
 
     protected writeFileSync(file: string, content: string) {
+        if (!("writeFileSync" in this.host)) throw new Error("Operation cannot be completed synchronously.");
         return this.host.writeFileSync(file, content);
     }
 
@@ -319,9 +323,15 @@ export class Grammar {
         let sourceFile = this.getSourceFileNoResolve(state, file);
         if (sourceFile) return sourceFile;
 
-        const result = sync ?
-            this.host.getSourceFileSync(file, cancellationToken) :
-            this.host.getSourceFile(file, cancellationToken);
+        let result: Promise<SourceFile | undefined> | SourceFile | undefined;
+        if (sync) {
+            if (!("getSourceFileSync" in this.host)) throw new Error("Operation cannot be completed synchronously.");
+            result = this.host.getSourceFileSync(file, cancellationToken);
+        }
+        else {
+            result = "getSourceFile" in this.host ? this.host.getSourceFile(file, cancellationToken) :
+                this.host.getSourceFileSync(file, cancellationToken);
+        }
 
         return pipe(
             result,
