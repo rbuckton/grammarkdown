@@ -7,6 +7,13 @@
 &emsp;&emsp;&emsp;<a name="LineTerminator-10022ab3"></a>&lt;LS&gt;  
 &emsp;&emsp;&emsp;<a name="LineTerminator-cfc875d1"></a>&lt;PS&gt;  
   
+&emsp;&emsp;<a name="LineTerminatorSequence"></a>*LineTerminatorSequence* **::**  
+&emsp;&emsp;&emsp;<a name="LineTerminatorSequence-7b39d525"></a>&lt;LF&gt;  
+&emsp;&emsp;&emsp;<a name="LineTerminatorSequence-1e22ed49"></a>&lt;CR&gt;&emsp;[lookahead ≠ &lt;LF&gt;]  
+&emsp;&emsp;&emsp;<a name="LineTerminatorSequence-10022ab3"></a>&lt;LS&gt;  
+&emsp;&emsp;&emsp;<a name="LineTerminatorSequence-cfc875d1"></a>&lt;PS&gt;  
+&emsp;&emsp;&emsp;<a name="LineTerminatorSequence-2da252ec"></a>&lt;CR&gt;&emsp;&lt;LF&gt;  
+  
 &emsp;&emsp;<a name="IdentifierName"></a>*IdentifierName* **::**  
 &emsp;&emsp;&emsp;<a name="IdentifierName-434685ab"></a>*[IdentifierStart](#IdentifierStart)*  
 &emsp;&emsp;&emsp;<a name="IdentifierName-700c1cee"></a>*[IdentifierName](#IdentifierName)*&emsp;*[IdentifierPart](#IdentifierPart)*  
@@ -73,7 +80,7 @@
   
 &emsp;&emsp;<a name="ProseLines"></a>*ProseLines* **::**  
 &emsp;&emsp;&emsp;<a name="ProseLines-5a8416e5"></a>*[ProseLine](#ProseLine)*  
-&emsp;&emsp;&emsp;<a name="ProseLines-178ac932"></a>*[ProseLine](#ProseLine)*&emsp;*[LineTerminator](#LineTerminator)*&emsp;*[ProseLines](#ProseLines)*  
+&emsp;&emsp;&emsp;<a name="ProseLines-7381e3e8"></a>*[ProseLine](#ProseLine)*&emsp;*[LineTerminatorSequence](#LineTerminatorSequence)*&emsp;*[ProseLines](#ProseLines)*  
   
 &emsp;&emsp;<a name="ProseLine"></a>*ProseLine* **::**  
 &emsp;&emsp;&emsp;<a name="ProseLine-a16b392e"></a>`` > ``&emsp;*[ProseChars](#ProseChars)*<sub>opt</sub>  
@@ -177,7 +184,7 @@
   
 &emsp;&emsp;<a name="ProseSpan"></a>*ProseSpan* **:**  
 &emsp;&emsp;&emsp;<a name="ProseSpan-097d0715"></a>*[Prose](#Prose)*  
-&emsp;&emsp;&emsp;<a name="ProseSpan-44ed1349"></a>*[ProseSpan](#ProseSpan)*&emsp;*[LineTerminator](#LineTerminator)*&emsp;*[Prose](#Prose)*  
+&emsp;&emsp;&emsp;<a name="ProseSpan-177e1aec"></a>*[ProseSpan](#ProseSpan)*&emsp;*[LineTerminatorSequence](#LineTerminatorSequence)*&emsp;*[Prose](#Prose)*  
   
 &emsp;&emsp;<a name="Symbol"></a>*Symbol* **:**  
 &emsp;&emsp;&emsp;<a name="Symbol-e03dc251"></a>*[Assertion](#Assertion)*  
@@ -194,18 +201,18 @@
 &emsp;&emsp;&emsp;<a name="RightHandSideList-34e2c10c"></a>*[RightHandSide](#RightHandSide)*&emsp;*[RightHandSideList](#RightHandSideList)*<sub>opt</sub>  
   
 &emsp;&emsp;<a name="RightHandSide"></a>*RightHandSide* **:**  
-&emsp;&emsp;&emsp;<a name="RightHandSide-23199d25"></a>*[SymbolSpan](#SymbolSpan)*&emsp;*[LineTerminator](#LineTerminator)*  
+&emsp;&emsp;&emsp;<a name="RightHandSide-5379227e"></a>*[SymbolSpan](#SymbolSpan)*&emsp;*[LineTerminatorSequence](#LineTerminatorSequence)*  
   
 &emsp;&emsp;<a name="Terminals"></a>*Terminals* **:**  
 &emsp;&emsp;&emsp;<a name="Terminals-1a4d4441"></a>*[Terminal](#Terminal)*&emsp;*[Terminals](#Terminals)*<sub>opt</sub>  
   
 &emsp;&emsp;<a name="TerminalList"></a>*TerminalList* **:**  
 &emsp;&emsp;&emsp;<a name="TerminalList-814b2520"></a>*[Terminals](#Terminals)*  
-&emsp;&emsp;&emsp;<a name="TerminalList-a9feb9ba"></a>*[TerminalList](#TerminalList)*&emsp;*[LineTerminator](#LineTerminator)*&emsp;*[Terminals](#Terminals)*  
+&emsp;&emsp;&emsp;<a name="TerminalList-19e4c069"></a>*[TerminalList](#TerminalList)*&emsp;*[LineTerminatorSequence](#LineTerminatorSequence)*&emsp;*[Terminals](#Terminals)*  
   
 &emsp;&emsp;<a name="OneOfList"></a>*OneOfList* **:**  
 &emsp;&emsp;&emsp;<a name="OneOfList-f888749c"></a>`` one ``&emsp;`` of ``&emsp;*[Terminals](#Terminals)*  
-&emsp;&emsp;&emsp;<a name="OneOfList-a6099582"></a>`` one ``&emsp;`` of ``&emsp;*[LineTerminator](#LineTerminator)*&emsp;*[Indent](#Indent)*&emsp;*[TerminalList](#TerminalList)*&emsp;*[Dedent](#Dedent)*  
+&emsp;&emsp;&emsp;<a name="OneOfList-32da5eff"></a>`` one ``&emsp;`` of ``&emsp;*[LineTerminatorSequence](#LineTerminatorSequence)*&emsp;*[Indent](#Indent)*&emsp;*[TerminalList](#TerminalList)*&emsp;*[Dedent](#Dedent)*  
   
 &emsp;&emsp;<a name="Parameter"></a>*Parameter* **:**  
 &emsp;&emsp;&emsp;<a name="Parameter-06b6ace8"></a>*[Identifier](#Identifier)*  
@@ -220,7 +227,7 @@
 &emsp;&emsp;<a name="Production"></a>*Production* **:**  
 &emsp;&emsp;&emsp;<a name="Production-d2040e0a"></a>*[Identifier](#Identifier)*&emsp;*[Parameters](#Parameters)*<sub>opt</sub>&emsp;`` : ``&emsp;*[OneOfList](#OneOfList)*  
 &emsp;&emsp;&emsp;<a name="Production-5478e70a"></a>*[Identifier](#Identifier)*&emsp;*[Parameters](#Parameters)*<sub>opt</sub>&emsp;`` : ``&emsp;*[RightHandSide](#RightHandSide)*  
-&emsp;&emsp;&emsp;<a name="Production-7bece964"></a>*[Identifier](#Identifier)*&emsp;*[Parameters](#Parameters)*<sub>opt</sub>&emsp;`` : ``&emsp;*[LineTerminator](#LineTerminator)*&emsp;*[Indent](#Indent)*&emsp;*[RightHandSideList](#RightHandSideList)*&emsp;*[Dedent](#Dedent)*  
+&emsp;&emsp;&emsp;<a name="Production-baa427d7"></a>*[Identifier](#Identifier)*&emsp;*[Parameters](#Parameters)*<sub>opt</sub>&emsp;`` : ``&emsp;*[LineTerminatorSequence](#LineTerminatorSequence)*&emsp;*[Indent](#Indent)*&emsp;*[RightHandSideList](#RightHandSideList)*&emsp;*[Dedent](#Dedent)*  
   
 &emsp;&emsp;<a name="SourceElement"></a>*SourceElement* **:**  
 &emsp;&emsp;&emsp;<a name="SourceElement-37b9c04c"></a>[empty]  
