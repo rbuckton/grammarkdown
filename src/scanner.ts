@@ -646,45 +646,53 @@ export class Scanner {
         let start = this.pos;
         while (true) {
             if (this.pos >= this.len) {
-                result += this.text.substring(start, this.pos);
+                result += this.text.slice(start, this.pos);
                 this.setTokenAsUnterminated();
                 this.getDiagnostics().report(this.pos, diagnostic || Diagnostics.Unterminated_string_literal);
                 break;
             }
 
             let ch = this.text.charCodeAt(this.pos);
+            let chFromEntity = false;
             if (decodeEscapeSequences && ch === CharacterCodes.Ampersand) {
-                result += this.text.substring(start, this.pos);
+                result += this.text.slice(start, this.pos);
                 this.pos++;
                 ch = this.scanCharacterEntity();
+
+                // Decoding escape sequences breaks assumptions about character start position.
+                // Set pos to the end of the escape sequence but slice start one character later,
+                // and record that we are in such a state.
                 start = this.pos;
+                this.pos--;
+                chFromEntity = true;
             }
 
             if (ch === quote) {
                 // If this is a terminal that consists solely of a single backtick character (e.g. ```),
                 // we capture the backtick.
-                if (quote === CharacterCodes.Backtick && this.pos === start && this.pos + 1 < this.len) {
+                if (quote === CharacterCodes.Backtick && result === "" && this.pos + 1 < this.len) {
                     ch = this.text.charCodeAt(this.pos + 1);
                     if (ch === CharacterCodes.Backtick) {
-                        result = "`";
-                        this.pos += 2;
-                        break;
+                        this.pos++;
+                        if (chFromEntity) {
+                            result = "`";
+                        }
                     }
                 }
 
-                result += this.text.substring(start, this.pos);
+                result += this.text.slice(start, this.pos);
                 this.pos++;
                 break;
             }
             else if (decodeEscapeSequences && ch === CharacterCodes.Backslash) {
                 // terminals cannot have escape sequences
-                result += this.text.substring(start, this.pos);
+                result += this.text.slice(start, this.pos);
                 result += this.scanEscapeSequence();
                 start = this.pos;
                 continue;
             }
             else if (isLineTerminator(ch)) {
-                result += this.text.substring(start, this.pos);
+                result += this.text.slice(start, this.pos);
                 this.setTokenAsUnterminated();
                 this.getDiagnostics().report(this.pos, diagnostic || Diagnostics.Unterminated_string_literal);
                 break;
