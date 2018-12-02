@@ -606,8 +606,8 @@ export class Scanner {
 
     private scanCharacter(decodeEntity: boolean) {
         let ch = this.text.charCodeAt(this.pos);
+        this.pos++;
         if (decodeEntity && ch === CharacterCodes.Ampersand) {
-            this.pos++;
             ch = this.scanCharacterEntity();
         }
         return ch;
@@ -663,9 +663,7 @@ export class Scanner {
 
             const pos = this.pos;
             let ch = this.scanCharacter(decodeEscapeSequences);
-            if (this.pos === pos) {
-                this.pos++;
-            } else {
+            if (this.pos > pos + 1) {
                 // Reference-decoded characters span multiple indexes, breaking naive assumptions.
                 // Read in everything preceding the reference, and set the new position to the
                 // index following it.
@@ -682,9 +680,6 @@ export class Scanner {
                     ch = this.scanCharacter(decodeEscapeSequences);
                     if (ch === CharacterCodes.Backtick) {
                         result = "`";
-                        if (this.pos === peekPos) {
-                            this.pos++;
-                        }
                         break;
                     }
 
