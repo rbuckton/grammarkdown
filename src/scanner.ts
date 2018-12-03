@@ -661,13 +661,13 @@ export class Scanner {
                 break;
             }
 
-            const pos = this.pos;
+            const lastPos = this.pos;
             let ch = this.scanCharacter(decodeEscapeSequences);
-            if (this.pos > pos + 1) {
+            if (this.pos > lastPos + 1) {
                 // Reference-decoded characters span multiple indexes, breaking naive assumptions.
                 // Read in everything preceding the reference, and set the new position to the
                 // index following it.
-                result += this.text.slice(start, pos);
+                result += this.text.slice(start, lastPos);
                 start = this.pos;
             }
 
