@@ -7,6 +7,19 @@
     <emu-rhs a="10022ab3"><emu-gprose>&lt;LS&gt;</emu-gprose></emu-rhs>
     <emu-rhs a="cfc875d1"><emu-gprose>&lt;PS&gt;</emu-gprose></emu-rhs>
 </emu-production>
+<emu-production name="LineTerminatorSequence" type="lexical">
+    <emu-rhs a="7b39d525"><emu-gprose>&lt;LF&gt;</emu-gprose></emu-rhs>
+    <emu-rhs a="1e22ed49">
+        <emu-gprose>&lt;CR&gt;</emu-gprose>
+        <emu-gann>lookahead ≠ <emu-gprose>&lt;LF&gt;</emu-gprose></emu-gann>
+    </emu-rhs>
+    <emu-rhs a="10022ab3"><emu-gprose>&lt;LS&gt;</emu-gprose></emu-rhs>
+    <emu-rhs a="cfc875d1"><emu-gprose>&lt;PS&gt;</emu-gprose></emu-rhs>
+    <emu-rhs a="2da252ec">
+        <emu-gprose>&lt;CR&gt;</emu-gprose>
+        <emu-gprose>&lt;LF&gt;</emu-gprose>
+    </emu-rhs>
+</emu-production>
 <emu-production name="IdentifierName" type="lexical">
     <emu-rhs a="434685ab"><emu-nt>IdentifierStart</emu-nt></emu-rhs>
     <emu-rhs a="700c1cee">
@@ -90,9 +103,9 @@
 </emu-production>
 <emu-production name="ProseLines" type="lexical">
     <emu-rhs a="5a8416e5"><emu-nt>ProseLine</emu-nt></emu-rhs>
-    <emu-rhs a="178ac932">
+    <emu-rhs a="7381e3e8">
         <emu-nt>ProseLine</emu-nt>
-        <emu-nt>LineTerminator</emu-nt>
+        <emu-nt>LineTerminatorSequence</emu-nt>
         <emu-nt>ProseLines</emu-nt>
     </emu-rhs>
 </emu-production>
@@ -276,9 +289,9 @@
 </emu-production>
 <emu-production name="ProseSpan">
     <emu-rhs a="097d0715"><emu-nt>Prose</emu-nt></emu-rhs>
-    <emu-rhs a="44ed1349">
+    <emu-rhs a="177e1aec">
         <emu-nt>ProseSpan</emu-nt>
-        <emu-nt>LineTerminator</emu-nt>
+        <emu-nt>LineTerminatorSequence</emu-nt>
         <emu-nt>Prose</emu-nt>
     </emu-rhs>
 </emu-production>
@@ -303,9 +316,9 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="RightHandSide">
-    <emu-rhs a="23199d25">
+    <emu-rhs a="5379227e">
         <emu-nt>SymbolSpan</emu-nt>
-        <emu-nt>LineTerminator</emu-nt>
+        <emu-nt>LineTerminatorSequence</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="Terminals">
@@ -316,9 +329,9 @@
 </emu-production>
 <emu-production name="TerminalList">
     <emu-rhs a="814b2520"><emu-nt>Terminals</emu-nt></emu-rhs>
-    <emu-rhs a="a9feb9ba">
+    <emu-rhs a="19e4c069">
         <emu-nt>TerminalList</emu-nt>
-        <emu-nt>LineTerminator</emu-nt>
+        <emu-nt>LineTerminatorSequence</emu-nt>
         <emu-nt>Terminals</emu-nt>
     </emu-rhs>
 </emu-production>
@@ -328,10 +341,10 @@
         <emu-t>of</emu-t>
         <emu-nt>Terminals</emu-nt>
     </emu-rhs>
-    <emu-rhs a="a6099582">
+    <emu-rhs a="32da5eff">
         <emu-t>one</emu-t>
         <emu-t>of</emu-t>
-        <emu-nt>LineTerminator</emu-nt>
+        <emu-nt>LineTerminatorSequence</emu-nt>
         <emu-nt>Indent</emu-nt>
         <emu-nt>TerminalList</emu-nt>
         <emu-nt>Dedent</emu-nt>
@@ -368,11 +381,11 @@
         <emu-t>:</emu-t>
         <emu-nt>RightHandSide</emu-nt>
     </emu-rhs>
-    <emu-rhs a="7bece964">
+    <emu-rhs a="baa427d7">
         <emu-nt>Identifier</emu-nt>
         <emu-nt optional>Parameters</emu-nt>
         <emu-t>:</emu-t>
-        <emu-nt>LineTerminator</emu-nt>
+        <emu-nt>LineTerminatorSequence</emu-nt>
         <emu-nt>Indent</emu-nt>
         <emu-nt>RightHandSideList</emu-nt>
         <emu-nt>Dedent</emu-nt>

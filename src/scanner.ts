@@ -604,6 +604,15 @@ export class Scanner {
         this.pos = triviaEnd;
     }
 
+    private scanCharacter(decodeEntity: boolean) {
+        let ch = this.text.charCodeAt(this.pos);
+        this.pos++;
+        if (decodeEntity && ch === CharacterCodes.Ampersand) {
+            ch = this.scanCharacterEntity();
+        }
+        return ch;
+    }
+
     private scanCharacterEntity() {
         let value = 0;
         let start: number;
@@ -646,51 +655,54 @@ export class Scanner {
         let start = this.pos;
         while (true) {
             if (this.pos >= this.len) {
-                result += this.text.substring(start, this.pos);
+                result += this.text.slice(start, this.pos);
                 this.setTokenAsUnterminated();
                 this.getDiagnostics().report(this.pos, diagnostic || Diagnostics.Unterminated_string_literal);
                 break;
             }
 
-            let ch = this.text.charCodeAt(this.pos);
-            if (decodeEscapeSequences && ch === CharacterCodes.Ampersand) {
-                result += this.text.substring(start, this.pos);
-                this.pos++;
-                ch = this.scanCharacterEntity();
+            const lastPos = this.pos;
+            let ch = this.scanCharacter(decodeEscapeSequences);
+            if (this.pos > lastPos + 1) {
+                // Reference-decoded characters span multiple indexes, breaking naive assumptions.
+                // Read in everything preceding the reference, and set the new position to the
+                // index following it.
+                result += this.text.slice(start, lastPos);
                 start = this.pos;
             }
 
             if (ch === quote) {
-                // If this is a terminal that consists solely of a single backtick character (e.g. ```),
+                // If this is a terminal consisting solely of one backtick character (e.g. ```),
                 // we capture the backtick.
-                if (quote === CharacterCodes.Backtick && this.pos === start && this.pos + 1 < this.len) {
-                    ch = this.text.charCodeAt(this.pos + 1);
+                if (quote === CharacterCodes.Backtick && result === "" && this.pos < this.len) {
+                    const peekPos = this.pos;
+
+                    ch = this.scanCharacter(decodeEscapeSequences);
                     if (ch === CharacterCodes.Backtick) {
                         result = "`";
-                        this.pos += 2;
                         break;
                     }
+
+                    this.pos = peekPos;
                 }
 
-                result += this.text.substring(start, this.pos);
-                this.pos++;
+                result += this.text.slice(start, this.pos - 1);
                 break;
             }
             else if (decodeEscapeSequences && ch === CharacterCodes.Backslash) {
                 // terminals cannot have escape sequences
-                result += this.text.substring(start, this.pos);
+                result += this.text.slice(start, this.pos - 1);
                 result += this.scanEscapeSequence();
                 start = this.pos;
                 continue;
             }
             else if (isLineTerminator(ch)) {
-                result += this.text.substring(start, this.pos);
+                this.pos--;
+                result += this.text.slice(start, this.pos);
                 this.setTokenAsUnterminated();
                 this.getDiagnostics().report(this.pos, diagnostic || Diagnostics.Unterminated_string_literal);
                 break;
             }
-
-            this.pos++;
         }
 
         return result;
@@ -698,7 +710,6 @@ export class Scanner {
 
     private scanEscapeSequence(): string {
         const start = this.pos;
-        this.pos++;
         if (this.pos >= this.len) {
             this.getDiagnostics().report(start, Diagnostics.Invalid_escape_sequence);
             return "";

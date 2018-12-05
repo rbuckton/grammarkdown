@@ -171,28 +171,38 @@
                 (18,8)SyntaxKind[Identifier](text = "A")
               (18,9)SyntaxKind[CloseBracketToken]
   (20,1)SyntaxKind[Production]
-    (20,1)SyntaxKind[Identifier](text = "Z")
+    (20,1)SyntaxKind[Identifier](text = "G")
     (20,3)SyntaxKind[ColonToken]
-    (21,10)SyntaxKind[RightHandSideList]
-      (21,10)SyntaxKind[RightHandSide]
-        (21,10)SyntaxKind[SymbolSpan]
-          (21,10)SyntaxKind[Nonterminal]
-            (21,10)SyntaxKind[Identifier](text = "A")
-      (22,10)SyntaxKind[RightHandSide]
-        (22,10)SyntaxKind[SymbolSpan]
-          (22,10)SyntaxKind[Nonterminal]
-            (22,10)SyntaxKind[Identifier](text = "B")
+    (21,5)SyntaxKind[RightHandSideList]
+      (21,5)SyntaxKind[RightHandSide]
+        (21,5)SyntaxKind[SymbolSpan]
+          (21,5)SyntaxKind[UnicodeCharacterLiteral](text = &lt;LF&gt;)
+      (22,5)SyntaxKind[RightHandSide]
+        (22,5)SyntaxKind[SymbolSpan]
+          (22,5)SyntaxKind[UnicodeCharacterLiteral](text = &lt;CR&gt;)
   (24,1)SyntaxKind[Production]
-    (24,1)SyntaxKind[Identifier](text = "LookaheadRestriction")
-    (24,21)SyntaxKind[ColonToken]
-    (25,5)SyntaxKind[RightHandSideList]
-      (25,5)SyntaxKind[RightHandSide]
-        (25,5)SyntaxKind[SymbolSpan]
-          (25,5)SyntaxKind[LookaheadAssertion]
-            (25,5)SyntaxKind[OpenBracketToken]
-            (25,6)SyntaxKind[LookaheadKeyword]
-            (25,16)SyntaxKind[LessThanExclamationToken]
-            (25,19)SyntaxKind[SymbolSpan]
-              (25,19)SyntaxKind[Nonterminal]
-                (25,19)SyntaxKind[Identifier](text = "A")
-            (25,20)SyntaxKind[CloseBracketToken]
+    (24,1)SyntaxKind[Identifier](text = "Z")
+    (24,3)SyntaxKind[ColonToken]
+    (25,10)SyntaxKind[RightHandSideList]
+      (25,10)SyntaxKind[RightHandSide]
+        (25,10)SyntaxKind[SymbolSpan]
+          (25,10)SyntaxKind[Nonterminal]
+            (25,10)SyntaxKind[Identifier](text = "A")
+      (26,10)SyntaxKind[RightHandSide]
+        (26,10)SyntaxKind[SymbolSpan]
+          (26,10)SyntaxKind[Nonterminal]
+            (26,10)SyntaxKind[Identifier](text = "B")
+  (28,1)SyntaxKind[Production]
+    (28,1)SyntaxKind[Identifier](text = "LookaheadRestriction")
+    (28,21)SyntaxKind[ColonToken]
+    (29,5)SyntaxKind[RightHandSideList]
+      (29,5)SyntaxKind[RightHandSide]
+        (29,5)SyntaxKind[SymbolSpan]
+          (29,5)SyntaxKind[LookaheadAssertion]
+            (29,5)SyntaxKind[OpenBracketToken]
+            (29,6)SyntaxKind[LookaheadKeyword]
+            (29,16)SyntaxKind[LessThanExclamationToken]
+            (29,19)SyntaxKind[SymbolSpan]
+              (29,19)SyntaxKind[Nonterminal]
+                (29,19)SyntaxKind[Identifier](text = "A")
+            (29,20)SyntaxKind[CloseBracketToken]

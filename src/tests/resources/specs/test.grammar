@@ -18,6 +18,10 @@ F[A] :
     E[~A]
     E[?A]
 
+G :
+    &lt;LF&gt;
+    &lt;CR&gt;
+
 Z :
     <del>A</del>
     <ins>B</ins>

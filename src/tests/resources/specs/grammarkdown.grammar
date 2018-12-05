@@ -11,6 +11,13 @@ LineTerminator ::
 	<LS>
 	<PS>
 
+LineTerminatorSequence ::
+	<LF>
+	<CR> [lookahead != <LF> ]
+	<LS>
+	<PS>
+	<CR> <LF>
+
 IdentifierName ::
 	IdentifierStart
 	IdentifierName IdentifierPart
@@ -83,7 +90,7 @@ Prose ::
 
 ProseLines ::
 	ProseLine
-	ProseLine LineTerminator ProseLines
+	ProseLine LineTerminatorSequence ProseLines
 
 ProseLine ::
 	`>` ProseChars?
@@ -190,7 +197,7 @@ Assertion :
 
 ProseSpan :
 	Prose
-	ProseSpan LineTerminator Prose
+	ProseSpan LineTerminatorSequence Prose
 
 Symbol :
 	Assertion
@@ -207,18 +214,18 @@ RightHandSideList :
 	RightHandSide RightHandSideList?
 
 RightHandSide :
-	SymbolSpan LineTerminator
+	SymbolSpan LineTerminatorSequence
 
 Terminals :
 	Terminal Terminals?
 
 TerminalList :
 	Terminals
-	TerminalList LineTerminator Terminals
+	TerminalList LineTerminatorSequence Terminals
 
 OneOfList :
 	`one` `of` Terminals
-	`one` `of` LineTerminator Indent TerminalList Dedent
+	`one` `of` LineTerminatorSequence Indent TerminalList Dedent
 
 Parameter :
 	Identifier
@@ -233,7 +240,7 @@ Parameters :
 Production :
 	Identifier Parameters? `:` OneOfList
 	Identifier Parameters? `:` RightHandSide
-	Identifier Parameters? `:` LineTerminator Indent RightHandSideList Dedent
+	Identifier Parameters? `:` LineTerminatorSequence Indent RightHandSideList Dedent
 
 SourceElement :
 	[empty]

@@ -21,6 +21,10 @@
 &emsp;&emsp;&emsp;<a name="F-d1c03b34"></a>*[E](#E)*<sub>[~A]</sub>  
 &emsp;&emsp;&emsp;<a name="F-3541f047"></a>*[E](#E)*<sub>[?A]</sub>  
   
+&emsp;&emsp;<a name="G"></a>*G* **:**  
+&emsp;&emsp;&emsp;<a name="G-df188a5e"></a>&lt;LF&gt;  
+&emsp;&emsp;&emsp;<a name="G-6bb44f60"></a>&lt;CR&gt;  
+  
 &emsp;&emsp;<a name="Z"></a>*Z* **:**  
 &emsp;&emsp;&emsp;<del><a name="Z-6dcd4ce2"></a>*[A](#A)*</del>  
 &emsp;&emsp;&emsp;<ins><a name="Z-ae4f281d"></a>*[B](#B)*</ins>  
