@@ -19,6 +19,6 @@ describe("cli", () => {
 
   it("prints version given --version", () => {
     let version = execSync("node bin/grammarkdown --version", { encoding: "utf8" });
-    assert.strictEqual(version.trim(), process.env.npm_package_version.trim());
+    assert.strictEqual(version.trim(), process.env.npm_package_version!.trim());
   });
 });

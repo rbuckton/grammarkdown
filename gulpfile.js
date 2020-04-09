@@ -1,6 +1,6 @@
 /* global process */
 const gulp = require("gulp");
-const gutil = require("gulp-util");
+const log = require("fancy-log");
 const sourcemaps = require("gulp-sourcemaps");
 const tsb = require("gulp-tsb");
 const mocha = require("gulp-mocha");
@@ -11,30 +11,46 @@ const src = {
     src: () => gulp.src(["src/**/*.ts"])
 };
 
-gulp.task("clean:dist", () => del(["dist/**/*"]));
-gulp.task("clean:baselines", cb => del(["baselines/local"]));
-gulp.task("clean", ["clean:dist", "clean:baselines"]);
+const clean_dist = () => del(["dist/**/*"]);
+gulp.task("clean:dist", clean_dist);
 
-gulp.task("build", () => src.src()
+const clean_baselines = () => del(["baselines/local"]);
+gulp.task("clean:baselines", clean_baselines);
+
+gulp.task("clean", gulp.parallel(clean_dist, clean_baselines));
+
+const build = () => src.src()
     .pipe(sourcemaps.init())
     .pipe(src.compile())
     .pipe(sourcemaps.write(".", { includeContent: false, sourceRoot: "../src" }))
-    .pipe(gulp.dest("dist")));
+    .pipe(gulp.dest("dist"));
+gulp.task("build", build);
 
-gulp.task("pre-test", ["build", "clean:baselines"]);
+const set_package_version = async () => {
+    if (!process.env.npm_package_version) {
+        process.env.npm_package_version = require("./package.json").version;
+    }
+};
 
-gulp.task("test", ["pre-test"], () => gulp
+const pre_test = gulp.parallel(set_package_version, build, clean_baselines);
+gulp.task("pre-test", pre_test);
+
+const run_tests = () => gulp
     .src(["dist/tests/index.js"], { read: false })
-    .pipe(mocha({ })));
+    .pipe(mocha({}));
     // .pipe(mocha({ reporter: "dot" })));
+const test = gulp.series(pre_test, run_tests);
+gulp.task("test", test);
 
-gulp.task("accept-baselines", () => gulp
+const accept_baselines = () => gulp
     .src("baselines/local/**/*")
-    .pipe(gulp.dest("baselines/reference")));
+    .pipe(gulp.dest("baselines/reference"));
+gulp.task("accept-baselines", accept_baselines);
 
-gulp.task("watch", () => gulp.watch(["src/**/*", "spec/*.grammar"], ["test"]));
+const watch = () => gulp.watch(["src/**/*", "spec/*.grammar"], test);
+gulp.task("watch", watch);
 
-gulp.task("default", ["test"]);
+gulp.task("default", test);
 
 gulp.task("diff", () => diff("baselines/reference/", "baselines/local/"));
 
@@ -46,7 +62,7 @@ function diff(remote, local) {
 
 function exec(cmd, args) {
     return new Promise((resolve, reject) => {
-        gutil.log((cmd ? cmd + " " : "") + args.join(" "));
+        log((cmd ? cmd + " " : "") + args.join(" "));
         spawn(cmd || process.argv[0], args, { stdio: "inherit" })
             .on("error", function (e) { reject(e); })
             .on("close", function (code) { code ? reject(new Error("Process exited with code: " + code)) : resolve(); });
