@@ -69,7 +69,7 @@ function main(): void {
 }
 
 function printUsage(): void {
-    const node_package = <Package>require("../../package.json");
+    const node_package = <Package>require("../package.json");
     usage(knownOptions, 36, (writer) => {
         writer.writeln(`Version ${node_package.version}`);
         writer.writeOption("Syntax:", "grammarkdown [options] [...files]");
@@ -82,7 +82,7 @@ function printUsage(): void {
 }
 
 function printVersion(): void {
-    const node_package = <Package>require("../../package.json");
+    const node_package = <Package>require("../package.json");
     console.log(node_package.version);
 }
 
