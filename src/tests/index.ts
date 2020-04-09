@@ -22,3 +22,4 @@ import "./navigator-tests";
 import "./checker-tests";
 import "./emitter-tests";
 import "./grammar-tests";
+import "./cli-tests";

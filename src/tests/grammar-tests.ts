@@ -7,7 +7,7 @@ import { Parser } from "../parser";
 import { Grammar } from "../grammar";
 import { EmitFormat, NewLineKind } from "../options";
 
-describe.only("Grammar", () => {
+describe("Grammar", () => {
     defineSuites();
 
     function defineSuites() {

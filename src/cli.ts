@@ -69,7 +69,7 @@ function main(): void {
 }
 
 function printUsage(): void {
-    const node_package = <Package>require("../../package.json");
+    const node_package = <Package>require("../package.json");
     usage(knownOptions, 36, (writer) => {
         writer.writeln(`Version ${node_package.version}`);
         writer.writeOption("Syntax:", "grammarkdown [options] [...files]");
@@ -82,7 +82,7 @@ function printUsage(): void {
 }
 
 function printVersion(): void {
-    const node_package = <Package>require("../../package.json");
+    const node_package = <Package>require("../package.json");
     console.log(node_package.version);
 }
 
@@ -101,12 +101,12 @@ function performCompilation(options: ParsedCommandLine): void {
 
     const inputFiles = options.rest;
     const grammar = new Grammar(inputFiles, compilerOptions);
-    grammar.bind();
-    grammar.check();
+    grammar.bindSync();
+    grammar.checkSync();
 
     if (!compilerOptions.noEmit) {
         if (!compilerOptions.noEmitOnError || grammar.diagnostics.size <= 0) {
-            grammar.emit();
+            grammar.emitSync();
         }
     }
 
