@@ -101,12 +101,12 @@ function performCompilation(options: ParsedCommandLine): void {
 
     const inputFiles = options.rest;
     const grammar = new Grammar(inputFiles, compilerOptions);
-    grammar.bind();
-    grammar.check();
+    grammar.bindSync();
+    grammar.checkSync();
 
     if (!compilerOptions.noEmit) {
         if (!compilerOptions.noEmitOnError || grammar.diagnostics.size <= 0) {
-            grammar.emit();
+            grammar.emitSync();
         }
     }
 
