@@ -6,8 +6,13 @@ const tsb = require("gulp-tsb");
 const mocha = require("gulp-mocha");
 const del = require("del");
 const spawn = require("child_process").spawn;
+
+let errorCount = 0;
 const src = {
-    compile: tsb.create("src/tsconfig.json"),
+    compile: tsb.create("src/tsconfig.json", {}, false, message => {
+        log(message);
+        errorCount++;
+    }),
     src: () => gulp.src(["src/**/*.ts"])
 };
 
@@ -17,13 +22,15 @@ gulp.task("clean:dist", clean_dist);
 const clean_baselines = () => del(["baselines/local"]);
 gulp.task("clean:baselines", clean_baselines);
 
-gulp.task("clean", gulp.parallel(clean_dist, clean_baselines));
+const clean = gulp.parallel(clean_dist, clean_baselines);
+gulp.task("clean", clean);
 
 const build = () => src.src()
     .pipe(sourcemaps.init())
     .pipe(src.compile())
     .pipe(sourcemaps.write(".", { includeContent: false, sourceRoot: "../src" }))
-    .pipe(gulp.dest("dist"));
+    .pipe(gulp.dest("dist"))
+    .on("end", () => { if (errorCount) throw new Error(`Build failed: ${errorCount} error(s)`); });
 gulp.task("build", build);
 
 const set_package_version = async () => {

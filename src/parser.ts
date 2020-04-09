@@ -346,7 +346,8 @@ export class Parser {
         }
     }
 
-    private parseElement<TParsingContext extends ParsingContext>(listContext: TParsingContext): ListTypes[TParsingContext] | undefined {
+    private parseElement<TParsingContext extends ParsingContext>(listContext: TParsingContext): ListTypes[TParsingContext] | undefined;
+    private parseElement(listContext: ParsingContext): ListTypes[ParsingContext] | undefined {
         switch (listContext) {
             case ParsingContext.SourceElements:
                 return this.parseSourceElement();

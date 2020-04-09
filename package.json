@@ -51,7 +51,7 @@
     "merge2": "^0.3.6",
     "mocha": "^5.2.0",
     "source-map-support": "^0.3.1",
-    "typescript": "^2.9.0-dev.20180505"
+    "typescript": "^3.8.3"
   },
   "dependencies": {
     "prex": "^0.4.2"
