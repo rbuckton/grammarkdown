@@ -1,0 +1,2 @@
+/// assertions/constraints/invalid.grammar:
+assertions/constraints/invalid.grammar(3,5): error GM2004: Production 'A' does not have a parameter named 'Two'.

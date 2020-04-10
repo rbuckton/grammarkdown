@@ -1199,11 +1199,21 @@ export class Checker {
                         }
                         else {
                             // get the symbol of the parameter of the target production
-                            const nonterminal = <Nonterminal>this.bindings.getAncestor(parent, SyntaxKind.Nonterminal);
+                            const nonterminal = <Nonterminal | undefined>this.bindings.getAncestor(parent, SyntaxKind.Nonterminal);
                             if (nonterminal && nonterminal.name && nonterminal.name.text) {
                                 const productionSymbol = this.resolveSymbol(node, nonterminal.name.text, SymbolKind.Production);
                                 if (productionSymbol) {
                                     const production = <Production>this.bindings.getDeclarations(productionSymbol)[0];
+                                    symbol = this.resolveSymbol(production, node.text, SymbolKind.Parameter);
+                                    if (!symbol) {
+                                        this.diagnostics.reportNode(this.sourceFile, node, Diagnostics.Production_0_does_not_have_a_parameter_named_1_, production.name.text, node.text);
+                                    }
+                                }
+                            }
+                            else {
+                                const constraints = <Constraints | undefined>this.bindings.getAncestor(parent, SyntaxKind.Constraints);
+                                if (constraints) {
+                                    const production = <Production>this.bindings.getAncestor(constraints, SyntaxKind.Production);
                                     symbol = this.resolveSymbol(production, node.text, SymbolKind.Parameter);
                                     if (!symbol) {
                                         this.diagnostics.reportNode(this.sourceFile, node, Diagnostics.Production_0_does_not_have_a_parameter_named_1_, production.name.text, node.text);

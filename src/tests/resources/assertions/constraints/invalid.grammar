@@ -1,0 +1,3 @@
+// https://github.com/rbuckton/grammarkdown/issues/42
+A[One] ::
+  [+Two] `x`
