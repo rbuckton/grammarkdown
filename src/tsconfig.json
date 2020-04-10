@@ -9,7 +9,8 @@
         "emitDecoratorMetadata": true,
         "declaration": true,
         "strict": true,
-        "stripInternal": true
+        "stripInternal": true,
+        "noUnusedLocals": true
     },
     "include": [
         "**/*.ts"

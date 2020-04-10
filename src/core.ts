@@ -14,6 +14,10 @@
  *  limitations under the License.
  */
 
+import { CancellationToken } from "prex";
+import { Cancelable, CancelSubscription } from "@esfx/cancelable";
+import { CancelToken } from "@esfx/async-canceltoken";
+
 // NOTE: grammarkdown requires a minimum of ES5.
 if (typeof Object.create !== "function") throw new Error("Grammarkdown requires a minimum host engine of ES5.");
 
@@ -291,4 +295,60 @@ function getEnumMembers(enumObject: any): [number, string][] {
         }
     }
     return enumObject[enumMembers] = stableSort<[number, string]>(result, (x, y) => compare(x[0], y[0]));
+}
+
+export function toCancelToken(cancelable: Cancelable | CancellationToken): CancelToken;
+export function toCancelToken(cancelable: Cancelable | CancellationToken | null | undefined): CancelToken | undefined;
+export function toCancelToken(cancelable: Cancelable | CancellationToken | null | undefined) {
+    if (Cancelable.hasInstance(cancelable)) {
+        return CancelToken.from(cancelable);
+    }
+    else if (cancelable) {
+        if (cancelable.cancellationRequested) return CancelToken.canceled;
+        if (!cancelable.canBeCanceled) return CancelToken.none;
+        const source = CancelToken.source();
+        cancelable.register(() => source.cancel());
+        return source.token;
+    }
+}
+
+export function wrapCancelToken(cancelToken: CancelToken): CancelToken & CancellationToken;
+export function wrapCancelToken(cancelToken: CancelToken | undefined): CancelToken & CancellationToken | undefined;
+export function wrapCancelToken(cancelToken: CancelToken | undefined) {
+    if (cancelToken) {
+        if (!("cancellationRequested" in cancelToken)) {
+            return Object.create(cancelToken, {
+                cancellationRequested: {
+                    configurable: true,
+                    get: function (this: CancelToken) { return this.signaled; }
+                },
+                canBeCanceled: {
+                    configurable: true,
+                    get: function (this: CancelToken) { return this.canBeSignaled; }
+                },
+                throwIfCancellationRequested: {
+                    configurable: true,
+                    writable: true,
+                    value: CancelToken.prototype.throwIfSignaled
+                },
+                register: {
+                    configurable: true,
+                    writable: true,
+                    value: function (this: CancelToken, callback: () => void) {
+                        const subscription = this.subscribe(callback);
+                        return Object.create(subscription, {
+                            unregister: {
+                                configurable: true,
+                                writable: true,
+                                value: function(this: CancelSubscription) {
+                                    this.unsubscribe();
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    }
+    return cancelToken;
 }

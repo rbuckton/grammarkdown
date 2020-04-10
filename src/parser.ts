@@ -13,7 +13,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { Range, TextRange, last, stableSort, concat } from "./core";
+
+import { Range, TextRange, concat, toCancelToken } from "./core";
 import { Diagnostics, DiagnosticMessages, NullDiagnosticMessages, LineMap, formatList } from "./diagnostics";
 import { SyntaxKind, tokenToString, ProductionSeperatorKind, ArgumentOperatorKind, LookaheadOperatorKind, ParameterOperatorKind, TokenKind } from "./tokens";
 import { Scanner } from "./scanner";
@@ -61,6 +62,8 @@ import {
     PrimarySymbol,
     HtmlTrivia
 } from "./nodes";
+import { CancelToken } from "@esfx/async-canceltoken";
+import { Cancelable } from "@esfx/cancelable";
 
 enum ParsingContext {
     SourceElements,
@@ -88,13 +91,6 @@ interface ListTypes {
     [ParsingContext.OneOfListIndented]: Terminal;
     [ParsingContext.OneOfSymbolList]: LexicalSymbol;
     [ParsingContext.NoSymbolHere]: PrimarySymbol;
-}
-
-enum SkipWhitespace {
-    None = 0,
-    LineTerminator = 0x1,
-    Indentation = 0x2,
-    All = LineTerminator | Indentation,
 }
 
 export interface TextChange {
@@ -134,7 +130,7 @@ export class Parser {
     private imports!: string[];
     private diagnostics!: DiagnosticMessages;
     private parsingContext!: ParsingContext;
-    private cancellationToken!: CancellationToken;
+    private cancelToken?: CancelToken;
     private tags: Map<number, HtmlTrivia[]> | undefined;
 
     // TODO(rbuckton): Incremental parser
@@ -165,36 +161,40 @@ export class Parser {
     //     // with new positions
     // }
 
-    public parseSourceFile(filename: string, text: string, cancellationToken = CancellationToken.none): SourceFile {
-        cancellationToken.throwIfCancellationRequested();
+    public parseSourceFile(filename: string, text: string, cancelable?: Cancelable): SourceFile;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public parseSourceFile(filename: string, text: string, cancelable?: CancellationToken | Cancelable): SourceFile;
+    public parseSourceFile(filename: string, text: string, cancelable?: CancellationToken | Cancelable): SourceFile {
+        const cancelToken = toCancelToken(cancelable);
+        cancelToken?.throwIfSignaled();
         const savedImports = this.imports;
         const savedDiagnostics = this.diagnostics;
-        const savedCancellationToken = this.cancellationToken;
+        const savedCancellationToken = this.cancelToken;
         const savedScanner = this.scanner;
         const savedParsingContext = this.parsingContext;
         const savedTags = this.tags;
         try {
-            return this.parse(filename, text, /*previousSourceFile*/ undefined, /*changeRange*/ undefined, cancellationToken);
+            return this.parse(filename, text, /*previousSourceFile*/ undefined, /*changeRange*/ undefined, cancelToken);
         }
         finally {
             this.imports = savedImports;
             this.diagnostics = savedDiagnostics;
-            this.cancellationToken = savedCancellationToken;
+            this.cancelToken = savedCancellationToken;
             this.scanner = savedScanner;
             this.parsingContext = savedParsingContext;
             this.tags = savedTags;
         }
     }
 
-    private parse(filename: string, text: string, previousSourceFile: SourceFile | undefined, changeRange: TextRange | undefined, cancellationToken: CancellationToken) {
+    private parse(filename: string, text: string, previousSourceFile: SourceFile | undefined, changeRange: TextRange | undefined, cancelToken?: CancelToken) {
         const elements: SourceElement[] = [];
         const sourceFile = new SourceFile(filename, text, elements);
         this.imports = [];
         this.diagnostics = new DiagnosticMessages();
         this.diagnostics.setSourceFile(sourceFile);
-        this.cancellationToken = cancellationToken;
+        this.cancelToken = cancelToken;
         this.parsingContext = ParsingContext.SourceElements;
-        this.scanner = new Scanner(filename, text, this.diagnostics, this.cancellationToken);
+        this.scanner = new Scanner(filename, text, this.diagnostics, this.cancelToken);
 
         this.nextToken();
         this.parseSourceElementList(elements);
@@ -217,9 +217,9 @@ export class Parser {
         return this.speculate(callback, /*isLookahead*/ true);
     }
 
-    private tryParse<T>(callback: () => T): T {
-        return this.speculate(callback, /*isLookahead*/ false);
-    }
+    // private tryParse<T>(callback: () => T): T {
+    //     return this.speculate(callback, /*isLookahead*/ false);
+    // }
 
     private speculate<T>(callback: () => T, isLookahead: boolean): T {
         const saveToken = this.token;
@@ -533,7 +533,7 @@ export class Parser {
         const saveContext = this.parsingContext;
         this.parsingContext = listContext;
         while (!this.isEOF()) {
-            this.cancellationToken.throwIfCancellationRequested();
+            this.cancelToken?.throwIfSignaled();
 
             let parsed = false;
             if (this.isStartOfListElement()) {

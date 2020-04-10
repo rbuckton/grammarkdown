@@ -14,11 +14,13 @@
  *  limitations under the License.
  */
 
-import { EOL } from 'os';
 import { CancellationToken } from "prex";
 import { CharacterCodes, SyntaxKind, stringToToken, isProseFragmentLiteralKind } from "./tokens";
 import { Diagnostics, DiagnosticMessages, NullDiagnosticMessages } from "./diagnostics";
-import { HtmlTrivia, HtmlCloseTagTrivia, HtmlOpenTagTrivia, SingleLineCommentTrivia, MultiLineCommentTrivia, HtmlTriviaBase, CommentTrivia, Token } from './nodes';
+import { HtmlTrivia, HtmlCloseTagTrivia, HtmlOpenTagTrivia, SingleLineCommentTrivia, MultiLineCommentTrivia, CommentTrivia } from './nodes';
+import { CancelToken } from '@esfx/async-canceltoken';
+import { Cancelable } from '@esfx/cancelable';
+import { toCancelToken } from './core';
 
 const enum TokenFlags {
     None = 0,
@@ -35,7 +37,7 @@ const enum TokenFlags {
 export class Scanner {
     public readonly text: string;
     public readonly filename: string;
-    private readonly cancellationToken: CancellationToken;
+    private readonly cancelToken?: CancelToken;
     private readonly len: number = 0;
     private pos: number = 0;
     private startPos: number = 0;
@@ -50,12 +52,15 @@ export class Scanner {
     private currentIndentLength: number = 0;
     private proseStartToken: SyntaxKind | undefined;
 
-    constructor(filename: string, text: string, diagnostics: DiagnosticMessages, cancellationToken = CancellationToken.none) {
+    constructor(filename: string, text: string, diagnostics: DiagnosticMessages, cancelable?: Cancelable);
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    constructor(filename: string, text: string, diagnostics: DiagnosticMessages, cancelable?: CancellationToken | Cancelable);
+    constructor(filename: string, text: string, diagnostics: DiagnosticMessages, cancelable?: CancellationToken | Cancelable) {
         this.filename = filename;
         this.text = text;
         this.len = text.length;
         this.diagnostics = diagnostics;
-        this.cancellationToken = cancellationToken;
+        this.cancelToken = toCancelToken(cancelable);
     }
 
     public getPos(): number {
@@ -205,7 +210,7 @@ export class Scanner {
     }
 
     public scan(): SyntaxKind {
-        this.cancellationToken.throwIfCancellationRequested();
+        this.cancelToken?.throwIfSignaled();
         this.startPos = this.pos;
         this.tokenValue = "";
         this.tokenFlags = 0;
@@ -812,41 +817,41 @@ export class Scanner {
         return value;
     }
 
-    private scanNumber(): number {
-        const start = this.pos;
-        while (isDecimalDigit(this.text.charCodeAt(this.pos))) {
-            this.pos++;
-        }
+    // private scanNumber(): number {
+    //     const start = this.pos;
+    //     while (isDecimalDigit(this.text.charCodeAt(this.pos))) {
+    //         this.pos++;
+    //     }
 
-        if (this.text.charCodeAt(this.pos) === CharacterCodes.Dot) {
-            this.pos++;
-            while (isDecimalDigit(this.text.charCodeAt(this.pos))) {
-                this.pos++;
-            }
-        }
+    //     if (this.text.charCodeAt(this.pos) === CharacterCodes.Dot) {
+    //         this.pos++;
+    //         while (isDecimalDigit(this.text.charCodeAt(this.pos))) {
+    //             this.pos++;
+    //         }
+    //     }
 
-        let end = this.pos;
-        if (this.text.charCodeAt(this.pos) === CharacterCodes.UpperE || this.text.charCodeAt(this.pos) === CharacterCodes.LowerE) {
-            this.pos++;
-            if (this.text.charCodeAt(this.pos) === CharacterCodes.Plus || this.text.charCodeAt(this.pos) === CharacterCodes.Minus) {
-                this.pos++;
-            }
+    //     let end = this.pos;
+    //     if (this.text.charCodeAt(this.pos) === CharacterCodes.UpperE || this.text.charCodeAt(this.pos) === CharacterCodes.LowerE) {
+    //         this.pos++;
+    //         if (this.text.charCodeAt(this.pos) === CharacterCodes.Plus || this.text.charCodeAt(this.pos) === CharacterCodes.Minus) {
+    //             this.pos++;
+    //         }
 
-            if (isDecimalDigit(this.text.charCodeAt(this.pos))) {
-                this.pos++;
-                while (isDecimalDigit(this.text.charCodeAt(this.pos))) {
-                    this.pos++;
-                }
+    //         if (isDecimalDigit(this.text.charCodeAt(this.pos))) {
+    //             this.pos++;
+    //             while (isDecimalDigit(this.text.charCodeAt(this.pos))) {
+    //                 this.pos++;
+    //             }
 
-                end = this.pos;
-            }
-            else {
-                this.getDiagnostics().report(start, Diagnostics.Digit_expected);
-            }
-        }
+    //             end = this.pos;
+    //         }
+    //         else {
+    //             this.getDiagnostics().report(start, Diagnostics.Digit_expected);
+    //         }
+    //     }
 
-        return +(this.text.substring(start, end));
-    }
+    //     return +(this.text.substring(start, end));
+    // }
 
     private getIdentifierToken(): SyntaxKind {
         const len = this.tokenValue.length;

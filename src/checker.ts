@@ -13,12 +13,15 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { Hash, createHash } from "crypto";
+
+import { createHash } from "crypto";
 import { CancellationToken } from "prex";
+import { Cancelable } from "@esfx/cancelable";
+import { CancelToken } from "@esfx/async-canceltoken";
 import { Diagnostics, DiagnosticMessages, Diagnostic, formatList, NullDiagnosticMessages } from "./diagnostics";
 import { SyntaxKind, tokenToString } from "./tokens";
-import { Symbol, SymbolKind, SymbolTable } from "./symbols";
-import { Binder, BindingTable } from "./binder";
+import { Symbol, SymbolKind } from "./symbols";
+import { BindingTable } from "./binder";
 import { StringWriter } from "./stringwriter";
 import { CompilerOptions } from "./options";
 import {
@@ -59,8 +62,7 @@ import {
     PlaceholderSymbol
 } from "./nodes";
 import { NodeNavigator } from "./navigator";
-import { skipTrivia } from "./scanner";
-
+import { toCancelToken } from "./core";
 
 // TODO: Check a Nonterminal as a call
 // TODO: Check all Productions to ensure they have the same parameters.
@@ -74,24 +76,28 @@ export class Checker {
     private noChecks!: boolean;
     private noStrictParametricProductions!: boolean;
     private productionParametersByName!: Map<Production, Set<string>>;
-    private cancellationToken!: CancellationToken;
+    private cancelToken?: CancelToken;
 
     constructor(options?: CompilerOptions) {
         this.options = options;
     }
 
-    public checkSourceFile(sourceFile: SourceFile, bindings: BindingTable, diagnostics: DiagnosticMessages, cancellationToken = CancellationToken.none): void {
-        cancellationToken.throwIfCancellationRequested();
+    public checkSourceFile(sourceFile: SourceFile, bindings: BindingTable, diagnostics: DiagnosticMessages, cancelable?: Cancelable): void;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public checkSourceFile(sourceFile: SourceFile, bindings: BindingTable, diagnostics: DiagnosticMessages, cancelable?: CancellationToken | Cancelable): void;
+    public checkSourceFile(sourceFile: SourceFile, bindings: BindingTable, diagnostics: DiagnosticMessages, cancelable?: CancellationToken | CancelToken | Cancelable): void {
+        const cancelToken = toCancelToken(cancelable);
+        cancelToken?.throwIfSignaled();
         if (!this.checkedFileSet.has(sourceFile.filename)) {
             const savedNoStrictParametricProductions = this.noStrictParametricProductions;
             const savedNoChecks = this.noChecks;
-            const savedCancellationToken = this.cancellationToken;
+            const savedCancellationToken = this.cancelToken;
             const savedSourceFile = this.sourceFile;
             const savedProductionParametersByName = this.productionParametersByName;
             const savedBindings = this.bindings;
             const savedDiagnostics = this.diagnostics;
             try {
-                this.cancellationToken = cancellationToken;
+                this.cancelToken = cancelToken;
                 this.sourceFile = sourceFile;
                 this.productionParametersByName = new Map<Production, Set<string>>();
                 this.noStrictParametricProductions = this.options && this.options.noStrictParametricProductions || false;
@@ -118,7 +124,7 @@ export class Checker {
             finally {
                 this.noStrictParametricProductions = savedNoStrictParametricProductions;
                 this.noChecks = savedNoChecks;
-                this.cancellationToken = savedCancellationToken;
+                this.cancelToken = savedCancellationToken;
                 this.sourceFile = savedSourceFile;
                 this.productionParametersByName = savedProductionParametersByName;
                 this.bindings = savedBindings;
@@ -1036,7 +1042,6 @@ export class Checker {
             const production = <Production>this.bindings.getDeclarations(productionSymbol)[0];
             const parameterList = production.parameterList;
             const parameterListElements = parameterList && parameterList.elements;
-            const parameterCount = parameterListElements ? parameterListElements.length : 0;
             const argumentList = node.argumentList;
             const argumentListElements = argumentList && argumentList.elements;
             const nameSet = new Set<string>();

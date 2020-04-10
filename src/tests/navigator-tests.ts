@@ -1,7 +1,20 @@
-import { readFileSync } from "fs";
-import { resolve } from "path";
+/*!
+ *  Copyright 2015 Ron Buckton (rbuckton@chronicles.org)
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 import { Production, RightHandSideList, RightHandSide, Nonterminal } from "../nodes";
-import { DiagnosticMessages } from "../diagnostics";
 import { Parser } from "../parser";
 import { NodeNavigator } from "../navigator";
 import { SyntaxKind } from "../tokens";
@@ -108,7 +121,7 @@ ExportSpecifier :
     });
 
     it("moveToNextSibling (in object)", () => {
-        const { sourceFile, navigator } = getNavigator();
+        const { navigator } = getNavigator();
         navigator.moveToFirstChild();
         const movedToFirstChild = navigator.moveToFirstChild();
         const production = <Production>navigator.getParent();
@@ -144,7 +157,7 @@ ExportSpecifier :
     });
 
     it("moveTopPreviousSibling (in object)", () => {
-        const { sourceFile, navigator } = getNavigator();
+        const { navigator } = getNavigator();
         navigator.moveToFirstChild();
         const movedToLastChild = navigator.moveToLastChild();
         const production = <Production>navigator.getParent();

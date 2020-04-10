@@ -13,8 +13,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { install } from "source-map-support";
-install();
+
+import "source-map-support/register";
 
 import "./scanner-tests";
 import "./parser-tests";

@@ -13,11 +13,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { readFileSync, writeFileSync, mkdirSync, existsSync, statSync, unlinkSync, mkdir } from "fs";
-import { EOL } from "os";
+
+import { readFileSync, writeFileSync, mkdirSync, existsSync, unlinkSync } from "fs";
 import { resolve, basename, dirname } from "path";
 import { Scanner } from "../scanner";
-import { SyntaxKind, tokenToString, CharacterCodes, formatKind } from "../tokens";
+import { SyntaxKind, tokenToString, formatKind } from "../tokens";
 import { DiagnosticMessages, LineMap } from "../diagnostics";
 import {
     SourceFile,
@@ -26,7 +26,6 @@ import {
     StringLiteral,
     Nonterminal,
     Argument,
-    Prose,
     ProseFragmentLiteral,
     Terminal,
     UnicodeCharacterLiteral,

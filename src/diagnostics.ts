@@ -13,10 +13,10 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+
 import { binarySearch, compareStrings, compare, Range, Position } from "./core";
 import { CharacterCodes, SyntaxKind, tokenToString } from "./tokens";
 import { Node, SourceFile } from "./nodes";
-import { skipTrivia } from "./scanner";
 
 export interface Diagnostic {
     code: number;
@@ -360,7 +360,6 @@ export class DiagnosticMessages {
         if (indices.length <= 1) {
             return indices;
         }
-        const numIndices = indices.length;
         const firstDiagnosticIndex = indices[0];
         const newIndices: number[] = [firstDiagnosticIndex];
         let previousDiagnosticIndex = firstDiagnosticIndex;
@@ -546,14 +545,6 @@ export class LineMap {
         }
         lineStarts.push(lineStart);
         this.lineStarts = lineStarts;
-    }
-
-    private isLineBreak(ch: number): boolean {
-        return ch === CharacterCodes.CarriageReturn
-            || ch === CharacterCodes.LineFeed
-            || ch === CharacterCodes.LineSeparator
-            || ch === CharacterCodes.ParagraphSeparator
-            || ch === CharacterCodes.NextLine;
     }
 }
 

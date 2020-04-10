@@ -1,18 +1,32 @@
-import * as fs from "fs";
-import * as path from "path";
-import * as os from "os";
+/*!
+ *  Copyright 2015 Ron Buckton (rbuckton@chronicles.org)
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
+import { CancellationToken } from "prex";
+import { CancelToken } from "@esfx/async-canceltoken";
+import { Cancelable } from "@esfx/cancelable";
 import * as performance from "./performance";
 import { Host, SingleFileHost, SyncHost, AsyncHost } from "./host";
-import { DiagnosticMessages, NullDiagnosticMessages } from "./diagnostics";
+import { DiagnosticMessages } from "./diagnostics";
 import { EmitFormat, CompilerOptions, getDefaultOptions } from "./options";
 import { SyntaxKind } from "./tokens";
-import { Parser } from "./parser";
 import { Binder, BindingTable } from "./binder";
 import { Checker, Resolver } from "./checker";
-import { Emitter, EcmarkupEmitter, MarkdownEmitter, HtmlEmitter } from "./emitter/index";
-import { SourceFile, Import } from "./nodes";
-import { CancellationToken, CancellationTokenCountdown } from "prex";
-import { pipe, isPromise, forEachPossiblyAsync } from "./core";
+import { SourceFile } from "./nodes";
+import { pipe, forEachPossiblyAsync, toCancelToken } from "./core";
+import { Emitter, EcmarkupEmitter, MarkdownEmitter, HtmlEmitter } from "./emitter";
 
 export class Grammar {
     public readonly host: Host | SyncHost | AsyncHost;
@@ -27,7 +41,7 @@ export class Grammar {
     private innerChecker: Checker | undefined;
     private innerResolver: Resolver | undefined;
     private innerEmitter: Emitter | undefined;
-    private writeFileFallback = (file: string, content: string, cancellationToken?: CancellationToken) => this.writeFile(file, content, cancellationToken);
+    private writeFileFallback = (file: string, content: string, cancelToken?: CancelToken) => this.writeFile(file, content, cancelToken);
     private writeFileSyncFallback = (file: string, content: string) => this.writeFileSync(file, content);
 
     constructor(rootNames: Iterable<string>, options: CompilerOptions = getDefaultOptions(), host: Host | SyncHost | AsyncHost = new Host()) {
@@ -77,18 +91,22 @@ export class Grammar {
         return this.innerEmitter || (this.innerEmitter = this.createEmitter(this.options));
     }
 
-    public static convert(content: string, options?: CompilerOptions, hostFallback?: Host | SyncHost | AsyncHost, cancellationToken?: CancellationToken) {
+    public static convert(content: string, options?: CompilerOptions, hostFallback?: Host | SyncHost | AsyncHost, cancelable?: Cancelable): string;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public static convert(content: string, options?: CompilerOptions, hostFallback?: Host | SyncHost | AsyncHost, cancelable?: CancellationToken | Cancelable): string;
+    public static convert(content: string, options?: CompilerOptions, hostFallback?: Host | SyncHost | AsyncHost, cancelable?: CancellationToken | Cancelable) {
+        const cancelToken = toCancelToken(cancelable);
         const host = hostFallback === undefined || !("readFile" in hostFallback) ? SyncHost.forFile(content, /*file*/ undefined, hostFallback) :
             !("readFileSync" in hostFallback) ? AsyncHost.forFile(content, /*file*/ undefined, hostFallback) :
             new SingleFileHost(content, /*file*/ undefined, hostFallback);
 
         const grammar = new Grammar([host.file], options, host);
-        grammar.parseSync(cancellationToken);
+        grammar.parseSync(cancelToken);
 
         const sourceFile = grammar.getSourceFile(host.file);
         if (!sourceFile) throw new Error(`Unable to resolve single file.`);
 
-        return grammar.emitStringSync(sourceFile, cancellationToken);
+        return grammar.emitStringSync(sourceFile, cancelToken);
     }
 
     public getSourceFile(file: string) {
@@ -96,29 +114,35 @@ export class Grammar {
         return this.parseState && this.getSourceFileNoResolve(this.parseState, file);
     }
 
-    public async parse(cancellationToken = CancellationToken.none) {
-        await this.parsePossiblyAsync(/*sync*/ false, cancellationToken);
+    public parse(cancelable?: Cancelable): Promise<void>;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public parse(cancelable?: CancellationToken | Cancelable): Promise<void>;
+    public async parse(cancelable?: CancellationToken | Cancelable) {
+        await this.parsePossiblyAsync(/*sync*/ false, toCancelToken(cancelable));
     }
 
-    public parseSync(cancellationToken = CancellationToken.none) {
-        this.parsePossiblyAsync(/*sync*/ true, cancellationToken);
+    public parseSync(cancelable?: Cancelable): void;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public parseSync(cancelable?: CancellationToken | Cancelable): void;
+    public parseSync(cancelable?: CancellationToken | Cancelable) {
+        this.parsePossiblyAsync(/*sync*/ true, toCancelToken(cancelable));
     }
 
-    private parsePossiblyAsync(sync: boolean, cancellationToken: CancellationToken) {
-        cancellationToken.throwIfCancellationRequested();
+    private parsePossiblyAsync(sync: boolean, cancelToken?: CancelToken) {
+        cancelToken?.throwIfSignaled();
         if (this.parseState) return;
         if (this.parsePromise) return this.parsePromise;
         const state: ParseState = { rootFiles: [], sourceFiles: [], sourceFilesMap: undefined };
         return this.parsePromise = pipe(
-            this.beginParsePossiblyAsync(sync, state, cancellationToken),
+            this.beginParsePossiblyAsync(sync, state, cancelToken),
             () => this.endParse(state));
     }
 
-    private beginParsePossiblyAsync(sync: boolean, state: ParseState, cancellationToken: CancellationToken) {
-        cancellationToken.throwIfCancellationRequested();
+    private beginParsePossiblyAsync(sync: boolean, state: ParseState, cancelToken?: CancelToken) {
+        cancelToken?.throwIfSignaled();
         if (this.rootNames) {
             return forEachPossiblyAsync(this.rootNames, rootName => {
-                return this.processRootFilePossiblyAsync(sync, state, this.resolveFile(rootName), cancellationToken);
+                return this.processRootFilePossiblyAsync(sync, state, this.resolveFile(rootName), cancelToken);
             });
         }
     }
@@ -130,30 +154,36 @@ export class Grammar {
         }
     }
 
-    public async bind(cancellationToken = CancellationToken.none) {
-        await this.bindPossiblyAsync(/*sync*/ false, cancellationToken);
+    public async bind(cancelable?: Cancelable): Promise<void>;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public async bind(cancelable?: CancellationToken | Cancelable): Promise<void>;
+    public async bind(cancelable?: CancellationToken | Cancelable) {
+        await this.bindPossiblyAsync(/*sync*/ false, toCancelToken(cancelable));
     }
 
-    public bindSync(cancellationToken = CancellationToken.none) {
-        this.bindPossiblyAsync(/*sync*/ true, cancellationToken);
+    public bindSync(cancelable?: Cancelable): void;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public bindSync(cancelable?: CancellationToken | Cancelable): void;
+    public bindSync(cancelable?: CancellationToken | Cancelable) {
+        this.bindPossiblyAsync(/*sync*/ true, toCancelToken(cancelable));
     }
 
-    private bindPossiblyAsync(sync: boolean, cancellationToken: CancellationToken) {
-        cancellationToken.throwIfCancellationRequested();
+    private bindPossiblyAsync(sync: boolean, cancelToken?: CancelToken) {
+        cancelToken?.throwIfSignaled();
         return pipe(
-            this.parsePossiblyAsync(sync, cancellationToken),
-            () => this.endBind(cancellationToken));
+            this.parsePossiblyAsync(sync, cancelToken),
+            () => this.endBind(cancelToken));
     }
 
-    private endBind(cancellationToken: CancellationToken) {
-        cancellationToken.throwIfCancellationRequested();
+    private endBind(cancelToken?: CancelToken) {
+        cancelToken?.throwIfSignaled();
 
         const binder = this.binder;
         performance.mark("beforeBind");
 
         const bindings = new BindingTable();
         for (const sourceFile of this.sourceFiles) {
-            binder.bindSourceFile(sourceFile, bindings, cancellationToken);
+            binder.bindSourceFile(sourceFile, bindings, cancelToken);
         }
 
         this.bindings = bindings;
@@ -162,25 +192,31 @@ export class Grammar {
         performance.measure("bind", "beforeBind", "afterBind");
     }
 
-    public async check(sourceFile?: SourceFile, cancellationToken = CancellationToken.none) {
-        await this.checkPossiblyAsync(/*sync*/ false, sourceFile, cancellationToken);
+    public check(sourceFile?: SourceFile, cancelable?: Cancelable): Promise<void>;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public check(sourceFile?: SourceFile, cancelable?: CancellationToken | Cancelable): Promise<void>;
+    public async check(sourceFile?: SourceFile, cancelable?: CancellationToken | Cancelable) {
+        await this.checkPossiblyAsync(/*sync*/ false, sourceFile, toCancelToken(cancelable));
     }
 
-    public checkSync(sourceFile?: SourceFile, cancellationToken = CancellationToken.none) {
-        this.checkPossiblyAsync(/*sync*/ true, sourceFile, cancellationToken);
+    public checkSync(sourceFile?: SourceFile, cancelable?: Cancelable): void;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public checkSync(sourceFile?: SourceFile, cancelable?: CancellationToken | Cancelable): void;
+    public checkSync(sourceFile?: SourceFile, cancelable?: CancellationToken | Cancelable) {
+        this.checkPossiblyAsync(/*sync*/ true, sourceFile, toCancelToken(cancelable));
     }
 
-    private checkPossiblyAsync(sync: boolean, sourceFile: SourceFile | undefined, cancellationToken: CancellationToken) {
-        cancellationToken.throwIfCancellationRequested();
+    private checkPossiblyAsync(sync: boolean, sourceFile: SourceFile | undefined, cancelToken?: CancelToken) {
+        cancelToken?.throwIfSignaled();
         return pipe(
-            this.bindPossiblyAsync(sync, cancellationToken),
-            () => this.endCheck(sourceFile, cancellationToken));
+            this.bindPossiblyAsync(sync, cancelToken),
+            () => this.endCheck(sourceFile, cancelToken));
     }
 
-    private endCheck(sourceFile: SourceFile | undefined, cancellationToken: CancellationToken) {
-        cancellationToken.throwIfCancellationRequested();
+    private endCheck(sourceFile: SourceFile | undefined, cancelToken?: CancelToken) {
+        cancelToken?.throwIfSignaled();
 
-        const registration = cancellationToken.register(() => {
+        const subscription = cancelToken?.subscribe(() => {
             this.innerChecker = undefined;
             this.innerEmitter = undefined;
         });
@@ -190,70 +226,83 @@ export class Grammar {
         performance.mark("beforeCheck");
 
         if (sourceFile) {
-            checker.checkSourceFile(sourceFile, this.bindings!, this.diagnostics, cancellationToken);
+            checker.checkSourceFile(sourceFile, this.bindings!, this.diagnostics, cancelToken);
         }
         else {
             for (const sourceFile of this.sourceFiles) {
-                checker.checkSourceFile(sourceFile, this.bindings!, this.diagnostics, cancellationToken);
+                checker.checkSourceFile(sourceFile, this.bindings!, this.diagnostics, cancelToken);
             }
         }
 
         performance.mark("afterCheck");
         performance.measure("check", "beforeCheck", "afterCheck");
-        registration.unregister();
+
+        subscription?.unsubscribe();
     }
 
-    public async emit(sourceFile?: SourceFile, writeFile: (file: string, output: string) => void | Promise<void> = this.writeFileFallback, cancellationToken = CancellationToken.none) {
-        await this.emitPossiblyAsync(/*sync*/ false, sourceFile, writeFile, cancellationToken);
+    public emit(sourceFile?: SourceFile, writeFile?: (file: string, output: string, cancelToken?: CancelToken) => void | PromiseLike<void>, cancelable?: Cancelable): Promise<void>;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public emit(sourceFile?: SourceFile, writeFile?: (file: string, output: string) => void | PromiseLike<void>, cancelable?: CancellationToken | Cancelable): Promise<void>;
+    public async emit(sourceFile?: SourceFile, writeFile: (file: string, output: string, cancelToken?: CancelToken) => void | PromiseLike<void> = this.writeFileFallback, cancelable?: CancellationToken | Cancelable) {
+        await this.emitPossiblyAsync(/*sync*/ false, sourceFile, writeFile, toCancelToken(cancelable));
     }
 
-    public emitSync(sourceFile?: SourceFile, writeFile: (file: string, output: string) => void = this.writeFileSyncFallback, cancellationToken = CancellationToken.none) {
-        this.emitPossiblyAsync(/*sync*/ true, sourceFile, writeFile, cancellationToken);
+    public emitSync(sourceFile?: SourceFile, writeFile?: (file: string, output: string, cancelToken?: CancelToken) => void, cancelable?: Cancelable): void;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public emitSync(sourceFile?: SourceFile, writeFile?: (file: string, output: string) => void, cancelable?: CancellationToken | Cancelable): void;
+    public emitSync(sourceFile?: SourceFile, writeFile: (file: string, output: string) => void = this.writeFileSyncFallback, cancelable?: CancellationToken | Cancelable) {
+        this.emitPossiblyAsync(/*sync*/ true, sourceFile, writeFile, toCancelToken(cancelable));
     }
 
-    private emitPossiblyAsync(sync: true, sourceFile: SourceFile | undefined, writeFile: (file: string, output: string) => void, cancellationToken: CancellationToken): void;
-    private emitPossiblyAsync(sync: boolean, sourceFile: SourceFile | undefined, writeFile: (file: string, output: string) => void | Promise<void>, cancellationToken: CancellationToken): Promise<void> | void;
-    private emitPossiblyAsync(sync: boolean, sourceFile: SourceFile | undefined, writeFile: (file: string, output: string) => void | Promise<void>, cancellationToken: CancellationToken) {
-        cancellationToken.throwIfCancellationRequested();
+    private emitPossiblyAsync(sync: true, sourceFile: SourceFile | undefined, writeFile: (file: string, output: string, cancelToken?: CancelToken) => void, cancelToken?: CancelToken): void;
+    private emitPossiblyAsync(sync: boolean, sourceFile: SourceFile | undefined, writeFile: (file: string, output: string, cancelToken?: CancelToken) => void | PromiseLike<void>, cancelToken?: CancelToken): Promise<void> | void;
+    private emitPossiblyAsync(sync: boolean, sourceFile: SourceFile | undefined, writeFile: (file: string, output: string, cancelToken?: CancelToken) => void | PromiseLike<void>, cancelToken?: CancelToken) {
+        cancelToken?.throwIfSignaled();
         return pipe(
-            this.checkPossiblyAsync(sync, sourceFile, cancellationToken),
-            () => this.endEmitPossiblyAsync(sync, sourceFile, writeFile, cancellationToken));
+            this.checkPossiblyAsync(sync, sourceFile, cancelToken),
+            () => this.endEmitPossiblyAsync(sync, sourceFile, writeFile, cancelToken));
     }
 
-    private endEmitPossiblyAsync(sync: boolean, sourceFile: SourceFile | undefined, writeFile: (file: string, output: string) => void | Promise<void>, cancellationToken: CancellationToken) {
-        cancellationToken.throwIfCancellationRequested();
+    private endEmitPossiblyAsync(sync: boolean, sourceFile: SourceFile | undefined, writeFile: (file: string, output: string, cancelToken?: CancelToken) => void | PromiseLike<void>, cancelToken?: CancelToken) {
+        cancelToken?.throwIfSignaled();
         if (sourceFile) {
-            return this.emitOnePossiblyAsync(sync, sourceFile, writeFile, cancellationToken);
+            return this.emitOnePossiblyAsync(sync, sourceFile, writeFile, cancelToken);
         }
         else {
-            return forEachPossiblyAsync(this.rootFiles, sourceFile => this.emitOnePossiblyAsync(sync, sourceFile, writeFile, cancellationToken));
+            return forEachPossiblyAsync(this.rootFiles, sourceFile => this.emitOnePossiblyAsync(sync, sourceFile, writeFile, cancelToken));
         }
     }
 
-    private emitOnePossiblyAsync(sync: boolean, sourceFile: SourceFile, writeFile: (file: string, output: string) => void | Promise<void>, cancellationToken: CancellationToken) {
-        return sync ? this.emitter.emitSync(sourceFile, this.resolver, this.diagnostics, writeFile, cancellationToken) :
-            this.emitter.emit(sourceFile, this.resolver, this.diagnostics, writeFile, cancellationToken);
+    private emitOnePossiblyAsync(sync: boolean, sourceFile: SourceFile, writeFile: (file: string, output: string, cancelToken?: CancelToken) => void | PromiseLike<void>, cancelToken?: CancelToken) {
+        return sync ?
+            this.emitter.emitSync(sourceFile, this.resolver, this.diagnostics, writeFile, cancelToken) :
+            this.emitter.emit(sourceFile, this.resolver, this.diagnostics, writeFile, cancelToken);
     }
 
-    public async emitString(sourceFile: SourceFile, cancellationToken = CancellationToken.none) {
-        return await this.emitStringPossiblyAsync(/*sync*/ false, sourceFile, cancellationToken);
+    public emitString(sourceFile: SourceFile, cancelable?: Cancelable): Promise<string>;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public emitString(sourceFile: SourceFile, cancelable?: CancellationToken | Cancelable): Promise<string>;
+    public async emitString(sourceFile: SourceFile, cancelable?: CancellationToken | Cancelable) {
+        return await this.emitStringPossiblyAsync(/*sync*/ false, sourceFile, toCancelToken(cancelable));
     }
 
-    public emitStringSync(sourceFile: SourceFile, cancellationToken = CancellationToken.none) {
-        return this.emitStringPossiblyAsync(/*sync*/ true, sourceFile, cancellationToken);
+    public emitStringSync(sourceFile: SourceFile, cancelable?: Cancelable): string;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public emitStringSync(sourceFile: SourceFile, cancelable?: CancellationToken | Cancelable): string;
+    public emitStringSync(sourceFile: SourceFile, cancelable?: CancellationToken | Cancelable) {
+        return this.emitStringPossiblyAsync(/*sync*/ true, sourceFile, toCancelToken(cancelable));
     }
 
-    private emitStringPossiblyAsync(sync: true, sourceFile: SourceFile, cancellationToken: CancellationToken): string;
-    private emitStringPossiblyAsync(sync: boolean, sourceFile: SourceFile, cancellationToken: CancellationToken): Promise<string> | string;
-    private emitStringPossiblyAsync(sync: boolean, sourceFile: SourceFile, cancellationToken: CancellationToken) {
-        cancellationToken.throwIfCancellationRequested();
+    private emitStringPossiblyAsync(sync: true, sourceFile: SourceFile, cancelToken?: CancelToken): string;
+    private emitStringPossiblyAsync(sync: boolean, sourceFile: SourceFile, cancelToken?: CancelToken): Promise<string> | string;
+    private emitStringPossiblyAsync(sync: boolean, sourceFile: SourceFile, cancelToken?: CancelToken) {
+        cancelToken?.throwIfSignaled();
         return pipe(
-            this.checkPossiblyAsync(sync, sourceFile, cancellationToken),
-            () => this.emitter.emitString(sourceFile, this.resolver, this.diagnostics, cancellationToken));
+            this.checkPossiblyAsync(sync, sourceFile, cancelToken),
+            () => this.emitter.emitString(sourceFile, this.resolver, this.diagnostics, cancelToken));
     }
 
-    protected createBinder(options: CompilerOptions): Binder;
-    protected createBinder(_options: CompilerOptions): Binder {
+    protected createBinder(options: CompilerOptions): Binder {
         return new Binder();
     }
 
@@ -279,9 +328,9 @@ export class Grammar {
         }
     }
 
-    protected readFile(file: string, cancellationToken?: CancellationToken): Promise<string | undefined> | string | undefined {
-        return "readFile" in this.host ? this.host.readFile(file, cancellationToken) :
-            this.host.readFileSync(file, cancellationToken);
+    protected readFile(file: string, cancelToken?: CancelToken): Promise<string | undefined> | string | undefined {
+        return "readFile" in this.host ? this.host.readFile(file, cancelToken) :
+            this.host.readFileSync(file, cancelToken);
     }
 
     protected readFileSync(file: string): Promise<string | undefined> | string | undefined {
@@ -289,9 +338,9 @@ export class Grammar {
         return this.host.readFileSync(file);
     }
 
-    protected writeFile(file: string, content: string, cancellationToken?: CancellationToken) {
-        return "writeFile" in this.host ? this.host.writeFile(file, content, cancellationToken) :
-            this.host.writeFileSync(file, content, cancellationToken);
+    protected writeFile(file: string, content: string, cancelToken?: CancelToken) {
+        return "writeFile" in this.host ? this.host.writeFile(file, content, cancelToken) :
+            this.host.writeFileSync(file, content, cancelToken);
     }
 
     protected writeFileSync(file: string, content: string) {
@@ -307,9 +356,9 @@ export class Grammar {
         return this.host.normalizeFile(file);
     }
 
-    private processRootFilePossiblyAsync(sync: boolean, state: ParseState, file: string, cancellationToken: CancellationToken) {
+    private processRootFilePossiblyAsync(sync: boolean, state: ParseState, file: string, cancelToken?: CancelToken) {
         return pipe(
-            this.processFilePossiblyAsync(sync, state, file, cancellationToken),
+            this.processFilePossiblyAsync(sync, state, file, cancelToken),
             sourceFile => this.endProcessRootFile(state, sourceFile));
     }
 
@@ -322,27 +371,27 @@ export class Grammar {
         }
     }
 
-    private processFilePossiblyAsync(sync: boolean, state: ParseState, file: string, cancellationToken: CancellationToken, referer?: SourceFile, refererPos?: number, refererEnd?: number) {
+    private processFilePossiblyAsync(sync: boolean, state: ParseState, file: string, cancelToken?: CancelToken, referer?: SourceFile, refererPos?: number, refererEnd?: number) {
         let sourceFile = this.getSourceFileNoResolve(state, file);
         if (sourceFile) return sourceFile;
 
         let result: Promise<SourceFile | undefined> | SourceFile | undefined;
         if (sync) {
             if (!("getSourceFileSync" in this.host)) throw new Error("Operation cannot be completed synchronously.");
-            result = this.host.getSourceFileSync(file, cancellationToken);
+            result = this.host.getSourceFileSync(file, cancelToken);
         }
         else {
-            result = "getSourceFile" in this.host ? this.host.getSourceFile(file, cancellationToken) :
-                this.host.getSourceFileSync(file, cancellationToken);
+            result = "getSourceFile" in this.host ? this.host.getSourceFile(file, cancelToken) :
+                this.host.getSourceFileSync(file, cancelToken);
         }
 
         return pipe(
             result,
-            sourceFile => this.endProcessFilePossiblyAsync(sync, state, file, sourceFile, cancellationToken)
+            sourceFile => this.endProcessFilePossiblyAsync(sync, state, file, sourceFile, cancelToken)
         );
     }
 
-    private endProcessFilePossiblyAsync(sync: boolean, state: ParseState, file: string, sourceFile: SourceFile | undefined, cancellationToken: CancellationToken) {
+    private endProcessFilePossiblyAsync(sync: boolean, state: ParseState, file: string, sourceFile: SourceFile | undefined, cancelToken?: CancelToken) {
         if (!sourceFile) return undefined;
 
         state.sourceFiles.push(sourceFile);
@@ -352,16 +401,16 @@ export class Grammar {
         }
 
         return pipe(
-            this.processImportsPossiblyAsync(sync, state, sourceFile, file, cancellationToken),
+            this.processImportsPossiblyAsync(sync, state, sourceFile, file, cancelToken),
             () => sourceFile);
     }
 
-    private processImportsPossiblyAsync(sync: boolean, state: ParseState, sourceFile: SourceFile, refererName: string, cancellationToken: CancellationToken): Promise<void> | void {
+    private processImportsPossiblyAsync(sync: boolean, state: ParseState, sourceFile: SourceFile, refererName: string, cancelToken?: CancelToken): Promise<void> | void {
         return forEachPossiblyAsync(sourceFile.elements, element => {
             if (element.kind === SyntaxKind.Import) {
                 if (element.path && element.path.text) {
                     const importPath = this.resolveFile(element.path.text, refererName);
-                    return this.processFilePossiblyAsync(sync, state, importPath, cancellationToken, sourceFile, element.getStart(sourceFile), element.end);
+                    return this.processFilePossiblyAsync(sync, state, importPath, cancelToken, sourceFile, element.getStart(sourceFile), element.end);
                 }
             }
         });

@@ -13,10 +13,10 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { Range, Position, TextRange, emptyIterable, forEach, first, last } from "./core";
+
+import { TextRange, emptyIterable, forEach, first, last } from "./core";
 import { LineMap, DiagnosticMessages } from "./diagnostics";
-import { SyntaxKind, ProseFragmentLiteralKind, LookaheadOperatorKind, ArgumentOperatorKind, ParameterOperatorKind, BooleanKind, ProductionSeperatorKind, TokenKind, CommentTriviaKind, HtmlTriviaKind, TriviaKind } from "./tokens";
-import { SymbolTable } from "./symbols";
+import { SyntaxKind, ProseFragmentLiteralKind, LookaheadOperatorKind, ArgumentOperatorKind, BooleanKind, ProductionSeperatorKind, TokenKind, CommentTriviaKind, HtmlTriviaKind, TriviaKind } from "./tokens";
 import { NodeVisitor } from "./visitor";
 import { skipTrivia } from "./scanner";
 
