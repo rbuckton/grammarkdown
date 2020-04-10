@@ -1,14 +1,30 @@
-import * as fs from "fs";
+/*!
+ *  Copyright 2015 Ron Buckton (rbuckton@chronicles.org)
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 import * as path from "path";
 import * as performance from "../performance";
 import { CancellationToken } from "prex";
+import { Cancelable } from "@esfx/cancelable";
+import { CancelToken } from "@esfx/async-canceltoken";
 import { DiagnosticMessages } from "../diagnostics";
 import { CompilerOptions, NewLineKind } from "../options";
-import { Checker, Resolver } from "../checker";
+import { Resolver } from "../checker";
 import { StringWriter } from "../stringwriter";
 import { SyntaxKind, tokenToString } from "../tokens";
-import { TextRange } from "../core";
-import { scanHtmlTrivia } from "../scanner";
+import { TextRange, toCancelToken, wrapCancelToken } from "../core";
 import {
     Node,
     SourceFile,
@@ -21,7 +37,6 @@ import {
     OneOfList,
     Terminal,
     SymbolSet,
-    Assertion,
     EmptyAssertion,
     LookaheadAssertion,
     NoSymbolHereAssertion,
@@ -33,14 +48,12 @@ import {
     ArgumentList,
     Nonterminal,
     OneOfSymbol,
-    LexicalSymbol,
     ButNotSymbol,
     SymbolSpan,
     RightHandSide,
     RightHandSideList,
     Production,
     Import,
-    SourceElement,
     TextContent,
     PlaceholderSymbol
 } from "../nodes";
@@ -54,26 +67,38 @@ export class Emitter {
     private diagnostics!: DiagnosticMessages;
     private sourceFile!: SourceFile;
     private triviaPos!: number;
-    private cancellationToken!: CancellationToken;
+    private cancelToken?: CancelToken;
 
     constructor(options: CompilerOptions) {
         this.options = options;
     }
 
-    public emit(node: SourceFile, resolver: Resolver, diagnostics: DiagnosticMessages, writeFile: (file: string, text: string, cancellationToken?: CancellationToken) => void | Promise<void>, cancellationToken = CancellationToken.none) {
+    public emit(node: SourceFile, resolver: Resolver, diagnostics: DiagnosticMessages, writeFile: (file: string, text: string, cancelToken?: CancelToken) => void | PromiseLike<void>, cancelable?: Cancelable): Promise<void>;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public emit(node: SourceFile, resolver: Resolver, diagnostics: DiagnosticMessages, writeFile: (file: string, text: string, cancelToken?: CancellationToken & CancelToken) => void | PromiseLike<void>, cancelable?: CancellationToken | Cancelable): Promise<void>;
+    public emit(node: SourceFile, resolver: Resolver, diagnostics: DiagnosticMessages, writeFile: (file: string, text: string, cancelToken?: CancellationToken & CancelToken) => void | PromiseLike<void>, cancelable?: CancellationToken | Cancelable) {
+        const cancelToken = toCancelToken(cancelable);
         const file = this.getOutputFilename(node);
-        const text = this.emitString(node, resolver, diagnostics, cancellationToken);
-        return writeFile(file, text, cancellationToken);
+        const text = this.emitString(node, resolver, diagnostics, cancelToken);
+        return Promise.resolve(writeFile(file, text, wrapCancelToken(cancelToken)));
     }
 
-    public emitSync(node: SourceFile, resolver: Resolver, diagnostics: DiagnosticMessages, writeFile: (file: string, text: string, cancellationToken?: CancellationToken) => void, cancellationToken = CancellationToken.none) {
+    public emitSync(node: SourceFile, resolver: Resolver, diagnostics: DiagnosticMessages, writeFile: (file: string, text: string, cancelToken?: CancelToken) => void, cancelable?: Cancelable): void;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public emitSync(node: SourceFile, resolver: Resolver, diagnostics: DiagnosticMessages, writeFile: (file: string, text: string, cancelToken?: CancellationToken & CancelToken) => void, cancelable?: CancellationToken | Cancelable): void;
+    public emitSync(node: SourceFile, resolver: Resolver, diagnostics: DiagnosticMessages, writeFile: (file: string, text: string, cancelToken?: CancellationToken & CancelToken) => void, cancelable?: CancellationToken | Cancelable) {
+        const cancelToken = toCancelToken(cancelable);
         const file = this.getOutputFilename(node);
-        const text = this.emitString(node, resolver, diagnostics, cancellationToken);
-        writeFile(file, text, cancellationToken);
+        const text = this.emitString(node, resolver, diagnostics, cancelToken);
+        writeFile(file, text, wrapCancelToken(cancelToken));
     }
 
-    public emitString(node: SourceFile, resolver: Resolver, diagnostics: DiagnosticMessages, cancellationToken = CancellationToken.none) {
-        cancellationToken.throwIfCancellationRequested();
+    public emitString(node: SourceFile, resolver: Resolver, diagnostics: DiagnosticMessages, cancelable?: Cancelable): string;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public emitString(node: SourceFile, resolver: Resolver, diagnostics: DiagnosticMessages, cancelable?: CancellationToken | Cancelable): string;
+    public emitString(node: SourceFile, resolver: Resolver, diagnostics: DiagnosticMessages, cancelable?: CancellationToken | Cancelable) {
+        const cancelToken = toCancelToken(cancelable);
+        cancelToken?.throwIfSignaled();
 
         performance.mark("beforeEmit");
 
@@ -82,11 +107,11 @@ export class Emitter {
         const saveDiagnostics = this.diagnostics;
         const saveSourceFile = this.sourceFile;
         const saveTriviaPos = this.triviaPos;
-        const saveCancellationToken = this.cancellationToken;
+        const saveCancellationToken = this.cancelToken;
 
         let text: string;
         try {
-            this.cancellationToken = cancellationToken;
+            this.cancelToken = cancelToken;
             this.resolver = resolver;
             this.diagnostics = new DiagnosticMessages();
             this.writer = this.createWriter(this.options);
@@ -102,7 +127,7 @@ export class Emitter {
             this.diagnostics = saveDiagnostics;
             this.sourceFile = saveSourceFile;
             this.triviaPos = saveTriviaPos;
-            this.cancellationToken = saveCancellationToken;
+            this.cancelToken = saveCancellationToken;
         }
 
         performance.mark("afterEmit");

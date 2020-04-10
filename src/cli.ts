@@ -13,10 +13,9 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import * as path from "path";
+
 import * as performance from "./performance";
 import { EOL } from "os";
-import { readFileSync, writeFileSync } from "fs";
 import { Package } from "./read-package";
 import { CompilerOptions, EmitFormat, getDefaultOptions, KnownOptions, ParsedArguments, parse, usage, NewLineKind } from "./options";
 import { Grammar } from "./grammar";
@@ -55,7 +54,7 @@ interface ParsedCommandLine extends ParsedArguments, CompilerOptions {
     version: boolean;
 }
 
-function main(): void {
+async function main(): Promise<void> {
     const opts = parse<ParsedCommandLine>(knownOptions);
     if (!opts || opts.help) {
         printUsage();
@@ -64,7 +63,7 @@ function main(): void {
         printVersion();
     }
     else {
-        performCompilation(opts);
+        await performCompilation(opts);
     }
 }
 
@@ -86,7 +85,7 @@ function printVersion(): void {
     console.log(node_package.version);
 }
 
-function performCompilation(options: ParsedCommandLine): void {
+async function performCompilation(options: ParsedCommandLine): Promise<void> {
     const compilerOptions = getDefaultOptions();
     if (options.out) compilerOptions.out = options.out;
     if (options.noChecks) compilerOptions.noChecks = true;
@@ -101,12 +100,12 @@ function performCompilation(options: ParsedCommandLine): void {
 
     const inputFiles = options.rest;
     const grammar = new Grammar(inputFiles, compilerOptions);
-    grammar.bindSync();
-    grammar.checkSync();
+    await grammar.bind();
+    await grammar.check();
 
     if (!compilerOptions.noEmit) {
         if (!compilerOptions.noEmitOnError || grammar.diagnostics.size <= 0) {
-            grammar.emitSync();
+            await grammar.emit();
         }
     }
 
@@ -129,4 +128,7 @@ function performCompilation(options: ParsedCommandLine): void {
     }
 }
 
-main();
+main().catch(e => {
+    console.error(e);
+    process.exit(-1);
+});

@@ -54,6 +54,8 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
-    "prex": "^0.4.2"
+    "prex": "^0.4.2",
+    "@esfx/async-canceltoken": "^1.0.0-pre.13",
+    "@esfx/cancelable": "^1.0.0-pre.13"
   }
 }

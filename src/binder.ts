@@ -13,10 +13,13 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+
 import { CancellationToken } from "prex";
+import { Cancelable } from "@esfx/cancelable";
 import { SyntaxKind } from "./tokens";
 import { Symbol, SymbolKind, SymbolTable } from "./symbols";
 import { SourceFile, Production, Parameter, Node, Declaration } from "./nodes";
+import { toCancelToken } from "./core";
 
 export class BindingTable {
     public readonly globals: SymbolTable = new SymbolTable();
@@ -197,8 +200,12 @@ export class Binder {
     private parentNode: Node | undefined;
     private parentSymbol: Symbol | undefined;
 
-    public bindSourceFile(file: SourceFile, bindings: BindingTable, cancellationToken = CancellationToken.none): void {
-        cancellationToken.throwIfCancellationRequested();
+    public bindSourceFile(file: SourceFile, bindings: BindingTable, cancelable?: Cancelable): void;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public bindSourceFile(file: SourceFile, bindings: BindingTable, cancelable?: CancellationToken | Cancelable): void;
+    public bindSourceFile(file: SourceFile, bindings: BindingTable, cancelable?: CancellationToken | Cancelable): void {
+        toCancelToken(cancelable)?.throwIfSignaled();
+
         if (bindings.globals.resolveSymbol(file.filename, SymbolKind.SourceFile)) {
             // skip files that have already been bound.
             return;
@@ -220,7 +227,7 @@ export class Binder {
 
     private bindParameter(bindings: BindingTable, scope: SymbolTable, node: Parameter): void {
         const symbol = this.declareSymbol(bindings, scope, node.name.text, node, SymbolKind.Parameter);
-        this.bindChildren(bindings, node, this.parentSymbol, scope);
+        this.bindChildren(bindings, node, symbol, scope);
     }
 
     private bindChildren(bindings: BindingTable, parentNode: Node, parentSymbol: Symbol | undefined, scope: SymbolTable): void {

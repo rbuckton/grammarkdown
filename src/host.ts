@@ -1,3 +1,19 @@
+/*!
+ *  Copyright 2015 Ron Buckton (rbuckton@chronicles.org)
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 import * as path from "path";
 import * as fs from "fs";
 import * as os from "os";
@@ -6,7 +22,9 @@ import * as performance from "./performance";
 import { SourceFile } from "./nodes";
 import { Parser } from "./parser";
 import { CancellationToken } from "prex";
-import { promiseFinally, pipe } from "./core";
+import { promiseFinally, pipe, toCancelToken, wrapCancelToken } from "./core";
+import { CancelToken } from "@esfx/async-canceltoken";
+import { Cancelable } from "@esfx/cancelable";
 
 const ignoreCaseFallback = /^(win32|win64|darwin)$/.test(os.platform());
 
@@ -81,9 +99,12 @@ export abstract class HostBase {
         return result;
     }
 
-    public parseSourceFile(file: string, text: string, cancellationToken?: CancellationToken) {
+    public parseSourceFile(file: string, text: string, cancelable?: Cancelable): SourceFile;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public parseSourceFile(file: string, text: string, cancelable?: CancellationToken | Cancelable): SourceFile;
+    public parseSourceFile(file: string, text: string, cancelable?: CancellationToken | Cancelable) {
         performance.mark("beforeParse");
-        const sourceFile = this.parser.parseSourceFile(file, text, cancellationToken);
+        const sourceFile = this.parser.parseSourceFile(file, text, cancelable);
         performance.mark("afterParse");
         performance.measure("parse", "beforeParse", "afterParse");
         return sourceFile;
@@ -94,14 +115,24 @@ export abstract class HostBase {
     }
 }
 
+export type ReadFileSyncCallback = (this: never, file: string, cancelToken?: CancelToken) => string;
+
+/** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+export type LegacyReadFileSyncCallback = (this: never, file: string, cancelToken?: CancellationToken) => string;
+
+export type WriteFileSyncCallback = (this: never, file: string, content: string, cancelToken?: CancelToken) => void;
+
+/** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+export type LegacyWriteFileSyncCallback = (this: never, file: string, content: string, cancelToken?: CancellationToken) => void;
+
 export interface SyncHostOptions extends HostBaseOptions {
-    readFileSync?: ((this: never, file: string, cancellationToken?: CancellationToken) => string) | false;
-    writeFileSync?: ((this: never, file: string, content: string, cancellationToken?: CancellationToken) => void) | false;
+    readFileSync?: LegacyReadFileSyncCallback | ReadFileSyncCallback | false;
+    writeFileSync?: LegacyWriteFileSyncCallback | WriteFileSyncCallback | false;
 }
 
 export class SyncHost extends HostBase {
-    private readFileSyncCallback?: ((file: string, cancellationToken?: CancellationToken) => string) | false;
-    private writeFileSyncCallback?: ((file: string, content: string, cancellationToken?: CancellationToken) => void) | false;
+    private readFileSyncCallback?: ((file: string, cancelToken?: CancelToken & CancellationToken) => string) | false;
+    private writeFileSyncCallback?: ((file: string, content: string, cancelToken?: CancelToken & CancellationToken) => void) | false;
 
     constructor({ readFileSync = readFileSyncFallback, writeFileSync = writeFileSyncFallback, ...baseOptions }: SyncHostOptions = {}) {
         super(baseOptions);
@@ -113,32 +144,42 @@ export class SyncHost extends HostBase {
         return new SyncSingleFileHost(file, content, hostFallback);
     }
 
-    public readFileSync(file: string, cancellationToken?: CancellationToken): string | undefined {
+    public readFileSync(file: string, cancelable?: Cancelable): string | undefined;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public readFileSync(file: string, cancelable?: CancellationToken | Cancelable): string | undefined;
+    public readFileSync(file: string, cancelable?: CancellationToken | Cancelable): string | undefined {
         const readFile = this.readFileSyncCallback;
         if (!readFile) throw new Error("Operation cannot be completed synchronously");
 
         performance.mark("ioRead");
         file = getLocalPath(file);
         if (isUri(file)) return undefined; // TODO: support uris?
-        const result = readFile(file, cancellationToken);
+        const result = readFile(file, wrapCancelToken(toCancelToken(cancelable)));
         performance.measure("ioRead", "ioRead");
         return result;
     }
 
-    public writeFileSync(file: string, text: string, cancellationToken?: CancellationToken) {
+    public writeFileSync(file: string, text: string, cancelable?: Cancelable): void;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public writeFileSync(file: string, text: string, cancelable?: CancellationToken | Cancelable): void;
+    public writeFileSync(file: string, text: string, cancelable?: CancellationToken | Cancelable) {
         const writeFile = this.writeFileSyncCallback;
         if (!writeFile) throw new Error("Operation cannot be completed synchronously");
 
         performance.mark("ioWrite");
         file = getLocalPath(file);
         if (isUri(file)) throw new Error("Cannot write to a non-file URI.");
-        writeFile(file, text, cancellationToken);
+        writeFile(file, text, wrapCancelToken(toCancelToken(cancelable)));
         performance.measure("ioWrite", "ioWrite");
     }
 
-    public getSourceFileSync(file: string, cancellationToken?: CancellationToken) {
-        const result = this.readFileSync(file, cancellationToken);
-        return typeof result === "string" ? this.parseSourceFile(file, result, cancellationToken) : undefined;
+    public getSourceFileSync(file: string, cancelable?: Cancelable): SourceFile | undefined;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public getSourceFileSync(file: string, cancelable?: CancellationToken | Cancelable): SourceFile | undefined;
+    public getSourceFileSync(file: string, cancelable?: CancellationToken | Cancelable) {
+        cancelable = toCancelToken(cancelable);
+        const result = this.readFileSync(file, cancelable);
+        return typeof result === "string" ? this.parseSourceFile(file, result, cancelable) : undefined;
     }
 }
 
@@ -166,26 +207,42 @@ export class SyncSingleFileHost extends SyncHost {
             super.resolveFile(file);
     }
 
-    public readFileSync(file: string, cancellationToken?: CancellationToken): string | undefined {
+    public readFileSync(file: string, cancelable?: Cancelable): string | undefined;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public readFileSync(file: string, cancelable?: CancellationToken | Cancelable): string | undefined;
+    public readFileSync(file: string, cancelable?: CancellationToken | Cancelable): string | undefined {
         if (file === this.file) return this.content;
-        if (this.hostFallback) return this.hostFallback.readFileSync(file, cancellationToken);
+        if (this.hostFallback) return this.hostFallback.readFileSync(file, cancelable);
         throw new Error(`File '${file}' cannot be read without a fallback host.`);
     }
 
-    public writeFileSync(file: string, text: string, cancellationToken?: CancellationToken) {
-        if (this.hostFallback) return this.hostFallback.writeFileSync(file, text, cancellationToken);
+    public writeFileSync(file: string, text: string, cancelable?: Cancelable): void;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public writeFileSync(file: string, text: string, cancelable?: CancellationToken | Cancelable): void;
+    public writeFileSync(file: string, text: string, cancelable?: CancellationToken | Cancelable) {
+        if (this.hostFallback) return this.hostFallback.writeFileSync(file, text, cancelable);
         throw new Error(`Cannot write file without a fallback host.`);
     }
 }
 
+export type ReadFileCallback = (this: never, file: string, cancelToken?: CancelToken) => PromiseLike<string> | string;
+
+/** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+export type LegacyReadFileCallback = (this: never, file: string, cancelToken?: CancellationToken) => PromiseLike<string> | string;
+
+export type WriteFileCallback = (this: never, file: string, content: string, cancelToken?: CancelToken) => PromiseLike<void> | void;
+
+/** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+export type LegacyWriteFileCallback = (this: never, file: string, content: string, cancelToken?: CancellationToken) => PromiseLike<void> | void;
+
 export interface AsyncHostOptions extends HostBaseOptions {
-    readFile?: ((this: never, file: string, cancellationToken?: CancellationToken) => Promise<string>) | false;
-    writeFile?: ((this: never, file: string, content: string, cancellationToken?: CancellationToken) => Promise<void>) | false;
+    readFile?: ReadFileCallback | LegacyReadFileCallback | false;
+    writeFile?: WriteFileCallback | LegacyWriteFileCallback | false;
 }
 
 export class AsyncHost extends HostBase {
-    private readFileCallback?: ((file: string, cancellationToken?: CancellationToken) => Promise<string>) | false;
-    private writeFileCallback?: ((file: string, content: string, cancellationToken?: CancellationToken) => Promise<void>) | false;
+    private readFileCallback?: ((file: string, cancelToken?: CancelToken & CancellationToken) => PromiseLike<string> | string) | false;
+    private writeFileCallback?: ((file: string, content: string, cancelToken?: CancelToken & CancellationToken) => PromiseLike<void> | void) | false;
 
     constructor({ readFile = readFileFallback, writeFile = writeFileFallback, ...baseOptions }: AsyncHostOptions = {}) {
         super(baseOptions);
@@ -197,32 +254,42 @@ export class AsyncHost extends HostBase {
         return new AsyncSingleFileHost(file, content, hostFallback);
     }
 
-    public async readFile(file: string, cancellationToken?: CancellationToken): Promise<string | undefined> {
+    public readFile(file: string, cancelable?: Cancelable): Promise<string | undefined>;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public readFile(file: string, cancelable?: CancellationToken | Cancelable): Promise<string | undefined>;
+    public async readFile(file: string, cancelable?: CancellationToken | Cancelable): Promise<string | undefined> {
         const readFile = this.readFileCallback;
         if (!readFile) throw new Error("Operation cannot be completed asynchronously");
 
         performance.mark("ioRead");
         file = getLocalPath(file);
         if (isUri(file)) return undefined; // TODO: support uris?
-        const result = await readFile(file, cancellationToken);
+        const result = await readFile(file, wrapCancelToken(toCancelToken(cancelable)));
         performance.measure("ioRead", "ioRead");
         return result;
     }
 
-    public async writeFile(file: string, text: string, cancellationToken?: CancellationToken) {
+    public writeFile(file: string, text: string, cancelable?: Cancelable): Promise<void>;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public writeFile(file: string, text: string, cancelable?: CancellationToken | Cancelable): Promise<void>;
+    public async writeFile(file: string, text: string, cancelable?: CancellationToken | Cancelable) {
         const writeFile = this.writeFileCallback;
         if (!writeFile) throw new Error("Operation cannot be completed asynchronously");
 
         performance.mark("ioWrite");
         file = getLocalPath(file);
         if (isUri(file)) throw new Error("Cannot write to a non-file URI.");
-        await writeFile(file, text, cancellationToken);
+        await writeFile(file, text, wrapCancelToken(toCancelToken(cancelable)));
         performance.measure("ioWrite", "ioWrite");
     }
 
-    public async getSourceFile(file: string, cancellationToken?: CancellationToken) {
-        const result = await this.readFile(file, cancellationToken);
-        return typeof result === "string" ? this.parseSourceFile(file, result, cancellationToken) : undefined;
+    public getSourceFile(file: string, cancelable?: Cancelable): Promise<SourceFile | undefined>;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public getSourceFile(file: string, cancelable?: CancellationToken | Cancelable): Promise<SourceFile | undefined>;
+    public async getSourceFile(file: string, cancelable?: CancellationToken | Cancelable) {
+        cancelable = toCancelToken(cancelable);
+        const result = await this.readFile(file, cancelable);
+        return typeof result === "string" ? this.parseSourceFile(file, result, cancelable) : undefined;
     }
 }
 
@@ -250,31 +317,37 @@ export class AsyncSingleFileHost extends AsyncHost {
             super.resolveFile(file);
     }
 
-    public async readFile(file: string, cancellationToken?: CancellationToken): Promise<string | undefined> {
+    public readFile(file: string, cancelable?: Cancelable): Promise<string | undefined>;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public readFile(file: string, cancelable?: CancellationToken | Cancelable): Promise<string | undefined>;
+    public async readFile(file: string, cancelable?: CancellationToken | Cancelable): Promise<string | undefined> {
         if (file === this.file) return this.content;
-        if (this.hostFallback) return await this.hostFallback.readFile(file, cancellationToken);
+        if (this.hostFallback) return await this.hostFallback.readFile(file, cancelable);
         throw new Error(`File '${file}' cannot be read without a fallback host.`);
     }
 
-    public async writeFile(file: string, text: string, cancellationToken?: CancellationToken) {
-        if (this.hostFallback) return this.hostFallback.writeFile(file, text, cancellationToken);
+    public writeFile(file: string, text: string, cancelable?: Cancelable): Promise<void>;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public writeFile(file: string, text: string, cancelable?: CancellationToken | Cancelable): Promise<void>;
+    public async writeFile(file: string, text: string, cancelable?: CancellationToken | Cancelable) {
+        if (this.hostFallback) return this.hostFallback.writeFile(file, text, cancelable);
         throw new Error(`Cannot write file without a fallback host.`);
     }
 }
 
 export interface HostOptions extends HostBaseOptions {
-    readFile?: (this: never, file: string, cancellationToken?: CancellationToken) => Promise<string>;
-    readFileSync?: (this: never, file: string, cancellationToken?: CancellationToken) => string;
-    writeFile?: (this: never, file: string, content: string, cancellationToken?: CancellationToken) => Promise<void>;
-    writeFileSync?: (this: never, file: string, content: string, cancellationToken?: CancellationToken) => void;
+    readFile?: ReadFileCallback | LegacyReadFileCallback;
+    readFileSync?: ReadFileSyncCallback | LegacyReadFileSyncCallback;
+    writeFile?: WriteFileCallback | LegacyWriteFileCallback;
+    writeFileSync?: WriteFileSyncCallback | LegacyWriteFileSyncCallback;
 }
 
 /** @deprecated Use `SyncHost` or `AsyncHost` instead */
 export class Host extends HostBase {
-    private readFileCallback?: (file: string, cancellationToken?: CancellationToken) => Promise<string> | string | undefined;
-    private readFileSyncCallback?: (file: string, cancellationToken?: CancellationToken) => string;
-    private writeFileCallback?: (file: string, content: string, cancellationToken?: CancellationToken) => Promise<void> | void;
-    private writeFileSyncCallback?: (file: string, content: string, cancellationToken?: CancellationToken) => void;
+    private readFileCallback?: (file: string, cancelToken?: CancelToken & CancellationToken) => PromiseLike<string> | string | undefined;
+    private readFileSyncCallback?: (file: string, cancelToken?: CancelToken & CancellationToken) => string;
+    private writeFileCallback?: (file: string, content: string, cancelToken?: CancelToken & CancellationToken) => PromiseLike<void> | void;
+    private writeFileSyncCallback?: (file: string, content: string, cancelToken?: CancelToken & CancellationToken) => void;
 
     constructor({ readFile, readFileSync, writeFile, writeFileSync, ...baseOptions }: HostOptions = {}) {
         super(baseOptions);
@@ -298,62 +371,80 @@ export class Host extends HostBase {
         }
     }
 
-    public async readFile(file: string, cancellationToken?: CancellationToken): Promise<string | undefined> {
-        return await this.readFilePossiblyAsync(/*sync*/ false, file, cancellationToken);
+    public readFile(file: string, cancelable?: Cancelable): Promise<string | undefined>;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public readFile(file: string, cancelable?: CancellationToken | Cancelable): Promise<string | undefined>;
+    public async readFile(file: string, cancelable?: CancellationToken | Cancelable): Promise<string | undefined> {
+        return await this.readFilePossiblyAsync(/*sync*/ false, file, toCancelToken(cancelable));
     }
 
-    public readFileSync(file: string, cancellationToken?: CancellationToken): string | undefined {
-        return this.readFilePossiblyAsync(/*sync*/ true, file, cancellationToken);
+    public readFileSync(file: string, cancelable?: Cancelable): string | undefined;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public readFileSync(file: string, cancelable?: CancellationToken | Cancelable): string | undefined;
+    public readFileSync(file: string, cancelable?: CancellationToken | Cancelable): string | undefined {
+        return this.readFilePossiblyAsync(/*sync*/ true, file, toCancelToken(cancelable));
     }
 
-    private readFilePossiblyAsync(sync: true, file: string, cancellationToken?: CancellationToken): string | undefined;
-    private readFilePossiblyAsync(sync: boolean, file: string, cancellationToken?: CancellationToken): Promise<string | undefined> | string | undefined;
-    private readFilePossiblyAsync(sync: boolean, file: string, cancellationToken?: CancellationToken): Promise<string | undefined> | string | undefined {
+    private readFilePossiblyAsync(sync: true, file: string, cancelToken?: CancelToken): string | undefined;
+    private readFilePossiblyAsync(sync: boolean, file: string, cancelToken?: CancelToken): Promise<string | undefined> | string | undefined;
+    private readFilePossiblyAsync(sync: boolean, file: string, cancelToken?: CancelToken): Promise<string | undefined> | string | undefined {
         const readFile = sync ? this.readFileSyncCallback : this.readFileCallback;
         if (!readFile) throw new Error("Operation cannot be completed synchronously");
 
         performance.mark("ioRead");
         file = getLocalPath(file);
         if (isUri(file)) return undefined; // TODO: support uris?
-        const result = readFile(file, cancellationToken);
+        const result = Promise.resolve(readFile(file, wrapCancelToken(cancelToken)));
         return typeof result === "object" ? promiseFinally(result, endIORead) : endIORead(result);
     }
 
-    public async writeFile(file: string, text: string, cancellationToken?: CancellationToken) {
-        return await this.writeFilePossiblyAsync(/*sync*/ false, file, text, cancellationToken);
+    public writeFile(file: string, text: string, cancelable?: Cancelable): Promise<void>;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public writeFile(file: string, text: string, cancelable?: CancellationToken | Cancelable): Promise<void>;
+    public async writeFile(file: string, text: string, cancelable?: CancellationToken | Cancelable) {
+        return await this.writeFilePossiblyAsync(/*sync*/ false, file, text, toCancelToken(cancelable));
     }
 
-    public writeFileSync(file: string, text: string, cancellationToken?: CancellationToken) {
-        this.writeFilePossiblyAsync(/*sync*/ true, file, text, cancellationToken);
+    public writeFileSync(file: string, text: string, cancelable?: Cancelable): void;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public writeFileSync(file: string, text: string, cancelable?: CancellationToken | Cancelable): void;
+    public writeFileSync(file: string, text: string, cancelable?: CancellationToken | Cancelable) {
+        this.writeFilePossiblyAsync(/*sync*/ true, file, text, toCancelToken(cancelable));
     }
 
-    private writeFilePossiblyAsync(sync: true, file: string, text: string, cancellationToken?: CancellationToken): void;
-    private writeFilePossiblyAsync(sync: boolean, file: string, text: string, cancellationToken?: CancellationToken): Promise<void> | void;
-    private writeFilePossiblyAsync(sync: boolean, file: string, text: string, cancellationToken?: CancellationToken) {
+    private writeFilePossiblyAsync(sync: true, file: string, text: string, cancelToken?: CancelToken): void;
+    private writeFilePossiblyAsync(sync: boolean, file: string, text: string, cancelToken?: CancelToken): Promise<void> | void;
+    private writeFilePossiblyAsync(sync: boolean, file: string, text: string, cancelToken?: CancelToken) {
         const writeFile = sync ? this.writeFileSyncCallback : this.writeFileCallback;
         if (!writeFile) throw new Error("Operation cannot be completed synchronously");
 
         performance.mark("ioWrite");
         file = getLocalPath(file);
         if (isUri(file)) throw new Error("Cannot write to a non-file URI.");
-        const result = writeFile(file, text, cancellationToken);
+        const result = Promise.resolve(writeFile(file, text, wrapCancelToken(cancelToken)));
         return typeof result === "object" ? promiseFinally(result, endIOWrite) : endIOWrite();
     }
 
-    public async getSourceFile(file: string, cancellationToken?: CancellationToken) {
-        return this.getSourceFilePossiblyAsync(/*sync*/ false, file, cancellationToken);
+    public getSourceFile(file: string, cancelable?: Cancelable): Promise<SourceFile | undefined>;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public getSourceFile(file: string, cancelable?: CancellationToken | Cancelable): Promise<SourceFile | undefined>;
+    public async getSourceFile(file: string, cancelable?: CancellationToken | Cancelable) {
+        return this.getSourceFilePossiblyAsync(/*sync*/ false, file, toCancelToken(cancelable));
     }
 
-    public getSourceFileSync(file: string, cancellationToken?: CancellationToken) {
-        return this.getSourceFilePossiblyAsync(/*sync*/ true, file, cancellationToken);
+    public getSourceFileSync(file: string, cancelable?: Cancelable): SourceFile | undefined;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public getSourceFileSync(file: string, cancelable?: CancellationToken | Cancelable): SourceFile | undefined;
+    public getSourceFileSync(file: string, cancelable?: CancellationToken | Cancelable) {
+        return this.getSourceFilePossiblyAsync(/*sync*/ true, file, toCancelToken(cancelable));
     }
 
-    private getSourceFilePossiblyAsync(sync: true, file: string, cancellationToken?: CancellationToken): SourceFile | undefined;
-    private getSourceFilePossiblyAsync(sync: boolean, file: string, cancellationToken?: CancellationToken): Promise<SourceFile | undefined> | SourceFile | undefined;
-    private getSourceFilePossiblyAsync(sync: boolean, file: string, cancellationToken?: CancellationToken) {
+    private getSourceFilePossiblyAsync(sync: true, file: string, cancelToken?: CancelToken): SourceFile | undefined;
+    private getSourceFilePossiblyAsync(sync: boolean, file: string, cancelToken?: CancelToken): Promise<SourceFile | undefined> | SourceFile | undefined;
+    private getSourceFilePossiblyAsync(sync: boolean, file: string, cancelToken?: CancelToken) {
         return pipe(
-            sync ? this.readFileSync(file, cancellationToken) : this.readFile(file, cancellationToken),
-            result => typeof result === "string" ? this.parseSourceFile(file, result, cancellationToken) : undefined);
+            sync ? this.readFileSync(file, cancelToken) : this.readFile(file, cancelToken),
+            result => typeof result === "string" ? this.parseSourceFile(file, result, cancelToken) : undefined);
     }
 }
 
@@ -367,7 +458,7 @@ export class SingleFileHost extends Host {
         super({ useBuiltinGrammars: false });
         this.file = file;
         this.content = content;
-        this.hostFallback = this.hostFallback;
+        this.hostFallback = hostFallback;
     }
 
     protected get parser() {
@@ -396,36 +487,54 @@ export class SingleFileHost extends Host {
             super.resolveFile(file, referer);
     }
 
-    public async readFile(file: string, cancellationToken?: CancellationToken): Promise<string | undefined> {
+    public readFile(file: string, cancelable?: Cancelable): Promise<string | undefined>;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public readFile(file: string, cancelable?: CancellationToken | Cancelable): Promise<string | undefined>;
+    public async readFile(file: string, cancelable?: CancellationToken | Cancelable): Promise<string | undefined> {
         if (file === this.file) return this.content;
-        if (this.hostFallback) return this.hostFallback.readFile(file, cancellationToken);
+        if (this.hostFallback) return this.hostFallback.readFile(file, cancelable);
         throw new Error(`File '${file}' cannot be read without a fallback host.`);
     }
 
-    public readFileSync(file: string, cancellationToken?: CancellationToken): string | undefined {
+    public readFileSync(file: string, cancelable?: Cancelable): string | undefined;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public readFileSync(file: string, cancelable?: CancellationToken | Cancelable): string | undefined;
+    public readFileSync(file: string, cancelable?: CancellationToken | Cancelable): string | undefined {
         if (file === this.file) return this.content;
-        if (this.hostFallback) return this.hostFallback.readFileSync(file, cancellationToken);
+        if (this.hostFallback) return this.hostFallback.readFileSync(file, cancelable);
         throw new Error(`File '${file}' cannot be read without a fallback host.`);
     }
 
-    public async writeFile(file: string, text: string, cancellationToken?: CancellationToken) {
-        if (this.hostFallback) return this.hostFallback.writeFile(file, text, cancellationToken);
+    public writeFile(file: string, text: string, cancelable?: Cancelable): Promise<void>;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public writeFile(file: string, text: string, cancelable?: CancellationToken | Cancelable): Promise<void>;
+    public async writeFile(file: string, text: string, cancelable?: CancellationToken | Cancelable) {
+        if (this.hostFallback) return this.hostFallback.writeFile(file, text, cancelable);
         throw new Error(`Cannot write file without a fallback host.`);
     }
 
-    public writeFileSync(file: string, text: string, cancellationToken?: CancellationToken) {
-        if (this.hostFallback) return this.hostFallback.writeFileSync(file, text, cancellationToken);
+    public writeFileSync(file: string, text: string, cancelable?: Cancelable): void;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public writeFileSync(file: string, text: string, cancelable?: CancellationToken | Cancelable): void;
+    public writeFileSync(file: string, text: string, cancelable?: CancellationToken | Cancelable) {
+        if (this.hostFallback) return this.hostFallback.writeFileSync(file, text, cancelable);
         throw new Error(`Cannot write file without a fallback host.`);
     }
 
-    public async getSourceFile(file: string, cancellationToken?: CancellationToken) {
-        return file !== this.file && this.hostFallback ? this.hostFallback.getSourceFile(file, cancellationToken) :
-            super.getSourceFile(file, cancellationToken);
+    public getSourceFile(file: string, cancelable?: Cancelable): Promise<SourceFile | undefined>;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public getSourceFile(file: string, cancelable?: CancellationToken | Cancelable): Promise<SourceFile | undefined>;
+    public async getSourceFile(file: string, cancelable?: CancellationToken | Cancelable) {
+        return file !== this.file && this.hostFallback ? this.hostFallback.getSourceFile(file, cancelable) :
+            super.getSourceFile(file, cancelable);
     }
 
-    public getSourceFileSync(file: string, cancellationToken?: CancellationToken) {
-        return file !== this.file && this.hostFallback ? this.hostFallback.getSourceFileSync(file, cancellationToken) :
-            super.getSourceFileSync(file, cancellationToken);
+    public getSourceFileSync(file: string, cancelable?: Cancelable): SourceFile | undefined;
+    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+    public getSourceFileSync(file: string, cancelable?: CancellationToken | Cancelable): SourceFile | undefined;
+    public getSourceFileSync(file: string, cancelable?: CancellationToken | Cancelable) {
+        return file !== this.file && this.hostFallback ? this.hostFallback.getSourceFileSync(file, cancelable) :
+            super.getSourceFileSync(file, cancelable);
     }
 
     protected createParser() {

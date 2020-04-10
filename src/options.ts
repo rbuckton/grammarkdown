@@ -1,5 +1,21 @@
+/*!
+ *  Copyright 2015 Ron Buckton (rbuckton@chronicles.org)
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 import { readFileSync } from "fs";
-import { DictionaryLike, mapFromObject } from "./core";
+import { mapFromObject } from "./core";
 import { CharacterCodes } from "./tokens";
 
 export enum NewLineKind {
@@ -100,15 +116,11 @@ export class UsageWriter {
     private margin: number;
     private padding: number;
     private remainder: number;
-    private marginText: string;
-    private paddingText: string;
 
     constructor(margin: number, padding: number) {
         this.margin = margin;
         this.padding = padding;
         this.remainder = 120 - margin - padding;
-        this.marginText = padRight("", margin);
-        this.paddingText = padRight("", padding);
     }
 
     public writeOption(left: string | undefined, right: string | undefined) {
@@ -207,8 +219,6 @@ export function usage(options: KnownOptions, margin: number = 0, printHeader?: (
 
     knownOptions.sort(compareKnownOptions);
 
-    const descriptionSize = 120 - margin;
-    const marginText = padRight("", margin);
     for (const option of knownOptions) {
         let left = " ";
         if (option.shortName) {
@@ -226,11 +236,6 @@ export function usage(options: KnownOptions, margin: number = 0, printHeader?: (
         left = padRight(left, margin);
         writer.writeOption(left, option.description);
     }
-}
-
-function padLeft(text: string, size: number, char: string = " ") {
-    while (text.length < size) text = char + text;
-    return text;
 }
 
 function padRight(text: string, size: number, char: string = " ") {

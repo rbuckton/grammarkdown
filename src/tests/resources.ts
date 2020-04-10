@@ -1,7 +1,23 @@
+/*!
+ *  Copyright 2015 Ron Buckton (rbuckton@chronicles.org)
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 import { readdirSync, statSync, existsSync, readFileSync } from "fs";
-import { resolve, extname, join, posix } from "path";
+import { resolve, extname, posix } from "path";
 import { Host, HostOptions } from "../host";
-import { CancellationToken } from "prex";
+import { Cancelable } from "@esfx/cancelable";
 
 let grammarFiles: TestFile[];
 
@@ -34,12 +50,12 @@ export class TestFileHost extends Host {
         return this.isTestFile(file) ? file : super.resolveFile(file, referer);
     }
 
-    async readFile(file: string, cancellationToken?: CancellationToken) {
-        return this.isTestFile(file) ? this.file.content : super.readFile(file, cancellationToken);
+    async readFile(file: string, cancelable?: Cancelable) {
+        return this.isTestFile(file) ? this.file.content : super.readFile(file, cancelable);
     }
 
-    readFileSync(file: string, cancellationToken?: CancellationToken) {
-        return this.isTestFile(file) ? this.file.content : super.readFileSync(file, cancellationToken);
+    readFileSync(file: string, cancelable?: Cancelable) {
+        return this.isTestFile(file) ? this.file.content : super.readFileSync(file, cancelable);
     }
 }
 
