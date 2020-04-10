@@ -1,3 +1,0 @@
-/// assertions/constraints.grammar:
-assertions/constraints.grammar(4,4): error GM1001: 'lookahead', 'lexical', 'no', '~', or '+' expected.
-assertions/constraints.grammar(5,12): error GM1001: 'lookahead', 'lexical', 'no', '~', or '+' expected.
