@@ -1,6 +1,6 @@
 {
   "name": "grammarkdown",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Markdown-like DSL for defining syntactic grammars for programming languages.",
   "license": "Apache-2.0",
   "keywords": [
@@ -54,7 +54,7 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
-    "prex": "^0.4.2",
+    "prex": "^0.4.7",
     "@esfx/async-canceltoken": "^1.0.0-pre.13",
     "@esfx/cancelable": "^1.0.0-pre.13"
   }

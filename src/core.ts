@@ -297,18 +297,11 @@ function getEnumMembers(enumObject: any): [number, string][] {
     return enumObject[enumMembers] = stableSort<[number, string]>(result, (x, y) => compare(x[0], y[0]));
 }
 
-export function toCancelToken(cancelable: Cancelable | CancellationToken): CancelToken;
-export function toCancelToken(cancelable: Cancelable | CancellationToken | null | undefined): CancelToken | undefined;
-export function toCancelToken(cancelable: Cancelable | CancellationToken | null | undefined) {
+export function toCancelToken(cancelable: Cancelable): CancelToken;
+export function toCancelToken(cancelable: Cancelable | null | undefined): CancelToken | undefined;
+export function toCancelToken(cancelable: Cancelable | null | undefined) {
     if (Cancelable.hasInstance(cancelable)) {
         return CancelToken.from(cancelable);
-    }
-    else if (cancelable) {
-        if (cancelable.cancellationRequested) return CancelToken.canceled;
-        if (!cancelable.canBeCanceled) return CancelToken.none;
-        const source = CancelToken.source();
-        cancelable.register(() => source.cancel());
-        return source.token;
     }
 }
 
