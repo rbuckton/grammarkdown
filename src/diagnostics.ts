@@ -48,6 +48,7 @@ export const Diagnostics = makeDiagnostics({
     Production_0_does_not_have_a_parameter_named_1_: { code: 2004, message: "Production '{0}' does not have a parameter named '{1}'." },
     Production_0_is_missing_parameter_1_All_definitions_of_production_0_must_specify_the_same_formal_parameters: { code: 2006, message: "Production '{0}' is missing parameter '{1}'. All definitions of production '{0}' must specify the same formal parameters." },
     There_is_no_argument_given_for_parameter_0_: { code: 2007, message: "There is no argument given for parameter '{0}'." },
+    Parameter_0_is_unused: { code: 2008, message: "Parameter '{0}' is unused." }
 });
 
 export interface DiagnosticInfo {

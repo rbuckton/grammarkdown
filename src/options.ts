@@ -35,6 +35,7 @@ export interface CompilerOptions {
     noEmit?: boolean;
     noEmitOnError?: boolean;
     noStrictParametricProductions?: boolean;
+    noUnusedParameters?: boolean;
     format?: EmitFormat;
     out?: string;
     emitLinks?: boolean;
