@@ -1,0 +1,20 @@
+// https://github.com/rbuckton/grammarkdown/issues/46
+@define noUnusedParameters true
+
+Foo[A] ::
+  Bar[+A]
+
+Bar[A] ::
+  `x`
+
+Baz[A] ::
+  `x`
+
+Baz[A] ::
+  [~A] `y`
+
+Quxx[A] ::
+  `x`
+
+Quxx[A] ::
+  Baz[?A]

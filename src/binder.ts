@@ -18,7 +18,7 @@ import { CancellationToken } from "prex";
 import { Cancelable } from "@esfx/cancelable";
 import { SyntaxKind } from "./tokens";
 import { Symbol, SymbolKind, SymbolTable } from "./symbols";
-import { SourceFile, Production, Parameter, Node, Declaration } from "./nodes";
+import { SourceFile, Production, Parameter, Node, Declaration, Identifier } from "./nodes";
 import { toCancelToken } from "./core";
 
 export class BindingTable {
@@ -55,6 +55,11 @@ export class BindingTable {
         }
 
         return undefined;
+    }
+
+    public getSourceFile(node: Node | undefined): SourceFile | undefined {
+        return node?.kind === SyntaxKind.SourceFile ? node as SourceFile :
+            this.getAncestor(node, SyntaxKind.SourceFile) as SourceFile | undefined;
     }
 
     public hasSymbol(node: Node | undefined): boolean {
@@ -154,7 +159,7 @@ export class BindingTable {
     }
 
     /* @internal */
-    public setSymbol(node: Node | undefined, symbol: Symbol | undefined): void {
+    public setSymbol(node: Identifier | undefined, symbol: Symbol | undefined): void {
         if (node && symbol) {
             this.setSymbolForNode(node, symbol);
             this.addReferenceToSymbol(symbol, node);

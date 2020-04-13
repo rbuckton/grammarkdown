@@ -67,6 +67,14 @@ import { toCancelToken } from "./core";
 // TODO: Check a Nonterminal as a call
 // TODO: Check all Productions to ensure they have the same parameters.
 
+interface NodeLinks {
+    hasResolvedSymbols?: boolean;
+}
+
+interface SymbolLinks {
+    isReferenced?: boolean;
+}
+
 export class Checker {
     private options: CompilerOptions | undefined;
     private checkedFileSet = new Set<string>();
@@ -75,8 +83,11 @@ export class Checker {
     private sourceFile!: SourceFile;
     private noChecks!: boolean;
     private noStrictParametricProductions!: boolean;
+    private noUnusedParameters!: boolean;
     private productionParametersByName!: Map<Production, Set<string>>;
     private cancelToken?: CancelToken;
+    private nodeLinks?: Map<Node, NodeLinks>;
+    private symbolLinks?: Map<Symbol, SymbolLinks>;
 
     constructor(options?: CompilerOptions) {
         this.options = options;
@@ -91,6 +102,7 @@ export class Checker {
         if (!this.checkedFileSet.has(sourceFile.filename)) {
             const savedNoStrictParametricProductions = this.noStrictParametricProductions;
             const savedNoChecks = this.noChecks;
+            const savedNoUnusedParameters = this.noUnusedParameters;
             const savedCancellationToken = this.cancelToken;
             const savedSourceFile = this.sourceFile;
             const savedProductionParametersByName = this.productionParametersByName;
@@ -100,8 +112,9 @@ export class Checker {
                 this.cancelToken = cancelToken;
                 this.sourceFile = sourceFile;
                 this.productionParametersByName = new Map<Production, Set<string>>();
-                this.noStrictParametricProductions = this.options && this.options.noStrictParametricProductions || false;
-                this.noChecks = this.options && this.options.noChecks || false;
+                this.noStrictParametricProductions = this.options?.noStrictParametricProductions ?? false;
+                this.noChecks = this.options?.noChecks ?? false;
+                this.noUnusedParameters = this.options?.noUnusedParameters ?? false;
 
                 this.bindings = new BindingTable();
                 this.bindings.copyFrom(bindings);
@@ -124,6 +137,7 @@ export class Checker {
             finally {
                 this.noStrictParametricProductions = savedNoStrictParametricProductions;
                 this.noChecks = savedNoChecks;
+                this.noUnusedParameters = savedNoUnusedParameters;
                 this.cancelToken = savedCancellationToken;
                 this.sourceFile = savedSourceFile;
                 this.productionParametersByName = savedProductionParametersByName;
@@ -147,11 +161,15 @@ export class Checker {
             const nodeKeyText = nodeKey.text;
             switch (nodeKeyText) {
                 case "noStrictParametricProductions":
-                    this.noStrictParametricProductions = node.valueToken ? node.valueToken.kind === SyntaxKind.TrueKeyword : false;
+                    this.noStrictParametricProductions = node.valueToken?.kind === SyntaxKind.TrueKeyword;
+                    break;
+
+                case "noUnusedParameters":
+                    this.noUnusedParameters = node.valueToken?.kind === SyntaxKind.TrueKeyword;
                     break;
 
                 default:
-                    this.diagnostics.reportNode(this.sourceFile, nodeKey, Diagnostics.Cannot_find_name_0_, nodeKeyText);
+                    this.reportError(nodeKey, Diagnostics.Cannot_find_name_0_, nodeKeyText);
                     break;
             }
         }
@@ -159,11 +177,11 @@ export class Checker {
 
     private checkGrammarDefine(node: Define) {
         if (!node.key || !node.key.text) {
-            return this.reportGrammarError(node.defineKeyword.end, Diagnostics._0_expected, tokenToString(SyntaxKind.Identifier));
+            return this.reportGrammarError(node, node.defineKeyword.end, Diagnostics._0_expected, tokenToString(SyntaxKind.Identifier));
         }
 
         if (!node.valueToken) {
-            return this.reportGrammarError(node.key.end, Diagnostics._0_expected, formatList([SyntaxKind.TrueKeyword, SyntaxKind.FalseKeyword]));
+            return this.reportGrammarError(node, node.key.end, Diagnostics._0_expected, formatList([SyntaxKind.TrueKeyword, SyntaxKind.FalseKeyword]));
         }
     }
 
@@ -204,6 +222,40 @@ export class Checker {
                     break;
             }
         }
+
+        this.getNodeLinks(node, /*create*/ true).hasResolvedSymbols = true;
+
+        if (this.noUnusedParameters) {
+            const symbol = this.bindings.getSymbol(node);
+            if (symbol) {
+                for (const decl of this.bindings.getDeclarations(symbol)) {
+                    if (decl.kind === SyntaxKind.Production) {
+                        this.resolveProduction(decl);
+                    }
+                }
+            }
+            if (node.parameterList?.elements) {
+                for (const param of node.parameterList.elements) {
+                    const symbol = this.bindings.getSymbol(param);
+                    if (symbol && !this.getSymbolLinks(symbol)?.isReferenced) {
+                        this.reportError(param, Diagnostics.Parameter_0_is_unused, param.name.text);
+                    }
+                }
+            }
+        }
+    }
+
+    private resolveProduction(node: Production) {
+        if (!this.getNodeLinks(node)?.hasResolvedSymbols) {
+            this.getNodeLinks(node, /*create*/ true).hasResolvedSymbols = true;
+        }
+        const visitNode = (node: Node) => {
+            if (node.kind === SyntaxKind.Identifier) {
+                this.resolveIdentifier(node as Identifier);
+            }
+            node.forEachChild(visitNode);
+        };
+        node.forEachChild(visitNode);
     }
 
     private checkProductionNonStrict(node: Production) {
@@ -260,7 +312,7 @@ export class Checker {
                 const firstProductionParameterName = firstProductionParameter.name;
                 const firstProductionParameterNameText = firstProductionParameterName.text;
                 if (firstProductionParameterNameText && !thisProductionParameterNames.has(firstProductionParameterNameText)) {
-                    this.diagnostics.reportNode(this.sourceFile, thisProductionName, Diagnostics.Production_0_is_missing_parameter_1_All_definitions_of_production_0_must_specify_the_same_formal_parameters, thisProductionNameText, firstProductionParameterNameText);
+                    this.reportError(thisProductionName, Diagnostics.Production_0_is_missing_parameter_1_All_definitions_of_production_0_must_specify_the_same_formal_parameters, thisProductionNameText, firstProductionParameterNameText);
                 }
             }
         }
@@ -271,7 +323,7 @@ export class Checker {
                 const thisProductionParameterName = thisProductionParameter.name;
                 const thisProductionParameterNameText = thisProductionParameterName.text;
                 if (thisProductionParameterNameText && !firstProductionParameterNames.has(thisProductionParameterNameText)) {
-                    this.diagnostics.reportNode(this.sourceFile, firstProduction, Diagnostics.Production_0_is_missing_parameter_1_All_definitions_of_production_0_must_specify_the_same_formal_parameters, thisProductionNameText, thisProductionParameterNameText);
+                    this.reportError(firstProduction, Diagnostics.Production_0_is_missing_parameter_1_All_definitions_of_production_0_must_specify_the_same_formal_parameters, thisProductionNameText, thisProductionParameterNameText);
                 }
             }
         }
@@ -279,11 +331,11 @@ export class Checker {
 
     private checkGrammarProduction(node: Production): boolean {
         if (!node.colonToken) {
-            return this.reportGrammarError(node.parameterList ? node.parameterList.end : node.name.end, Diagnostics._0_expected, tokenToString(SyntaxKind.ColonToken));
+            return this.reportGrammarError(node, node.parameterList ? node.parameterList.end : node.name.end, Diagnostics._0_expected, tokenToString(SyntaxKind.ColonToken));
         }
 
         if (!node.body) {
-            return this.reportGrammarError(node.colonToken.end, Diagnostics._0_expected, formatList([
+            return this.reportGrammarError(node, node.colonToken.end, Diagnostics._0_expected, formatList([
                 SyntaxKind.OneOfList,
                 SyntaxKind.RightHandSide,
             ]));
@@ -296,7 +348,7 @@ export class Checker {
                 break;
 
             default:
-                return this.reportGrammarError(node.colonToken.end, Diagnostics._0_expected, formatList([
+                return this.reportGrammarError(node, node.colonToken.end, Diagnostics._0_expected, formatList([
                     SyntaxKind.OneOfList,
                     SyntaxKind.RightHandSide,
                 ]));
@@ -317,7 +369,7 @@ export class Checker {
 
     private checkGrammarParameterList(node: ParameterList) {
         if (!node.openParenToken) {
-            return this.reportGrammarError(node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBracketToken));
+            return this.reportGrammarError(node, node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBracketToken));
         }
 
         if (node.openParenToken.kind === SyntaxKind.OpenParenToken) {
@@ -325,11 +377,11 @@ export class Checker {
         }
 
         if (!node.elements) {
-            return this.reportGrammarError(node.openParenToken.end, Diagnostics._0_expected, tokenToString(SyntaxKind.Identifier));
+            return this.reportGrammarError(node, node.openParenToken.end, Diagnostics._0_expected, tokenToString(SyntaxKind.Identifier));
         }
 
         if (!node.closeParenToken) {
-            return this.reportGrammarError(node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.CloseBracketToken));
+            return this.reportGrammarError(node, node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.CloseBracketToken));
         }
     }
 
@@ -346,7 +398,7 @@ export class Checker {
                 const text = terminal.text;
                 if (text) {
                     if (terminalSet.has(text)) {
-                        this.diagnostics.reportNode(this.sourceFile, terminal, Diagnostics.Duplicate_terminal_0_, text);
+                        this.reportError(terminal, Diagnostics.Duplicate_terminal_0_, text);
                     }
                     else {
                         terminalSet.add(text);
@@ -359,19 +411,19 @@ export class Checker {
 
     private checkGrammarOneOfList(node: OneOfList): boolean {
         if (!node.oneKeyword) {
-            return this.reportGrammarError(node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OneKeyword));
+            return this.reportGrammarError(node, node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OneKeyword));
         }
 
         if (!node.ofKeyword) {
-            return this.reportGrammarError(node.oneKeyword.end, Diagnostics._0_expected, tokenToString(SyntaxKind.OfKeyword));
+            return this.reportGrammarError(node, node.oneKeyword.end, Diagnostics._0_expected, tokenToString(SyntaxKind.OfKeyword));
         }
 
         if (!node.terminals) {
-            return this.reportGrammarError(node.ofKeyword.end, Diagnostics._0_expected, tokenToString(SyntaxKind.Terminal));
+            return this.reportGrammarError(node, node.ofKeyword.end, Diagnostics._0_expected, tokenToString(SyntaxKind.Terminal));
         }
 
         // if (node.openIndentToken && !node.closeIndentToken) {
-        //     return this.reportGrammarError(node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.DedentToken));
+        //     return this.reportGrammarError(node, node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.DedentToken));
         // }
 
         return false;
@@ -401,7 +453,7 @@ export class Checker {
         }
 
         // if (!node.closeIndentToken) {
-        //     return this.reportGrammarError(node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.DedentToken));
+        //     return this.reportGrammarError(node, node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.DedentToken));
         // }
 
         return false;
@@ -450,11 +502,11 @@ export class Checker {
 
     private checkGrammarConstraints(node: Constraints): boolean {
         if (!node.elements) {
-            return this.reportGrammarError(node.openBracketToken.end, Diagnostics._0_expected, formatList([SyntaxKind.TildeToken, SyntaxKind.PlusToken]));
+            return this.reportGrammarError(node, node.openBracketToken.end, Diagnostics._0_expected, formatList([SyntaxKind.TildeToken, SyntaxKind.PlusToken]));
         }
 
         if (!node.closeBracketToken) {
-            return this.reportGrammarError(node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.CloseBracketToken));
+            return this.reportGrammarError(node, node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.CloseBracketToken));
         }
 
         return false;
@@ -471,7 +523,7 @@ export class Checker {
 
     private checkGrammarSymbolSpan(node: SymbolSpan): boolean {
         if (!node.symbol) {
-            return this.reportGrammarError(node.getStart(this.sourceFile), Diagnostics._0_expected, formatList([
+            return this.reportGrammarError(node, node.getStart(this.sourceFile), Diagnostics._0_expected, formatList([
                 SyntaxKind.UnicodeCharacterLiteral,
                 SyntaxKind.Terminal,
                 SyntaxKind.Identifier,
@@ -482,7 +534,7 @@ export class Checker {
 
         if (node.next) {
             if (node.symbol.kind === SyntaxKind.Prose) {
-                return this.reportGrammarError(node.symbol.end, Diagnostics._0_expected, "«line terminator»");
+                return this.reportGrammarError(node, node.symbol.end, Diagnostics._0_expected, "«line terminator»");
             }
         }
 
@@ -517,7 +569,7 @@ export class Checker {
 
     private checkGrammarSymbolSpanRest(node: SymbolSpan): boolean {
         if (!node.symbol) {
-            return this.reportGrammarError(node.getStart(this.sourceFile), Diagnostics._0_expected, formatList([
+            return this.reportGrammarError(node, node.getStart(this.sourceFile), Diagnostics._0_expected, formatList([
                 SyntaxKind.UnicodeCharacterLiteral,
                 SyntaxKind.Terminal,
                 SyntaxKind.Identifier,
@@ -527,11 +579,11 @@ export class Checker {
         }
 
         if (node.symbol.kind === SyntaxKind.Prose) {
-            return this.reportGrammarError(node.symbol.getStart(this.sourceFile), Diagnostics._0_expected, "«line terminator»");
+            return this.reportGrammarError(node, node.symbol.getStart(this.sourceFile), Diagnostics._0_expected, "«line terminator»");
         }
 
         if (node.next && node.next.symbol.kind === SyntaxKind.Prose) {
-            return this.reportGrammarError(node.symbol.end, Diagnostics._0_expected, "«line terminator»");
+            return this.reportGrammarError(node, node.symbol.end, Diagnostics._0_expected, "«line terminator»");
         }
 
         return false;
@@ -576,7 +628,7 @@ export class Checker {
 
     private checkGrammarAssertionHead(node: Assertion): boolean {
         if (!node.openBracketToken) {
-            return this.reportGrammarError(node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBracketToken));
+            return this.reportGrammarError(node, node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBracketToken));
         }
 
         return false;
@@ -584,7 +636,7 @@ export class Checker {
 
     private checkGrammarAssertionTail(node: Assertion): boolean {
         if (!node.closeBracketToken) {
-            return this.reportGrammarError(node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.CloseBracketToken));
+            return this.reportGrammarError(node, node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.CloseBracketToken));
         }
 
         return false;
@@ -596,7 +648,7 @@ export class Checker {
 
     private checkGrammarEmptyAssertion(node: EmptyAssertion) {
         if (!node.emptyKeyword) {
-            return this.reportGrammarError(node.openBracketToken.end, Diagnostics._0_expected, tokenToString(SyntaxKind.EmptyKeyword, /*quoted*/ true));
+            return this.reportGrammarError(node, node.openBracketToken.end, Diagnostics._0_expected, tokenToString(SyntaxKind.EmptyKeyword, /*quoted*/ true));
         }
     }
 
@@ -655,13 +707,13 @@ export class Checker {
                 case SyntaxKind.EqualsEqualsToken:
                 case SyntaxKind.ExclamationEqualsToken:
                 case SyntaxKind.NotEqualToToken:
-                    return this.reportGrammarError(node.operatorToken.end, Diagnostics._0_expected, tokenToString(SyntaxKind.Terminal));
+                    return this.reportGrammarError(node, node.operatorToken.end, Diagnostics._0_expected, tokenToString(SyntaxKind.Terminal));
 
                 case SyntaxKind.LessThanMinusToken:
                 case SyntaxKind.ElementOfToken:
                 case SyntaxKind.LessThanExclamationToken:
                 case SyntaxKind.NotAnElementOfToken:
-                    return this.reportGrammarError(node.operatorToken.end, Diagnostics._0_expected, formatList([SyntaxKind.OpenBraceToken, SyntaxKind.Nonterminal]));
+                    return this.reportGrammarError(node, node.operatorToken.end, Diagnostics._0_expected, formatList([SyntaxKind.OpenBraceToken, SyntaxKind.Nonterminal]));
             }
         }
 
@@ -724,11 +776,11 @@ export class Checker {
 
     private checkGrammarSymbolSet(node: SymbolSet): boolean {
         if (!node.openBraceToken) {
-            return this.reportGrammarError(node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBraceToken));
+            return this.reportGrammarError(node, node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBraceToken));
         }
 
         if (!node.elements) {
-            return this.reportGrammarError(node.openBraceToken.end, Diagnostics._0_expected, formatList([
+            return this.reportGrammarError(node, node.openBraceToken.end, Diagnostics._0_expected, formatList([
                 SyntaxKind.Identifier,
                 SyntaxKind.Terminal,
                 SyntaxKind.UnicodeCharacterLiteral
@@ -736,7 +788,7 @@ export class Checker {
         }
 
         if (!node.closeBraceToken) {
-            return this.reportGrammarError(node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.CloseBraceToken));
+            return this.reportGrammarError(node, node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.CloseBraceToken));
         }
 
         return false;
@@ -752,15 +804,15 @@ export class Checker {
 
     private checkGrammarLexicalGoalAssertion(node: LexicalGoalAssertion): boolean {
         if (!node.lexicalKeyword) {
-            return this.reportGrammarError(node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.LexicalKeyword));
+            return this.reportGrammarError(node, node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.LexicalKeyword));
         }
 
         if (!node.goalKeyword) {
-            return this.reportGrammarError(node.lexicalKeyword.end, Diagnostics._0_expected, tokenToString(SyntaxKind.GoalKeyword));
+            return this.reportGrammarError(node, node.lexicalKeyword.end, Diagnostics._0_expected, tokenToString(SyntaxKind.GoalKeyword));
         }
 
         if (!node.symbol) {
-            return this.reportGrammarError(node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.Identifier));
+            return this.reportGrammarError(node, node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.Identifier));
         }
 
         return false;
@@ -778,11 +830,11 @@ export class Checker {
 
     private checkGrammarNoSymbolHereAssertion(node: NoSymbolHereAssertion): boolean {
         if (!node.noKeyword) {
-            return this.reportGrammarError(node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.NoKeyword));
+            return this.reportGrammarError(node, node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.NoKeyword));
         }
 
         if (!node.symbols || node.symbols.length <= 0) {
-            return this.reportGrammarError(node.noKeyword.end, Diagnostics._0_expected, formatList([
+            return this.reportGrammarError(node, node.noKeyword.end, Diagnostics._0_expected, formatList([
                 SyntaxKind.Identifier,
                 SyntaxKind.Terminal,
                 SyntaxKind.UnicodeCharacterLiteral
@@ -790,7 +842,7 @@ export class Checker {
         }
 
         if (!node.hereKeyword) {
-            return this.reportGrammarError(node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.HereKeyword));
+            return this.reportGrammarError(node, node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.HereKeyword));
         }
 
         return false;
@@ -808,7 +860,7 @@ export class Checker {
 
     private checkGrammarProseAssertionHead(node: Assertion): boolean {
         if (!node.openBracketToken) {
-            return this.reportGrammarError(node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBracketGreaterThanToken));
+            return this.reportGrammarError(node, node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBracketGreaterThanToken));
         }
 
         return false;
@@ -844,7 +896,7 @@ export class Checker {
             return;
         }
 
-        this.reportGrammarError(node.openBracketToken.end, Diagnostics._0_expected, formatList([
+        this.reportGrammarError(node, node.openBracketToken.end, Diagnostics._0_expected, formatList([
             SyntaxKind.LookaheadKeyword,
             SyntaxKind.LexicalKeyword,
             SyntaxKind.NoKeyword,
@@ -870,15 +922,15 @@ export class Checker {
 
     private checkGrammarButNotSymbol(node: ButNotSymbol): boolean {
         if (!node.butKeyword) {
-            return this.reportGrammarErrorForNodeOrPos(node.notKeyword || node.right, node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.ButKeyword));
+            return this.reportGrammarErrorForNodeOrPos(node, node.notKeyword || node.right, node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.ButKeyword));
         }
 
         if (!node.notKeyword) {
-            return this.reportGrammarErrorForNodeOrPos(node.right, node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.NotKeyword));
+            return this.reportGrammarErrorForNodeOrPos(node, node.right, node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.NotKeyword));
         }
 
         if (!node.right) {
-            return this.reportGrammarError(node.end, Diagnostics._0_expected, formatList([
+            return this.reportGrammarError(node, node.end, Diagnostics._0_expected, formatList([
                 SyntaxKind.Identifier,
                 SyntaxKind.Terminal,
                 SyntaxKind.UnicodeCharacterLiteral,
@@ -910,15 +962,15 @@ export class Checker {
 
     private checkGrammarOneOfSymbol(node: OneOfSymbol): boolean {
         if (!node.oneKeyword) {
-            return this.reportGrammarError(node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OneKeyword));
+            return this.reportGrammarError(node, node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OneKeyword));
         }
 
         if (!node.ofKeyword) {
-            return this.reportGrammarError(node.oneKeyword.end, Diagnostics._0_expected, tokenToString(SyntaxKind.OfKeyword));
+            return this.reportGrammarError(node, node.oneKeyword.end, Diagnostics._0_expected, tokenToString(SyntaxKind.OfKeyword));
         }
 
         if (!node.symbols || node.symbols.length <= 0) {
-            return this.reportGrammarError(node.end, Diagnostics._0_expected, formatList([
+            return this.reportGrammarError(node, node.end, Diagnostics._0_expected, formatList([
                 SyntaxKind.Identifier,
                 SyntaxKind.Terminal,
                 SyntaxKind.UnicodeCharacterLiteral
@@ -990,7 +1042,7 @@ export class Checker {
             return this.reportGrammarErrorForNode(node.right || node, Diagnostics._0_expected, tokenToString(SyntaxKind.ThroughKeyword));
         }
         if (!node.right) {
-            return this.reportGrammarError(node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.UnicodeCharacterLiteral));
+            return this.reportGrammarError(node, node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.UnicodeCharacterLiteral));
         }
         return false;
     }
@@ -1055,13 +1107,13 @@ export class Checker {
                         const argumentNameText = argumentName.text;
                         if (argumentNameText) {
                             if (nameSet.has(argumentNameText)) {
-                                this.diagnostics.reportNode(this.sourceFile, argumentName, Diagnostics.Argument_0_cannot_be_specified_multiple_times, argumentNameText);
+                                this.reportError(argumentName, Diagnostics.Argument_0_cannot_be_specified_multiple_times, argumentNameText);
                             }
                             else {
                                 nameSet.add(argumentNameText);
                                 const parameterSymbol = this.resolveSymbol(production, argumentNameText, SymbolKind.Parameter);
                                 if (!parameterSymbol) {
-                                    this.diagnostics.reportNode(this.sourceFile, argumentName, Diagnostics.Production_0_does_not_have_a_parameter_named_1_, productionSymbol.name, argumentNameText);
+                                    this.reportError(argumentName, Diagnostics.Production_0_does_not_have_a_parameter_named_1_, productionSymbol.name, argumentNameText);
                                 }
                             }
                         }
@@ -1077,7 +1129,7 @@ export class Checker {
                     if (parameterName) {
                         const parameterNameText = parameterName.text;
                         if (parameterNameText && !nameSet.has(parameterNameText)) {
-                            this.diagnostics.reportNode(this.sourceFile, nonterminalName, Diagnostics.There_is_no_argument_given_for_parameter_0_, parameterNameText);
+                            this.reportError(nonterminalName, Diagnostics.There_is_no_argument_given_for_parameter_0_, parameterNameText);
                         }
                     }
                 }
@@ -1101,7 +1153,7 @@ export class Checker {
 
     private checkGrammarArgumentList(node: ArgumentList): boolean {
         if (!node.openParenToken) {
-            return this.reportGrammarError(node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBracketToken));
+            return this.reportGrammarError(node, node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBracketToken));
         }
 
         if (node.openParenToken.kind === SyntaxKind.OpenParenToken) {
@@ -1109,11 +1161,11 @@ export class Checker {
         }
 
         if (!node.elements) {
-            return this.reportGrammarError(node.openParenToken.end, Diagnostics._0_expected, tokenToString(SyntaxKind.Identifier));
+            return this.reportGrammarError(node, node.openParenToken.end, Diagnostics._0_expected, tokenToString(SyntaxKind.Identifier));
         }
 
         if (!node.closeParenToken) {
-            return this.reportGrammarError(node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.CloseBracketToken));
+            return this.reportGrammarError(node, node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.CloseBracketToken));
         }
 
         return false;
@@ -1128,7 +1180,7 @@ export class Checker {
         const parent = this.bindings.getParent(node);
         if (parent && parent.kind === SyntaxKind.Constraints) {
             if (!node.operatorToken) {
-                return this.reportGrammarError(node.getStart(this.sourceFile), Diagnostics._0_expected, formatList([SyntaxKind.PlusToken, SyntaxKind.TildeToken]));
+                return this.reportGrammarError(node, node.getStart(this.sourceFile), Diagnostics._0_expected, formatList([SyntaxKind.PlusToken, SyntaxKind.TildeToken]));
             }
             if (node.operatorToken.kind !== SyntaxKind.PlusToken
                 && node.operatorToken.kind !== SyntaxKind.TildeToken) {
@@ -1144,11 +1196,11 @@ export class Checker {
             }
 
             if (!node.operatorToken && !this.noStrictParametricProductions) {
-                return this.reportGrammarError(node.getStart(this.sourceFile), Diagnostics._0_expected, formatList([SyntaxKind.QuestionToken, SyntaxKind.PlusToken, SyntaxKind.TildeToken]));
+                return this.reportGrammarError(node, node.getStart(this.sourceFile), Diagnostics._0_expected, formatList([SyntaxKind.QuestionToken, SyntaxKind.PlusToken, SyntaxKind.TildeToken]));
             }
         }
         if (!node.name) {
-            return this.reportGrammarError(node.operatorToken ? node.operatorToken.end : node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.Identifier));
+            return this.reportGrammarError(node, node.operatorToken ? node.operatorToken.end : node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.Identifier));
         }
         return false;
     }
@@ -1162,40 +1214,55 @@ export class Checker {
         ]));
     }
 
-    private checkIdentifier(node: Identifier): Symbol | undefined {
-        this.checkGrammarIdentifier(node);
+    private markSymbolAsReferenced(symbol: Symbol | undefined) {
+        if (symbol) {
+            this.getSymbolLinks(symbol, /*create*/ true).isReferenced = true;
+        }
+    }
 
-        if (node.text) {
+    private resolveIdentifier(node: Identifier, reportErrors?: boolean): Symbol | undefined {
+        let symbol = reportErrors ? undefined : this.bindings.getSymbol(node);
+        if (!symbol && node.text) {
             const parent = this.bindings.getParent(node);
             if (parent) {
-                let symbol: Symbol | undefined;
                 switch (parent.kind) {
                     case SyntaxKind.Parameter:
-                        symbol = this.resolveSymbol(node, node.text, SymbolKind.Parameter);
-
-                        let declarationSymbol = this.bindings.getSymbol(parent);
-                        if (declarationSymbol !== symbol) {
-                            this.diagnostics.reportNode(this.sourceFile, node, Diagnostics.Duplicate_identifier_0_, node.text);
+                        if (!symbol) {
+                            symbol = this.resolveSymbol(node, node.text, SymbolKind.Parameter);
                         }
-
+                        if (reportErrors) {
+                            let declarationSymbol = this.bindings.getSymbol(parent);
+                            if (declarationSymbol !== symbol) {
+                                this.reportError(node, Diagnostics.Duplicate_identifier_0_, node.text);
+                            }
+                        }
+                        this.bindings.setSymbol(node, symbol);
                         return symbol;
 
                     case SyntaxKind.Production:
-                        return this.bindings.getSymbol(parent);
+                        symbol = this.bindings.getSymbol(parent);
+                        this.bindings.setSymbol(node, symbol);
+                        return symbol;
 
                     case SyntaxKind.LookaheadAssertion:
                     case SyntaxKind.Nonterminal:
-                        symbol = this.resolveSymbol(node, node.text, SymbolKind.Production, Diagnostics.Cannot_find_name_0_);
+                        if (!symbol) {
+                            symbol = this.resolveSymbol(node, node.text, SymbolKind.Production, reportErrors ? Diagnostics.Cannot_find_name_0_ : undefined);
+                            this.markSymbolAsReferenced(symbol);
+                        }
                         break;
 
                     case SyntaxKind.Argument:
                         const argument = <Argument>parent;
                         if (argument.operatorToken && argument.operatorToken.kind === SyntaxKind.QuestionToken) {
-                            symbol = this.resolveSymbol(node, node.text, SymbolKind.Parameter);
                             if (!symbol) {
-                                const production = <Production>this.bindings.getAncestor(argument, SyntaxKind.Production);
-                                this.diagnostics.reportNode(this.sourceFile, node, Diagnostics.Production_0_does_not_have_a_parameter_named_1_, production.name.text, node.text);
+                                symbol = this.resolveSymbol(node, node.text, SymbolKind.Parameter);
                             }
+                            if (!symbol && reportErrors) {
+                                const production = <Production>this.bindings.getAncestor(argument, SyntaxKind.Production);
+                                this.reportError(node, Diagnostics.Production_0_does_not_have_a_parameter_named_1_, production.name.text, node.text);
+                            }
+                            this.markSymbolAsReferenced(symbol);
                         }
                         else {
                             // get the symbol of the parameter of the target production
@@ -1204,9 +1271,11 @@ export class Checker {
                                 const productionSymbol = this.resolveSymbol(node, nonterminal.name.text, SymbolKind.Production);
                                 if (productionSymbol) {
                                     const production = <Production>this.bindings.getDeclarations(productionSymbol)[0];
-                                    symbol = this.resolveSymbol(production, node.text, SymbolKind.Parameter);
                                     if (!symbol) {
-                                        this.diagnostics.reportNode(this.sourceFile, node, Diagnostics.Production_0_does_not_have_a_parameter_named_1_, production.name.text, node.text);
+                                        symbol = this.resolveSymbol(production, node.text, SymbolKind.Parameter);
+                                    }
+                                    if (!symbol && reportErrors) {
+                                        this.reportError(node, Diagnostics.Production_0_does_not_have_a_parameter_named_1_, production.name.text, node.text);
                                     }
                                 }
                             }
@@ -1214,23 +1283,29 @@ export class Checker {
                                 const constraints = <Constraints | undefined>this.bindings.getAncestor(parent, SyntaxKind.Constraints);
                                 if (constraints) {
                                     const production = <Production>this.bindings.getAncestor(constraints, SyntaxKind.Production);
-                                    symbol = this.resolveSymbol(production, node.text, SymbolKind.Parameter);
                                     if (!symbol) {
-                                        this.diagnostics.reportNode(this.sourceFile, node, Diagnostics.Production_0_does_not_have_a_parameter_named_1_, production.name.text, node.text);
+                                        symbol = this.resolveSymbol(production, node.text, SymbolKind.Parameter);
+                                        this.markSymbolAsReferenced(symbol);
+                                    }
+                                    if (!symbol && reportErrors) {
+                                        this.reportError(node, Diagnostics.Production_0_does_not_have_a_parameter_named_1_, production.name.text, node.text);
                                     }
                                 }
                             }
                         }
-
                         break;
                 }
 
                 this.bindings.setSymbol(node, symbol);
-                return symbol;
             }
         }
 
-        return undefined;
+        return symbol;
+    }
+
+    private checkIdentifier(node: Identifier): Symbol | undefined {
+        this.checkGrammarIdentifier(node);
+        return this.resolveIdentifier(node, /*reportErrors*/ true);
     }
 
     private checkGrammarIdentifier(node: Identifier): boolean {
@@ -1247,29 +1322,67 @@ export class Checker {
     //     ]));
     // }
 
+    private getNodeLinks(node: Node, create: true): NodeLinks;
+    private getNodeLinks(node: Node, create?: boolean): NodeLinks | undefined;
+    private getNodeLinks(node: Node, create?: boolean) {
+        if (!this.nodeLinks) this.nodeLinks = new Map();
+        let links = this.nodeLinks.get(node);
+        if (!links) this.nodeLinks.set(node, links = {});
+        return links;
+    }
+
+    private getSymbolLinks(symbol: Symbol, create: true): SymbolLinks;
+    private getSymbolLinks(symbol: Symbol, create?: boolean): SymbolLinks | undefined;
+    private getSymbolLinks(symbol: Symbol, create?: boolean) {
+        if (!this.symbolLinks) this.symbolLinks = new Map();
+        let links = this.symbolLinks.get(symbol);
+        if (!links) this.symbolLinks.set(symbol, links = {});
+        return links;
+    }
+
     private resolveSymbol(location: Node, name: string, meaning: SymbolKind, diagnosticMessage?: Diagnostic): Symbol | undefined {
         const result = this.bindings.resolveSymbol(location, name, meaning);
         if (!result && diagnosticMessage) {
-            this.diagnostics.reportNode(this.sourceFile, location, diagnosticMessage, name);
+            this.reportError(location, diagnosticMessage, name);
         }
 
         return result;
     }
 
-    private reportGrammarError(pos: number, diagnosticMessage: Diagnostic, arg0?: any, arg1?: any, arg2?: any) {
-        this.diagnostics.report(pos, diagnosticMessage, arg0, arg1, arg2);
+    private reportError(location: Node, diagnosticMessage: Diagnostic, arg0?: any, arg1?: any, arg2?: any) {
+        const sourceFile = this.bindings.getSourceFile(location) ?? this.sourceFile;
+        if (sourceFile !== this.sourceFile) {
+            this.diagnostics.setSourceFile(sourceFile);
+            this.diagnostics.reportNode(sourceFile, location, diagnosticMessage, arg0, arg1, arg2);
+            this.diagnostics.setSourceFile(sourceFile);
+        }
+        else {
+            this.diagnostics.reportNode(sourceFile, location, diagnosticMessage, arg0, arg1, arg2);
+        }
+    }
+
+    private reportGrammarError(context: Node, pos: number, diagnosticMessage: Diagnostic, arg0?: any, arg1?: any, arg2?: any) {
+        const sourceFile = this.bindings.getSourceFile(context) ?? this.sourceFile;
+        if (sourceFile !== this.sourceFile) {
+            this.diagnostics.setSourceFile(sourceFile);
+            this.diagnostics.report(pos, diagnosticMessage, arg0, arg1, arg2);
+            this.diagnostics.setSourceFile(this.sourceFile);
+        }
+        else {
+            this.diagnostics.report(pos, diagnosticMessage, arg0, arg1, arg2);
+        }
         return true;
     }
 
     private reportGrammarErrorForNode(location: Node, diagnosticMessage: Diagnostic, arg0?: any, arg1?: any, arg2?: any) {
-        this.diagnostics.reportNode(this.sourceFile, location, diagnosticMessage, arg0, arg1, arg2);
+        this.reportError(location, diagnosticMessage, arg0, arg1, arg2);
         return true;
     }
 
-    private reportGrammarErrorForNodeOrPos(location: Node | undefined, pos: number, diagnosticMessage: Diagnostic, arg0?: any, arg1?: any, arg2?: any) {
+    private reportGrammarErrorForNodeOrPos(context: Node, location: Node | undefined, pos: number, diagnosticMessage: Diagnostic, arg0?: any, arg1?: any, arg2?: any) {
         return location
             ? this.reportGrammarErrorForNode(location, diagnosticMessage, arg0, arg1, arg2)
-            : this.reportGrammarError(pos, diagnosticMessage, arg0, arg1, arg2);
+            : this.reportGrammarError(context, pos, diagnosticMessage, arg0, arg1, arg2);
     }
 }
 

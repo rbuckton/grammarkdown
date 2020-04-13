@@ -43,6 +43,7 @@ const knownOptions: KnownOptions = {
     "noEmitOnError": { type: "boolean", description: "Does not emit output if there are errors." },
     "noChecks": { type: "boolean", description: "Does not perform static checking of the grammar." },
     "noStrictParametricProductions": { type: "boolean", description: "Does not perform strict checking of parametric productions and nonterminals." },
+    "noUnusedParameters": { type: "boolean", description: "Disallow unused parameters in productions." },
     "emitLinks": { type: "boolean", hidden: true },
     "usage": { aliasFor: ["--help"], hidden: true },
     "md": { aliasFor: ["--format", "markdown"], hidden: true },
