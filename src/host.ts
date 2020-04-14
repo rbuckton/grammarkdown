@@ -35,6 +35,7 @@ export interface HostBaseOptions {
     ignoreCase?: boolean;
     knownGrammars?: Record<string, string>;
     useBuiltinGrammars?: boolean;
+    resolveFile?: (file: string, referer?: string) => string;
 }
 
 /** {@docCategory Hosts} */
@@ -44,10 +45,12 @@ export abstract class HostBase {
     private useBuiltinGrammars: boolean;
     private innerParser: Parser | undefined;
     private knownGrammars: Map<string, string> | undefined;
+    private resolveFileCallback: (file: string, referer?: string) => string;
 
-    constructor({ ignoreCase = ignoreCaseFallback, knownGrammars, useBuiltinGrammars = true }: HostBaseOptions = {}) {
+    constructor({ ignoreCase = ignoreCaseFallback, knownGrammars, useBuiltinGrammars = true, resolveFile = resolveFileFallback }: HostBaseOptions = {}) {
         this.ignoreCase = ignoreCase;
         this.useBuiltinGrammars = useBuiltinGrammars;
+        this.resolveFileCallback = resolveFile;
 
         if (knownGrammars) {
             for (const key in knownGrammars) if (Object.prototype.hasOwnProperty.call(knownGrammars, key)) {
@@ -83,20 +86,7 @@ export abstract class HostBase {
 
     public resolveFile(file: string, referer?: string): string {
         file = this.resolveKnownGrammar(file) || file;
-
-        let result: string;
-        if (isFileUri(file) || path.isAbsolute(file)) {
-            result = file;
-        }
-        else if (referer) {
-            result = isUri(referer)
-                ? url.resolve(referer, file)
-                : path.resolve(path.dirname(referer), file);
-        }
-        else {
-            result = path.resolve(file);
-        }
-
+        let result = this.resolveFileCallback(file, referer);
         result = result.replace(/\\/g, "/");
         return result;
     }
@@ -595,6 +585,20 @@ function getLocalPath(file: string): string {
     }
 
     return file;
+}
+
+function resolveFileFallback(file: string, referer?: string) {
+    if (isFileUri(file) || path.isAbsolute(file)) {
+        return file;
+    }
+    else if (referer) {
+        return isUri(referer)
+            ? url.resolve(referer, file)
+            : path.resolve(path.dirname(referer), file);
+    }
+    else {
+        return path.resolve(file);
+    }
 }
 
 function readFileFallback(file: string) {
