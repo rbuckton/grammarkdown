@@ -1,0 +1,231 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Syntax | Grammarkdown API Reference </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Syntax | Grammarkdown API Reference ">
+    <meta name="generator" content="docfx 2.52.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h2 id="syntax">Syntax</h2>
+
+<p>A <code>grammarkdown</code> grammar file uses significant whitespace in the form of line terminators and indentation. Tab (ASCII 0x9) characters are preferred,
+however using multiple spaces for indentation is supported as long as all nested elements have the same amount of leading whitespace.</p>
+<h4 id="productions">Productions</h4>
+<p>A <em>Production</em> consists of a left-hand-side <em>Nonterminal</em> followed by a colon (<code>:</code>) separator and one or more <em>right-hand-side</em> sentences consisting of
+various forms of <em>terminal</em> and <em>nonterminal</em> symbols. For example:</p>
+<pre><code>NameSpaceImport : `*` `as` ImportedBinding
+</code></pre><p>It is recommended that <em>Productions</em> should follow pascal-case naming conventions, to avoid collision with reserved keywords.</p>
+<p>You may specify multiple productions for a <em>Nonterminal</em> on multiple lines, as follows:</p>
+<pre><code>NamedImports : `{` `}`
+NamedImports : `{` ImportList `}`
+NamedImports : `{` ImportList `,` `}`
+</code></pre><p>You may also specify multiple left-hand-side sentences for a single production by indenting them:</p>
+<pre><code>NamedImports :
+    `{` `}`
+    `{` ImportList `}`
+    `{` ImportList `,` `}`
+</code></pre><p>A <em>Production</em> may specify one or more <em>parameters</em> that can be used to reuse a <em>Nonterminal</em> in various circumstances:</p>
+<pre><code>IdentifierReference[Yield] :
+    Identifier
+    [~Yield] `yield`
+</code></pre><p>A <em>Production</em> may also specify a limited set of terminals, by using the <code>one of</code> keyphrase:</p>
+<pre><code>Keyword :: one of
+    `break`     `do`        `in`            `typeof`
+    `case`      `else`      `instanceof`    `var`
+    `catch`     `export`    `new`           `void`
+    `class`     `extends`   `return`        `while`
+    `const`     `finally`   `super`         `with`
+    `continue`  `for`       `switch`        `yield`
+    `debugger`  `function`  `this`
+    `default`   `if`        `throw`
+    `delete`    `import`    `try`
+</code></pre><h4 id="parameters">Parameters</h4>
+<p>If a <em>Nonterminal</em> on the right-hand-side of a production needs to set a parameter, they supply it in an argument list.
+Supplying the name of the argument sets the parameter, prefixing the name with a question mark (&#39;?) passes the current value of the parameter, and eliding the argument clears the parameter:</p>
+<pre><code>Declaration[Yield] :
+    HoistableDeclaration[?Yield]
+    ClassDeclaration[?Yield]
+    LexicalDeclaration[In, ?Yield]
+</code></pre><p>The right-hand-side of a <em>Production</em> consists of one or more <em>Terminal</em> or <em>Nonterminal</em> symbols, a sentence of <em>Prose</em>, or an <em>Assertion</em>.</p>
+<h4 id="terminals">Terminals</h4>
+<p>A <em>Terminal</em> symbol can be one of the following:</p>
+<ul>
+<li>A literal string of one or more characters enclosed in backticks (&#39;`&#39;). For example: <code>`function` </code></li>
+<li>A sequence of three backtick characters, which denotes a backtick token. For example: <code>``` </code></li>
+<li>A unicode character literal enclosed in a leading less-than (&#39;&lt;&#39;) character and a trailing greater-than (&#39;&gt;&#39;) character. For example: <code>&lt;TAB&gt;</code></li>
+</ul>
+<h4 id="nonterminals">Nonterminals</h4>
+<p>A <em>Nonterminal</em> symbol is an identifier, followed by an optional argument list, and an optional question mark (&#39;?&#39;). The question mark changes the cardinality of the <em>Nonterminal</em> from &quot;exactly one&quot; to &quot;zero or one&quot;.
+The identifier may optionally be enclosed in <code>|</code> characters, if it happens to collide with a keyword.</p>
+<h4 id="character-literals-and-ranges">Character Literals and Ranges</h4>
+<p>Character literals may be specified using one of the following forms:</p>
+<ul>
+<li>An abbreviation for a Unicode Code point, of the form <code>&lt;NBSP&gt;</code></li>
+<li>A Unicode code point, of the form <code>U+00A0</code></li>
+</ul>
+<p>Character ranges may be specified using the <code>through</code> keyword:</p>
+<pre><code>    SourceCharacter but not one of `&quot;` or `\` or U+0000 through U+001F
+</code></pre><h4 id="prose">Prose</h4>
+<p>A sentence of <em>Prose</em> is a single line with a leading greater-than (&#39;&gt;&#39;) character. For example: <code>&gt; any Unicode code point</code></p>
+<h4 id="the-but-not-condition">The <code>but not</code> Condition</h4>
+<p>The <code>but not</code> condition allows you to reference a production, excluding some part of that production. For example:</p>
+<pre><code>MultiLineNotAsteriskChar ::
+    SourceCharacter but not `*`
+</code></pre><p>Here, <em>MultiLineNotAsteriskChar</em> may contain any alternative from <em>SourceCharacter</em>, except the terminal <code>`*` </code>.</p>
+<h4 id="the-one-of-condition">The <code>one of</code> Condition</h4>
+<p>You can exclude multiple alternatives by including a list of symbols to exclude through the use of the <code>one of</code> keyphrase.
+Each entry in the list is separated by <code>or</code>:</p>
+<pre><code>MultiLineNotForwardSlashOrAsteriskChar ::
+    SourceCharacter but not one of `/` or `*`
+</code></pre><h4 id="assertions">Assertions</h4>
+<p>An <em>Assertion</em> is a zero-width test that must evaluate successfully for the <em>Production</em> to be considered.
+<em>Assertions</em> are enclosed in a leading open bracket (&#39;[&#39;) character and a trailing close-bracket (&#39;]&#39;) character.</p>
+<p>The possible assertions include:</p>
+<ul>
+<li>The <em>empty assertion</em>, which matches exactly zero tokens: <code>[empty]</code></li>
+<li>The <em>lookahead assertion</em>, which verifies the next tokens in the stream: <code>[lookahead != `function`]</code></li>
+<li>The <em>no-symbol-here assertion</em>, which verifies the next token is not the provided symbol: <code>[no LineTerminator here]</code></li>
+<li>The <em>lexical-goal assertion</em>, which states that the current lexical goal is the supplied <em>Nonterminal</em>: <code>[lexical goal InputElementRegExp]</code></li>
+<li>The <em>parameter assertion</em>, which states the supplied parameter to the current production is either set (using the plus (&#39;+&#39;) character), or cleared (using the tilde (&#39;~&#39;) character): <code>[~Yield] `yield` </code></li>
+<li>The <em>prose assertion</em>, which allows for arbitrary prose, mixed with terminals and nonterminals: <code>[&gt; prose text `terminal` prose text |NonTerminal| prose text]</code></li>
+</ul>
+<p>A <em>lookahead assertion</em> has the following operators:</p>
+<ul>
+<li>The <code>==</code> operator states the lookahead phrase is matched: <code>[lookahead == `class`]</code></li>
+<li>The <code>!=</code> operator states the lookahead phrase is not matched: <code>[lookahead != `function`]</code></li>
+<li>The <code>&lt;-</code> operator states that any matching phrase in the provided set is matched: <code>[lookahead &lt;- { `public`, `private` }]</code></li>
+<li>The <code>&lt;!</code> operator states that any matching phrase in the provided set is not matched: <code>[lookahead &lt;! { `{`, `function` }]</code></li>
+</ul>
+<h4 id="linking">Linking</h4>
+<p>During emit, <code>grammarkdown</code> implicitly adds a generated name for each <em>Production</em> and <em>Right-hand side</em> that can be used to
+link directly to the production using a URI fragment. You can explicitly set the name for a production by tagging it with a custom link name:</p>
+<pre><code>Declaration[Yield] :
+    HoistableDeclaration[?Yield]       #declaration-hoistable
+    ClassDeclaration[?Yield]           #declaration-class
+    LexicalDeclaration[In, ?Yield]     #declaration-lexical
+</code></pre><h4 id="comments">Comments</h4>
+<p>You can also annotate your grammar with C-style single-line and multi-line comments.</p>
+<h4 id="examples">Examples</h4>
+<p>For comprehensive examples of <code>grammarkdown</code> syntax and output, you can review the following samples:</p>
+<ul>
+<li>ECMA-262 version 2015 (ES6) Grammar<ul>
+<li><a href="https://github.com/rbuckton/grammarkdown/blob/master/spec/es6.grammar">Plain-text</a></li>
+<li><a href="https://rbuckton.github.io/grammarkdown/es6.html">HTML</a></li>
+</ul>
+</li>
+<li>TypeScript 1.5 Supplemental Grammar<ul>
+<li><a href="https://github.com/rbuckton/grammarkdown/blob/master/spec/typescript.grammar">Plain-text</a></li>
+<li><a href="https://rbuckton.github.io/grammarkdown/typescript.html">HTML</a></li>
+</ul>
+</li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/rbuckton/grammarkdown/blob/docs/src/docs/content/usage/syntax.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

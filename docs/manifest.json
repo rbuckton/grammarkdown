@@ -1,0 +1,1288 @@
+{
+  "homepages": [],
+  "source_base_path": "C:/dev/grammarkdown",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Resource",
+      "output": {
+        "resource": {
+          "relative_path": "index.json"
+        }
+      },
+      "is_incremental": false
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown.html",
+          "hash": "iagVrqUib9oxOsfd52pgXw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/argument.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/argument.html",
+          "hash": "BcTzH4ZHcivqgOIxVDy+ww=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/argumentlist.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/argumentlist.html",
+          "hash": "v9hoDYu0jUVD/wI7MjBKXA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/assertionbase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/assertionbase.html",
+          "hash": "0hgSXzIpkpZS9GZhHUYOhA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/asynchost.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/asynchost.html",
+          "hash": "aj5UdcimBKJhI2y8Fm9Z7Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/asynchostoptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/asynchostoptions.html",
+          "hash": "aZPtPtwMi5R312w2oqL2jg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/asyncsinglefilehost.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/asyncsinglefilehost.html",
+          "hash": "BDtiFZGu7z+CpF7uIvIB0g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/binder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/binder.html",
+          "hash": "LtMDb3J43aRRjwrkdthurA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/bindingtable.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/bindingtable.html",
+          "hash": "yI21JD4Lyxe6bcbI5FvcUQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/butnotsymbol.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/butnotsymbol.html",
+          "hash": "qY7WTVrrXqcmHf2Zs8207A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/charactercodes.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/charactercodes.html",
+          "hash": "peDCnB0TGmWEmG4jwaSPqw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/checker.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/checker.html",
+          "hash": "HHjSQsmVPeCaqCY2oZqclg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/commenttriviabase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/commenttriviabase.html",
+          "hash": "SRghXEo+5aPY4DuUv+LfYw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/compileroptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/compileroptions.html",
+          "hash": "umkQkdjjZ8fpgtTqbJvY/Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/constraints.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/constraints.html",
+          "hash": "jP1p3VKlgjCImlvgIHRS+g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/define.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/define.html",
+          "hash": "SC0RSf5C3PGA57ilHEQCVg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/diagnostic.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/diagnostic.html",
+          "hash": "4IXMBPEHjvxfHrwlBQsuZw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/diagnosticinfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/diagnosticinfo.html",
+          "hash": "re0CUKUEIjcKUrTsqMWzqg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/diagnosticmessages.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/diagnosticmessages.html",
+          "hash": "COCoj0YRW88wPd2//vcDZQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/ecmarkupemitter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/ecmarkupemitter.html",
+          "hash": "rl/WCVxwSf54mh7waw8gpA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/emitformat.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/emitformat.html",
+          "hash": "Hx3zBjAGecADcw1Ozcg6PA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/emitter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/emitter.html",
+          "hash": "O+Ei9s4EMlj0bTwIuP1mtw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/emptyassertion.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/emptyassertion.html",
+          "hash": "azLb7mt81FrYfjcwCDlwcg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/grammar.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/grammar.html",
+          "hash": "n6/46V/YSjs7jO/S/R8Z9A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/host.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/host.html",
+          "hash": "N02IBFLZyB3A6g2vw/h07w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/hostbase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/hostbase.html",
+          "hash": "/fVp3rBJJ0wGnWBut4s8GQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/hostbaseoptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/hostbaseoptions.html",
+          "hash": "3oB0Q2N5vsofr6YFzMW6Vg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/hostoptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/hostoptions.html",
+          "hash": "8Ok/8BuYPwBJkTE+z7tZHA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/htmlclosetagtrivia.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/htmlclosetagtrivia.html",
+          "hash": "T9Iz3OPpRE+MkGQhwazjHA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/htmlemitter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/htmlemitter.html",
+          "hash": "oTelq4RG6ZKS9Zit3faCBw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/htmlopentagtrivia.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/htmlopentagtrivia.html",
+          "hash": "0GjoyIwpvpP/TkRpS9conA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/htmltriviabase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/htmltriviabase.html",
+          "hash": "kVZWrujtoHbsip5bSqUtyw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/identifier.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/identifier.html",
+          "hash": "yeZqX4gYnCcgtSnqSns8zA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/import.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/import.html",
+          "hash": "ULh4Sa8lB79waF+NS7qLbA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/invalidassertion.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/invalidassertion.html",
+          "hash": "uzLo6w6GqGFo98MclEIwfQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/invalidsymbol.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/invalidsymbol.html",
+          "hash": "fdqpaHrVnnhlRsW90nVzcg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/lexicalgoalassertion.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/lexicalgoalassertion.html",
+          "hash": "Wo2/wFcwTwItTzYjkfjqkQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/lexicalsymbolbase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/lexicalsymbolbase.html",
+          "hash": "U0rj81nYRNYV41oCh2Ul+g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/linemap.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/linemap.html",
+          "hash": "4dBN3nEXJxcW+RNpf8eJ0Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/linkreference.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/linkreference.html",
+          "hash": "eenMXfQKR7dgxOwqXpiFEg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/lookaheadassertion.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/lookaheadassertion.html",
+          "hash": "k4ZlHMMcWU6AgoOih+qU1A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/markdownemitter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/markdownemitter.html",
+          "hash": "s5ITraHLpK/KvK4rs0O3eg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/metaelementbase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/metaelementbase.html",
+          "hash": "PqhCXRANEhYxNuCvfjAHyg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/multilinecommenttrivia.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/multilinecommenttrivia.html",
+          "hash": "czamHjO/+sthGwm9aT8O6w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/newlinekind.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/newlinekind.html",
+          "hash": "lCBbo2LzE8n1vdsh86uEIA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/node.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/node.html",
+          "hash": "eYapbVqxK1AyKgWyEM0yzQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/nodenavigator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/nodenavigator.html",
+          "hash": "3Hk7iTrwhp1bMpFEFnwjvQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/nodevisitor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/nodevisitor.html",
+          "hash": "9mZ7y1gA8ntysawLbTTwhA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/nonterminal.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/nonterminal.html",
+          "hash": "P5X0haBjOscu+aJq+uzZ8A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/nosymbolhereassertion.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/nosymbolhereassertion.html",
+          "hash": "VmfH0novTb5miOhEWwqwwg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/nulldiagnosticmessages.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/nulldiagnosticmessages.html",
+          "hash": "0RAU0gRPL9whj4SAm9AIRA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/oneoflist.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/oneoflist.html",
+          "hash": "N6QnpAvC6+acXW9LKam/1Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/oneofsymbol.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/oneofsymbol.html",
+          "hash": "eaYpTyt1XNHMjJ5fn+8CCQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/optionalsymbolbase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/optionalsymbolbase.html",
+          "hash": "xj/RJ9TxnMCjrRXDcQiW3w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/parameter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/parameter.html",
+          "hash": "5pqMntb5SaGkXIXTahdNjg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/parameterlist.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/parameterlist.html",
+          "hash": "7wZYT6PSb0B3gykrRTYinQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/parser.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/parser.html",
+          "hash": "rO7vkrPjfo/qWK/DNluO9g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/placeholdersymbol.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/placeholdersymbol.html",
+          "hash": "5uxRDEmNeeyd+GERqvuYqQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/position-interface.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/position-interface.html",
+          "hash": "rEivWjmYy8mWDtvUmsoYow=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/position-namespace.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/position-namespace.html",
+          "hash": "MGoIbvnzU9CCSPajWNIy3A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/primarysymbolbase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/primarysymbolbase.html",
+          "hash": "JUjfMCj97LNMwqdSt65OFA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/production.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/production.html",
+          "hash": "40W2I9MhX9rqHcuu2d0myg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/productionbodybase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/productionbodybase.html",
+          "hash": "oW81c0CJLJE/eyyXiEiOiw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/prose.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/prose.html",
+          "hash": "E/a9G4oKf/DDg+UA26/IfA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/proseassertion.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/proseassertion.html",
+          "hash": "5mx4ggt79tx9jQA4i0VIEQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/prosefragmentliteral.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/prosefragmentliteral.html",
+          "hash": "0dQvdhoKMF2lueEN9bMvzQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/range-interface.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/range-interface.html",
+          "hash": "A9Iekb55iJXdnknGzo2/cg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/range-namespace.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/range-namespace.html",
+          "hash": "Sz4HhvY8/p4CZjzDPrmcQA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/resolver.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/resolver.html",
+          "hash": "LfRDB0pvBvOOLPzZ4KHY/A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/righthandside.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/righthandside.html",
+          "hash": "IlZ9Y0ZvLUvPKJpc1IHTdA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/righthandsidelist.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/righthandsidelist.html",
+          "hash": "793OkF2rLKKbRN7h0cgABg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/scanner.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/scanner.html",
+          "hash": "0qlAy9awfECMR7kvRCEJpg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/singlefilehost.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/singlefilehost.html",
+          "hash": "QVo80L4yTtLqO0XwcyE3lQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/singlelinecommenttrivia.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/singlelinecommenttrivia.html",
+          "hash": "dF7C4ANpqkVN7plFp9MZQA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/sourceelementbase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/sourceelementbase.html",
+          "hash": "jqWesNR46pbLsPT8i0eiHw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/sourcefile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/sourcefile.html",
+          "hash": "2Ug+ReGpF+Fu0o80Bnrmjw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/stringliteral.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/stringliteral.html",
+          "hash": "izjnlIx5mw29KfrQaf0ULA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/stringwriter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/stringwriter.html",
+          "hash": "xZdiIkwNNIyQ5u8e3z/j0Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/symbol.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/symbol.html",
+          "hash": "8t8FmH9eXnPxj07wcgwlEA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/symbolkind.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/symbolkind.html",
+          "hash": "TwnNeUlyqZegCkjHBriD8Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/symbolset.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/symbolset.html",
+          "hash": "MHI2UZ32YMhD3CB1AdOMiA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/symbolspan.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/symbolspan.html",
+          "hash": "xYEQtnKAcHXabHRXeFT7zA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/symboltable.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/symboltable.html",
+          "hash": "wpEk5yNVVK90OX9zHWMkgA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/synchost.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/synchost.html",
+          "hash": "5nx+YqYTtSnAq7RodiRD8A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/synchostoptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/synchostoptions.html",
+          "hash": "Hd9MsB0fy5THAowPtvXG8Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/syncsinglefilehost.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/syncsinglefilehost.html",
+          "hash": "d7AVpnlzeQqct3bso1crJw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/syntaxkind.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/syntaxkind.html",
+          "hash": "y/pzsdXDI1XzB0rng/tYAw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/terminal.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/terminal.html",
+          "hash": "I19ohUJbhFqo9M2gvGcsfw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/textchange-interface.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/textchange-interface.html",
+          "hash": "BcVoBZALAP3wnZTzTX3sHA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/textchange-namespace.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/textchange-namespace.html",
+          "hash": "Gbx7Wzv7rkum7Tl1XIG9EA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/textcontent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/textcontent.html",
+          "hash": "PgCM7fuOrIjKQB0m5gzCMw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/textrange.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/textrange.html",
+          "hash": "1XYhBjVcbdgipOzLu9L0iA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/token.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/token.html",
+          "hash": "jWRTO1mnliaO62FvfEdtfg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/triviabase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/triviabase.html",
+          "hash": "OdYdO9IITB2PvmE0AhrztA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/unicodecharacterliteral.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/unicodecharacterliteral.html",
+          "hash": "6Yx8qp3QYPa6ExOyyoCNWw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/unicodecharacterrange.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/unicodecharacterrange.html",
+          "hash": "Hp69gUQjDwO8zedZRyFhfQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "obj/yaml/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html",
+          "hash": "gxXTUHXxwp/UbERNqAObAA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "src/docs/content/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html",
+          "hash": "P6An5Wvs2gnS+WQ+1bwg9g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "src/docs/content/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html",
+          "hash": "tsjzJ4gRbDoD9ApDyMUKjQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "src/docs/content/usage/cli.md",
+      "output": {
+        ".html": {
+          "relative_path": "usage/cli.html",
+          "hash": "vgMrJs1rLti3tOf/3V6Oog=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "src/docs/content/usage/syntax.md",
+      "output": {
+        ".html": {
+          "relative_path": "usage/syntax.html",
+          "hash": "OJLjgOZZKRVoVDeleHpEoQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "src/docs/content/usage/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "usage/toc.html",
+          "hash": "iqdJY3thFHNiTD7QPhCQ+w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    }
+  ],
+  "incremental_info": [
+    {
+      "status": {
+        "can_incremental": true,
+        "incrementalPhase": "build",
+        "total_file_count": 0,
+        "skipped_file_count": 0
+      },
+      "processors": {
+        "ConceptualDocumentProcessor": {
+          "can_incremental": true,
+          "incrementalPhase": "build",
+          "total_file_count": 3,
+          "skipped_file_count": 3
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "UniversalReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor UniversalReferenceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        }
+      }
+    },
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot support incremental post processing, the reason is: should not trace intermediate info.",
+        "incrementalPhase": "postProcessing",
+        "total_file_count": 0,
+        "skipped_file_count": 0
+      },
+      "processors": {}
+    }
+  ],
+  "version_info": {},
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

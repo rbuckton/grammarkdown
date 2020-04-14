@@ -93,11 +93,13 @@ interface ListTypes {
     [ParsingContext.NoSymbolHere]: PrimarySymbol;
 }
 
+/** {@docCategory Other} */
 export interface TextChange {
     range: Range;
     text: string;
 }
 
+/** {@docCategory Other} */
 export namespace TextChange {
     export function create(text: string, range: Range) {
         return { text, range };
@@ -124,6 +126,7 @@ export namespace TextChange {
     }
 }
 
+/** {@docCategory Parse} */
 export class Parser {
     private scanner!: Scanner;
     /* @internal */ token!: SyntaxKind;

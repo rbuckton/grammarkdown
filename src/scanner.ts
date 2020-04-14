@@ -34,6 +34,7 @@ const enum TokenFlags {
     AnyPrecedingIndent = PrecedingIndent | PrecedingDedent,
 }
 
+/** {@docCategory Parse} */
 export class Scanner {
     public readonly text: string;
     public readonly filename: string;

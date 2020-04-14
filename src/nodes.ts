@@ -16,14 +16,34 @@
 
 import { TextRange, emptyIterable, forEach, first, last } from "./core";
 import { LineMap, DiagnosticMessages } from "./diagnostics";
-import { SyntaxKind, ProseFragmentLiteralKind, LookaheadOperatorKind, ArgumentOperatorKind, BooleanKind, ProductionSeperatorKind, TokenKind, CommentTriviaKind, HtmlTriviaKind, TriviaKind } from "./tokens";
+import {
+    SyntaxKind,
+    ProseFragmentLiteralKind,
+    LookaheadOperatorKind,
+    ArgumentOperatorKind,
+    BooleanKind,
+    ProductionSeperatorKind,
+    TokenKind,
+    CommentTriviaKind,
+    HtmlTriviaKind,
+    TriviaKind,
+    LexicalSymbolKind,
+    AssertionKind,
+    ProductionBodyKind,
+    OptionalSymbolKind,
+    PrimarySymbolKind,
+    MetaElementKind,
+    SourceElementKind,
+} from "./tokens";
 import { NodeVisitor } from "./visitor";
 import { skipTrivia } from "./scanner";
 
+/** {@docCategory Nodes} */
 export interface TextContent {
     text: string | undefined;
 }
 
+/** {@docCategory Nodes} */
 export abstract class Node<TKind extends SyntaxKind = SyntaxKind> implements TextRange {
     public readonly kind: TKind;
     public leadingHtmlTrivia: HtmlTrivia[] | undefined;
@@ -55,32 +75,41 @@ export abstract class Node<TKind extends SyntaxKind = SyntaxKind> implements Tex
     /*@internal*/ accept(visitor: NodeVisitor): Node { return visitor.visitExtension(this); }
 }
 
-export interface TriviaTypes extends HtmlTriviaTypes, CommentTriviaTypes {}
-export type Trivia = TriviaTypes[TriviaKind];
+/** {@docCategory Nodes} */
 export abstract class TriviaBase<TKind extends TriviaKind> extends Node<TKind> {
 }
 
-export interface CommentTriviaTypes {}
-export type CommentTrivia = CommentTriviaTypes[CommentTriviaKind];
+/** {@docCategory Nodes} */
+export type Trivia =
+    | CommentTrivia
+    | HtmlTrivia
+    ;
+
+/** {@docCategory Nodes} */
 export abstract class CommentTriviaBase<TKind extends CommentTriviaKind> extends TriviaBase<TKind> {
 }
 
-export interface CommentTriviaTypes { [SyntaxKind.SingleLineCommentTrivia]: SingleLineCommentTrivia }
+/** {@docCategory Nodes} */
+export type CommentTrivia =
+    | SingleLineCommentTrivia
+    | MultiLineCommentTrivia
+    ;
+
+/** {@docCategory Nodes} */
 export class SingleLineCommentTrivia extends CommentTriviaBase<SyntaxKind.SingleLineCommentTrivia> {
     constructor() {
         super(SyntaxKind.SingleLineCommentTrivia);
     }
 }
 
-export interface CommentTriviaTypes { [SyntaxKind.MultiLineCommentTrivia]: MultiLineCommentTrivia }
+/** {@docCategory Nodes} */
 export class MultiLineCommentTrivia extends CommentTriviaBase<SyntaxKind.MultiLineCommentTrivia> {
     constructor() {
         super(SyntaxKind.MultiLineCommentTrivia);
     }
 }
 
-export interface HtmlTriviaTypes {}
-export type HtmlTrivia = HtmlTriviaTypes[HtmlTriviaKind];
+/** {@docCategory Nodes} */
 export abstract class HtmlTriviaBase<TKind extends HtmlTriviaKind> extends TriviaBase<TKind> {
     public readonly tagName: string;
     constructor(kind: TKind, tagName: string) {
@@ -89,24 +118,32 @@ export abstract class HtmlTriviaBase<TKind extends HtmlTriviaKind> extends Trivi
     }
 }
 
-export interface HtmlTriviaTypes { [SyntaxKind.HtmlOpenTagTrivia]: HtmlOpenTagTrivia; }
+/** {@docCategory Nodes} */
+export type HtmlTrivia =
+    | HtmlOpenTagTrivia
+    | HtmlCloseTagTrivia
+    ;
+
+/** {@docCategory Nodes} */
 export class HtmlOpenTagTrivia extends HtmlTriviaBase<SyntaxKind.HtmlOpenTagTrivia> {
     constructor(tagName: string) {
         super(SyntaxKind.HtmlOpenTagTrivia, tagName);
     }
 }
 
-export interface HtmlTriviaTypes { [SyntaxKind.HtmlCloseTagTrivia]: HtmlCloseTagTrivia; }
+/** {@docCategory Nodes} */
 export class HtmlCloseTagTrivia extends HtmlTriviaBase<SyntaxKind.HtmlCloseTagTrivia> {
     constructor(tagName: string) {
         super(SyntaxKind.HtmlCloseTagTrivia, tagName);
     }
 }
 
+/** {@docCategory Nodes} */
 export class Token<TKind extends TokenKind = TokenKind> extends Node<TKind> {
     /*@internal*/ accept(visitor: NodeVisitor): Token<TKind> { return visitor.visitToken(this); }
 }
 
+/** {@docCategory Nodes} */
 export class StringLiteral extends Node<SyntaxKind.StringLiteral> implements TextContent {
     public readonly text: string | undefined;
 
@@ -118,6 +155,7 @@ export class StringLiteral extends Node<SyntaxKind.StringLiteral> implements Tex
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitStringLiteral(this); }
 }
 
+/** {@docCategory Nodes} */
 export class Identifier extends Node<SyntaxKind.Identifier> implements TextContent {
     public readonly text: string | undefined;
 
@@ -129,6 +167,7 @@ export class Identifier extends Node<SyntaxKind.Identifier> implements TextConte
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitIdentifier(this); }
 }
 
+/** {@docCategory Nodes} */
 export class SymbolSet extends Node<SyntaxKind.SymbolSet> {
     public readonly openBraceToken: Token<SyntaxKind.OpenBraceToken>;
     public readonly elements: ReadonlyArray<SymbolSpan> | undefined;
@@ -185,6 +224,7 @@ export class SymbolSet extends Node<SyntaxKind.SymbolSet> {
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitSymbolSet(this); }
 }
 
+/** {@docCategory Nodes} */
 export class Constraints extends Node<SyntaxKind.Constraints> {
     public readonly openBracketToken: Token<SyntaxKind.OpenBracketToken>;
     public readonly elements: ReadonlyArray<Argument> | undefined;
@@ -245,22 +285,11 @@ export class Constraints extends Node<SyntaxKind.Constraints> {
 // Symbols
 //
 
-export interface LexicalSymbolTypes extends PrimarySymbolTypes, AssertionTypes {}
-export type LexicalSymbolKind = keyof LexicalSymbolTypes;
-export type LexicalSymbol = LexicalSymbolTypes[LexicalSymbolKind];
+/** {@docCategory Nodes} */
 export abstract class LexicalSymbolBase<TKind extends LexicalSymbolKind> extends Node<TKind> {
 }
 
-export interface LexicalSymbolTypes { [SyntaxKind.InvalidSymbol]: InvalidSymbol; }
-export class InvalidSymbol extends LexicalSymbolBase<SyntaxKind.InvalidSymbol> {
-    constructor() {
-        super(SyntaxKind.InvalidSymbol);
-    }
-
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitInvalidSymbol(this); }
-}
-
-export interface LexicalSymbolTypes { [SyntaxKind.PlaceholderSymbol]: PlaceholderSymbol; }
+/** {@docCategory Nodes} */
 export class PlaceholderSymbol extends LexicalSymbolBase<SyntaxKind.PlaceholderSymbol> {
     public readonly placeholderToken: Token<SyntaxKind.AtToken>;
 
@@ -287,7 +316,7 @@ export class PlaceholderSymbol extends LexicalSymbolBase<SyntaxKind.PlaceholderS
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitPlaceholderSymbol(this); }
 }
 
-export interface LexicalSymbolTypes { [SyntaxKind.UnicodeCharacterRange]: UnicodeCharacterRange; }
+/** {@docCategory Nodes} */
 export class UnicodeCharacterRange extends LexicalSymbolBase<SyntaxKind.UnicodeCharacterRange> {
     public readonly left: UnicodeCharacterLiteral;
     public readonly throughKeyword: Token<SyntaxKind.ThroughKeyword>;
@@ -343,7 +372,7 @@ export class UnicodeCharacterRange extends LexicalSymbolBase<SyntaxKind.UnicodeC
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitUnicodeCharacterRange(this); }
 }
 
-export interface LexicalSymbolTypes { [SyntaxKind.ButNotSymbol]: ButNotSymbol; }
+/** {@docCategory Nodes} */
 export class ButNotSymbol extends LexicalSymbolBase<SyntaxKind.ButNotSymbol> {
     public readonly left: LexicalSymbol;
     public readonly butKeyword: Token<SyntaxKind.ButKeyword> | undefined;
@@ -405,7 +434,7 @@ export class ButNotSymbol extends LexicalSymbolBase<SyntaxKind.ButNotSymbol> {
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitButNotSymbol(this); }
 }
 
-export interface LexicalSymbolTypes { [SyntaxKind.Prose]: Prose; }
+/** {@docCategory Nodes} */
 export class Prose extends LexicalSymbolBase<SyntaxKind.Prose> {
     public readonly greaterThanToken: Token<SyntaxKind.GreaterThanToken>;
     public readonly fragments: ReadonlyArray<ProseFragment> | undefined;
@@ -456,7 +485,7 @@ export class Prose extends LexicalSymbolBase<SyntaxKind.Prose> {
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitProse(this); }
 }
 
-export interface LexicalSymbolTypes { [SyntaxKind.OneOfSymbol]: OneOfSymbol; }
+/** {@docCategory Nodes} */
 export class OneOfSymbol extends LexicalSymbolBase<SyntaxKind.OneOfSymbol> {
     public readonly oneKeyword: Token<SyntaxKind.OneKeyword>;
     public readonly ofKeyword: Token<SyntaxKind.OfKeyword> | undefined;
@@ -513,13 +542,32 @@ export class OneOfSymbol extends LexicalSymbolBase<SyntaxKind.OneOfSymbol> {
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitOneOfSymbol(this); }
 }
 
+/** {@docCategory Nodes} */
+export class InvalidSymbol extends LexicalSymbolBase<SyntaxKind.InvalidSymbol> {
+    constructor() {
+        super(SyntaxKind.InvalidSymbol);
+    }
+
+    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitInvalidSymbol(this); }
+}
+
+/** {@docCategory Nodes} */
+export type LexicalSymbol =
+    | PrimarySymbol
+    | Assertion
+    | PlaceholderSymbol
+    | UnicodeCharacterRange
+    | ButNotSymbol
+    | Prose
+    | OneOfSymbol
+    | InvalidSymbol
+    ;
+
 //
 // Primary Symbols
 //
 
-export type PrimarySymbolKind = keyof PrimarySymbolTypes;
-export type PrimarySymbol = PrimarySymbolTypes[PrimarySymbolKind];
-export interface PrimarySymbolTypes extends OptionalSymbolTypes {}
+/** {@docCategory Nodes} */
 export abstract class PrimarySymbolBase<TKind extends PrimarySymbolKind> extends LexicalSymbolBase<TKind> {
 }
 
@@ -527,9 +575,7 @@ export abstract class PrimarySymbolBase<TKind extends PrimarySymbolKind> extends
 // Optional Symbols
 //
 
-export interface OptionalSymbolTypes {}
-export type OptionalSymbolKind = keyof OptionalSymbolTypes;
-export type OptionalSymbol = OptionalSymbolTypes[OptionalSymbolKind];
+/** {@docCategory Nodes} */
 export abstract class OptionalSymbolBase<TKind extends OptionalSymbolKind> extends PrimarySymbolBase<TKind> {
     public readonly questionToken: Token<SyntaxKind.QuestionToken> | undefined;
 
@@ -539,7 +585,7 @@ export abstract class OptionalSymbolBase<TKind extends OptionalSymbolKind> exten
     }
 }
 
-export interface OptionalSymbolTypes { [SyntaxKind.UnicodeCharacterLiteral]: UnicodeCharacterLiteral; }
+/** {@docCategory Nodes} */
 export class UnicodeCharacterLiteral extends OptionalSymbolBase<SyntaxKind.UnicodeCharacterLiteral> implements TextContent {
     public readonly text: string | undefined;
 
@@ -566,8 +612,7 @@ export class UnicodeCharacterLiteral extends OptionalSymbolBase<SyntaxKind.Unico
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitUnicodeCharacterLiteral(this); }
 }
 
-export interface OptionalSymbolTypes { [SyntaxKind.Terminal]: Terminal; }
-export interface ProseFragmentTypes { [SyntaxKind.Terminal]: Terminal; }
+/** {@docCategory Nodes} */
 export class Terminal extends OptionalSymbolBase<SyntaxKind.Terminal> implements TextContent {
     public readonly text: string | undefined;
 
@@ -594,8 +639,7 @@ export class Terminal extends OptionalSymbolBase<SyntaxKind.Terminal> implements
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitTerminal(this); }
 }
 
-export interface OptionalSymbolTypes { [SyntaxKind.Nonterminal]: Nonterminal; }
-export interface ProseFragmentTypes { [SyntaxKind.Nonterminal]: Nonterminal; }
+/** {@docCategory Nodes} */
 export class Nonterminal extends OptionalSymbolBase<SyntaxKind.Nonterminal> {
     public readonly name: Identifier;
     public readonly argumentList: ArgumentList | undefined;
@@ -650,13 +694,22 @@ export class Nonterminal extends OptionalSymbolBase<SyntaxKind.Nonterminal> {
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitNonterminal(this); }
 }
 
+/** {@docCategory Nodes} */
+export type OptionalSymbol =
+    | UnicodeCharacterLiteral
+    | Terminal
+    | Nonterminal
+    ;
+
+/** {@docCategory Nodes} */
+export type PrimarySymbol =
+    | OptionalSymbol;
+
 //
 // Assertions
 //
 
-export interface AssertionTypes {}
-export type AssertionKind = keyof AssertionTypes;
-export type Assertion = AssertionTypes[AssertionKind];
+/** {@docCategory Nodes} */
 export abstract class AssertionBase<TKind extends AssertionKind, TBracket extends SyntaxKind.OpenBracketToken | SyntaxKind.OpenBracketGreaterThanToken> extends LexicalSymbolBase<TKind> {
     public readonly openBracketToken: Token<TBracket>;
     public readonly closeBracketToken: Token<SyntaxKind.CloseBracketToken> | undefined;
@@ -671,46 +724,7 @@ export abstract class AssertionBase<TKind extends AssertionKind, TBracket extend
     abstract get lastChild(): Node | undefined;
 }
 
-export interface AssertionTypes { [SyntaxKind.InvalidAssertion]: InvalidAssertion; }
-export class InvalidAssertion extends AssertionBase<SyntaxKind.InvalidAssertion, SyntaxKind.OpenBracketToken> {
-    constructor(openBracketToken: Token<SyntaxKind.OpenBracketToken>, closeBracketToken: Token<SyntaxKind.CloseBracketToken> | undefined) {
-        super(SyntaxKind.InvalidAssertion, openBracketToken, closeBracketToken);
-    }
-
-    get lastChild(): Node | undefined { return this.closeBracketToken || this.openBracketToken; }
-
-    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
-        return cbNode(this.openBracketToken)
-            || (this.closeBracketToken && cbNode(this.closeBracketToken));
-    }
-
-    public * children(): IterableIterator<Node> {
-        yield this.openBracketToken;
-        if (this.closeBracketToken) yield this.closeBracketToken;
-    }
-
-    /*@internal*/ get edgeCount() { return 2; }
-    /*@internal*/ edgeIsArray(_offset: number) { return false; }
-    /*@internal*/ edgeName(offset: number): string | undefined {
-        switch (offset) {
-            case 0: return "openBracketToken";
-            case 1: return "closeBracketToken";
-        }
-        return undefined;
-    }
-
-    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
-        switch (offset) {
-            case 0: return this.openBracketToken;
-            case 1: return this.closeBracketToken;
-        }
-        return undefined;
-    }
-
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitInvalidAssertion(this); }
-}
-
-export interface AssertionTypes { [SyntaxKind.EmptyAssertion]: EmptyAssertion; }
+/** {@docCategory Nodes} */
 export class EmptyAssertion extends AssertionBase<SyntaxKind.EmptyAssertion, SyntaxKind.OpenBracketToken> {
     public readonly emptyKeyword: Token<SyntaxKind.EmptyKeyword>;
 
@@ -756,7 +770,7 @@ export class EmptyAssertion extends AssertionBase<SyntaxKind.EmptyAssertion, Syn
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitEmptyAssertion(this); }
 }
 
-export interface AssertionTypes { [SyntaxKind.LookaheadAssertion]: LookaheadAssertion; }
+/** {@docCategory Nodes} */
 export class LookaheadAssertion extends AssertionBase<SyntaxKind.LookaheadAssertion, SyntaxKind.OpenBracketToken> {
     public readonly lookaheadKeyword: Token<SyntaxKind.LookaheadKeyword>;
     public readonly operatorToken: Token<LookaheadOperatorKind> | undefined;
@@ -820,7 +834,7 @@ export class LookaheadAssertion extends AssertionBase<SyntaxKind.LookaheadAssert
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitLookaheadAssertion(this); }
 }
 
-export interface AssertionTypes { [SyntaxKind.LexicalGoalAssertion]: LexicalGoalAssertion; }
+/** {@docCategory Nodes} */
 export class LexicalGoalAssertion extends AssertionBase<SyntaxKind.LexicalGoalAssertion, SyntaxKind.OpenBracketToken> {
     public readonly lexicalKeyword: Token<SyntaxKind.LexicalKeyword>;
     public readonly goalKeyword: Token<SyntaxKind.GoalKeyword> | undefined;
@@ -884,7 +898,7 @@ export class LexicalGoalAssertion extends AssertionBase<SyntaxKind.LexicalGoalAs
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitLexicalGoalAssertion(this); }
 }
 
-export interface AssertionTypes { [SyntaxKind.NoSymbolHereAssertion]: NoSymbolHereAssertion; }
+/** {@docCategory Nodes} */
 export class NoSymbolHereAssertion extends AssertionBase<SyntaxKind.NoSymbolHereAssertion, SyntaxKind.OpenBracketToken> {
     public readonly noKeyword: Token<SyntaxKind.NoKeyword>;
     public readonly symbols: ReadonlyArray<PrimarySymbol> | undefined;
@@ -948,7 +962,7 @@ export class NoSymbolHereAssertion extends AssertionBase<SyntaxKind.NoSymbolHere
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitNoSymbolHereAssertion(this); }
 }
 
-export interface AssertionTypes { [SyntaxKind.ProseAssertion]: ProseAssertion; }
+/** {@docCategory Nodes} */
 export class ProseAssertion extends AssertionBase<SyntaxKind.ProseAssertion, SyntaxKind.OpenBracketGreaterThanToken> {
     public readonly fragments: ReadonlyArray<ProseFragment> | undefined;
 
@@ -1000,8 +1014,56 @@ export class ProseAssertion extends AssertionBase<SyntaxKind.ProseAssertion, Syn
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitProseAssertion(this); }
 }
 
-export interface ProseFragmentTypes extends ProseFragmentLiteralTypes {}
-export type ProseFragmentLiteralTypes = { [P in ProseFragmentLiteralKind]: ProseFragmentLiteral<P>; }
+/** {@docCategory Nodes} */
+export class InvalidAssertion extends AssertionBase<SyntaxKind.InvalidAssertion, SyntaxKind.OpenBracketToken> {
+    constructor(openBracketToken: Token<SyntaxKind.OpenBracketToken>, closeBracketToken: Token<SyntaxKind.CloseBracketToken> | undefined) {
+        super(SyntaxKind.InvalidAssertion, openBracketToken, closeBracketToken);
+    }
+
+    get lastChild(): Node | undefined { return this.closeBracketToken || this.openBracketToken; }
+
+    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
+        return cbNode(this.openBracketToken)
+            || (this.closeBracketToken && cbNode(this.closeBracketToken));
+    }
+
+    public * children(): IterableIterator<Node> {
+        yield this.openBracketToken;
+        if (this.closeBracketToken) yield this.closeBracketToken;
+    }
+
+    /*@internal*/ get edgeCount() { return 2; }
+    /*@internal*/ edgeIsArray(_offset: number) { return false; }
+    /*@internal*/ edgeName(offset: number): string | undefined {
+        switch (offset) {
+            case 0: return "openBracketToken";
+            case 1: return "closeBracketToken";
+        }
+        return undefined;
+    }
+
+    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
+        switch (offset) {
+            case 0: return this.openBracketToken;
+            case 1: return this.closeBracketToken;
+        }
+        return undefined;
+    }
+
+    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitInvalidAssertion(this); }
+}
+
+/** {@docCategory Nodes} */
+export type Assertion =
+    | EmptyAssertion
+    | LookaheadAssertion
+    | LexicalGoalAssertion
+    | NoSymbolHereAssertion
+    | ProseAssertion
+    | InvalidAssertion
+    ;
+
+/** {@docCategory Nodes} */
 export class ProseFragmentLiteral<TKind extends ProseFragmentLiteralKind = ProseFragmentLiteralKind> extends Node<SyntaxKind> implements TextContent {
     public readonly text: string | undefined;
 
@@ -1017,10 +1079,13 @@ export class ProseFragmentLiteral<TKind extends ProseFragmentLiteralKind = Prose
     /*@internal*/ accept(visitor: NodeVisitor): ProseFragmentLiteral<TKind> { return visitor.visitProseFragmentLiteral(this); }
 }
 
-export interface ProseFragmentTypes {}
-export type ProseFragmentKind = keyof ProseFragmentTypes;
-export type ProseFragment = ProseFragmentTypes[ProseFragmentKind];
+/** {@docCategory Nodes} */
+export type ProseFragment =
+    | ProseFragmentLiteral<ProseFragmentLiteralKind>
+    | Terminal
+    | Nonterminal;
 
+/** {@docCategory Nodes} */
 export class Argument extends Node<SyntaxKind.Argument> {
     public readonly operatorToken: Token<ArgumentOperatorKind> | undefined;
     public readonly name: Identifier | undefined;
@@ -1071,6 +1136,7 @@ export class Argument extends Node<SyntaxKind.Argument> {
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitArgument(this); }
 }
 
+/** {@docCategory Nodes} */
 export class ArgumentList extends Node<SyntaxKind.ArgumentList> {
     public readonly openParenToken: Token<SyntaxKind.OpenParenToken | SyntaxKind.OpenBracketToken>;
     public readonly elements: ReadonlyArray<Argument> | undefined;
@@ -1127,6 +1193,7 @@ export class ArgumentList extends Node<SyntaxKind.ArgumentList> {
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitArgumentList(this); }
 }
 
+/** {@docCategory Nodes} */
 export class SymbolSpan extends Node<SyntaxKind.SymbolSpan> {
     public readonly symbol: LexicalSymbol;
     public readonly next: SymbolSpan | undefined;
@@ -1177,6 +1244,7 @@ export class SymbolSpan extends Node<SyntaxKind.SymbolSpan> {
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitSymbolSpan(this); }
 }
 
+/** {@docCategory Nodes} */
 export class LinkReference extends Node<SyntaxKind.LinkReference> {
     public readonly text: string | undefined;
 
@@ -1195,8 +1263,12 @@ export class LinkReference extends Node<SyntaxKind.LinkReference> {
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitLinkReference(this); }
 }
 
-export interface ProductionBodyTypes { [SyntaxKind.RightHandSide]: RightHandSide }
-export class RightHandSide extends Node<SyntaxKind.RightHandSide> {
+/** {@docCategory Nodes} */
+export abstract class ProductionBodyBase<TKind extends ProductionBodyKind> extends Node<TKind> {
+}
+
+/** {@docCategory Nodes} */
+export class RightHandSide extends ProductionBodyBase<SyntaxKind.RightHandSide> {
     public readonly constraints: Constraints | undefined;
     public readonly head: SymbolSpan | undefined;
     public readonly reference: LinkReference | undefined;
@@ -1252,8 +1324,8 @@ export class RightHandSide extends Node<SyntaxKind.RightHandSide> {
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitRightHandSide(this); }
 }
 
-export interface ProductionBodyTypes { [SyntaxKind.RightHandSideList]: RightHandSideList }
-export class RightHandSideList extends Node<SyntaxKind.RightHandSideList> {
+/** {@docCategory Nodes} */
+export class RightHandSideList extends ProductionBodyBase<SyntaxKind.RightHandSideList> {
     public readonly elements: ReadonlyArray<RightHandSide> | undefined;
 
     constructor(elements: ReadonlyArray<RightHandSide> | undefined) {
@@ -1297,8 +1369,8 @@ export class RightHandSideList extends Node<SyntaxKind.RightHandSideList> {
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitRightHandSideList(this); }
 }
 
-export interface ProductionBodyTypes { [SyntaxKind.OneOfList]: OneOfList }
-export class OneOfList extends Node<SyntaxKind.OneOfList> {
+/** {@docCategory Nodes} */
+export class OneOfList extends ProductionBodyBase<SyntaxKind.OneOfList> {
     public readonly oneKeyword: Token<SyntaxKind.OneKeyword>;
     public readonly ofKeyword: Token<SyntaxKind.OfKeyword> | undefined;
     public readonly indented: boolean;
@@ -1356,7 +1428,14 @@ export class OneOfList extends Node<SyntaxKind.OneOfList> {
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitOneOfList(this); }
 }
 
-export interface DeclarationTypes { [SyntaxKind.Parameter]: Parameter; }
+/** {@docCategory Nodes} */
+export type ProductionBody =
+    | OneOfList
+    | RightHandSide
+    | RightHandSideList
+    ;
+
+/** {@docCategory Nodes} */
 export class Parameter extends Node<SyntaxKind.Parameter> {
     public readonly name: Identifier;
 
@@ -1389,6 +1468,7 @@ export class Parameter extends Node<SyntaxKind.Parameter> {
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitParameter(this); }
 }
 
+/** {@docCategory Nodes} */
 export class ParameterList extends Node<SyntaxKind.ParameterList> {
     public readonly openParenToken: Token<SyntaxKind.OpenParenToken | SyntaxKind.OpenBracketToken>;
     public readonly elements: ReadonlyArray<Parameter> | undefined;
@@ -1445,18 +1525,11 @@ export class ParameterList extends Node<SyntaxKind.ParameterList> {
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitParameterList(this); }
 }
 
-export interface SourceElementTypes {}
-export type SourceElementKind = keyof SourceElementTypes;
-export type SourceElement = SourceElementTypes[SourceElementKind];
-export abstract class SourceElementBase<TKind extends SyntaxKind = SyntaxKind> extends Node<TKind> {
+/** {@docCategory Nodes} */
+export abstract class SourceElementBase<TKind extends SourceElementKind> extends Node<TKind> {
 }
 
-export interface ProductionBodyTypes {}
-export type ProductionBodyKind = keyof ProductionBodyTypes;
-export type ProductionBody = ProductionBodyTypes[ProductionBodyKind];
-
-export interface SourceElementTypes { [SyntaxKind.Production]: Production; }
-export interface DeclarationTypes { [SyntaxKind.Production]: Production; }
+/** {@docCategory Nodes} */
 export class Production extends SourceElementBase<SyntaxKind.Production> {
     public readonly name: Identifier;
     public readonly parameterList: ParameterList | undefined;
@@ -1519,10 +1592,7 @@ export class Production extends SourceElementBase<SyntaxKind.Production> {
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitProduction(this); }
 }
 
-export interface SourceElementTypes extends MetaElementTypes { }
-export interface MetaElementTypes {}
-export type MetaElementKind = keyof MetaElementTypes;
-export type MetaElement = MetaElementTypes[MetaElementKind];
+/** {@docCategory Nodes} */
 export abstract class MetaElementBase<TKind extends MetaElementKind> extends SourceElementBase<TKind> {
     public readonly atToken: Token<SyntaxKind.AtToken>;
 
@@ -1534,7 +1604,7 @@ export abstract class MetaElementBase<TKind extends MetaElementKind> extends Sou
     get firstChild(): Node | undefined { return this.atToken; }
 }
 
-export interface MetaElementTypes { [SyntaxKind.Import]: Import; }
+/** {@docCategory Nodes} */
 export class Import extends MetaElementBase<SyntaxKind.Import> {
     public readonly importKeyword: Token<SyntaxKind.ImportKeyword>;
     public readonly path: StringLiteral | undefined;
@@ -1582,7 +1652,7 @@ export class Import extends MetaElementBase<SyntaxKind.Import> {
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitImport(this); }
 }
 
-export interface MetaElementTypes { [SyntaxKind.Define]: Define; }
+/** {@docCategory Nodes} */
 export class Define extends MetaElementBase<SyntaxKind.Define> {
     public readonly defineKeyword: Token<SyntaxKind.DefineKeyword>;
     public readonly key: Identifier;
@@ -1636,11 +1706,19 @@ export class Define extends MetaElementBase<SyntaxKind.Define> {
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitDefine(this); }
 }
 
-export interface DeclarationTypes {}
-export type DeclarationKind = keyof DeclarationTypes;
-export type Declaration = DeclarationTypes[DeclarationKind];
+/** {@docCategory Nodes} */
+export type MetaElement =
+    | Import
+    | Define
+    ;
 
-export interface DeclarationTypes { [SyntaxKind.SourceFile]: SourceFile; }
+/** {@docCategory Nodes} */
+export type SourceElement =
+    | Production
+    | MetaElement
+    ;
+
+/** {@docCategory Nodes} */
 export class SourceFile extends Node<SyntaxKind.SourceFile> {
     public readonly elements: ReadonlyArray<SourceElement>;
     public readonly filename: string;
@@ -1683,6 +1761,13 @@ export class SourceFile extends Node<SyntaxKind.SourceFile> {
     /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined { return offset === 0 ? this.elements : undefined; }
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitSourceFile(this); }
 }
+
+/** {@docCategory Nodes} */
+export type Declaration =
+    | SourceFile
+    | Production
+    | Parameter
+    ;
 
 function setTextRange<T extends Node>(node: T, pos: number, end: number) {
     node.pos = pos;

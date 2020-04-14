@@ -75,6 +75,7 @@ interface SymbolLinks {
     isReferenced?: boolean;
 }
 
+/** {@docCategory Check} */
 export class Checker {
     private options: CompilerOptions | undefined;
     private checkedFileSet = new Set<string>();
@@ -1386,6 +1387,7 @@ export class Checker {
     }
 }
 
+/** {@docCategory Check} */
 export class Resolver {
     private bindings: BindingTable;
 

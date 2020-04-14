@@ -18,6 +18,7 @@ import { binarySearch, compareStrings, compare, Range, Position } from "./core";
 import { CharacterCodes, SyntaxKind, tokenToString } from "./tokens";
 import { Node, SourceFile } from "./nodes";
 
+/** {@docCategory Check} */
 export interface Diagnostic {
     code: number;
     message: string;
@@ -51,6 +52,7 @@ export const Diagnostics = makeDiagnostics({
     Parameter_0_is_unused: { code: 2008, message: "Parameter '{0}' is unused." }
 });
 
+/** {@docCategory Check} */
 export interface DiagnosticInfo {
     diagnosticIndex: number;
     code: number;
@@ -64,6 +66,7 @@ export interface DiagnosticInfo {
     formattedMessage?: string;
 }
 
+/** {@docCategory Check} */
 export class DiagnosticMessages {
     private diagnostics: Diagnostic[] | undefined;
     private diagnosticsArguments: any[][] | undefined;
@@ -436,6 +439,7 @@ export class DiagnosticMessages {
     }
 }
 
+/** {@docCategory Check} */
 export class NullDiagnosticMessages extends DiagnosticMessages {
     private static _instance: NullDiagnosticMessages;
 
@@ -451,6 +455,7 @@ export class NullDiagnosticMessages extends DiagnosticMessages {
     public reportNode(sourceFile: SourceFile | undefined, node: Node, message: Diagnostic, ...args: any[]): void { }
 }
 
+/** {@docCategory Check} */
 export class LineMap {
     private text: string;
     private lineStarts!: number[];

@@ -21,6 +21,7 @@ import { Symbol, SymbolKind, SymbolTable } from "./symbols";
 import { SourceFile, Production, Parameter, Node, Declaration, Identifier } from "./nodes";
 import { toCancelToken } from "./core";
 
+/** {@docCategory Bind} */
 export class BindingTable {
     public readonly globals: SymbolTable = new SymbolTable();
 
@@ -201,6 +202,7 @@ export class BindingTable {
     }
 }
 
+/** {@docCategory Bind} */
 export class Binder {
     private parentNode: Node | undefined;
     private parentSymbol: Symbol | undefined;

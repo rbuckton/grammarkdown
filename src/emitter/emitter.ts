@@ -58,6 +58,7 @@ import {
     PlaceholderSymbol
 } from "../nodes";
 
+/** {@docCategory Emit} */
 export class Emitter {
     protected options: CompilerOptions;
     protected resolver!: Resolver;

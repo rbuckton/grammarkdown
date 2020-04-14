@@ -1,0 +1,34 @@
+{
+    "projectFolder": ".",
+    "mainEntryPointFilePath": "<projectFolder>/dist/index.d.ts",
+    "compiler": { "tsconfigFilePath": "<projectFolder>/src/tsconfig.json" },
+    "apiReport": {
+        "enabled": false,
+        "reportFolder": "<projectFolder>/baselines/reference/api-report",
+        "reportTempFolder": "<projectFolder>/baselines/local/api-report"
+    },
+    "dtsRollup": { "enabled": false },
+    "tsdocMetadata": {
+        "enabled": true,
+        "tsdocMetadataFilePath": "<projectFolder>/dist/tsdoc-metadata.json"
+    },
+    "docModel": {
+        "enabled": true,
+        "apiJsonFilePath": "<projectFolder>/obj/json/grammarkdown.api.json"
+    },
+    "messages": {
+        "extractorMessageReporting": {
+            "ae-missing-release-tag": {
+                "logLevel": "none"
+            }
+        },
+        "tsdocMessageReporting": {
+            "tsdoc-param-tag-with-invalid-name": {
+                "logLevel": "none"
+            },
+            "tsdoc-undefined-tag": {
+                "logLevel": "none"
+            }
+        }
+    }
+}

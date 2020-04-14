@@ -16,6 +16,7 @@
 
 import { EOL } from 'os';
 
+/** {@docCategory Emit} */
 export class StringWriter {
     private _text = "";
     private _depth = 0;

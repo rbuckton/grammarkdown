@@ -25,6 +25,7 @@ import {
     SyntaxKind
 } from "./tokens";
 
+/** {@docCategory Compiler} */
 export class NodeNavigator {
     private sourceFile!: SourceFile;
     private nodeStack!: (Node | undefined)[];

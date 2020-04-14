@@ -18,17 +18,20 @@ import { readFileSync } from "fs";
 import { mapFromObject } from "./core";
 import { CharacterCodes } from "./tokens";
 
+/** {@docCategory Compiler} */
 export enum NewLineKind {
     LineFeed,
     CarriageReturnLineFeed,
 }
 
+/** {@docCategory Compiler} */
 export enum EmitFormat {
     markdown,
     html,
     ecmarkup
 }
 
+/** {@docCategory Compiler} */
 export interface CompilerOptions {
     newLine?: NewLineKind;
     noChecks?: boolean;

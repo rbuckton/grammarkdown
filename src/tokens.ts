@@ -16,6 +16,7 @@
 
 import { formatEnum } from "./core";
 
+/** {@docCategory Parse} */
 export const enum CharacterCodes {
     NullCharacter = 0,
     MaxAsciiCharacter = 0x7F,
@@ -153,6 +154,7 @@ export const enum CharacterCodes {
     ByteOrderMark = 0xFEFF,
 }
 
+/** {@docCategory Parse} */
 export enum SyntaxKind {
     Unknown,
 
@@ -429,6 +431,110 @@ export type TextContentKind =
 export function isTextContentKind(kind: SyntaxKind): kind is TextContentKind {
     return kind >= SyntaxKind.FirstTextContent
         && kind <= SyntaxKind.LastTextContent;
+}
+
+export type AssertionKind =
+    | SyntaxKind.EmptyAssertion
+    | SyntaxKind.LookaheadAssertion
+    | SyntaxKind.LexicalGoalAssertion
+    | SyntaxKind.NoSymbolHereAssertion
+    | SyntaxKind.ProseAssertion
+    | SyntaxKind.InvalidAssertion
+    ;
+
+export function isAssertionKind(kind: SyntaxKind): kind is AssertionKind {
+    return kind === SyntaxKind.EmptyAssertion
+        || kind === SyntaxKind.LookaheadAssertion
+        || kind === SyntaxKind.LexicalGoalAssertion
+        || kind === SyntaxKind.NoSymbolHereAssertion
+        || kind === SyntaxKind.ProseAssertion
+        || kind === SyntaxKind.InvalidAssertion;
+}
+
+export type OptionalSymbolKind =
+    | SyntaxKind.UnicodeCharacterLiteral
+    | SyntaxKind.Terminal
+    | SyntaxKind.Nonterminal
+    ;
+
+export function isOptionalSymbolKind(kind: SyntaxKind): kind is OptionalSymbolKind {
+    return kind === SyntaxKind.UnicodeCharacterLiteral
+        || kind === SyntaxKind.Terminal
+        || kind === SyntaxKind.Nonterminal;
+}
+
+export type PrimarySymbolKind =
+    | OptionalSymbolKind
+    ;
+
+export function isPrimarySymbolKind(kind: SyntaxKind): kind is PrimarySymbolKind {
+    return isOptionalSymbolKind(kind);
+}
+
+export type LexicalSymbolKind =
+    | PrimarySymbolKind
+    | AssertionKind
+    | SyntaxKind.PlaceholderSymbol
+    | SyntaxKind.UnicodeCharacterRange
+    | SyntaxKind.ButNotSymbol
+    | SyntaxKind.Prose
+    | SyntaxKind.OneOfSymbol
+    | SyntaxKind.InvalidSymbol
+    ;
+
+export function isLexicalSymbolKind(kind: SyntaxKind): kind is LexicalSymbolKind {
+    return isPrimarySymbolKind(kind)
+        || isOptionalSymbolKind(kind)
+        || kind === SyntaxKind.PlaceholderSymbol
+        || kind === SyntaxKind.UnicodeCharacterRange
+        || kind === SyntaxKind.ButNotSymbol
+        || kind === SyntaxKind.Prose
+        || kind === SyntaxKind.OneOfSymbol
+        || kind === SyntaxKind.InvalidSymbol;
+}
+
+export type ProseFragmentKind =
+    | ProseFragmentLiteralKind
+    | SyntaxKind.Terminal
+    | SyntaxKind.Nonterminal
+    ;
+
+export function isProseFragmentKind(kind: SyntaxKind): kind is ProseFragmentKind {
+    return isProseFragmentLiteralKind(kind)
+        || kind === SyntaxKind.Terminal
+        || kind === SyntaxKind.Nonterminal;
+}
+
+export type ProductionBodyKind =
+    | SyntaxKind.OneOfList
+    | SyntaxKind.RightHandSide
+    | SyntaxKind.RightHandSideList
+    ;
+
+export function isProductionBodyKind(kind: SyntaxKind): kind is ProductionBodyKind {
+    return kind === SyntaxKind.OneOfList
+        || kind === SyntaxKind.RightHandSide
+        || kind === SyntaxKind.RightHandSideList;
+}
+
+export type MetaElementKind =
+    | SyntaxKind.Import
+    | SyntaxKind.Define
+    ;
+
+export function isMetaElementKind(kind: SyntaxKind): kind is MetaElementKind {
+    return kind === SyntaxKind.Import
+        || kind === SyntaxKind.Define;
+}
+
+export type SourceElementKind =
+    | MetaElementKind
+    | SyntaxKind.Production
+    ;
+
+export function isSourceElementKind(kind: SyntaxKind): kind is SourceElementKind {
+    return isMetaElementKind(kind)
+        || kind === SyntaxKind.Production;
 }
 
 const textToToken = new Map<string, SyntaxKind>([

@@ -28,6 +28,7 @@ import { SourceFile } from "./nodes";
 import { pipe, forEachPossiblyAsync, toCancelToken } from "./core";
 import { Emitter, EcmarkupEmitter, MarkdownEmitter, HtmlEmitter } from "./emitter";
 
+/** {@docCategory Compiler} */
 export class Grammar {
     public readonly host: Host | SyncHost | AsyncHost;
     public options: CompilerOptions;

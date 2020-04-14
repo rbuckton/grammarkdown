@@ -1,0 +1,20 @@
+{
+  "build": {
+    "template": ["default"],
+    "content": [
+      { "files": ["**/*.yml"], "src": "obj/yaml", "dest": "api" },
+      { "files": ["**/*.{md,yml}"], "src": "src/docs/content" }
+    ],
+    "resource": [
+      { "files": ["**"], "src": "src/docs/resources" }
+    ],
+    "overwrite": [
+      { "files": ["**/*.md"], "src": "src/docs/overwrite" }
+    ],
+    "globalMetadata": {
+      "_appTitle": "Grammarkdown API Reference",
+      "_enableSearch": true
+    },
+    "dest": "docs"
+  }
+}

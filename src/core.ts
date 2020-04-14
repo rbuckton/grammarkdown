@@ -82,16 +82,19 @@ export function forEach<T, U>(array: ReadonlyArray<T> | undefined, cb: (value: T
     }
 }
 
+/** {@docCategory Other} */
 export interface TextRange {
     pos: number;
     end: number;
 }
 
+/** {@docCategory Other} */
 export interface Position {
     line: number;
     character: number;
 }
 
+/** {@docCategory Other} */
 export namespace Position {
     export function create(line: number, character: number): Position {
         return { line, character };
@@ -115,11 +118,13 @@ export namespace Position {
     }
 }
 
+/** {@docCategory Other} */
 export interface Range {
     start: Position;
     end: Position;
 }
 
+/** {@docCategory Other} */
 export namespace Range {
     export function create(start: Position, end: Position): Range {
         return { start, end };

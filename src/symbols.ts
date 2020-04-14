@@ -16,12 +16,14 @@
 
 let nextSymbolId = 0;
 
+/** {@docCategory Bind} */
 export enum SymbolKind {
     SourceFile,
     Production,
     Parameter
 }
 
+/** {@docCategory Bind} */
 export class Symbol {
     public id: number = ++nextSymbolId;
     public name: string;
@@ -35,6 +37,7 @@ export class Symbol {
     }
 }
 
+/** {@docCategory Bind} */
 export class SymbolTable {
     private nameMap: Map<SymbolKind, Map<string, Symbol>> | undefined;
 

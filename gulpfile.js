@@ -1,11 +1,16 @@
 /* global process */
+const path = require("path");
+const fs = require("fs");
 const gulp = require("gulp");
+const chalk = require("chalk");
 const log = require("fancy-log");
 const sourcemaps = require("gulp-sourcemaps");
 const tsb = require("gulp-tsb");
 const mocha = require("gulp-mocha");
 const del = require("del");
 const spawn = require("child_process").spawn;
+const { argv } = require("yargs")
+    .option("serve", { type: Boolean, default: false });
 
 let errorCount = 0;
 const src = {
@@ -22,7 +27,10 @@ gulp.task("clean:dist", clean_dist);
 const clean_baselines = () => del(["baselines/local"]);
 gulp.task("clean:baselines", clean_baselines);
 
-const clean = gulp.parallel(clean_dist, clean_baselines);
+const clean_obj = () => del(["obj"]);
+gulp.task("clean:obj", clean_obj);
+
+const clean = gulp.parallel(clean_dist, clean_baselines, clean_obj);
 gulp.task("clean", clean);
 
 const build = () => src.src()
@@ -60,6 +68,21 @@ gulp.task("watch", watch);
 gulp.task("default", test);
 
 gulp.task("diff", () => diff("baselines/reference/", "baselines/local/"));
+
+const api_extractor = () => exec(process.execPath, [require.resolve("@microsoft/api-extractor/bin/api-extractor"), "run", "--local"]);
+const api_extractor_fixup = async () => {
+    const data = fs.readFileSync("obj/json/grammarkdown.api.json", "utf8");
+    fs.writeFileSync("obj/json/grammarkdown.api.json", data.replace(/Symbol_2/g, "Symbol"), "utf8");
+};
+const api_documenter = () => exec(process.execPath, [require.resolve("@microsoft/api-documenter/bin/api-documenter"), "generate", "-i", "obj/json", "-o", "obj/yaml"]);
+const docfx = () => exec("docfx", argv.serve ? ["--serve"] : []);
+gulp.task("docs", gulp.series(
+    build,
+    api_extractor,
+    api_extractor_fixup,
+    api_documenter,
+    docfx
+));
 
 function diff(remote, local) {
     var cmd = process.env.DIFF;

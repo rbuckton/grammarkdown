@@ -30,12 +30,14 @@ const ignoreCaseFallback = /^(win32|win64|darwin)$/.test(os.platform());
 
 let builtinGrammars: Map<string, string> | undefined;
 
+/** {@docCategory Hosts} */
 export interface HostBaseOptions {
     ignoreCase?: boolean;
     knownGrammars?: Record<string, string>;
     useBuiltinGrammars?: boolean;
 }
 
+/** {@docCategory Hosts} */
 export abstract class HostBase {
     public readonly ignoreCase: boolean;
 
@@ -115,21 +117,31 @@ export abstract class HostBase {
     }
 }
 
+/** {@docCategory Hosts} */
 export type ReadFileSyncCallback = (this: never, file: string, cancelToken?: CancelToken) => string;
 
-/** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+/**
+ * @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable`
+ * {@docCategory Hosts}
+ */
 export type LegacyReadFileSyncCallback = (this: never, file: string, cancelToken?: CancellationToken) => string;
 
+/** {@docCategory Hosts} */
 export type WriteFileSyncCallback = (this: never, file: string, content: string, cancelToken?: CancelToken) => void;
 
-/** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+/**
+ * @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable`
+ * {@docCategory Hosts}
+ */
 export type LegacyWriteFileSyncCallback = (this: never, file: string, content: string, cancelToken?: CancellationToken) => void;
 
+/** {@docCategory Hosts} */
 export interface SyncHostOptions extends HostBaseOptions {
     readFileSync?: LegacyReadFileSyncCallback | ReadFileSyncCallback | false;
     writeFileSync?: LegacyWriteFileSyncCallback | WriteFileSyncCallback | false;
 }
 
+/** {@docCategory Hosts} */
 export class SyncHost extends HostBase {
     private readFileSyncCallback?: ((file: string, cancelToken?: CancelToken & CancellationToken) => string) | false;
     private writeFileSyncCallback?: ((file: string, content: string, cancelToken?: CancelToken & CancellationToken) => void) | false;
@@ -183,6 +195,7 @@ export class SyncHost extends HostBase {
     }
 }
 
+/** {@docCategory Hosts} */
 export class SyncSingleFileHost extends SyncHost {
     public readonly file: string;
     public readonly content: string;
@@ -225,21 +238,31 @@ export class SyncSingleFileHost extends SyncHost {
     }
 }
 
+/** {@docCategory Hosts} */
 export type ReadFileCallback = (this: never, file: string, cancelToken?: CancelToken) => PromiseLike<string> | string;
 
-/** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+/**
+ * @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable`
+ * {@docCategory Hosts}
+ */
 export type LegacyReadFileCallback = (this: never, file: string, cancelToken?: CancellationToken) => PromiseLike<string> | string;
 
+/** {@docCategory Hosts} */
 export type WriteFileCallback = (this: never, file: string, content: string, cancelToken?: CancelToken) => PromiseLike<void> | void;
 
-/** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
+/**
+ * @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable`
+ * {@docCategory Hosts}
+ */
 export type LegacyWriteFileCallback = (this: never, file: string, content: string, cancelToken?: CancellationToken) => PromiseLike<void> | void;
 
+/** {@docCategory Hosts} */
 export interface AsyncHostOptions extends HostBaseOptions {
     readFile?: ReadFileCallback | LegacyReadFileCallback | false;
     writeFile?: WriteFileCallback | LegacyWriteFileCallback | false;
 }
 
+/** {@docCategory Hosts} */
 export class AsyncHost extends HostBase {
     private readFileCallback?: ((file: string, cancelToken?: CancelToken & CancellationToken) => PromiseLike<string> | string) | false;
     private writeFileCallback?: ((file: string, content: string, cancelToken?: CancelToken & CancellationToken) => PromiseLike<void> | void) | false;
@@ -293,6 +316,7 @@ export class AsyncHost extends HostBase {
     }
 }
 
+/** {@docCategory Hosts} */
 export class AsyncSingleFileHost extends AsyncHost {
     public readonly file: string;
     public readonly content: string;
@@ -335,6 +359,7 @@ export class AsyncSingleFileHost extends AsyncHost {
     }
 }
 
+/** {@docCategory Hosts} */
 export interface HostOptions extends HostBaseOptions {
     readFile?: ReadFileCallback | LegacyReadFileCallback;
     readFileSync?: ReadFileSyncCallback | LegacyReadFileSyncCallback;
@@ -342,7 +367,10 @@ export interface HostOptions extends HostBaseOptions {
     writeFileSync?: WriteFileSyncCallback | LegacyWriteFileSyncCallback;
 }
 
-/** @deprecated Use `SyncHost` or `AsyncHost` instead */
+/**
+ * @deprecated Use `SyncHost` or `AsyncHost` instead
+ * {@docCategory Hosts}
+ */
 export class Host extends HostBase {
     private readFileCallback?: (file: string, cancelToken?: CancelToken & CancellationToken) => PromiseLike<string> | string | undefined;
     private readFileSyncCallback?: (file: string, cancelToken?: CancelToken & CancellationToken) => string;
@@ -448,7 +476,10 @@ export class Host extends HostBase {
     }
 }
 
-/** @deprecated Use `SyncHost.forFile` or `AsyncHost.forFile` instead */
+/**
+ * @deprecated Use `SyncHost.forFile` or `AsyncHost.forFile` instead
+ * {@docCategory Hosts}
+ */
 export class SingleFileHost extends Host {
     public readonly file: string;
     public readonly content: string;

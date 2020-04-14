@@ -43,6 +43,7 @@ import {
     TextContent
 } from "../nodes";
 
+/** {@docCategory Emit} */
 export class MarkdownEmitter extends Emitter {
     protected extension = ".md";
 

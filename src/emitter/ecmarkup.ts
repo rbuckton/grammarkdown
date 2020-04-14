@@ -45,6 +45,7 @@ import {
     TextContent
 } from "../nodes";
 
+/** {@docCategory Emit} */
 export class EcmarkupEmitter extends Emitter {
     protected extension = ".emu.html";
 

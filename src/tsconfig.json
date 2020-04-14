@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "target": "es2015",
+        "lib": ["es2015"],
         "module": "commonjs",
         "outDir": "../dist",
         "types": ["node", "mocha"],

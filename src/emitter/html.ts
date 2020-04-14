@@ -46,6 +46,7 @@ import {
     TextContent
 } from "../nodes";
 
+/** {@docCategory Emit} */
 export class HtmlEmitter extends Emitter {
     protected extension = ".html";
 

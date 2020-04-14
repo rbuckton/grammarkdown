@@ -1,0 +1,28 @@
+{
+    "outputTarget": "docfx",
+    "newDocfxNamespaces": true,
+    "tableOfContents": {
+        "tocConfig": {
+            "items": [
+                {
+                    "name": "grammarkdown",
+                    "uid": "grammarkdown!",
+                    "items": [
+                        { "name": "Services", "items": [
+                            { "name": "Compiler", "items": [] },
+                            { "name": "Hosts", "items": [] },
+                            { "name": "Parse", "items": [] },
+                            { "name": "Bind", "items": [] },
+                            { "name": "Check", "items": [] },
+                            { "name": "Emit", "items": [] }
+                        ] },
+                        { "name": "Nodes", "items": [] },
+                        { "name": "Other", "items": [] }
+                    ]
+                }
+            ]
+        },
+        "catchAllCategory": "Other",
+        "categoryInlineTag": "docCategory"
+    }
+}

@@ -1,0 +1,1983 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>API Reference | Grammarkdown API Reference </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="API Reference | Grammarkdown API Reference ">
+    <meta name="generator" content="docfx 2.52.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="grammarkdown!">
+  
+  <h1 id="grammarkdown_" data-uid="grammarkdown!" class="text-break">Package grammarkdown
+  </h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"><p><code>grammarkdown</code> has an API that can be consumed:</p>
+<pre><code class="lang-js">var grammarkdown = require(&quot;grammarkdown&quot;)
+  , Grammar = grammarkdown.Grammar
+  , EmitFormat = grammarkdown.EmitFormat
+
+var filename = &quot;...&quot;;
+var source = &quot;...&quot;;
+var output;
+
+// parse
+var grammar = new Grammar(
+  [filename],
+  { format: EmitFormat.markdown },
+  function () { return source; });
+
+// bind (optional, bind happens automatically during check)
+grammar.bindSync();
+
+// check (optional, check happens automatically during emit)
+grammar.checkSync();
+
+// emit
+grammar.emitSync(undefined, function (file, text) { output = text; });
+
+console.log(output);
+</code></pre></div>
+  <div class="markdown level0 remarks"></div>
+    <h3 id="namespaces"></h3>
+        <h4><a class="xref" href="grammarkdown/position-namespace.html#grammarkdown_Position_namespace">Position</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/range-namespace.html#grammarkdown_Range_namespace">Range</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/textchange-namespace.html#grammarkdown_TextChange_namespace">TextChange</a></h4>
+        <section></section>
+    <h3 id="classes">Classes
+  </h3>
+        <h4><a class="xref" href="grammarkdown/argument.html#grammarkdown_Argument_class">Argument</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/argumentlist.html#grammarkdown_ArgumentList_class">ArgumentList</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/assertionbase.html#grammarkdown_AssertionBase_class">AssertionBase</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/asynchost.html#grammarkdown_AsyncHost_class">AsyncHost</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/asyncsinglefilehost.html#grammarkdown_AsyncSingleFileHost_class">AsyncSingleFileHost</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/binder.html#grammarkdown_Binder_class">Binder</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/bindingtable.html#grammarkdown_BindingTable_class">BindingTable</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/butnotsymbol.html#grammarkdown_ButNotSymbol_class">ButNotSymbol</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/checker.html#grammarkdown_Checker_class">Checker</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/commenttriviabase.html#grammarkdown_CommentTriviaBase_class">CommentTriviaBase</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/constraints.html#grammarkdown_Constraints_class">Constraints</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/define.html#grammarkdown_Define_class">Define</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/diagnosticmessages.html#grammarkdown_DiagnosticMessages_class">DiagnosticMessages</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/ecmarkupemitter.html#grammarkdown_EcmarkupEmitter_class">EcmarkupEmitter</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/emitter.html#grammarkdown_Emitter_class">Emitter</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/emptyassertion.html#grammarkdown_EmptyAssertion_class">EmptyAssertion</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/grammar.html#grammarkdown_Grammar_class">Grammar</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/host.html#grammarkdown_Host_class">Host</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/hostbase.html#grammarkdown_HostBase_class">HostBase</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/htmlclosetagtrivia.html#grammarkdown_HtmlCloseTagTrivia_class">HtmlCloseTagTrivia</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/htmlemitter.html#grammarkdown_HtmlEmitter_class">HtmlEmitter</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/htmlopentagtrivia.html#grammarkdown_HtmlOpenTagTrivia_class">HtmlOpenTagTrivia</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/htmltriviabase.html#grammarkdown_HtmlTriviaBase_class">HtmlTriviaBase</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/identifier.html#grammarkdown_Identifier_class">Identifier</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/import.html#grammarkdown_Import_class">Import</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/invalidassertion.html#grammarkdown_InvalidAssertion_class">InvalidAssertion</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/invalidsymbol.html#grammarkdown_InvalidSymbol_class">InvalidSymbol</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/lexicalgoalassertion.html#grammarkdown_LexicalGoalAssertion_class">LexicalGoalAssertion</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/lexicalsymbolbase.html#grammarkdown_LexicalSymbolBase_class">LexicalSymbolBase</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/linemap.html#grammarkdown_LineMap_class">LineMap</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/linkreference.html#grammarkdown_LinkReference_class">LinkReference</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/lookaheadassertion.html#grammarkdown_LookaheadAssertion_class">LookaheadAssertion</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/markdownemitter.html#grammarkdown_MarkdownEmitter_class">MarkdownEmitter</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/metaelementbase.html#grammarkdown_MetaElementBase_class">MetaElementBase</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/multilinecommenttrivia.html#grammarkdown_MultiLineCommentTrivia_class">MultiLineCommentTrivia</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/node.html#grammarkdown_Node_class">Node</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_class">NodeNavigator</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/nodevisitor.html#grammarkdown_NodeVisitor_class">NodeVisitor</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/nonterminal.html#grammarkdown_Nonterminal_class">Nonterminal</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/nosymbolhereassertion.html#grammarkdown_NoSymbolHereAssertion_class">NoSymbolHereAssertion</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/nulldiagnosticmessages.html#grammarkdown_NullDiagnosticMessages_class">NullDiagnosticMessages</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/oneoflist.html#grammarkdown_OneOfList_class">OneOfList</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/oneofsymbol.html#grammarkdown_OneOfSymbol_class">OneOfSymbol</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/optionalsymbolbase.html#grammarkdown_OptionalSymbolBase_class">OptionalSymbolBase</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/parameter.html#grammarkdown_Parameter_class">Parameter</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/parameterlist.html#grammarkdown_ParameterList_class">ParameterList</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/parser.html#grammarkdown_Parser_class">Parser</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/placeholdersymbol.html#grammarkdown_PlaceholderSymbol_class">PlaceholderSymbol</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/primarysymbolbase.html#grammarkdown_PrimarySymbolBase_class">PrimarySymbolBase</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/production.html#grammarkdown_Production_class">Production</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/productionbodybase.html#grammarkdown_ProductionBodyBase_class">ProductionBodyBase</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/prose.html#grammarkdown_Prose_class">Prose</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/proseassertion.html#grammarkdown_ProseAssertion_class">ProseAssertion</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/prosefragmentliteral.html#grammarkdown_ProseFragmentLiteral_class">ProseFragmentLiteral</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/resolver.html#grammarkdown_Resolver_class">Resolver</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/righthandside.html#grammarkdown_RightHandSide_class">RightHandSide</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/righthandsidelist.html#grammarkdown_RightHandSideList_class">RightHandSideList</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/scanner.html#grammarkdown_Scanner_class">Scanner</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_class">SingleFileHost</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/singlelinecommenttrivia.html#grammarkdown_SingleLineCommentTrivia_class">SingleLineCommentTrivia</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/sourceelementbase.html#grammarkdown_SourceElementBase_class">SourceElementBase</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/stringliteral.html#grammarkdown_StringLiteral_class">StringLiteral</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/stringwriter.html#grammarkdown_StringWriter_class">StringWriter</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/symbol.html#grammarkdown_Symbol_class">Symbol</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/symbolset.html#grammarkdown_SymbolSet_class">SymbolSet</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/symbolspan.html#grammarkdown_SymbolSpan_class">SymbolSpan</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/symboltable.html#grammarkdown_SymbolTable_class">SymbolTable</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/synchost.html#grammarkdown_SyncHost_class">SyncHost</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/syncsinglefilehost.html#grammarkdown_SyncSingleFileHost_class">SyncSingleFileHost</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/terminal.html#grammarkdown_Terminal_class">Terminal</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/token.html#grammarkdown_Token_class">Token</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/triviabase.html#grammarkdown_TriviaBase_class">TriviaBase</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/unicodecharacterliteral.html#grammarkdown_UnicodeCharacterLiteral_class">UnicodeCharacterLiteral</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/unicodecharacterrange.html#grammarkdown_UnicodeCharacterRange_class">UnicodeCharacterRange</a></h4>
+        <section></section>
+    <h3 id="interfaces">Interfaces
+  </h3>
+        <h4><a class="xref" href="grammarkdown/asynchostoptions.html#grammarkdown_AsyncHostOptions_interface">AsyncHostOptions</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/compileroptions.html#grammarkdown_CompilerOptions_interface">CompilerOptions</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/diagnostic.html#grammarkdown_Diagnostic_interface">Diagnostic</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/diagnosticinfo.html#grammarkdown_DiagnosticInfo_interface">DiagnosticInfo</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/hostbaseoptions.html#grammarkdown_HostBaseOptions_interface">HostBaseOptions</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/hostoptions.html#grammarkdown_HostOptions_interface">HostOptions</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/position-interface.html#grammarkdown_Position_interface">Position</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/range-interface.html#grammarkdown_Range_interface">Range</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/synchostoptions.html#grammarkdown_SyncHostOptions_interface">SyncHostOptions</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/textchange-interface.html#grammarkdown_TextChange_interface">TextChange</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/textcontent.html#grammarkdown_TextContent_interface">TextContent</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/textrange.html#grammarkdown_TextRange_interface">TextRange</a></h4>
+        <section></section>
+    <h3 id="enums">Enums
+  </h3>
+        <h4><a class="xref" href="grammarkdown/charactercodes.html#grammarkdown_CharacterCodes_enum">CharacterCodes</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/emitformat.html#grammarkdown_EmitFormat_enum">EmitFormat</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/newlinekind.html#grammarkdown_NewLineKind_enum">NewLineKind</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/symbolkind.html#grammarkdown_SymbolKind_enum">SymbolKind</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a></h4>
+        <section></section>
+    <h3 id="functions">Functions
+  </h3>
+  
+  
+        <h4 id="grammarkdown_forEachChild_function_1_" data-uid="grammarkdown!forEachChild:function(1)">forEachChild(node, cbNode)</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare function forEachChild&lt;T&gt;(node: Node | undefined, cbNode: (node: Node) =&gt; T | undefined): T | undefined;</code></pre>
+        </div>
+        <h5 class="parameters">Parameters</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a class="xref" href="grammarkdown/node.html#grammarkdown_Node_class">Node</a> | undefined</td>
+              <td><em>node</em></td>
+              <td>
+                
+                
+              </td>
+            </tr>
+            <tr>
+              <td>(node: <a class="xref" href="grammarkdown/node.html#grammarkdown_Node_class">Node</a>) =&gt; T | undefined</td>
+              <td><em>cbNode</em></td>
+              <td>
+                
+                
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h5 class="returns">Returns</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="xref">T | undefined</span></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <h5 class="typeParameters">Type Parameters</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><em>T</em></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+  
+  
+        <h4 id="grammarkdown_formatList_function_1_" data-uid="grammarkdown!formatList:function(1)">formatList(tokens)</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare function formatList(tokens: (SyntaxKind | string)[]): string;</code></pre>
+        </div>
+        <h5 class="parameters">Parameters</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>(<a class="xref" href="grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a> | string)[]</td>
+              <td><em>tokens</em></td>
+              <td>
+                
+                
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h5 class="returns">Returns</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="xref">string</span></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+  
+  
+        <h4 id="grammarkdown_formatString_function_1_" data-uid="grammarkdown!formatString:function(1)">formatString(format, args)</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare function formatString(format: string, args?: any[]): string;</code></pre>
+        </div>
+        <h5 class="parameters">Parameters</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="xref">string</span></td>
+              <td><em>format</em></td>
+              <td>
+                
+                
+              </td>
+            </tr>
+            <tr>
+              <td><span class="xref">any[]</span></td>
+              <td><em>args</em></td>
+              <td>
+                
+                
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h5 class="returns">Returns</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="xref">string</span></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+  
+  
+        <h4 id="grammarkdown_formatString_function_2_" data-uid="grammarkdown!formatString:function(2)">formatString(format, args)</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare function formatString(format: string, ...args: any[]): string;</code></pre>
+        </div>
+        <h5 class="parameters">Parameters</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="xref">string</span></td>
+              <td><em>format</em></td>
+              <td>
+                
+                
+              </td>
+            </tr>
+            <tr>
+              <td><span class="xref">any[]</span></td>
+              <td><em>args</em></td>
+              <td>
+                
+                
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h5 class="returns">Returns</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="xref">string</span></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+  
+  
+        <h4 id="grammarkdown_getDefaultOptions_function_1_" data-uid="grammarkdown!getDefaultOptions:function(1)">getDefaultOptions()</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare function getDefaultOptions(): CompilerOptions;</code></pre>
+        </div>
+        <h5 class="returns">Returns</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a class="xref" href="grammarkdown/compileroptions.html#grammarkdown_CompilerOptions_interface">CompilerOptions</a></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+  
+  
+        <h4 id="grammarkdown_isAssertionKind_function_1_" data-uid="grammarkdown!isAssertionKind:function(1)">isAssertionKind(kind)</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare function isAssertionKind(kind: SyntaxKind): kind is AssertionKind;</code></pre>
+        </div>
+        <h5 class="parameters">Parameters</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a class="xref" href="grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a></td>
+              <td><em>kind</em></td>
+              <td>
+                
+                
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h5 class="returns">Returns</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="xref">kind</span> is <a class="xref" href="grammarkdown.html#grammarkdown_AssertionKind_type">AssertionKind</a></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+  
+  
+        <h4 id="grammarkdown_isCommentTriviaKind_function_1_" data-uid="grammarkdown!isCommentTriviaKind:function(1)">isCommentTriviaKind(kind)</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare function isCommentTriviaKind(kind: SyntaxKind): kind is CommentTriviaKind;</code></pre>
+        </div>
+        <h5 class="parameters">Parameters</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a class="xref" href="grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a></td>
+              <td><em>kind</em></td>
+              <td>
+                
+                
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h5 class="returns">Returns</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="xref">kind</span> is <a class="xref" href="grammarkdown.html#grammarkdown_CommentTriviaKind_type">CommentTriviaKind</a></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+  
+  
+        <h4 id="grammarkdown_isHtmlTriviaKind_function_1_" data-uid="grammarkdown!isHtmlTriviaKind:function(1)">isHtmlTriviaKind(kind)</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare function isHtmlTriviaKind(kind: SyntaxKind): kind is HtmlTriviaKind;</code></pre>
+        </div>
+        <h5 class="parameters">Parameters</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a class="xref" href="grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a></td>
+              <td><em>kind</em></td>
+              <td>
+                
+                
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h5 class="returns">Returns</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="xref">kind</span> is <a class="xref" href="grammarkdown.html#grammarkdown_HtmlTriviaKind_type">HtmlTriviaKind</a></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+  
+  
+        <h4 id="grammarkdown_isKeywordKind_function_1_" data-uid="grammarkdown!isKeywordKind:function(1)">isKeywordKind(kind)</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare function isKeywordKind(kind: SyntaxKind): kind is KeywordKind;</code></pre>
+        </div>
+        <h5 class="parameters">Parameters</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a class="xref" href="grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a></td>
+              <td><em>kind</em></td>
+              <td>
+                
+                
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h5 class="returns">Returns</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="xref">kind</span> is <a class="xref" href="grammarkdown.html#grammarkdown_KeywordKind_type">KeywordKind</a></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+  
+  
+        <h4 id="grammarkdown_isLexicalSymbolKind_function_1_" data-uid="grammarkdown!isLexicalSymbolKind:function(1)">isLexicalSymbolKind(kind)</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare function isLexicalSymbolKind(kind: SyntaxKind): kind is LexicalSymbolKind;</code></pre>
+        </div>
+        <h5 class="parameters">Parameters</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a class="xref" href="grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a></td>
+              <td><em>kind</em></td>
+              <td>
+                
+                
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h5 class="returns">Returns</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="xref">kind</span> is <a class="xref" href="grammarkdown.html#grammarkdown_LexicalSymbolKind_type">LexicalSymbolKind</a></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+  
+  
+        <h4 id="grammarkdown_isMetaElementKind_function_1_" data-uid="grammarkdown!isMetaElementKind:function(1)">isMetaElementKind(kind)</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare function isMetaElementKind(kind: SyntaxKind): kind is MetaElementKind;</code></pre>
+        </div>
+        <h5 class="parameters">Parameters</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a class="xref" href="grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a></td>
+              <td><em>kind</em></td>
+              <td>
+                
+                
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h5 class="returns">Returns</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="xref">kind</span> is <a class="xref" href="grammarkdown.html#grammarkdown_MetaElementKind_type">MetaElementKind</a></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+  
+  
+        <h4 id="grammarkdown_isOptionalSymbolKind_function_1_" data-uid="grammarkdown!isOptionalSymbolKind:function(1)">isOptionalSymbolKind(kind)</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare function isOptionalSymbolKind(kind: SyntaxKind): kind is OptionalSymbolKind;</code></pre>
+        </div>
+        <h5 class="parameters">Parameters</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a class="xref" href="grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a></td>
+              <td><em>kind</em></td>
+              <td>
+                
+                
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h5 class="returns">Returns</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="xref">kind</span> is <a class="xref" href="grammarkdown.html#grammarkdown_OptionalSymbolKind_type">OptionalSymbolKind</a></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+  
+  
+        <h4 id="grammarkdown_isPrimarySymbolKind_function_1_" data-uid="grammarkdown!isPrimarySymbolKind:function(1)">isPrimarySymbolKind(kind)</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare function isPrimarySymbolKind(kind: SyntaxKind): kind is PrimarySymbolKind;</code></pre>
+        </div>
+        <h5 class="parameters">Parameters</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a class="xref" href="grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a></td>
+              <td><em>kind</em></td>
+              <td>
+                
+                
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h5 class="returns">Returns</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="xref">kind</span> is <a class="xref" href="grammarkdown.html#grammarkdown_PrimarySymbolKind_type">PrimarySymbolKind</a></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+  
+  
+        <h4 id="grammarkdown_isProductionBodyKind_function_1_" data-uid="grammarkdown!isProductionBodyKind:function(1)">isProductionBodyKind(kind)</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare function isProductionBodyKind(kind: SyntaxKind): kind is ProductionBodyKind;</code></pre>
+        </div>
+        <h5 class="parameters">Parameters</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a class="xref" href="grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a></td>
+              <td><em>kind</em></td>
+              <td>
+                
+                
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h5 class="returns">Returns</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="xref">kind</span> is <a class="xref" href="grammarkdown.html#grammarkdown_ProductionBodyKind_type">ProductionBodyKind</a></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+  
+  
+        <h4 id="grammarkdown_isProseFragmentKind_function_1_" data-uid="grammarkdown!isProseFragmentKind:function(1)">isProseFragmentKind(kind)</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare function isProseFragmentKind(kind: SyntaxKind): kind is ProseFragmentKind;</code></pre>
+        </div>
+        <h5 class="parameters">Parameters</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a class="xref" href="grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a></td>
+              <td><em>kind</em></td>
+              <td>
+                
+                
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h5 class="returns">Returns</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="xref">kind</span> is <a class="xref" href="grammarkdown.html#grammarkdown_ProseFragmentKind_type">ProseFragmentKind</a></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+  
+  
+        <h4 id="grammarkdown_isProseFragmentLiteralKind_function_1_" data-uid="grammarkdown!isProseFragmentLiteralKind:function(1)">isProseFragmentLiteralKind(kind)</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare function isProseFragmentLiteralKind(kind: SyntaxKind): kind is ProseFragmentLiteralKind;</code></pre>
+        </div>
+        <h5 class="parameters">Parameters</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a class="xref" href="grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a></td>
+              <td><em>kind</em></td>
+              <td>
+                
+                
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h5 class="returns">Returns</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="xref">kind</span> is <a class="xref" href="grammarkdown.html#grammarkdown_ProseFragmentLiteralKind_type">ProseFragmentLiteralKind</a></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+  
+  
+        <h4 id="grammarkdown_isPunctuationKind_function_1_" data-uid="grammarkdown!isPunctuationKind:function(1)">isPunctuationKind(kind)</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare function isPunctuationKind(kind: SyntaxKind): kind is PunctuationKind;</code></pre>
+        </div>
+        <h5 class="parameters">Parameters</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a class="xref" href="grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a></td>
+              <td><em>kind</em></td>
+              <td>
+                
+                
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h5 class="returns">Returns</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="xref">kind</span> is <a class="xref" href="grammarkdown.html#grammarkdown_PunctuationKind_type">PunctuationKind</a></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+  
+  
+        <h4 id="grammarkdown_isSourceElementKind_function_1_" data-uid="grammarkdown!isSourceElementKind:function(1)">isSourceElementKind(kind)</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare function isSourceElementKind(kind: SyntaxKind): kind is SourceElementKind;</code></pre>
+        </div>
+        <h5 class="parameters">Parameters</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a class="xref" href="grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a></td>
+              <td><em>kind</em></td>
+              <td>
+                
+                
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h5 class="returns">Returns</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="xref">kind</span> is <a class="xref" href="grammarkdown.html#grammarkdown_SourceElementKind_type">SourceElementKind</a></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+  
+  
+        <h4 id="grammarkdown_isTextContentKind_function_1_" data-uid="grammarkdown!isTextContentKind:function(1)">isTextContentKind(kind)</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare function isTextContentKind(kind: SyntaxKind): kind is TextContentKind;</code></pre>
+        </div>
+        <h5 class="parameters">Parameters</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a class="xref" href="grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a></td>
+              <td><em>kind</em></td>
+              <td>
+                
+                
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h5 class="returns">Returns</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="xref">kind</span> is <a class="xref" href="grammarkdown.html#grammarkdown_TextContentKind_type">TextContentKind</a></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+  
+  
+        <h4 id="grammarkdown_isTokenKind_function_1_" data-uid="grammarkdown!isTokenKind:function(1)">isTokenKind(kind)</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare function isTokenKind(kind: SyntaxKind): kind is TokenKind;</code></pre>
+        </div>
+        <h5 class="parameters">Parameters</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a class="xref" href="grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a></td>
+              <td><em>kind</em></td>
+              <td>
+                
+                
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h5 class="returns">Returns</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="xref">kind</span> is <a class="xref" href="grammarkdown.html#grammarkdown_TokenKind_type">TokenKind</a></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+  
+  
+        <h4 id="grammarkdown_isTriviaKind_function_1_" data-uid="grammarkdown!isTriviaKind:function(1)">isTriviaKind(kind)</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare function isTriviaKind(kind: SyntaxKind): kind is TriviaKind;</code></pre>
+        </div>
+        <h5 class="parameters">Parameters</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a class="xref" href="grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a></td>
+              <td><em>kind</em></td>
+              <td>
+                
+                
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h5 class="returns">Returns</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="xref">kind</span> is <a class="xref" href="grammarkdown.html#grammarkdown_TriviaKind_type">TriviaKind</a></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+  
+  
+        <h4 id="grammarkdown_scanHtmlTrivia_function_1_" data-uid="grammarkdown!scanHtmlTrivia:function(1)">scanHtmlTrivia(text, pos, end)</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare function scanHtmlTrivia(text: string, pos: number, end: number): HtmlTrivia[] | undefined;</code></pre>
+        </div>
+        <h5 class="parameters">Parameters</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="xref">string</span></td>
+              <td><em>text</em></td>
+              <td>
+                
+                
+              </td>
+            </tr>
+            <tr>
+              <td><span class="xref">number</span></td>
+              <td><em>pos</em></td>
+              <td>
+                
+                
+              </td>
+            </tr>
+            <tr>
+              <td><span class="xref">number</span></td>
+              <td><em>end</em></td>
+              <td>
+                
+                
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h5 class="returns">Returns</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a class="xref" href="grammarkdown.html#grammarkdown_HtmlTrivia_type">HtmlTrivia</a>[] | undefined</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+  
+  
+        <h4 id="grammarkdown_skipTrivia_function_1_" data-uid="grammarkdown!skipTrivia:function(1)">skipTrivia(text, pos, end, htmlTrivia, commentTrivia)</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare function skipTrivia(text: string, pos: number, end: number, htmlTrivia?: HtmlTrivia[], commentTrivia?: CommentTrivia[]): number;</code></pre>
+        </div>
+        <h5 class="parameters">Parameters</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="xref">string</span></td>
+              <td><em>text</em></td>
+              <td>
+                
+                
+              </td>
+            </tr>
+            <tr>
+              <td><span class="xref">number</span></td>
+              <td><em>pos</em></td>
+              <td>
+                
+                
+              </td>
+            </tr>
+            <tr>
+              <td><span class="xref">number</span></td>
+              <td><em>end</em></td>
+              <td>
+                
+                
+              </td>
+            </tr>
+            <tr>
+              <td><a class="xref" href="grammarkdown.html#grammarkdown_HtmlTrivia_type">HtmlTrivia</a>[]</td>
+              <td><em>htmlTrivia</em></td>
+              <td>
+                
+                
+              </td>
+            </tr>
+            <tr>
+              <td><a class="xref" href="grammarkdown.html#grammarkdown_CommentTrivia_type">CommentTrivia</a>[]</td>
+              <td><em>commentTrivia</em></td>
+              <td>
+                
+                
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h5 class="returns">Returns</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="xref">number</span></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+  
+  
+        <h4 id="grammarkdown_stringToToken_function_1_" data-uid="grammarkdown!stringToToken:function(1)">stringToToken(text)</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare function stringToToken(text: string): SyntaxKind | undefined;</code></pre>
+        </div>
+        <h5 class="parameters">Parameters</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="xref">string</span></td>
+              <td><em>text</em></td>
+              <td>
+                
+                
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h5 class="returns">Returns</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a class="xref" href="grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a> | undefined</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+  
+  
+        <h4 id="grammarkdown_tokenToString_function_1_" data-uid="grammarkdown!tokenToString:function(1)">tokenToString(kind, quoted)</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare function tokenToString(kind: SyntaxKind | string, quoted?: boolean): string;</code></pre>
+        </div>
+        <h5 class="parameters">Parameters</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a class="xref" href="grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a> | string</td>
+              <td><em>kind</em></td>
+              <td>
+                
+                
+              </td>
+            </tr>
+            <tr>
+              <td><span class="xref">boolean</span></td>
+              <td><em>quoted</em></td>
+              <td>
+                
+                
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h5 class="returns">Returns</h5>
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="xref">string</span></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+    <h3 id="variables">Variables
+  </h3>
+  
+  
+        <h4 id="grammarkdown_Diagnostics_var" data-uid="grammarkdown!Diagnostics:var">Diagnostics</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">Diagnostics: {
+    Constant_expected: {
+        code: number;
+        message: string;
+    };
+    _0_expected: {
+        code: number;
+        message: string;
+    };
+    _0_or_1_: {
+        code: number;
+        message: string;
+    };
+    Unexpected_token_0_: {
+        code: number;
+        message: string;
+    };
+    Invalid_character: {
+        code: number;
+        message: string;
+    };
+    Unterminated_string_literal: {
+        code: number;
+        message: string;
+    };
+    Invalid_escape_sequence: {
+        code: number;
+        message: string;
+    };
+    Digit_expected: {
+        code: number;
+        message: string;
+    };
+    Production_expected: {
+        code: number;
+        message: string;
+    };
+    Unterminated_identifier_literal: {
+        code: number;
+        message: string;
+    };
+    Obsolete_0_: {
+        code: number;
+        message: string;
+        warning: true;
+    };
+    Cannot_find_name_0_: {
+        code: number;
+        message: string;
+    };
+    Duplicate_identifier_0_: {
+        code: number;
+        message: string;
+    };
+    Duplicate_terminal_0_: {
+        code: number;
+        message: string;
+    };
+    Argument_0_cannot_be_specified_multiple_times: {
+        code: number;
+        message: string;
+    };
+    Production_0_does_not_have_a_parameter_named_1_: {
+        code: number;
+        message: string;
+    };
+    Production_0_is_missing_parameter_1_All_definitions_of_production_0_must_specify_the_same_formal_parameters: {
+        code: number;
+        message: string;
+    };
+    There_is_no_argument_given_for_parameter_0_: {
+        code: number;
+        message: string;
+    };
+    Parameter_0_is_unused: {
+        code: number;
+        message: string;
+    };
+}</code></pre>
+        </div>
+    <h3 id="typealiases">Type Aliases
+  </h3>
+  
+  
+        <h4 id="grammarkdown_ArgumentOperatorKind_type" data-uid="grammarkdown!ArgumentOperatorKind:type">ArgumentOperatorKind</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type ArgumentOperatorKind = SyntaxKind.QuestionToken | SyntaxKind.PlusToken | SyntaxKind.TildeToken;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_Assertion_type" data-uid="grammarkdown!Assertion:type">Assertion</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type Assertion = EmptyAssertion | LookaheadAssertion | LexicalGoalAssertion | NoSymbolHereAssertion | ProseAssertion | InvalidAssertion;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_AssertionKind_type" data-uid="grammarkdown!AssertionKind:type">AssertionKind</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type AssertionKind = SyntaxKind.EmptyAssertion | SyntaxKind.LookaheadAssertion | SyntaxKind.LexicalGoalAssertion | SyntaxKind.NoSymbolHereAssertion | SyntaxKind.ProseAssertion | SyntaxKind.InvalidAssertion;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_BooleanKind_type" data-uid="grammarkdown!BooleanKind:type">BooleanKind</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type BooleanKind = SyntaxKind.TrueKeyword | SyntaxKind.FalseKeyword;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_CommentTrivia_type" data-uid="grammarkdown!CommentTrivia:type">CommentTrivia</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type CommentTrivia = SingleLineCommentTrivia | MultiLineCommentTrivia;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_CommentTriviaKind_type" data-uid="grammarkdown!CommentTriviaKind:type">CommentTriviaKind</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type CommentTriviaKind = SyntaxKind.SingleLineCommentTrivia | SyntaxKind.MultiLineCommentTrivia;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_Declaration_type" data-uid="grammarkdown!Declaration:type">Declaration</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type Declaration = SourceFile | Production | Parameter;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_HtmlTrivia_type" data-uid="grammarkdown!HtmlTrivia:type">HtmlTrivia</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type HtmlTrivia = HtmlOpenTagTrivia | HtmlCloseTagTrivia;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_HtmlTriviaKind_type" data-uid="grammarkdown!HtmlTriviaKind:type">HtmlTriviaKind</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type HtmlTriviaKind = SyntaxKind.HtmlOpenTagTrivia | SyntaxKind.HtmlCloseTagTrivia;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_KeywordKind_type" data-uid="grammarkdown!KeywordKind:type">KeywordKind</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type KeywordKind = SyntaxKind.ButKeyword | SyntaxKind.DefineKeyword | SyntaxKind.EmptyKeyword | SyntaxKind.FalseKeyword | SyntaxKind.GoalKeyword | SyntaxKind.HereKeyword | SyntaxKind.ImportKeyword | SyntaxKind.LexicalKeyword | SyntaxKind.LookaheadKeyword | SyntaxKind.NoKeyword | SyntaxKind.NotKeyword | SyntaxKind.OfKeyword | SyntaxKind.OneKeyword | SyntaxKind.OrKeyword | SyntaxKind.ThroughKeyword | SyntaxKind.TrueKeyword;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_LegacyReadFileCallback_type" data-uid="grammarkdown!LegacyReadFileCallback:type">LegacyReadFileCallback</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type LegacyReadFileCallback = (this: never, file: string, cancelToken?: CancellationToken) =&gt; PromiseLike&lt;string&gt; | string;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_LegacyReadFileSyncCallback_type" data-uid="grammarkdown!LegacyReadFileSyncCallback:type">LegacyReadFileSyncCallback</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type LegacyReadFileSyncCallback = (this: never, file: string, cancelToken?: CancellationToken) =&gt; string;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_LegacyWriteFileCallback_type" data-uid="grammarkdown!LegacyWriteFileCallback:type">LegacyWriteFileCallback</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type LegacyWriteFileCallback = (this: never, file: string, content: string, cancelToken?: CancellationToken) =&gt; PromiseLike&lt;void&gt; | void;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_LegacyWriteFileSyncCallback_type" data-uid="grammarkdown!LegacyWriteFileSyncCallback:type">LegacyWriteFileSyncCallback</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type LegacyWriteFileSyncCallback = (this: never, file: string, content: string, cancelToken?: CancellationToken) =&gt; void;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_LexicalSymbol_type" data-uid="grammarkdown!LexicalSymbol:type">LexicalSymbol</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type LexicalSymbol = PrimarySymbol | Assertion | PlaceholderSymbol | UnicodeCharacterRange | ButNotSymbol | Prose | OneOfSymbol | InvalidSymbol;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_LexicalSymbolKind_type" data-uid="grammarkdown!LexicalSymbolKind:type">LexicalSymbolKind</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type LexicalSymbolKind = PrimarySymbolKind | AssertionKind | SyntaxKind.PlaceholderSymbol | SyntaxKind.UnicodeCharacterRange | SyntaxKind.ButNotSymbol | SyntaxKind.Prose | SyntaxKind.OneOfSymbol | SyntaxKind.InvalidSymbol;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_LookaheadOperatorKind_type" data-uid="grammarkdown!LookaheadOperatorKind:type">LookaheadOperatorKind</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type LookaheadOperatorKind = SyntaxKind.EqualsToken | SyntaxKind.EqualsEqualsToken | SyntaxKind.ExclamationEqualsToken | SyntaxKind.NotEqualToToken | SyntaxKind.LessThanMinusToken | SyntaxKind.ElementOfToken | SyntaxKind.LessThanExclamationToken | SyntaxKind.NotAnElementOfToken;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_MetaElement_type" data-uid="grammarkdown!MetaElement:type">MetaElement</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type MetaElement = Import | Define;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_MetaElementKind_type" data-uid="grammarkdown!MetaElementKind:type">MetaElementKind</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type MetaElementKind = SyntaxKind.Import | SyntaxKind.Define;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_OptionalSymbol_type" data-uid="grammarkdown!OptionalSymbol:type">OptionalSymbol</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type OptionalSymbol = UnicodeCharacterLiteral | Terminal | Nonterminal;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_OptionalSymbolKind_type" data-uid="grammarkdown!OptionalSymbolKind:type">OptionalSymbolKind</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type OptionalSymbolKind = SyntaxKind.UnicodeCharacterLiteral | SyntaxKind.Terminal | SyntaxKind.Nonterminal;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_ParameterOperatorKind_type" data-uid="grammarkdown!ParameterOperatorKind:type">ParameterOperatorKind</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type ParameterOperatorKind = SyntaxKind.PlusToken | SyntaxKind.TildeToken;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_PrimarySymbol_type" data-uid="grammarkdown!PrimarySymbol:type">PrimarySymbol</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type PrimarySymbol = OptionalSymbol;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_PrimarySymbolKind_type" data-uid="grammarkdown!PrimarySymbolKind:type">PrimarySymbolKind</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type PrimarySymbolKind = OptionalSymbolKind;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_ProductionBody_type" data-uid="grammarkdown!ProductionBody:type">ProductionBody</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type ProductionBody = OneOfList | RightHandSide | RightHandSideList;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_ProductionBodyKind_type" data-uid="grammarkdown!ProductionBodyKind:type">ProductionBodyKind</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type ProductionBodyKind = SyntaxKind.OneOfList | SyntaxKind.RightHandSide | SyntaxKind.RightHandSideList;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_ProductionSeperatorKind_type" data-uid="grammarkdown!ProductionSeperatorKind:type">ProductionSeperatorKind</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type ProductionSeperatorKind = SyntaxKind.ColonToken | SyntaxKind.ColonColonToken | SyntaxKind.ColonColonColonToken;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_ProseFragment_type" data-uid="grammarkdown!ProseFragment:type">ProseFragment</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type ProseFragment = ProseFragmentLiteral&lt;ProseFragmentLiteralKind&gt; | Terminal | Nonterminal;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_ProseFragmentKind_type" data-uid="grammarkdown!ProseFragmentKind:type">ProseFragmentKind</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type ProseFragmentKind = ProseFragmentLiteralKind | SyntaxKind.Terminal | SyntaxKind.Nonterminal;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_ProseFragmentLiteralKind_type" data-uid="grammarkdown!ProseFragmentLiteralKind:type">ProseFragmentLiteralKind</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type ProseFragmentLiteralKind = SyntaxKind.ProseFull | SyntaxKind.ProseHead | SyntaxKind.ProseMiddle | SyntaxKind.ProseTail;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_PunctuationKind_type" data-uid="grammarkdown!PunctuationKind:type">PunctuationKind</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type PunctuationKind = SyntaxKind.AtToken | SyntaxKind.OpenBraceToken | SyntaxKind.CloseBraceToken | SyntaxKind.OpenBracketToken | SyntaxKind.OpenBracketGreaterThanToken | SyntaxKind.CloseBracketToken | SyntaxKind.GreaterThanToken | SyntaxKind.OpenParenToken | SyntaxKind.CloseParenToken | SyntaxKind.ColonToken | SyntaxKind.ColonColonToken | SyntaxKind.ColonColonColonToken | SyntaxKind.CommaToken | SyntaxKind.PlusToken | SyntaxKind.TildeToken | SyntaxKind.QuestionToken | SyntaxKind.EqualsToken | SyntaxKind.EqualsEqualsToken | SyntaxKind.ExclamationEqualsToken | SyntaxKind.LessThanExclamationToken | SyntaxKind.LessThanMinusToken | SyntaxKind.NotEqualToToken | SyntaxKind.ElementOfToken | SyntaxKind.NotAnElementOfToken;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_ReadFileCallback_type" data-uid="grammarkdown!ReadFileCallback:type">ReadFileCallback</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type ReadFileCallback = (this: never, file: string, cancelToken?: CancelToken) =&gt; PromiseLike&lt;string&gt; | string;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_ReadFileSyncCallback_type" data-uid="grammarkdown!ReadFileSyncCallback:type">ReadFileSyncCallback</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type ReadFileSyncCallback = (this: never, file: string, cancelToken?: CancelToken) =&gt; string;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_SourceElement_type" data-uid="grammarkdown!SourceElement:type">SourceElement</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type SourceElement = Production | MetaElement;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_SourceElementKind_type" data-uid="grammarkdown!SourceElementKind:type">SourceElementKind</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type SourceElementKind = MetaElementKind | SyntaxKind.Production;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_TextContentKind_type" data-uid="grammarkdown!TextContentKind:type">TextContentKind</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type TextContentKind = SyntaxKind.StringLiteral | SyntaxKind.Terminal | SyntaxKind.UnicodeCharacterLiteral | ProseFragmentLiteralKind | SyntaxKind.Identifier;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_TokenKind_type" data-uid="grammarkdown!TokenKind:type">TokenKind</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type TokenKind = SyntaxKind.EndOfFileToken | PunctuationKind | KeywordKind;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_Trivia_type" data-uid="grammarkdown!Trivia:type">Trivia</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type Trivia = CommentTrivia | HtmlTrivia;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_TriviaKind_type" data-uid="grammarkdown!TriviaKind:type">TriviaKind</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type TriviaKind = CommentTriviaKind | HtmlTriviaKind;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_WriteFileCallback_type" data-uid="grammarkdown!WriteFileCallback:type">WriteFileCallback</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type WriteFileCallback = (this: never, file: string, content: string, cancelToken?: CancelToken) =&gt; PromiseLike&lt;void&gt; | void;</code></pre>
+        </div>
+  
+  
+        <h4 id="grammarkdown_WriteFileSyncCallback_type" data-uid="grammarkdown!WriteFileSyncCallback:type">WriteFileSyncCallback</h4>
+        <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type WriteFileSyncCallback = (this: never, file: string, content: string, cancelToken?: CancelToken) =&gt; void;</code></pre>
+        </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/rbuckton/grammarkdown/blob/docs/src/docs/overwrite/grammarkdown.md/#L2" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

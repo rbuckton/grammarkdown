@@ -14,10 +14,15 @@
  *  limitations under the License.
  */
 
-export { Position, Range } from "./core";
+export { TextRange, Position, Range } from "./core";
 export * from "./host";
 export * from "./diagnostics";
-export * from "./options";
+export {
+    CompilerOptions,
+    EmitFormat,
+    NewLineKind,
+    getDefaultOptions,
+} from "./options";
 export * from "./tokens";
 export * from "./nodes";
 export * from "./symbols";

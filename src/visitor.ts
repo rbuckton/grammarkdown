@@ -53,6 +53,7 @@ import {
     Define,
 } from "./nodes";
 
+/** {@docCategory Other} */
 export abstract class NodeVisitor {
     public visit<T extends Node>(node: T): T;
     public visit<T extends Node>(node: T | undefined): T | undefined;
