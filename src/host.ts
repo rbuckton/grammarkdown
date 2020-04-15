@@ -253,8 +253,6 @@ export class CoreSyncHost extends HostBase {
     public readFileSync(file: string, cancelable?: CancellationToken | Cancelable): string | undefined {
         performance.mark("ioRead");
         try {
-            file = getLocalPath(file);
-            if (isUri(file)) return undefined; // TODO: support uris?
             return this.readFileSyncCore(file, toCancelToken(cancelable));
         }
         finally {
@@ -268,8 +266,6 @@ export class CoreSyncHost extends HostBase {
     public writeFileSync(file: string, text: string, cancelable?: CancellationToken | Cancelable) {
         performance.mark("ioWrite");
         try {
-            file = getLocalPath(file);
-            if (isUri(file)) throw new Error("Cannot write to a non-file URI.");
             this.writeFileSyncCore(file, text, toCancelToken(cancelable));
         }
         finally {

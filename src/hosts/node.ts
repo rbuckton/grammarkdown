@@ -313,18 +313,30 @@ function resolveFileFallback(file: string, referer?: string) {
 }
 
 function readFileFallback(file: string) {
-    return new Promise<string>((resolve, reject) => fs.readFile(file, "utf8", (error, data) => error ? reject(error) : resolve(data)));
+    return new Promise<string>((resolve, reject) => {
+        file = getLocalPath(file);
+        if (isUri(file)) return undefined;
+        fs.readFile(file, "utf8", (error, data) => error ? reject(error) : resolve(data));
+    });
 }
 
 function readFileSyncFallback(file: string) {
+    file = getLocalPath(file);
+    if (isUri(file)) return undefined;
     return fs.readFileSync(file, "utf8");
 }
 
 function writeFileFallback(file: string, content: string) {
-    return new Promise<void>((resolve, reject) => fs.writeFile(file, content, "utf8", (error) => error ? reject(error) : resolve()));
+    return new Promise<void>((resolve, reject) => {
+        file = getLocalPath(file);
+        if (isUri(file)) throw new Error("Cannot write to a non-file URI.");
+        fs.writeFile(file, content, "utf8", (error) => error ? reject(error) : resolve());
+    });
 }
 
 function writeFileSyncFallback(file: string, content: string) {
+    file = getLocalPath(file);
+    if (isUri(file)) throw new Error("Cannot write to a non-file URI.");
     return fs.writeFileSync(file, content, "utf8");
 }
 
