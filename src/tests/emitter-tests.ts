@@ -17,15 +17,16 @@
 import { assert } from "chai";
 import { CancelToken } from "@esfx/async-canceltoken";
 import { Grammar } from "../grammar";
-import { Host } from "../host";
+import { CoreAsyncHost } from "../host";
 
 describe("Emitter", () => {
     it("cancelable", async () => {
         const cts = CancelToken.source();
-        const grammar = new Grammar(["cancelable.grammar"], {}, new class extends Host {
-            async readFile(file: string) { return ""; }
+        const grammar = new Grammar(["cancelable.grammar"], {}, CoreAsyncHost.from({
+            resolveFile: file => file,
+            async readFile(file: string) { return ""; },
             async writeFile(file: string, content: string) { }
-        });
+        }));
         await grammar.check(/*sourceFile*/ undefined, cts.token);
         cts.cancel();
         try {

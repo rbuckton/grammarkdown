@@ -18,7 +18,8 @@ import { CancellationToken } from "prex";
 import { CancelToken } from "@esfx/async-canceltoken";
 import { Cancelable } from "@esfx/cancelable";
 import * as performance from "./performance";
-import { Host, SingleFileHost, SyncHost, AsyncHost } from "./host";
+import { CoreSyncHost, CoreAsyncHost } from "./host";
+import { Host, SingleFileHost } from "./hosts/node";
 import { DiagnosticMessages } from "./diagnostics";
 import { EmitFormat, CompilerOptions, getDefaultOptions } from "./options";
 import { SyntaxKind } from "./tokens";
@@ -30,7 +31,7 @@ import { Emitter, EcmarkupEmitter, MarkdownEmitter, HtmlEmitter } from "./emitte
 
 /** {@docCategory Compiler} */
 export class Grammar {
-    public readonly host: Host | SyncHost | AsyncHost;
+    public readonly host: Host | CoreSyncHost | CoreAsyncHost;
     public options: CompilerOptions;
     public diagnostics: DiagnosticMessages = new DiagnosticMessages();
 
@@ -45,7 +46,7 @@ export class Grammar {
     private writeFileFallback = (file: string, content: string, cancelToken?: CancelToken) => this.writeFile(file, content, cancelToken);
     private writeFileSyncFallback = (file: string, content: string) => this.writeFileSync(file, content);
 
-    constructor(rootNames: Iterable<string>, options: CompilerOptions = getDefaultOptions(), host: Host | SyncHost | AsyncHost = new Host()) {
+    constructor(rootNames: Iterable<string>, options: CompilerOptions = getDefaultOptions(), host: Host | CoreSyncHost | CoreAsyncHost = new Host()) {
         this.rootNames = rootNames;
         this.options = options;
         this.host = host;
@@ -92,13 +93,13 @@ export class Grammar {
         return this.innerEmitter || (this.innerEmitter = this.createEmitter(this.options));
     }
 
-    public static convert(content: string, options?: CompilerOptions, hostFallback?: Host | SyncHost | AsyncHost, cancelable?: Cancelable): string;
+    public static convert(content: string, options?: CompilerOptions, hostFallback?: Host | CoreSyncHost | CoreAsyncHost, cancelable?: Cancelable): string;
     /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
-    public static convert(content: string, options?: CompilerOptions, hostFallback?: Host | SyncHost | AsyncHost, cancelable?: CancellationToken | Cancelable): string;
-    public static convert(content: string, options?: CompilerOptions, hostFallback?: Host | SyncHost | AsyncHost, cancelable?: CancellationToken | Cancelable) {
+    public static convert(content: string, options?: CompilerOptions, hostFallback?: Host | CoreSyncHost | CoreAsyncHost, cancelable?: CancellationToken | Cancelable): string;
+    public static convert(content: string, options?: CompilerOptions, hostFallback?: Host | CoreSyncHost | CoreAsyncHost, cancelable?: CancellationToken | Cancelable) {
         const cancelToken = toCancelToken(cancelable);
-        const host = hostFallback === undefined || !("readFile" in hostFallback) ? SyncHost.forFile(content, /*file*/ undefined, hostFallback) :
-            !("readFileSync" in hostFallback) ? AsyncHost.forFile(content, /*file*/ undefined, hostFallback) :
+        const host = hostFallback === undefined || !("readFile" in hostFallback) ? CoreSyncHost.forFile(content, /*file*/ undefined, hostFallback) :
+            !("readFileSync" in hostFallback) ? CoreAsyncHost.forFile(content, /*file*/ undefined, hostFallback) :
             new SingleFileHost(content, /*file*/ undefined, hostFallback);
 
         const grammar = new Grammar([host.file], options, host);
