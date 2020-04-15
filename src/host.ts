@@ -14,43 +14,124 @@
  *  limitations under the License.
  */
 
-import * as path from "path";
-import * as fs from "fs";
-import * as os from "os";
-import * as url from "url";
 import * as performance from "./performance";
 import { SourceFile } from "./nodes";
 import { Parser } from "./parser";
 import { CancellationToken } from "prex";
-import { promiseFinally, pipe, toCancelToken, wrapCancelToken } from "./core";
+import { toCancelToken, isUri, getLocalPath } from "./core";
 import { CancelToken } from "@esfx/async-canceltoken";
 import { Cancelable } from "@esfx/cancelable";
 
-const ignoreCaseFallback = /^(win32|win64|darwin)$/.test(os.platform());
+/**
+ * Synchronously read a file from the host.
+ *
+ * @param file The resolved path to the file.
+ * @param cancelToken An optional `CancelToken` that indicates whether the operation was canceled.
+ * @returns A `string` containing the contents of the file, or `undefined` if the file could not be read.
+ *
+ * {@docCategory Hosts}
+ */
+export type ReadFileSyncCallback = (this: void, file: string, cancelToken?: CancelToken) => string | undefined;
 
-let builtinGrammars: Map<string, string> | undefined;
+/**
+ * Asynchronously read a file from the host.
+ *
+ * @param file The resolved path to the file.
+ * @param cancelToken An optional `CancelToken` that indicates whether the operation was canceled.
+ * @returns A `string` containing the contents of the file, or `undefined` if the file could not be read.
+ *
+ * {@docCategory Hosts}
+ */
+export type ReadFileCallback = (this: void, file: string, cancelToken?: CancelToken) => PromiseLike<string | undefined> | string | undefined;
+
+/**
+ * Synchronously read a file from the underlying host.
+ *
+ * @param file The resolved path to the file.
+ * @param cancelToken An optional `prex.CancellationToken` that indicates whether the operation was canceled.
+ * @returns A `string` containing the contents of the file, or `undefined` if the file could not be read.
+ *
+ * @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable`
+ * {@docCategory Hosts}
+ */
+export type LegacyReadFileSyncCallback = (this: void, file: string, cancelToken?: CancellationToken) => string | undefined;
+
+/**
+ * Asynchronously read a file from the underlying host.
+ *
+ * @param file The resolved path to the file.
+ * @param cancelToken An optional `prex.CancellationToken` that indicates whether the operation was canceled.
+ * @returns A `string` containing the contents of the file, or `undefined` if the file could not be read.
+ *
+ * @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable`
+ * {@docCategory Hosts}
+ */
+export type LegacyReadFileCallback = (this: void, file: string, cancelToken?: CancellationToken) => PromiseLike<string> | string;
+
+/**
+ * Synchronously write a file to the host.
+ *
+ * @param file The resolved path to the file.
+ * @param content The contents of the file.
+ * @param cancelToken An optional `CancelToken` that indicates whether the operation was canceled.
+ *
+ * {@docCategory Hosts}
+ */
+export type WriteFileSyncCallback = (this: void, file: string, content: string, cancelToken?: CancelToken) => void;
+
+/**
+ * Asynchronously write a file to the host.
+ *
+ * @param file The resolved path to the file.
+ * @param content The contents of the file.
+ * @param cancelToken An optional `CancelToken` that indicates whether the operation was canceled.
+ *
+ * {@docCategory Hosts}
+ */
+export type WriteFileCallback = (this: void, file: string, content: string, cancelToken?: CancelToken) => PromiseLike<void> | void;
+
+/**
+ * Synchronously write a file to the host.
+ *
+ * @param file The resolved path to the file.
+ * @param content The contents of the file.
+ * @param cancelToken An optional `prex.CancellationToken` that indicates whether the operation was canceled.
+ *
+ * @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable`
+ * {@docCategory Hosts}
+ */
+export type LegacyWriteFileSyncCallback = (this: void, file: string, content: string, cancelToken?: CancellationToken) => void;
+
+/**
+ * Asynchronously write a file to the host.
+ *
+ * @param file The resolved path to the file.
+ * @param content The contents of the file.
+ * @param cancelToken An optional `prex.CancellationToken` that indicates whether the operation was canceled.
+ *
+ * @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable`
+ * {@docCategory Hosts}
+ */
+export type LegacyWriteFileCallback = (this: void, file: string, content: string, cancelToken?: CancellationToken) => PromiseLike<void> | void;
 
 /** {@docCategory Hosts} */
 export interface HostBaseOptions {
     ignoreCase?: boolean;
     knownGrammars?: Record<string, string>;
     useBuiltinGrammars?: boolean;
-    resolveFile?: (file: string, referer?: string) => string;
 }
 
 /** {@docCategory Hosts} */
 export abstract class HostBase {
     public readonly ignoreCase: boolean;
 
-    private useBuiltinGrammars: boolean;
-    private innerParser: Parser | undefined;
-    private knownGrammars: Map<string, string> | undefined;
-    private resolveFileCallback: (file: string, referer?: string) => string;
+    private _innerParser: Parser | undefined;
+    private _knownGrammars: Map<string, string> | undefined;
+    private _useBuiltinGrammars: boolean;
 
-    constructor({ ignoreCase = ignoreCaseFallback, knownGrammars, useBuiltinGrammars = true, resolveFile = resolveFileFallback }: HostBaseOptions = {}) {
+    constructor({ ignoreCase = false, knownGrammars, useBuiltinGrammars = true }: HostBaseOptions = {}) {
         this.ignoreCase = ignoreCase;
-        this.useBuiltinGrammars = useBuiltinGrammars;
-        this.resolveFileCallback = resolveFile;
+        this._useBuiltinGrammars = useBuiltinGrammars;
 
         if (knownGrammars) {
             for (const key in knownGrammars) if (Object.prototype.hasOwnProperty.call(knownGrammars, key)) {
@@ -60,33 +141,26 @@ export abstract class HostBase {
     }
 
     protected get parser(): Parser {
-        return this.innerParser
-            || (this.innerParser = this.createParser());
+        return this._innerParser
+            || (this._innerParser = this.createParser());
     }
 
     public normalizeFile(file: string) {
-        return this.ignoreCase ? file.toLowerCase() : file;
+        return this.normalizeFileCore(file);
     }
 
     public resolveKnownGrammar(name: string) {
-        return this.knownGrammars
-            && this.knownGrammars.get(name.toLowerCase())
-            || this.resolveBuiltInGrammar(name);
+        return this.resolveKnownGrammarCore(name)
+            ?? (this._useBuiltinGrammars ? resolveBuiltInGrammar(name) : undefined);
     }
 
     public registerKnownGrammar(name: string, file: string) {
-        if (!this.knownGrammars) this.knownGrammars = new Map<string, string>();
-        this.knownGrammars.set(name.toLowerCase(), file);
-    }
-
-    protected resolveBuiltInGrammar(name: string) {
-        if (!this.useBuiltinGrammars) return undefined;
-        return resolveBuiltInGrammar(name);
+        this.registerKnownGrammarCore(name, file);
     }
 
     public resolveFile(file: string, referer?: string): string {
         file = this.resolveKnownGrammar(file) || file;
-        let result = this.resolveFileCallback(file, referer);
+        let result = this.resolveFileCore(file, referer);
         result = result.replace(/\\/g, "/");
         return result;
     }
@@ -105,74 +179,102 @@ export abstract class HostBase {
     protected createParser(): Parser {
         return new Parser();
     }
-}
 
-/** {@docCategory Hosts} */
-export type ReadFileSyncCallback = (this: never, file: string, cancelToken?: CancelToken) => string;
-
-/**
- * @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable`
- * {@docCategory Hosts}
- */
-export type LegacyReadFileSyncCallback = (this: never, file: string, cancelToken?: CancellationToken) => string;
-
-/** {@docCategory Hosts} */
-export type WriteFileSyncCallback = (this: never, file: string, content: string, cancelToken?: CancelToken) => void;
-
-/**
- * @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable`
- * {@docCategory Hosts}
- */
-export type LegacyWriteFileSyncCallback = (this: never, file: string, content: string, cancelToken?: CancellationToken) => void;
-
-/** {@docCategory Hosts} */
-export interface SyncHostOptions extends HostBaseOptions {
-    readFileSync?: LegacyReadFileSyncCallback | ReadFileSyncCallback | false;
-    writeFileSync?: LegacyWriteFileSyncCallback | WriteFileSyncCallback | false;
-}
-
-/** {@docCategory Hosts} */
-export class SyncHost extends HostBase {
-    private readFileSyncCallback?: ((file: string, cancelToken?: CancelToken & CancellationToken) => string) | false;
-    private writeFileSyncCallback?: ((file: string, content: string, cancelToken?: CancelToken & CancellationToken) => void) | false;
-
-    constructor({ readFileSync = readFileSyncFallback, writeFileSync = writeFileSyncFallback, ...baseOptions }: SyncHostOptions = {}) {
-        super(baseOptions);
-        this.readFileSyncCallback = readFileSync;
-        this.writeFileSyncCallback = writeFileSync;
+    protected normalizeFileCore(file: string) {
+        return this.ignoreCase ? file.toUpperCase() : file;
     }
 
-    public static forFile(content: string, file = "file.grammar", hostFallback?: SyncHost) {
-        return new SyncSingleFileHost(file, content, hostFallback);
+    protected resolveKnownGrammarCore(name: string): string | undefined {
+        return this._knownGrammars?.get(name.toUpperCase());
+    }
+
+    protected registerKnownGrammarCore(name: string, file: string) {
+        if (!this._knownGrammars) this._knownGrammars = new Map<string, string>();
+        this._knownGrammars.set(name.toUpperCase(), file);
+    }
+
+    protected abstract resolveFileCore(file: string, referer?: string): string;
+}
+
+/** {@docCategory Hosts} */
+export interface CoreSyncHostOptions extends HostBaseOptions {
+    normalizeFile?: (this: void, file: string, fallback: (file: string) => string) => string;
+    resolveFile?: (this: void, file: string, referer: string | undefined, fallback: (file: string, referer?: string) => string) => string;
+    resolveKnownGrammar?: (this: void, name: string, fallback: (name: string) => string | undefined) => string | undefined;
+    readFileSync?: (this: void, file: string, cancelToken: CancelToken | undefined, fallback: (file: string, cancelToken?: CancelToken) => string | undefined) => string | undefined;
+    writeFileSync?: (this: void, file: string, content: string, cancelToken: CancelToken | undefined, fallback: (file: string, content: string, cancelToken?: CancelToken) => void) => void;
+}
+
+/** {@docCategory Hosts} */
+export class CoreSyncHost extends HostBase {
+    private _normalizeFile: CoreSyncHostOptions["normalizeFile"];
+    private _resolveFile: CoreSyncHostOptions["resolveFile"];
+    private _resolveKnownGrammar: CoreSyncHostOptions["resolveKnownGrammar"];
+    private _readFileSync: CoreSyncHostOptions["readFileSync"];
+    private _writeFileSync: CoreSyncHostOptions["writeFileSync"];
+    private _hostFallback?: CoreSyncHost;
+
+    private _normalizeFileCallback?: (file: string) => string;
+    private _resolveFileCallback?: (file: string, referer?: string) => string;
+    private _resolveKnownGrammarCallback?: (name: string) => string | undefined;
+    private _readFileSyncCallback?: (file: string, cancelToken?: CancelToken) => string | undefined;
+    private _writeFileSyncCallback?: (file: string, content: string, cancelToken?: CancelToken) => void;
+
+    constructor(options: CoreSyncHostOptions, hostFallback?: CoreSyncHost) {
+        const {
+            ignoreCase = hostFallback?.ignoreCase,
+            normalizeFile,
+            resolveFile,
+            resolveKnownGrammar,
+            readFileSync,
+            writeFileSync,
+            ...baseOptions
+        } = options;
+        super({ ...baseOptions, ignoreCase });
+        this._normalizeFile = normalizeFile;
+        this._resolveFile = resolveFile;
+        this._resolveKnownGrammar = resolveKnownGrammar;
+        this._readFileSync = readFileSync;
+        this._writeFileSync = writeFileSync;
+        this._hostFallback = hostFallback;
+    }
+
+    public static forFile(content: string, file = "file.grammar", hostFallback?: CoreSyncHost) {
+        return new StringSyncHost(file, content, hostFallback);
+    }
+
+    public static from(options: CoreSyncHostOptions, hostFallback?: CoreSyncHost) {
+        return new CoreSyncHost(options, hostFallback);
     }
 
     public readFileSync(file: string, cancelable?: Cancelable): string | undefined;
     /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
     public readFileSync(file: string, cancelable?: CancellationToken | Cancelable): string | undefined;
     public readFileSync(file: string, cancelable?: CancellationToken | Cancelable): string | undefined {
-        const readFile = this.readFileSyncCallback;
-        if (!readFile) throw new Error("Operation cannot be completed synchronously");
-
         performance.mark("ioRead");
-        file = getLocalPath(file);
-        if (isUri(file)) return undefined; // TODO: support uris?
-        const result = readFile(file, wrapCancelToken(toCancelToken(cancelable)));
-        performance.measure("ioRead", "ioRead");
-        return result;
+        try {
+            file = getLocalPath(file);
+            if (isUri(file)) return undefined; // TODO: support uris?
+            return this.readFileSyncCore(file, toCancelToken(cancelable));
+        }
+        finally {
+            performance.measure("ioRead", "ioRead");
+        }
     }
 
     public writeFileSync(file: string, text: string, cancelable?: Cancelable): void;
     /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
     public writeFileSync(file: string, text: string, cancelable?: CancellationToken | Cancelable): void;
     public writeFileSync(file: string, text: string, cancelable?: CancellationToken | Cancelable) {
-        const writeFile = this.writeFileSyncCallback;
-        if (!writeFile) throw new Error("Operation cannot be completed synchronously");
-
         performance.mark("ioWrite");
-        file = getLocalPath(file);
-        if (isUri(file)) throw new Error("Cannot write to a non-file URI.");
-        writeFile(file, text, wrapCancelToken(toCancelToken(cancelable)));
-        performance.measure("ioWrite", "ioWrite");
+        try {
+            file = getLocalPath(file);
+            if (isUri(file)) throw new Error("Cannot write to a non-file URI.");
+            this.writeFileSyncCore(file, text, toCancelToken(cancelable));
+        }
+        finally {
+            performance.measure("ioWrite", "ioWrite");
+        }
     }
 
     public getSourceFileSync(file: string, cancelable?: Cancelable): SourceFile | undefined;
@@ -183,117 +285,176 @@ export class SyncHost extends HostBase {
         const result = this.readFileSync(file, cancelable);
         return typeof result === "string" ? this.parseSourceFile(file, result, cancelable) : undefined;
     }
-}
 
-/** {@docCategory Hosts} */
-export class SyncSingleFileHost extends SyncHost {
-    public readonly file: string;
-    public readonly content: string;
-    private hostFallback?: SyncHost;
-
-    constructor(file: string, content: string, hostFallback?: SyncHost) {
-        super({ ignoreCase: hostFallback ? hostFallback.ignoreCase : undefined });
-        this.file = file;
-        this.content = content;
-        this.hostFallback = hostFallback;
+    protected normalizeFileCore(file: string) {
+        const normalizeFile = this._normalizeFile;
+        if (normalizeFile) {
+            if (!this._normalizeFileCallback) this._normalizeFileCallback = this._normalizeFileFallback.bind(this);
+            return normalizeFile(file, this._normalizeFileCallback);
+        }
+        return this._normalizeFileFallback(file);
     }
 
-    public normalizeFile(file: string) {
-        return file === this.file ? file :
-            this.hostFallback ? this.hostFallback.normalizeFile(file) :
-            super.normalizeFile(file);
+    private _normalizeFileFallback(file: string) {
+        if (this._hostFallback) return this._hostFallback.normalizeFile(file);
+        return super.normalizeFileCore(file);
     }
 
-    public resolveFile(file: string, referer?: string): string {
-        return file === this.file ? file :
-            this.hostFallback ? this.hostFallback.resolveFile(file, referer) :
-            super.resolveFile(file);
+    protected resolveFileCore(file: string, referer?: string) {
+        const resolveFile = this._resolveFile;
+        if (resolveFile) {
+            if (!this._resolveFileCallback) this._resolveFileCallback = this._resolveFileFallback.bind(this);
+            return resolveFile(file, referer, this._resolveFileCallback);
+        }
+        return this._resolveFileFallback(file, referer);
     }
 
-    public readFileSync(file: string, cancelable?: Cancelable): string | undefined;
-    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
-    public readFileSync(file: string, cancelable?: CancellationToken | Cancelable): string | undefined;
-    public readFileSync(file: string, cancelable?: CancellationToken | Cancelable): string | undefined {
-        if (file === this.file) return this.content;
-        if (this.hostFallback) return this.hostFallback.readFileSync(file, cancelable);
+    private _resolveFileFallback(file: string, referer?: string) {
+        if (this._hostFallback) return this._hostFallback.resolveFile(file, referer);
+        throw new Error("Cannot resolve a file without a fallback host.");
+    }
+
+    protected resolveKnownGrammarCore(name: string) {
+        const resolveKnownGrammar = this._resolveKnownGrammar;
+        if (resolveKnownGrammar) {
+            if (!this._resolveKnownGrammarCallback) this._resolveKnownGrammarCallback = this._resolveKnownGrammarFallback.bind(this);
+            return resolveKnownGrammar(name, this._resolveKnownGrammarCallback);
+        }
+        return this._resolveKnownGrammarFallback(name);
+    }
+
+    private _resolveKnownGrammarFallback(name: string) {
+        return this._hostFallback?.resolveKnownGrammar(name);
+    }
+
+    protected registerKnownGrammarCore(_name: string, _file: string) {
+        throw new Error("Known grammars must be registered on the fallback host.")
+    }
+
+    protected readFileSyncCore(file: string, cancelToken?: CancelToken): string | undefined {
+        const readFileSync = this._readFileSync;
+        if (readFileSync) {
+            if (!this._readFileSyncCallback) this._readFileSyncCallback = this._readFileSyncFallback.bind(this);
+            return readFileSync(file, cancelToken, this._readFileSyncCallback);
+        }
+        return this._readFileSyncFallback(file, cancelToken);
+    }
+
+    private _readFileSyncFallback(file: string, cancelToken?: CancelToken) {
+        if (this._hostFallback) return this._hostFallback.readFileSync(file, cancelToken);
         throw new Error(`File '${file}' cannot be read without a fallback host.`);
     }
 
-    public writeFileSync(file: string, text: string, cancelable?: Cancelable): void;
-    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
-    public writeFileSync(file: string, text: string, cancelable?: CancellationToken | Cancelable): void;
-    public writeFileSync(file: string, text: string, cancelable?: CancellationToken | Cancelable) {
-        if (this.hostFallback) return this.hostFallback.writeFileSync(file, text, cancelable);
+    protected writeFileSyncCore(file: string, content: string, cancelToken?: CancelToken) {
+        const writeFileSync = this._writeFileSync;
+        if (writeFileSync) {
+            if (!this._writeFileSyncCallback) this._writeFileSyncCallback = this._writeFileSyncFallback.bind(this);
+            return writeFileSync(file, content, cancelToken, this._writeFileSyncCallback);
+        }
+        return this._writeFileSyncFallback(file, content, cancelToken);
+    }
+
+    private _writeFileSyncFallback(file: string, content: string, cancelToken?: CancelToken) {
+        if (this._hostFallback) return this._hostFallback.writeFileSync(file, content, cancelToken);
         throw new Error(`Cannot write file without a fallback host.`);
     }
 }
 
 /** {@docCategory Hosts} */
-export type ReadFileCallback = (this: never, file: string, cancelToken?: CancelToken) => PromiseLike<string> | string;
+export class StringSyncHost extends CoreSyncHost {
+    public readonly file: string;
+    public readonly content: string;
 
-/**
- * @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable`
- * {@docCategory Hosts}
- */
-export type LegacyReadFileCallback = (this: never, file: string, cancelToken?: CancellationToken) => PromiseLike<string> | string;
-
-/** {@docCategory Hosts} */
-export type WriteFileCallback = (this: never, file: string, content: string, cancelToken?: CancelToken) => PromiseLike<void> | void;
-
-/**
- * @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable`
- * {@docCategory Hosts}
- */
-export type LegacyWriteFileCallback = (this: never, file: string, content: string, cancelToken?: CancellationToken) => PromiseLike<void> | void;
-
-/** {@docCategory Hosts} */
-export interface AsyncHostOptions extends HostBaseOptions {
-    readFile?: ReadFileCallback | LegacyReadFileCallback | false;
-    writeFile?: WriteFileCallback | LegacyWriteFileCallback | false;
+    constructor(file: string, content: string, hostFallback?: CoreSyncHost) {
+        super({
+            normalizeFile: (file, fallback) => file === this.file ? file : fallback(file),
+            resolveFile: (file, referer, fallback) => file === this.file ? file : fallback(file, referer),
+            readFileSync: (file, cancelToken, fallback) => file === this.file ? this.content : fallback(file, cancelToken)
+        }, hostFallback);
+        this.file = file;
+        this.content = content;
+    }
 }
 
 /** {@docCategory Hosts} */
-export class AsyncHost extends HostBase {
-    private readFileCallback?: ((file: string, cancelToken?: CancelToken & CancellationToken) => PromiseLike<string> | string) | false;
-    private writeFileCallback?: ((file: string, content: string, cancelToken?: CancelToken & CancellationToken) => PromiseLike<void> | void) | false;
+export interface CoreAsyncHostOptions extends HostBaseOptions {
+    normalizeFile?: (this: void, file: string, fallback: (file: string) => string) => string;
+    resolveFile?: (this: void, file: string, referer: string | undefined, fallback: (file: string, referer?: string) => string) => string;
+    resolveKnownGrammar?: (this: void, name: string, fallback: (name: string) => string | undefined) => string | undefined;
+    readFile?: (this: void, file: string, cancelToken: CancelToken | undefined, fallback: (file: string, cancelToken?: CancelToken) => Promise<string | undefined>) => PromiseLike<string | undefined> | string | undefined;
+    writeFile?: (this: void, file: string, content: string, cancelToken: CancelToken | undefined, fallback: (file: string, content: string, cancelToken?: CancelToken) => Promise<void>) => PromiseLike<void> | void;
+}
 
-    constructor({ readFile = readFileFallback, writeFile = writeFileFallback, ...baseOptions }: AsyncHostOptions = {}) {
-        super(baseOptions);
-        this.readFileCallback = readFile;
-        this.writeFileCallback = writeFile;
+/** {@docCategory Hosts} */
+export class CoreAsyncHost extends HostBase {
+    private _normalizeFile: CoreAsyncHostOptions["normalizeFile"];
+    private _resolveFile: CoreAsyncHostOptions["resolveFile"];
+    private _resolveKnownGrammar: CoreAsyncHostOptions["resolveKnownGrammar"];
+    private _readFile: CoreAsyncHostOptions["readFile"];
+    private _writeFile: CoreAsyncHostOptions["writeFile"];
+    private _hostFallback?: CoreAsyncHost;
+
+    private _normalizeFileCallback?: (file: string) => string;
+    private _resolveFileCallback?: (file: string, referer?: string) => string;
+    private _resolveKnownGrammarCallback?: (name: string) => string | undefined;
+    private _readFileCallback?: (file: string, cancelToken?: CancelToken) => Promise<string | undefined>;
+    private _writeFileCallback?: (file: string, content: string, cancelToken?: CancelToken) => Promise<void>;
+
+    constructor(options: CoreAsyncHostOptions, hostFallback?: CoreAsyncHost) {
+        const {
+            ignoreCase = hostFallback?.ignoreCase,
+            normalizeFile,
+            resolveFile,
+            resolveKnownGrammar,
+            readFile,
+            writeFile,
+            ...baseOptions
+        } = options;
+        super({ ...baseOptions, ignoreCase });
+        this._normalizeFile = normalizeFile;
+        this._resolveFile = resolveFile;
+        this._resolveKnownGrammar = resolveKnownGrammar;
+        this._readFile = readFile;
+        this._writeFile = writeFile;
+        this._hostFallback = hostFallback;
     }
 
-    public static forFile(content: string, file = "file.grammar", hostFallback?: AsyncHost) {
-        return new AsyncSingleFileHost(file, content, hostFallback);
+    public static forFile(content: string, file = "file.grammar", hostFallback?: CoreAsyncHost) {
+        return new StringAsyncHost(file, content, hostFallback);
+    }
+
+    public static from(custom: CoreAsyncHostOptions, hostFallback?: CoreAsyncHost) {
+        return new CoreAsyncHost(custom, hostFallback);
     }
 
     public readFile(file: string, cancelable?: Cancelable): Promise<string | undefined>;
     /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
     public readFile(file: string, cancelable?: CancellationToken | Cancelable): Promise<string | undefined>;
     public async readFile(file: string, cancelable?: CancellationToken | Cancelable): Promise<string | undefined> {
-        const readFile = this.readFileCallback;
-        if (!readFile) throw new Error("Operation cannot be completed asynchronously");
-
         performance.mark("ioRead");
-        file = getLocalPath(file);
-        if (isUri(file)) return undefined; // TODO: support uris?
-        const result = await readFile(file, wrapCancelToken(toCancelToken(cancelable)));
-        performance.measure("ioRead", "ioRead");
-        return result;
+        try {
+            file = getLocalPath(file);
+            if (isUri(file)) return undefined; // TODO: support uris?
+            return await this.readFileCore(file, toCancelToken(cancelable));
+        }
+        finally {
+            performance.measure("ioRead", "ioRead");
+        }
     }
 
     public writeFile(file: string, text: string, cancelable?: Cancelable): Promise<void>;
     /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
     public writeFile(file: string, text: string, cancelable?: CancellationToken | Cancelable): Promise<void>;
     public async writeFile(file: string, text: string, cancelable?: CancellationToken | Cancelable) {
-        const writeFile = this.writeFileCallback;
-        if (!writeFile) throw new Error("Operation cannot be completed asynchronously");
-
         performance.mark("ioWrite");
-        file = getLocalPath(file);
-        if (isUri(file)) throw new Error("Cannot write to a non-file URI.");
-        await writeFile(file, text, wrapCancelToken(toCancelToken(cancelable)));
-        performance.measure("ioWrite", "ioWrite");
+        try {
+            file = getLocalPath(file);
+            if (isUri(file)) throw new Error("Cannot write to a non-file URI.");
+            await this.writeFileCore(file, text, toCancelToken(cancelable));
+        }
+        finally {
+            performance.measure("ioWrite", "ioWrite");
+        }
     }
 
     public getSourceFile(file: string, cancelable?: Cancelable): Promise<SourceFile | undefined>;
@@ -304,336 +465,107 @@ export class AsyncHost extends HostBase {
         const result = await this.readFile(file, cancelable);
         return typeof result === "string" ? this.parseSourceFile(file, result, cancelable) : undefined;
     }
-}
 
-/** {@docCategory Hosts} */
-export class AsyncSingleFileHost extends AsyncHost {
-    public readonly file: string;
-    public readonly content: string;
-    private hostFallback?: AsyncHost;
-
-    constructor(file: string, content: string, hostFallback?: AsyncHost) {
-        super({ ignoreCase: hostFallback ? hostFallback.ignoreCase : undefined });
-        this.file = file;
-        this.content = content;
-        this.hostFallback = hostFallback;
-    }
-
-    public normalizeFile(file: string) {
-        return file === this.file ? file :
-            this.hostFallback ? this.hostFallback.normalizeFile(file) :
-            super.normalizeFile(file);
-    }
-
-    public resolveFile(file: string, referer?: string): string {
-        return file === this.file ? file :
-            this.hostFallback ? this.hostFallback.resolveFile(file, referer) :
-            super.resolveFile(file);
-    }
-
-    public readFile(file: string, cancelable?: Cancelable): Promise<string | undefined>;
-    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
-    public readFile(file: string, cancelable?: CancellationToken | Cancelable): Promise<string | undefined>;
-    public async readFile(file: string, cancelable?: CancellationToken | Cancelable): Promise<string | undefined> {
-        if (file === this.file) return this.content;
-        if (this.hostFallback) return await this.hostFallback.readFile(file, cancelable);
-        throw new Error(`File '${file}' cannot be read without a fallback host.`);
-    }
-
-    public writeFile(file: string, text: string, cancelable?: Cancelable): Promise<void>;
-    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
-    public writeFile(file: string, text: string, cancelable?: CancellationToken | Cancelable): Promise<void>;
-    public async writeFile(file: string, text: string, cancelable?: CancellationToken | Cancelable) {
-        if (this.hostFallback) return this.hostFallback.writeFile(file, text, cancelable);
-        throw new Error(`Cannot write file without a fallback host.`);
-    }
-}
-
-/** {@docCategory Hosts} */
-export interface HostOptions extends HostBaseOptions {
-    readFile?: ReadFileCallback | LegacyReadFileCallback;
-    readFileSync?: ReadFileSyncCallback | LegacyReadFileSyncCallback;
-    writeFile?: WriteFileCallback | LegacyWriteFileCallback;
-    writeFileSync?: WriteFileSyncCallback | LegacyWriteFileSyncCallback;
-}
-
-/**
- * @deprecated Use `SyncHost` or `AsyncHost` instead
- * {@docCategory Hosts}
- */
-export class Host extends HostBase {
-    private readFileCallback?: (file: string, cancelToken?: CancelToken & CancellationToken) => PromiseLike<string> | string | undefined;
-    private readFileSyncCallback?: (file: string, cancelToken?: CancelToken & CancellationToken) => string;
-    private writeFileCallback?: (file: string, content: string, cancelToken?: CancelToken & CancellationToken) => PromiseLike<void> | void;
-    private writeFileSyncCallback?: (file: string, content: string, cancelToken?: CancelToken & CancellationToken) => void;
-
-    constructor({ readFile, readFileSync, writeFile, writeFileSync, ...baseOptions }: HostOptions = {}) {
-        super(baseOptions);
-
-        if (!readFileSync && !readFile) {
-            this.readFileCallback = readFileFallback;
-            this.readFileSyncCallback = readFileSyncFallback;
+    protected normalizeFileCore(file: string) {
+        const normalizeFile = this._normalizeFile;
+        if (normalizeFile) {
+            if (!this._normalizeFileCallback) this._normalizeFileCallback = this._normalizeFileFallback.bind(this);
+            return normalizeFile(file, this._normalizeFileCallback);
         }
-        else {
-            this.readFileCallback = readFile || readFileSync;
-            this.readFileSyncCallback = readFileSync;
+        return this._normalizeFileFallback(file);
+    }
+
+    private _normalizeFileFallback(file: string) {
+        if (this._hostFallback) return this._hostFallback.normalizeFile(file);
+        return super.normalizeFileCore(file);
+    }
+
+    protected resolveFileCore(file: string, referer?: string) {
+        const resolveFile = this._resolveFile;
+        if (resolveFile) {
+            if (!this._resolveFileCallback) this._resolveFileCallback = this._resolveFileFallback.bind(this);
+            return resolveFile(file, referer, this._resolveFileCallback);
         }
+        return this._resolveFileFallback(file, referer);
+    }
 
-        if (!writeFileSync && !writeFile) {
-            this.writeFileCallback = writeFileFallback;
-            this.writeFileSyncCallback = writeFileSyncFallback;
+    private _resolveFileFallback(file: string, referer?: string) {
+        if (this._hostFallback) return this._hostFallback.resolveFile(file, referer);
+        throw new Error("Cannot resolve a file without a fallback host.");
+    }
+
+    protected resolveKnownGrammarCore(name: string) {
+        const resolveKnownGrammar = this._resolveKnownGrammar;
+        if (resolveKnownGrammar) {
+            if (!this._resolveKnownGrammarCallback) this._resolveKnownGrammarCallback = this._resolveKnownGrammarFallback.bind(this);
+            return resolveKnownGrammar(name, this._resolveKnownGrammarCallback);
         }
-        else {
-            this.writeFileCallback = writeFile || writeFileSync;
-            this.writeFileSyncCallback = writeFileSync;
-        }
+        return this._resolveKnownGrammarFallback(name);
     }
 
-    public readFile(file: string, cancelable?: Cancelable): Promise<string | undefined>;
-    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
-    public readFile(file: string, cancelable?: CancellationToken | Cancelable): Promise<string | undefined>;
-    public async readFile(file: string, cancelable?: CancellationToken | Cancelable): Promise<string | undefined> {
-        return await this.readFilePossiblyAsync(/*sync*/ false, file, toCancelToken(cancelable));
+    private _resolveKnownGrammarFallback(name: string) {
+        return this._hostFallback?.resolveKnownGrammar(name);
     }
 
-    public readFileSync(file: string, cancelable?: Cancelable): string | undefined;
-    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
-    public readFileSync(file: string, cancelable?: CancellationToken | Cancelable): string | undefined;
-    public readFileSync(file: string, cancelable?: CancellationToken | Cancelable): string | undefined {
-        return this.readFilePossiblyAsync(/*sync*/ true, file, toCancelToken(cancelable));
-    }
-
-    private readFilePossiblyAsync(sync: true, file: string, cancelToken?: CancelToken): string | undefined;
-    private readFilePossiblyAsync(sync: boolean, file: string, cancelToken?: CancelToken): Promise<string | undefined> | string | undefined;
-    private readFilePossiblyAsync(sync: boolean, file: string, cancelToken?: CancelToken): Promise<string | undefined> | string | undefined {
-        const readFile = sync ? this.readFileSyncCallback : this.readFileCallback;
-        if (!readFile) throw new Error("Operation cannot be completed synchronously");
-
-        performance.mark("ioRead");
-        file = getLocalPath(file);
-        if (isUri(file)) return undefined; // TODO: support uris?
-        const result = Promise.resolve(readFile(file, wrapCancelToken(cancelToken)));
-        return typeof result === "object" ? promiseFinally(result, endIORead) : endIORead(result);
-    }
-
-    public writeFile(file: string, text: string, cancelable?: Cancelable): Promise<void>;
-    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
-    public writeFile(file: string, text: string, cancelable?: CancellationToken | Cancelable): Promise<void>;
-    public async writeFile(file: string, text: string, cancelable?: CancellationToken | Cancelable) {
-        return await this.writeFilePossiblyAsync(/*sync*/ false, file, text, toCancelToken(cancelable));
-    }
-
-    public writeFileSync(file: string, text: string, cancelable?: Cancelable): void;
-    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
-    public writeFileSync(file: string, text: string, cancelable?: CancellationToken | Cancelable): void;
-    public writeFileSync(file: string, text: string, cancelable?: CancellationToken | Cancelable) {
-        this.writeFilePossiblyAsync(/*sync*/ true, file, text, toCancelToken(cancelable));
-    }
-
-    private writeFilePossiblyAsync(sync: true, file: string, text: string, cancelToken?: CancelToken): void;
-    private writeFilePossiblyAsync(sync: boolean, file: string, text: string, cancelToken?: CancelToken): Promise<void> | void;
-    private writeFilePossiblyAsync(sync: boolean, file: string, text: string, cancelToken?: CancelToken) {
-        const writeFile = sync ? this.writeFileSyncCallback : this.writeFileCallback;
-        if (!writeFile) throw new Error("Operation cannot be completed synchronously");
-
-        performance.mark("ioWrite");
-        file = getLocalPath(file);
-        if (isUri(file)) throw new Error("Cannot write to a non-file URI.");
-        const result = Promise.resolve(writeFile(file, text, wrapCancelToken(cancelToken)));
-        return typeof result === "object" ? promiseFinally(result, endIOWrite) : endIOWrite();
-    }
-
-    public getSourceFile(file: string, cancelable?: Cancelable): Promise<SourceFile | undefined>;
-    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
-    public getSourceFile(file: string, cancelable?: CancellationToken | Cancelable): Promise<SourceFile | undefined>;
-    public async getSourceFile(file: string, cancelable?: CancellationToken | Cancelable) {
-        return this.getSourceFilePossiblyAsync(/*sync*/ false, file, toCancelToken(cancelable));
-    }
-
-    public getSourceFileSync(file: string, cancelable?: Cancelable): SourceFile | undefined;
-    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
-    public getSourceFileSync(file: string, cancelable?: CancellationToken | Cancelable): SourceFile | undefined;
-    public getSourceFileSync(file: string, cancelable?: CancellationToken | Cancelable) {
-        return this.getSourceFilePossiblyAsync(/*sync*/ true, file, toCancelToken(cancelable));
-    }
-
-    private getSourceFilePossiblyAsync(sync: true, file: string, cancelToken?: CancelToken): SourceFile | undefined;
-    private getSourceFilePossiblyAsync(sync: boolean, file: string, cancelToken?: CancelToken): Promise<SourceFile | undefined> | SourceFile | undefined;
-    private getSourceFilePossiblyAsync(sync: boolean, file: string, cancelToken?: CancelToken) {
-        return pipe(
-            sync ? this.readFileSync(file, cancelToken) : this.readFile(file, cancelToken),
-            result => typeof result === "string" ? this.parseSourceFile(file, result, cancelToken) : undefined);
-    }
-}
-
-/**
- * @deprecated Use `SyncHost.forFile` or `AsyncHost.forFile` instead
- * {@docCategory Hosts}
- */
-export class SingleFileHost extends Host {
-    public readonly file: string;
-    public readonly content: string;
-    private hostFallback: Host | undefined;
-
-    constructor(content: string, file: string = "file.grammar", hostFallback?: Host) {
-        super({ useBuiltinGrammars: false });
-        this.file = file;
-        this.content = content;
-        this.hostFallback = hostFallback;
-    }
-
-    protected get parser() {
-        return this.hostFallback ? this.hostFallback["parser"] : super.parser;
-    }
-
-    public normalizeFile(file: string) {
-        return this.hostFallback ? this.hostFallback.normalizeFile(file) : super.normalizeFile(file);
-    }
-
-    public resolveKnownGrammar(name: string) {
-        return this.hostFallback ? this.hostFallback.resolveKnownGrammar(name) : super.resolveKnownGrammar(name);
-    }
-
-    public registerKnownGrammar(_name: string, _file: string) {
+    protected registerKnownGrammarCore(_name: string, _file: string) {
         throw new Error("Known grammars must be registered on the fallback host.")
     }
 
-    protected resolveBuiltInGrammar(name: string) {
-        return this.hostFallback ? this.hostFallback["resolveBuiltInGrammar"](name) : super.resolveBuiltInGrammar(name);
-    }
-
-    public resolveFile(file: string, referer?: string) {
-        return file === this.file ? file :
-            this.hostFallback ? this.hostFallback.resolveFile(file, referer) :
-            super.resolveFile(file, referer);
-    }
-
-    public readFile(file: string, cancelable?: Cancelable): Promise<string | undefined>;
-    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
-    public readFile(file: string, cancelable?: CancellationToken | Cancelable): Promise<string | undefined>;
-    public async readFile(file: string, cancelable?: CancellationToken | Cancelable): Promise<string | undefined> {
-        if (file === this.file) return this.content;
-        if (this.hostFallback) return this.hostFallback.readFile(file, cancelable);
-        throw new Error(`File '${file}' cannot be read without a fallback host.`);
-    }
-
-    public readFileSync(file: string, cancelable?: Cancelable): string | undefined;
-    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
-    public readFileSync(file: string, cancelable?: CancellationToken | Cancelable): string | undefined;
-    public readFileSync(file: string, cancelable?: CancellationToken | Cancelable): string | undefined {
-        if (file === this.file) return this.content;
-        if (this.hostFallback) return this.hostFallback.readFileSync(file, cancelable);
-        throw new Error(`File '${file}' cannot be read without a fallback host.`);
-    }
-
-    public writeFile(file: string, text: string, cancelable?: Cancelable): Promise<void>;
-    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
-    public writeFile(file: string, text: string, cancelable?: CancellationToken | Cancelable): Promise<void>;
-    public async writeFile(file: string, text: string, cancelable?: CancellationToken | Cancelable) {
-        if (this.hostFallback) return this.hostFallback.writeFile(file, text, cancelable);
-        throw new Error(`Cannot write file without a fallback host.`);
-    }
-
-    public writeFileSync(file: string, text: string, cancelable?: Cancelable): void;
-    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
-    public writeFileSync(file: string, text: string, cancelable?: CancellationToken | Cancelable): void;
-    public writeFileSync(file: string, text: string, cancelable?: CancellationToken | Cancelable) {
-        if (this.hostFallback) return this.hostFallback.writeFileSync(file, text, cancelable);
-        throw new Error(`Cannot write file without a fallback host.`);
-    }
-
-    public getSourceFile(file: string, cancelable?: Cancelable): Promise<SourceFile | undefined>;
-    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
-    public getSourceFile(file: string, cancelable?: CancellationToken | Cancelable): Promise<SourceFile | undefined>;
-    public async getSourceFile(file: string, cancelable?: CancellationToken | Cancelable) {
-        return file !== this.file && this.hostFallback ? this.hostFallback.getSourceFile(file, cancelable) :
-            super.getSourceFile(file, cancelable);
-    }
-
-    public getSourceFileSync(file: string, cancelable?: Cancelable): SourceFile | undefined;
-    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
-    public getSourceFileSync(file: string, cancelable?: CancellationToken | Cancelable): SourceFile | undefined;
-    public getSourceFileSync(file: string, cancelable?: CancellationToken | Cancelable) {
-        return file !== this.file && this.hostFallback ? this.hostFallback.getSourceFileSync(file, cancelable) :
-            super.getSourceFileSync(file, cancelable);
-    }
-
-    protected createParser() {
-        return this.hostFallback ? this.hostFallback["createParser"]() : super.createParser();
-    }
-}
-
-function isUri(file: string) {
-    return !path.isAbsolute(file) && !!url.parse(file).protocol;
-}
-
-function isFileUri(file: string) {
-    return /^file:\/\//.test(file);
-}
-
-function getLocalPath(file: string): string {
-    if (/^file:\/\//.test(file)) {
-        const parsed = url.parse(file);
-        if (parsed.path) {
-            if (parsed.hostname) {
-                file = `//${parsed.hostname}${decodeURIComponent(parsed.path)}`;
-            }
-            else {
-                file = decodeURIComponent(parsed.path).substr(1);
-            }
+    protected async readFileCore(file: string, cancelToken?: CancelToken): Promise<string | undefined> {
+        const readFile = this._readFile;
+        if (readFile) {
+            if (!this._readFileCallback) this._readFileCallback = this._readFileFallback.bind(this);
+            return readFile(file, cancelToken, this._readFileCallback);
         }
+        return this._readFileFallback(file, cancelToken);
     }
 
-    return file;
-}
-
-function resolveFileFallback(file: string, referer?: string) {
-    if (isFileUri(file) || path.isAbsolute(file)) {
-        return file;
+    private async _readFileFallback(file: string, cancelToken?: CancelToken) {
+        if (this._hostFallback) return this._hostFallback.readFile(file, cancelToken);
+        throw new Error(`File '${file}' cannot be read without a fallback host.`);
     }
-    else if (referer) {
-        return isUri(referer)
-            ? url.resolve(referer, file)
-            : path.resolve(path.dirname(referer), file);
+
+    protected async writeFileCore(file: string, content: string, cancelToken?: CancelToken) {
+        const writeFile = this._writeFile;
+        if (writeFile) {
+            if (!this._writeFileCallback) this._writeFileCallback = this._writeFileFallback.bind(this);
+            return writeFile(file, content, cancelToken, this._writeFileCallback);
+        }
+        return this._writeFileFallback(file, content, cancelToken);
     }
-    else {
-        return path.resolve(file);
+
+    private async _writeFileFallback(file: string, content: string, cancelToken?: CancelToken) {
+        if (this._hostFallback) return this._hostFallback.writeFile(file, content, cancelToken);
+        throw new Error(`Cannot write file without a fallback host.`);
     }
 }
 
-function readFileFallback(file: string) {
-    return new Promise<string>((resolve, reject) => fs.readFile(file, "utf8", (error, data) => error ? reject(error) : resolve(data)));
+/** {@docCategory Hosts} */
+export class StringAsyncHost extends CoreAsyncHost {
+    public readonly file: string;
+    public readonly content: string;
+
+    constructor(file: string, content: string, hostFallback?: CoreAsyncHost) {
+        super({
+            normalizeFile: (file, fallback) => file === this.file ? file : fallback(file),
+            resolveFile: (file, referer, fallback) => file === this.file ? file : fallback(file, referer),
+            readFile: (file, cancelToken, fallback) => file === this.file ? this.content : fallback(file, cancelToken)
+        }, hostFallback);
+        this.file = file;
+        this.content = content;
+    }
 }
 
-function readFileSyncFallback(file: string) {
-    return fs.readFileSync(file, "utf8");
-}
-
-function writeFileFallback(file: string, content: string) {
-    return new Promise<void>((resolve, reject) => fs.writeFile(file, content, "utf8", (error) => error ? reject(error) : resolve()));
-}
-
-function writeFileSyncFallback(file: string, content: string) {
-    return fs.writeFileSync(file, content, "utf8");
-}
-
-function endIORead<T>(value?: T) {
-    performance.measure("ioRead", "ioRead");
-    return value;
-}
-
-function endIOWrite() {
-    performance.measure("ioWrite", "ioWrite");
-}
+let builtinGrammars: Map<string, string> | undefined;
 
 function resolveBuiltInGrammar(name: string) {
     if (!builtinGrammars) {
         builtinGrammars = new Map<string, string>([
-            ["es6", path.resolve(__dirname, "../grammars/es2015.grammar")],
-            ["es2015", path.resolve(__dirname, "../grammars/es2015.grammar")],
-            ["ts", path.resolve(__dirname, "../grammars/typescript.grammar")],
-            ["typescript", path.resolve(__dirname, "../grammars/typescript.grammar")],
+            ["ES6", require.resolve("../grammars/es2015.grammar")],
+            ["ES2015", require.resolve("../grammars/es2015.grammar")],
+            ["TS", require.resolve("../grammars/typescript.grammar")],
+            ["TYPESCRIPT", require.resolve("../grammars/typescript.grammar")],
         ]);
     }
-    return builtinGrammars.get(name.toLowerCase());
+    return builtinGrammars.get(name.toUpperCase());
 }

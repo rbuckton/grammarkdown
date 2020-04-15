@@ -14,6 +14,7 @@
  *  limitations under the License.
  */
 
+import * as url from "url";
 import { CancellationToken } from "prex";
 import { Cancelable, CancelSubscription } from "@esfx/cancelable";
 import { CancelToken } from "@esfx/async-canceltoken";
@@ -214,7 +215,7 @@ export function concat<T>(a: T[] | undefined, b: T[] | undefined) {
     return a ? b ? a.concat(b) : a : b;
 }
 
-export function promiseFinally<T>(promise: Promise<T>, onFinally: () => void) {
+export function promiseFinally<T>(promise: PromiseLike<T>, onFinally: () => void) {
     return promise.then(value => {
         onFinally();
         return value;
@@ -349,4 +350,29 @@ export function wrapCancelToken(cancelToken: CancelToken | undefined) {
         }
     }
     return cancelToken;
+}
+
+export function isUri(file: string) {
+    return !/^([\\/]|[a-z]:($|[\\/]))/i.test(file)
+        && !!url.parse(file).protocol;
+}
+
+export function isFileUri(file: string) {
+    return /^file:\/\//.test(file);
+}
+
+export function getLocalPath(file: string): string {
+    if (/^file:\/\//.test(file)) {
+        const parsed = url.parse(file);
+        if (parsed.path) {
+            if (parsed.hostname) {
+                file = `//${parsed.hostname}${decodeURIComponent(parsed.path)}`;
+            }
+            else {
+                file = decodeURIComponent(parsed.path).substr(1);
+            }
+        }
+    }
+
+    return file;
 }

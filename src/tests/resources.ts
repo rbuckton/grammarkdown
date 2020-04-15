@@ -16,7 +16,7 @@
 
 import { readdirSync, statSync, existsSync, readFileSync } from "fs";
 import { resolve, extname, posix } from "path";
-import { Host, HostOptions } from "../host";
+import { Host, HostOptions } from "../hosts/node";
 import { Cancelable } from "@esfx/cancelable";
 
 let grammarFiles: TestFile[];
