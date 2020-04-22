@@ -20,7 +20,7 @@
     <meta property="docfx:tocrel" content="../toc.html">
     
     <meta property="docfx:rel" content="../../">
-    
+    <meta property="docfx:newtab" content="true">
   </head>
   <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
@@ -83,6 +83,7 @@
   
   <h1 id="grammarkdown_NoSymbolHereAssertion_class" data-uid="grammarkdown!NoSymbolHereAssertion:class">Class NoSymbolHereAssertion
   </h1>
+  <h6><strong>Package</strong>: <a class="xref" href="../grammarkdown.html">grammarkdown</a></h6>
   <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -90,71 +91,81 @@
       <div class="level0"><a class="xref" href="assertionbase.html#grammarkdown_AssertionBase_class">AssertionBase</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_NoSymbolHereAssertion_member">SyntaxKind.NoSymbolHereAssertion</a>, <a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_OpenBracketToken_member">SyntaxKind.OpenBracketToken</a>&gt; </div>
       <div class="level1"><span class="xref">NoSymbolHereAssertion</span></div>
   </div>
-  <h6><strong>Package</strong>: <a class="xref" href="../grammarkdown.html">grammarkdown</a></h6>
   <h3 id="constructors">Constructors
   </h3>
   
   
-  <h4 id="grammarkdown_NoSymbolHereAssertion_constructor_1_" data-uid="grammarkdown!NoSymbolHereAssertion:constructor(1)">(constructor)(openBracketToken, noKeyword, symbols, hereKeyword, closeBracketToken)</h4>
+  <h4 id="grammarkdown_NoSymbolHereAssertion_constructor_1_" data-uid="grammarkdown!NoSymbolHereAssertion:constructor(1)">constructor(openBracketToken, noKeyword, symbols, hereKeyword, closeBracketToken)</h4>
   <div class="markdown level1 summary"><p>Constructs a new instance of the <code>NoSymbolHereAssertion</code> class</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">constructor(openBracketToken: Token&lt;SyntaxKind.OpenBracketToken&gt;, noKeyword: Token&lt;SyntaxKind.NoKeyword&gt;, symbols: ReadonlyArray&lt;PrimarySymbol&gt; | undefined, hereKeyword: Token&lt;SyntaxKind.HereKeyword&gt; | undefined, closeBracketToken: Token&lt;SyntaxKind.CloseBracketToken&gt; | undefined);</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_OpenBracketToken_member">SyntaxKind.OpenBracketToken</a>&gt;</td>
-        <td><em>openBracketToken</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_NoKeyword_member">SyntaxKind.NoKeyword</a>&gt;</td>
-        <td><em>noKeyword</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><span class="xref">ReadonlyArray</span>&lt;<a class="xref" href="../grammarkdown.html#grammarkdown_PrimarySymbol_type">PrimarySymbol</a>&gt; | undefined</td>
-        <td><em>symbols</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_HereKeyword_member">SyntaxKind.HereKeyword</a>&gt; | undefined</td>
-        <td><em>hereKeyword</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_CloseBracketToken_member">SyntaxKind.CloseBracketToken</a>&gt; | undefined</td>
-        <td><em>closeBracketToken</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>openBracketToken</dt>
+        <dd><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_OpenBracketToken_member">SyntaxKind.OpenBracketToken</a>&gt;</dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>noKeyword</dt>
+        <dd><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_NoKeyword_member">SyntaxKind.NoKeyword</a>&gt;</dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>symbols</dt>
+        <dd><span class="xref">ReadonlyArray</span>&lt;<a class="xref" href="../grammarkdown.html#grammarkdown_PrimarySymbol_type">PrimarySymbol</a>&gt; | undefined</dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>hereKeyword</dt>
+        <dd><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_HereKeyword_member">SyntaxKind.HereKeyword</a>&gt; | undefined</dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>closeBracketToken</dt>
+        <dd><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_CloseBracketToken_member">SyntaxKind.CloseBracketToken</a>&gt; | undefined</dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
   <h3 id="properties">Properties
   </h3>
   
@@ -163,96 +174,104 @@
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">readonly hereKeyword: Token&lt;SyntaxKind.HereKeyword&gt; | undefined;</code></pre>
   </div>
+  
+  
+  
+  
+  
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_HereKeyword_member">SyntaxKind.HereKeyword</a>&gt; | undefined</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_HereKeyword_member">SyntaxKind.HereKeyword</a>&gt; | undefined</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_NoSymbolHereAssertion_lastChild_member" data-uid="grammarkdown!NoSymbolHereAssertion#lastChild:member">lastChild</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">get lastChild(): Node | undefined;</code></pre>
   </div>
+  
+  
+  
+  
+  
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="node.html#grammarkdown_Node_class">Node</a> | undefined</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="node.html#grammarkdown_Node_class">Node</a> | undefined</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_NoSymbolHereAssertion_noKeyword_member" data-uid="grammarkdown!NoSymbolHereAssertion#noKeyword:member">noKeyword</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">readonly noKeyword: Token&lt;SyntaxKind.NoKeyword&gt;;</code></pre>
   </div>
+  
+  
+  
+  
+  
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_NoKeyword_member">SyntaxKind.NoKeyword</a>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_NoKeyword_member">SyntaxKind.NoKeyword</a>&gt;</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_NoSymbolHereAssertion_symbols_member" data-uid="grammarkdown!NoSymbolHereAssertion#symbols:member">symbols</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">readonly symbols: ReadonlyArray&lt;PrimarySymbol&gt; | undefined;</code></pre>
   </div>
+  
+  
+  
+  
+  
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">ReadonlyArray</span>&lt;<a class="xref" href="../grammarkdown.html#grammarkdown_PrimarySymbol_type">PrimarySymbol</a>&gt; | undefined</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">ReadonlyArray</span>&lt;<a class="xref" href="../grammarkdown.html#grammarkdown_PrimarySymbol_type">PrimarySymbol</a>&gt; | undefined</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
   <h3 id="methods">Methods
   </h3>
   
@@ -261,127 +280,116 @@
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">children(): IterableIterator&lt;Node&gt;;</code></pre>
   </div>
+  
+  
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IterableIterator</span>&lt;<a class="xref" href="node.html#grammarkdown_Node_class">Node</a>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">IterableIterator</span>&lt;<a class="xref" href="node.html#grammarkdown_Node_class">Node</a>&gt;</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_NoSymbolHereAssertion_forEachChild_member_1_" data-uid="grammarkdown!NoSymbolHereAssertion#forEachChild:member(1)">forEachChild(cbNode)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">forEachChild&lt;T&gt;(cbNode: (node: Node) =&gt; T | undefined): T | undefined;</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>(node: <a class="xref" href="node.html#grammarkdown_Node_class">Node</a>) =&gt; T | undefined</td>
-        <td><em>cbNode</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">T | undefined</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  
   <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><em>T</em></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>T</dt>
+        <dd></dd>
+      </dl>
+      <p>
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cbNode</dt>
+        <dd>(node: <a class="xref" href="node.html#grammarkdown_Node_class">Node</a>) =&gt; T | undefined</dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">T | undefined</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_NoSymbolHereAssertion_update_member_1_" data-uid="grammarkdown!NoSymbolHereAssertion#update:member(1)">update(symbols)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">update(symbols: ReadonlyArray&lt;PrimarySymbol&gt; | undefined): NoSymbolHereAssertion;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">ReadonlyArray</span>&lt;<a class="xref" href="../grammarkdown.html#grammarkdown_PrimarySymbol_type">PrimarySymbol</a>&gt; | undefined</td>
-        <td><em>symbols</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>symbols</dt>
+        <dd><span class="xref">ReadonlyArray</span>&lt;<a class="xref" href="../grammarkdown.html#grammarkdown_PrimarySymbol_type">PrimarySymbol</a>&gt; | undefined</dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="nosymbolhereassertion.html#grammarkdown_NoSymbolHereAssertion_class">NoSymbolHereAssertion</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="nosymbolhereassertion.html#grammarkdown_NoSymbolHereAssertion_class">NoSymbolHereAssertion</a></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
 </article>
           </div>
           

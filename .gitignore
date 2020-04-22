@@ -5,3 +5,4 @@ temp
 obj
 baselines/local
 spec/*.grammar.html
+_exported_templates

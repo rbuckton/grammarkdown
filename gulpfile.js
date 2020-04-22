@@ -7,6 +7,7 @@ const log = require("fancy-log");
 const sourcemaps = require("gulp-sourcemaps");
 const tsb = require("gulp-tsb");
 const mocha = require("gulp-mocha");
+const { transform } = require("gulp-insert");
 const del = require("del");
 const spawn = require("child_process").spawn;
 const { argv } = require("yargs")
@@ -75,12 +76,16 @@ const api_extractor_fixup = async () => {
     fs.writeFileSync("obj/json/grammarkdown.api.json", data.replace(/Symbol_2/g, "Symbol"), "utf8");
 };
 const api_documenter = () => exec(process.execPath, [require.resolve("@microsoft/api-documenter/bin/api-documenter"), "generate", "-i", "obj/json", "-o", "obj/yaml"]);
+const api_documenter_fixup = () => gulp.src("obj/yaml/**/*.yml")
+    .pipe(transform(content => content.replace(/(?<=\]\(xref:[^#)]*)#(?=[^#)]*\))/g, "%23")))
+    .pipe(gulp.dest("obj/yaml"));
 const docfx = () => exec("docfx", argv.serve ? ["--serve"] : []);
 gulp.task("docs", gulp.series(
     build,
     api_extractor,
     api_extractor_fixup,
     api_documenter,
+    api_documenter_fixup,
     docfx
 ));
 

@@ -9,14 +9,14 @@
                     "uid": "grammarkdown!",
                     "items": [
                         { "name": "Services", "items": [
-                            { "name": "Compiler", "items": [] },
-                            { "name": "Hosts", "items": [] },
-                            { "name": "Parse", "items": [] },
-                            { "name": "Bind", "items": [] },
-                            { "name": "Check", "items": [] },
-                            { "name": "Emit", "items": [] }
+                            { "name": "Compiler", "uid": "compiler", "items": [] },
+                            { "name": "Hosts", "uid": "hosts", "items": [] },
+                            { "name": "Parse", "uid": "parse", "items": [] },
+                            { "name": "Bind", "uid": "bind", "items": [] },
+                            { "name": "Check", "uid": "check", "items": [] },
+                            { "name": "Emit", "uid": "emit", "items": [] }
                         ] },
-                        { "name": "Nodes", "items": [] },
+                        { "name": "Nodes", "uid": "nodes", "items": [] },
                         { "name": "Other", "items": [] }
                     ]
                 }

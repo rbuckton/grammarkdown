@@ -1,6 +1,6 @@
 {
   "build": {
-    "template": ["default"],
+    "template": ["default", "src/docs/template"],
     "content": [
       { "files": ["**/*.yml"], "src": "obj/yaml", "dest": "api" },
       { "files": ["**/*.{md,yml}"], "src": "src/docs/content" }
@@ -9,12 +9,21 @@
       { "files": ["**"], "src": "src/docs/resources" }
     ],
     "overwrite": [
-      { "files": ["**/*.md"], "src": "src/docs/overwrite" }
+      { "files": ["**/*.{md,yml}"], "src": "src/docs/overwrite" }
     ],
     "globalMetadata": {
       "_appTitle": "Grammarkdown API Reference",
-      "_enableSearch": true
+      "_enableSearch": true,
+      "_enableNewTab": true
     },
+    "exportRawModel": true,
+    "rawModelOutputFolder": "obj/raw",
+    "exportViewModel": true,
+    "viewModelOutputFolder": "obj/view",
+    "xref": [
+      "src/docs/xrefmap.yml",
+      "https://esfx.js.org/esfx/xrefmap.yml"
+    ],
     "dest": "docs"
   }
 }

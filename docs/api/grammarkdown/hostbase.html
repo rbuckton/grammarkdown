@@ -20,7 +20,7 @@
     <meta property="docfx:tocrel" content="../toc.html">
     
     <meta property="docfx:rel" content="../../">
-    
+    <meta property="docfx:newtab" content="true">
   </head>
   <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
@@ -83,473 +83,639 @@
   
   <h1 id="grammarkdown_HostBase_class" data-uid="grammarkdown!HostBase:class">Class HostBase
   </h1>
-  <div class="markdown level0 summary"></div>
-  <div class="markdown level0 conceptual"></div>
   <h6><strong>Package</strong>: <a class="xref" href="../grammarkdown.html">grammarkdown</a></h6>
+  <div class="markdown level0 summary"><p>A Host is a user-provided service that indicates how various Grammarkdown services can interact with a file system. The <code>HostBase</code> class provides a set of common functionality shared between synchronous and asynchronous hosts (i.e., <code>SyncHost</code> and <code>AsyncHost</code> respectively).</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
   <h3 id="constructors">Constructors
   </h3>
   
   
-  <h4 id="grammarkdown_HostBase_constructor_1_" data-uid="grammarkdown!HostBase:constructor(1)">(constructor)({ ignoreCase, knownGrammars, useBuiltinGrammars })</h4>
+  <h4 id="grammarkdown_HostBase_constructor_1_" data-uid="grammarkdown!HostBase:constructor(1)">constructor(options)</h4>
   <div class="markdown level1 summary"><p>Constructs a new instance of the <code>HostBase</code> class</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">constructor({ ignoreCase, knownGrammars, useBuiltinGrammars }?: HostBaseOptions);</code></pre>
+    <pre><code class="lang-typeScript hljs">constructor(options?: HostBaseOptions);</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="hostbaseoptions.html#grammarkdown_HostBaseOptions_interface">HostBaseOptions</a></td>
-        <td><em>{ ignoreCase, knownGrammars, useBuiltinGrammars }</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>options</dt>
+        <dd><a class="xref" href="hostbaseoptions.html#grammarkdown_HostBaseOptions_interface">HostBaseOptions</a></dd>
+      </dl>
+      <p>
+        <p>The options used to configure the host.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
   <h3 id="properties">Properties
   </h3>
   
   
   <h4 id="grammarkdown_HostBase_ignoreCase_member" data-uid="grammarkdown!HostBase#ignoreCase:member">ignoreCase</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Indicates whether comparisons for this host should be case insensitive.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">readonly ignoreCase: boolean;</code></pre>
   </div>
+  
+  
+  
+  
+  
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">boolean</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">boolean</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_HostBase_parser_member" data-uid="grammarkdown!HostBase#parser:member">parser</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the parser instance associated with this host.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">protected get parser(): Parser;</code></pre>
   </div>
+  
+  
+  
+  
+  
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="parser.html#grammarkdown_Parser_class">Parser</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="parser.html#grammarkdown_Parser_class">Parser</a></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
   <h3 id="methods">Methods
   </h3>
   
   
   <h4 id="grammarkdown_HostBase_createParser_member_1_" data-uid="grammarkdown!HostBase#createParser:member(1)">createParser()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="parser.html#grammarkdown_Parser_class">Parser</a> for this host.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">protected createParser(): Parser;</code></pre>
+    <pre><code class="lang-typeScript hljs">/** @virtual */
+protected createParser(): Parser;</code></pre>
   </div>
+  
+  
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="parser.html#grammarkdown_Parser_class">Parser</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="parser.html#grammarkdown_Parser_class">Parser</a></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_HostBase_normalizeFile_member_1_" data-uid="grammarkdown!HostBase#normalizeFile:member(1)">normalizeFile(file)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Normalize a file path&#39;s string representation for use as a key based on the case sensitivity of the host.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">normalizeFile(file: string): string;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">string</span></td>
-        <td><em>file</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>file</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The file path.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">string</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">string</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_HostBase_normalizeFileCore_member_1_" data-uid="grammarkdown!HostBase#normalizeFileCore:member(1)">normalizeFileCore(file)</h4>
+  <div class="markdown level1 summary"><p>When overridden in a derived class, normalizes a file path&#39;s string representation for use as a key based on the case sensitivity of the host.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">/** @virtual */
+protected normalizeFileCore(file: string): string;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>file</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The file path.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">string</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_HostBase_parseSourceFile_member_1_" data-uid="grammarkdown!HostBase#parseSourceFile:member(1)">parseSourceFile(file, text, cancelable)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Parse a source file.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">parseSourceFile(file: string, text: string, cancelable?: Cancelable): SourceFile;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">string</span></td>
-        <td><em>file</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><span class="xref">string</span></td>
-        <td><em>text</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><span class="xref">Cancelable</span></td>
-        <td><em>cancelable</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>file</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The path to the source file.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>text</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The text of the source file.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelable</dt>
+        <dd><a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
+      </dl>
+      <p>
+        <p>An optional cancelable object that can be used to abort a long-running parse.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_HostBase_parseSourceFile_member_2_" data-uid="grammarkdown!HostBase#parseSourceFile:member(2)">parseSourceFile(file, text, cancelable)</h4>
-  <div class="markdown level1 summary"></div>
+  	<div class="alert is-warning">
+  		<h5>Warning</h5>
+  		<p>Deprecated</p>
+  			since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable`
+  	</div>
+  <div class="markdown level1 summary"><p>Parse a source file.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">parseSourceFile(file: string, text: string, cancelable?: CancellationToken | Cancelable): SourceFile;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">string</span></td>
-        <td><em>file</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><span class="xref">string</span></td>
-        <td><em>text</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><span class="xref">CancellationToken</span> | <span class="xref">Cancelable</span></td>
-        <td><em>cancelable</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>file</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The path to the source file.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>text</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The text of the source file.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelable</dt>
+        <dd><a class="xref" href="https://github.com/rbuckton/prex/blob/master/docs/cancellation.md#class-cancellationtoken">CancellationToken</a> | <a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
+      </dl>
+      <p>
+        <p>An optional cancelable object that can be used to abort a long-running parse.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_HostBase_registerKnownGrammar_member_1_" data-uid="grammarkdown!HostBase#registerKnownGrammar:member(1)">registerKnownGrammar(name, file)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Registers a known grammar for use with <code>@import</code> directives.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">registerKnownGrammar(name: string, file: string): void;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">string</span></td>
-        <td><em>name</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><span class="xref">string</span></td>
-        <td><em>file</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>name</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The name for the grammar.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>file</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The file path of the grammar.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">void</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">void</span></div>
+    <p>
+  </div>
+  </div>
   
   
-  <h4 id="grammarkdown_HostBase_resolveBuiltInGrammar_member_1_" data-uid="grammarkdown!HostBase#resolveBuiltInGrammar:member(1)">resolveBuiltInGrammar(name)</h4>
-  <div class="markdown level1 summary"></div>
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_HostBase_registerKnownGrammarCore_member_1_" data-uid="grammarkdown!HostBase#registerKnownGrammarCore:member(1)">registerKnownGrammarCore(name, file)</h4>
+  <div class="markdown level1 summary"><p>When overridden in a derived clas, registers a known grammar for use with <code>@import</code> directives.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">protected resolveBuiltInGrammar(name: string): string | undefined;</code></pre>
+    <pre><code class="lang-typeScript hljs">/** @virtual */
+protected registerKnownGrammarCore(name: string, file: string): void;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">string</span></td>
-        <td><em>name</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>name</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The name for the grammar.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>file</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The file path of the grammar.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">string | undefined</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">void</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_HostBase_resolveFile_member_1_" data-uid="grammarkdown!HostBase#resolveFile:member(1)">resolveFile(file, referer)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Resolve the full path of a file relative to the provided referer.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">resolveFile(file: string, referer?: string): string;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">string</span></td>
-        <td><em>file</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><span class="xref">string</span></td>
-        <td><em>referer</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>file</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The path to the requested file.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>referer</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>An optional path indicating the file from which the path should be resolved.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">string</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">string</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_HostBase_resolveFileCore_member_1_" data-uid="grammarkdown!HostBase#resolveFileCore:member(1)">resolveFileCore(file, referer)</h4>
+  <div class="markdown level1 summary"><p>When overridden in a derived class, resolves the full path of a file relative to the provided referer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">/** @virtual */
+protected abstract resolveFileCore(file: string, referer?: string): string;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>file</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The path to the requested file.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>referer</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>An optional path indicating the file from which the path should be resolved.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">string</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_HostBase_resolveKnownGrammar_member_1_" data-uid="grammarkdown!HostBase#resolveKnownGrammar:member(1)">resolveKnownGrammar(name)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Returns the path for a known or built-in grammar based on its name (i.e., <code>&quot;es2015&quot;</code><!-- -->, etc.)</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">resolveKnownGrammar(name: string): string | undefined;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">string</span></td>
-        <td><em>name</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>name</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The name of the grammar.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">string | undefined</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">string | undefined</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_HostBase_resolveKnownGrammarCore_member_1_" data-uid="grammarkdown!HostBase#resolveKnownGrammarCore:member(1)">resolveKnownGrammarCore(name)</h4>
+  <div class="markdown level1 summary"><p>When overridden in a derived class, returns the path for a known or built-in grammar based on its name (i.e., <code>&quot;es2015&quot;</code><!-- -->, etc.)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">/** @virtual */
+protected resolveKnownGrammarCore(name: string): string | undefined;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>name</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The name of the grammar.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">string | undefined</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
 </article>
           </div>
           
@@ -557,6 +723,9 @@
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
+                  <li>
+                    <a href="https://github.com/rbuckton/grammarkdown/blob/master/src/docs/overwrite/hostbase.md/#L2" class="contribution-link">Improve this Doc</a>
+                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">

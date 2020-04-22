@@ -20,7 +20,7 @@
     <meta property="docfx:tocrel" content="../toc.html">
     
     <meta property="docfx:rel" content="../../">
-    
+    <meta property="docfx:newtab" content="true">
   </head>
   <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
@@ -83,6 +83,7 @@
   
   <h1 id="grammarkdown_Nonterminal_class" data-uid="grammarkdown!Nonterminal:class">Class Nonterminal
   </h1>
+  <h6><strong>Package</strong>: <a class="xref" href="../grammarkdown.html">grammarkdown</a></h6>
   <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -90,55 +91,61 @@
       <div class="level0"><a class="xref" href="optionalsymbolbase.html#grammarkdown_OptionalSymbolBase_class">OptionalSymbolBase</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_Nonterminal_member">SyntaxKind.Nonterminal</a>&gt; </div>
       <div class="level1"><span class="xref">Nonterminal</span></div>
   </div>
-  <h6><strong>Package</strong>: <a class="xref" href="../grammarkdown.html">grammarkdown</a></h6>
   <h3 id="constructors">Constructors
   </h3>
   
   
-  <h4 id="grammarkdown_Nonterminal_constructor_1_" data-uid="grammarkdown!Nonterminal:constructor(1)">(constructor)(name, argumentList, questionToken)</h4>
+  <h4 id="grammarkdown_Nonterminal_constructor_1_" data-uid="grammarkdown!Nonterminal:constructor(1)">constructor(name, argumentList, questionToken)</h4>
   <div class="markdown level1 summary"><p>Constructs a new instance of the <code>Nonterminal</code> class</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">constructor(name: Identifier, argumentList: ArgumentList | undefined, questionToken: Token&lt;SyntaxKind.QuestionToken&gt; | undefined);</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="identifier.html#grammarkdown_Identifier_class">Identifier</a></td>
-        <td><em>name</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="argumentlist.html#grammarkdown_ArgumentList_class">ArgumentList</a> | undefined</td>
-        <td><em>argumentList</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_QuestionToken_member">SyntaxKind.QuestionToken</a>&gt; | undefined</td>
-        <td><em>questionToken</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>name</dt>
+        <dd><a class="xref" href="identifier.html#grammarkdown_Identifier_class">Identifier</a></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>argumentList</dt>
+        <dd><a class="xref" href="argumentlist.html#grammarkdown_ArgumentList_class">ArgumentList</a> | undefined</dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>questionToken</dt>
+        <dd><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_QuestionToken_member">SyntaxKind.QuestionToken</a>&gt; | undefined</dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
   <h3 id="properties">Properties
   </h3>
   
@@ -147,96 +154,104 @@
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">readonly argumentList: ArgumentList | undefined;</code></pre>
   </div>
+  
+  
+  
+  
+  
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="argumentlist.html#grammarkdown_ArgumentList_class">ArgumentList</a> | undefined</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="argumentlist.html#grammarkdown_ArgumentList_class">ArgumentList</a> | undefined</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Nonterminal_firstChild_member" data-uid="grammarkdown!Nonterminal#firstChild:member">firstChild</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">get firstChild(): Node | undefined;</code></pre>
   </div>
+  
+  
+  
+  
+  
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="node.html#grammarkdown_Node_class">Node</a> | undefined</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="node.html#grammarkdown_Node_class">Node</a> | undefined</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Nonterminal_lastChild_member" data-uid="grammarkdown!Nonterminal#lastChild:member">lastChild</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">get lastChild(): Node | undefined;</code></pre>
   </div>
+  
+  
+  
+  
+  
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="node.html#grammarkdown_Node_class">Node</a> | undefined</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="node.html#grammarkdown_Node_class">Node</a> | undefined</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Nonterminal_name_member" data-uid="grammarkdown!Nonterminal#name:member">name</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">readonly name: Identifier;</code></pre>
   </div>
+  
+  
+  
+  
+  
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="identifier.html#grammarkdown_Identifier_class">Identifier</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="identifier.html#grammarkdown_Identifier_class">Identifier</a></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
   <h3 id="methods">Methods
   </h3>
   
@@ -245,135 +260,126 @@
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">children(): IterableIterator&lt;Node&gt;;</code></pre>
   </div>
+  
+  
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IterableIterator</span>&lt;<a class="xref" href="node.html#grammarkdown_Node_class">Node</a>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">IterableIterator</span>&lt;<a class="xref" href="node.html#grammarkdown_Node_class">Node</a>&gt;</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Nonterminal_forEachChild_member_1_" data-uid="grammarkdown!Nonterminal#forEachChild:member(1)">forEachChild(cbNode)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">forEachChild&lt;T&gt;(cbNode: (node: Node) =&gt; T | undefined): T | undefined;</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>(node: <a class="xref" href="node.html#grammarkdown_Node_class">Node</a>) =&gt; T | undefined</td>
-        <td><em>cbNode</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">T | undefined</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  
   <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><em>T</em></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>T</dt>
+        <dd></dd>
+      </dl>
+      <p>
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cbNode</dt>
+        <dd>(node: <a class="xref" href="node.html#grammarkdown_Node_class">Node</a>) =&gt; T | undefined</dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">T | undefined</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Nonterminal_update_member_1_" data-uid="grammarkdown!Nonterminal#update:member(1)">update(name, argumentList)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">update(name: Identifier, argumentList: ArgumentList | undefined): Nonterminal;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="identifier.html#grammarkdown_Identifier_class">Identifier</a></td>
-        <td><em>name</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="argumentlist.html#grammarkdown_ArgumentList_class">ArgumentList</a> | undefined</td>
-        <td><em>argumentList</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>name</dt>
+        <dd><a class="xref" href="identifier.html#grammarkdown_Identifier_class">Identifier</a></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>argumentList</dt>
+        <dd><a class="xref" href="argumentlist.html#grammarkdown_ArgumentList_class">ArgumentList</a> | undefined</dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="nonterminal.html#grammarkdown_Nonterminal_class">Nonterminal</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="nonterminal.html#grammarkdown_Nonterminal_class">Nonterminal</a></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
 </article>
           </div>
           

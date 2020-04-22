@@ -26,6 +26,9 @@
             "tsdoc-param-tag-with-invalid-name": {
                 "logLevel": "none"
             },
+            "tsdoc-param-tag-missing-hyphen": {
+                "logLevel": "none"
+            },
             "tsdoc-undefined-tag": {
                 "logLevel": "none"
             }

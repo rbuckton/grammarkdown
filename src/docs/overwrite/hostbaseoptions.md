@@ -1,0 +1,3 @@
+---
+uid: 'grammarkdown!HostBaseOptions:interface'
+---

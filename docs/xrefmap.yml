@@ -1,6 +1,18 @@
 ### YamlMime:XRefMap
 sorted: true
 references:
+- uid: bind
+  name: Binder API
+  href: api/bind.html
+- uid: check
+  name: Checker API
+  href: api/check.html
+- uid: compiler
+  name: Compiler API
+  href: api/compiler.html
+- uid: emit
+  name: Emitter API
+  href: api/emit.html
 - uid: grammarkdown!
   name: grammarkdown
   href: api/grammarkdown.html
@@ -117,94 +129,6 @@ references:
   name: AssertionKind
   href: api/grammarkdown.html#grammarkdown_AssertionKind_type
   fullName: AssertionKind
-- uid: grammarkdown!AsyncHost#getSourceFile:member(1)
-  name: getSourceFile(file, cancelable)
-  href: api/grammarkdown/asynchost.html#grammarkdown_AsyncHost_getSourceFile_member_1_
-  fullName: getSourceFile(file, cancelable)
-- uid: grammarkdown!AsyncHost#getSourceFile:member(2)
-  name: getSourceFile(file, cancelable)
-  href: api/grammarkdown/asynchost.html#grammarkdown_AsyncHost_getSourceFile_member_2_
-  fullName: getSourceFile(file, cancelable)
-- uid: grammarkdown!AsyncHost#readFile:member(1)
-  name: readFile(file, cancelable)
-  href: api/grammarkdown/asynchost.html#grammarkdown_AsyncHost_readFile_member_1_
-  fullName: readFile(file, cancelable)
-- uid: grammarkdown!AsyncHost#readFile:member(2)
-  name: readFile(file, cancelable)
-  href: api/grammarkdown/asynchost.html#grammarkdown_AsyncHost_readFile_member_2_
-  fullName: readFile(file, cancelable)
-- uid: grammarkdown!AsyncHost#writeFile:member(1)
-  name: writeFile(file, text, cancelable)
-  href: api/grammarkdown/asynchost.html#grammarkdown_AsyncHost_writeFile_member_1_
-  fullName: writeFile(file, text, cancelable)
-- uid: grammarkdown!AsyncHost#writeFile:member(2)
-  name: writeFile(file, text, cancelable)
-  href: api/grammarkdown/asynchost.html#grammarkdown_AsyncHost_writeFile_member_2_
-  fullName: writeFile(file, text, cancelable)
-- uid: grammarkdown!AsyncHost.forFile:member(1)
-  name: forFile(content, file, hostFallback)
-  href: api/grammarkdown/asynchost.html#grammarkdown_AsyncHost_forFile_member_1_
-  fullName: forFile(content, file, hostFallback)
-- uid: grammarkdown!AsyncHost:class
-  name: AsyncHost
-  href: api/grammarkdown/asynchost.html#grammarkdown_AsyncHost_class
-  fullName: AsyncHost
-- uid: grammarkdown!AsyncHost:constructor(1)
-  name: (constructor)({ readFile, writeFile, ...baseOptions })
-  href: api/grammarkdown/asynchost.html#grammarkdown_AsyncHost_constructor_1_
-  fullName: (constructor)({ readFile, writeFile, ...baseOptions })
-- uid: grammarkdown!AsyncHostOptions#readFile:member
-  name: readFile
-  href: api/grammarkdown/asynchostoptions.html#grammarkdown_AsyncHostOptions_readFile_member
-  fullName: readFile
-- uid: grammarkdown!AsyncHostOptions#writeFile:member
-  name: writeFile
-  href: api/grammarkdown/asynchostoptions.html#grammarkdown_AsyncHostOptions_writeFile_member
-  fullName: writeFile
-- uid: grammarkdown!AsyncHostOptions:interface
-  name: AsyncHostOptions
-  href: api/grammarkdown/asynchostoptions.html#grammarkdown_AsyncHostOptions_interface
-  fullName: AsyncHostOptions
-- uid: grammarkdown!AsyncSingleFileHost#content:member
-  name: content
-  href: api/grammarkdown/asyncsinglefilehost.html#grammarkdown_AsyncSingleFileHost_content_member
-  fullName: content
-- uid: grammarkdown!AsyncSingleFileHost#file:member
-  name: file
-  href: api/grammarkdown/asyncsinglefilehost.html#grammarkdown_AsyncSingleFileHost_file_member
-  fullName: file
-- uid: grammarkdown!AsyncSingleFileHost#normalizeFile:member(1)
-  name: normalizeFile(file)
-  href: api/grammarkdown/asyncsinglefilehost.html#grammarkdown_AsyncSingleFileHost_normalizeFile_member_1_
-  fullName: normalizeFile(file)
-- uid: grammarkdown!AsyncSingleFileHost#readFile:member(1)
-  name: readFile(file, cancelable)
-  href: api/grammarkdown/asyncsinglefilehost.html#grammarkdown_AsyncSingleFileHost_readFile_member_1_
-  fullName: readFile(file, cancelable)
-- uid: grammarkdown!AsyncSingleFileHost#readFile:member(2)
-  name: readFile(file, cancelable)
-  href: api/grammarkdown/asyncsinglefilehost.html#grammarkdown_AsyncSingleFileHost_readFile_member_2_
-  fullName: readFile(file, cancelable)
-- uid: grammarkdown!AsyncSingleFileHost#resolveFile:member(1)
-  name: resolveFile(file, referer)
-  href: api/grammarkdown/asyncsinglefilehost.html#grammarkdown_AsyncSingleFileHost_resolveFile_member_1_
-  fullName: resolveFile(file, referer)
-- uid: grammarkdown!AsyncSingleFileHost#writeFile:member(1)
-  name: writeFile(file, text, cancelable)
-  href: api/grammarkdown/asyncsinglefilehost.html#grammarkdown_AsyncSingleFileHost_writeFile_member_1_
-  fullName: writeFile(file, text, cancelable)
-- uid: grammarkdown!AsyncSingleFileHost#writeFile:member(2)
-  name: writeFile(file, text, cancelable)
-  href: api/grammarkdown/asyncsinglefilehost.html#grammarkdown_AsyncSingleFileHost_writeFile_member_2_
-  fullName: writeFile(file, text, cancelable)
-- uid: grammarkdown!AsyncSingleFileHost:class
-  name: AsyncSingleFileHost
-  href: api/grammarkdown/asyncsinglefilehost.html#grammarkdown_AsyncSingleFileHost_class
-  fullName: AsyncSingleFileHost
-- uid: grammarkdown!AsyncSingleFileHost:constructor(1)
-  name: (constructor)(file, content, hostFallback)
-  href: api/grammarkdown/asyncsinglefilehost.html#grammarkdown_AsyncSingleFileHost_constructor_1_
-  fullName: (constructor)(file, content, hostFallback)
 - uid: grammarkdown!Binder#bindSourceFile:member(1)
   name: bindSourceFile(file, bindings, cancelable)
   href: api/grammarkdown/binder.html#grammarkdown_Binder_bindSourceFile_member_1_
@@ -929,6 +853,182 @@ references:
   name: (constructor)(openBracketToken, elements, closeBracketToken)
   href: api/grammarkdown/constraints.html#grammarkdown_Constraints_constructor_1_
   fullName: (constructor)(openBracketToken, elements, closeBracketToken)
+- uid: grammarkdown!CoreAsyncHost#getSourceFile:member(1)
+  name: getSourceFile(file, cancelable)
+  href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_getSourceFile_member_1_
+  fullName: getSourceFile(file, cancelable)
+- uid: grammarkdown!CoreAsyncHost#getSourceFile:member(2)
+  name: getSourceFile(file, cancelable)
+  href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_getSourceFile_member_2_
+  fullName: getSourceFile(file, cancelable)
+- uid: grammarkdown!CoreAsyncHost#normalizeFileCore:member(1)
+  name: normalizeFileCore(file)
+  href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_normalizeFileCore_member_1_
+  fullName: normalizeFileCore(file)
+- uid: grammarkdown!CoreAsyncHost#readFile:member(1)
+  name: readFile(file, cancelable)
+  href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_readFile_member_1_
+  fullName: readFile(file, cancelable)
+- uid: grammarkdown!CoreAsyncHost#readFile:member(2)
+  name: readFile(file, cancelable)
+  href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_readFile_member_2_
+  fullName: readFile(file, cancelable)
+- uid: grammarkdown!CoreAsyncHost#readFileCore:member(1)
+  name: readFileCore(file, cancelToken)
+  href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_readFileCore_member_1_
+  fullName: readFileCore(file, cancelToken)
+- uid: grammarkdown!CoreAsyncHost#registerKnownGrammarCore:member(1)
+  name: registerKnownGrammarCore(name, file)
+  href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_registerKnownGrammarCore_member_1_
+  fullName: registerKnownGrammarCore(name, file)
+- uid: grammarkdown!CoreAsyncHost#resolveFileCore:member(1)
+  name: resolveFileCore(file, referer)
+  href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_resolveFileCore_member_1_
+  fullName: resolveFileCore(file, referer)
+- uid: grammarkdown!CoreAsyncHost#resolveKnownGrammarCore:member(1)
+  name: resolveKnownGrammarCore(name)
+  href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_resolveKnownGrammarCore_member_1_
+  fullName: resolveKnownGrammarCore(name)
+- uid: grammarkdown!CoreAsyncHost#writeFile:member(1)
+  name: writeFile(file, text, cancelable)
+  href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_writeFile_member_1_
+  fullName: writeFile(file, text, cancelable)
+- uid: grammarkdown!CoreAsyncHost#writeFile:member(2)
+  name: writeFile(file, text, cancelable)
+  href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_writeFile_member_2_
+  fullName: writeFile(file, text, cancelable)
+- uid: grammarkdown!CoreAsyncHost#writeFileCore:member(1)
+  name: writeFileCore(file, content, cancelToken)
+  href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_writeFileCore_member_1_
+  fullName: writeFileCore(file, content, cancelToken)
+- uid: grammarkdown!CoreAsyncHost.forFile:member(1)
+  name: forFile(content, file, hostFallback)
+  href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_forFile_member_1_
+  fullName: forFile(content, file, hostFallback)
+- uid: grammarkdown!CoreAsyncHost.from:member(1)
+  name: from(custom, hostFallback)
+  href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_from_member_1_
+  fullName: from(custom, hostFallback)
+- uid: grammarkdown!CoreAsyncHost:class
+  name: CoreAsyncHost
+  href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_class
+  fullName: CoreAsyncHost
+- uid: grammarkdown!CoreAsyncHost:constructor(1)
+  name: (constructor)(options, hostFallback)
+  href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_constructor_1_
+  fullName: (constructor)(options, hostFallback)
+- uid: grammarkdown!CoreAsyncHostOptions#normalizeFile:member
+  name: normalizeFile
+  href: api/grammarkdown/coreasynchostoptions.html#grammarkdown_CoreAsyncHostOptions_normalizeFile_member
+  fullName: normalizeFile
+- uid: grammarkdown!CoreAsyncHostOptions#readFile:member
+  name: readFile
+  href: api/grammarkdown/coreasynchostoptions.html#grammarkdown_CoreAsyncHostOptions_readFile_member
+  fullName: readFile
+- uid: grammarkdown!CoreAsyncHostOptions#resolveFile:member
+  name: resolveFile
+  href: api/grammarkdown/coreasynchostoptions.html#grammarkdown_CoreAsyncHostOptions_resolveFile_member
+  fullName: resolveFile
+- uid: grammarkdown!CoreAsyncHostOptions#resolveKnownGrammar:member
+  name: resolveKnownGrammar
+  href: api/grammarkdown/coreasynchostoptions.html#grammarkdown_CoreAsyncHostOptions_resolveKnownGrammar_member
+  fullName: resolveKnownGrammar
+- uid: grammarkdown!CoreAsyncHostOptions#writeFile:member
+  name: writeFile
+  href: api/grammarkdown/coreasynchostoptions.html#grammarkdown_CoreAsyncHostOptions_writeFile_member
+  fullName: writeFile
+- uid: grammarkdown!CoreAsyncHostOptions:interface
+  name: CoreAsyncHostOptions
+  href: api/grammarkdown/coreasynchostoptions.html#grammarkdown_CoreAsyncHostOptions_interface
+  fullName: CoreAsyncHostOptions
+- uid: grammarkdown!CoreSyncHost#getSourceFileSync:member(1)
+  name: getSourceFileSync(file, cancelable)
+  href: api/grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_getSourceFileSync_member_1_
+  fullName: getSourceFileSync(file, cancelable)
+- uid: grammarkdown!CoreSyncHost#getSourceFileSync:member(2)
+  name: getSourceFileSync(file, cancelable)
+  href: api/grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_getSourceFileSync_member_2_
+  fullName: getSourceFileSync(file, cancelable)
+- uid: grammarkdown!CoreSyncHost#normalizeFileCore:member(1)
+  name: normalizeFileCore(file)
+  href: api/grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_normalizeFileCore_member_1_
+  fullName: normalizeFileCore(file)
+- uid: grammarkdown!CoreSyncHost#readFileSync:member(1)
+  name: readFileSync(file, cancelable)
+  href: api/grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_readFileSync_member_1_
+  fullName: readFileSync(file, cancelable)
+- uid: grammarkdown!CoreSyncHost#readFileSync:member(2)
+  name: readFileSync(file, cancelable)
+  href: api/grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_readFileSync_member_2_
+  fullName: readFileSync(file, cancelable)
+- uid: grammarkdown!CoreSyncHost#readFileSyncCore:member(1)
+  name: readFileSyncCore(file, cancelToken)
+  href: api/grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_readFileSyncCore_member_1_
+  fullName: readFileSyncCore(file, cancelToken)
+- uid: grammarkdown!CoreSyncHost#registerKnownGrammarCore:member(1)
+  name: registerKnownGrammarCore(name, file)
+  href: api/grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_registerKnownGrammarCore_member_1_
+  fullName: registerKnownGrammarCore(name, file)
+- uid: grammarkdown!CoreSyncHost#resolveFileCore:member(1)
+  name: resolveFileCore(file, referer)
+  href: api/grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_resolveFileCore_member_1_
+  fullName: resolveFileCore(file, referer)
+- uid: grammarkdown!CoreSyncHost#resolveKnownGrammarCore:member(1)
+  name: resolveKnownGrammarCore(name)
+  href: api/grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_resolveKnownGrammarCore_member_1_
+  fullName: resolveKnownGrammarCore(name)
+- uid: grammarkdown!CoreSyncHost#writeFileSync:member(1)
+  name: writeFileSync(file, text, cancelable)
+  href: api/grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_writeFileSync_member_1_
+  fullName: writeFileSync(file, text, cancelable)
+- uid: grammarkdown!CoreSyncHost#writeFileSync:member(2)
+  name: writeFileSync(file, text, cancelable)
+  href: api/grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_writeFileSync_member_2_
+  fullName: writeFileSync(file, text, cancelable)
+- uid: grammarkdown!CoreSyncHost#writeFileSyncCore:member(1)
+  name: writeFileSyncCore(file, content, cancelToken)
+  href: api/grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_writeFileSyncCore_member_1_
+  fullName: writeFileSyncCore(file, content, cancelToken)
+- uid: grammarkdown!CoreSyncHost.forFile:member(1)
+  name: forFile(content, file, hostFallback)
+  href: api/grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_forFile_member_1_
+  fullName: forFile(content, file, hostFallback)
+- uid: grammarkdown!CoreSyncHost.from:member(1)
+  name: from(options, hostFallback)
+  href: api/grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_from_member_1_
+  fullName: from(options, hostFallback)
+- uid: grammarkdown!CoreSyncHost:class
+  name: CoreSyncHost
+  href: api/grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_class
+  fullName: CoreSyncHost
+- uid: grammarkdown!CoreSyncHost:constructor(1)
+  name: (constructor)(options, hostFallback)
+  href: api/grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_constructor_1_
+  fullName: (constructor)(options, hostFallback)
+- uid: grammarkdown!CoreSyncHostOptions#normalizeFile:member
+  name: normalizeFile
+  href: api/grammarkdown/coresynchostoptions.html#grammarkdown_CoreSyncHostOptions_normalizeFile_member
+  fullName: normalizeFile
+- uid: grammarkdown!CoreSyncHostOptions#readFileSync:member
+  name: readFileSync
+  href: api/grammarkdown/coresynchostoptions.html#grammarkdown_CoreSyncHostOptions_readFileSync_member
+  fullName: readFileSync
+- uid: grammarkdown!CoreSyncHostOptions#resolveFile:member
+  name: resolveFile
+  href: api/grammarkdown/coresynchostoptions.html#grammarkdown_CoreSyncHostOptions_resolveFile_member
+  fullName: resolveFile
+- uid: grammarkdown!CoreSyncHostOptions#resolveKnownGrammar:member
+  name: resolveKnownGrammar
+  href: api/grammarkdown/coresynchostoptions.html#grammarkdown_CoreSyncHostOptions_resolveKnownGrammar_member
+  fullName: resolveKnownGrammar
+- uid: grammarkdown!CoreSyncHostOptions#writeFileSync:member
+  name: writeFileSync
+  href: api/grammarkdown/coresynchostoptions.html#grammarkdown_CoreSyncHostOptions_writeFileSync_member
+  fullName: writeFileSync
+- uid: grammarkdown!CoreSyncHostOptions:interface
+  name: CoreSyncHostOptions
+  href: api/grammarkdown/coresynchostoptions.html#grammarkdown_CoreSyncHostOptions_interface
+  fullName: CoreSyncHostOptions
 - uid: grammarkdown!Declaration:type
   name: Declaration
   href: api/grammarkdown.html#grammarkdown_Declaration_type
@@ -1693,6 +1793,10 @@ references:
   name: readFileSync(file, cancelable)
   href: api/grammarkdown/host.html#grammarkdown_Host_readFileSync_member_2_
   fullName: readFileSync(file, cancelable)
+- uid: grammarkdown!Host#resolveFileCore:member(1)
+  name: resolveFileCore(file, referer)
+  href: api/grammarkdown/host.html#grammarkdown_Host_resolveFileCore_member_1_
+  fullName: resolveFileCore(file, referer)
 - uid: grammarkdown!Host#writeFile:member(1)
   name: writeFile(file, text, cancelable)
   href: api/grammarkdown/host.html#grammarkdown_Host_writeFile_member_1_
@@ -1714,9 +1818,9 @@ references:
   href: api/grammarkdown/host.html#grammarkdown_Host_class
   fullName: Host
 - uid: grammarkdown!Host:constructor(1)
-  name: (constructor)({ readFile, readFileSync, writeFile, writeFileSync, ...baseOptions })
+  name: (constructor)(options)
   href: api/grammarkdown/host.html#grammarkdown_Host_constructor_1_
-  fullName: (constructor)({ readFile, readFileSync, writeFile, writeFileSync, ...baseOptions })
+  fullName: (constructor)(options)
 - uid: grammarkdown!HostBase#createParser:member(1)
   name: createParser()
   href: api/grammarkdown/hostbase.html#grammarkdown_HostBase_createParser_member_1_
@@ -1729,6 +1833,10 @@ references:
   name: normalizeFile(file)
   href: api/grammarkdown/hostbase.html#grammarkdown_HostBase_normalizeFile_member_1_
   fullName: normalizeFile(file)
+- uid: grammarkdown!HostBase#normalizeFileCore:member(1)
+  name: normalizeFileCore(file)
+  href: api/grammarkdown/hostbase.html#grammarkdown_HostBase_normalizeFileCore_member_1_
+  fullName: normalizeFileCore(file)
 - uid: grammarkdown!HostBase#parser:member
   name: parser
   href: api/grammarkdown/hostbase.html#grammarkdown_HostBase_parser_member
@@ -1745,26 +1853,34 @@ references:
   name: registerKnownGrammar(name, file)
   href: api/grammarkdown/hostbase.html#grammarkdown_HostBase_registerKnownGrammar_member_1_
   fullName: registerKnownGrammar(name, file)
-- uid: grammarkdown!HostBase#resolveBuiltInGrammar:member(1)
-  name: resolveBuiltInGrammar(name)
-  href: api/grammarkdown/hostbase.html#grammarkdown_HostBase_resolveBuiltInGrammar_member_1_
-  fullName: resolveBuiltInGrammar(name)
+- uid: grammarkdown!HostBase#registerKnownGrammarCore:member(1)
+  name: registerKnownGrammarCore(name, file)
+  href: api/grammarkdown/hostbase.html#grammarkdown_HostBase_registerKnownGrammarCore_member_1_
+  fullName: registerKnownGrammarCore(name, file)
 - uid: grammarkdown!HostBase#resolveFile:member(1)
   name: resolveFile(file, referer)
   href: api/grammarkdown/hostbase.html#grammarkdown_HostBase_resolveFile_member_1_
   fullName: resolveFile(file, referer)
+- uid: grammarkdown!HostBase#resolveFileCore:member(1)
+  name: resolveFileCore(file, referer)
+  href: api/grammarkdown/hostbase.html#grammarkdown_HostBase_resolveFileCore_member_1_
+  fullName: resolveFileCore(file, referer)
 - uid: grammarkdown!HostBase#resolveKnownGrammar:member(1)
   name: resolveKnownGrammar(name)
   href: api/grammarkdown/hostbase.html#grammarkdown_HostBase_resolveKnownGrammar_member_1_
   fullName: resolveKnownGrammar(name)
+- uid: grammarkdown!HostBase#resolveKnownGrammarCore:member(1)
+  name: resolveKnownGrammarCore(name)
+  href: api/grammarkdown/hostbase.html#grammarkdown_HostBase_resolveKnownGrammarCore_member_1_
+  fullName: resolveKnownGrammarCore(name)
 - uid: grammarkdown!HostBase:class
   name: HostBase
   href: api/grammarkdown/hostbase.html#grammarkdown_HostBase_class
   fullName: HostBase
 - uid: grammarkdown!HostBase:constructor(1)
-  name: (constructor)({ ignoreCase, knownGrammars, useBuiltinGrammars })
+  name: (constructor)(options)
   href: api/grammarkdown/hostbase.html#grammarkdown_HostBase_constructor_1_
-  fullName: (constructor)({ ignoreCase, knownGrammars, useBuiltinGrammars })
+  fullName: (constructor)(options)
 - uid: grammarkdown!HostBaseOptions#ignoreCase:member
   name: ignoreCase
   href: api/grammarkdown/hostbaseoptions.html#grammarkdown_HostBaseOptions_ignoreCase_member
@@ -1789,6 +1905,10 @@ references:
   name: readFileSync
   href: api/grammarkdown/hostoptions.html#grammarkdown_HostOptions_readFileSync_member
   fullName: readFileSync
+- uid: grammarkdown!HostOptions#useBuiltinGrammars:member
+  name: useBuiltinGrammars
+  href: api/grammarkdown/hostoptions.html#grammarkdown_HostOptions_useBuiltinGrammars_member
+  fullName: useBuiltinGrammars
 - uid: grammarkdown!HostOptions#writeFile:member
   name: writeFile
   href: api/grammarkdown/hostoptions.html#grammarkdown_HostOptions_writeFile_member
@@ -2461,6 +2581,26 @@ references:
   name: (constructor)(kind)
   href: api/grammarkdown/node.html#grammarkdown_Node_constructor_1_
   fullName: (constructor)(kind)
+- uid: grammarkdown!NodeAsyncHost:class
+  name: NodeAsyncHost
+  href: api/grammarkdown/nodeasynchost.html#grammarkdown_NodeAsyncHost_class
+  fullName: NodeAsyncHost
+- uid: grammarkdown!NodeAsyncHost:constructor(1)
+  name: (constructor)(options)
+  href: api/grammarkdown/nodeasynchost.html#grammarkdown_NodeAsyncHost_constructor_1_
+  fullName: (constructor)(options)
+- uid: grammarkdown!NodeAsyncHostOptions#readFile:member
+  name: readFile
+  href: api/grammarkdown/nodeasynchostoptions.html#grammarkdown_NodeAsyncHostOptions_readFile_member
+  fullName: readFile
+- uid: grammarkdown!NodeAsyncHostOptions#writeFile:member
+  name: writeFile
+  href: api/grammarkdown/nodeasynchostoptions.html#grammarkdown_NodeAsyncHostOptions_writeFile_member
+  fullName: writeFile
+- uid: grammarkdown!NodeAsyncHostOptions:interface
+  name: NodeAsyncHostOptions
+  href: api/grammarkdown/nodeasynchostoptions.html#grammarkdown_NodeAsyncHostOptions_interface
+  fullName: NodeAsyncHostOptions
 - uid: grammarkdown!NodeNavigator#clone:member(1)
   name: clone()
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_clone_member_1_
@@ -2501,14 +2641,30 @@ references:
   name: hasAncestor(predicate)
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_hasAncestor_member_1_
   fullName: hasAncestor(predicate)
+- uid: grammarkdown!NodeNavigator#hasAncestor:member(2)
+  name: hasAncestor(kind)
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_hasAncestor_member_2_
+  fullName: hasAncestor(kind)
 - uid: grammarkdown!NodeNavigator#hasChildren:member(1)
   name: hasChildren(predicate)
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_hasChildren_member_1_
   fullName: hasChildren(predicate)
+- uid: grammarkdown!NodeNavigator#hasChildren:member(2)
+  name: hasChildren(kind)
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_hasChildren_member_2_
+  fullName: hasChildren(kind)
 - uid: grammarkdown!NodeNavigator#isArray:member(1)
   name: isArray()
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_isArray_member_1_
   fullName: isArray()
+- uid: grammarkdown!NodeNavigator#isMatch:member(1)
+  name: isMatch(predicate)
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_isMatch_member_1_
+  fullName: isMatch(predicate)
+- uid: grammarkdown!NodeNavigator#isMatch:member(2)
+  name: isMatch(kind)
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_isMatch_member_2_
+  fullName: isMatch(kind)
 - uid: grammarkdown!NodeNavigator#isSamePosition:member(1)
   name: isSamePosition(other)
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_isSamePosition_member_1_
@@ -2521,10 +2677,18 @@ references:
   name: moveToAncestor(predicate)
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToAncestor_member_1_
   fullName: moveToAncestor(predicate)
+- uid: grammarkdown!NodeNavigator#moveToAncestor:member(2)
+  name: moveToAncestor(kind)
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToAncestor_member_2_
+  fullName: moveToAncestor(kind)
 - uid: grammarkdown!NodeNavigator#moveToAncestorOrSelf:member(1)
   name: moveToAncestorOrSelf(predicate)
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToAncestorOrSelf_member_1_
   fullName: moveToAncestorOrSelf(predicate)
+- uid: grammarkdown!NodeNavigator#moveToAncestorOrSelf:member(2)
+  name: moveToAncestorOrSelf(kind)
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToAncestorOrSelf_member_2_
+  fullName: moveToAncestorOrSelf(kind)
 - uid: grammarkdown!NodeNavigator#moveToDeclaration:member(1)
   name: moveToDeclaration()
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToDeclaration_member_1_
@@ -2541,10 +2705,18 @@ references:
   name: moveToFirstChild(predicate)
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToFirstChild_member_3_
   fullName: moveToFirstChild(predicate)
+- uid: grammarkdown!NodeNavigator#moveToFirstChild:member(4)
+  name: moveToFirstChild(kind)
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToFirstChild_member_4_
+  fullName: moveToFirstChild(kind)
 - uid: grammarkdown!NodeNavigator#moveToFirstElement:member(1)
   name: moveToFirstElement(predicate)
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToFirstElement_member_1_
   fullName: moveToFirstElement(predicate)
+- uid: grammarkdown!NodeNavigator#moveToFirstElement:member(2)
+  name: moveToFirstElement(kind)
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToFirstElement_member_2_
+  fullName: moveToFirstElement(kind)
 - uid: grammarkdown!NodeNavigator#moveToFirstSibling:member(1)
   name: moveToFirstSibling()
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToFirstSibling_member_1_
@@ -2557,6 +2729,10 @@ references:
   name: moveToFirstSibling(predicate)
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToFirstSibling_member_3_
   fullName: moveToFirstSibling(predicate)
+- uid: grammarkdown!NodeNavigator#moveToFirstSibling:member(4)
+  name: moveToFirstSibling(kind)
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToFirstSibling_member_4_
+  fullName: moveToFirstSibling(kind)
 - uid: grammarkdown!NodeNavigator#moveToLastChild:member(1)
   name: moveToLastChild()
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToLastChild_member_1_
@@ -2569,10 +2745,18 @@ references:
   name: moveToLastChild(predicate)
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToLastChild_member_3_
   fullName: moveToLastChild(predicate)
+- uid: grammarkdown!NodeNavigator#moveToLastChild:member(4)
+  name: moveToLastChild(kind)
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToLastChild_member_4_
+  fullName: moveToLastChild(kind)
 - uid: grammarkdown!NodeNavigator#moveToLastElement:member(1)
   name: moveToLastElement(predicate)
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToLastElement_member_1_
   fullName: moveToLastElement(predicate)
+- uid: grammarkdown!NodeNavigator#moveToLastElement:member(2)
+  name: moveToLastElement(kind)
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToLastElement_member_2_
+  fullName: moveToLastElement(kind)
 - uid: grammarkdown!NodeNavigator#moveToLastSibling:member(1)
   name: moveToLastSibling()
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToLastSibling_member_1_
@@ -2585,6 +2769,10 @@ references:
   name: moveToLastSibling(predicate)
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToLastSibling_member_3_
   fullName: moveToLastSibling(predicate)
+- uid: grammarkdown!NodeNavigator#moveToLastSibling:member(4)
+  name: moveToLastSibling(kind)
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToLastSibling_member_4_
+  fullName: moveToLastSibling(kind)
 - uid: grammarkdown!NodeNavigator#moveToName:member(1)
   name: moveToName()
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToName_member_1_
@@ -2593,6 +2781,10 @@ references:
   name: moveToNextElement(predicate)
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToNextElement_member_1_
   fullName: moveToNextElement(predicate)
+- uid: grammarkdown!NodeNavigator#moveToNextElement:member(2)
+  name: moveToNextElement(kind)
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToNextElement_member_2_
+  fullName: moveToNextElement(kind)
 - uid: grammarkdown!NodeNavigator#moveToNextSibling:member(1)
   name: moveToNextSibling()
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToNextSibling_member_1_
@@ -2605,18 +2797,30 @@ references:
   name: moveToNextSibling(predicate)
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToNextSibling_member_3_
   fullName: moveToNextSibling(predicate)
+- uid: grammarkdown!NodeNavigator#moveToNextSibling:member(4)
+  name: moveToNextSibling(kind)
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToNextSibling_member_4_
+  fullName: moveToNextSibling(kind)
 - uid: grammarkdown!NodeNavigator#moveToParent:member(1)
   name: moveToParent(predicate)
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToParent_member_1_
   fullName: moveToParent(predicate)
+- uid: grammarkdown!NodeNavigator#moveToParent:member(2)
+  name: moveToParent(kind)
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToParent_member_2_
+  fullName: moveToParent(kind)
 - uid: grammarkdown!NodeNavigator#moveToPosition:member(1)
-  name: moveToPosition(position)
+  name: moveToPosition(position, outermost)
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToPosition_member_1_
-  fullName: moveToPosition(position)
+  fullName: moveToPosition(position, outermost)
 - uid: grammarkdown!NodeNavigator#moveToPreviousElement:member(1)
   name: moveToPreviousElement(predicate)
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToPreviousElement_member_1_
   fullName: moveToPreviousElement(predicate)
+- uid: grammarkdown!NodeNavigator#moveToPreviousElement:member(2)
+  name: moveToPreviousElement(kind)
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToPreviousElement_member_2_
+  fullName: moveToPreviousElement(kind)
 - uid: grammarkdown!NodeNavigator#moveToPreviousSibling:member(1)
   name: moveToPreviousSibling()
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToPreviousSibling_member_1_
@@ -2629,6 +2833,10 @@ references:
   name: moveToPreviousSibling(predicate)
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToPreviousSibling_member_3_
   fullName: moveToPreviousSibling(predicate)
+- uid: grammarkdown!NodeNavigator#moveToPreviousSibling:member(4)
+  name: moveToPreviousSibling(kind)
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToPreviousSibling_member_4_
+  fullName: moveToPreviousSibling(kind)
 - uid: grammarkdown!NodeNavigator#moveToRoot:member(1)
   name: moveToRoot()
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToRoot_member_1_
@@ -2649,6 +2857,26 @@ references:
   name: (constructor)(other)
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_constructor_2_
   fullName: (constructor)(other)
+- uid: grammarkdown!NodeSyncHost:class
+  name: NodeSyncHost
+  href: api/grammarkdown/nodesynchost.html#grammarkdown_NodeSyncHost_class
+  fullName: NodeSyncHost
+- uid: grammarkdown!NodeSyncHost:constructor(1)
+  name: (constructor)(options)
+  href: api/grammarkdown/nodesynchost.html#grammarkdown_NodeSyncHost_constructor_1_
+  fullName: (constructor)(options)
+- uid: grammarkdown!NodeSyncHostOptions#readFileSync:member
+  name: readFileSync
+  href: api/grammarkdown/nodesynchostoptions.html#grammarkdown_NodeSyncHostOptions_readFileSync_member
+  fullName: readFileSync
+- uid: grammarkdown!NodeSyncHostOptions#writeFileSync:member
+  name: writeFileSync
+  href: api/grammarkdown/nodesynchostoptions.html#grammarkdown_NodeSyncHostOptions_writeFileSync_member
+  fullName: writeFileSync
+- uid: grammarkdown!NodeSyncHostOptions:interface
+  name: NodeSyncHostOptions
+  href: api/grammarkdown/nodesynchostoptions.html#grammarkdown_NodeSyncHostOptions_interface
+  fullName: NodeSyncHostOptions
 - uid: grammarkdown!NodeVisitor#visit:member(1)
   name: visit(node)
   href: api/grammarkdown/nodevisitor.html#grammarkdown_NodeVisitor_visit_member_1_
@@ -3621,10 +3849,10 @@ references:
   name: getSourceFileSync(file, cancelable)
   href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_getSourceFileSync_member_2_
   fullName: getSourceFileSync(file, cancelable)
-- uid: grammarkdown!SingleFileHost#normalizeFile:member(1)
-  name: normalizeFile(file)
-  href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_normalizeFile_member_1_
-  fullName: normalizeFile(file)
+- uid: grammarkdown!SingleFileHost#normalizeFileCore:member(1)
+  name: normalizeFileCore(file)
+  href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_normalizeFileCore_member_1_
+  fullName: normalizeFileCore(file)
 - uid: grammarkdown!SingleFileHost#parser:member
   name: parser
   href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_parser_member
@@ -3645,22 +3873,18 @@ references:
   name: readFileSync(file, cancelable)
   href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_readFileSync_member_2_
   fullName: readFileSync(file, cancelable)
-- uid: grammarkdown!SingleFileHost#registerKnownGrammar:member(1)
-  name: registerKnownGrammar(_name, _file)
-  href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_registerKnownGrammar_member_1_
-  fullName: registerKnownGrammar(_name, _file)
-- uid: grammarkdown!SingleFileHost#resolveBuiltInGrammar:member(1)
-  name: resolveBuiltInGrammar(name)
-  href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_resolveBuiltInGrammar_member_1_
-  fullName: resolveBuiltInGrammar(name)
-- uid: grammarkdown!SingleFileHost#resolveFile:member(1)
-  name: resolveFile(file, referer)
-  href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_resolveFile_member_1_
-  fullName: resolveFile(file, referer)
-- uid: grammarkdown!SingleFileHost#resolveKnownGrammar:member(1)
-  name: resolveKnownGrammar(name)
-  href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_resolveKnownGrammar_member_1_
-  fullName: resolveKnownGrammar(name)
+- uid: grammarkdown!SingleFileHost#registerKnownGrammarCore:member(1)
+  name: registerKnownGrammarCore(_name, _file)
+  href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_registerKnownGrammarCore_member_1_
+  fullName: registerKnownGrammarCore(_name, _file)
+- uid: grammarkdown!SingleFileHost#resolveFileCore:member(1)
+  name: resolveFileCore(file, referer)
+  href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_resolveFileCore_member_1_
+  fullName: resolveFileCore(file, referer)
+- uid: grammarkdown!SingleFileHost#resolveKnownGrammarCore:member(1)
+  name: resolveKnownGrammarCore(name)
+  href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_resolveKnownGrammarCore_member_1_
+  fullName: resolveKnownGrammarCore(name)
 - uid: grammarkdown!SingleFileHost#writeFile:member(1)
   name: writeFile(file, text, cancelable)
   href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_writeFile_member_1_
@@ -3757,6 +3981,22 @@ references:
   name: (constructor)(filename, text, elements)
   href: api/grammarkdown/sourcefile.html#grammarkdown_SourceFile_constructor_1_
   fullName: (constructor)(filename, text, elements)
+- uid: grammarkdown!StringAsyncHost#content:member
+  name: content
+  href: api/grammarkdown/stringasynchost.html#grammarkdown_StringAsyncHost_content_member
+  fullName: content
+- uid: grammarkdown!StringAsyncHost#file:member
+  name: file
+  href: api/grammarkdown/stringasynchost.html#grammarkdown_StringAsyncHost_file_member
+  fullName: file
+- uid: grammarkdown!StringAsyncHost:class
+  name: StringAsyncHost
+  href: api/grammarkdown/stringasynchost.html#grammarkdown_StringAsyncHost_class
+  fullName: StringAsyncHost
+- uid: grammarkdown!StringAsyncHost:constructor(1)
+  name: (constructor)(file, content, hostFallback)
+  href: api/grammarkdown/stringasynchost.html#grammarkdown_StringAsyncHost_constructor_1_
+  fullName: (constructor)(file, content, hostFallback)
 - uid: grammarkdown!StringLiteral#text:member
   name: text
   href: api/grammarkdown/stringliteral.html#grammarkdown_StringLiteral_text_member
@@ -3769,6 +4009,22 @@ references:
   name: (constructor)(text)
   href: api/grammarkdown/stringliteral.html#grammarkdown_StringLiteral_constructor_1_
   fullName: (constructor)(text)
+- uid: grammarkdown!StringSyncHost#content:member
+  name: content
+  href: api/grammarkdown/stringsynchost.html#grammarkdown_StringSyncHost_content_member
+  fullName: content
+- uid: grammarkdown!StringSyncHost#file:member
+  name: file
+  href: api/grammarkdown/stringsynchost.html#grammarkdown_StringSyncHost_file_member
+  fullName: file
+- uid: grammarkdown!StringSyncHost:class
+  name: StringSyncHost
+  href: api/grammarkdown/stringsynchost.html#grammarkdown_StringSyncHost_class
+  fullName: StringSyncHost
+- uid: grammarkdown!StringSyncHost:constructor(1)
+  name: (constructor)(file, content, hostFallback)
+  href: api/grammarkdown/stringsynchost.html#grammarkdown_StringSyncHost_constructor_1_
+  fullName: (constructor)(file, content, hostFallback)
 - uid: grammarkdown!stringToToken:function(1)
   name: stringToToken(text)
   href: api/grammarkdown.html#grammarkdown_stringToToken_function_1_
@@ -3937,94 +4193,6 @@ references:
   name: SymbolTable
   href: api/grammarkdown/symboltable.html#grammarkdown_SymbolTable_class
   fullName: SymbolTable
-- uid: grammarkdown!SyncHost#getSourceFileSync:member(1)
-  name: getSourceFileSync(file, cancelable)
-  href: api/grammarkdown/synchost.html#grammarkdown_SyncHost_getSourceFileSync_member_1_
-  fullName: getSourceFileSync(file, cancelable)
-- uid: grammarkdown!SyncHost#getSourceFileSync:member(2)
-  name: getSourceFileSync(file, cancelable)
-  href: api/grammarkdown/synchost.html#grammarkdown_SyncHost_getSourceFileSync_member_2_
-  fullName: getSourceFileSync(file, cancelable)
-- uid: grammarkdown!SyncHost#readFileSync:member(1)
-  name: readFileSync(file, cancelable)
-  href: api/grammarkdown/synchost.html#grammarkdown_SyncHost_readFileSync_member_1_
-  fullName: readFileSync(file, cancelable)
-- uid: grammarkdown!SyncHost#readFileSync:member(2)
-  name: readFileSync(file, cancelable)
-  href: api/grammarkdown/synchost.html#grammarkdown_SyncHost_readFileSync_member_2_
-  fullName: readFileSync(file, cancelable)
-- uid: grammarkdown!SyncHost#writeFileSync:member(1)
-  name: writeFileSync(file, text, cancelable)
-  href: api/grammarkdown/synchost.html#grammarkdown_SyncHost_writeFileSync_member_1_
-  fullName: writeFileSync(file, text, cancelable)
-- uid: grammarkdown!SyncHost#writeFileSync:member(2)
-  name: writeFileSync(file, text, cancelable)
-  href: api/grammarkdown/synchost.html#grammarkdown_SyncHost_writeFileSync_member_2_
-  fullName: writeFileSync(file, text, cancelable)
-- uid: grammarkdown!SyncHost.forFile:member(1)
-  name: forFile(content, file, hostFallback)
-  href: api/grammarkdown/synchost.html#grammarkdown_SyncHost_forFile_member_1_
-  fullName: forFile(content, file, hostFallback)
-- uid: grammarkdown!SyncHost:class
-  name: SyncHost
-  href: api/grammarkdown/synchost.html#grammarkdown_SyncHost_class
-  fullName: SyncHost
-- uid: grammarkdown!SyncHost:constructor(1)
-  name: (constructor)({ readFileSync, writeFileSync, ...baseOptions })
-  href: api/grammarkdown/synchost.html#grammarkdown_SyncHost_constructor_1_
-  fullName: (constructor)({ readFileSync, writeFileSync, ...baseOptions })
-- uid: grammarkdown!SyncHostOptions#readFileSync:member
-  name: readFileSync
-  href: api/grammarkdown/synchostoptions.html#grammarkdown_SyncHostOptions_readFileSync_member
-  fullName: readFileSync
-- uid: grammarkdown!SyncHostOptions#writeFileSync:member
-  name: writeFileSync
-  href: api/grammarkdown/synchostoptions.html#grammarkdown_SyncHostOptions_writeFileSync_member
-  fullName: writeFileSync
-- uid: grammarkdown!SyncHostOptions:interface
-  name: SyncHostOptions
-  href: api/grammarkdown/synchostoptions.html#grammarkdown_SyncHostOptions_interface
-  fullName: SyncHostOptions
-- uid: grammarkdown!SyncSingleFileHost#content:member
-  name: content
-  href: api/grammarkdown/syncsinglefilehost.html#grammarkdown_SyncSingleFileHost_content_member
-  fullName: content
-- uid: grammarkdown!SyncSingleFileHost#file:member
-  name: file
-  href: api/grammarkdown/syncsinglefilehost.html#grammarkdown_SyncSingleFileHost_file_member
-  fullName: file
-- uid: grammarkdown!SyncSingleFileHost#normalizeFile:member(1)
-  name: normalizeFile(file)
-  href: api/grammarkdown/syncsinglefilehost.html#grammarkdown_SyncSingleFileHost_normalizeFile_member_1_
-  fullName: normalizeFile(file)
-- uid: grammarkdown!SyncSingleFileHost#readFileSync:member(1)
-  name: readFileSync(file, cancelable)
-  href: api/grammarkdown/syncsinglefilehost.html#grammarkdown_SyncSingleFileHost_readFileSync_member_1_
-  fullName: readFileSync(file, cancelable)
-- uid: grammarkdown!SyncSingleFileHost#readFileSync:member(2)
-  name: readFileSync(file, cancelable)
-  href: api/grammarkdown/syncsinglefilehost.html#grammarkdown_SyncSingleFileHost_readFileSync_member_2_
-  fullName: readFileSync(file, cancelable)
-- uid: grammarkdown!SyncSingleFileHost#resolveFile:member(1)
-  name: resolveFile(file, referer)
-  href: api/grammarkdown/syncsinglefilehost.html#grammarkdown_SyncSingleFileHost_resolveFile_member_1_
-  fullName: resolveFile(file, referer)
-- uid: grammarkdown!SyncSingleFileHost#writeFileSync:member(1)
-  name: writeFileSync(file, text, cancelable)
-  href: api/grammarkdown/syncsinglefilehost.html#grammarkdown_SyncSingleFileHost_writeFileSync_member_1_
-  fullName: writeFileSync(file, text, cancelable)
-- uid: grammarkdown!SyncSingleFileHost#writeFileSync:member(2)
-  name: writeFileSync(file, text, cancelable)
-  href: api/grammarkdown/syncsinglefilehost.html#grammarkdown_SyncSingleFileHost_writeFileSync_member_2_
-  fullName: writeFileSync(file, text, cancelable)
-- uid: grammarkdown!SyncSingleFileHost:class
-  name: SyncSingleFileHost
-  href: api/grammarkdown/syncsinglefilehost.html#grammarkdown_SyncSingleFileHost_class
-  fullName: SyncSingleFileHost
-- uid: grammarkdown!SyncSingleFileHost:constructor(1)
-  name: (constructor)(file, content, hostFallback)
-  href: api/grammarkdown/syncsinglefilehost.html#grammarkdown_SyncSingleFileHost_constructor_1_
-  fullName: (constructor)(file, content, hostFallback)
 - uid: grammarkdown!SyntaxKind.Argument:member
   name: Argument
   href: api/grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_Argument_member
@@ -4621,3 +4789,12 @@ references:
   name: WriteFileSyncCallback
   href: api/grammarkdown.html#grammarkdown_WriteFileSyncCallback_type
   fullName: WriteFileSyncCallback
+- uid: hosts
+  name: Host API
+  href: api/hosts.html
+- uid: nodes
+  name: Syntax Nodes
+  href: api/nodes.html
+- uid: parse
+  name: Parser API
+  href: api/parse.html

@@ -1,0 +1,3 @@
+---
+uid: 'grammarkdown!NodeSyncHost:class'
+---

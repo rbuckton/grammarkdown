@@ -1,5 +1,5 @@
 /*!
- *  Copyright 2015 Ron Buckton (rbuckton@chronicles.org)
+ *  Copyright 2020 Ron Buckton (rbuckton@chronicles.org)
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25,125 +25,188 @@ import {
     SyntaxKind
 } from "./tokens";
 
-/** {@docCategory Compiler} */
+/**
+ * Navigates the syntax-tree of a {@link SourceFile}.
+ * {@docCategory Compiler}
+ *
+ * @remkarks
+ * Nodes in Grammarkdown's syntax tree are immutable and do not maintain pointers to their parents.
+ * This can make traversing through a document somewhat difficult. The NodeNavigator class is intended
+ * to improve this process by providing an API that can traverse a syntax tree starting from the root.
+ *
+ * A NodeNavigator focuses on a specific {@link Node} within a syntax tree, and maintains the
+ * path to that node from the root. Various methods on the navigator move the focus, allowing you to
+ * navigate to any other node within the syntax tree.
+ */
 export class NodeNavigator {
-    private sourceFile!: SourceFile;
-    private nodeStack!: (Node | undefined)[];
-    private edgeStack!: (number | undefined)[];
-    private arrayStack!: (ReadonlyArray<Node> | undefined)[];
-    private offsetStack!: (number | undefined)[];
-    private currentDepth!: number;
-    private currentNode!: Node;
-    private currentEdge!: number;
-    private currentOffset!: number;
-    private currentArray: ReadonlyArray<Node> | undefined;
-    private parentNode: Node | undefined;
-    private hasAnyChildren: boolean | undefined;
-    private copyOnNavigate: boolean = false;
+    private _sourceFile!: SourceFile;
+    private _nodeStack!: (Node | undefined)[];
+    private _edgeStack!: (number | undefined)[];
+    private _arrayStack!: (ReadonlyArray<Node> | undefined)[];
+    private _offsetStack!: (number | undefined)[];
+    private _currentDepth!: number;
+    private _currentNode!: Node;
+    private _currentEdge!: number;
+    private _currentOffset!: number;
+    private _currentArray: ReadonlyArray<Node> | undefined;
+    private _parentNode: Node | undefined;
+    private _hasAnyChildren: boolean | undefined;
+    private _copyOnNavigate: boolean = false;
 
-    constructor(sourceFile: SourceFile);
-    constructor(other: NodeNavigator);
-    constructor(sourceFileOrNavigator: SourceFile | NodeNavigator) {
+    /**
+     * @param sourceFile The {@link SourceFile} to use as the root of the navigator.
+     */
+    public constructor(sourceFile: SourceFile);
+    /**
+     * @param other A {@link NodeNavigator} whose position information is used to create this navigator.
+     */
+    public constructor(other: NodeNavigator);
+    public constructor(sourceFileOrNavigator: SourceFile | NodeNavigator) {
         if (sourceFileOrNavigator instanceof NodeNavigator) {
             const navigator = <NodeNavigator>sourceFileOrNavigator;
-            this.initialize(
-                navigator.sourceFile,
-                navigator.nodeStack.slice(),
-                navigator.edgeStack.slice(),
-                navigator.arrayStack.slice(),
-                navigator.offsetStack.slice());
+            this._sourceFile = navigator._sourceFile;
+            this._nodeStack = navigator._nodeStack.slice();
+            this._edgeStack = navigator._edgeStack.slice();
+            this._arrayStack = navigator._arrayStack.slice();
+            this._offsetStack = navigator._offsetStack.slice();
+            this._currentDepth = this._nodeStack.length - 1;
         }
         else {
-            const sourceFile = <SourceFile>sourceFileOrNavigator;
-            this.initialize(sourceFile, [sourceFile], [-1], [undefined], [0]);
+            this._sourceFile = <SourceFile>sourceFileOrNavigator;
+            this._nodeStack = [this._sourceFile];
+            this._edgeStack = [-1];
+            this._arrayStack = [undefined];
+            this._offsetStack = [0];
+            this._currentDepth = 0;
         }
+        this._afterNavigate();
     }
 
-    private initialize(sourceFile: SourceFile, nodeStack: (Node | undefined)[], edgeStack: (number | undefined)[], arrayStack: (ReadonlyArray<Node> | undefined)[], offsetStack: (number | undefined)[]) {
-        this.sourceFile = sourceFile;
-        this.nodeStack = nodeStack;
-        this.edgeStack = edgeStack;
-        this.arrayStack = arrayStack;
-        this.offsetStack = offsetStack;
-        this.currentDepth = nodeStack.length - 1;
-        this.afterNavigate();
-    }
-
+    /**
+     * Creates a copy of this {@link NodeNavigator} at the same position.
+     */
     public clone() {
         return new NodeNavigator(this);
     }
 
+    /**
+     * Gets the root {@link SourceFile} node for this navigator.
+     */
     public getRoot() {
-        return this.sourceFile;
+        return this._sourceFile;
     }
 
+    /**
+     * Gets the parent {@link Node} of the {@link Node} the navigator is currently focused on.
+     */
     public getParent() {
-        return this.parentNode;
+        return this._parentNode;
     }
 
+    /**
+     * Gets the {@link Node} the navigator is currently focused on.
+     */
     public getNode() {
-        return this.currentNode;
+        return this._currentNode;
     }
 
+    /**
+     * Gets the {@link SyntaxKind} of the {@link Node} the navigator is currently focused on.
+     */
     public getKind() {
-        return this.currentNode.kind;
+        return this._currentNode.kind;
     }
 
+    /**
+     * Gets the name of the property on the parent {@link Node} the navigator is currently focused on.
+     */
     public getName() {
-        return this.parentNode && this.parentNode.edgeName(this.currentEdge);
+        return this._parentNode && this._parentNode.edgeName(this._currentEdge);
     }
 
+    /**
+     * Gets the containing node array of {@link Node} the navigator is currently focused on.
+     */
     public getArray() {
-        return this.currentArray;
+        return this._currentArray;
     }
 
+    /**
+     * Gets the ordinal offset within the containing node array of {@link Node} the navigator is currently focused on.
+     */
     public getOffset() {
-        return this.currentOffset;
+        return this._currentOffset;
     }
 
+    /**
+     * Gets the current depth within the syntax-tree of the current focus of the navigator.
+     */
     public getDepth() {
-        return this.currentDepth;
+        return this._currentDepth;
     }
 
+    /**
+     * Returns a value indicating whether the focus of the navigator points to a {@link Node} in an array.
+     */
     public isArray(): boolean {
-        return this.currentArray !== undefined;
+        return this._currentArray !== undefined;
     }
 
-    public hasChildren(predicate?: (node: Node) => boolean): boolean {
-        if (this.hasAnyChildren === undefined) {
-            return this.hasAnyChildren = this.hasChild(predicate || matchAny);
-        }
-
-        return this.hasAnyChildren;
-    }
-
-    private hasChild(predicate: (node: Node) => boolean): boolean {
-        if (this.hasAnyChildren === false || this.currentNode.edgeCount === 0) {
+    /**
+     * Determines whether the focused {@link Node} has any children that match the supplied predicate.
+     * @param predicate An optional callback that can be used to filter the children of the node.
+     * @returns `true` if the focused {@link Node} contains a child that matches the supplied predicate; otherwise, `false`.
+     */
+    public hasChildren(predicate?: (child: Node) => boolean): boolean;
+    /**
+     * Determines whether the focused {@link Node} has any children with the provided {@link SyntaxKind}.
+     * @param kind The {@link SyntaxKind} that at least one child must match.
+     * @returns `true` if the focused {@link Node} contains a matching child; otherwise, `false`.
+     */
+    public hasChildren(kind: SyntaxKind): boolean;
+    public hasChildren(predicateOrKind?: SyntaxKind | ((child: Node) => boolean)): boolean {
+        if (this._hasAnyChildren === false || this._currentNode.edgeCount === 0) {
             return false;
         }
-
-        for (let nextEdge = 0; nextEdge < this.currentNode.edgeCount; nextEdge++) {
-            const next = this.currentNode.edgeValue(nextEdge);
+        if (predicateOrKind === undefined && this._hasAnyChildren !== undefined) {
+            return this._hasAnyChildren;
+        }
+        for (let nextEdge = 0; nextEdge < this._currentNode.edgeCount; nextEdge++) {
+            const next = this._currentNode.edgeValue(nextEdge);
             if (isNodeArray(next)) {
                 for (let nextOffset = 0; nextOffset < next.length; nextOffset++) {
                     const nextNode = next[nextOffset];
-                    if (nextNode && predicate(nextNode)) {
-                        return this.hasAnyChildren = true;
+                    if (nextNode && matchPredicateOrKind(nextNode, predicateOrKind)) {
+                        return this._hasAnyChildren = true;
                     }
                 }
             }
-            else if (next && predicate(next)) {
-                return this.hasAnyChildren = true;
+            else if (next && matchPredicateOrKind(next, predicateOrKind)) {
+                return this._hasAnyChildren = true;
             }
         }
-
+        if (!predicateOrKind) {
+            this._hasAnyChildren = false;
+        }
         return false;
     }
 
-    public hasAncestor(predicate?: (node: Node) => boolean): boolean {
-        for (let nextDepth = this.currentDepth - 1; nextDepth >= 0; nextDepth--) {
-            const nextNode = this.nodeStack[nextDepth]!;
-            if (!predicate || predicate(nextNode)) {
+    /**
+     * Determines whether the focused {@link Node} has an ancestor that matches the supplied predicate.
+     * @param predicate An optional callback used to filter the ancestors of the node.
+     * @returns `true` if the focused {@link Node} contains an ancestor that matches the supplied predicate; otherwise, `false`.
+     */
+    public hasAncestor(predicate?: (ancestor: Node) => boolean): boolean;
+    /**
+     * Determines whether the focused {@link Node} has an ancestor that matches the supplied predicate.
+     * @param predicate An optional callback used to filter the ancestors of the node.
+     * @returns `true` if the focused {@link Node} contains an ancestor that matches the supplied predicate; otherwise, `false`.
+     */
+    public hasAncestor(kind: SyntaxKind): boolean;
+    public hasAncestor(predicateOrKind?: SyntaxKind | ((ancestor: Node) => boolean)): boolean {
+        for (let nextDepth = this._currentDepth - 1; nextDepth >= 0; nextDepth--) {
+            const nextNode = this._nodeStack[nextDepth]!;
+            if (matchPredicateOrKind(nextNode, predicateOrKind)) {
                 return true;
             }
         }
@@ -151,53 +214,84 @@ export class NodeNavigator {
         return false;
     }
 
+    /**
+     * Determines whether the focused {@link Node} matches the supplied predicate.
+     * @param predicate A callback used to match the focused {@link Node}.
+     * @returns `true` if the focused {@link Node} matches; otherwise, `false`.
+     */
+    public isMatch(predicate: (node: Node) => boolean): boolean;
+    /**
+     * Determines whether the focused {@link Node} matches the supplied {@link SyntaxKind}.
+     * @param kind The {@link SyntaxKind} that the focused {@link Node} must match.
+     * @returns `true` if the focused {@link Node} matches; otherwise, `false`.
+     */
+    public isMatch(kind: SyntaxKind): boolean;
+    public isMatch(predicateOrKind: SyntaxKind | ((node: Node) => boolean)): boolean {
+        return matchPredicateOrKind(this._currentNode, predicateOrKind);
+    }
+
+
+    /**
+     * Determines whether this navigator is focused on the same location within the tree as another navigator.
+     * @param other The other navigator.
+     * @returns `true` if both navigators are focused on the same location within the tree; otherwise, `false`.
+     */
     public isSamePosition(other: NodeNavigator) {
         if (this === other) {
             return true;
         }
 
-        return this.sourceFile === other.sourceFile
-            && this.currentNode === other.currentNode
-            && this.currentDepth === other.currentDepth
-            && this.currentEdge === other.currentEdge
-            && this.currentOffset === other.currentOffset;
+        return this._sourceFile === other._sourceFile
+            && this._currentNode === other._currentNode
+            && this._currentDepth === other._currentDepth
+            && this._currentEdge === other._currentEdge
+            && this._currentOffset === other._currentOffset;
     }
 
-    public moveToPosition(position: Position) {
-        const pos = this.sourceFile.lineMap.offsetAt(position);
-        const currentDepth = this.currentDepth;
-        const nodeStack = this.nodeStack;
-        const edgeStack = this.edgeStack;
-        const arrayStack = this.arrayStack;
-        const offsetStack = this.offsetStack;
-        const hasChild = this.hasAnyChildren;
+    /**
+     * Moves the focus of the navigator to the {@link Node} that contains the provided [Position](xref:grammarkdown!Position:interface).
+     * @param position The [Position](xref:grammarkdown!Position:interface) at which to focus the navigator.
+     * @param outermost When `true`, moves to the outermost node containing the provided position.
+     * When `false` or not specified, moves to the innermost node containing the provided position.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToPosition(position: Position, outermost?: boolean) {
+        const pos = this._sourceFile.lineMap.offsetAt(position);
+        const currentDepth = this._currentDepth;
+        const nodeStack = this._nodeStack;
+        const edgeStack = this._edgeStack;
+        const arrayStack = this._arrayStack;
+        const offsetStack = this._offsetStack;
+        const hasChild = this._hasAnyChildren;
 
-        this.copyOnNavigate = true;
+        this._copyOnNavigate = true;
         this.moveToRoot();
-        if (this.moveToPositionWorker(pos)) {
+        if (this._moveToPositionWorker(pos, outermost)) {
             return true;
         }
 
-        this.currentDepth = currentDepth;
-        this.nodeStack = nodeStack;
-        this.edgeStack = edgeStack;
-        this.arrayStack = arrayStack;
-        this.offsetStack = offsetStack;
-        this.hasAnyChildren = hasChild;
-        this.afterNavigate();
+        this._currentDepth = currentDepth;
+        this._nodeStack = nodeStack;
+        this._edgeStack = edgeStack;
+        this._arrayStack = arrayStack;
+        this._offsetStack = offsetStack;
+        this._hasAnyChildren = hasChild;
+        this._afterNavigate();
         return false;
     }
 
-    private moveToPositionWorker(pos: number) {
-        if (pos >= this.currentNode.pos && pos < this.currentNode.end) {
-            if (this.moveToFirstChild()) {
-                do {
-                    if (this.moveToPositionWorker(pos)) {
-                        return true;
+    private _moveToPositionWorker(pos: number, outermost?: boolean) {
+        if (pos >= this._currentNode.pos && pos < this._currentNode.end) {
+            if (!outermost) {
+                if (this.moveToFirstChild()) {
+                    do {
+                        if (this._moveToPositionWorker(pos)) {
+                            return true;
+                        }
                     }
+                    while (this.moveToNextSibling());
+                    this.moveToParent();
                 }
-                while (this.moveToNextSibling());
-                this.moveToParent();
             }
 
             return true;
@@ -206,40 +300,61 @@ export class NodeNavigator {
         return false;
     }
 
+    /**
+     * Moves the focus of this navigator to the same position within the syntax tree as another navigator.
+     * @param other The other navigator.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
     public moveTo(other: NodeNavigator) {
         if (this === other) {
             return true;
         }
 
-        if (this.sourceFile !== other.sourceFile) {
+        if (this._sourceFile !== other._sourceFile) {
             return false;
         }
 
-        this.currentDepth = other.currentDepth;
-        this.nodeStack = other.nodeStack.slice();
-        this.edgeStack = other.edgeStack.slice();
-        this.arrayStack = other.arrayStack.slice();
-        this.offsetStack = other.offsetStack.slice();
-        this.afterNavigate();
+        this._currentDepth = other._currentDepth;
+        this._nodeStack = other._nodeStack.slice();
+        this._edgeStack = other._edgeStack.slice();
+        this._arrayStack = other._arrayStack.slice();
+        this._offsetStack = other._offsetStack.slice();
+        this._afterNavigate();
         return true;
     }
 
+    /**
+     * Moves the focus of the navigator to the root of the syntax tree.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
     public moveToRoot(): boolean {
-        if (this.currentDepth > 0) {
-            this.beforeNavigate();
-            this.reset();
-            this.afterNavigate();
+        if (this._currentDepth > 0) {
+            this._beforeNavigate();
+            this._reset();
+            this._afterNavigate();
         }
 
         return true;
     }
 
-    public moveToParent(predicate?: (node: Node) => boolean): boolean {
-        if (this.currentDepth > 0) {
-            if (!predicate || predicate(this.parentNode!)) {
-                this.beforeNavigate();
-                this.popEdge();
-                this.afterNavigate();
+    /**
+     * Moves the focus of the navigator to the parent {@link Node} of the focused {@link Node}.
+     * @param predicate An optional callback that determines whether the focus should move to the parent node.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToParent(predicate?: (parent: Node) => boolean): boolean;
+    /**
+     * Moves the focus of the navigator to the parent {@link Node} of the focused {@link Node}.
+     * @param kind The required {@link SyntaxKind} of the parent node.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToParent(kind: SyntaxKind): boolean;
+    public moveToParent(predicateOrKind?: SyntaxKind | ((node: Node) => boolean)): boolean {
+        if (this._currentDepth > 0) {
+            if (matchPredicateOrKind(this._parentNode!, predicateOrKind)) {
+                this._beforeNavigate();
+                this._popEdge();
+                this._afterNavigate();
                 return true;
             }
         }
@@ -247,20 +362,46 @@ export class NodeNavigator {
         return false;
     }
 
-    public moveToAncestorOrSelf(predicate: (node: Node) => boolean): boolean {
-        return predicate(this.currentNode)
-            || this.moveToAncestor(predicate);
+    /**
+     * Moves the focus of the navigator to the nearest ancestor matching the supplied predicate. If the current node
+     * matches the predicate, the focus does not change.
+     * @param predicate A callback used to match an ancestor.
+     * @returns `true` if the current node matched the predicate or the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToAncestorOrSelf(predicate: (ancestorOrSelf: Node) => boolean): boolean;
+    /**
+     * Moves the focus of the navigator to the nearest ancestor matching the supplied predicate. If the current node
+     * matches the predicate, the focus does not change.
+     * @param kind The {@link SyntaxKind} that the focused {@link Node} or one of its ancestors must match.
+     * @returns `true` if the current node matched the predicate or the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToAncestorOrSelf(kind: SyntaxKind): boolean;
+    public moveToAncestorOrSelf(predicateOrKind: SyntaxKind | ((node: Node) => boolean)): boolean {
+        return this.isMatch(predicateOrKind as SyntaxKind)
+            || this.moveToAncestor(predicateOrKind as SyntaxKind);
     }
 
-    public moveToAncestor(predicate: (node: Node) => boolean): boolean {
-        for (let nextDepth = this.currentDepth - 1; nextDepth >= 0; nextDepth--) {
-            const nextNode = this.nodeStack[nextDepth]!;
-            if (predicate(nextNode)) {
-                this.beforeNavigate();
-                while (this.currentDepth !== nextDepth) {
-                    this.popEdge();
+    /**
+     * Moves the focus of the navigator to the nearest ancestor matching the supplied predicate.
+     * @param predicate A callback used to match an ancestor.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToAncestor(predicate: (ancestor: Node) => boolean): boolean;
+    /**
+     * Moves the focus of the navigator to the nearest ancestor matching the supplied {@link SyntaxKind}.
+     * @param kind The {@link SyntaxKind} that the ancestor must match.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToAncestor(kind: SyntaxKind): boolean;
+    public moveToAncestor(predicateOrKind: SyntaxKind | ((node: Node) => boolean)): boolean {
+        for (let nextDepth = this._currentDepth - 1; nextDepth >= 0; nextDepth--) {
+            const nextNode = this._nodeStack[nextDepth]!;
+            if (matchPredicateOrKind(nextNode, predicateOrKind)) {
+                this._beforeNavigate();
+                while (this._currentDepth !== nextDepth) {
+                    this._popEdge();
                 }
-                this.afterNavigate();
+                this._afterNavigate();
                 return true;
             }
         }
@@ -268,47 +409,77 @@ export class NodeNavigator {
         return false;
     }
 
+    /**
+     * Moves the focus of the navigator to the parent of the focused {@link Node} if that parent is a {@link SourceElement}.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
     public moveToSourceElement(): boolean {
         return this.moveToParent(matchSourceElement);
     }
 
+    /**
+     * Moves the focus of the navigator to the parent of the focused {@link Node} if that parent is either a {@link Parameter} or a {@link Production}.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
     public moveToDeclaration(): boolean {
-        return this.moveToParent(matchParameter)
-            || this.moveToParent(matchProduction);
+        return this.moveToParent(SyntaxKind.Parameter)
+            || this.moveToParent(SyntaxKind.Production);
     }
 
+    /**
+     * Moves the focus of the navigator to the nearest {@link Identifier}.
+     * @returns `true` if the current node is an {@link Identifier} or the navigator's focus changed; otherwise, `false`.
+     * @remarks
+     * The "nearest {@link Identifier}" is determined using the following rules:
+     * <ul>
+     * <li>If the focus or its nearest ancestor is a {@link Parameter}, move to the `name` of the {@link Parameter}.</li>
+     * <li>If the focus or its nearest ancestor is an {@link Argument}, move to the `name` of the {@link Argument}.</li>
+     * <li>If the focus or its nearest ancestor is a {@link Nonterminal}, move to the `name` of the {@link Nonterminal}.</li>
+     * <li>If the focus or its nearest ancestor is a {@link LexicalGoalAssertion}, move to the `symbol` of the of the {@link LexicalGoalAssertion}.</li>
+     * <li>If the focus or its nearest ancestor is a {@link Define}, move to the `key` of the {@link Define}.</li>
+     * <li>If the focus or its nearest ancestor is a {@link Constraints}, move to the `name` of the of the first {@link Argument} of the {@link Constraints}.</li>
+     * <li>If the focus is not within the `body` of a {@link Production} and the focus or its nearest ancestor is a {@link Production}, move to the `name` of the {@link Production}.</li>
+     * </ul>
+     */
     public moveToName(): boolean {
         if (this.getKind() === SyntaxKind.Identifier) {
             return true;
         }
         else {
             const navigator = this.clone();
-            if (navigator.moveToAncestorOrSelf(matchParameter)
+            if (navigator.moveToAncestorOrSelf(SyntaxKind.Parameter)
                 && navigator.moveToFirstChild("name")) {
                 return this.moveTo(navigator);
             }
 
             navigator.moveTo(this);
-            if (navigator.moveToAncestorOrSelf(matchArgument)
+            if (navigator.moveToAncestorOrSelf(SyntaxKind.Argument)
                 && navigator.moveToFirstChild("name")) {
                 return this.moveTo(navigator);
             }
 
             navigator.moveTo(this);
-            if (navigator.moveToAncestorOrSelf(matchNonterminal)
+            if (navigator.moveToAncestorOrSelf(SyntaxKind.Nonterminal)
+                && navigator.moveToFirstChild("name")) {
+                return this.moveTo(navigator);
+            }
+
+            navigator.moveTo(this);
+            if (navigator.moveToAncestorOrSelf(SyntaxKind.LexicalGoalAssertion)
+                && navigator.moveToFirstChild("symbol")) {
+                return this.moveTo(navigator);
+            }
+
+            navigator.moveTo(this);
+            if (navigator.moveToAncestorOrSelf(SyntaxKind.Constraints)
+                && navigator.moveToFirstChild("elements")
                 && navigator.moveToFirstChild("name")) {
                 return this.moveTo(navigator);
             }
 
             navigator.moveTo(this);
             if (!navigator.hasAncestor(matchProductionBody)
-                && navigator.moveToAncestorOrSelf(matchProduction)
-                && navigator.moveToFirstChild("name")) {
-                return this.moveTo(navigator);
-            }
-
-            navigator.moveTo(this);
-            if (navigator.moveToAncestorOrSelf(matchParameterValueAssertion)
+                && navigator.moveToAncestorOrSelf(SyntaxKind.Production)
                 && navigator.moveToFirstChild("name")) {
                 return this.moveTo(navigator);
             }
@@ -317,142 +488,303 @@ export class NodeNavigator {
         return false;
     }
 
+    /**
+     * Moves the focus of the navigator to the first child of the focused {@link Node}.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
     public moveToFirstChild(): boolean;
+    /**
+     * Moves the focus of the navigator to the first child of the focused {@link Node} with the provided property name.
+     * @param name The name of the property on the focused {@link Node}.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
     public moveToFirstChild(name: string): boolean;
-    public moveToFirstChild(predicate: (node: Node) => boolean): boolean;
-    public moveToFirstChild(predicateOrName?: string | ((node: Node) => boolean)): boolean {
-        return this.moveToChild(Navigation.first, Navigation.next, predicateOrName);
+    /**
+     * Moves the focus of the navigator to the first child of the focused {@link Node} matching the supplied predicate.
+     * @param predicate A callback used to match a child node.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToFirstChild(predicate: (child: Node) => boolean): boolean;
+    /**
+     * Moves the focus of the navigator to the first child of the focused {@link Node} matching the provided {@link SyntaxKind}.
+     * @param kind The {@link SyntaxKind} that the child must match.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToFirstChild(kind: SyntaxKind): boolean;
+    public moveToFirstChild(predicateOrNameOrKind?: string | SyntaxKind | ((node: Node) => boolean)): boolean {
+        return this._moveToChild(Navigation.first, Navigation.next, predicateOrNameOrKind);
     }
 
+    /**
+     * Moves the focus of the navigator to the last child of the focused {@link Node}.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
     public moveToLastChild(): boolean;
+    /**
+     * Moves the focus of the navigator to the last child of the focused {@link Node} with the provided property name.
+     * @param name The name of the property on the focused {@link Node}.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
     public moveToLastChild(name: string): boolean;
+    /**
+     * Moves the focus of the navigator to the last child of the focused {@link Node} matching the supplied predicate.
+     * @param predicate A callback used to match a child node.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
     public moveToLastChild(predicate: (node: Node) => boolean): boolean;
-    public moveToLastChild(predicateOrName?: string | ((node: Node) => boolean)): boolean {
-        return this.moveToChild(Navigation.last, Navigation.previous, predicateOrName);
+    /**
+     * Moves the focus of the navigator to the last child of the focused {@link Node} matching the provided {@link SyntaxKind}.
+     * @param kind The {@link SyntaxKind} that the child must match.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToLastChild(kind: SyntaxKind): boolean;
+    public moveToLastChild(predicateOrNameOrKind?: string | SyntaxKind | ((node: Node) => boolean)): boolean {
+        return this._moveToChild(Navigation.last, Navigation.previous, predicateOrNameOrKind);
     }
 
-    public moveToFirstElement(predicate?: (node: Node) => boolean): boolean {
-        return this.moveToElement(Navigation.first, Navigation.next, this.currentArray, this.currentOffset, predicate);
+    /**
+     * Moves the focus of the navigator to the first element of the containing array of the focused {@link Node} matching the supplied predicate.
+     * @param predicate A callback used to match a node.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToFirstElement(predicate?: (element: Node) => boolean): boolean;
+    /**
+     * Moves the focus of the navigator to the first element of the containing array of the focused {@link Node} matching the provided {@link SyntaxKind}.
+     * @param kind The {@link SyntaxKind} that the element must match.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToFirstElement(kind: SyntaxKind): boolean;
+    public moveToFirstElement(predicateOrKind?: SyntaxKind | ((node: Node) => boolean)): boolean {
+        return this._moveToElement(Navigation.first, Navigation.next, this._currentArray, this._currentOffset, predicateOrKind);
     }
 
-    public moveToPreviousElement(predicate?: (node: Node) => boolean): boolean {
-        return this.moveToElement(Navigation.previous, Navigation.previous, this.currentArray, this.currentOffset, predicate);
+    /**
+     * Moves the focus of the navigator to the previous element in the containing array of the focused {@link Node} matching the supplied predicate.
+     * @param predicate A callback used to match a node.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToPreviousElement(predicate?: (node: Node) => boolean): boolean;
+    /**
+     * Moves the focus of the navigator to the previous element in the containing array of the focused {@link Node} matching the provided {@link SyntaxKind}.
+     * @param kind The {@link SyntaxKind} that the element must match.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToPreviousElement(kind: SyntaxKind): boolean;
+    public moveToPreviousElement(predicateOrKind?: SyntaxKind | ((node: Node) => boolean)): boolean {
+        return this._moveToElement(Navigation.previous, Navigation.previous, this._currentArray, this._currentOffset, predicateOrKind);
     }
 
-    public moveToNextElement(predicate?: (node: Node) => boolean): boolean {
-        return this.moveToElement(Navigation.next, Navigation.next, this.currentArray, this.currentOffset, predicate);
+    /**
+     * Moves the focus of the navigator to the next element in the containing array of the focused {@link Node} matching the supplied predicate.
+     * @param predicate A callback used to match a node.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToNextElement(predicate?: (node: Node) => boolean): boolean;
+    /**
+     * Moves the focus of the navigator to the next element in the containing array of the focused {@link Node} matching the provided {@link SyntaxKind}.
+     * @param kind The {@link SyntaxKind} that the element must match.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToNextElement(kind: SyntaxKind): boolean;
+    public moveToNextElement(predicateOrKind?: SyntaxKind | ((node: Node) => boolean)): boolean {
+        return this._moveToElement(Navigation.next, Navigation.next, this._currentArray, this._currentOffset, predicateOrKind);
     }
 
-    public moveToLastElement(predicate?: (node: Node) => boolean): boolean {
-        return this.moveToElement(Navigation.last, Navigation.previous, this.currentArray, this.currentOffset, predicate);
+    /**
+     * Moves the focus of the navigator to the last element of the containing array of the focused {@link Node} matching the supplied predicate.
+     * @param predicate A callback used to match a node.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToLastElement(predicate?: (node: Node) => boolean): boolean;
+    /**
+     * Moves the focus of the navigator to the last element of the containing array of the focused {@link Node} matching the provided {@link SyntaxKind}.
+     * @param kind The {@link SyntaxKind} that the element must match.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToLastElement(kind: SyntaxKind): boolean;
+    public moveToLastElement(predicateOrKind?: SyntaxKind | ((node: Node) => boolean)): boolean {
+        return this._moveToElement(Navigation.last, Navigation.previous, this._currentArray, this._currentOffset, predicateOrKind);
     }
 
+    /**
+     * Moves the focus of the navigator to the first sibling of the focused {@link Node}.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
     public moveToFirstSibling(): boolean;
+    /**
+     * Moves the focus of the navigator to the first sibling of the focused {@link Node} with the provided property name.
+     * @param name The name of a property on the parent of the focused {@link Node}.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
     public moveToFirstSibling(name: string): boolean;
-    public moveToFirstSibling(predicate: (node: Node) => boolean): boolean;
-    public moveToFirstSibling(predicateOrName?: string | ((node: Node) => boolean)): boolean {
-        return this.moveToSibling(Navigation.first, undefined, Navigation.first, Navigation.next, this.parentNode, predicateOrName);
+    /**
+     * Moves the focus of the navigator to the first sibling of the focused {@link Node} that matches the provided predicate.
+     * @param predicate A callback used to match a sibling node.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToFirstSibling(predicate: (sibling: Node) => boolean): boolean;
+    /**
+     * Moves the focus of the navigator to the first sibling of the focused {@link Node} matching the provided {@link SyntaxKind}.
+     * @param kind The {@link SyntaxKind} that the sibling must match.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToFirstSibling(kind: SyntaxKind): boolean;
+    public moveToFirstSibling(predicateOrNameOrKind?: string | SyntaxKind | ((node: Node) => boolean)): boolean {
+        return this._moveToSibling(Navigation.first, undefined, Navigation.first, Navigation.next, this._parentNode, predicateOrNameOrKind);
     }
 
+    /**
+     * Moves the focus of the navigator to the previous sibling of the focused {@link Node}.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
     public moveToPreviousSibling(): boolean;
+    /**
+     * Moves the focus of the navigator to the previous sibling of the focused {@link Node} with the provided property name.
+     * @param name The name of a property on the parent of the focused {@link Node}.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
     public moveToPreviousSibling(name: string): boolean;
-    public moveToPreviousSibling(predicate: (node: Node) => boolean): boolean;
-    public moveToPreviousSibling(predicateOrName?: string | ((node: Node) => boolean)): boolean {
-        return this.moveToSibling(Navigation.previous, Navigation.previous, Navigation.last, Navigation.previous, this.parentNode, predicateOrName);
+    /**
+     * Moves the focus of the navigator to the previous sibling of the focused {@link Node} that matches the provided predicate.
+     * @param predicate A callback used to match a sibling node.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToPreviousSibling(predicate: (sibling: Node) => boolean): boolean;
+    /**
+     * Moves the focus of the navigator to the previous sibling of the focused {@link Node} matching the provided {@link SyntaxKind}.
+     * @param kind The {@link SyntaxKind} that the sibling must match.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToPreviousSibling(kind: SyntaxKind): boolean;
+    public moveToPreviousSibling(predicateOrNameOrKind?: string | SyntaxKind | ((node: Node) => boolean)): boolean {
+        return this._moveToSibling(Navigation.previous, Navigation.previous, Navigation.last, Navigation.previous, this._parentNode, predicateOrNameOrKind);
     }
 
+    /**
+     * Moves the focus of the navigator to the next sibling of the focused {@link Node}.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
     public moveToNextSibling(): boolean;
+    /**
+     * Moves the focus of the navigator to the next sibling of the focused {@link Node} with the provided property name.
+     * @param name The name of a property on the parent of the focused {@link Node}.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
     public moveToNextSibling(name: string): boolean;
+    /**
+     * Moves the focus of the navigator to the next sibling of the focused {@link Node} that matches the provided predicate.
+     * @param predicate A callback used to match a sibling node.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
     public moveToNextSibling(predicate: (node: Node) => boolean): boolean;
-    public moveToNextSibling(predicateOrName?: string | ((node: Node) => boolean)): boolean {
-        return this.moveToSibling(Navigation.next, Navigation.next, Navigation.first, Navigation.next, this.parentNode, predicateOrName);
+    /**
+     * Moves the focus of the navigator to the next sibling of the focused {@link Node} matching the provided {@link SyntaxKind}.
+     * @param kind The {@link SyntaxKind} that the sibling must match.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToNextSibling(kind: SyntaxKind): boolean;
+    public moveToNextSibling(predicateOrNameOrKind?: string | SyntaxKind | ((node: Node) => boolean)): boolean {
+        return this._moveToSibling(Navigation.next, Navigation.next, Navigation.first, Navigation.next, this._parentNode, predicateOrNameOrKind);
     }
 
+    /**
+     * Moves the focus of the navigator to the last sibling of the focused {@link Node}.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
     public moveToLastSibling(): boolean;
+    /**
+     * Moves the focus of the navigator to the last sibling of the focused {@link Node} with the provided property name.
+     * @param name The name of a property on the parent of the focused {@link Node}.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
     public moveToLastSibling(name: string): boolean;
+    /**
+     * Moves the focus of the navigator to the last sibling of the focused {@link Node} that matches the provided predicate.
+     * @param predicate A callback used to match a sibling node.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
     public moveToLastSibling(predicate: (node: Node) => boolean): boolean;
-    public moveToLastSibling(predicateOrName?: string | ((node: Node) => boolean)): boolean {
-        return this.moveToSibling(Navigation.last, undefined, Navigation.last, Navigation.previous, this.parentNode, predicateOrName);
+    /**
+     * Moves the focus of the navigator to the last sibling of the focused {@link Node} matching the provided {@link SyntaxKind}.
+     * @param kind The {@link SyntaxKind} that the sibling must match.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToLastSibling(kind: SyntaxKind): boolean;
+    public moveToLastSibling(predicateOrNameOrKind?: string | SyntaxKind | ((node: Node) => boolean)): boolean {
+        return this._moveToSibling(Navigation.last, undefined, Navigation.last, Navigation.previous, this._parentNode, predicateOrNameOrKind);
     }
 
-    private beforeNavigate() {
-        if (this.copyOnNavigate) {
-            this.nodeStack = this.nodeStack.slice();
-            this.edgeStack = this.edgeStack.slice();
-            this.arrayStack = this.arrayStack.slice();
-            this.offsetStack = this.offsetStack.slice();
-            this.copyOnNavigate = false;
+    private _beforeNavigate() {
+        if (this._copyOnNavigate) {
+            this._nodeStack = this._nodeStack.slice();
+            this._edgeStack = this._edgeStack.slice();
+            this._arrayStack = this._arrayStack.slice();
+            this._offsetStack = this._offsetStack.slice();
+            this._copyOnNavigate = false;
         }
     }
 
-    private afterNavigate() {
-        this.currentNode = this.nodeStack[this.currentDepth]!;
-        this.currentEdge = this.edgeStack[this.currentDepth]!;
-        this.currentArray = this.arrayStack[this.currentDepth];
-        this.currentOffset = this.offsetStack[this.currentDepth]!;
-        this.parentNode = this.currentDepth > 0 ? this.nodeStack[this.currentDepth - 1] : undefined;
-        this.copyOnNavigate = false;
+    private _afterNavigate() {
+        this._currentNode = this._nodeStack[this._currentDepth]!;
+        this._currentEdge = this._edgeStack[this._currentDepth]!;
+        this._currentArray = this._arrayStack[this._currentDepth];
+        this._currentOffset = this._offsetStack[this._currentDepth]!;
+        this._parentNode = this._currentDepth > 0 ? this._nodeStack[this._currentDepth - 1] : undefined;
+        this._copyOnNavigate = false;
     }
 
-    private pushEdge() {
-        this.nodeStack.push(undefined);
-        this.edgeStack.push(undefined);
-        this.arrayStack.push(undefined);
-        this.offsetStack.push(1);
-        this.hasAnyChildren = undefined;
-        this.currentDepth++;
+    private _pushEdge() {
+        this._nodeStack.push(undefined);
+        this._edgeStack.push(undefined);
+        this._arrayStack.push(undefined);
+        this._offsetStack.push(1);
+        this._hasAnyChildren = undefined;
+        this._currentDepth++;
     }
 
-    private setEdge(node: Node, edge: number, array: ReadonlyArray<Node> | undefined, offset: number | undefined) {
-        try {
-            this.nodeStack[this.currentDepth] = node;
-            this.edgeStack[this.currentDepth] = edge;
-            this.arrayStack[this.currentDepth] = array;
-            this.offsetStack[this.currentDepth] = offset;
-            this.hasAnyChildren = undefined;
-        }
-        catch (e) {
-            console.log("foo");
-            debugger;
-            throw e;
-        }
+    private _setEdge(node: Node, edge: number, array: ReadonlyArray<Node> | undefined, offset: number | undefined) {
+        this._nodeStack[this._currentDepth] = node;
+        this._edgeStack[this._currentDepth] = edge;
+        this._arrayStack[this._currentDepth] = array;
+        this._offsetStack[this._currentDepth] = offset;
+        this._hasAnyChildren = undefined;
     }
 
-    private popEdge() {
-        this.currentDepth--;
-        this.nodeStack.pop();
-        this.edgeStack.pop();
-        this.arrayStack.pop();
-        this.offsetStack.pop();
-        this.hasAnyChildren = this.currentNode !== undefined;
+    private _popEdge() {
+        this._currentDepth--;
+        this._nodeStack.pop();
+        this._edgeStack.pop();
+        this._arrayStack.pop();
+        this._offsetStack.pop();
+        this._hasAnyChildren = this._currentNode !== undefined;
     }
 
-    private moveToChild(initializer: SeekOperation, seekDirection: SeekOperation, predicateOrName: string | ((node: Node) => boolean) | undefined) {
-        const predicate = typeof predicateOrName === "function" ? predicateOrName : matchAny;
-        const name = typeof predicateOrName === "string" ? predicateOrName : undefined;
-        const offset = this.currentEdge;
-        const length = this.currentNode.edgeCount;
+    private _moveToChild(initializer: SeekOperation, seekDirection: SeekOperation, predicateOrNameOrKind: string | SyntaxKind | ((node: Node) => boolean) | undefined) {
+        const name = typeof predicateOrNameOrKind === "string" ? predicateOrNameOrKind : undefined;
+        const predicateOrKind = typeof predicateOrNameOrKind !== "string" ? predicateOrNameOrKind : undefined;
+        const offset = this._currentEdge;
+        const length = this._currentNode.edgeCount;
         for (let nextEdge = initializer(offset, length); bounded(nextEdge, length); nextEdge = seekDirection(nextEdge, length)) {
-            if (!name || this.currentNode.edgeName(nextEdge) === name) {
-                const next = this.currentNode.edgeValue(nextEdge);
+            if (!name || this._currentNode.edgeName(nextEdge) === name) {
+                const next = this._currentNode.edgeValue(nextEdge);
                 if (isNodeArray(next)) {
                     const length = next.length;
                     for (let nextOffset = initializer(0, length); bounded(nextOffset, length); nextOffset = seekDirection(nextOffset, length)) {
                         const nextNode = next[nextOffset];
-                        if (nextNode && predicate(nextNode)) {
-                            this.beforeNavigate();
-                            this.pushEdge();
-                            this.setEdge(nextNode, nextEdge, next, nextOffset);
-                            this.afterNavigate();
+                        if (nextNode && matchPredicateOrKind(nextNode, predicateOrKind)) {
+                            this._beforeNavigate();
+                            this._pushEdge();
+                            this._setEdge(nextNode, nextEdge, next, nextOffset);
+                            this._afterNavigate();
                             return true;
                         }
                     }
                 }
-                else if (next && predicate(next)) {
-                    this.beforeNavigate();
-                    this.pushEdge();
-                    this.setEdge(next, nextEdge, /*array*/ undefined, /*offset*/ undefined);
-                    this.afterNavigate();
+                else if (next && matchPredicateOrKind(next, predicateOrKind)) {
+                    this._beforeNavigate();
+                    this._pushEdge();
+                    this._setEdge(next, nextEdge, /*array*/ undefined, /*offset*/ undefined);
+                    this._afterNavigate();
                     return true;
                 }
             }
@@ -460,20 +792,19 @@ export class NodeNavigator {
         return false;
     }
 
-    private moveToElement(currentArrayInitializer: SeekOperation, seekDirection: SeekOperation, currentArray: ReadonlyArray<Node> | undefined, currentOffset: number, predicateOrName: string | ((node: Node) => boolean) | undefined) {
+    private _moveToElement(currentArrayInitializer: SeekOperation, seekDirection: SeekOperation, currentArray: ReadonlyArray<Node> | undefined, currentOffset: number, predicateOrKind: SyntaxKind | ((node: Node) => boolean) | undefined) {
         if (!currentArray) {
             return false;
         }
 
-        const predicate = typeof predicateOrName === "function" ? predicateOrName : matchAny;
         const offset = currentOffset;
         const length = currentArray.length;
         for (let nextOffset = currentArrayInitializer(offset, length); bounded(nextOffset, length); nextOffset = seekDirection(nextOffset, length)) {
             const nextNode = currentArray[nextOffset];
-            if (nextNode && predicate(nextNode)) {
-                this.beforeNavigate();
-                this.setEdge(nextNode, this.currentEdge, currentArray, nextOffset);
-                this.afterNavigate();
+            if (nextNode && matchPredicateOrKind(nextNode, predicateOrKind)) {
+                this._beforeNavigate();
+                this._setEdge(nextNode, this._currentEdge, currentArray, nextOffset);
+                this._afterNavigate();
                 return true;
             }
         }
@@ -481,32 +812,33 @@ export class NodeNavigator {
         return false;
     }
 
-    private moveToSibling(currentEdgeInitializer: SeekOperation, currentArrayInitializer: SeekOperation | undefined, nextArrayInitializer: SeekOperation, seekDirection: SeekOperation, parentNode: Node | undefined, predicateOrName: string | ((node: Node) => boolean) | undefined) {
+    private _moveToSibling(currentEdgeInitializer: SeekOperation, currentArrayInitializer: SeekOperation | undefined, nextArrayInitializer: SeekOperation, seekDirection: SeekOperation, parentNode: Node | undefined, predicateOrNameOrKind: string | SyntaxKind | ((node: Node) => boolean) | undefined) {
         if (!parentNode) {
             return false;
         }
 
-        if (currentArrayInitializer && this.moveToElement(currentArrayInitializer, seekDirection, this.currentArray, this.currentOffset, predicateOrName)) {
+        const name = typeof predicateOrNameOrKind === "string" ? predicateOrNameOrKind : undefined;
+        const predicateOrKind = typeof predicateOrNameOrKind !== "string" ? predicateOrNameOrKind : undefined;
+
+        if (currentArrayInitializer && this._moveToElement(currentArrayInitializer, seekDirection, this._currentArray, this._currentOffset, predicateOrKind)) {
             return true;
         }
 
-        const predicate = typeof predicateOrName === "function" ? predicateOrName : matchAny;
-        const name = typeof predicateOrName === "string" ? predicateOrName : undefined;
-        const offset = this.currentEdge;
+        const offset = this._currentEdge;
         const length = parentNode.edgeCount;
         for (let nextEdge = currentEdgeInitializer(offset, length); bounded(nextEdge, length); nextEdge = seekDirection(nextEdge, length)) {
             if (!name || parentNode.edgeName(nextEdge) === name) {
                 const next = parentNode.edgeValue(nextEdge);
                 if (isNodeArray(next)) {
-                    if (this.moveToElement(nextArrayInitializer, seekDirection, next, 0, predicateOrName)) {
+                    if (this._moveToElement(nextArrayInitializer, seekDirection, next, 0, predicateOrKind)) {
                         return true;
                     }
                 }
                 else {
-                    if (next && predicate(next)) {
-                        this.beforeNavigate();
-                        this.setEdge(next, nextEdge, /*array*/ undefined, /*offset*/ undefined);
-                        this.afterNavigate();
+                    if (next && matchPredicateOrKind(next, predicateOrKind)) {
+                        this._beforeNavigate();
+                        this._setEdge(next, nextEdge, /*array*/ undefined, /*offset*/ undefined);
+                        this._afterNavigate();
                         return true;
                     }
                 }
@@ -516,98 +848,13 @@ export class NodeNavigator {
         return false;
     }
 
-    private reset() {
-        this.currentDepth = 0;
-        this.nodeStack.length = 1;
-        this.edgeStack.length = 1;
-        this.arrayStack.length = 1;
-        this.offsetStack.length = 1;
+    private _reset() {
+        this._currentDepth = 0;
+        this._nodeStack.length = 1;
+        this._edgeStack.length = 1;
+        this._arrayStack.length = 1;
+        this._offsetStack.length = 1;
     }
-
-    // private seekElement(array: Node[],
-    //     init: (current: number, length: number) => number,
-    //     advance: (offset: number) => number,
-    //     beforeNavigate: (nav: NodeNavigator) => void,
-    //     afterNavigate: (nav: NodeNavigator) => void) {
-    //     if (array) {
-    //         let length = array.length;
-    //         let nextOffset = init(this.currentOffset, length);
-    //         while (nextOffset >= 0 && nextOffset < length) {
-    //             let nextNode = array[nextOffset];
-    //             if (nextNode) {
-    //                 if (nextOffset !== this.currentOffset) {
-    //                     beforeNavigate(this);
-    //                     this.offsetStack[this.currentDepth] = this.currentOffset = nextOffset;
-    //                     this.shapeStack[this.currentDepth] = this.currentShape = array[nextOffset].getEdges();
-    //                     this.nodeStack[this.currentDepth] = this.currentNode = array[nextOffset];
-    //                     afterNavigate(this);
-    //                 }
-
-    //                 return true;
-    //             }
-
-    //             nextOffset = advance(nextOffset);
-    //         }
-    //     }
-
-    //     return false;
-    // }
-
-    // private seekSibling(
-    //     parentShape: NodeEdge[],
-    //     parentNode: Node,
-    //     init: (current: number, length: number) => number,
-    //     advance: (offset: number) => number,
-    //     beforeNavigate: (nav: NodeNavigator) => void,
-    //     afterNavigate: (nav: NodeNavigator) => void, name: string,
-    //     initOffset?: (current: number, length: number) => number,
-    //     advanceOffset?: (offset: number) => number) {
-    //     if (parentShape) {
-    //         let length = parentShape.length;
-    //         let nextEdge = init(this.currentEdge, length);
-    //         while (nextEdge >= 0 && nextEdge < length) {
-    //             let edge = parentShape[nextEdge];
-    //             if (edge && (!name || edge.name === name)) {
-    //                 if (edge.isArray) {
-    //                     let nextArray = edge.readArray(parentNode);
-    //                     if (this.seekElement(
-    //                         nextArray,
-    //                         initOffset || NodeNavigator.seekFirst,
-    //                         advanceOffset || NodeNavigator.increment,
-    //                         beforeNavigate,
-    //                         NodeNavigator.nop)) {
-    //                         if (nextEdge !== this.currentEdge || this.positionChanged) {
-    //                             beforeNavigate(this);
-    //                             this.edgeStack[this.currentDepth] = nextEdge;
-    //                             this.arrayStack[this.currentDepth] = nextArray;
-    //                             afterNavigate(this);
-    //                         }
-    //                         return true;
-    //                     }
-    //                 }
-    //                 else {
-    //                     let nextNode = edge.read(parentNode);
-    //                     if (nextNode) {
-    //                         if (nextEdge !== this.currentEdge) {
-    //                             beforeNavigate(this);
-    //                             this.offsetStack[this.currentDepth] = -1;
-    //                             this.nodeStack[this.currentDepth] = nextNode;
-    //                             this.edgeStack[this.currentDepth] = nextEdge;
-    //                             this.shapeStack[this.currentDepth] = nextNode.getEdges();
-    //                             this.arrayStack[this.currentDepth] = undefined;
-    //                             afterNavigate(this);
-    //                         }
-    //                         return true;
-    //                     }
-    //                 }
-    //             }
-
-    //             nextEdge = advance(nextEdge);
-    //         }
-    //     }
-
-    //     return false;
-    // }
 }
 
 type SeekOperation = (offset: number, length: number) => number;
@@ -638,34 +885,10 @@ function bounded(offset: number, length: number) {
     return offset >= 0 && offset < length;
 }
 
-function matchAny(node: Node) {
-    return true;
-}
-
-function matchParameter(node: Node) {
-    return node.kind === SyntaxKind.Parameter;
-}
-
-function matchProduction(node: Node) {
-    return node.kind === SyntaxKind.Production;
-}
-
-function matchNonterminal(node: Node) {
-    return node.kind === SyntaxKind.Nonterminal;
-}
-
-function matchArgument(node: Node) {
-    return node.kind === SyntaxKind.Argument;
-}
-
 function matchProductionBody(node: Node) {
     return node.kind === SyntaxKind.OneOfList
         || node.kind === SyntaxKind.RightHandSideList
         || node.kind === SyntaxKind.RightHandSide;
-}
-
-function matchParameterValueAssertion(node: Node) {
-    return node.kind === SyntaxKind.Constraints;
 }
 
 function matchSourceElement(node: Node) {
@@ -675,4 +898,10 @@ function matchSourceElement(node: Node) {
 
 function isNodeArray(value: any): value is ReadonlyArray<Node> {
     return Array.isArray(value);
+}
+
+function matchPredicateOrKind(node: Node, predicateOrKind: SyntaxKind | ((node: Node) => boolean) | undefined): boolean {
+    return typeof predicateOrKind === "function" ? predicateOrKind(node) :
+        typeof predicateOrKind === "number" ? node.kind === predicateOrKind :
+        true;
 }

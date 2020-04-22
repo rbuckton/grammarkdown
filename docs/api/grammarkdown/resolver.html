@@ -20,7 +20,7 @@
     <meta property="docfx:tocrel" content="../toc.html">
     
     <meta property="docfx:rel" content="../../">
-    
+    <meta property="docfx:newtab" content="true">
   </head>
   <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
@@ -83,41 +83,44 @@
   
   <h1 id="grammarkdown_Resolver_class" data-uid="grammarkdown!Resolver:class">Class Resolver
   </h1>
+  <h6><strong>Package</strong>: <a class="xref" href="../grammarkdown.html">grammarkdown</a></h6>
   <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
-  <h6><strong>Package</strong>: <a class="xref" href="../grammarkdown.html">grammarkdown</a></h6>
   <h3 id="constructors">Constructors
   </h3>
   
   
-  <h4 id="grammarkdown_Resolver_constructor_1_" data-uid="grammarkdown!Resolver:constructor(1)">(constructor)(bindings)</h4>
+  <h4 id="grammarkdown_Resolver_constructor_1_" data-uid="grammarkdown!Resolver:constructor(1)">constructor(bindings)</h4>
   <div class="markdown level1 summary"><p>Constructs a new instance of the <code>Resolver</code> class</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">constructor(bindings: BindingTable);</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="bindingtable.html#grammarkdown_BindingTable_class">BindingTable</a></td>
-        <td><em>bindings</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>bindings</dt>
+        <dd><a class="xref" href="bindingtable.html#grammarkdown_BindingTable_class">BindingTable</a></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
   <h3 id="methods">Methods
   </h3>
   
@@ -126,316 +129,283 @@
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">createNavigator(node: Node): NodeNavigator | undefined;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="node.html#grammarkdown_Node_class">Node</a></td>
-        <td><em>node</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>node</dt>
+        <dd><a class="xref" href="node.html#grammarkdown_Node_class">Node</a></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="nodenavigator.html#grammarkdown_NodeNavigator_class">NodeNavigator</a> | undefined</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="nodenavigator.html#grammarkdown_NodeNavigator_class">NodeNavigator</a> | undefined</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Resolver_getDeclarations_member_1_" data-uid="grammarkdown!Resolver#getDeclarations:member(1)">getDeclarations(node)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">getDeclarations(node: Identifier): (SourceFile | Production | Parameter)[];</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="identifier.html#grammarkdown_Identifier_class">Identifier</a></td>
-        <td><em>node</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>node</dt>
+        <dd><a class="xref" href="identifier.html#grammarkdown_Identifier_class">Identifier</a></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>(<a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a> | <a class="xref" href="production.html#grammarkdown_Production_class">Production</a> | <a class="xref" href="parameter.html#grammarkdown_Parameter_class">Parameter</a>)[]</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div>(<a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a> | <a class="xref" href="production.html#grammarkdown_Production_class">Production</a> | <a class="xref" href="parameter.html#grammarkdown_Parameter_class">Parameter</a>)[]</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Resolver_getParent_member_1_" data-uid="grammarkdown!Resolver#getParent:member(1)">getParent(node)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">getParent(node: Node): Node | undefined;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="node.html#grammarkdown_Node_class">Node</a></td>
-        <td><em>node</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>node</dt>
+        <dd><a class="xref" href="node.html#grammarkdown_Node_class">Node</a></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="node.html#grammarkdown_Node_class">Node</a> | undefined</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="node.html#grammarkdown_Node_class">Node</a> | undefined</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Resolver_getProductionLinkId_member_1_" data-uid="grammarkdown!Resolver#getProductionLinkId:member(1)">getProductionLinkId(node)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">getProductionLinkId(node: Identifier): string | undefined;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="identifier.html#grammarkdown_Identifier_class">Identifier</a></td>
-        <td><em>node</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>node</dt>
+        <dd><a class="xref" href="identifier.html#grammarkdown_Identifier_class">Identifier</a></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">string | undefined</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">string | undefined</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Resolver_getReferences_member_1_" data-uid="grammarkdown!Resolver#getReferences:member(1)">getReferences(node)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">getReferences(node: Identifier): Node&lt;SyntaxKind&gt;[];</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="identifier.html#grammarkdown_Identifier_class">Identifier</a></td>
-        <td><em>node</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>node</dt>
+        <dd><a class="xref" href="identifier.html#grammarkdown_Identifier_class">Identifier</a></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="node.html#grammarkdown_Node_class">Node</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a>&gt;[]</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="node.html#grammarkdown_Node_class">Node</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a>&gt;[]</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Resolver_getRightHandSideLinkId_member_1_" data-uid="grammarkdown!Resolver#getRightHandSideLinkId:member(1)">getRightHandSideLinkId(node, includePrefix)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">getRightHandSideLinkId(node: RightHandSide, includePrefix: boolean): string;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="righthandside.html#grammarkdown_RightHandSide_class">RightHandSide</a></td>
-        <td><em>node</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><span class="xref">boolean</span></td>
-        <td><em>includePrefix</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>node</dt>
+        <dd><a class="xref" href="righthandside.html#grammarkdown_RightHandSide_class">RightHandSide</a></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>includePrefix</dt>
+        <dd><span class="xref">boolean</span></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">string</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">string</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Resolver_getSourceFileOfNode_member_1_" data-uid="grammarkdown!Resolver#getSourceFileOfNode:member(1)">getSourceFileOfNode(node)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">getSourceFileOfNode(node: Node): SourceFile;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="node.html#grammarkdown_Node_class">Node</a></td>
-        <td><em>node</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>node</dt>
+        <dd><a class="xref" href="node.html#grammarkdown_Node_class">Node</a></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
 </article>
           </div>
           

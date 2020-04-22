@@ -1,0 +1,3 @@
+---
+uid: 'grammarkdown!StringSyncHost:class'
+---

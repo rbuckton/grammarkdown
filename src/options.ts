@@ -1,5 +1,5 @@
 /*!
- *  Copyright 2015 Ron Buckton (rbuckton@chronicles.org)
+ *  Copyright 2020 Ron Buckton (rbuckton@chronicles.org)
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,33 +18,90 @@ import { readFileSync } from "fs";
 import { mapFromObject } from "./core";
 import { CharacterCodes } from "./tokens";
 
-/** {@docCategory Compiler} */
+/**
+ * Indicates the token to use for line terminators during emit.
+ * {@docCategory Compiler}
+ */
 export enum NewLineKind {
+    /**
+     * Lines should be terminated with a line-feed (Unix-style).
+     */
     LineFeed,
+    /**
+     * Lines should be terminted with a carriage-return followed by a line-feed (DOS-style).
+     */
     CarriageReturnLineFeed,
 }
 
-/** {@docCategory Compiler} */
+/**
+ * Indicates the emit output format.
+ * {@docCategory Compiler}
+ */
 export enum EmitFormat {
+    /**
+     * Output should be emitted in Markdown format.
+     */
     markdown,
+    /**
+     * Output should be emitted in HTML format.
+     */
     html,
+    /**
+     * Output should be emitted in ECMArkup format.
+     */
     ecmarkup
 }
 
-/** {@docCategory Compiler} */
+/**
+ * Options that control the behavior of the compiler.
+ * {@docCategory Compiler}
+ */
 export interface CompilerOptions {
+    /**
+     * Indicates the token to use for line terminators during emit.
+     */
     newLine?: NewLineKind;
+    /**
+     * Indicates that diagnostics should not be reported.
+     */
     noChecks?: boolean;
+    /**
+     * Indicates that emit output should not be produced.
+     */
     noEmit?: boolean;
+    /**
+     * Indicates that emit output should not be produced if any diagnostics are reported.
+     */
     noEmitOnError?: boolean;
+    /**
+     * Disables strict checking of production parameters.
+     */
     noStrictParametricProductions?: boolean;
+    /**
+     * Indicates that diagnostics should be produced if production parameters are unused.
+     */
     noUnusedParameters?: boolean;
+    /**
+     * Indicates the emit output format.
+     */
     format?: EmitFormat;
+    /**
+     * Indicates the file path for emit output.
+     */
     out?: string;
+    /**
+     * Indicates whether to include hyperlinks in the emit output.
+     */
     emitLinks?: boolean;
+    /**
+     * Indicates whether internal diagnostic information should be reported to the console.
+     */
     diagnostics?: boolean;
 }
 
+/**
+ * Gets the default options for the compiler.
+ */
 export function getDefaultOptions(): CompilerOptions {
     return { format: EmitFormat.markdown };
 }

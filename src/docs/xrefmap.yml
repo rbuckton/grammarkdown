@@ -1,0 +1,11 @@
+### YamlMime:XRefMap
+sorted: false
+references:
+- uid: 'prex!'
+  name: 'prex'
+  fullName: 'prex'
+  href: https://github.com/rbuckton/prex/#readme
+- uid: 'prex!CancellationToken:class'
+  name: 'CancellationToken'
+  fullName: 'CancellationToken'
+  href: https://github.com/rbuckton/prex/blob/master/docs/cancellation.md#class-cancellationtoken

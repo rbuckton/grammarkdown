@@ -20,7 +20,7 @@
     <meta property="docfx:tocrel" content="../toc.html">
     
     <meta property="docfx:rel" content="../../">
-    
+    <meta property="docfx:newtab" content="true">
   </head>
   <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
@@ -83,6 +83,7 @@
   
   <h1 id="grammarkdown_AssertionBase_class" data-uid="grammarkdown!AssertionBase:class">Class AssertionBase
   </h1>
+  <h6><strong>Package</strong>: <a class="xref" href="../grammarkdown.html">grammarkdown</a></h6>
   <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -90,55 +91,61 @@
       <div class="level0"><a class="xref" href="lexicalsymbolbase.html#grammarkdown_LexicalSymbolBase_class">LexicalSymbolBase</a>&lt;TKind&gt; </div>
       <div class="level1"><span class="xref">AssertionBase</span></div>
   </div>
-  <h6><strong>Package</strong>: <a class="xref" href="../grammarkdown.html">grammarkdown</a></h6>
   <h3 id="constructors">Constructors
   </h3>
   
   
-  <h4 id="grammarkdown_AssertionBase_constructor_1_" data-uid="grammarkdown!AssertionBase:constructor(1)">(constructor)(kind, openBracketToken, closeBracketToken)</h4>
+  <h4 id="grammarkdown_AssertionBase_constructor_1_" data-uid="grammarkdown!AssertionBase:constructor(1)">constructor(kind, openBracketToken, closeBracketToken)</h4>
   <div class="markdown level1 summary"><p>Constructs a new instance of the <code>AssertionBase</code> class</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">constructor(kind: TKind, openBracketToken: Token&lt;TBracket&gt;, closeBracketToken: Token&lt;SyntaxKind.CloseBracketToken&gt; | undefined);</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">TKind</span></td>
-        <td><em>kind</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;TBracket&gt;</td>
-        <td><em>openBracketToken</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_CloseBracketToken_member">SyntaxKind.CloseBracketToken</a>&gt; | undefined</td>
-        <td><em>closeBracketToken</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>kind</dt>
+        <dd><span class="xref">TKind</span></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>openBracketToken</dt>
+        <dd><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;TBracket&gt;</dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>closeBracketToken</dt>
+        <dd><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_CloseBracketToken_member">SyntaxKind.CloseBracketToken</a>&gt; | undefined</dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
   <h3 id="properties">Properties
   </h3>
   
@@ -147,96 +154,104 @@
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">readonly closeBracketToken: Token&lt;SyntaxKind.CloseBracketToken&gt; | undefined;</code></pre>
   </div>
+  
+  
+  
+  
+  
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_CloseBracketToken_member">SyntaxKind.CloseBracketToken</a>&gt; | undefined</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_CloseBracketToken_member">SyntaxKind.CloseBracketToken</a>&gt; | undefined</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_AssertionBase_firstChild_member" data-uid="grammarkdown!AssertionBase#firstChild:member">firstChild</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">get firstChild(): Node | undefined;</code></pre>
   </div>
+  
+  
+  
+  
+  
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="node.html#grammarkdown_Node_class">Node</a> | undefined</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="node.html#grammarkdown_Node_class">Node</a> | undefined</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_AssertionBase_lastChild_member" data-uid="grammarkdown!AssertionBase#lastChild:member">lastChild</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">abstract get lastChild(): Node | undefined;</code></pre>
   </div>
+  
+  
+  
+  
+  
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="node.html#grammarkdown_Node_class">Node</a> | undefined</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="node.html#grammarkdown_Node_class">Node</a> | undefined</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_AssertionBase_openBracketToken_member" data-uid="grammarkdown!AssertionBase#openBracketToken:member">openBracketToken</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">readonly openBracketToken: Token&lt;TBracket&gt;;</code></pre>
   </div>
+  
+  
+  
+  
+  
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;TBracket&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;TBracket&gt;</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
 </article>
           </div>
           

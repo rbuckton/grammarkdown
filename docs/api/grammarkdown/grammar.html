@@ -20,7 +20,7 @@
     <meta property="docfx:tocrel" content="../toc.html">
     
     <meta property="docfx:rel" content="../../">
-    
+    <meta property="docfx:newtab" content="true">
   </head>
   <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
@@ -83,1897 +83,1999 @@
   
   <h1 id="grammarkdown_Grammar_class" data-uid="grammarkdown!Grammar:class">Class Grammar
   </h1>
-  <div class="markdown level0 summary"></div>
-  <div class="markdown level0 conceptual"></div>
   <h6><strong>Package</strong>: <a class="xref" href="../grammarkdown.html">grammarkdown</a></h6>
+  <div class="markdown level0 summary"><p>The primary service used to interact with one or more Grammarkdown <a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFiles</a><!-- -->.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
   <h3 id="constructors">Constructors
   </h3>
   
   
-  <h4 id="grammarkdown_Grammar_constructor_1_" data-uid="grammarkdown!Grammar:constructor(1)">(constructor)(rootNames, options, host)</h4>
+  <h4 id="grammarkdown_Grammar_constructor_1_" data-uid="grammarkdown!Grammar:constructor(1)">constructor(rootNames, options, host)</h4>
   <div class="markdown level1 summary"><p>Constructs a new instance of the <code>Grammar</code> class</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">constructor(rootNames: Iterable&lt;string&gt;, options?: CompilerOptions, host?: Host | SyncHost | AsyncHost);</code></pre>
+    <pre><code class="lang-typeScript hljs">constructor(rootNames: Iterable&lt;string&gt;, options?: CompilerOptions, host?: Host | CoreSyncHost | CoreAsyncHost);</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Iterable</span>&lt;string&gt;</td>
-        <td><em>rootNames</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="compileroptions.html#grammarkdown_CompilerOptions_interface">CompilerOptions</a></td>
-        <td><em>options</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="host.html#grammarkdown_Host_class">Host</a> | <a class="xref" href="synchost.html#grammarkdown_SyncHost_class">SyncHost</a> | <a class="xref" href="asynchost.html#grammarkdown_AsyncHost_class">AsyncHost</a></td>
-        <td><em>host</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>rootNames</dt>
+        <dd><span class="xref">Iterable</span>&lt;string&gt;</dd>
+      </dl>
+      <p>
+        <p>The names of the root files used by the grammar.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>options</dt>
+        <dd><a class="xref" href="compileroptions.html#grammarkdown_CompilerOptions_interface">CompilerOptions</a></dd>
+      </dl>
+      <p>
+        <p>The <a class="xref" href="compileroptions.html#grammarkdown_CompilerOptions_interface">CompilerOptions</a> used by the grammar.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>host</dt>
+        <dd><a class="xref" href="host.html#grammarkdown_Host_class">Host</a> | <a class="xref" href="coresynchost.html#grammarkdown_CoreSyncHost_class">CoreSyncHost</a> | <a class="xref" href="coreasynchost.html#grammarkdown_CoreAsyncHost_class">CoreAsyncHost</a></dd>
+      </dl>
+      <p>
+        <p>The [Host](xref:hosts) the grammar uses to interact with the file system.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
   <h3 id="properties">Properties
   </h3>
   
   
   <h4 id="grammarkdown_Grammar_binder_member" data-uid="grammarkdown!Grammar#binder:member">binder</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="binder.html#grammarkdown_Binder_class">Binder</a> used to bind the grammar.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">protected get binder(): Binder;</code></pre>
   </div>
+  
+  
+  
+  
+  
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="binder.html#grammarkdown_Binder_class">Binder</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="binder.html#grammarkdown_Binder_class">Binder</a></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_checker_member" data-uid="grammarkdown!Grammar#checker:member">checker</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="checker.html#grammarkdown_Checker_class">Checker</a> used to check the grammar.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">protected get checker(): Checker;</code></pre>
   </div>
+  
+  
+  
+  
+  
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="checker.html#grammarkdown_Checker_class">Checker</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="checker.html#grammarkdown_Checker_class">Checker</a></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_diagnostics_member" data-uid="grammarkdown!Grammar#diagnostics:member">diagnostics</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The diagnostic messages produced by the grammar.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">diagnostics: DiagnosticMessages;</code></pre>
+    <pre><code class="lang-typeScript hljs">readonly diagnostics: DiagnosticMessages;</code></pre>
   </div>
+  
+  
+  
+  
+  
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="diagnosticmessages.html#grammarkdown_DiagnosticMessages_class">DiagnosticMessages</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="diagnosticmessages.html#grammarkdown_DiagnosticMessages_class">DiagnosticMessages</a></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_emitter_member" data-uid="grammarkdown!Grammar#emitter:member">emitter</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="emitter.html#grammarkdown_Emitter_class">Emitter</a> used to emit the grammar.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">protected get emitter(): Emitter;</code></pre>
   </div>
+  
+  
+  
+  
+  
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="emitter.html#grammarkdown_Emitter_class">Emitter</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="emitter.html#grammarkdown_Emitter_class">Emitter</a></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_host_member" data-uid="grammarkdown!Grammar#host:member">host</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The [Host](xref:hosts) the grammar uses to interact with the file system.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">readonly host: Host | SyncHost | AsyncHost;</code></pre>
+    <pre><code class="lang-typeScript hljs">readonly host: Host | CoreSyncHost | CoreAsyncHost;</code></pre>
   </div>
+  
+  
+  
+  
+  
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="host.html#grammarkdown_Host_class">Host</a> | <a class="xref" href="synchost.html#grammarkdown_SyncHost_class">SyncHost</a> | <a class="xref" href="asynchost.html#grammarkdown_AsyncHost_class">AsyncHost</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="host.html#grammarkdown_Host_class">Host</a> | <a class="xref" href="coresynchost.html#grammarkdown_CoreSyncHost_class">CoreSyncHost</a> | <a class="xref" href="coreasynchost.html#grammarkdown_CoreAsyncHost_class">CoreAsyncHost</a></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_isBound_member" data-uid="grammarkdown!Grammar#isBound:member">isBound</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Indicates whether the grammar has been bound.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">get isBound(): boolean;</code></pre>
   </div>
+  
+  
+  
+  
+  
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">boolean</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">boolean</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_isParsed_member" data-uid="grammarkdown!Grammar#isParsed:member">isParsed</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Indicates whether the grammar has been parsed.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">get isParsed(): boolean;</code></pre>
   </div>
+  
+  
+  
+  
+  
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">boolean</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">boolean</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_options_member" data-uid="grammarkdown!Grammar#options:member">options</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The <a class="xref" href="compileroptions.html#grammarkdown_CompilerOptions_interface">CompilerOptions</a> used by the grammar.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">options: CompilerOptions;</code></pre>
+    <pre><code class="lang-typeScript hljs">readonly options: Readonly&lt;CompilerOptions&gt;;</code></pre>
   </div>
+  
+  
+  
+  
+  
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="compileroptions.html#grammarkdown_CompilerOptions_interface">CompilerOptions</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">Readonly</span>&lt;<a class="xref" href="compileroptions.html#grammarkdown_CompilerOptions_interface">CompilerOptions</a>&gt;</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_resolver_member" data-uid="grammarkdown!Grammar#resolver:member">resolver</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the resolver used to resolve references to bound nodes.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">get resolver(): Resolver;</code></pre>
   </div>
+  
+  
+  
+  
+  
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="resolver.html#grammarkdown_Resolver_class">Resolver</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="resolver.html#grammarkdown_Resolver_class">Resolver</a></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_rootFiles_member" data-uid="grammarkdown!Grammar#rootFiles:member">rootFiles</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the root files parsed by the grammar.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">get rootFiles(): ReadonlyArray&lt;SourceFile&gt;;</code></pre>
   </div>
+  
+  
+  
+  
+  
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">ReadonlyArray</span>&lt;<a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">ReadonlyArray</span>&lt;<a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a>&gt;</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_sourceFiles_member" data-uid="grammarkdown!Grammar#sourceFiles:member">sourceFiles</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the source files parsed by the grammar.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">get sourceFiles(): ReadonlyArray&lt;SourceFile&gt;;</code></pre>
   </div>
+  
+  
+  
+  
+  
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">ReadonlyArray</span>&lt;<a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">ReadonlyArray</span>&lt;<a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a>&gt;</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
   <h3 id="methods">Methods
   </h3>
   
   
   <h4 id="grammarkdown_Grammar_bind_member_1_" data-uid="grammarkdown!Grammar#bind:member(1)">bind(cancelable)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Asynchronously binds each file in the grammar. Will also parse the grammar if it has not yet been parsed.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">bind(cancelable?: Cancelable): Promise&lt;void&gt;;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Cancelable</span></td>
-        <td><em>cancelable</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelable</dt>
+        <dd><a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
+      </dl>
+      <p>
+        <p>A cancelable object that can be used to abort the operation.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Promise</span>&lt;void&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">Promise</span>&lt;void&gt;</div>
+    <p><p>A <code>Promise</code> that is settled when the operation has completed.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_bind_member_2_" data-uid="grammarkdown!Grammar#bind:member(2)">bind(cancelable)</h4>
-  <div class="markdown level1 summary"></div>
+  	<div class="alert is-warning">
+  		<h5>Warning</h5>
+  		<p>Deprecated</p>
+  			since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable`
+  	</div>
+  <div class="markdown level1 summary"><p>Asynchronously binds each file in the grammar. Will also parse the grammar if it has not yet been parsed.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">bind(cancelable?: CancellationToken | Cancelable): Promise&lt;void&gt;;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">CancellationToken</span> | <span class="xref">Cancelable</span></td>
-        <td><em>cancelable</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelable</dt>
+        <dd><a class="xref" href="https://github.com/rbuckton/prex/blob/master/docs/cancellation.md#class-cancellationtoken">CancellationToken</a> | <a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
+      </dl>
+      <p>
+        <p>A cancelable object that can be used to abort the operation.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Promise</span>&lt;void&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">Promise</span>&lt;void&gt;</div>
+    <p><p>A <code>Promise</code> that is settled when the operation has completed.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_bindSync_member_1_" data-uid="grammarkdown!Grammar#bindSync:member(1)">bindSync(cancelable)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Synchronously binds each file in the grammar. Will also parse the grammar if it has not yet been parsed.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">bindSync(cancelable?: Cancelable): void;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Cancelable</span></td>
-        <td><em>cancelable</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelable</dt>
+        <dd><a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
+      </dl>
+      <p>
+        <p>A cancelable object that can be used to abort the operation.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">void</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">void</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_bindSync_member_2_" data-uid="grammarkdown!Grammar#bindSync:member(2)">bindSync(cancelable)</h4>
-  <div class="markdown level1 summary"></div>
+  	<div class="alert is-warning">
+  		<h5>Warning</h5>
+  		<p>Deprecated</p>
+  			since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable`
+  	</div>
+  <div class="markdown level1 summary"><p>Synchronously binds each file in the grammar. Will also parse the grammar if it has not yet been parsed.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">bindSync(cancelable?: CancellationToken | Cancelable): void;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">CancellationToken</span> | <span class="xref">Cancelable</span></td>
-        <td><em>cancelable</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelable</dt>
+        <dd><a class="xref" href="https://github.com/rbuckton/prex/blob/master/docs/cancellation.md#class-cancellationtoken">CancellationToken</a> | <a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
+      </dl>
+      <p>
+        <p>A cancelable object that can be used to abort the operation.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">void</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">void</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_check_member_1_" data-uid="grammarkdown!Grammar#check:member(1)">check(sourceFile, cancelable)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Asynchronously checks each file in the grammar. Will also parse and bind the grammar if it has not yet been parsed or bound.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">check(sourceFile?: SourceFile, cancelable?: Cancelable): Promise&lt;void&gt;;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></td>
-        <td><em>sourceFile</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><span class="xref">Cancelable</span></td>
-        <td><em>cancelable</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>sourceFile</dt>
+        <dd><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelable</dt>
+        <dd><a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
+      </dl>
+      <p>
+        <p>A cancelable object that can be used to abort the operation.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Promise</span>&lt;void&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">Promise</span>&lt;void&gt;</div>
+    <p><p>A <code>Promise</code> that is settled when the operation has completed.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_check_member_2_" data-uid="grammarkdown!Grammar#check:member(2)">check(sourceFile, cancelable)</h4>
-  <div class="markdown level1 summary"></div>
+  	<div class="alert is-warning">
+  		<h5>Warning</h5>
+  		<p>Deprecated</p>
+  			since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable`
+  	</div>
+  <div class="markdown level1 summary"><p>Asynchronously checks each file in the grammar. Will also parse and bind the grammar if it has not yet been parsed or bound.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">check(sourceFile?: SourceFile, cancelable?: CancellationToken | Cancelable): Promise&lt;void&gt;;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></td>
-        <td><em>sourceFile</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><span class="xref">CancellationToken</span> | <span class="xref">Cancelable</span></td>
-        <td><em>cancelable</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>sourceFile</dt>
+        <dd><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelable</dt>
+        <dd><a class="xref" href="https://github.com/rbuckton/prex/blob/master/docs/cancellation.md#class-cancellationtoken">CancellationToken</a> | <a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
+      </dl>
+      <p>
+        <p>A cancelable object that can be used to abort the operation.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Promise</span>&lt;void&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">Promise</span>&lt;void&gt;</div>
+    <p><p>A <code>Promise</code> that is settled when the operation has completed.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_checkSync_member_1_" data-uid="grammarkdown!Grammar#checkSync:member(1)">checkSync(sourceFile, cancelable)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Synchronously checks each file in the grammar. Will also parse and bind the grammar if it has not yet been parsed or bound.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">checkSync(sourceFile?: SourceFile, cancelable?: Cancelable): void;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></td>
-        <td><em>sourceFile</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><span class="xref">Cancelable</span></td>
-        <td><em>cancelable</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>sourceFile</dt>
+        <dd><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelable</dt>
+        <dd><a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
+      </dl>
+      <p>
+        <p>A cancelable object that can be used to abort the operation.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">void</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">void</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_checkSync_member_2_" data-uid="grammarkdown!Grammar#checkSync:member(2)">checkSync(sourceFile, cancelable)</h4>
-  <div class="markdown level1 summary"></div>
+  	<div class="alert is-warning">
+  		<h5>Warning</h5>
+  		<p>Deprecated</p>
+  			since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable`
+  	</div>
+  <div class="markdown level1 summary"><p>Synchronously checks each file in the grammar. Will also parse and bind the grammar if it has not yet been parsed or bound.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">checkSync(sourceFile?: SourceFile, cancelable?: CancellationToken | Cancelable): void;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></td>
-        <td><em>sourceFile</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><span class="xref">CancellationToken</span> | <span class="xref">Cancelable</span></td>
-        <td><em>cancelable</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>sourceFile</dt>
+        <dd><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelable</dt>
+        <dd><a class="xref" href="https://github.com/rbuckton/prex/blob/master/docs/cancellation.md#class-cancellationtoken">CancellationToken</a> | <a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
+      </dl>
+      <p>
+        <p>A cancelable object that can be used to abort the operation.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">void</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">void</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_convert_member_1_" data-uid="grammarkdown!Grammar.convert:member(1)">convert(content, options, hostFallback, cancelable)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Converts a string containing Grammarkdown syntax into output based on the provided options.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">static convert(content: string, options?: CompilerOptions, hostFallback?: Host | SyncHost | AsyncHost, cancelable?: Cancelable): string;</code></pre>
+    <pre><code class="lang-typeScript hljs">static convert(content: string, options?: CompilerOptions, hostFallback?: Host | CoreSyncHost | CoreAsyncHost, cancelable?: Cancelable): string;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">string</span></td>
-        <td><em>content</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="compileroptions.html#grammarkdown_CompilerOptions_interface">CompilerOptions</a></td>
-        <td><em>options</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="host.html#grammarkdown_Host_class">Host</a> | <a class="xref" href="synchost.html#grammarkdown_SyncHost_class">SyncHost</a> | <a class="xref" href="asynchost.html#grammarkdown_AsyncHost_class">AsyncHost</a></td>
-        <td><em>hostFallback</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><span class="xref">Cancelable</span></td>
-        <td><em>cancelable</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>content</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The Grammarkdown source text to convert.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>options</dt>
+        <dd><a class="xref" href="compileroptions.html#grammarkdown_CompilerOptions_interface">CompilerOptions</a></dd>
+      </dl>
+      <p>
+        <p>The <a class="xref" href="compileroptions.html#grammarkdown_CompilerOptions_interface">CompilerOptions</a> used by the grammar.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>hostFallback</dt>
+        <dd><a class="xref" href="host.html#grammarkdown_Host_class">Host</a> | <a class="xref" href="coresynchost.html#grammarkdown_CoreSyncHost_class">CoreSyncHost</a> | <a class="xref" href="coreasynchost.html#grammarkdown_CoreAsyncHost_class">CoreAsyncHost</a></dd>
+      </dl>
+      <p>
+        <p>An optional host to use as a fallback for file system operations.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelable</dt>
+        <dd><a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
+      </dl>
+      <p>
+        <p>A cancelable object that can be used to abort the operation.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">string</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">string</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_convert_member_2_" data-uid="grammarkdown!Grammar.convert:member(2)">convert(content, options, hostFallback, cancelable)</h4>
-  <div class="markdown level1 summary"></div>
+  	<div class="alert is-warning">
+  		<h5>Warning</h5>
+  		<p>Deprecated</p>
+  			since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable`
+  	</div>
+  <div class="markdown level1 summary"><p>Converts a string containing Grammarkdown syntax into output based on the provided options.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">static convert(content: string, options?: CompilerOptions, hostFallback?: Host | SyncHost | AsyncHost, cancelable?: CancellationToken | Cancelable): string;</code></pre>
+    <pre><code class="lang-typeScript hljs">static convert(content: string, options?: CompilerOptions, hostFallback?: Host | CoreSyncHost | CoreAsyncHost, cancelable?: CancellationToken | Cancelable): string;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">string</span></td>
-        <td><em>content</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="compileroptions.html#grammarkdown_CompilerOptions_interface">CompilerOptions</a></td>
-        <td><em>options</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="host.html#grammarkdown_Host_class">Host</a> | <a class="xref" href="synchost.html#grammarkdown_SyncHost_class">SyncHost</a> | <a class="xref" href="asynchost.html#grammarkdown_AsyncHost_class">AsyncHost</a></td>
-        <td><em>hostFallback</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><span class="xref">CancellationToken</span> | <span class="xref">Cancelable</span></td>
-        <td><em>cancelable</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>content</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The Grammarkdown source text to convert.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>options</dt>
+        <dd><a class="xref" href="compileroptions.html#grammarkdown_CompilerOptions_interface">CompilerOptions</a></dd>
+      </dl>
+      <p>
+        <p>The <a class="xref" href="compileroptions.html#grammarkdown_CompilerOptions_interface">CompilerOptions</a> used by the grammar.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>hostFallback</dt>
+        <dd><a class="xref" href="host.html#grammarkdown_Host_class">Host</a> | <a class="xref" href="coresynchost.html#grammarkdown_CoreSyncHost_class">CoreSyncHost</a> | <a class="xref" href="coreasynchost.html#grammarkdown_CoreAsyncHost_class">CoreAsyncHost</a></dd>
+      </dl>
+      <p>
+        <p>An optional host to use as a fallback for file system operations.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelable</dt>
+        <dd><a class="xref" href="https://github.com/rbuckton/prex/blob/master/docs/cancellation.md#class-cancellationtoken">CancellationToken</a> | <a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
+      </dl>
+      <p>
+        <p>A cancelable object that can be used to abort the operation.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">string</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">string</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_createBinder_member_1_" data-uid="grammarkdown!Grammar#createBinder:member(1)">createBinder(options)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>When overridden in a derived class, creates a <a class="xref" href="binder.html#grammarkdown_Binder_class">Binder</a> to be used by this grammar.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">protected createBinder(options: CompilerOptions): Binder;</code></pre>
+    <pre><code class="lang-typeScript hljs">/** @virtual */
+protected createBinder(options: Readonly&lt;CompilerOptions&gt;): Binder;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="compileroptions.html#grammarkdown_CompilerOptions_interface">CompilerOptions</a></td>
-        <td><em>options</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>options</dt>
+        <dd><span class="xref">Readonly</span>&lt;<a class="xref" href="compileroptions.html#grammarkdown_CompilerOptions_interface">CompilerOptions</a>&gt;</dd>
+      </dl>
+      <p>
+        <p>The options to pass on to the <a class="xref" href="binder.html#grammarkdown_Binder_class">Binder</a><!-- -->.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="binder.html#grammarkdown_Binder_class">Binder</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="binder.html#grammarkdown_Binder_class">Binder</a></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_createChecker_member_1_" data-uid="grammarkdown!Grammar#createChecker:member(1)">createChecker(options)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>When overridden in a derived class, creates a <a class="xref" href="checker.html#grammarkdown_Checker_class">Checker</a> to be used by this grammar.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">protected createChecker(options: CompilerOptions): Checker;</code></pre>
+    <pre><code class="lang-typeScript hljs">/** @virtual */
+protected createChecker(options: Readonly&lt;CompilerOptions&gt;): Checker;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="compileroptions.html#grammarkdown_CompilerOptions_interface">CompilerOptions</a></td>
-        <td><em>options</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>options</dt>
+        <dd><span class="xref">Readonly</span>&lt;<a class="xref" href="compileroptions.html#grammarkdown_CompilerOptions_interface">CompilerOptions</a>&gt;</dd>
+      </dl>
+      <p>
+        <p>The options to pass on to the <a class="xref" href="checker.html#grammarkdown_Checker_class">Checker</a><!-- -->.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="checker.html#grammarkdown_Checker_class">Checker</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="checker.html#grammarkdown_Checker_class">Checker</a></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_createEmitter_member_1_" data-uid="grammarkdown!Grammar#createEmitter:member(1)">createEmitter(options)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>When overridden in a derived class, creates an <a class="xref" href="emitter.html#grammarkdown_Emitter_class">Emitter</a> to be used by this grammar.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">protected createEmitter(options: CompilerOptions): Emitter;</code></pre>
+    <pre><code class="lang-typeScript hljs">/** @virtual */
+protected createEmitter(options: CompilerOptions): Emitter;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="compileroptions.html#grammarkdown_CompilerOptions_interface">CompilerOptions</a></td>
-        <td><em>options</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>options</dt>
+        <dd><a class="xref" href="compileroptions.html#grammarkdown_CompilerOptions_interface">CompilerOptions</a></dd>
+      </dl>
+      <p>
+        <p>The options to pass on to the <a class="xref" href="emitter.html#grammarkdown_Emitter_class">Emitter</a><!-- -->.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="emitter.html#grammarkdown_Emitter_class">Emitter</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="emitter.html#grammarkdown_Emitter_class">Emitter</a></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_createResolver_member_1_" data-uid="grammarkdown!Grammar#createResolver:member(1)">createResolver(bindings)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>When overridden in a derived class, creates a <a class="xref" href="resolver.html#grammarkdown_Resolver_class">Resolver</a> to be used by this grammar.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">protected createResolver(bindings: BindingTable): Resolver;</code></pre>
+    <pre><code class="lang-typeScript hljs">/** @virtual */
+protected createResolver(bindings: BindingTable): Resolver;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="bindingtable.html#grammarkdown_BindingTable_class">BindingTable</a></td>
-        <td><em>bindings</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>bindings</dt>
+        <dd><a class="xref" href="bindingtable.html#grammarkdown_BindingTable_class">BindingTable</a></dd>
+      </dl>
+      <p>
+        <p>A <a class="xref" href="bindingtable.html#grammarkdown_BindingTable_class">BindingTable</a> used by the resolver to resolve references to nodes.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="resolver.html#grammarkdown_Resolver_class">Resolver</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="resolver.html#grammarkdown_Resolver_class">Resolver</a></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_emit_member_1_" data-uid="grammarkdown!Grammar#emit:member(1)">emit(sourceFile, writeFile, cancelable)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Asynchronously emits each file in the grammar. Will also parse, bind, and check the grammar if it has not yet been parsed, bound, or checked.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">emit(sourceFile?: SourceFile, writeFile?: (file: string, output: string, cancelToken?: CancelToken) =&gt; void | PromiseLike&lt;void&gt;, cancelable?: Cancelable): Promise&lt;void&gt;;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></td>
-        <td><em>sourceFile</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td>(file: string, output: string, cancelToken?: <span class="xref">CancelToken</span>) =&gt; void | <span class="xref">PromiseLike</span>&lt;void&gt;</td>
-        <td><em>writeFile</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><span class="xref">Cancelable</span></td>
-        <td><em>cancelable</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>sourceFile</dt>
+        <dd><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></dd>
+      </dl>
+      <p>
+        <p>The <a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a> to emit. If not provided, this method will generate output for all root files.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>writeFile</dt>
+        <dd>(file: string, output: string, cancelToken?: <a class="xref" href="https://esfx.js.org/esfx/api/async-canceltoken/canceltoken.html#_esfx_async_canceltoken_CancelToken_class">CancelToken</a>) =&gt; void | <span class="xref">PromiseLike</span>&lt;void&gt;</dd>
+      </dl>
+      <p>
+        <p>An optional callback used to write the output. If not provided, this method will emit output via this grammar&#39;s <a class="xref" href="grammar.html#grammarkdown_Grammar_host_member">host</a><!-- -->.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelable</dt>
+        <dd><a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
+      </dl>
+      <p>
+        <p>A cancelable object that can be used to abort the operation.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Promise</span>&lt;void&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">Promise</span>&lt;void&gt;</div>
+    <p><p>A <code>Promise</code> that is settled when the operation has completed.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_emit_member_2_" data-uid="grammarkdown!Grammar#emit:member(2)">emit(sourceFile, writeFile, cancelable)</h4>
-  <div class="markdown level1 summary"></div>
+  	<div class="alert is-warning">
+  		<h5>Warning</h5>
+  		<p>Deprecated</p>
+  			since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable`
+  	</div>
+  <div class="markdown level1 summary"><p>Asynchronously emits each file in the grammar. Will also parse, bind, and check the grammar if it has not yet been parsed, bound, or checked.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">emit(sourceFile?: SourceFile, writeFile?: (file: string, output: string) =&gt; void | PromiseLike&lt;void&gt;, cancelable?: CancellationToken | Cancelable): Promise&lt;void&gt;;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></td>
-        <td><em>sourceFile</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td>(file: string, output: string) =&gt; void | <span class="xref">PromiseLike</span>&lt;void&gt;</td>
-        <td><em>writeFile</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><span class="xref">CancellationToken</span> | <span class="xref">Cancelable</span></td>
-        <td><em>cancelable</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>sourceFile</dt>
+        <dd><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></dd>
+      </dl>
+      <p>
+        <p>The <a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a> to emit. If not provided, this method will generate output for all root files.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>writeFile</dt>
+        <dd>(file: string, output: string) =&gt; void | <span class="xref">PromiseLike</span>&lt;void&gt;</dd>
+      </dl>
+      <p>
+        <p>An optional callback used to write the output. If not provided, this method will emit output via this grammar&#39;s <a class="xref" href="grammar.html#grammarkdown_Grammar_host_member">host</a><!-- -->.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelable</dt>
+        <dd><a class="xref" href="https://github.com/rbuckton/prex/blob/master/docs/cancellation.md#class-cancellationtoken">CancellationToken</a> | <a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
+      </dl>
+      <p>
+        <p>A cancelable object that can be used to abort the operation.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Promise</span>&lt;void&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">Promise</span>&lt;void&gt;</div>
+    <p><p>A <code>Promise</code> that is settled when the operation has completed.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_emitString_member_1_" data-uid="grammarkdown!Grammar#emitString:member(1)">emitString(sourceFile, cancelable)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Asynchronously emits the provided file in the grammar as a string. Will also parse, bind, and check the grammar if it has not yet been parsed, bound, or checked.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">emitString(sourceFile: SourceFile, cancelable?: Cancelable): Promise&lt;string&gt;;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></td>
-        <td><em>sourceFile</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><span class="xref">Cancelable</span></td>
-        <td><em>cancelable</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>sourceFile</dt>
+        <dd><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></dd>
+      </dl>
+      <p>
+        <p>The <a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a> to emit.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelable</dt>
+        <dd><a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
+      </dl>
+      <p>
+        <p>A cancelable object that can be used to abort the operation.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Promise</span>&lt;string&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">Promise</span>&lt;string&gt;</div>
+    <p><p>A <code>Promise</code> for the emit output that is settled when the operation has completed.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_emitString_member_2_" data-uid="grammarkdown!Grammar#emitString:member(2)">emitString(sourceFile, cancelable)</h4>
-  <div class="markdown level1 summary"></div>
+  	<div class="alert is-warning">
+  		<h5>Warning</h5>
+  		<p>Deprecated</p>
+  			since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable`
+  	</div>
+  <div class="markdown level1 summary"><p>Asynchronously emits the provided file in the grammar as a string. Will also parse, bind, and check the grammar if it has not yet been parsed, bound, or checked.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">emitString(sourceFile: SourceFile, cancelable?: CancellationToken | Cancelable): Promise&lt;string&gt;;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></td>
-        <td><em>sourceFile</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><span class="xref">CancellationToken</span> | <span class="xref">Cancelable</span></td>
-        <td><em>cancelable</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>sourceFile</dt>
+        <dd><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></dd>
+      </dl>
+      <p>
+        <p>The <a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a> to emit.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelable</dt>
+        <dd><a class="xref" href="https://github.com/rbuckton/prex/blob/master/docs/cancellation.md#class-cancellationtoken">CancellationToken</a> | <a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
+      </dl>
+      <p>
+        <p>A cancelable object that can be used to abort the operation.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Promise</span>&lt;string&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">Promise</span>&lt;string&gt;</div>
+    <p><p>A <code>Promise</code> for the emit output that is settled when the operation has completed.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_emitStringSync_member_1_" data-uid="grammarkdown!Grammar#emitStringSync:member(1)">emitStringSync(sourceFile, cancelable)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Synchronously emits the provided file in the grammar as a string. Will also parse, bind, and check the grammar if it has not yet been parsed, bound, or checked.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">emitStringSync(sourceFile: SourceFile, cancelable?: Cancelable): string;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></td>
-        <td><em>sourceFile</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><span class="xref">Cancelable</span></td>
-        <td><em>cancelable</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>sourceFile</dt>
+        <dd><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></dd>
+      </dl>
+      <p>
+        <p>The <a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a> to emit.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelable</dt>
+        <dd><a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
+      </dl>
+      <p>
+        <p>A cancelable object that can be used to abort the operation.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">string</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">string</span></div>
+    <p><p>The emit output.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_emitStringSync_member_2_" data-uid="grammarkdown!Grammar#emitStringSync:member(2)">emitStringSync(sourceFile, cancelable)</h4>
-  <div class="markdown level1 summary"></div>
+  	<div class="alert is-warning">
+  		<h5>Warning</h5>
+  		<p>Deprecated</p>
+  			since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable`
+  	</div>
+  <div class="markdown level1 summary"><p>Synchronously emits the provided file in the grammar as a string. Will also parse, bind, and check the grammar if it has not yet been parsed, bound, or checked.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">emitStringSync(sourceFile: SourceFile, cancelable?: CancellationToken | Cancelable): string;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></td>
-        <td><em>sourceFile</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><span class="xref">CancellationToken</span> | <span class="xref">Cancelable</span></td>
-        <td><em>cancelable</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>sourceFile</dt>
+        <dd><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></dd>
+      </dl>
+      <p>
+        <p>The <a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a> to emit.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelable</dt>
+        <dd><a class="xref" href="https://github.com/rbuckton/prex/blob/master/docs/cancellation.md#class-cancellationtoken">CancellationToken</a> | <a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
+      </dl>
+      <p>
+        <p>A cancelable object that can be used to abort the operation.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">string</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">string</span></div>
+    <p><p>The emit output.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_emitSync_member_1_" data-uid="grammarkdown!Grammar#emitSync:member(1)">emitSync(sourceFile, writeFile, cancelable)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Synchronously emits each file in the grammar. Will also parse, bind, and check the grammar if it has not yet been parsed, bound, or checked.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">emitSync(sourceFile?: SourceFile, writeFile?: (file: string, output: string, cancelToken?: CancelToken) =&gt; void, cancelable?: Cancelable): void;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></td>
-        <td><em>sourceFile</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td>(file: string, output: string, cancelToken?: <span class="xref">CancelToken</span>) =&gt; void</td>
-        <td><em>writeFile</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><span class="xref">Cancelable</span></td>
-        <td><em>cancelable</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>sourceFile</dt>
+        <dd><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></dd>
+      </dl>
+      <p>
+        <p>The <a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a> to emit. If not provided, this method will generate output for all root files.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>writeFile</dt>
+        <dd>(file: string, output: string, cancelToken?: <a class="xref" href="https://esfx.js.org/esfx/api/async-canceltoken/canceltoken.html#_esfx_async_canceltoken_CancelToken_class">CancelToken</a>) =&gt; void</dd>
+      </dl>
+      <p>
+        <p>An optional callback used to write the output. If not provided, this method will emit output via this grammar&#39;s <a class="xref" href="grammar.html#grammarkdown_Grammar_host_member">host</a><!-- -->.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelable</dt>
+        <dd><a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
+      </dl>
+      <p>
+        <p>A cancelable object that can be used to abort the operation.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">void</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">void</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_emitSync_member_2_" data-uid="grammarkdown!Grammar#emitSync:member(2)">emitSync(sourceFile, writeFile, cancelable)</h4>
-  <div class="markdown level1 summary"></div>
+  	<div class="alert is-warning">
+  		<h5>Warning</h5>
+  		<p>Deprecated</p>
+  			since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable`
+  	</div>
+  <div class="markdown level1 summary"><p>Synchronously emits each file in the grammar. Will also parse, bind, and check the grammar if it has not yet been parsed, bound, or checked.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">emitSync(sourceFile?: SourceFile, writeFile?: (file: string, output: string) =&gt; void, cancelable?: CancellationToken | Cancelable): void;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></td>
-        <td><em>sourceFile</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><span class="xref">(file: string, output: string) =&gt; void</span></td>
-        <td><em>writeFile</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><span class="xref">CancellationToken</span> | <span class="xref">Cancelable</span></td>
-        <td><em>cancelable</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>sourceFile</dt>
+        <dd><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></dd>
+      </dl>
+      <p>
+        <p>The <a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a> to emit. If not provided, this method will generate output for all root files.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>writeFile</dt>
+        <dd><span class="xref">(file: string, output: string) =&gt; void</span></dd>
+      </dl>
+      <p>
+        <p>An optional callback used to write the output. If not provided, this method will emit output via this grammar&#39;s <a class="xref" href="grammar.html#grammarkdown_Grammar_host_member">host</a><!-- -->.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelable</dt>
+        <dd><a class="xref" href="https://github.com/rbuckton/prex/blob/master/docs/cancellation.md#class-cancellationtoken">CancellationToken</a> | <a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
+      </dl>
+      <p>
+        <p>A cancelable object that can be used to abort the operation.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">void</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">void</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_getSourceFile_member_1_" data-uid="grammarkdown!Grammar#getSourceFile:member(1)">getSourceFile(file)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a> parsed for the provided file path.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">getSourceFile(file: string): SourceFile | undefined;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">string</span></td>
-        <td><em>file</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>file</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The path to the source file.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a> | undefined</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a> | undefined</div>
+    <p><p>The <a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a> for the provided path, if one was parsed; otherwise, <code>undefined</code><!-- -->.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_parse_member_1_" data-uid="grammarkdown!Grammar#parse:member(1)">parse(cancelable)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Asynchronously parses the root files provided to the grammar.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">parse(cancelable?: Cancelable): Promise&lt;void&gt;;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Cancelable</span></td>
-        <td><em>cancelable</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelable</dt>
+        <dd><a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
+      </dl>
+      <p>
+        <p>A cancelable object that can be used to abort the operation.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Promise</span>&lt;void&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">Promise</span>&lt;void&gt;</div>
+    <p><p>A <code>Promise</code> that is settled when the operation has completed.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_parse_member_2_" data-uid="grammarkdown!Grammar#parse:member(2)">parse(cancelable)</h4>
-  <div class="markdown level1 summary"></div>
+  	<div class="alert is-warning">
+  		<h5>Warning</h5>
+  		<p>Deprecated</p>
+  			since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable`
+  	</div>
+  <div class="markdown level1 summary"><p>Asynchronously parses the root files provided to the grammar.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">parse(cancelable?: CancellationToken | Cancelable): Promise&lt;void&gt;;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">CancellationToken</span> | <span class="xref">Cancelable</span></td>
-        <td><em>cancelable</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelable</dt>
+        <dd><a class="xref" href="https://github.com/rbuckton/prex/blob/master/docs/cancellation.md#class-cancellationtoken">CancellationToken</a> | <a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
+      </dl>
+      <p>
+        <p>A cancelable object that can be used to abort the operation.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Promise</span>&lt;void&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">Promise</span>&lt;void&gt;</div>
+    <p><p>A <code>Promise</code> that is settled when the operation has completed.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_parseSync_member_1_" data-uid="grammarkdown!Grammar#parseSync:member(1)">parseSync(cancelable)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Synchronously parses the root files provided to the grammar.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">parseSync(cancelable?: Cancelable): void;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Cancelable</span></td>
-        <td><em>cancelable</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelable</dt>
+        <dd><a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
+      </dl>
+      <p>
+        <p>A cancelable object that can be used to abort the operation.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">void</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">void</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_parseSync_member_2_" data-uid="grammarkdown!Grammar#parseSync:member(2)">parseSync(cancelable)</h4>
-  <div class="markdown level1 summary"></div>
+  	<div class="alert is-warning">
+  		<h5>Warning</h5>
+  		<p>Deprecated</p>
+  			since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable`
+  	</div>
+  <div class="markdown level1 summary"><p>Synchronously parses the root files provided to the grammar.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">parseSync(cancelable?: CancellationToken | Cancelable): void;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">CancellationToken</span> | <span class="xref">Cancelable</span></td>
-        <td><em>cancelable</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelable</dt>
+        <dd><a class="xref" href="https://github.com/rbuckton/prex/blob/master/docs/cancellation.md#class-cancellationtoken">CancellationToken</a> | <a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
+      </dl>
+      <p>
+        <p>A cancelable object that can be used to abort the operation.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">void</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">void</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_readFile_member_1_" data-uid="grammarkdown!Grammar#readFile:member(1)">readFile(file, cancelToken)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>When overridden in a derived class, asynchronously reads the contents of the provided file.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">protected readFile(file: string, cancelToken?: CancelToken): Promise&lt;string | undefined&gt; | string | undefined;</code></pre>
+    <pre><code class="lang-typeScript hljs">/** @virtual */
+protected readFile(file: string, cancelToken?: CancelToken): Promise&lt;string | undefined&gt; | string | undefined;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">string</span></td>
-        <td><em>file</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><span class="xref">CancelToken</span></td>
-        <td><em>cancelToken</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>file</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The file to read.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelToken</dt>
+        <dd><a class="xref" href="https://esfx.js.org/esfx/api/async-canceltoken/canceltoken.html#_esfx_async_canceltoken_CancelToken_class">CancelToken</a></dd>
+      </dl>
+      <p>
+        <p>A cancellation token that can be used by the caller to abort the operation.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Promise</span>&lt;string | undefined&gt; | string | undefined</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">Promise</span>&lt;string | undefined&gt; | string | undefined</div>
+    <p><p>A <code>Promise</code> for either a <code>string</code> containing the content if the file could be read, or <code>undefined</code> if the file could not be read.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_readFileSync_member_1_" data-uid="grammarkdown!Grammar#readFileSync:member(1)">readFileSync(file)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>When overridden in a derived class, synchronously reads the contents of the provided file.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">protected readFileSync(file: string): Promise&lt;string | undefined&gt; | string | undefined;</code></pre>
+    <pre><code class="lang-typeScript hljs">/** @virtual */
+protected readFileSync(file: string): Promise&lt;string | undefined&gt; | string | undefined;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">string</span></td>
-        <td><em>file</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>file</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The file to read.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Promise</span>&lt;string | undefined&gt; | string | undefined</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">Promise</span>&lt;string | undefined&gt; | string | undefined</div>
+    <p><p>A <code>string</code> containing the content if the file could be read; otherwise, <code>undefined</code><!-- -->.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_writeFile_member_1_" data-uid="grammarkdown!Grammar#writeFile:member(1)">writeFile(file, content, cancelToken)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>When overridden in a derived class, asynchronously writes a file to the host.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">protected writeFile(file: string, content: string, cancelToken?: CancelToken): void | Promise&lt;void&gt;;</code></pre>
+    <pre><code class="lang-typeScript hljs">/** @virtual */
+protected writeFile(file: string, content: string, cancelToken?: CancelToken): void | Promise&lt;void&gt;;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">string</span></td>
-        <td><em>file</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><span class="xref">string</span></td>
-        <td><em>content</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><span class="xref">CancelToken</span></td>
-        <td><em>cancelToken</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>file</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The path to the file.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>content</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelToken</dt>
+        <dd><a class="xref" href="https://esfx.js.org/esfx/api/async-canceltoken/canceltoken.html#_esfx_async_canceltoken_CancelToken_class">CancelToken</a></dd>
+      </dl>
+      <p>
+        <p>A cancellation token that can be used by the caller to abort the operation.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>void | <span class="xref">Promise</span>&lt;void&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div>void | <span class="xref">Promise</span>&lt;void&gt;</div>
+    <p><p>A <code>Promise</code> that is settled when the operation completes.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Grammar_writeFileSync_member_1_" data-uid="grammarkdown!Grammar#writeFileSync:member(1)">writeFileSync(file, content)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>When overridden in a derived class, synchronosly writes a file to the host.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">protected writeFileSync(file: string, content: string): void;</code></pre>
+    <pre><code class="lang-typeScript hljs">/** @virtual */
+protected writeFileSync(file: string, content: string): void;</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">string</span></td>
-        <td><em>file</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><span class="xref">string</span></td>
-        <td><em>content</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>file</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The path to the file.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>content</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+  </div>
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">void</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">void</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
 </article>
           </div>
           

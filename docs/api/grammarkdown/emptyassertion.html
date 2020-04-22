@@ -20,7 +20,7 @@
     <meta property="docfx:tocrel" content="../toc.html">
     
     <meta property="docfx:rel" content="../../">
-    
+    <meta property="docfx:newtab" content="true">
   </head>
   <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
@@ -83,6 +83,7 @@
   
   <h1 id="grammarkdown_EmptyAssertion_class" data-uid="grammarkdown!EmptyAssertion:class">Class EmptyAssertion
   </h1>
+  <h6><strong>Package</strong>: <a class="xref" href="../grammarkdown.html">grammarkdown</a></h6>
   <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -90,55 +91,61 @@
       <div class="level0"><a class="xref" href="assertionbase.html#grammarkdown_AssertionBase_class">AssertionBase</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_EmptyAssertion_member">SyntaxKind.EmptyAssertion</a>, <a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_OpenBracketToken_member">SyntaxKind.OpenBracketToken</a>&gt; </div>
       <div class="level1"><span class="xref">EmptyAssertion</span></div>
   </div>
-  <h6><strong>Package</strong>: <a class="xref" href="../grammarkdown.html">grammarkdown</a></h6>
   <h3 id="constructors">Constructors
   </h3>
   
   
-  <h4 id="grammarkdown_EmptyAssertion_constructor_1_" data-uid="grammarkdown!EmptyAssertion:constructor(1)">(constructor)(openBracketToken, emptyKeyword, closeBracketToken)</h4>
+  <h4 id="grammarkdown_EmptyAssertion_constructor_1_" data-uid="grammarkdown!EmptyAssertion:constructor(1)">constructor(openBracketToken, emptyKeyword, closeBracketToken)</h4>
   <div class="markdown level1 summary"><p>Constructs a new instance of the <code>EmptyAssertion</code> class</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">constructor(openBracketToken: Token&lt;SyntaxKind.OpenBracketToken&gt;, emptyKeyword: Token&lt;SyntaxKind.EmptyKeyword&gt;, closeBracketToken: Token&lt;SyntaxKind.CloseBracketToken&gt; | undefined);</code></pre>
   </div>
+  
+  
   <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_OpenBracketToken_member">SyntaxKind.OpenBracketToken</a>&gt;</td>
-        <td><em>openBracketToken</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_EmptyKeyword_member">SyntaxKind.EmptyKeyword</a>&gt;</td>
-        <td><em>emptyKeyword</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_CloseBracketToken_member">SyntaxKind.CloseBracketToken</a>&gt; | undefined</td>
-        <td><em>closeBracketToken</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>openBracketToken</dt>
+        <dd><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_OpenBracketToken_member">SyntaxKind.OpenBracketToken</a>&gt;</dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>emptyKeyword</dt>
+        <dd><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_EmptyKeyword_member">SyntaxKind.EmptyKeyword</a>&gt;</dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>closeBracketToken</dt>
+        <dd><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_CloseBracketToken_member">SyntaxKind.CloseBracketToken</a>&gt; | undefined</dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
   <h3 id="properties">Properties
   </h3>
   
@@ -147,48 +154,52 @@
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">readonly emptyKeyword: Token&lt;SyntaxKind.EmptyKeyword&gt;;</code></pre>
   </div>
+  
+  
+  
+  
+  
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_EmptyKeyword_member">SyntaxKind.EmptyKeyword</a>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_EmptyKeyword_member">SyntaxKind.EmptyKeyword</a>&gt;</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_EmptyAssertion_lastChild_member" data-uid="grammarkdown!EmptyAssertion#lastChild:member">lastChild</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">get lastChild(): Node | undefined;</code></pre>
   </div>
+  
+  
+  
+  
+  
   <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="node.html#grammarkdown_Node_class">Node</a> | undefined</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="node.html#grammarkdown_Node_class">Node</a> | undefined</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
   <h3 id="methods">Methods
   </h3>
   
@@ -197,83 +208,77 @@
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">children(): IterableIterator&lt;Node&gt;;</code></pre>
   </div>
+  
+  
+  
   <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IterableIterator</span>&lt;<a class="xref" href="node.html#grammarkdown_Node_class">Node</a>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+  <div class="property">
+    <div><span class="xref">IterableIterator</span>&lt;<a class="xref" href="node.html#grammarkdown_Node_class">Node</a>&gt;</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_EmptyAssertion_forEachChild_member_1_" data-uid="grammarkdown!EmptyAssertion#forEachChild:member(1)">forEachChild(cbNode)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
+  
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">forEachChild&lt;T&gt;(cbNode: (node: Node) =&gt; T | undefined): T | undefined;</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>(node: <a class="xref" href="node.html#grammarkdown_Node_class">Node</a>) =&gt; T | undefined</td>
-        <td><em>cbNode</em></td>
-        <td>
-          
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">T | undefined</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  
   <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><em>T</em></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>T</dt>
+        <dd></dd>
+      </dl>
+      <p>
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cbNode</dt>
+        <dd>(node: <a class="xref" href="node.html#grammarkdown_Node_class">Node</a>) =&gt; T | undefined</dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">T | undefined</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
 </article>
           </div>
           

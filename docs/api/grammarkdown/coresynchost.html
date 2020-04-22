@@ -1,0 +1,978 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class CoreSyncHost
+   | Grammarkdown API Reference </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class CoreSyncHost
+   | Grammarkdown API Reference ">
+    <meta name="generator" content="docfx 2.52.0.0">
+    
+    <link rel="shortcut icon" href="../../favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    <meta property="docfx:newtab" content="true">
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="grammarkdown!CoreSyncHost:class">
+  
+  
+  <h1 id="grammarkdown_CoreSyncHost_class" data-uid="grammarkdown!CoreSyncHost:class">Class CoreSyncHost
+  </h1>
+  <h6><strong>Package</strong>: <a class="xref" href="../grammarkdown.html">grammarkdown</a></h6>
+  <div class="markdown level0 summary"><p>A Host is a user-provided service that indicates how various Grammarkdown services can interact with a file system. The <code>CoreSyncHost</code> class provides the API surface that Grammarkdown uses to interact with a host that is able to access the file system synchronously.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+      <div class="level0"><a class="xref" href="hostbase.html#grammarkdown_HostBase_class">HostBase</a></div>
+      <div class="level1"><span class="xref">CoreSyncHost</span></div>
+  </div>
+  <h5 id="grammarkdown_CoreSyncHost_class_examples"><strong>Examples</strong></h5>
+  <p>The following example shows how you can create a <a class="xref" href="coresynchost.html#grammarkdown_CoreSyncHost_class">CoreSyncHost</a> from a <code>Map</code>:</p>
+<pre><code class="lang-ts">const files = new Map([
+  [&quot;a.grammar&quot;, &quot;...&quot;],
+  [&quot;b.grammar&quot;, &quot;...&quot;]
+]);
+const host = new CoreSyncHost({
+  ignoreCase: false,
+  useBuiltinGrammers: false,
+  resolveFile: file =&gt; file,
+  readFileSync: file =&gt; files.get(file)
+});
+</code></pre>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <h4 id="grammarkdown_CoreSyncHost_constructor_1_" data-uid="grammarkdown!CoreSyncHost:constructor(1)">constructor(options, hostFallback)</h4>
+  <div class="markdown level1 summary"><p>Constructs a new instance of the <code>CoreSyncHost</code> class</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">constructor(options: CoreSyncHostOptions, hostFallback?: CoreSyncHost);</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>options</dt>
+        <dd><a class="xref" href="coresynchostoptions.html#grammarkdown_CoreSyncHostOptions_interface">CoreSyncHostOptions</a></dd>
+      </dl>
+      <p>
+        <p>The options used to configure the host.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>hostFallback</dt>
+        <dd><a class="xref" href="coresynchost.html#grammarkdown_CoreSyncHost_class">CoreSyncHost</a></dd>
+      </dl>
+      <p>
+        <p>An optional host to use as a fallback for operations not supported by this host.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/rbuckton/grammarkdown/blob/master/src/docs/overwrite/coresynchost.md/#L23">Improve this Doc</a>
+  </span>
+  
+  <h4 id="grammarkdown_CoreSyncHost_forFile_member_1_" data-uid="grammarkdown!CoreSyncHost.forFile:member(1)">forFile(content, file, hostFallback)</h4>
+  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="stringsynchost.html#grammarkdown_StringSyncHost_class">StringSyncHost</a> for the provided content.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">static forFile(content: string, file?: string, hostFallback?: CoreSyncHost): StringSyncHost;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>content</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The content of the file.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>file</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The file name for the content.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>hostFallback</dt>
+        <dd><a class="xref" href="coresynchost.html#grammarkdown_CoreSyncHost_class">CoreSyncHost</a></dd>
+      </dl>
+      <p>
+        <p>An optional host to use as a fallback for operations not supported by this host.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="stringsynchost.html#grammarkdown_StringSyncHost_class">StringSyncHost</a></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  <h5 id="grammarkdown_CoreSyncHost_forFile_member_1__examples">Examples</h5>
+  <p>The following example shows how you can create a <a class="xref" href="coresynchost.html#grammarkdown_CoreSyncHost_class">CoreSyncHost</a> for a <code>string</code>:</p>
+<pre><code class="lang-ts">const content = &quot;...&quot;;
+const host = CoreSyncHost.forFile(content);
+</code></pre>
+  
+  
+  <h4 id="grammarkdown_CoreSyncHost_from_member_1_" data-uid="grammarkdown!CoreSyncHost.from:member(1)">from(options, hostFallback)</h4>
+  <div class="markdown level1 summary"><p>Creates a <code>CoreSyncHost</code><!-- -->.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">static from(options: CoreSyncHostOptions, hostFallback?: CoreSyncHost): CoreSyncHost;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>options</dt>
+        <dd><a class="xref" href="coresynchostoptions.html#grammarkdown_CoreSyncHostOptions_interface">CoreSyncHostOptions</a></dd>
+      </dl>
+      <p>
+        <p>The options used to configure the host.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>hostFallback</dt>
+        <dd><a class="xref" href="coresynchost.html#grammarkdown_CoreSyncHost_class">CoreSyncHost</a></dd>
+      </dl>
+      <p>
+        <p>An optional host to use as a fallback for operations not supported by this host.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="coresynchost.html#grammarkdown_CoreSyncHost_class">CoreSyncHost</a></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_CoreSyncHost_getSourceFileSync_member_1_" data-uid="grammarkdown!CoreSyncHost#getSourceFileSync:member(1)">getSourceFileSync(file, cancelable)</h4>
+  <div class="markdown level1 summary"><p>Reads and parses a source file from the host.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">getSourceFileSync(file: string, cancelable?: Cancelable): SourceFile | undefined;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>file</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The path to the file.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelable</dt>
+        <dd><a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
+      </dl>
+      <p>
+        <p>A cancelable object that can be used to abort the operation.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a> | undefined</div>
+    <p><p>The parsed <a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a> of the file if the file could be read; otherwise, <code>undefined</code><!-- -->.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_CoreSyncHost_getSourceFileSync_member_2_" data-uid="grammarkdown!CoreSyncHost#getSourceFileSync:member(2)">getSourceFileSync(file, cancelable)</h4>
+  	<div class="alert is-warning">
+  		<h5>Warning</h5>
+  		<p>Deprecated</p>
+  			since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable`
+  	</div>
+  <div class="markdown level1 summary"><p>Reads and parses a source file from the host.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">getSourceFileSync(file: string, cancelable?: CancellationToken | Cancelable): SourceFile | undefined;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>file</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The path to the file.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelable</dt>
+        <dd><a class="xref" href="https://github.com/rbuckton/prex/blob/master/docs/cancellation.md#class-cancellationtoken">CancellationToken</a> | <a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
+      </dl>
+      <p>
+        <p>A cancelable object that can be used to abort the operation.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a> | undefined</div>
+    <p><p>The parsed <a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a> of the file if the file could be read; otherwise, <code>undefined</code><!-- -->.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_CoreSyncHost_normalizeFileCore_member_1_" data-uid="grammarkdown!CoreSyncHost#normalizeFileCore:member(1)">normalizeFileCore(file)</h4>
+  <div class="markdown level1 summary"><p>When overridden in a derived class, normalizes a file path&#39;s string representation for use as a key based on the case sensitivity of the host.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">/** @override */
+protected normalizeFileCore(file: string): string;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>file</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The file path.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">string</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_CoreSyncHost_readFileSync_member_1_" data-uid="grammarkdown!CoreSyncHost#readFileSync:member(1)">readFileSync(file, cancelable)</h4>
+  <div class="markdown level1 summary"><p>Reads a file from the host.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">readFileSync(file: string, cancelable?: Cancelable): string | undefined;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>file</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The path to the file.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelable</dt>
+        <dd><a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
+      </dl>
+      <p>
+        <p>A cancelable object that can be used to abort the operation.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">string | undefined</span></div>
+    <p><p>A <code>string</code> containing the content if the file could be read; otherwise, <code>undefined</code><!-- -->.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_CoreSyncHost_readFileSync_member_2_" data-uid="grammarkdown!CoreSyncHost#readFileSync:member(2)">readFileSync(file, cancelable)</h4>
+  	<div class="alert is-warning">
+  		<h5>Warning</h5>
+  		<p>Deprecated</p>
+  			since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable`
+  	</div>
+  <div class="markdown level1 summary"><p>Reads a file from the host.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">readFileSync(file: string, cancelable?: CancellationToken | Cancelable): string | undefined;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>file</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The path to the file.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelable</dt>
+        <dd><a class="xref" href="https://github.com/rbuckton/prex/blob/master/docs/cancellation.md#class-cancellationtoken">CancellationToken</a> | <a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
+      </dl>
+      <p>
+        <p>A cancelable object that can be used to abort the operation.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">string | undefined</span></div>
+    <p><p>A <code>string</code> containing the content if the file could be read; otherwise, <code>undefined</code><!-- -->.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_CoreSyncHost_readFileSyncCore_member_1_" data-uid="grammarkdown!CoreSyncHost#readFileSyncCore:member(1)">readFileSyncCore(file, cancelToken)</h4>
+  <div class="markdown level1 summary"><p>When overridden in a derived class, reads a file from the host.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">/** @virtual */
+protected readFileSyncCore(file: string, cancelToken?: CancelToken): string | undefined;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>file</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The path to the file.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelToken</dt>
+        <dd><a class="xref" href="https://esfx.js.org/esfx/api/async-canceltoken/canceltoken.html#_esfx_async_canceltoken_CancelToken_class">CancelToken</a></dd>
+      </dl>
+      <p>
+        <p>A cancellation token that can be used by the caller to abort the operation.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">string | undefined</span></div>
+    <p><p>A <code>string</code> containing the content if the file could be read; otherwise, <code>undefined</code><!-- -->.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_CoreSyncHost_registerKnownGrammarCore_member_1_" data-uid="grammarkdown!CoreSyncHost#registerKnownGrammarCore:member(1)">registerKnownGrammarCore(name, file)</h4>
+  <div class="markdown level1 summary"><p>When overridden in a derived clas, registers a known grammar for use with <code>@import</code> directives.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">/** @override */
+protected registerKnownGrammarCore(name: string, file: string): void;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>name</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The name for the grammar.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>file</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The file path of the grammar.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">void</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_CoreSyncHost_resolveFileCore_member_1_" data-uid="grammarkdown!CoreSyncHost#resolveFileCore:member(1)">resolveFileCore(file, referer)</h4>
+  <div class="markdown level1 summary"><p>When overridden in a derived class, resolves the full path of a file relative to the provided referer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">/** @override */
+protected resolveFileCore(file: string, referer?: string): string;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>file</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The path to the requested file.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>referer</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>An optional path indicating the file from which the path should be resolved.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">string</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_CoreSyncHost_resolveKnownGrammarCore_member_1_" data-uid="grammarkdown!CoreSyncHost#resolveKnownGrammarCore:member(1)">resolveKnownGrammarCore(name)</h4>
+  <div class="markdown level1 summary"><p>When overridden in a derived class, returns the path for a known or built-in grammar based on its name (i.e., <code>&quot;es2015&quot;</code><!-- -->, etc.)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">/** @override */
+protected resolveKnownGrammarCore(name: string): string | undefined;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>name</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The name of the grammar.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">string | undefined</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_CoreSyncHost_writeFileSync_member_1_" data-uid="grammarkdown!CoreSyncHost#writeFileSync:member(1)">writeFileSync(file, text, cancelable)</h4>
+  <div class="markdown level1 summary"><p>Writes a file to the host.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">writeFileSync(file: string, text: string, cancelable?: Cancelable): void;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>file</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The path to the file.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>text</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The contents of the file.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelable</dt>
+        <dd><a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
+      </dl>
+      <p>
+        <p>A cancelable object that can be used to abort the operation.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">void</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_CoreSyncHost_writeFileSync_member_2_" data-uid="grammarkdown!CoreSyncHost#writeFileSync:member(2)">writeFileSync(file, text, cancelable)</h4>
+  	<div class="alert is-warning">
+  		<h5>Warning</h5>
+  		<p>Deprecated</p>
+  			since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable`
+  	</div>
+  <div class="markdown level1 summary"><p>Writes a file to the host.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">writeFileSync(file: string, text: string, cancelable?: CancellationToken | Cancelable): void;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>file</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The path to the file.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>text</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The contents of the file.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelable</dt>
+        <dd><a class="xref" href="https://github.com/rbuckton/prex/blob/master/docs/cancellation.md#class-cancellationtoken">CancellationToken</a> | <a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
+      </dl>
+      <p>
+        <p>A cancelable object that can be used to abort the operation.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">void</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_CoreSyncHost_writeFileSyncCore_member_1_" data-uid="grammarkdown!CoreSyncHost#writeFileSyncCore:member(1)">writeFileSyncCore(file, content, cancelToken)</h4>
+  <div class="markdown level1 summary"><p>When overridden in a derived class, writes a file to the host.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">/** @virtual */
+protected writeFileSyncCore(file: string, content: string, cancelToken?: CancelToken): void;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>file</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The path to the file.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>content</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelToken</dt>
+        <dd><a class="xref" href="https://esfx.js.org/esfx/api/async-canceltoken/canceltoken.html#_esfx_async_canceltoken_CancelToken_class">CancelToken</a></dd>
+      </dl>
+      <p>
+        <p>A cancellation token that can be used by the caller to abort the operation.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">void</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/rbuckton/grammarkdown/blob/master/src/docs/overwrite/coresynchost.md/#L2" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>
