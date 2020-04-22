@@ -29,7 +29,7 @@ import {
  * Navigates the syntax-tree of a {@link SourceFile}.
  * {@docCategory Compiler}
  *
- * @remkarks
+ * @remarks
  * Nodes in Grammarkdown's syntax tree are immutable and do not maintain pointers to their parents.
  * This can make traversing through a document somewhat difficult. The NodeNavigator class is intended
  * to improve this process by providing an API that can traverse a syntax tree starting from the root.
