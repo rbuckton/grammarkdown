@@ -1,0 +1,2 @@
+HexDigits[Sep] :: [empty]
+NotCodePoint :: HexDigits[~Sep] [> but only if MV of |HexDigits| > 0x10FFFF]

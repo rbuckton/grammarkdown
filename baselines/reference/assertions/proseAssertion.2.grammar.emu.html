@@ -1,0 +1,9 @@
+<emu-production name="HexDigits" params="Sep" type="lexical" collapsed>
+    <emu-rhs a="37b9c04c"><emu-gann>empty</emu-gann></emu-rhs>
+</emu-production>
+<emu-production name="NotCodePoint" type="lexical" collapsed>
+    <emu-rhs a="c53626dc">
+        <emu-nt params="~Sep">HexDigits</emu-nt>
+        <emu-gmod>but only if MV of <emu-nt>HexDigits</emu-nt> &gt; 0x10FFFF</emu-gmod>
+    </emu-rhs>
+</emu-production>
