@@ -870,7 +870,7 @@ export class Checker {
     private checkProseFragment(fragment: ProseFragment): void {
         switch (fragment.kind) {
             case SyntaxKind.Nonterminal:
-                this.checkNonterminal(<Nonterminal>fragment, /*allowOptional*/ false);
+                this.checkNonterminal(<Nonterminal>fragment, /*allowOptional*/ false, /*allowArguments*/ false);
                 break;
 
             case SyntaxKind.Terminal:
@@ -1000,7 +1000,7 @@ export class Checker {
                 break;
 
             case SyntaxKind.Nonterminal:
-                this.checkNonterminal(<Nonterminal>node, allowOptional);
+                this.checkNonterminal(<Nonterminal>node, allowOptional, /*allowArguments*/ true);
                 break;
 
             case SyntaxKind.PlaceholderSymbol:
@@ -1011,6 +1011,16 @@ export class Checker {
                 this.reportInvalidSymbol(<LexicalSymbol>node);
                 break;
         }
+    }
+
+    private checkGrammarNonTerminal(node: Nonterminal, allowOptional: boolean, allowArguments: boolean) {
+        if (this.checkGrammarOptionalSymbol(node, allowOptional)) {
+            return true;
+        }
+        if (!allowArguments && node.argumentList) {
+            return this.reportGrammarErrorForNode(node.argumentList, Diagnostics.Unexpected_token_0_, tokenToString(node.argumentList.openParenToken.kind));
+        }
+        return false;
     }
 
     private checkGrammarOptionalSymbol(node: OptionalSymbol, allowOptional: boolean) {
@@ -1069,10 +1079,10 @@ export class Checker {
     private checkPlaceholder(node: PlaceholderSymbol): void {
     }
 
-    private checkNonterminal(node: Nonterminal, allowOptional: boolean = false): void {
-        this.checkGrammarOptionalSymbol(node, allowOptional);
+    private checkNonterminal(node: Nonterminal, allowOptional: boolean = false, allowArguments: boolean = true): void {
+        this.checkGrammarNonTerminal(node, allowOptional, allowArguments);
 
-        if (this.noStrictParametricProductions) {
+        if (this.noStrictParametricProductions || !allowArguments) {
             this.checkNonterminalNonStrict(node);
         }
         else {
