@@ -6,7 +6,8 @@
       { "files": ["**/*.{md,yml}"], "src": "src/docs/content" }
     ],
     "resource": [
-      { "files": ["**"], "src": "src/docs/resources" }
+      { "files": ["**"], "src": "src/docs/resources" },
+      { "files": ["**"], "src": "obj/resources" }
     ],
     "overwrite": [
       { "files": ["**/*.{md,yml}"], "src": "src/docs/overwrite" }

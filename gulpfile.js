@@ -70,6 +70,14 @@ gulp.task("default", test);
 
 gulp.task("diff", () => diff("baselines/reference/", "baselines/local/"));
 
+const emu = async () => {
+    await exec(process.execPath, [require.resolve("./dist/cli.js"), "spec/es6.grammar", "-o", "spec/es6.grammar.html", "-f", "ecmarkup", "--emitLinks"]);
+    await exec(process.execPath, [require.resolve("./dist/cli.js"), "spec/typescript.grammar", "-o", "spec/typescript.grammar.html", "-f", "ecmarkup", "--emitLinks"]);
+    try { await fs.mkdirSync("obj/resources", { recursive: true }); } catch { }
+    await exec(process.execPath, [require.resolve("ecmarkup/bin/ecmarkup.js"), "spec/es6.html", "obj/resources/es6.html", "--css-out", "obj/resources/elements.css", "--js-out", "obj/resources/menu.js"]);
+    await exec(process.execPath, [require.resolve("ecmarkup/bin/ecmarkup.js"), "spec/typescript.html", "obj/resources/typescript.html"]);
+}
+
 const api_extractor = () => exec(process.execPath, [require.resolve("@microsoft/api-extractor/bin/api-extractor"), "run", "--local"]);
 const api_extractor_fixup = async () => {
     const data = fs.readFileSync("obj/json/grammarkdown.api.json", "utf8");
@@ -82,6 +90,7 @@ const api_documenter_fixup = () => gulp.src("obj/yaml/**/*.yml")
 const docfx = () => exec("docfx", argv.serve ? ["--serve"] : []);
 gulp.task("docs", gulp.series(
     build,
+    emu,
     api_extractor,
     api_extractor_fixup,
     api_documenter,
