@@ -59,7 +59,7 @@ import {
     Production,
     SourceElement,
     Define,
-    PlaceholderSymbol
+    PlaceholderSymbol, HtmlTrivia
 } from "./nodes";
 import { NodeNavigator } from "./navigator";
 import { toCancelToken } from "./core";
@@ -355,7 +355,9 @@ export class Checker {
                 ]));
         }
 
-        return false;
+        return this.reportInvalidHtmlTrivia(node.name.trailingHtmlTrivia)
+            || this.reportInvalidHtmlTrivia(node.colonToken.leadingHtmlTrivia)
+            || this.reportInvalidHtmlTrivia(node.colonToken.trailingHtmlTrivia);
     }
 
     private checkParameterList(node: ParameterList): void {
@@ -384,9 +386,13 @@ export class Checker {
         if (!node.closeParenToken) {
             return this.reportGrammarError(node, node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.CloseBracketToken));
         }
+
+        return this.reportInvalidHtmlTrivia(node.leadingHtmlTrivia)
+            || this.reportInvalidHtmlTrivia(node.trailingHtmlTrivia);
     }
 
     private checkParameter(node: Parameter): void {
+        this.reportInvalidHtmlTrivia(node.leadingHtmlTrivia) || this.reportInvalidHtmlTrivia(node.trailingHtmlTrivia);
         this.checkIdentifier(node.name);
     }
 
@@ -1394,6 +1400,13 @@ export class Checker {
         return location
             ? this.reportGrammarErrorForNode(location, diagnosticMessage, arg0, arg1, arg2)
             : this.reportGrammarError(context, pos, diagnosticMessage, arg0, arg1, arg2);
+    }
+
+    private reportInvalidHtmlTrivia(nodes: HtmlTrivia[] | undefined) {
+        if (nodes && nodes.length) {
+            return this.reportGrammarErrorForNode(nodes[0], Diagnostics.Html_trivia_not_allowed_here);
+        }
+        return false;
     }
 }
 

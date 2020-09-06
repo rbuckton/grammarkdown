@@ -1,0 +1,3 @@
+/// html/aroundProduction.grammar:
+html/aroundProduction.grammar(9,16): error GM1010: HTML trivia not allowed here.
+html/aroundProduction.grammar(12,16): error GM1010: HTML trivia not allowed here.
