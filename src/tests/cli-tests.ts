@@ -1,3 +1,10 @@
+/*!
+ * Copyright (c) 2020 Ron Buckton (rbuckton@chronicles.org)
+ *
+ * This file is licensed to you under the terms of the MIT License, found in the LICENSE file
+ * in the root of this repository or package.
+ */
+
 import { assert } from "chai";
 import { execSync } from "child_process";
 
