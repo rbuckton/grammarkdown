@@ -13,6 +13,50 @@
       "is_incremental": false
     },
     {
+      "type": "Resource",
+      "source_relative_path": "obj/resources/elements.css",
+      "output": {
+        "resource": {
+          "relative_path": "elements.css"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "obj/resources/es6.html",
+      "output": {
+        "resource": {
+          "relative_path": "es6.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "obj/resources/menu.js",
+      "output": {
+        "resource": {
+          "relative_path": "menu.js"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "obj/resources/typescript.html",
+      "output": {
+        "resource": {
+          "relative_path": "typescript.html"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
       "type": "UniversalReference",
       "source_relative_path": "obj/yaml/grammarkdown.yml",
       "output": {
@@ -1383,6 +1427,13 @@
           "incrementalPhase": "build",
           "total_file_count": 10,
           "skipped_file_count": 10
+        },
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
         },
         "TocDocumentProcessor": {
           "can_incremental": false,
