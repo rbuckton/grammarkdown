@@ -113,7 +113,13 @@ export class EcmarkupEmitter extends Emitter {
                     this.writer.write(` `);
                 }
 
-                this.emitTextContent(node.terminals[i]);
+                const terminal = node.terminals[i];
+                if (terminal.leadingHtmlTrivia || terminal.trailingHtmlTrivia) {
+                    this.emitNode(terminal);
+                }
+                else {
+                    this.emitTextContent(node.terminals[i]);
+                }
             }
         }
 
