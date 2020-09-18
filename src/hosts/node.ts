@@ -21,6 +21,7 @@ import { HostBaseOptions, LegacyReadFileSyncCallback, ReadFileSyncCallback, Lega
 export interface NodeSyncHostOptions extends HostBaseOptions {
     readFileSync?: LegacyReadFileSyncCallback | ReadFileSyncCallback | false;
     writeFileSync?: LegacyWriteFileSyncCallback | WriteFileSyncCallback | false;
+    allowUris?: false;
 }
 
 /** {@docCategory Hosts} */
@@ -46,6 +47,7 @@ export class NodeSyncHost extends CoreSyncHost {
 export interface NodeAsyncHostOptions extends HostBaseOptions {
     readFile?: ReadFileCallback | LegacyReadFileCallback | false;
     writeFile?: WriteFileCallback | LegacyWriteFileCallback | false;
+    allowUris?: false;
 }
 
 /** {@docCategory Hosts} */

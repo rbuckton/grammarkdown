@@ -9,7 +9,7 @@ import * as performance from "./performance";
 import { SourceFile } from "./nodes";
 import { Parser } from "./parser";
 import { CancellationToken } from "prex";
-import { toCancelToken, isUri, getLocalPath } from "./core";
+import { toCancelToken, getLocalPath } from "./core";
 import { CancelToken } from "@esfx/async-canceltoken";
 import { Cancelable } from "@esfx/cancelable";
 
@@ -376,7 +376,7 @@ export class CoreSyncHost extends HostBase {
     public readFileSync(file: string, cancelable?: CancellationToken | Cancelable): string | undefined {
         performance.mark("ioRead");
         try {
-            return this.readFileSyncCore(file, toCancelToken(cancelable));
+            return this.readFileSyncCore(getLocalPath(file), toCancelToken(cancelable));
         }
         finally {
             performance.measure("ioRead", "ioRead");
@@ -398,7 +398,7 @@ export class CoreSyncHost extends HostBase {
     public writeFileSync(file: string, text: string, cancelable?: CancellationToken | Cancelable) {
         performance.mark("ioWrite");
         try {
-            this.writeFileSyncCore(file, text, toCancelToken(cancelable));
+            this.writeFileSyncCore(getLocalPath(file), text, toCancelToken(cancelable));
         }
         finally {
             performance.measure("ioWrite", "ioWrite");
@@ -663,9 +663,7 @@ export class CoreAsyncHost extends HostBase {
     public async readFile(file: string, cancelable?: CancellationToken | Cancelable): Promise<string | undefined> {
         performance.mark("ioRead");
         try {
-            file = getLocalPath(file);
-            if (isUri(file)) return undefined; // TODO: support uris?
-            return await this.readFileCore(file, toCancelToken(cancelable));
+            return await this.readFileCore(getLocalPath(file), toCancelToken(cancelable));
         }
         finally {
             performance.measure("ioRead", "ioRead");
@@ -688,9 +686,7 @@ export class CoreAsyncHost extends HostBase {
     public async writeFile(file: string, text: string, cancelable?: CancellationToken | Cancelable) {
         performance.mark("ioWrite");
         try {
-            file = getLocalPath(file);
-            if (isUri(file)) throw new Error("Cannot write to a non-file URI.");
-            await this.writeFileCore(file, text, toCancelToken(cancelable));
+            await this.writeFileCore(getLocalPath(file), text, toCancelToken(cancelable));
         }
         finally {
             performance.measure("ioWrite", "ioWrite");
