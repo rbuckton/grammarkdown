@@ -1,0 +1,8 @@
+@line 5 "foo"
+A : B
+
+@line 25
+    C : D
+
+@line default
+E : F

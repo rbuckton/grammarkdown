@@ -170,6 +170,12 @@ export class Scanner {
         this.tokenFlags &= ~TokenFlags.PrecedingNonWhitespaceTrivia;
     }
 
+    public resetIndent() {
+        this.insignificantIndentLength = this.currentIndentLength;
+        this.significantIndentLength = 0;
+        this.tokenFlags &= ~(TokenFlags.PrecedingIndent | TokenFlags.PrecedingDedent | TokenFlags.LineContinuation);
+    }
+
     public speculate<T>(callback: () => T, isLookahead: boolean): T {
         const savePos = this.pos;
         const saveStartPos = this.startPos;
@@ -427,6 +433,18 @@ export class Scanner {
                     }
 
                     return this.token = SyntaxKind.Unknown;
+
+                case CharacterCodes.Number0:
+                case CharacterCodes.Number1:
+                case CharacterCodes.Number2:
+                case CharacterCodes.Number3:
+                case CharacterCodes.Number4:
+                case CharacterCodes.Number5:
+                case CharacterCodes.Number6:
+                case CharacterCodes.Number7:
+                case CharacterCodes.Number8:
+                case CharacterCodes.Number9:
+                    return this.tokenValue = this.scanNumber(), this.token = SyntaxKind.NumberLiteral;
 
                 case CharacterCodes.UpperU:
                 case CharacterCodes.LowerU:
@@ -809,41 +827,40 @@ export class Scanner {
         return value;
     }
 
-    // private scanNumber(): number {
-    //     const start = this.pos;
-    //     while (isDecimalDigit(this.text.charCodeAt(this.pos))) {
-    //         this.pos++;
-    //     }
+    private scanNumber(): string {
+        while (isDecimalDigit(this.text.charCodeAt(this.pos))) {
+            this.pos++;
+        }
 
-    //     if (this.text.charCodeAt(this.pos) === CharacterCodes.Dot) {
-    //         this.pos++;
-    //         while (isDecimalDigit(this.text.charCodeAt(this.pos))) {
-    //             this.pos++;
-    //         }
-    //     }
+        if (this.text.charCodeAt(this.pos) === CharacterCodes.Dot) {
+            this.pos++;
+            while (isDecimalDigit(this.text.charCodeAt(this.pos))) {
+                this.pos++;
+            }
+        }
 
-    //     let end = this.pos;
-    //     if (this.text.charCodeAt(this.pos) === CharacterCodes.UpperE || this.text.charCodeAt(this.pos) === CharacterCodes.LowerE) {
-    //         this.pos++;
-    //         if (this.text.charCodeAt(this.pos) === CharacterCodes.Plus || this.text.charCodeAt(this.pos) === CharacterCodes.Minus) {
-    //             this.pos++;
-    //         }
+        let end = this.pos;
+        if (this.text.charCodeAt(this.pos) === CharacterCodes.UpperE || this.text.charCodeAt(this.pos) === CharacterCodes.LowerE) {
+            this.pos++;
+            if (this.text.charCodeAt(this.pos) === CharacterCodes.Plus || this.text.charCodeAt(this.pos) === CharacterCodes.Minus) {
+                this.pos++;
+            }
 
-    //         if (isDecimalDigit(this.text.charCodeAt(this.pos))) {
-    //             this.pos++;
-    //             while (isDecimalDigit(this.text.charCodeAt(this.pos))) {
-    //                 this.pos++;
-    //             }
+            if (isDecimalDigit(this.text.charCodeAt(this.pos))) {
+                this.pos++;
+                while (isDecimalDigit(this.text.charCodeAt(this.pos))) {
+                    this.pos++;
+                }
 
-    //             end = this.pos;
-    //         }
-    //         else {
-    //             this.getDiagnostics().report(start, Diagnostics.Digit_expected);
-    //         }
-    //     }
+                end = this.pos;
+            }
+            else {
+                this.getDiagnostics().report(this.pos, Diagnostics.Digit_expected);
+            }
+        }
 
-    //     return +(this.text.substring(start, end));
-    // }
+        return +(this.text.substring(this.tokenPos, end)) + "";
+    }
 
     private getIdentifierToken(): SyntaxKind {
         const len = this.tokenValue.length;

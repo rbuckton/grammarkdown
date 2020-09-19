@@ -8,6 +8,7 @@
 import { binarySearch, compareStrings, compare, Range, Position } from "./core";
 import { CharacterCodes, SyntaxKind, tokenToString } from "./tokens";
 import { Node, SourceFile } from "./nodes";
+import { SortedUniqueList } from "./sortedUniqueList";
 
 /** {@docCategory Check} */
 export interface Diagnostic {
@@ -53,6 +54,7 @@ export interface DiagnosticInfo {
     warning: boolean;
     range: Range | undefined;
     sourceFile: SourceFile | undefined;
+    filename: string | undefined;
     node: Node | undefined;
     pos: number;
     formattedMessage?: string;
@@ -70,6 +72,11 @@ export class DiagnosticMessages {
     private sourceFiles: SourceFile[] | undefined;
     private sourceFilesDiagnosticOffset: number[] | undefined;
     private sortedAndDeduplicatedDiagnosticIndices: number[] | undefined;
+    private lineOffsetMap: LineOffsetMap | undefined;
+
+    constructor(lineOffsetMap?: LineOffsetMap) {
+        this.lineOffsetMap = lineOffsetMap;
+    }
 
     public get size() {
         return this.diagnostics ? this.diagnostics.length : 0;
@@ -80,15 +87,19 @@ export class DiagnosticMessages {
             return;
         }
 
-        if (!this.diagnostics && !this.sourceFiles) {
-            this.diagnostics = other.diagnostics && other.diagnostics.slice();
-            this.diagnosticsArguments = other.diagnosticsArguments && other.diagnosticsArguments.slice();
-            this.diagnosticsPos = other.diagnosticsPos && other.diagnosticsPos.slice();
-            this.diagnosticsLength = other.diagnosticsLength && other.diagnosticsLength.slice();
-            this.diagnosticsNode = other.diagnosticsNode && other.diagnosticsNode.slice();
-            this.sourceFiles = other.sourceFiles && other.sourceFiles.slice();
-            this.sourceFilesDiagnosticOffset = other.sourceFilesDiagnosticOffset && other.sourceFilesDiagnosticOffset.slice();
-            this.sortedAndDeduplicatedDiagnosticIndices = other.sortedAndDeduplicatedDiagnosticIndices && other.sortedAndDeduplicatedDiagnosticIndices.slice();
+        if (!this.diagnostics && !this.sourceFiles && !this.lineOffsetMap) {
+            this.diagnostics = other.diagnostics?.slice();
+            this.diagnosticsArguments = other.diagnosticsArguments?.slice();
+            this.diagnosticsPos = other.diagnosticsPos?.slice();
+            this.diagnosticsLength = other.diagnosticsLength?.slice();
+            this.diagnosticsNode = other.diagnosticsNode?.slice();
+            this.sourceFiles = other.sourceFiles?.slice();
+            this.sourceFilesDiagnosticOffset = other.sourceFilesDiagnosticOffset?.slice();
+            if (other.lineOffsetMap) {
+                this.lineOffsetMap = new LineOffsetMap();
+                this.lineOffsetMap.copyFrom(other.lineOffsetMap);
+            }
+            this.sortedAndDeduplicatedDiagnosticIndices = other.sortedAndDeduplicatedDiagnosticIndices?.slice();
             this.detailedDiagnosticMessages = other.detailedDiagnosticMessages && new Map(other.detailedDiagnosticMessages);
             this.simpleDiagnosticMessages = other.simpleDiagnosticMessages && new Map(other.simpleDiagnosticMessages);
             return;
@@ -110,6 +121,12 @@ export class DiagnosticMessages {
                 this.sourceFiles[sourceFileOffset + i] = other.sourceFiles[i];
                 this.sourceFilesDiagnosticOffset[sourceFileOffset + i] = other.sourceFilesDiagnosticOffset[i] + diagnosticOffset;
             }
+        }
+
+        // copy line offsets
+        if (other.lineOffsetMap) {
+            this.lineOffsetMap ||= new LineOffsetMap();
+            this.lineOffsetMap.copyFrom(other.lineOffsetMap);
         }
 
         // copy diagnostics
@@ -161,7 +178,7 @@ export class DiagnosticMessages {
         return this.diagnostics ? this.diagnostics.length : 0;
     }
 
-    public getMessage(diagnosticIndex: number, options: { detailed?: boolean; } = { detailed: true }): string {
+    public getMessage(diagnosticIndex: number, options: { detailed?: boolean; raw?: boolean; } = { detailed: true }): string {
         const diagnostic = this.diagnostics && this.diagnostics[diagnosticIndex];
         if (diagnostic) {
             const { detailed = true } = options;
@@ -175,14 +192,19 @@ export class DiagnosticMessages {
             }
 
             const diagnosticArguments = this.diagnosticsArguments && this.diagnosticsArguments[diagnosticIndex];
-            const sourceFile = this.getDiagnosticSourceFile(diagnosticIndex);
             let text = "";
             if (detailed) {
-                text += sourceFile ? sourceFile.filename : "";
-                if (this.diagnosticsPos && diagnosticIndex in this.diagnosticsPos) {
+                const sourceFile = this.getDiagnosticSourceFile(diagnosticIndex);
+                const filename = this.getDiagnosticFilename(diagnosticIndex, options.raw);
+                const position = this.getDiagnosticPosition(diagnosticIndex, options.raw)
+                text += filename ?? (sourceFile ? sourceFile.filename : "");
+                if (position) {
+                    text += `(${position.line + 1},${position.character + 1})`;
+                }
+                else if (this.diagnosticsPos && diagnosticIndex in this.diagnosticsPos) {
                     const diagnosticPos = this.diagnosticsPos[diagnosticIndex];
                     if (sourceFile && sourceFile.lineMap) {
-                        text += `(${sourceFile.lineMap.formatPosition(diagnosticPos)})`;
+                        text += `(${sourceFile.lineMap.formatOffset(diagnosticPos)})`;
                     }
                     else {
                         text += `(${diagnosticPos})`;
@@ -212,7 +234,7 @@ export class DiagnosticMessages {
         return this.diagnostics && this.diagnostics[diagnosticIndex];
     }
 
-    public getDiagnosticInfos(options?: { formatMessage?: boolean; detailedMessage?: boolean; }): DiagnosticInfo[] {
+    public getDiagnosticInfos(options?: { formatMessage?: boolean; detailedMessage?: boolean; raw?: boolean; }): DiagnosticInfo[] {
         const result: DiagnosticInfo[] = [];
         if (this.diagnostics) {
             for (const diagnosticIndex of this.getSortedAndDeduplicatedDiagnosticIndices()) {
@@ -225,7 +247,7 @@ export class DiagnosticMessages {
         return result;
     }
 
-    public getDiagnosticInfosForSourceFile(sourceFile: SourceFile, options?: { formatMessage?: boolean; detailedMessage?: boolean; }): DiagnosticInfo[] {
+    public getDiagnosticInfosForSourceFile(sourceFile: SourceFile, options?: { formatMessage?: boolean; detailedMessage?: boolean; raw?: boolean; }): DiagnosticInfo[] {
         const result: DiagnosticInfo[] = [];
         if (this.diagnostics) {
             for (const diagnosticIndex of this.getSortedAndDeduplicatedDiagnosticIndices()) {
@@ -240,7 +262,7 @@ export class DiagnosticMessages {
         return result;
     }
 
-    public getDiagnosticInfo(diagnosticIndex: number, options: { formatMessage?: boolean; detailedMessage?: boolean; } = {}): DiagnosticInfo | undefined {
+    public getDiagnosticInfo(diagnosticIndex: number, options: { formatMessage?: boolean; detailedMessage?: boolean; raw?: boolean; } = {}): DiagnosticInfo | undefined {
         const diagnostic = this.getDiagnostic(diagnosticIndex);
         if (diagnostic) {
             const info: DiagnosticInfo = {
@@ -249,8 +271,9 @@ export class DiagnosticMessages {
                 warning: diagnostic.warning || false,
                 message: diagnostic.message,
                 messageArguments: this.getDiagnosticArguments(diagnosticIndex),
-                range: this.getDiagnosticRange(diagnosticIndex),
+                range: this.getDiagnosticRange(diagnosticIndex, options.raw),
                 sourceFile: this.getDiagnosticSourceFile(diagnosticIndex),
+                filename: this.getDiagnosticFilename(diagnosticIndex, options.raw),
                 node: this.getDiagnosticNode(diagnosticIndex),
                 pos: this.getDiagnosticPos(diagnosticIndex)
             };
@@ -269,15 +292,50 @@ export class DiagnosticMessages {
         return this.diagnosticsArguments && this.diagnosticsArguments[diagnosticIndex];
     }
 
-    public getDiagnosticRange(diagnosticIndex: number) {
+    public getDiagnosticRange(diagnosticIndex: number, raw?: boolean) {
         const diagnostic = this.getDiagnostic(diagnosticIndex);
         const sourceFile = this.getDiagnosticSourceFile(diagnosticIndex);
         const node = this.getDiagnosticNode(diagnosticIndex);
         const pos = this.getDiagnosticPos(diagnosticIndex);
         if (diagnostic && node || pos > -1) {
-            return getDiagnosticRange(node, pos, sourceFile);
+            let range = getDiagnosticRange(node, pos, sourceFile);
+            if (!raw && sourceFile) {
+                const startLineOffset = this.lineOffsetMap?.findLineOffset(sourceFile, range.start);
+                if (startLineOffset && startLineOffset.sourceLine !== "default") {
+                    const diff = range.start.line - startLineOffset.generatedLine;
+                    const sourceLine = startLineOffset.sourceLine.line + diff;
+                    range = Range.create(Position.create(sourceLine, range.start.character), range.end);
+                }
+                const endLineOffset = this.lineOffsetMap?.findLineOffset(sourceFile, range.end);
+                if (endLineOffset && endLineOffset.sourceLine !== "default") {
+                    const diff = range.end.line - endLineOffset.generatedLine;
+                    const sourceLine = endLineOffset.sourceLine.line + diff;
+                    range = Range.create(range.start, Position.create(sourceLine, range.end.character));
+                }
+            }
+            return range;
         }
 
+        return undefined;
+    }
+
+    public getDiagnosticPosition(diagnosticIndex: number, raw?: boolean) {
+        const diagnostic = this.getDiagnostic(diagnosticIndex);
+        const sourceFile = this.getDiagnosticSourceFile(diagnosticIndex);
+        const node = this.getDiagnosticNode(diagnosticIndex);
+        const pos = this.getDiagnosticPos(diagnosticIndex);
+        if (diagnostic && node || pos > -1) {
+            let position = positionOfStart(node, pos, sourceFile);
+            if (!raw && sourceFile) {
+                const startLineOffset = this.lineOffsetMap?.findLineOffset(sourceFile, position);
+                if (startLineOffset && startLineOffset.sourceLine !== "default") {
+                    const diff = position.line - startLineOffset.generatedLine;
+                    const sourceLine = startLineOffset.sourceLine.line + diff;
+                    position = Position.create(sourceLine, position.character);
+                }
+            }
+            return position;
+        }
         return undefined;
     }
 
@@ -299,6 +357,21 @@ export class DiagnosticMessages {
             return this.sourceFiles[offset];
         }
 
+        return undefined;
+    }
+
+    public getDiagnosticFilename(diagnosticIndex: number, raw?: boolean): string | undefined {
+        const sourceFile = this.getDiagnosticSourceFile(diagnosticIndex);
+        if (sourceFile) {
+            if (!raw) {
+                const pos = this.getDiagnosticPos(diagnosticIndex);
+                const lineOffset = this.lineOffsetMap?.findLineOffset(sourceFile, sourceFile.lineMap.positionAt(pos));
+                if (lineOffset && lineOffset.sourceLine !== "default" && lineOffset.sourceLine.file !== undefined) {
+                    return lineOffset.sourceLine.file;
+                }
+            }
+            return sourceFile.filename;
+        }
         return undefined;
     }
 
@@ -461,9 +534,9 @@ export class LineMap {
         return this.lineStarts.length;
     }
 
-    /* @obsolete */ /* @internal */ formatPosition(pos: number): string { return this.formatOffset(pos); }
-    /* @obsolete */ /* @internal */ getPositionOfLineAndCharacter(lineAndCharacter: Position) { return this.offsetAt(lineAndCharacter); }
-    /* @obsolete */ /* @internal */ getLineAndCharacterOfPosition(pos: number): Position { return this.positionAt(pos); }
+    /** @deprecated */ /* @internal */ formatPosition(pos: number): string { return this.formatOffset(pos); }
+    /** @deprecated */ /* @internal */ getPositionOfLineAndCharacter(lineAndCharacter: Position) { return this.offsetAt(lineAndCharacter); }
+    /** @deprecated */ /* @internal */ getLineAndCharacterOfPosition(pos: number): Position { return this.positionAt(pos); }
 
     public formatOffset(pos: number): string {
         this.computeLineStarts();
@@ -543,6 +616,112 @@ export class LineMap {
         }
         lineStarts.push(lineStart);
         this.lineStarts = lineStarts;
+    }
+}
+
+/* @internal */
+export interface SourceLine {
+    line: number;
+    file?: string;
+}
+
+/* @internal */
+export interface LineOffset {
+    generatedLine: number;
+    sourceLine: SourceLine | "default";
+}
+
+function compareSourceLines(a: SourceLine | "default", b: SourceLine | "default") {
+    if (a === "default") return b === "default" ? 0 : -1;
+    if (b === "default") return 1;
+    return compare(a.file, b.file)
+        || compare(a.line, b.line);
+}
+
+/* @internal */
+export function compareLineOffsets(a: LineOffset, b: LineOffset): number {
+    return compare(a.generatedLine, b.generatedLine)
+        || compareSourceLines(a.sourceLine, b.sourceLine);
+}
+
+function equateSourceLines(a: SourceLine | "default", b: SourceLine | "default") {
+    if (a === "default") return b === "default";
+    if (b === "default") return false;
+    return a.line === b.line
+        && a.file === b.file;
+}
+
+/* @internal */
+export function equateLineOffsets(a: LineOffset, b: LineOffset): boolean {
+    return a.generatedLine === b.generatedLine
+        && equateSourceLines(a.sourceLine, b.sourceLine);
+}
+
+export class LineOffsetMap {
+    private sourceFilesLineOffsets: Map<string, SortedUniqueList<LineOffset>> | undefined;
+
+    /* @internal */
+    public addLineOffset(sourceFile: SourceFile, lineOffset: LineOffset) {
+        this.sourceFilesLineOffsets ||= new Map();
+        let lineOffsets = this.sourceFilesLineOffsets.get(sourceFile.filename);
+        if (!lineOffsets) this.sourceFilesLineOffsets.set(sourceFile.filename, lineOffsets = new SortedUniqueList(compareLineOffsets, equateLineOffsets));
+        lineOffsets.push(lineOffset);
+    }
+
+    /* @internal */
+    public findLineOffset(sourceFile: SourceFile, position: Position) {
+        const lineOffsets = this.sourceFilesLineOffsets?.get(sourceFile.filename)?.toArray();
+        if (lineOffsets) {
+            for (let i = lineOffsets.length - 1; i >= 0; i--) {
+                const lineOffset = lineOffsets[i];
+                if (lineOffset.generatedLine <= position.line) {
+                    return lineOffset;
+                }
+            }
+        }
+    }
+
+    /* @internal */
+    public copyFrom(other: LineOffsetMap) {
+        if (other.sourceFilesLineOffsets) {
+            this.sourceFilesLineOffsets ||= new Map();
+            for (const [filename, list] of other.sourceFilesLineOffsets) {
+                this.sourceFilesLineOffsets.set(filename, list.clone());
+            }
+        }
+    }
+
+    /**
+     * Gets the effective filename of a raw position within a source file, taking into account `@line` directives.
+     */
+    public getEffectiveFilenameAtPosition(sourceFile: SourceFile, position: Position) {
+        const lineOffset = this.findLineOffset(sourceFile, position);
+        if (lineOffset && lineOffset.sourceLine !== "default" && lineOffset.sourceLine.file !== undefined) {
+            return lineOffset.sourceLine.file;
+        }
+        return sourceFile.filename;
+    }
+
+    /**
+     * Gets the effective position of a raw position within a source file, taking into account `@line` directives.
+     */
+    public getEffectivePosition(sourceFile: SourceFile, position: Position) {
+        const lineOffset = this.findLineOffset(sourceFile, position);
+        if (lineOffset && lineOffset.sourceLine !== "default") {
+            const diff = position.line - lineOffset.generatedLine;
+            const sourceLine = lineOffset.sourceLine.line + diff;
+            return Position.create(sourceLine, position.character);
+        }
+        return position;
+    }
+
+    /**
+     * Gets the effective range of a raw range within a source file, taking into account `@line` directives.
+     */
+    public getEffectiveRange(sourceFile: SourceFile, range: Range) {
+        const start = this.getEffectivePosition(sourceFile, range.start);
+        const end = this.getEffectivePosition(sourceFile, range.end);
+        return start !== range.start || end !== range.end ? Range.create(start, end) : range;
     }
 }
 

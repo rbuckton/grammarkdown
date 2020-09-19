@@ -206,6 +206,24 @@ export function concat<T>(a: T[] | undefined, b: T[] | undefined) {
     return a ? b ? a.concat(b) : a : b;
 }
 
+export function deduplicateSorted<T>(array: readonly T[], comparer: (a: T, b: T) => number | boolean): T[] {
+    if (array.length === 0) return [];
+    let last = array[0];
+    const deduplicated: T[] = [last];
+    for (let i = 1; i < array.length; i++) {
+        const next = array[i];
+        const result = comparer(next, last);
+        if (result === true || result === 0) {
+            continue;
+        }
+        else if (result !== false && result < 0) {
+            throw new Error("Array is unsorted");
+        }
+        deduplicated.push(last = next);
+    }
+    return deduplicated;
+}
+
 export function promiseFinally<T>(promise: PromiseLike<T>, onFinally: () => void) {
     return promise.then(value => {
         onFinally();

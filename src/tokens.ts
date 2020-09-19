@@ -189,12 +189,14 @@ export enum SyntaxKind {
     // Tokens, Keywords
     ButKeyword, // FirstKeyword
     DefineKeyword,
+    DefaultKeyword,
     EmptyKeyword,
     FalseKeyword,
     GoalKeyword,
     HereKeyword,
     ImportKeyword,
     LexicalKeyword,
+    LineKeyword,
     LookaheadKeyword,
     NoKeyword,
     NotKeyword,
@@ -206,6 +208,7 @@ export enum SyntaxKind {
 
     // TextContent, Literals
     StringLiteral, // FirstLiteral, FirstTextContent
+    NumberLiteral,
     Terminal,
     UnicodeCharacterLiteral, // LastLiteral
 
@@ -224,6 +227,7 @@ export enum SyntaxKind {
     // Nodes, Top Level
     Import, // @import "path"
     Define, // @define key value
+    Line,   // @line 10 "path"
     Production, // Production: ...
 
     // Nodes, Elements
@@ -365,6 +369,7 @@ export type ArgumentOperatorKind =
 
 export type KeywordKind =
     | SyntaxKind.ButKeyword
+    | SyntaxKind.DefaultKeyword
     | SyntaxKind.DefineKeyword
     | SyntaxKind.EmptyKeyword
     | SyntaxKind.FalseKeyword
@@ -372,6 +377,7 @@ export type KeywordKind =
     | SyntaxKind.HereKeyword
     | SyntaxKind.ImportKeyword
     | SyntaxKind.LexicalKeyword
+    | SyntaxKind.LineKeyword
     | SyntaxKind.LookaheadKeyword
     | SyntaxKind.NoKeyword
     | SyntaxKind.NotKeyword
@@ -414,6 +420,7 @@ export function isProseFragmentLiteralKind(kind: SyntaxKind): kind is ProseFragm
 
 export type TextContentKind =
     | SyntaxKind.StringLiteral
+    | SyntaxKind.NumberLiteral
     | SyntaxKind.Terminal
     | SyntaxKind.UnicodeCharacterLiteral
     | ProseFragmentLiteralKind
@@ -511,11 +518,13 @@ export function isProductionBodyKind(kind: SyntaxKind): kind is ProductionBodyKi
 export type MetaElementKind =
     | SyntaxKind.Import
     | SyntaxKind.Define
+    | SyntaxKind.Line
     ;
 
 export function isMetaElementKind(kind: SyntaxKind): kind is MetaElementKind {
     return kind === SyntaxKind.Import
-        || kind === SyntaxKind.Define;
+        || kind === SyntaxKind.Define
+        || kind === SyntaxKind.Line;
 }
 
 export type SourceElementKind =
@@ -555,12 +564,14 @@ const textToToken = new Map<string, SyntaxKind>([
     ["∉", SyntaxKind.NotAnElementOfToken],
     ["but", SyntaxKind.ButKeyword],
     ["define", SyntaxKind.DefineKeyword],
+    ["default", SyntaxKind.DefaultKeyword],
     ["empty", SyntaxKind.EmptyKeyword],
     ["false", SyntaxKind.FalseKeyword],
     ["goal", SyntaxKind.GoalKeyword],
     ["here", SyntaxKind.HereKeyword],
     ["import", SyntaxKind.ImportKeyword],
     ["lexical", SyntaxKind.LexicalKeyword],
+    ["line", SyntaxKind.LineKeyword],
     ["lookahead", SyntaxKind.LookaheadKeyword],
     ["no", SyntaxKind.NoKeyword],
     ["not", SyntaxKind.NotKeyword],

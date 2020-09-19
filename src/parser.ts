@@ -51,7 +51,9 @@ import {
     MetaElement,
     SourceElement,
     PrimarySymbol,
-    HtmlTrivia
+    HtmlTrivia,
+    Line,
+    NumberLiteral
 } from "./nodes";
 import { CancelToken } from "@esfx/async-canceltoken";
 import { Cancelable } from "@esfx/cancelable";
@@ -1049,6 +1051,18 @@ export class Parser {
         return undefined;
     }
 
+    private parseNumberLiteral(): NumberLiteral | undefined {
+        if (this.token === SyntaxKind.NumberLiteral) {
+            const fullStart = this.scanner.getStartPos();
+            const text = this.scanner.getTokenValue();
+            const node = new NumberLiteral(text);
+            this.nextToken();
+            return this.finishNode(node, fullStart);
+        }
+
+        return undefined;
+    }
+
     private parseMetaElement(atToken: Token<SyntaxKind.AtToken>): MetaElement | undefined {
         const importKeyword = this.parseToken(SyntaxKind.ImportKeyword);
         if (importKeyword) {
@@ -1060,7 +1074,12 @@ export class Parser {
             return this.parseDefine(atToken, defineKeyword);
         }
 
-        this.diagnostics.report(this.scanner.getTokenPos(), Diagnostics._0_expected, formatList([SyntaxKind.ImportKeyword, SyntaxKind.DefineKeyword]));
+        const lineKeyword = this.parseToken(SyntaxKind.LineKeyword);
+        if (lineKeyword) {
+            return this.parseLine(atToken, lineKeyword);
+        }
+
+        this.diagnostics.report(this.scanner.getTokenPos(), Diagnostics._0_expected, formatList([SyntaxKind.ImportKeyword, SyntaxKind.DefineKeyword, SyntaxKind.LineKeyword]));
         return undefined;
     }
 
@@ -1076,6 +1095,15 @@ export class Parser {
         const key = this.parseIdentifier();
         const valueToken = this.parseAnyToken(isBooleanLiteralToken);
         const node = new Define(atToken, defineKeyword, key, valueToken);
+        this.finishNode(node, atToken.pos);
+        return node;
+    }
+
+    private parseLine(atToken: Token<SyntaxKind.AtToken>, lineKeyword: Token<SyntaxKind.LineKeyword>): Line {
+        const defaultKeyword = this.parseToken(SyntaxKind.DefaultKeyword);
+        const number = !defaultKeyword ? this.parseNumberLiteral() : undefined;
+        const path = !defaultKeyword ? this.parseStringLiteral() : undefined;
+        const node = new Line(atToken, lineKeyword, defaultKeyword || number, path);
         this.finishNode(node, atToken.pos);
         return node;
     }
@@ -1100,15 +1128,20 @@ export class Parser {
     }
 
     private parseSourceElement(): SourceElement | undefined {
+        let node: SourceElement | undefined;
         if (this.token === SyntaxKind.Identifier) {
-            return this.parseProduction();
+            node = this.parseProduction();
         }
-
-        const atToken = this.parseToken(SyntaxKind.AtToken);
-        if (atToken) {
-            return this.parseMetaElement(atToken);
+        else {
+            const atToken = this.parseToken(SyntaxKind.AtToken);
+            if (atToken) {
+                node = this.parseMetaElement(atToken);
+            }
         }
-
+        if (node) {
+            this.scanner.resetIndent();
+            return node;
+        }
         this.diagnostics.report(this.scanner.getTokenPos(), Diagnostics.Unexpected_token_0_, tokenToString(this.token));
         return undefined;
     }

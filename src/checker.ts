@@ -9,7 +9,7 @@ import { createHash } from "crypto";
 import { CancellationToken } from "prex";
 import { Cancelable } from "@esfx/cancelable";
 import { CancelToken } from "@esfx/async-canceltoken";
-import { Diagnostics, DiagnosticMessages, Diagnostic, formatList, NullDiagnosticMessages } from "./diagnostics";
+import { Diagnostics, DiagnosticMessages, Diagnostic, formatList, NullDiagnosticMessages, LineOffsetMap } from "./diagnostics";
 import { SyntaxKind, tokenToString } from "./tokens";
 import { Symbol, SymbolKind } from "./symbols";
 import { BindingTable } from "./binder";
@@ -50,10 +50,12 @@ import {
     Production,
     SourceElement,
     Define,
-    PlaceholderSymbol, HtmlTrivia
+    PlaceholderSymbol,
+    HtmlTrivia,
+    Line
 } from "./nodes";
 import { NodeNavigator } from "./navigator";
-import { toCancelToken } from "./core";
+import { Position, Range, toCancelToken } from "./core";
 
 // TODO: Check a Nonterminal as a call
 // TODO: Check all Productions to ensure they have the same parameters.
@@ -80,9 +82,11 @@ export class Checker {
     private cancelToken?: CancelToken;
     private nodeLinks?: Map<Node, NodeLinks>;
     private symbolLinks?: Map<Symbol, SymbolLinks>;
+    private lineOffsetMap: LineOffsetMap;
 
-    constructor(options?: CompilerOptions) {
+    constructor(options?: CompilerOptions, lineOffsetMap = new LineOffsetMap()) {
         this.options = options;
+        this.lineOffsetMap = lineOffsetMap;
     }
 
     public checkSourceFile(sourceFile: SourceFile, bindings: BindingTable, diagnostics: DiagnosticMessages, cancelable?: Cancelable): void;
@@ -144,6 +148,9 @@ export class Checker {
             case SyntaxKind.Define:
                 this.preprocessDefine(<Define>node);
                 break;
+            case SyntaxKind.Line:
+                this.preprocessLine(<Line>node);
+                break;
         }
     }
 
@@ -174,6 +181,24 @@ export class Checker {
 
         if (!node.valueToken) {
             return this.reportGrammarError(node, node.key.end, Diagnostics._0_expected, formatList([SyntaxKind.TrueKeyword, SyntaxKind.FalseKeyword]));
+        }
+    }
+
+    private preprocessLine(node: Line) {
+        if (!this.checkGrammarLine(node)) {
+            const generatedLine = this.sourceFile.lineMap.positionAt(node.end).line + 1;
+            if (node.number?.kind === SyntaxKind.DefaultKeyword) {
+                this.lineOffsetMap.addLineOffset(this.sourceFile, { generatedLine, sourceLine: "default" });
+            }
+            else if (node.number?.kind === SyntaxKind.NumberLiteral) {
+                this.lineOffsetMap.addLineOffset(this.sourceFile, { generatedLine, sourceLine: { line: +node.number.text! - 1, file: node.path?.text } });
+            }
+        }
+    }
+
+    private checkGrammarLine(node: Line) {
+        if (!node.number) {
+            return this.reportGrammarError(node, node.lineKeyword.end, Diagnostics._0_expected, formatList([SyntaxKind.NumberLiteral, SyntaxKind.DefaultKeyword]));
         }
     }
 
@@ -1362,7 +1387,7 @@ export class Checker {
         if (sourceFile !== this.sourceFile) {
             this.diagnostics.setSourceFile(sourceFile);
             this.diagnostics.reportNode(sourceFile, location, diagnosticMessage, arg0, arg1, arg2);
-            this.diagnostics.setSourceFile(sourceFile);
+            this.diagnostics.setSourceFile(this.sourceFile);
         }
         else {
             this.diagnostics.reportNode(sourceFile, location, diagnosticMessage, arg0, arg1, arg2);
@@ -1404,9 +1429,32 @@ export class Checker {
 /** {@docCategory Check} */
 export class Resolver {
     private bindings: BindingTable;
+    private lineOffsetMap: LineOffsetMap | undefined;
 
-    constructor(bindings: BindingTable) {
+    constructor(bindings: BindingTable, lineOffsetMap?: LineOffsetMap) {
         this.bindings = bindings;
+        this.lineOffsetMap = lineOffsetMap;
+    }
+
+    /**
+     * Gets the effective filename of a raw position within a source file, taking into account `@line` directives.
+     */
+    public getEffectiveFilenameAtPosition(sourceFile: SourceFile, position: Position) {
+        return this.lineOffsetMap?.getEffectiveFilenameAtPosition(sourceFile, position) ?? sourceFile.filename;
+    }
+
+    /**
+     * Gets the effective position of a raw position within a source file, taking into account `@line` directives.
+     */
+    public getEffectivePosition(sourceFile: SourceFile, position: Position) {
+        return this.lineOffsetMap?.getEffectivePosition(sourceFile, position) ?? position;
+    }
+
+    /**
+     * Gets the effective range of a raw range within a source file, taking into account `@line` directives.
+     */
+    public getEffectiveRange(sourceFile: SourceFile, range: Range) {
+        return this.lineOffsetMap?.getEffectiveRange(sourceFile, range) ?? range;
     }
 
     public getParent(node: Node): Node | undefined {

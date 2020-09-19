@@ -11,7 +11,7 @@ import { Cancelable } from "@esfx/cancelable";
 import * as performance from "./performance";
 import { CoreSyncHost, CoreAsyncHost } from "./host";
 import { Host, SingleFileHost } from "./hosts/node";
-import { DiagnosticMessages } from "./diagnostics";
+import { DiagnosticMessages, LineOffsetMap } from "./diagnostics";
 import { EmitFormat, CompilerOptions, getDefaultOptions } from "./options";
 import { SyntaxKind } from "./tokens";
 import { Binder, BindingTable } from "./binder";
@@ -25,6 +25,18 @@ import { Emitter, EcmarkupEmitter, MarkdownEmitter, HtmlEmitter } from "./emitte
  * {@docCategory Compiler}
  */
 export class Grammar {
+    private _bindings: BindingTable | undefined;
+    private _rootNames: Iterable<string> | undefined;
+    private _parseState: ParseState | undefined;
+    private _parsePromise: Promise<void> | void | undefined;
+    private _innerBinder: Binder | undefined;
+    private _innerChecker: Checker | undefined;
+    private _innerResolver: Resolver | undefined;
+    private _innerEmitter: Emitter | undefined;
+    private _lineOffsetMap = new LineOffsetMap();
+    private _writeFileFallback = (file: string, content: string, cancelToken?: CancelToken) => this.writeFile(file, content, cancelToken);
+    private _writeFileSyncFallback = (file: string, content: string) => this.writeFileSync(file, content);
+
     /**
      * The {@link CompilerOptions} used by the grammar.
      */
@@ -36,18 +48,7 @@ export class Grammar {
     /**
      * The diagnostic messages produced by the grammar.
      */
-    public readonly diagnostics: DiagnosticMessages = new DiagnosticMessages();
-
-    private _bindings: BindingTable | undefined;
-    private _rootNames: Iterable<string> | undefined;
-    private _parseState: ParseState | undefined;
-    private _parsePromise: Promise<void> | void | undefined;
-    private _innerBinder: Binder | undefined;
-    private _innerChecker: Checker | undefined;
-    private _innerResolver: Resolver | undefined;
-    private _innerEmitter: Emitter | undefined;
-    private _writeFileFallback = (file: string, content: string, cancelToken?: CancelToken) => this.writeFile(file, content, cancelToken);
-    private _writeFileSyncFallback = (file: string, content: string) => this.writeFileSync(file, content);
+    public readonly diagnostics: DiagnosticMessages = new DiagnosticMessages(this._lineOffsetMap);
 
     /**
      * @param rootNames The names of the root files used by the grammar.
@@ -446,7 +447,7 @@ export class Grammar {
      * @virtual
      */
     protected createChecker(options: Readonly<CompilerOptions>): Checker {
-        return new Checker(options);
+        return new Checker(options, this._lineOffsetMap);
     }
 
     /**
@@ -455,7 +456,7 @@ export class Grammar {
      * @virtual
      */
     protected createResolver(bindings: BindingTable) {
-        return new Resolver(bindings);
+        return new Resolver(bindings, this._lineOffsetMap);
     }
 
     /**

@@ -147,6 +147,18 @@ export class StringLiteral extends Node<SyntaxKind.StringLiteral> implements Tex
 }
 
 /** {@docCategory Nodes} */
+export class NumberLiteral extends Node<SyntaxKind.NumberLiteral> implements TextContent {
+    public readonly text: string | undefined;
+
+    constructor(text: string | undefined) {
+        super(SyntaxKind.NumberLiteral);
+        this.text = text;
+    }
+
+    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitNumberLiteral(this); }
+}
+
+/** {@docCategory Nodes} */
 export class Identifier extends Node<SyntaxKind.Identifier> implements TextContent {
     public readonly text: string | undefined;
 
@@ -1698,9 +1710,64 @@ export class Define extends MetaElementBase<SyntaxKind.Define> {
 }
 
 /** {@docCategory Nodes} */
+export class Line extends MetaElementBase<SyntaxKind.Line> {
+    public readonly lineKeyword: Token<SyntaxKind.LineKeyword>;
+    public readonly number: NumberLiteral | Token<SyntaxKind.DefaultKeyword> | undefined;
+    public readonly path: StringLiteral | undefined;
+
+    constructor(atToken: Token<SyntaxKind.AtToken>, lineKeyword: Token<SyntaxKind.LineKeyword>, number: NumberLiteral | Token<SyntaxKind.DefaultKeyword> | undefined, path: StringLiteral | undefined) {
+        super(SyntaxKind.Line, atToken);
+        this.lineKeyword = lineKeyword;
+        this.number = number;
+        this.path = path;
+    }
+
+    get lastChild(): Node | undefined { return this.path || this.number || this.lineKeyword; }
+
+    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
+        return cbNode(this.atToken)
+            || cbNode(this.lineKeyword)
+            || (this.number && cbNode(this.number))
+            || (this.path && cbNode(this.path));
+    }
+
+    public * children(): IterableIterator<Node> {
+        yield this.atToken;
+        yield this.lineKeyword;
+        if (this.number) yield this.number;
+        if (this.path) yield this.path;
+    }
+
+    /*@internal*/ get edgeCount() { return 4; }
+    /*@internal*/ edgeIsArray(offset: number) { return false; }
+    /*@internal*/ edgeName(offset: number): string | undefined {
+        switch (offset) {
+            case 0: return "atToken";
+            case 1: return "lineKeyword";
+            case 2: return "number";
+            case 3: return "path";
+        }
+        return undefined;
+    }
+
+    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
+        switch (offset) {
+            case 0: return this.atToken;
+            case 1: return this.lineKeyword;
+            case 2: return this.number;
+            case 4: return this.path;
+        }
+        return undefined;
+    }
+
+    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitLine(this); }
+}
+
+/** {@docCategory Nodes} */
 export type MetaElement =
     | Import
     | Define
+    | Line
     ;
 
 /** {@docCategory Nodes} */

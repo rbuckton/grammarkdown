@@ -42,6 +42,8 @@ import {
     Production,
     Import,
     Define,
+    NumberLiteral,
+    Line,
 } from "./nodes";
 
 /** {@docCategory Other} */
@@ -84,6 +86,10 @@ export abstract class NodeVisitor {
     }
 
     public visitStringLiteral(node: StringLiteral): StringLiteral {
+        return node;
+    }
+
+    public visitNumberLiteral(node: NumberLiteral): NumberLiteral {
         return node;
     }
 
@@ -208,6 +214,10 @@ export abstract class NodeVisitor {
     }
 
     public visitDefine(node: Define): Define {
+        return node;
+    }
+
+    public visitLine(node: Line): Line {
         return node;
     }
 
