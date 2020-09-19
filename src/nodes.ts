@@ -5,7 +5,8 @@
  * in the root of this repository or package.
  */
 
-import { TextRange, emptyIterable, forEach, first, last } from "./core";
+import { emptyIterable, forEach, first, last } from "./core";
+import { TextRange } from "./types";
 import { LineMap, DiagnosticMessages } from "./diagnostics";
 import {
     SyntaxKind,
@@ -1659,9 +1660,9 @@ export class Import extends MetaElementBase<SyntaxKind.Import> {
 export class Define extends MetaElementBase<SyntaxKind.Define> {
     public readonly defineKeyword: Token<SyntaxKind.DefineKeyword>;
     public readonly key: Identifier;
-    public readonly valueToken: Token<BooleanKind> | undefined;
+    public readonly valueToken: Token<BooleanKind> | Token<SyntaxKind.DefaultKeyword> | undefined;
 
-    constructor(atToken: Token<SyntaxKind.AtToken>, defineKeyword: Token<SyntaxKind.DefineKeyword>, key: Identifier, valueToken: Token<BooleanKind> | undefined) {
+    constructor(atToken: Token<SyntaxKind.AtToken>, defineKeyword: Token<SyntaxKind.DefineKeyword>, key: Identifier, valueToken: Token<BooleanKind> | Token<SyntaxKind.DefaultKeyword> | undefined) {
         super(SyntaxKind.Define, atToken);
         this.defineKeyword = defineKeyword;
         this.key = key;

@@ -1,0 +1,15 @@
+// @emit: none
+// default for 'noUnusedParameters' is 'false'
+A[A] : `a` // ok
+
+@define noUnusedParameters true
+B[A] :: `a` // error
+
+@define noUnusedParameters false
+C[A] :: `a` // ok
+
+@define noUnusedParameters true
+D[A] :: `a` // error
+
+@define noUnusedParameters default
+E[A] :: `a` // ok

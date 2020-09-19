@@ -11,7 +11,7 @@ import {
 } from "./nodes";
 import {
     Position
-} from "./core";
+} from "./types";
 import {
     SyntaxKind
 } from "./tokens";

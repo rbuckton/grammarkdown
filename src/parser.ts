@@ -5,7 +5,8 @@
  * in the root of this repository or package.
  */
 
-import { Range, TextRange, concat, toCancelToken } from "./core";
+import { concat, toCancelToken } from "./core";
+import { Range, TextRange } from "./types";
 import { Diagnostics, DiagnosticMessages, NullDiagnosticMessages, LineMap, formatList } from "./diagnostics";
 import { SyntaxKind, tokenToString, ProductionSeperatorKind, ArgumentOperatorKind, LookaheadOperatorKind, ParameterOperatorKind, TokenKind } from "./tokens";
 import { Scanner } from "./scanner";
@@ -1093,7 +1094,7 @@ export class Parser {
 
     private parseDefine(atToken: Token<SyntaxKind.AtToken>, defineKeyword: Token<SyntaxKind.DefineKeyword>): Define {
         const key = this.parseIdentifier();
-        const valueToken = this.parseAnyToken(isBooleanLiteralToken);
+        const valueToken = this.parseAnyToken(isBooleanLiteralToken) || this.parseToken(SyntaxKind.DefaultKeyword);
         const node = new Define(atToken, defineKeyword, key, valueToken);
         this.finishNode(node, atToken.pos);
         return node;

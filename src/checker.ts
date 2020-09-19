@@ -9,7 +9,8 @@ import { createHash } from "crypto";
 import { CancellationToken } from "prex";
 import { Cancelable } from "@esfx/cancelable";
 import { CancelToken } from "@esfx/async-canceltoken";
-import { Diagnostics, DiagnosticMessages, Diagnostic, formatList, NullDiagnosticMessages, LineOffsetMap } from "./diagnostics";
+import { Diagnostics, DiagnosticMessages, Diagnostic, formatList, NullDiagnosticMessages } from "./diagnostics";
+import { LineOffsetMap } from "./lineOffsetMap";
 import { SyntaxKind, tokenToString } from "./tokens";
 import { Symbol, SymbolKind } from "./symbols";
 import { BindingTable } from "./binder";
@@ -55,7 +56,9 @@ import {
     Line
 } from "./nodes";
 import { NodeNavigator } from "./navigator";
-import { Position, Range, toCancelToken } from "./core";
+import { toCancelToken } from "./core";
+import { Position, Range } from "./types";
+import { RegionMap } from "./regionMap";
 
 // TODO: Check a Nonterminal as a call
 // TODO: Check all Productions to ensure they have the same parameters.
@@ -68,6 +71,21 @@ interface SymbolLinks {
     isReferenced?: boolean;
 }
 
+interface Defines {
+    readonly noStrictParametricProductions: boolean;
+    readonly noUnusedParameters: boolean;
+}
+
+interface DefineOverrides {
+    noStrictParametricProductions?: boolean | "default";
+    noUnusedParameters?: boolean | "default";
+}
+
+function equateDefines(a: DefineOverrides, b: DefineOverrides) {
+    return a.noStrictParametricProductions === b.noStrictParametricProductions
+        && a.noUnusedParameters === b.noUnusedParameters;
+}
+
 /** {@docCategory Check} */
 export class Checker {
     private options: CompilerOptions | undefined;
@@ -76,17 +94,21 @@ export class Checker {
     private diagnostics!: DiagnosticMessages;
     private sourceFile!: SourceFile;
     private noChecks!: boolean;
-    private noStrictParametricProductions!: boolean;
-    private noUnusedParameters!: boolean;
     private productionParametersByName!: Map<Production, Set<string>>;
     private cancelToken?: CancelToken;
     private nodeLinks?: Map<Node, NodeLinks>;
     private symbolLinks?: Map<Symbol, SymbolLinks>;
     private lineOffsetMap: LineOffsetMap;
+    private defines: Defines;
+    private defineOverrideMap?: RegionMap<DefineOverrides>;
 
     constructor(options?: CompilerOptions, lineOffsetMap = new LineOffsetMap()) {
         this.options = options;
         this.lineOffsetMap = lineOffsetMap;
+        this.defines = {
+            noStrictParametricProductions: this.options?.noStrictParametricProductions ?? false,
+            noUnusedParameters: this.options?.noUnusedParameters ?? false
+        };
     }
 
     public checkSourceFile(sourceFile: SourceFile, bindings: BindingTable, diagnostics: DiagnosticMessages, cancelable?: Cancelable): void;
@@ -96,9 +118,7 @@ export class Checker {
         const cancelToken = toCancelToken(cancelable);
         cancelToken?.throwIfSignaled();
         if (!this.checkedFileSet.has(sourceFile.filename)) {
-            const savedNoStrictParametricProductions = this.noStrictParametricProductions;
             const savedNoChecks = this.noChecks;
-            const savedNoUnusedParameters = this.noUnusedParameters;
             const savedCancellationToken = this.cancelToken;
             const savedSourceFile = this.sourceFile;
             const savedProductionParametersByName = this.productionParametersByName;
@@ -108,9 +128,7 @@ export class Checker {
                 this.cancelToken = cancelToken;
                 this.sourceFile = sourceFile;
                 this.productionParametersByName = new Map<Production, Set<string>>();
-                this.noStrictParametricProductions = this.options?.noStrictParametricProductions ?? false;
                 this.noChecks = this.options?.noChecks ?? false;
-                this.noUnusedParameters = this.options?.noUnusedParameters ?? false;
 
                 this.bindings = new BindingTable();
                 this.bindings.copyFrom(bindings);
@@ -131,9 +149,7 @@ export class Checker {
                 this.checkedFileSet.add(sourceFile.filename);
             }
             finally {
-                this.noStrictParametricProductions = savedNoStrictParametricProductions;
                 this.noChecks = savedNoChecks;
-                this.noUnusedParameters = savedNoUnusedParameters;
                 this.cancelToken = savedCancellationToken;
                 this.sourceFile = savedSourceFile;
                 this.productionParametersByName = savedProductionParametersByName;
@@ -141,6 +157,20 @@ export class Checker {
                 this.diagnostics = savedDiagnostics;
             }
         }
+    }
+
+    private getDefine<K extends keyof DefineOverrides>(location: Node, key: K): NonNullable<Defines[K]>;
+    private getDefine<K extends keyof DefineOverrides>(location: Node, key: K) {
+        if (this.defineOverrideMap) {
+            const position = this.sourceFile.lineMap.positionAt(location.getStart(this.sourceFile))
+            for (const region of this.defineOverrideMap.regions(this.sourceFile, position.line)) {
+                const value = region.value[key];
+                if (value === "default") break;
+                if (value === undefined) continue;
+                return value;
+            }
+        }
+        return this.defines[key];
     }
 
     private preprocessSourceElement(node: SourceElement): void {
@@ -156,15 +186,23 @@ export class Checker {
 
     private preprocessDefine(node: Define) {
         if (!this.checkGrammarDefine(node)) {
+            const position = this.sourceFile.lineMap.positionAt(node.getStart(this.sourceFile));
             const nodeKey = node.key;
             const nodeKeyText = nodeKey.text;
+            this.defineOverrideMap ??= new RegionMap(equateDefines);
             switch (nodeKeyText) {
                 case "noStrictParametricProductions":
-                    this.noStrictParametricProductions = node.valueToken?.kind === SyntaxKind.TrueKeyword;
+                    this.defineOverrideMap.addRegion(this.sourceFile, position.line, {
+                        noStrictParametricProductions: node.valueToken!.kind === SyntaxKind.DefaultKeyword ? "default" :
+                            node.valueToken!.kind === SyntaxKind.TrueKeyword
+                    });
                     break;
 
                 case "noUnusedParameters":
-                    this.noUnusedParameters = node.valueToken?.kind === SyntaxKind.TrueKeyword;
+                    this.defineOverrideMap.addRegion(this.sourceFile, position.line, {
+                        noUnusedParameters: node.valueToken!.kind === SyntaxKind.DefaultKeyword ? "default" :
+                            node.valueToken!.kind === SyntaxKind.TrueKeyword
+                    });
                     break;
 
                 default:
@@ -180,7 +218,7 @@ export class Checker {
         }
 
         if (!node.valueToken) {
-            return this.reportGrammarError(node, node.key.end, Diagnostics._0_expected, formatList([SyntaxKind.TrueKeyword, SyntaxKind.FalseKeyword]));
+            return this.reportGrammarError(node, node.key.end, Diagnostics._0_expected, formatList([SyntaxKind.TrueKeyword, SyntaxKind.FalseKeyword, SyntaxKind.DefaultKeyword]));
         }
     }
 
@@ -188,10 +226,10 @@ export class Checker {
         if (!this.checkGrammarLine(node)) {
             const generatedLine = this.sourceFile.lineMap.positionAt(node.end).line + 1;
             if (node.number?.kind === SyntaxKind.DefaultKeyword) {
-                this.lineOffsetMap.addLineOffset(this.sourceFile, { generatedLine, sourceLine: "default" });
+                this.lineOffsetMap.addLineOffset(this.sourceFile, generatedLine, "default");
             }
             else if (node.number?.kind === SyntaxKind.NumberLiteral) {
-                this.lineOffsetMap.addLineOffset(this.sourceFile, { generatedLine, sourceLine: { line: +node.number.text! - 1, file: node.path?.text } });
+                this.lineOffsetMap.addLineOffset(this.sourceFile, generatedLine, { line: +node.number.text! - 1, file: node.path?.text });
             }
         }
     }
@@ -217,7 +255,7 @@ export class Checker {
     private checkProduction(node: Production): void {
         this.checkGrammarProduction(node);
 
-        if (this.noStrictParametricProductions) {
+        if (this.getDefine(node, "noStrictParametricProductions")) {
             this.checkProductionNonStrict(node);
         }
         else {
@@ -242,7 +280,7 @@ export class Checker {
 
         this.getNodeLinks(node, /*create*/ true).hasResolvedSymbols = true;
 
-        if (this.noUnusedParameters) {
+        if (this.getDefine(node, "noUnusedParameters")) {
             const symbol = this.bindings.getSymbol(node);
             if (symbol) {
                 for (const decl of this.bindings.getDeclarations(symbol)) {
@@ -1104,7 +1142,7 @@ export class Checker {
     private checkNonterminal(node: Nonterminal, allowOptional: boolean = false, allowArguments: boolean = true): void {
         this.checkGrammarNonTerminal(node, allowOptional, allowArguments);
 
-        if (this.noStrictParametricProductions || !allowArguments) {
+        if (this.getDefine(node, "noStrictParametricProductions") || !allowArguments) {
             this.checkNonterminalNonStrict(node);
         }
         else {
@@ -1228,7 +1266,7 @@ export class Checker {
                 return this.reportGrammarErrorForNode(node.operatorToken, Diagnostics.Unexpected_token_0_, tokenToString(node.operatorToken.kind));
             }
 
-            if (!node.operatorToken && !this.noStrictParametricProductions) {
+            if (!node.operatorToken && !this.getDefine(node, "noStrictParametricProductions")) {
                 return this.reportGrammarError(node, node.getStart(this.sourceFile), Diagnostics._0_expected, formatList([SyntaxKind.QuestionToken, SyntaxKind.PlusToken, SyntaxKind.TildeToken]));
             }
         }

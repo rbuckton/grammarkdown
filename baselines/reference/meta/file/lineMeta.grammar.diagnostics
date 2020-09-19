@@ -1,4 +1,0 @@
-/// meta/file/lineMeta.grammar:
-foo(5,5): error GM2000: Cannot find name: 'B'.
-meta/file/lineMeta.grammar(25,9): error GM2000: Cannot find name: 'D'.
-meta/file/lineMeta.grammar(8,5): error GM2000: Cannot find name: 'F'.

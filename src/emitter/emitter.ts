@@ -15,7 +15,8 @@ import { CompilerOptions, NewLineKind } from "../options";
 import { Resolver } from "../checker";
 import { StringWriter } from "../stringwriter";
 import { SyntaxKind, tokenToString } from "../tokens";
-import { TextRange, toCancelToken, wrapCancelToken } from "../core";
+import { toCancelToken, wrapCancelToken } from "../core";
+import { TextRange } from "../types";
 import {
     Node,
     SourceFile,

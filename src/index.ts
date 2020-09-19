@@ -5,7 +5,7 @@
  * in the root of this repository or package.
  */
 
-export { TextRange, Position, Range } from "./core";
+export { TextRange, Position, Range } from "./types";
 export {
     ReadFileCallback,
     ReadFileSyncCallback,

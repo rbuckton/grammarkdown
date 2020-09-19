@@ -5,10 +5,11 @@
  * in the root of this repository or package.
  */
 
-import { binarySearch, compareStrings, compare, Range, Position } from "./core";
+import { binarySearch, compareStrings, compare } from "./core";
+import { Range, Position } from "./types";
 import { CharacterCodes, SyntaxKind, tokenToString } from "./tokens";
 import { Node, SourceFile } from "./nodes";
-import { SortedUniqueList } from "./sortedUniqueList";
+import { LineOffsetMap } from "./lineOffsetMap";
 
 /** {@docCategory Check} */
 export interface Diagnostic {
@@ -298,20 +299,9 @@ export class DiagnosticMessages {
         const node = this.getDiagnosticNode(diagnosticIndex);
         const pos = this.getDiagnosticPos(diagnosticIndex);
         if (diagnostic && node || pos > -1) {
-            let range = getDiagnosticRange(node, pos, sourceFile);
-            if (!raw && sourceFile) {
-                const startLineOffset = this.lineOffsetMap?.findLineOffset(sourceFile, range.start);
-                if (startLineOffset && startLineOffset.sourceLine !== "default") {
-                    const diff = range.start.line - startLineOffset.generatedLine;
-                    const sourceLine = startLineOffset.sourceLine.line + diff;
-                    range = Range.create(Position.create(sourceLine, range.start.character), range.end);
-                }
-                const endLineOffset = this.lineOffsetMap?.findLineOffset(sourceFile, range.end);
-                if (endLineOffset && endLineOffset.sourceLine !== "default") {
-                    const diff = range.end.line - endLineOffset.generatedLine;
-                    const sourceLine = endLineOffset.sourceLine.line + diff;
-                    range = Range.create(range.start, Position.create(sourceLine, range.end.character));
-                }
+            const range = getDiagnosticRange(node, pos, sourceFile);
+            if (!raw && sourceFile && this.lineOffsetMap) {
+                return this.lineOffsetMap.getEffectiveRange(sourceFile, range);
             }
             return range;
         }
@@ -325,14 +315,9 @@ export class DiagnosticMessages {
         const node = this.getDiagnosticNode(diagnosticIndex);
         const pos = this.getDiagnosticPos(diagnosticIndex);
         if (diagnostic && node || pos > -1) {
-            let position = positionOfStart(node, pos, sourceFile);
-            if (!raw && sourceFile) {
-                const startLineOffset = this.lineOffsetMap?.findLineOffset(sourceFile, position);
-                if (startLineOffset && startLineOffset.sourceLine !== "default") {
-                    const diff = position.line - startLineOffset.generatedLine;
-                    const sourceLine = startLineOffset.sourceLine.line + diff;
-                    position = Position.create(sourceLine, position.character);
-                }
+            const position = positionOfStart(node, pos, sourceFile);
+            if (!raw && sourceFile && this.lineOffsetMap) {
+                return this.lineOffsetMap.getEffectivePosition(sourceFile, position);
             }
             return position;
         }
@@ -363,11 +348,10 @@ export class DiagnosticMessages {
     public getDiagnosticFilename(diagnosticIndex: number, raw?: boolean): string | undefined {
         const sourceFile = this.getDiagnosticSourceFile(diagnosticIndex);
         if (sourceFile) {
-            if (!raw) {
+            if (!raw && this.lineOffsetMap) {
                 const pos = this.getDiagnosticPos(diagnosticIndex);
-                const lineOffset = this.lineOffsetMap?.findLineOffset(sourceFile, sourceFile.lineMap.positionAt(pos));
-                if (lineOffset && lineOffset.sourceLine !== "default" && lineOffset.sourceLine.file !== undefined) {
-                    return lineOffset.sourceLine.file;
+                if (pos > -1) {
+                    return this.lineOffsetMap.getEffectiveFilenameAtPosition(sourceFile, sourceFile.lineMap.positionAt(pos));
                 }
             }
             return sourceFile.filename;
@@ -616,112 +600,6 @@ export class LineMap {
         }
         lineStarts.push(lineStart);
         this.lineStarts = lineStarts;
-    }
-}
-
-/* @internal */
-export interface SourceLine {
-    line: number;
-    file?: string;
-}
-
-/* @internal */
-export interface LineOffset {
-    generatedLine: number;
-    sourceLine: SourceLine | "default";
-}
-
-function compareSourceLines(a: SourceLine | "default", b: SourceLine | "default") {
-    if (a === "default") return b === "default" ? 0 : -1;
-    if (b === "default") return 1;
-    return compare(a.file, b.file)
-        || compare(a.line, b.line);
-}
-
-/* @internal */
-export function compareLineOffsets(a: LineOffset, b: LineOffset): number {
-    return compare(a.generatedLine, b.generatedLine)
-        || compareSourceLines(a.sourceLine, b.sourceLine);
-}
-
-function equateSourceLines(a: SourceLine | "default", b: SourceLine | "default") {
-    if (a === "default") return b === "default";
-    if (b === "default") return false;
-    return a.line === b.line
-        && a.file === b.file;
-}
-
-/* @internal */
-export function equateLineOffsets(a: LineOffset, b: LineOffset): boolean {
-    return a.generatedLine === b.generatedLine
-        && equateSourceLines(a.sourceLine, b.sourceLine);
-}
-
-export class LineOffsetMap {
-    private sourceFilesLineOffsets: Map<string, SortedUniqueList<LineOffset>> | undefined;
-
-    /* @internal */
-    public addLineOffset(sourceFile: SourceFile, lineOffset: LineOffset) {
-        this.sourceFilesLineOffsets ||= new Map();
-        let lineOffsets = this.sourceFilesLineOffsets.get(sourceFile.filename);
-        if (!lineOffsets) this.sourceFilesLineOffsets.set(sourceFile.filename, lineOffsets = new SortedUniqueList(compareLineOffsets, equateLineOffsets));
-        lineOffsets.push(lineOffset);
-    }
-
-    /* @internal */
-    public findLineOffset(sourceFile: SourceFile, position: Position) {
-        const lineOffsets = this.sourceFilesLineOffsets?.get(sourceFile.filename)?.toArray();
-        if (lineOffsets) {
-            for (let i = lineOffsets.length - 1; i >= 0; i--) {
-                const lineOffset = lineOffsets[i];
-                if (lineOffset.generatedLine <= position.line) {
-                    return lineOffset;
-                }
-            }
-        }
-    }
-
-    /* @internal */
-    public copyFrom(other: LineOffsetMap) {
-        if (other.sourceFilesLineOffsets) {
-            this.sourceFilesLineOffsets ||= new Map();
-            for (const [filename, list] of other.sourceFilesLineOffsets) {
-                this.sourceFilesLineOffsets.set(filename, list.clone());
-            }
-        }
-    }
-
-    /**
-     * Gets the effective filename of a raw position within a source file, taking into account `@line` directives.
-     */
-    public getEffectiveFilenameAtPosition(sourceFile: SourceFile, position: Position) {
-        const lineOffset = this.findLineOffset(sourceFile, position);
-        if (lineOffset && lineOffset.sourceLine !== "default" && lineOffset.sourceLine.file !== undefined) {
-            return lineOffset.sourceLine.file;
-        }
-        return sourceFile.filename;
-    }
-
-    /**
-     * Gets the effective position of a raw position within a source file, taking into account `@line` directives.
-     */
-    public getEffectivePosition(sourceFile: SourceFile, position: Position) {
-        const lineOffset = this.findLineOffset(sourceFile, position);
-        if (lineOffset && lineOffset.sourceLine !== "default") {
-            const diff = position.line - lineOffset.generatedLine;
-            const sourceLine = lineOffset.sourceLine.line + diff;
-            return Position.create(sourceLine, position.character);
-        }
-        return position;
-    }
-
-    /**
-     * Gets the effective range of a raw range within a source file, taking into account `@line` directives.
-     */
-    public getEffectiveRange(sourceFile: SourceFile, range: Range) {
-        const start = this.getEffectivePosition(sourceFile, range.start);
-        const end = this.getEffectivePosition(sourceFile, range.end);
-        return start !== range.start || end !== range.end ? Range.create(start, end) : range;
     }
 }
 

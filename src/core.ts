@@ -31,23 +31,35 @@ export function mapFromObject<T>(object: DictionaryLike<T>) {
 }
 
 export function binarySearch(array: number[], value: number): number {
-    let low = 0;
-    let high = array.length - 1;
+    return binarySearchBy(array, value, identity, compareNumbers);
+}
+
+export function binarySearchBy<T, K>(array: readonly T[], key: K, selector: (value: T) => K, comparison: (x: K, y: K) => number = compare): number {
+    if (array.length === 0 || comparison(key, selector(array[0])) < 0) {
+        return -1;
+    }
+    if (comparison(key, selector(array[array.length - 1])) > 0) {
+        return ~array.length;
+    }
+    let low: number = 0;
+    let high: number = array.length - 1;
     while (low <= high) {
-        const middle = low + ((high - low) >> 1);
-        const midValue = array[middle];
-        if (midValue === value) {
+        const middle: number = low + ((high - low) >> 1);
+        const mid: K = selector(array[middle]);
+        const cmp: number = comparison(mid, key);
+        if (cmp > 0) {
+            high = middle - 1;
+        } else if (cmp < 0) {
+            low = middle + 1;
+        } else {
             return middle;
         }
-        else if (midValue > value) {
-            high = middle - 1;
-        }
-        else {
-            low = middle + 1;
-        }
     }
-
     return ~low;
+}
+
+export function compareNumbers(a: number, b: number) {
+    return a - b;
 }
 
 export function compareStrings(x: string | undefined, y: string | undefined, ignoreCase?: boolean) {
@@ -74,95 +86,14 @@ export function forEach<T, U>(array: ReadonlyArray<T> | undefined, cb: (value: T
     }
 }
 
-/** {@docCategory Other} */
-export interface TextRange {
-    pos: number;
-    end: number;
-}
-
-/** {@docCategory Other} */
-export interface Position {
-    line: number;
-    character: number;
-}
-
-/** {@docCategory Other} */
-export namespace Position {
-    export function create(line: number, character: number): Position {
-        return { line, character };
-    }
-
-    export function clone(position: Position): Position {
-        return create(position.line, position.character);
-    }
-
-    export function compare(left: Position, right: Position) {
-        if (left.line < right.line) return -1;
-        if (left.line > right.line) return +1;
-        if (left.character < right.character) return -1;
-        if (left.character > right.character) return +1;
-        return 0;
-    }
-
-    export function equals(left: Position, right: Position) {
-        return left.line === right.line
-            && left.character === right.character;
-    }
-}
-
-/** {@docCategory Other} */
-export interface Range {
-    start: Position;
-    end: Position;
-}
-
-/** {@docCategory Other} */
-export namespace Range {
-    export function create(start: Position, end: Position): Range {
-        return { start, end };
-    }
-
-    export function clone(range: Range): Range {
-        return create(Position.clone(range.start), Position.clone(range.end));
-    }
-
-    export function collapseToStart(range: Range): Range {
-        return create(range.start, range.start);
-    }
-
-    export function collapseToEnd(range: Range): Range {
-        return create(range.end, range.end);
-    }
-
-    export function isCollapsed(range: Range): boolean {
-        return Position.compare(range.start, range.end) >= 0;
-    }
-
-    export function contains(left: Range, right: Range): boolean {
-        return Position.compare(left.start, right.start) <= 0
-            && Position.compare(left.end, right.end) >= 0;
-    }
-
-    export function containsPosition(range: Range, position: Position): boolean {
-        return Position.compare(range.start, position) <= 0
-            && Position.compare(range.end, position) >= 0;
-    }
-
-    export function intersects(left: Range, right: Range): boolean {
-        return containsPosition(left, right.start)
-            || containsPosition(left, right.end);
-    }
-
-    export function equals(left: Range, right: Range): boolean {
-        return Position.equals(left.start, right.start)
-            && Position.equals(left.end, right.end)
-    }
-}
-
 export const emptyIterable: IterableIterator<never> = {
     next() { return { done: true, value: undefined as never }; },
     [Symbol.iterator]() { return this; }
 };
+
+export function identity<T>(value: T) {
+    return value;
+}
 
 export function first<T>(iterable: Iterable<T> | T[] | undefined) {
     if (iterable === undefined) return undefined;

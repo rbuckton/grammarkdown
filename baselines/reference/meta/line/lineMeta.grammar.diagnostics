@@ -1,0 +1,4 @@
+/// meta/line/lineMeta.grammar:
+foo(5,5): error GM2000: Cannot find name: 'B'.
+meta/line/lineMeta.grammar(25,9): error GM2000: Cannot find name: 'D'.
+meta/line/lineMeta.grammar(8,5): error GM2000: Cannot find name: 'F'.
