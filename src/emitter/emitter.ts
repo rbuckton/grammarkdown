@@ -47,7 +47,9 @@ import {
     Production,
     Import,
     TextContent,
-    PlaceholderSymbol
+    PlaceholderSymbol,
+    Define,
+    Line
 } from "../nodes";
 
 /** {@docCategory Emit} */
@@ -176,6 +178,8 @@ export class Emitter {
             case SyntaxKind.ArgumentList: this.emitArgumentList(<ArgumentList>node); break;
             case SyntaxKind.Production: this.emitProduction(<Production>node); break;
             case SyntaxKind.Import: this.emitImport(<Import>node); break;
+            case SyntaxKind.Define: this.emitDefine(<Define>node); break;
+            case SyntaxKind.Line: this.emitLine(<Line>node); break;
             case SyntaxKind.OneOfList: this.emitOneOfList(<OneOfList>node); break;
             case SyntaxKind.RightHandSideList: this.emitRightHandSideList(<RightHandSideList>node); break;
             case SyntaxKind.RightHandSide: this.emitRightHandSide(<RightHandSide>node); break;
@@ -276,6 +280,12 @@ export class Emitter {
     }
 
     protected emitImport(node: Import): void {
+    }
+
+    protected emitDefine(node: Define): void {
+    }
+
+    protected emitLine(node: Line): void {
     }
 
     protected emitOneOfList(node: OneOfList): void {

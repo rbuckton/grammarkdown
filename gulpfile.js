@@ -34,13 +34,16 @@ gulp.task("clean:obj", clean_obj);
 const clean = gulp.parallel(clean_dist, clean_baselines, clean_obj);
 gulp.task("clean", clean);
 
+const generate_diagnostics = () => exec(process.execPath, ["./scripts/generateDiagnostics.js", "./src/diagnostics.json", "./src/diagnostics.generated.ts"]);
+gulp.task("generate-diagnostics", generate_diagnostics);
+
 const build = () => src.src()
     .pipe(sourcemaps.init())
     .pipe(src.compile())
     .pipe(sourcemaps.write(".", { includeContent: false, sourceRoot: "../src" }))
     .pipe(gulp.dest("dist"))
     .on("end", () => { if (errorCount) throw new Error(`Build failed: ${errorCount} error(s)`); });
-gulp.task("build", build);
+gulp.task("build", gulp.series(generate_diagnostics, build));
 
 const set_package_version = async () => {
     if (!process.env.npm_package_version) {
@@ -48,7 +51,7 @@ const set_package_version = async () => {
     }
 };
 
-const pre_test = gulp.parallel(set_package_version, build, clean_baselines);
+const pre_test = gulp.parallel(set_package_version, gulp.series(generate_diagnostics, build), clean_baselines);
 gulp.task("pre-test", pre_test);
 
 const run_tests = () => gulp
@@ -89,6 +92,7 @@ const api_documenter_fixup = () => gulp.src("obj/yaml/**/*.yml")
     .pipe(gulp.dest("obj/yaml"));
 const docfx = () => exec("docfx", argv.serve ? ["--serve"] : []);
 gulp.task("docs", gulp.series(
+    generate_diagnostics,
     build,
     emu,
     api_extractor,

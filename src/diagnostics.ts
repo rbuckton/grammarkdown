@@ -18,33 +18,8 @@ export interface Diagnostic {
     warning?: boolean;
 }
 
-function makeDiagnostics<T extends Record<string, Diagnostic>>(diagnostics: T) {
-    return diagnostics;
-}
-
-export const Diagnostics = makeDiagnostics({
-    Constant_expected: { code: 1000, message: "Constant expected." },
-    _0_expected: { code: 1001, message: "{0} expected." },
-    _0_or_1_: { code: 0, message: "{0} or {1}" },
-    Unexpected_token_0_: { code: 1002, message: "Unexpected token {0}." },
-    Invalid_character: { code: 1003, message: "Invalid character." },
-    Unterminated_string_literal: { code: 1004, message: "Unterminated string literal." },
-    Invalid_escape_sequence: { code: 1005, message: "Invalid escape sequence." },
-    Digit_expected: { code: 1006, message: "Digit expected." },
-    Production_expected: { code: 1007, message: "Production expected." },
-    Unterminated_identifier_literal: { code: 1008, message: "Unterminated identifier literal." },
-    Obsolete_0_: { code: 1009, message: "Obsolete: {0}", warning: true },
-    Html_trivia_not_allowed_here: { code: 1010, message: "HTML trivia not allowed here." },
-
-    Cannot_find_name_0_: { code: 2000, message: "Cannot find name: '{0}'." },
-    Duplicate_identifier_0_: { code: 2001, message: "Duplicate identifier: '{0}'." },
-    Duplicate_terminal_0_: { code: 2002, message: "Duplicate terminal: `{0}`." },
-    Argument_0_cannot_be_specified_multiple_times: { code: 2003, message: "Argument '{0}' cannot be specified multiple times." },
-    Production_0_does_not_have_a_parameter_named_1_: { code: 2004, message: "Production '{0}' does not have a parameter named '{1}'." },
-    Production_0_is_missing_parameter_1_All_definitions_of_production_0_must_specify_the_same_formal_parameters: { code: 2006, message: "Production '{0}' is missing parameter '{1}'. All definitions of production '{0}' must specify the same formal parameters." },
-    There_is_no_argument_given_for_parameter_0_: { code: 2007, message: "There is no argument given for parameter '{0}'." },
-    Parameter_0_is_unused: { code: 2008, message: "Parameter '{0}' is unused." }
-});
+import { Diagnostics } from "./diagnostics.generated";
+export { Diagnostics } from "./diagnostics.generated";
 
 /** {@docCategory Check} */
 export interface DiagnosticInfo {
@@ -517,10 +492,6 @@ export class LineMap {
         this.computeLineStarts();
         return this.lineStarts.length;
     }
-
-    /** @deprecated */ /* @internal */ formatPosition(pos: number): string { return this.formatOffset(pos); }
-    /** @deprecated */ /* @internal */ getPositionOfLineAndCharacter(lineAndCharacter: Position) { return this.offsetAt(lineAndCharacter); }
-    /** @deprecated */ /* @internal */ getLineAndCharacterOfPosition(pos: number): Position { return this.positionAt(pos); }
 
     public formatOffset(pos: number): string {
         this.computeLineStarts();

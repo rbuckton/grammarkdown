@@ -1,0 +1,82 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://rbuckton.github.io/grammarkdown/localization/diagnostics",
+    "description": "Localized diagnostic messages",
+    "type": "object",
+    "properties": {
+        "version": { "type": "string", "const": "1.0", "enum": ["1.0"], "description": "The version of the schema (1.0)" },
+        "lang": { "type": "string", "description": "The language for the messages." },
+        "messages": { "$ref": "#/definitions/DiagnosticMessages" }
+    },
+    "required": ["version", "lang", "messages"],
+    "definitions": {
+        "DiagnosticMessages": {
+            "$id": "#DiagnosticMessages",
+            "description": "A collection of localized diagnostic messages. The key is the message in en, or the code for an obsolete message. The value is the details of the message.",
+            "type": "object",
+            "patternProperties": {
+                "^\\d+$": { "$ref": "#/definitions/Obsolete" },
+                "^(?!\\d+$)": { "$ref": "#/definitions/Diagnostic" }
+            }
+        },
+        "Obsolete": {
+            "$id": "#Obsolete",
+            "description": "Information about an obsolete diagnostic code.",
+            "default": { "since": "0.0.0" },
+            "type": "object",
+            "properties": {
+                "since": { "type": "string", "description": "The version the code became obsolete." }
+            },
+            "required": ["since"],
+            "additionalProperties": false
+        },
+        "Diagnostic": {
+            "$id": "#Diagnostic",
+            "oneOf": [
+                { "$ref": "#/definitions/Error" },
+                { "$ref": "#/definitions/Warning" },
+                { "$ref": "#/definitions/Message" },
+                { "$ref": "#/definitions/LocalizedString" }
+            ]
+        },
+        "Error": {
+            "$id": "#Error",
+            "description": "A localizable error message.",
+            "default": { "kind": "error", "code": 1000 },
+            "type": "object",
+            "properties": {
+                "kind": { "type": "string", "const": "error", "enum": ["error"], "description": "The type of diagnostic message." },
+                "code": { "type": "integer", "exclusiveMinimum": 0, "description": "The diagnostic code." }
+            },
+            "required": ["code"]
+        },
+        "Warning": {
+            "$id": "#Warning",
+            "description": "A localizable warning message.",
+            "default": { "kind": "warning", "code": 1000 },
+            "type": "object",
+            "properties": {
+                "kind": { "type": "string", "const": "warning", "enum": ["warning"], "description": "The type of diagnostic message." },
+                "code": { "type": "integer", "exclusiveMinimum": 0, "description": "The diagnostic code." }
+            },
+            "required": ["code", "kind"]
+        },
+        "Message": {
+            "$id": "#Message",
+            "description": "A localizable informational message.",
+            "default": { "kind": "message" },
+            "type": "object",
+            "properties": {
+                "kind": { "type": "string", "const": "message", "enum": ["message"], "description": "The type of diagnostic message." },
+                "code": { "type": "integer", "minimum": 0, "description": "The diagnostic code." }
+            },
+            "required": ["kind"]
+        },
+        "LocalizedString": {
+            "$id": "#LocalizedString",
+            "description": "A localized message override.",
+            "default": "",
+            "type": "string"
+        }
+    }
+}

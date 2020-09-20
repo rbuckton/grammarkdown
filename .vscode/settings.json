@@ -3,5 +3,11 @@
     "editor.insertSpaces": true,
     "files.trimTrailingWhitespace": true,
     "editor.renderWhitespace": "boundary",
-    "typescript.tsdk": "node_modules/typescript/lib"
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "json.schemas": [
+        { "fileMatch": ["diagnostics.json", "diagnostics.jsonc"], "url": "./schema/diagnostics.schema.json" }
+    ],
+    "files.associations": {
+        "diagnostics.json": "jsonc"
+    }
 }

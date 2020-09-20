@@ -27,7 +27,7 @@ export function writeTokens(test: string, scanner: Scanner, lineMap: LineMap, ba
     let token: SyntaxKind;
     do {
         token = scanner.scan();
-        let message = `SyntaxKind[${formatKind(token)}](${lineMap.formatPosition(scanner.getTokenPos()) }): `;
+        let message = `SyntaxKind[${formatKind(token)}](${lineMap.formatOffset(scanner.getTokenPos()) }): `;
         switch (token) {
             case SyntaxKind.ProseFull:
             case SyntaxKind.ProseHead:
@@ -166,7 +166,7 @@ function ensureDirectory(path: string) {
 }
 
 function formatNode(node: Node, sourceFile: SourceFile) {
-    var text = `(${sourceFile.lineMap.formatPosition(node.getStart(sourceFile))})`;
+    var text = `(${sourceFile.lineMap.formatOffset(node.getStart(sourceFile))})`;
     text += `SyntaxKind[${formatKind(node.kind)}]`;
     switch (node.kind) {
         case SyntaxKind.Identifier:

@@ -1,0 +1,31 @@
+{
+    "version": "1.0",
+    "lang": "en",
+    "messages": {
+        // Messages
+        "{0} or {1}": { "kind": "message" },
+
+        // Error codes from 1000-1999 are reserved for grammar diagnostics
+        "Constant expected.": { "code": 1000 },
+        "{0} expected.": { "code": 1001 },
+        "Unexpected token {0}.": { "code": 1002 },
+        "Invalid character.": { "code": 1003, "kind": "error" },
+        "Unterminated string literal.": { "code": 1004, "kind": "error" },
+        "Invalid escape sequence.": { "code": 1005, "kind": "error" },
+        "Digit expected.": { "code": 1006, "kind": "error" },
+        "Production expected.": { "code": 1007, "kind": "error" },
+        "Unterminated identifier literal.": { "code": 1008, "kind": "error" },
+        "Obsolete: {0}": { "code": 1009, "kind": "warning" },
+        "HTML trivia not allowed here.": { "code": 1010, "kind": "error" },
+
+        // Error codes from 2000-2999 are reserved for checker diagnostics
+        "Cannot find name: '{0}'.": { "code": 2000, "kind": "error" },
+        "Duplicate identifier: '{0}'.": { "code": 2001, "kind": "error" },
+        "Duplicate terminal: `{0}`.": { "code": 2002, "kind": "error" },
+        "Argument '{0}' cannot be specified multiple times.": { "code": 2003, "kind": "error" },
+        "Production '{0}' does not have a parameter named '{1}'.": { "code": 2004, "kind": "error" },
+        "Production '{0}' is missing parameter '{1}'. All definitions of production '{0}' must specify the same formal parameters.": { "code": 2006, "kind": "error" },
+        "There is no argument given for parameter '{0}'.": { "code": 2007, "kind": "error" },
+        "Parameter '{0}' is unused.": { "code": 2008, "kind": "error" },
+    }
+}

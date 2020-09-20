@@ -1458,7 +1458,7 @@ export class Checker {
 
     private reportInvalidHtmlTrivia(nodes: HtmlTrivia[] | undefined) {
         if (nodes && nodes.length) {
-            return this.reportGrammarErrorForNode(nodes[0], Diagnostics.Html_trivia_not_allowed_here);
+            return this.reportGrammarErrorForNode(nodes[0], Diagnostics.HTML_trivia_not_allowed_here);
         }
         return false;
     }
