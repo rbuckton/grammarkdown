@@ -14,3 +14,4 @@ import "./checker-tests";
 import "./emitter-tests";
 import "./grammar-tests";
 import "./cli-tests";
+import "./lineOffsetMap-tests";

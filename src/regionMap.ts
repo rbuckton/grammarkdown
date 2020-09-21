@@ -34,10 +34,11 @@ export class RegionMap<T> implements ReadonlyRegionMap<T> {
      * @param line The line number of the region start
      * @param value The value for the region
      */
-    addRegion(sourceFile: SourceFile, line: number, value: T) {
+    addRegion(sourceFile: SourceFile | string, line: number, value: T) {
         this._sourceFileRegions ??= new Map();
-        let regions = this._sourceFileRegions.get(sourceFile.filename);
-        if (!regions) this._sourceFileRegions.set(sourceFile.filename, regions = new SortedUniqueList(compareRegions, this._equateRegions));
+        const filename = typeof sourceFile === "string" ? sourceFile : sourceFile.filename;
+        let regions = this._sourceFileRegions.get(filename);
+        if (!regions) this._sourceFileRegions.set(filename, regions = new SortedUniqueList(compareRegions, this._equateRegions));
         regions.push({ line, value });
     }
 
@@ -46,8 +47,9 @@ export class RegionMap<T> implements ReadonlyRegionMap<T> {
      * @param sourceFile The source file in which to find a region.
      * @param line The line number from which to start searching.
      */
-    findRegion(sourceFile: SourceFile, line: number) {
-        const regions = this._sourceFileRegions?.get(sourceFile.filename)?.toArray();
+    findRegion(sourceFile: SourceFile | string, line: number) {
+        const filename = typeof sourceFile === "string" ? sourceFile : sourceFile.filename;
+        const regions = this._sourceFileRegions?.get(filename)?.toArray();
         if (!regions) return;
         let index = binarySearchBy(regions, line, selectLine, compareNumbers);
         if (index < 0) index = ~index - 1;
@@ -59,8 +61,9 @@ export class RegionMap<T> implements ReadonlyRegionMap<T> {
      * @param sourceFile The source file in which to find a region.
      * @param line The line number from which to start searching.
      */
-    * regions(sourceFile: SourceFile, line: number) {
-        const regions = this._sourceFileRegions?.get(sourceFile.filename)?.toArray();
+    * regions(sourceFile: SourceFile | string, line: number) {
+        const filename = typeof sourceFile === "string" ? sourceFile : sourceFile.filename;
+        const regions = this._sourceFileRegions?.get(filename)?.toArray();
         if (!regions) return;
         let index = binarySearchBy(regions, line, selectLine, compareNumbers);
         if (index < 0) index = ~index - 1;
