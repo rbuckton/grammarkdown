@@ -1466,7 +1466,7 @@ export class Checker {
 
 /** {@docCategory Check} */
 export class Resolver {
-    private bindings: BindingTable;
+    public readonly bindings: BindingTable;
     private lineOffsetMap: LineOffsetMap | undefined;
 
     constructor(bindings: BindingTable, lineOffsetMap?: LineOffsetMap) {

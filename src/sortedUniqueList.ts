@@ -55,7 +55,10 @@ export class SortedUniqueList<T> {
         }
     }
 
-    mutate(cb: (array: readonly T[]) => void) {
+    mutate(cb: (array: T[]) => void) {
+        if (this.copyOnWrite) {
+            this.unsafeArray = this.unsafeArray.slice();
+        }
         this.copyOnWrite = true;
         cb(this.unsafeArray);
         this.sortedAndUnique = false;

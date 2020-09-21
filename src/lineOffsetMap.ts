@@ -53,10 +53,13 @@ export class LineOffsetMap {
 
         // add reverse mapping
         this.sourceFilesLineOffsets ||= new RegionMap(equateSourceLines);
-        this.sourceFilesLineOffsets.addRegion(
-            sourceLine === "default" || sourceLine.file === undefined ? filename : sourceLine.file,
-            sourceLine === "default" ? line : sourceLine.line,
-            sourceLine === "default" ? "default" : { file: filename, line });
+        const reverseFilename = sourceLine === "default" || sourceLine.file === undefined ? filename : sourceLine.file;
+        const reverseLine = sourceLine === "default" ? line : sourceLine.line;
+        const reverseSourceLine = sourceLine === "default" ? "default" : { file: filename, line };
+        this.sourceFilesLineOffsets.upsertRegion(reverseFilename, reverseLine, old => {
+            if (reverseSourceLine === "default") return old ?? reverseSourceLine;
+            return reverseSourceLine;
+        });
     }
 
     /* @internal */

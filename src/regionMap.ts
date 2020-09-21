@@ -43,6 +43,32 @@ export class RegionMap<T> implements ReadonlyRegionMap<T> {
     }
 
     /**
+     * Adds or updates a `Region` for a source file.
+     * @param sourceFile The source file in which to add a region
+     * @param line The line number of the region start
+     * @param value The value for the region
+     */
+    upsertRegion(sourceFile: SourceFile | string, line: number, upsert: (value: T | undefined) => T) {
+        this._sourceFileRegions ??= new Map();
+        const filename = typeof sourceFile === "string" ? sourceFile : sourceFile.filename;
+        let regions = this._sourceFileRegions.get(filename);
+        if (!regions) this._sourceFileRegions.set(filename, regions = new SortedUniqueList(compareRegions, this._equateRegions));
+        const array = regions.toArray();
+        let index = binarySearchBy(array, line, selectLine, compareNumbers);
+        if (index >= 0 && index < array.length) {
+            const region = array[index];
+            regions.mutate((array) => {
+                if (array[index] === region) {
+                    array[index] = { line, value: upsert(region.value) };
+                }
+            });
+        }
+        else {
+            regions.push({ line, value: upsert(undefined) });
+        }
+    }
+
+    /**
      * Finds the nearest `Region` that starts at or prior to the provided `line`.
      * @param sourceFile The source file in which to find a region.
      * @param line The line number from which to start searching.
