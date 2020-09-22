@@ -474,6 +474,14 @@ export class NodeNavigator {
                 && navigator.moveToFirstChild("name")) {
                 return this.moveTo(navigator);
             }
+
+            navigator.moveTo(this);
+            if (navigator.moveToParent(SyntaxKind.InvalidAssertion)
+                && navigator.moveToParent(SyntaxKind.SymbolSpan)
+                && navigator.moveToPreviousSibling(SyntaxKind.Nonterminal)
+                && navigator.moveToFirstChild("name")) {
+                return this.moveTo(navigator);
+            }
         }
 
         return false;

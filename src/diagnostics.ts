@@ -487,27 +487,14 @@ export class LineMap {
 
     public offsetAt(position: Position) {
         this.computeLineStarts();
-        if (position.line < 0 ||
-            position.character < 0 ||
-            position.line >= this.lineStarts.length) {
-            return -1;
-        }
-
-        const pos = this.lineStarts[position.line] + position.character;
+        if (position.line < 0) return 0;
+        if (position.line >= this.lineStarts.length) return this.text.length;
+        const linePos = this.lineStarts[position.line];
+        const pos = linePos + position.character;
         const lineEnd = position.line + 1 < this.lineStarts.length
             ? this.lineStarts[position.line + 1]
             : this.text.length;
-
-        if (pos >= lineEnd) {
-            return -1;
-        }
-
-        if (this.text.charCodeAt(pos) === CharacterCodes.LineFeed ||
-            this.text.charCodeAt(pos) === CharacterCodes.CarriageReturn) {
-            return -1;
-        }
-
-        return pos;
+        return pos < linePos ? linePos : pos > lineEnd ? lineEnd : pos;
     }
 
     public positionAt(offset: number): Position {
