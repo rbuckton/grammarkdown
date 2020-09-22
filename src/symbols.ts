@@ -42,6 +42,13 @@ export class SymbolTable {
         return undefined;
     }
 
+    public * symbolsOfKind(kind: SymbolKind) {
+        const symbols = this.nameMap?.get(kind);
+        if (symbols) {
+            yield* symbols.values();
+        }
+    }
+
     /* @internal */
     public copyFrom(other: SymbolTable) {
         if (other === this || !other.nameMap) return;
