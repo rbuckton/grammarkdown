@@ -345,6 +345,9 @@ export class SharedOperation<T> {
                 operationSubscription.unsubscribe();
             }
         }
+        else {
+            return await this._invokeWorker(this._sharedOperation, cancelToken);
+        }
     }
 
     private async _invokeWorker(sharedOperation: [AggregateCancelable, Promise<T>], cancelToken: CancelToken | undefined) {
