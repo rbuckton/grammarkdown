@@ -55,7 +55,7 @@ export class DiagnosticMessages {
     }
 
     public get size() {
-        return this.diagnostics ? this.diagnostics.length : 0;
+        return this.diagnostics?.length ?? 0;
     }
 
     public copyFrom(other: DiagnosticMessages) {
@@ -83,10 +83,8 @@ export class DiagnosticMessages {
 
         // copy source files
         if (other.sourceFiles && other.sourceFilesDiagnosticOffset) {
-            if (!this.sourceFiles || !this.sourceFilesDiagnosticOffset) {
-                this.sourceFiles = [];
-                this.sourceFilesDiagnosticOffset = [];
-            }
+            this.sourceFiles ??= [];
+            this.sourceFilesDiagnosticOffset ??= [];
 
             const diagnosticOffset = this.size;
             const sourceFileOffset = this.sourceFiles.length;
@@ -101,7 +99,7 @@ export class DiagnosticMessages {
 
         // copy line offsets
         if (other.lineOffsetMap) {
-            this.lineOffsetMap ||= new LineOffsetMap();
+            this.lineOffsetMap ??= new LineOffsetMap();
             this.lineOffsetMap.copyFrom(other.lineOffsetMap);
         }
 
@@ -120,10 +118,8 @@ export class DiagnosticMessages {
     }
 
     public setSourceFile(sourceFile: SourceFile): void {
-        if (!this.sourceFiles || !this.sourceFilesDiagnosticOffset) {
-            this.sourceFiles = [];
-            this.sourceFilesDiagnosticOffset = [];
-        }
+        this.sourceFiles ??= [];
+        this.sourceFilesDiagnosticOffset ??= [];
 
         const sourceFileIndex = this.sourceFiles.length;
         if (sourceFileIndex > 0 && this.sourceFiles[sourceFileIndex - 1] === sourceFile) {
@@ -151,23 +147,23 @@ export class DiagnosticMessages {
     }
 
     public count(): number {
-        return this.diagnostics ? this.diagnostics.length : 0;
+        return this.diagnostics?.length ?? 0;
     }
 
     public getMessage(diagnosticIndex: number, options: { detailed?: boolean; raw?: boolean; } = { detailed: true }): string {
-        const diagnostic = this.diagnostics && this.diagnostics[diagnosticIndex];
+        const diagnostic = this.diagnostics?.[diagnosticIndex];
         if (diagnostic) {
             const { detailed = true } = options;
             const diagnosticMessages = detailed
-                ? this.detailedDiagnosticMessages || (this.detailedDiagnosticMessages = new Map<number, string>())
-                : this.simpleDiagnosticMessages || (this.simpleDiagnosticMessages = new Map<number, string>());
+                ? this.detailedDiagnosticMessages ??= new Map()
+                : this.simpleDiagnosticMessages ??= new Map();
 
             const diagnosticMessage = diagnosticMessages.get(diagnosticIndex);
             if (diagnosticMessage !== undefined) {
                 return diagnosticMessage;
             }
 
-            const diagnosticArguments = this.diagnosticsArguments && this.diagnosticsArguments[diagnosticIndex];
+            const diagnosticArguments = this.diagnosticsArguments?.[diagnosticIndex];
             let text = "";
             if (detailed) {
                 const sourceFile = this.getDiagnosticSourceFile(diagnosticIndex);
@@ -207,7 +203,7 @@ export class DiagnosticMessages {
     }
 
     public getDiagnostic(diagnosticIndex: number): Diagnostic | undefined {
-        return this.diagnostics && this.diagnostics[diagnosticIndex];
+        return this.diagnostics?.[diagnosticIndex];
     }
 
     public getDiagnosticInfos(options?: { formatMessage?: boolean; detailedMessage?: boolean; raw?: boolean; }): DiagnosticInfo[] {
@@ -265,7 +261,7 @@ export class DiagnosticMessages {
     }
 
     public getDiagnosticArguments(diagnosticIndex: number): any[] | undefined {
-        return this.diagnosticsArguments && this.diagnosticsArguments[diagnosticIndex];
+        return this.diagnosticsArguments?.[diagnosticIndex];
     }
 
     public getDiagnosticRange(diagnosticIndex: number, raw?: boolean) {
@@ -300,7 +296,7 @@ export class DiagnosticMessages {
     }
 
     public getDiagnosticNode(diagnosticIndex: number): Node | undefined {
-        return this.diagnosticsNode && this.diagnosticsNode[diagnosticIndex];
+        return this.diagnosticsNode?.[diagnosticIndex];
     }
 
     public getDiagnosticSourceFile(diagnosticIndex: number): SourceFile | undefined {
@@ -402,62 +398,45 @@ export class DiagnosticMessages {
     }
 
     private getDiagnosticPos(diagnosticIndex: number): number {
-        return this.diagnosticsPos && this.diagnosticsPos[diagnosticIndex] || -1;
+        return this.diagnosticsPos?.[diagnosticIndex] ?? -1;
     }
 
     private getDiagnosticLength(diagnosticIndex: number): number {
-        return this.diagnosticsLength && this.diagnosticsLength[diagnosticIndex] || 0;
+        return this.diagnosticsLength?.[diagnosticIndex] ?? 0;
     }
 
     private getDiagnosticCode(diagnosticIndex: number): number {
-        const diagnostic = this.getDiagnostic(diagnosticIndex);
-        return diagnostic && diagnostic.code || 0;
+        return this.getDiagnostic(diagnosticIndex)?.code ?? 0;
     }
 
     private getDiagnosticErrorLevel(diagnosticIndex: number): number {
-        const diagnostic = this.getDiagnostic(diagnosticIndex);
-        return diagnostic && diagnostic.warning ? 0 : 1;
+        return this.getDiagnostic(diagnosticIndex)?.warning ? 0 : 1;
     }
 
     private reportDiagnostic(message: Diagnostic, args: any[] | undefined, pos?: number, length?: number, node?: Node): void {
         this.sortedAndDeduplicatedDiagnosticIndices = undefined;
-
-        if (!this.diagnostics) {
-            this.diagnostics = [];
-        }
+        this.diagnostics ??= [];
 
         const diagnosticIndex = this.diagnostics.length;
         this.diagnostics[diagnosticIndex] = message;
 
         if (args && args.length > 0) {
-            if (!this.diagnosticsArguments) {
-                this.diagnosticsArguments = [];
-            }
-
+            this.diagnosticsArguments ??= [];
             this.diagnosticsArguments[diagnosticIndex] = args;
         }
 
         if (pos !== undefined) {
-            if (!this.diagnosticsPos) {
-                this.diagnosticsPos = [];
-            }
-
+            this.diagnosticsPos ??= [];
             this.diagnosticsPos[diagnosticIndex] = pos;
         }
 
         if (length !== undefined) {
-            if (!this.diagnosticsLength) {
-                this.diagnosticsLength = [];
-            }
-
+            this.diagnosticsLength ??= [];
             this.diagnosticsLength[diagnosticIndex] = length;
         }
 
         if (node !== undefined) {
-            if (!this.diagnosticsNode) {
-                this.diagnosticsNode = [];
-            }
-
+            this.diagnosticsNode ??= [];
             this.diagnosticsNode[diagnosticIndex] = node;
         }
     }
@@ -468,7 +447,7 @@ export class NullDiagnosticMessages extends DiagnosticMessages {
     private static _instance: NullDiagnosticMessages;
 
     public static get instance() {
-        return this._instance || (this._instance = new NullDiagnosticMessages());
+        return this._instance ??= new NullDiagnosticMessages();
     }
 
     get size() { return 0; }
@@ -590,7 +569,7 @@ function positionOfEnd(diagnosticNode: Node | undefined, diagnosticPos: number, 
 }
 
 function positionAt(diagnosticPos: number, sourceFile: SourceFile | undefined) {
-    return sourceFile && sourceFile.lineMap
+    return sourceFile?.lineMap
         ? sourceFile.lineMap.positionAt(diagnosticPos)
         : { line: 0, character: diagnosticPos };
 }

@@ -86,22 +86,17 @@
   <h6><strong>Package</strong>: <a class="xref" href="../grammarkdown.html">grammarkdown</a></h6>
   <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
-  <div class="inheritance">
-    <h5>Inheritance</h5>
-      <div class="level0"><a class="xref" href="hostbaseoptions.html#grammarkdown_HostBaseOptions_interface">HostBaseOptions</a></div>
-      <div class="level1"><span class="xref">NodeAsyncHostOptions</span></div>
-  </div>
   <h3 id="properties">Properties
   </h3>
   
   
-  <h4 id="grammarkdown_NodeAsyncHostOptions_readFile_member" data-uid="grammarkdown!NodeAsyncHostOptions#readFile:member">readFile</h4>
+  <h4 id="grammarkdown_NodeAsyncHostOptions_allowUris_member" data-uid="grammarkdown!NodeAsyncHostOptions#allowUris:member">allowUris</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">readFile?: ReadFileCallback | LegacyReadFileCallback | false;</code></pre>
+    <pre><code class="lang-typeScript hljs">allowUris?: false;</code></pre>
   </div>
   
   
@@ -111,7 +106,114 @@
   <h5 class="propertyValue">Property Value</h5>
   <div>
   <div class="property">
-    <div><a class="xref" href="../grammarkdown.html#grammarkdown_ReadFileCallback_type">ReadFileCallback</a> | <a class="xref" href="../grammarkdown.html#grammarkdown_LegacyReadFileCallback_type">LegacyReadFileCallback</a> | false</div>
+    <div><span class="xref">false</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_NodeAsyncHostOptions_ignoreCase_member" data-uid="grammarkdown!NodeAsyncHostOptions#ignoreCase:member">ignoreCase</h4>
+  <div class="markdown level1 summary"><p>Indicates whether the host is case-insensitive (<code>true</code><!-- -->) or case-sensitive (<code>false</code><!-- -->).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">ignoreCase?: boolean;</code></pre>
+  </div>
+  
+  
+  
+  
+  
+  <h5 class="propertyValue">Property Value</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">boolean</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_NodeAsyncHostOptions_knownGrammars_member" data-uid="grammarkdown!NodeAsyncHostOptions#knownGrammars:member">knownGrammars</h4>
+  <div class="markdown level1 summary"><p>A set of known grammars in the form <code>{ &quot;name&quot;: &quot;path&quot; }</code></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">knownGrammars?: Record&lt;string, string&gt;;</code></pre>
+  </div>
+  
+  
+  
+  
+  
+  <h5 class="propertyValue">Property Value</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">Record</span>&lt;string, string&gt;</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_NodeAsyncHostOptions_readFile_member" data-uid="grammarkdown!NodeAsyncHostOptions#readFile:member">readFile</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">readFile?: ReadFileCallback | false;</code></pre>
+  </div>
+  
+  
+  
+  
+  
+  <h5 class="propertyValue">Property Value</h5>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="../grammarkdown.html#grammarkdown_ReadFileCallback_type">ReadFileCallback</a> | false</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_NodeAsyncHostOptions_useBuiltinGrammars_member" data-uid="grammarkdown!NodeAsyncHostOptions#useBuiltinGrammars:member">useBuiltinGrammars</h4>
+  <div class="markdown level1 summary"><p>Indicates whether to include builtin grammars in the set of known grammars.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">useBuiltinGrammars?: boolean;</code></pre>
+  </div>
+  
+  
+  
+  
+  
+  <h5 class="propertyValue">Property Value</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">boolean</span></div>
     <p>
   </div>
   </div>
@@ -127,7 +229,7 @@
   <h5 class="decalaration">Declaration</h5>
   
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">writeFile?: WriteFileCallback | LegacyWriteFileCallback | false;</code></pre>
+    <pre><code class="lang-typeScript hljs">writeFile?: WriteFileCallback | false;</code></pre>
   </div>
   
   
@@ -137,7 +239,7 @@
   <h5 class="propertyValue">Property Value</h5>
   <div>
   <div class="property">
-    <div><a class="xref" href="../grammarkdown.html#grammarkdown_WriteFileCallback_type">WriteFileCallback</a> | <a class="xref" href="../grammarkdown.html#grammarkdown_LegacyWriteFileCallback_type">LegacyWriteFileCallback</a> | false</div>
+    <div><a class="xref" href="../grammarkdown.html#grammarkdown_WriteFileCallback_type">WriteFileCallback</a> | false</div>
     <p>
   </div>
   </div>
@@ -153,7 +255,7 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/rbuckton/grammarkdown/blob/master/src/docs/overwrite/nodeasynchostoptions.md/#L2" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/rbuckton/grammarkdown/blob/apiCleanup/src/docs/overwrite/nodeasynchostoptions.md/#L2" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

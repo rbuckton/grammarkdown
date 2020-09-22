@@ -6,9 +6,10 @@
  */
 
 import * as url from "url";
-import { CancellationToken } from "prex";
 import { Cancelable, CancelSubscription } from "@esfx/cancelable";
 import { CancelToken } from "@esfx/async-canceltoken";
+import { Disposable } from '@esfx/disposable';
+
 
 // NOTE: grammarkdown requires a minimum of ES5.
 if (typeof Object.create !== "function") throw new Error("Grammarkdown requires a minimum host engine of ES5.");
@@ -251,45 +252,111 @@ export function toCancelToken(cancelable: Cancelable | null | undefined) {
     }
 }
 
-export function wrapCancelToken(cancelToken: CancelToken): CancelToken & CancellationToken;
-export function wrapCancelToken(cancelToken: CancelToken | undefined): CancelToken & CancellationToken | undefined;
-export function wrapCancelToken(cancelToken: CancelToken | undefined) {
-    if (cancelToken) {
-        if (!("cancellationRequested" in cancelToken)) {
-            return Object.create(cancelToken, {
-                cancellationRequested: {
-                    configurable: true,
-                    get: function (this: CancelToken) { return this.signaled; }
-                },
-                canBeCanceled: {
-                    configurable: true,
-                    get: function (this: CancelToken) { return this.canBeSignaled; }
-                },
-                throwIfCancellationRequested: {
-                    configurable: true,
-                    writable: true,
-                    value: CancelToken.prototype.throwIfSignaled
-                },
-                register: {
-                    configurable: true,
-                    writable: true,
-                    value: function (this: CancelToken, callback: () => void) {
-                        const subscription = this.subscribe(callback);
-                        return Object.create(subscription, {
-                            unregister: {
-                                configurable: true,
-                                writable: true,
-                                value: function(this: CancelSubscription) {
-                                    this.unsubscribe();
-                                }
-                            }
-                        });
+export class AggregateCancelable {
+    private _cancelSource = CancelToken.source();
+    private _subscriptions = new Set<CancelSubscription>();
+    private _cancelCount = 0;
+
+    get canBeCanceled() {
+        return this._cancelCount >= 0;
+    }
+
+    get cancelable() {
+        return this._cancelSource.token;
+    }
+
+    addCancelable(cancelable: Cancelable | undefined) {
+        if (this._cancelSource.token.signaled) return;
+        if (cancelable === undefined || cancelable instanceof CancelToken && !cancelable.canBeSignaled) {
+            // We have an observer that cannot be canceled
+            if (this._cancelCount >= 0) {
+                this._cancelCount = -1; // -1 indicates we cannot be canceled
+                // Remove all subscriptions
+                const subscriptions = [...this._subscriptions];
+                this._subscriptions.clear();
+                for (const subscription of subscriptions) {
+                    subscription.unsubscribe();
+                }
+            }
+            return;
+        }
+
+        // Track that we can be canceled
+        this._cancelCount++;
+
+        // Create a subscription that can only be invoked once
+        let invoked = false;
+        const subscription = Cancelable.subscribe(cancelable, () => {
+            if (!invoked) {
+                invoked = true;
+                if (this._cancelCount > 0) {
+                    this._cancelCount--;
+                    if (this._cancelCount === 0) {
+                        this._cancelCount = -2; // indicate we are now canceled.
+                        this._cancelSource.cancel();
                     }
                 }
+            }
+        });
+
+        // Return a subscription that can remove this token.
+        const unsubscribe = () => {
+            if (this._subscriptions.delete(subscription)) {
+                subscription.unsubscribe();
+            }
+        };
+        return {
+            unsubscribe,
+            [Disposable.dispose]: unsubscribe
+        };
+    }
+}
+
+/**
+ * Synchronizes multiple asynchronous cancelable calls for the same resource,
+ * such that the operation is only canceled when all callers have canceled.
+ */
+export class SharedOperation<T> {
+    private _callback: (cancelToken?: CancelToken) => PromiseLike<T> | T;
+    private _sharedOperation: [AggregateCancelable, Promise<T>] | undefined;
+
+    constructor(callback: (cancelToken?: CancelToken) => PromiseLike<T> | T) {
+        this._callback = callback;
+    }
+
+    async invoke(cancelable?: Cancelable) {
+        const cancelToken = toCancelToken(cancelable);
+        cancelToken?.throwIfSignaled();
+
+        if (!this._sharedOperation) {
+            const operation = new AggregateCancelable();
+            const operationSubscription = operation.cancelable.subscribe(() => {
+                if (this._sharedOperation === sharedOperation) {
+                    this._sharedOperation = undefined;
+                }
             });
+            const promise = Promise.resolve((void 0, this._callback)(operation.cancelable));
+            const sharedOperation = this._sharedOperation = [operation, promise];
+            try {
+                await this._invokeWorker(sharedOperation, cancelToken);
+            }
+            finally {
+                this._sharedOperation = undefined;
+                operationSubscription.unsubscribe();
+            }
         }
     }
-    return cancelToken;
+
+    private async _invokeWorker(sharedOperation: [AggregateCancelable, Promise<T>], cancelToken: CancelToken | undefined) {
+        const [operation, promise] = sharedOperation;
+        const subscription = operation.addCancelable(cancelToken);
+        try {
+            return await promise;
+        }
+        finally {
+            subscription?.unsubscribe();
+        }
+    }
 }
 
 export function isUri(file: string) {

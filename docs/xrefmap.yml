@@ -57,10 +57,10 @@ references:
   name: children()
   href: api/grammarkdown/argumentlist.html#grammarkdown_ArgumentList_children_member_1_
   fullName: children()
-- uid: grammarkdown!ArgumentList#closeParenToken:member
-  name: closeParenToken
-  href: api/grammarkdown/argumentlist.html#grammarkdown_ArgumentList_closeParenToken_member
-  fullName: closeParenToken
+- uid: grammarkdown!ArgumentList#closeBracketToken:member
+  name: closeBracketToken
+  href: api/grammarkdown/argumentlist.html#grammarkdown_ArgumentList_closeBracketToken_member
+  fullName: closeBracketToken
 - uid: grammarkdown!ArgumentList#elements:member
   name: elements
   href: api/grammarkdown/argumentlist.html#grammarkdown_ArgumentList_elements_member
@@ -77,10 +77,10 @@ references:
   name: lastChild
   href: api/grammarkdown/argumentlist.html#grammarkdown_ArgumentList_lastChild_member
   fullName: lastChild
-- uid: grammarkdown!ArgumentList#openParenToken:member
-  name: openParenToken
-  href: api/grammarkdown/argumentlist.html#grammarkdown_ArgumentList_openParenToken_member
-  fullName: openParenToken
+- uid: grammarkdown!ArgumentList#openBracketToken:member
+  name: openBracketToken
+  href: api/grammarkdown/argumentlist.html#grammarkdown_ArgumentList_openBracketToken_member
+  fullName: openBracketToken
 - uid: grammarkdown!ArgumentList#update:member(1)
   name: update(elements)
   href: api/grammarkdown/argumentlist.html#grammarkdown_ArgumentList_update_member_1_
@@ -132,10 +132,6 @@ references:
 - uid: grammarkdown!Binder#bindSourceFile:member(1)
   name: bindSourceFile(file, bindings, cancelable)
   href: api/grammarkdown/binder.html#grammarkdown_Binder_bindSourceFile_member_1_
-  fullName: bindSourceFile(file, bindings, cancelable)
-- uid: grammarkdown!Binder#bindSourceFile:member(2)
-  name: bindSourceFile(file, bindings, cancelable)
-  href: api/grammarkdown/binder.html#grammarkdown_Binder_bindSourceFile_member_2_
   fullName: bindSourceFile(file, bindings, cancelable)
 - uid: grammarkdown!Binder:class
   name: Binder
@@ -745,18 +741,14 @@ references:
   name: checkSourceFile(sourceFile, bindings, diagnostics, cancelable)
   href: api/grammarkdown/checker.html#grammarkdown_Checker_checkSourceFile_member_1_
   fullName: checkSourceFile(sourceFile, bindings, diagnostics, cancelable)
-- uid: grammarkdown!Checker#checkSourceFile:member(2)
-  name: checkSourceFile(sourceFile, bindings, diagnostics, cancelable)
-  href: api/grammarkdown/checker.html#grammarkdown_Checker_checkSourceFile_member_2_
-  fullName: checkSourceFile(sourceFile, bindings, diagnostics, cancelable)
 - uid: grammarkdown!Checker:class
   name: Checker
   href: api/grammarkdown/checker.html#grammarkdown_Checker_class
   fullName: Checker
 - uid: grammarkdown!Checker:constructor(1)
-  name: (constructor)(options)
+  name: (constructor)(options, lineOffsetMap)
   href: api/grammarkdown/checker.html#grammarkdown_Checker_constructor_1_
-  fullName: (constructor)(options)
+  fullName: (constructor)(options, lineOffsetMap)
 - uid: grammarkdown!CommentTrivia:type
   name: CommentTrivia
   href: api/grammarkdown.html#grammarkdown_CommentTrivia_type
@@ -853,38 +845,62 @@ references:
   name: (constructor)(openBracketToken, elements, closeBracketToken)
   href: api/grammarkdown/constraints.html#grammarkdown_Constraints_constructor_1_
   fullName: (constructor)(openBracketToken, elements, closeBracketToken)
+- uid: grammarkdown!CoreAsyncHost#createParser:member(1)
+  name: createParser()
+  href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_createParser_member_1_
+  fullName: createParser()
 - uid: grammarkdown!CoreAsyncHost#getSourceFile:member(1)
   name: getSourceFile(file, cancelable)
   href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_getSourceFile_member_1_
   fullName: getSourceFile(file, cancelable)
-- uid: grammarkdown!CoreAsyncHost#getSourceFile:member(2)
-  name: getSourceFile(file, cancelable)
-  href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_getSourceFile_member_2_
-  fullName: getSourceFile(file, cancelable)
+- uid: grammarkdown!CoreAsyncHost#ignoreCase:member
+  name: ignoreCase
+  href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_ignoreCase_member
+  fullName: ignoreCase
+- uid: grammarkdown!CoreAsyncHost#normalizeFile:member(1)
+  name: normalizeFile(file)
+  href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_normalizeFile_member_1_
+  fullName: normalizeFile(file)
 - uid: grammarkdown!CoreAsyncHost#normalizeFileCore:member(1)
   name: normalizeFileCore(file)
   href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_normalizeFileCore_member_1_
   fullName: normalizeFileCore(file)
+- uid: grammarkdown!CoreAsyncHost#parser:member
+  name: parser
+  href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_parser_member
+  fullName: parser
+- uid: grammarkdown!CoreAsyncHost#parseSourceFile:member(1)
+  name: parseSourceFile(file, text, cancelable)
+  href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_parseSourceFile_member_1_
+  fullName: parseSourceFile(file, text, cancelable)
 - uid: grammarkdown!CoreAsyncHost#readFile:member(1)
   name: readFile(file, cancelable)
   href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_readFile_member_1_
-  fullName: readFile(file, cancelable)
-- uid: grammarkdown!CoreAsyncHost#readFile:member(2)
-  name: readFile(file, cancelable)
-  href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_readFile_member_2_
   fullName: readFile(file, cancelable)
 - uid: grammarkdown!CoreAsyncHost#readFileCore:member(1)
   name: readFileCore(file, cancelToken)
   href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_readFileCore_member_1_
   fullName: readFileCore(file, cancelToken)
+- uid: grammarkdown!CoreAsyncHost#registerKnownGrammar:member(1)
+  name: registerKnownGrammar(name, file)
+  href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_registerKnownGrammar_member_1_
+  fullName: registerKnownGrammar(name, file)
 - uid: grammarkdown!CoreAsyncHost#registerKnownGrammarCore:member(1)
   name: registerKnownGrammarCore(name, file)
   href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_registerKnownGrammarCore_member_1_
   fullName: registerKnownGrammarCore(name, file)
+- uid: grammarkdown!CoreAsyncHost#resolveFile:member(1)
+  name: resolveFile(file, referer)
+  href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_resolveFile_member_1_
+  fullName: resolveFile(file, referer)
 - uid: grammarkdown!CoreAsyncHost#resolveFileCore:member(1)
-  name: resolveFileCore(file, referer)
+  name: resolveFileCore(file, referrer)
   href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_resolveFileCore_member_1_
-  fullName: resolveFileCore(file, referer)
+  fullName: resolveFileCore(file, referrer)
+- uid: grammarkdown!CoreAsyncHost#resolveKnownGrammar:member(1)
+  name: resolveKnownGrammar(name)
+  href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_resolveKnownGrammar_member_1_
+  fullName: resolveKnownGrammar(name)
 - uid: grammarkdown!CoreAsyncHost#resolveKnownGrammarCore:member(1)
   name: resolveKnownGrammarCore(name)
   href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_resolveKnownGrammarCore_member_1_
@@ -892,10 +908,6 @@ references:
 - uid: grammarkdown!CoreAsyncHost#writeFile:member(1)
   name: writeFile(file, text, cancelable)
   href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_writeFile_member_1_
-  fullName: writeFile(file, text, cancelable)
-- uid: grammarkdown!CoreAsyncHost#writeFile:member(2)
-  name: writeFile(file, text, cancelable)
-  href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_writeFile_member_2_
   fullName: writeFile(file, text, cancelable)
 - uid: grammarkdown!CoreAsyncHost#writeFileCore:member(1)
   name: writeFileCore(file, content, cancelToken)
@@ -917,6 +929,14 @@ references:
   name: (constructor)(options, hostFallback)
   href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_constructor_1_
   fullName: (constructor)(options, hostFallback)
+- uid: grammarkdown!CoreAsyncHostOptions#ignoreCase:member
+  name: ignoreCase
+  href: api/grammarkdown/coreasynchostoptions.html#grammarkdown_CoreAsyncHostOptions_ignoreCase_member
+  fullName: ignoreCase
+- uid: grammarkdown!CoreAsyncHostOptions#knownGrammars:member
+  name: knownGrammars
+  href: api/grammarkdown/coreasynchostoptions.html#grammarkdown_CoreAsyncHostOptions_knownGrammars_member
+  fullName: knownGrammars
 - uid: grammarkdown!CoreAsyncHostOptions#normalizeFile:member
   name: normalizeFile
   href: api/grammarkdown/coreasynchostoptions.html#grammarkdown_CoreAsyncHostOptions_normalizeFile_member
@@ -933,6 +953,10 @@ references:
   name: resolveKnownGrammar
   href: api/grammarkdown/coreasynchostoptions.html#grammarkdown_CoreAsyncHostOptions_resolveKnownGrammar_member
   fullName: resolveKnownGrammar
+- uid: grammarkdown!CoreAsyncHostOptions#useBuiltinGrammars:member
+  name: useBuiltinGrammars
+  href: api/grammarkdown/coreasynchostoptions.html#grammarkdown_CoreAsyncHostOptions_useBuiltinGrammars_member
+  fullName: useBuiltinGrammars
 - uid: grammarkdown!CoreAsyncHostOptions#writeFile:member
   name: writeFile
   href: api/grammarkdown/coreasynchostoptions.html#grammarkdown_CoreAsyncHostOptions_writeFile_member
@@ -941,94 +965,6 @@ references:
   name: CoreAsyncHostOptions
   href: api/grammarkdown/coreasynchostoptions.html#grammarkdown_CoreAsyncHostOptions_interface
   fullName: CoreAsyncHostOptions
-- uid: grammarkdown!CoreSyncHost#getSourceFileSync:member(1)
-  name: getSourceFileSync(file, cancelable)
-  href: api/grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_getSourceFileSync_member_1_
-  fullName: getSourceFileSync(file, cancelable)
-- uid: grammarkdown!CoreSyncHost#getSourceFileSync:member(2)
-  name: getSourceFileSync(file, cancelable)
-  href: api/grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_getSourceFileSync_member_2_
-  fullName: getSourceFileSync(file, cancelable)
-- uid: grammarkdown!CoreSyncHost#normalizeFileCore:member(1)
-  name: normalizeFileCore(file)
-  href: api/grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_normalizeFileCore_member_1_
-  fullName: normalizeFileCore(file)
-- uid: grammarkdown!CoreSyncHost#readFileSync:member(1)
-  name: readFileSync(file, cancelable)
-  href: api/grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_readFileSync_member_1_
-  fullName: readFileSync(file, cancelable)
-- uid: grammarkdown!CoreSyncHost#readFileSync:member(2)
-  name: readFileSync(file, cancelable)
-  href: api/grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_readFileSync_member_2_
-  fullName: readFileSync(file, cancelable)
-- uid: grammarkdown!CoreSyncHost#readFileSyncCore:member(1)
-  name: readFileSyncCore(file, cancelToken)
-  href: api/grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_readFileSyncCore_member_1_
-  fullName: readFileSyncCore(file, cancelToken)
-- uid: grammarkdown!CoreSyncHost#registerKnownGrammarCore:member(1)
-  name: registerKnownGrammarCore(name, file)
-  href: api/grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_registerKnownGrammarCore_member_1_
-  fullName: registerKnownGrammarCore(name, file)
-- uid: grammarkdown!CoreSyncHost#resolveFileCore:member(1)
-  name: resolveFileCore(file, referer)
-  href: api/grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_resolveFileCore_member_1_
-  fullName: resolveFileCore(file, referer)
-- uid: grammarkdown!CoreSyncHost#resolveKnownGrammarCore:member(1)
-  name: resolveKnownGrammarCore(name)
-  href: api/grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_resolveKnownGrammarCore_member_1_
-  fullName: resolveKnownGrammarCore(name)
-- uid: grammarkdown!CoreSyncHost#writeFileSync:member(1)
-  name: writeFileSync(file, text, cancelable)
-  href: api/grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_writeFileSync_member_1_
-  fullName: writeFileSync(file, text, cancelable)
-- uid: grammarkdown!CoreSyncHost#writeFileSync:member(2)
-  name: writeFileSync(file, text, cancelable)
-  href: api/grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_writeFileSync_member_2_
-  fullName: writeFileSync(file, text, cancelable)
-- uid: grammarkdown!CoreSyncHost#writeFileSyncCore:member(1)
-  name: writeFileSyncCore(file, content, cancelToken)
-  href: api/grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_writeFileSyncCore_member_1_
-  fullName: writeFileSyncCore(file, content, cancelToken)
-- uid: grammarkdown!CoreSyncHost.forFile:member(1)
-  name: forFile(content, file, hostFallback)
-  href: api/grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_forFile_member_1_
-  fullName: forFile(content, file, hostFallback)
-- uid: grammarkdown!CoreSyncHost.from:member(1)
-  name: from(options, hostFallback)
-  href: api/grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_from_member_1_
-  fullName: from(options, hostFallback)
-- uid: grammarkdown!CoreSyncHost:class
-  name: CoreSyncHost
-  href: api/grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_class
-  fullName: CoreSyncHost
-- uid: grammarkdown!CoreSyncHost:constructor(1)
-  name: (constructor)(options, hostFallback)
-  href: api/grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_constructor_1_
-  fullName: (constructor)(options, hostFallback)
-- uid: grammarkdown!CoreSyncHostOptions#normalizeFile:member
-  name: normalizeFile
-  href: api/grammarkdown/coresynchostoptions.html#grammarkdown_CoreSyncHostOptions_normalizeFile_member
-  fullName: normalizeFile
-- uid: grammarkdown!CoreSyncHostOptions#readFileSync:member
-  name: readFileSync
-  href: api/grammarkdown/coresynchostoptions.html#grammarkdown_CoreSyncHostOptions_readFileSync_member
-  fullName: readFileSync
-- uid: grammarkdown!CoreSyncHostOptions#resolveFile:member
-  name: resolveFile
-  href: api/grammarkdown/coresynchostoptions.html#grammarkdown_CoreSyncHostOptions_resolveFile_member
-  fullName: resolveFile
-- uid: grammarkdown!CoreSyncHostOptions#resolveKnownGrammar:member
-  name: resolveKnownGrammar
-  href: api/grammarkdown/coresynchostoptions.html#grammarkdown_CoreSyncHostOptions_resolveKnownGrammar_member
-  fullName: resolveKnownGrammar
-- uid: grammarkdown!CoreSyncHostOptions#writeFileSync:member
-  name: writeFileSync
-  href: api/grammarkdown/coresynchostoptions.html#grammarkdown_CoreSyncHostOptions_writeFileSync_member
-  fullName: writeFileSync
-- uid: grammarkdown!CoreSyncHostOptions:interface
-  name: CoreSyncHostOptions
-  href: api/grammarkdown/coresynchostoptions.html#grammarkdown_CoreSyncHostOptions_interface
-  fullName: CoreSyncHostOptions
 - uid: grammarkdown!Declaration:type
   name: Declaration
   href: api/grammarkdown.html#grammarkdown_Declaration_type
@@ -1089,6 +1025,10 @@ references:
   name: diagnosticIndex
   href: api/grammarkdown/diagnosticinfo.html#grammarkdown_DiagnosticInfo_diagnosticIndex_member
   fullName: diagnosticIndex
+- uid: grammarkdown!DiagnosticInfo#filename:member
+  name: filename
+  href: api/grammarkdown/diagnosticinfo.html#grammarkdown_DiagnosticInfo_filename_member
+  fullName: filename
 - uid: grammarkdown!DiagnosticInfo#formattedMessage:member
   name: formattedMessage
   href: api/grammarkdown/diagnosticinfo.html#grammarkdown_DiagnosticInfo_formattedMessage_member
@@ -1149,6 +1089,10 @@ references:
   name: getDiagnosticArguments(diagnosticIndex)
   href: api/grammarkdown/diagnosticmessages.html#grammarkdown_DiagnosticMessages_getDiagnosticArguments_member_1_
   fullName: getDiagnosticArguments(diagnosticIndex)
+- uid: grammarkdown!DiagnosticMessages#getDiagnosticFilename:member(1)
+  name: getDiagnosticFilename(diagnosticIndex, raw)
+  href: api/grammarkdown/diagnosticmessages.html#grammarkdown_DiagnosticMessages_getDiagnosticFilename_member_1_
+  fullName: getDiagnosticFilename(diagnosticIndex, raw)
 - uid: grammarkdown!DiagnosticMessages#getDiagnosticInfo:member(1)
   name: getDiagnosticInfo(diagnosticIndex, options)
   href: api/grammarkdown/diagnosticmessages.html#grammarkdown_DiagnosticMessages_getDiagnosticInfo_member_1_
@@ -1165,10 +1109,14 @@ references:
   name: getDiagnosticNode(diagnosticIndex)
   href: api/grammarkdown/diagnosticmessages.html#grammarkdown_DiagnosticMessages_getDiagnosticNode_member_1_
   fullName: getDiagnosticNode(diagnosticIndex)
+- uid: grammarkdown!DiagnosticMessages#getDiagnosticPosition:member(1)
+  name: getDiagnosticPosition(diagnosticIndex, raw)
+  href: api/grammarkdown/diagnosticmessages.html#grammarkdown_DiagnosticMessages_getDiagnosticPosition_member_1_
+  fullName: getDiagnosticPosition(diagnosticIndex, raw)
 - uid: grammarkdown!DiagnosticMessages#getDiagnosticRange:member(1)
-  name: getDiagnosticRange(diagnosticIndex)
+  name: getDiagnosticRange(diagnosticIndex, raw)
   href: api/grammarkdown/diagnosticmessages.html#grammarkdown_DiagnosticMessages_getDiagnosticRange_member_1_
-  fullName: getDiagnosticRange(diagnosticIndex)
+  fullName: getDiagnosticRange(diagnosticIndex, raw)
 - uid: grammarkdown!DiagnosticMessages#getDiagnosticSourceFile:member(1)
   name: getDiagnosticSourceFile(diagnosticIndex)
   href: api/grammarkdown/diagnosticmessages.html#grammarkdown_DiagnosticMessages_getDiagnosticSourceFile_member_1_
@@ -1201,6 +1149,10 @@ references:
   name: DiagnosticMessages
   href: api/grammarkdown/diagnosticmessages.html#grammarkdown_DiagnosticMessages_class
   fullName: DiagnosticMessages
+- uid: grammarkdown!DiagnosticMessages:constructor(1)
+  name: (constructor)(lineOffsetMap)
+  href: api/grammarkdown/diagnosticmessages.html#grammarkdown_DiagnosticMessages_constructor_1_
+  fullName: (constructor)(lineOffsetMap)
 - uid: grammarkdown!Diagnostics:var
   name: Diagnostics
   href: api/grammarkdown.html#grammarkdown_Diagnostics_var
@@ -1349,10 +1301,6 @@ references:
   name: emit(node, resolver, diagnostics, writeFile, cancelable)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emit_member_1_
   fullName: emit(node, resolver, diagnostics, writeFile, cancelable)
-- uid: grammarkdown!Emitter#emit:member(2)
-  name: emit(node, resolver, diagnostics, writeFile, cancelable)
-  href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emit_member_2_
-  fullName: emit(node, resolver, diagnostics, writeFile, cancelable)
 - uid: grammarkdown!Emitter#emitArgument:member(1)
   name: emitArgument(node)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitArgument_member_1_
@@ -1369,6 +1317,10 @@ references:
   name: emitConstraints(node)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitConstraints_member_1_
   fullName: emitConstraints(node)
+- uid: grammarkdown!Emitter#emitDefine:member(1)
+  name: emitDefine(node)
+  href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitDefine_member_1_
+  fullName: emitDefine(node)
 - uid: grammarkdown!Emitter#emitEmptyAssertion:member(1)
   name: emitEmptyAssertion(node)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitEmptyAssertion_member_1_
@@ -1397,6 +1349,10 @@ references:
   name: emitLexicalGoalAssertion(node)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitLexicalGoalAssertion_member_1_
   fullName: emitLexicalGoalAssertion(node)
+- uid: grammarkdown!Emitter#emitLine:member(1)
+  name: emitLine(node)
+  href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitLine_member_1_
+  fullName: emitLine(node)
 - uid: grammarkdown!Emitter#emitLookaheadAssertion:member(1)
   name: emitLookaheadAssertion(node)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitLookaheadAssertion_member_1_
@@ -1465,10 +1421,6 @@ references:
   name: emitString(node, resolver, diagnostics, cancelable)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitString_member_1_
   fullName: emitString(node, resolver, diagnostics, cancelable)
-- uid: grammarkdown!Emitter#emitString:member(2)
-  name: emitString(node, resolver, diagnostics, cancelable)
-  href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitString_member_2_
-  fullName: emitString(node, resolver, diagnostics, cancelable)
 - uid: grammarkdown!Emitter#emitSymbolSet:member(1)
   name: emitSymbolSet(node)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitSymbolSet_member_1_
@@ -1477,14 +1429,6 @@ references:
   name: emitSymbolSpan(node)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitSymbolSpan_member_1_
   fullName: emitSymbolSpan(node)
-- uid: grammarkdown!Emitter#emitSync:member(1)
-  name: emitSync(node, resolver, diagnostics, writeFile, cancelable)
-  href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitSync_member_1_
-  fullName: emitSync(node, resolver, diagnostics, writeFile, cancelable)
-- uid: grammarkdown!Emitter#emitSync:member(2)
-  name: emitSync(node, resolver, diagnostics, writeFile, cancelable)
-  href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitSync_member_2_
-  fullName: emitSync(node, resolver, diagnostics, writeFile, cancelable)
 - uid: grammarkdown!Emitter#emitTerminal:member(1)
   name: emitTerminal(node)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitTerminal_member_1_
@@ -1589,42 +1533,18 @@ references:
   name: bind(cancelable)
   href: api/grammarkdown/grammar.html#grammarkdown_Grammar_bind_member_1_
   fullName: bind(cancelable)
-- uid: grammarkdown!Grammar#bind:member(2)
-  name: bind(cancelable)
-  href: api/grammarkdown/grammar.html#grammarkdown_Grammar_bind_member_2_
-  fullName: bind(cancelable)
 - uid: grammarkdown!Grammar#binder:member
   name: binder
   href: api/grammarkdown/grammar.html#grammarkdown_Grammar_binder_member
   fullName: binder
-- uid: grammarkdown!Grammar#bindSync:member(1)
-  name: bindSync(cancelable)
-  href: api/grammarkdown/grammar.html#grammarkdown_Grammar_bindSync_member_1_
-  fullName: bindSync(cancelable)
-- uid: grammarkdown!Grammar#bindSync:member(2)
-  name: bindSync(cancelable)
-  href: api/grammarkdown/grammar.html#grammarkdown_Grammar_bindSync_member_2_
-  fullName: bindSync(cancelable)
 - uid: grammarkdown!Grammar#check:member(1)
   name: check(sourceFile, cancelable)
   href: api/grammarkdown/grammar.html#grammarkdown_Grammar_check_member_1_
-  fullName: check(sourceFile, cancelable)
-- uid: grammarkdown!Grammar#check:member(2)
-  name: check(sourceFile, cancelable)
-  href: api/grammarkdown/grammar.html#grammarkdown_Grammar_check_member_2_
   fullName: check(sourceFile, cancelable)
 - uid: grammarkdown!Grammar#checker:member
   name: checker
   href: api/grammarkdown/grammar.html#grammarkdown_Grammar_checker_member
   fullName: checker
-- uid: grammarkdown!Grammar#checkSync:member(1)
-  name: checkSync(sourceFile, cancelable)
-  href: api/grammarkdown/grammar.html#grammarkdown_Grammar_checkSync_member_1_
-  fullName: checkSync(sourceFile, cancelable)
-- uid: grammarkdown!Grammar#checkSync:member(2)
-  name: checkSync(sourceFile, cancelable)
-  href: api/grammarkdown/grammar.html#grammarkdown_Grammar_checkSync_member_2_
-  fullName: checkSync(sourceFile, cancelable)
 - uid: grammarkdown!Grammar#createBinder:member(1)
   name: createBinder(options)
   href: api/grammarkdown/grammar.html#grammarkdown_Grammar_createBinder_member_1_
@@ -1649,34 +1569,10 @@ references:
   name: emit(sourceFile, writeFile, cancelable)
   href: api/grammarkdown/grammar.html#grammarkdown_Grammar_emit_member_1_
   fullName: emit(sourceFile, writeFile, cancelable)
-- uid: grammarkdown!Grammar#emit:member(2)
-  name: emit(sourceFile, writeFile, cancelable)
-  href: api/grammarkdown/grammar.html#grammarkdown_Grammar_emit_member_2_
-  fullName: emit(sourceFile, writeFile, cancelable)
 - uid: grammarkdown!Grammar#emitString:member(1)
   name: emitString(sourceFile, cancelable)
   href: api/grammarkdown/grammar.html#grammarkdown_Grammar_emitString_member_1_
   fullName: emitString(sourceFile, cancelable)
-- uid: grammarkdown!Grammar#emitString:member(2)
-  name: emitString(sourceFile, cancelable)
-  href: api/grammarkdown/grammar.html#grammarkdown_Grammar_emitString_member_2_
-  fullName: emitString(sourceFile, cancelable)
-- uid: grammarkdown!Grammar#emitStringSync:member(1)
-  name: emitStringSync(sourceFile, cancelable)
-  href: api/grammarkdown/grammar.html#grammarkdown_Grammar_emitStringSync_member_1_
-  fullName: emitStringSync(sourceFile, cancelable)
-- uid: grammarkdown!Grammar#emitStringSync:member(2)
-  name: emitStringSync(sourceFile, cancelable)
-  href: api/grammarkdown/grammar.html#grammarkdown_Grammar_emitStringSync_member_2_
-  fullName: emitStringSync(sourceFile, cancelable)
-- uid: grammarkdown!Grammar#emitSync:member(1)
-  name: emitSync(sourceFile, writeFile, cancelable)
-  href: api/grammarkdown/grammar.html#grammarkdown_Grammar_emitSync_member_1_
-  fullName: emitSync(sourceFile, writeFile, cancelable)
-- uid: grammarkdown!Grammar#emitSync:member(2)
-  name: emitSync(sourceFile, writeFile, cancelable)
-  href: api/grammarkdown/grammar.html#grammarkdown_Grammar_emitSync_member_2_
-  fullName: emitSync(sourceFile, writeFile, cancelable)
 - uid: grammarkdown!Grammar#emitter:member
   name: emitter
   href: api/grammarkdown/grammar.html#grammarkdown_Grammar_emitter_member
@@ -1705,26 +1601,10 @@ references:
   name: parse(cancelable)
   href: api/grammarkdown/grammar.html#grammarkdown_Grammar_parse_member_1_
   fullName: parse(cancelable)
-- uid: grammarkdown!Grammar#parse:member(2)
-  name: parse(cancelable)
-  href: api/grammarkdown/grammar.html#grammarkdown_Grammar_parse_member_2_
-  fullName: parse(cancelable)
-- uid: grammarkdown!Grammar#parseSync:member(1)
-  name: parseSync(cancelable)
-  href: api/grammarkdown/grammar.html#grammarkdown_Grammar_parseSync_member_1_
-  fullName: parseSync(cancelable)
-- uid: grammarkdown!Grammar#parseSync:member(2)
-  name: parseSync(cancelable)
-  href: api/grammarkdown/grammar.html#grammarkdown_Grammar_parseSync_member_2_
-  fullName: parseSync(cancelable)
 - uid: grammarkdown!Grammar#readFile:member(1)
   name: readFile(file, cancelToken)
   href: api/grammarkdown/grammar.html#grammarkdown_Grammar_readFile_member_1_
   fullName: readFile(file, cancelToken)
-- uid: grammarkdown!Grammar#readFileSync:member(1)
-  name: readFileSync(file)
-  href: api/grammarkdown/grammar.html#grammarkdown_Grammar_readFileSync_member_1_
-  fullName: readFileSync(file)
 - uid: grammarkdown!Grammar#resolver:member
   name: resolver
   href: api/grammarkdown/grammar.html#grammarkdown_Grammar_resolver_member
@@ -1741,17 +1621,9 @@ references:
   name: writeFile(file, content, cancelToken)
   href: api/grammarkdown/grammar.html#grammarkdown_Grammar_writeFile_member_1_
   fullName: writeFile(file, content, cancelToken)
-- uid: grammarkdown!Grammar#writeFileSync:member(1)
-  name: writeFileSync(file, content)
-  href: api/grammarkdown/grammar.html#grammarkdown_Grammar_writeFileSync_member_1_
-  fullName: writeFileSync(file, content)
 - uid: grammarkdown!Grammar.convert:member(1)
   name: convert(content, options, hostFallback, cancelable)
   href: api/grammarkdown/grammar.html#grammarkdown_Grammar_convert_member_1_
-  fullName: convert(content, options, hostFallback, cancelable)
-- uid: grammarkdown!Grammar.convert:member(2)
-  name: convert(content, options, hostFallback, cancelable)
-  href: api/grammarkdown/grammar.html#grammarkdown_Grammar_convert_member_2_
   fullName: convert(content, options, hostFallback, cancelable)
 - uid: grammarkdown!Grammar:class
   name: Grammar
@@ -1761,166 +1633,6 @@ references:
   name: (constructor)(rootNames, options, host)
   href: api/grammarkdown/grammar.html#grammarkdown_Grammar_constructor_1_
   fullName: (constructor)(rootNames, options, host)
-- uid: grammarkdown!Host#getSourceFile:member(1)
-  name: getSourceFile(file, cancelable)
-  href: api/grammarkdown/host.html#grammarkdown_Host_getSourceFile_member_1_
-  fullName: getSourceFile(file, cancelable)
-- uid: grammarkdown!Host#getSourceFile:member(2)
-  name: getSourceFile(file, cancelable)
-  href: api/grammarkdown/host.html#grammarkdown_Host_getSourceFile_member_2_
-  fullName: getSourceFile(file, cancelable)
-- uid: grammarkdown!Host#getSourceFileSync:member(1)
-  name: getSourceFileSync(file, cancelable)
-  href: api/grammarkdown/host.html#grammarkdown_Host_getSourceFileSync_member_1_
-  fullName: getSourceFileSync(file, cancelable)
-- uid: grammarkdown!Host#getSourceFileSync:member(2)
-  name: getSourceFileSync(file, cancelable)
-  href: api/grammarkdown/host.html#grammarkdown_Host_getSourceFileSync_member_2_
-  fullName: getSourceFileSync(file, cancelable)
-- uid: grammarkdown!Host#readFile:member(1)
-  name: readFile(file, cancelable)
-  href: api/grammarkdown/host.html#grammarkdown_Host_readFile_member_1_
-  fullName: readFile(file, cancelable)
-- uid: grammarkdown!Host#readFile:member(2)
-  name: readFile(file, cancelable)
-  href: api/grammarkdown/host.html#grammarkdown_Host_readFile_member_2_
-  fullName: readFile(file, cancelable)
-- uid: grammarkdown!Host#readFileSync:member(1)
-  name: readFileSync(file, cancelable)
-  href: api/grammarkdown/host.html#grammarkdown_Host_readFileSync_member_1_
-  fullName: readFileSync(file, cancelable)
-- uid: grammarkdown!Host#readFileSync:member(2)
-  name: readFileSync(file, cancelable)
-  href: api/grammarkdown/host.html#grammarkdown_Host_readFileSync_member_2_
-  fullName: readFileSync(file, cancelable)
-- uid: grammarkdown!Host#resolveFileCore:member(1)
-  name: resolveFileCore(file, referer)
-  href: api/grammarkdown/host.html#grammarkdown_Host_resolveFileCore_member_1_
-  fullName: resolveFileCore(file, referer)
-- uid: grammarkdown!Host#writeFile:member(1)
-  name: writeFile(file, text, cancelable)
-  href: api/grammarkdown/host.html#grammarkdown_Host_writeFile_member_1_
-  fullName: writeFile(file, text, cancelable)
-- uid: grammarkdown!Host#writeFile:member(2)
-  name: writeFile(file, text, cancelable)
-  href: api/grammarkdown/host.html#grammarkdown_Host_writeFile_member_2_
-  fullName: writeFile(file, text, cancelable)
-- uid: grammarkdown!Host#writeFileSync:member(1)
-  name: writeFileSync(file, text, cancelable)
-  href: api/grammarkdown/host.html#grammarkdown_Host_writeFileSync_member_1_
-  fullName: writeFileSync(file, text, cancelable)
-- uid: grammarkdown!Host#writeFileSync:member(2)
-  name: writeFileSync(file, text, cancelable)
-  href: api/grammarkdown/host.html#grammarkdown_Host_writeFileSync_member_2_
-  fullName: writeFileSync(file, text, cancelable)
-- uid: grammarkdown!Host:class
-  name: Host
-  href: api/grammarkdown/host.html#grammarkdown_Host_class
-  fullName: Host
-- uid: grammarkdown!Host:constructor(1)
-  name: (constructor)(options)
-  href: api/grammarkdown/host.html#grammarkdown_Host_constructor_1_
-  fullName: (constructor)(options)
-- uid: grammarkdown!HostBase#createParser:member(1)
-  name: createParser()
-  href: api/grammarkdown/hostbase.html#grammarkdown_HostBase_createParser_member_1_
-  fullName: createParser()
-- uid: grammarkdown!HostBase#ignoreCase:member
-  name: ignoreCase
-  href: api/grammarkdown/hostbase.html#grammarkdown_HostBase_ignoreCase_member
-  fullName: ignoreCase
-- uid: grammarkdown!HostBase#normalizeFile:member(1)
-  name: normalizeFile(file)
-  href: api/grammarkdown/hostbase.html#grammarkdown_HostBase_normalizeFile_member_1_
-  fullName: normalizeFile(file)
-- uid: grammarkdown!HostBase#normalizeFileCore:member(1)
-  name: normalizeFileCore(file)
-  href: api/grammarkdown/hostbase.html#grammarkdown_HostBase_normalizeFileCore_member_1_
-  fullName: normalizeFileCore(file)
-- uid: grammarkdown!HostBase#parser:member
-  name: parser
-  href: api/grammarkdown/hostbase.html#grammarkdown_HostBase_parser_member
-  fullName: parser
-- uid: grammarkdown!HostBase#parseSourceFile:member(1)
-  name: parseSourceFile(file, text, cancelable)
-  href: api/grammarkdown/hostbase.html#grammarkdown_HostBase_parseSourceFile_member_1_
-  fullName: parseSourceFile(file, text, cancelable)
-- uid: grammarkdown!HostBase#parseSourceFile:member(2)
-  name: parseSourceFile(file, text, cancelable)
-  href: api/grammarkdown/hostbase.html#grammarkdown_HostBase_parseSourceFile_member_2_
-  fullName: parseSourceFile(file, text, cancelable)
-- uid: grammarkdown!HostBase#registerKnownGrammar:member(1)
-  name: registerKnownGrammar(name, file)
-  href: api/grammarkdown/hostbase.html#grammarkdown_HostBase_registerKnownGrammar_member_1_
-  fullName: registerKnownGrammar(name, file)
-- uid: grammarkdown!HostBase#registerKnownGrammarCore:member(1)
-  name: registerKnownGrammarCore(name, file)
-  href: api/grammarkdown/hostbase.html#grammarkdown_HostBase_registerKnownGrammarCore_member_1_
-  fullName: registerKnownGrammarCore(name, file)
-- uid: grammarkdown!HostBase#resolveFile:member(1)
-  name: resolveFile(file, referer)
-  href: api/grammarkdown/hostbase.html#grammarkdown_HostBase_resolveFile_member_1_
-  fullName: resolveFile(file, referer)
-- uid: grammarkdown!HostBase#resolveFileCore:member(1)
-  name: resolveFileCore(file, referer)
-  href: api/grammarkdown/hostbase.html#grammarkdown_HostBase_resolveFileCore_member_1_
-  fullName: resolveFileCore(file, referer)
-- uid: grammarkdown!HostBase#resolveKnownGrammar:member(1)
-  name: resolveKnownGrammar(name)
-  href: api/grammarkdown/hostbase.html#grammarkdown_HostBase_resolveKnownGrammar_member_1_
-  fullName: resolveKnownGrammar(name)
-- uid: grammarkdown!HostBase#resolveKnownGrammarCore:member(1)
-  name: resolveKnownGrammarCore(name)
-  href: api/grammarkdown/hostbase.html#grammarkdown_HostBase_resolveKnownGrammarCore_member_1_
-  fullName: resolveKnownGrammarCore(name)
-- uid: grammarkdown!HostBase:class
-  name: HostBase
-  href: api/grammarkdown/hostbase.html#grammarkdown_HostBase_class
-  fullName: HostBase
-- uid: grammarkdown!HostBase:constructor(1)
-  name: (constructor)(options)
-  href: api/grammarkdown/hostbase.html#grammarkdown_HostBase_constructor_1_
-  fullName: (constructor)(options)
-- uid: grammarkdown!HostBaseOptions#ignoreCase:member
-  name: ignoreCase
-  href: api/grammarkdown/hostbaseoptions.html#grammarkdown_HostBaseOptions_ignoreCase_member
-  fullName: ignoreCase
-- uid: grammarkdown!HostBaseOptions#knownGrammars:member
-  name: knownGrammars
-  href: api/grammarkdown/hostbaseoptions.html#grammarkdown_HostBaseOptions_knownGrammars_member
-  fullName: knownGrammars
-- uid: grammarkdown!HostBaseOptions#useBuiltinGrammars:member
-  name: useBuiltinGrammars
-  href: api/grammarkdown/hostbaseoptions.html#grammarkdown_HostBaseOptions_useBuiltinGrammars_member
-  fullName: useBuiltinGrammars
-- uid: grammarkdown!HostBaseOptions:interface
-  name: HostBaseOptions
-  href: api/grammarkdown/hostbaseoptions.html#grammarkdown_HostBaseOptions_interface
-  fullName: HostBaseOptions
-- uid: grammarkdown!HostOptions#readFile:member
-  name: readFile
-  href: api/grammarkdown/hostoptions.html#grammarkdown_HostOptions_readFile_member
-  fullName: readFile
-- uid: grammarkdown!HostOptions#readFileSync:member
-  name: readFileSync
-  href: api/grammarkdown/hostoptions.html#grammarkdown_HostOptions_readFileSync_member
-  fullName: readFileSync
-- uid: grammarkdown!HostOptions#useBuiltinGrammars:member
-  name: useBuiltinGrammars
-  href: api/grammarkdown/hostoptions.html#grammarkdown_HostOptions_useBuiltinGrammars_member
-  fullName: useBuiltinGrammars
-- uid: grammarkdown!HostOptions#writeFile:member
-  name: writeFile
-  href: api/grammarkdown/hostoptions.html#grammarkdown_HostOptions_writeFile_member
-  fullName: writeFile
-- uid: grammarkdown!HostOptions#writeFileSync:member
-  name: writeFileSync
-  href: api/grammarkdown/hostoptions.html#grammarkdown_HostOptions_writeFileSync_member
-  fullName: writeFileSync
-- uid: grammarkdown!HostOptions:interface
-  name: HostOptions
-  href: api/grammarkdown/hostoptions.html#grammarkdown_HostOptions_interface
-  fullName: HostOptions
 - uid: grammarkdown!HtmlCloseTagTrivia:class
   name: HtmlCloseTagTrivia
   href: api/grammarkdown/htmlclosetagtrivia.html#grammarkdown_HtmlCloseTagTrivia_class
@@ -2209,22 +1921,6 @@ references:
   name: KeywordKind
   href: api/grammarkdown.html#grammarkdown_KeywordKind_type
   fullName: KeywordKind
-- uid: grammarkdown!LegacyReadFileCallback:type
-  name: LegacyReadFileCallback
-  href: api/grammarkdown.html#grammarkdown_LegacyReadFileCallback_type
-  fullName: LegacyReadFileCallback
-- uid: grammarkdown!LegacyReadFileSyncCallback:type
-  name: LegacyReadFileSyncCallback
-  href: api/grammarkdown.html#grammarkdown_LegacyReadFileSyncCallback_type
-  fullName: LegacyReadFileSyncCallback
-- uid: grammarkdown!LegacyWriteFileCallback:type
-  name: LegacyWriteFileCallback
-  href: api/grammarkdown.html#grammarkdown_LegacyWriteFileCallback_type
-  fullName: LegacyWriteFileCallback
-- uid: grammarkdown!LegacyWriteFileSyncCallback:type
-  name: LegacyWriteFileSyncCallback
-  href: api/grammarkdown.html#grammarkdown_LegacyWriteFileSyncCallback_type
-  fullName: LegacyWriteFileSyncCallback
 - uid: grammarkdown!LexicalGoalAssertion#children:member(1)
   name: children()
   href: api/grammarkdown/lexicalgoalassertion.html#grammarkdown_LexicalGoalAssertion_children_member_1_
@@ -2273,6 +1969,38 @@ references:
   name: LexicalSymbolKind
   href: api/grammarkdown.html#grammarkdown_LexicalSymbolKind_type
   fullName: LexicalSymbolKind
+- uid: grammarkdown!Line#children:member(1)
+  name: children()
+  href: api/grammarkdown/line.html#grammarkdown_Line_children_member_1_
+  fullName: children()
+- uid: grammarkdown!Line#forEachChild:member(1)
+  name: forEachChild(cbNode)
+  href: api/grammarkdown/line.html#grammarkdown_Line_forEachChild_member_1_
+  fullName: forEachChild(cbNode)
+- uid: grammarkdown!Line#lastChild:member
+  name: lastChild
+  href: api/grammarkdown/line.html#grammarkdown_Line_lastChild_member
+  fullName: lastChild
+- uid: grammarkdown!Line#lineKeyword:member
+  name: lineKeyword
+  href: api/grammarkdown/line.html#grammarkdown_Line_lineKeyword_member
+  fullName: lineKeyword
+- uid: grammarkdown!Line#number:member
+  name: number
+  href: api/grammarkdown/line.html#grammarkdown_Line_number_member
+  fullName: number
+- uid: grammarkdown!Line#path:member
+  name: path
+  href: api/grammarkdown/line.html#grammarkdown_Line_path_member
+  fullName: path
+- uid: grammarkdown!Line:class
+  name: Line
+  href: api/grammarkdown/line.html#grammarkdown_Line_class
+  fullName: Line
+- uid: grammarkdown!Line:constructor(1)
+  name: (constructor)(atToken, lineKeyword, number, path)
+  href: api/grammarkdown/line.html#grammarkdown_Line_constructor_1_
+  fullName: (constructor)(atToken, lineKeyword, number, path)
 - uid: grammarkdown!LineMap#formatOffset:member(1)
   name: formatOffset(pos)
   href: api/grammarkdown/linemap.html#grammarkdown_LineMap_formatOffset_member_1_
@@ -2297,6 +2025,34 @@ references:
   name: (constructor)(text)
   href: api/grammarkdown/linemap.html#grammarkdown_LineMap_constructor_1_
   fullName: (constructor)(text)
+- uid: grammarkdown!LineOffsetMap#getEffectiveFilenameAtPosition:member(1)
+  name: getEffectiveFilenameAtPosition(sourceFile, position)
+  href: api/grammarkdown/lineoffsetmap.html#grammarkdown_LineOffsetMap_getEffectiveFilenameAtPosition_member_1_
+  fullName: getEffectiveFilenameAtPosition(sourceFile, position)
+- uid: grammarkdown!LineOffsetMap#getEffectivePosition:member(1)
+  name: getEffectivePosition(sourceFile, position)
+  href: api/grammarkdown/lineoffsetmap.html#grammarkdown_LineOffsetMap_getEffectivePosition_member_1_
+  fullName: getEffectivePosition(sourceFile, position)
+- uid: grammarkdown!LineOffsetMap#getEffectiveRange:member(1)
+  name: getEffectiveRange(sourceFile, range)
+  href: api/grammarkdown/lineoffsetmap.html#grammarkdown_LineOffsetMap_getEffectiveRange_member_1_
+  fullName: getEffectiveRange(sourceFile, range)
+- uid: grammarkdown!LineOffsetMap#getRawFilenameAtEffectivePosition:member(1)
+  name: getRawFilenameAtEffectivePosition(filename, position)
+  href: api/grammarkdown/lineoffsetmap.html#grammarkdown_LineOffsetMap_getRawFilenameAtEffectivePosition_member_1_
+  fullName: getRawFilenameAtEffectivePosition(filename, position)
+- uid: grammarkdown!LineOffsetMap#getRawPositionFromEffectivePosition:member(1)
+  name: getRawPositionFromEffectivePosition(filename, position)
+  href: api/grammarkdown/lineoffsetmap.html#grammarkdown_LineOffsetMap_getRawPositionFromEffectivePosition_member_1_
+  fullName: getRawPositionFromEffectivePosition(filename, position)
+- uid: grammarkdown!LineOffsetMap#getRawRangeFromEffectiveRange:member(1)
+  name: getRawRangeFromEffectiveRange(filename, range)
+  href: api/grammarkdown/lineoffsetmap.html#grammarkdown_LineOffsetMap_getRawRangeFromEffectiveRange_member_1_
+  fullName: getRawRangeFromEffectiveRange(filename, range)
+- uid: grammarkdown!LineOffsetMap:class
+  name: LineOffsetMap
+  href: api/grammarkdown/lineoffsetmap.html#grammarkdown_LineOffsetMap_class
+  fullName: LineOffsetMap
 - uid: grammarkdown!LinkReference#children:member(1)
   name: children()
   href: api/grammarkdown/linkreference.html#grammarkdown_LinkReference_children_member_1_
@@ -2589,10 +2345,26 @@ references:
   name: (constructor)(options)
   href: api/grammarkdown/nodeasynchost.html#grammarkdown_NodeAsyncHost_constructor_1_
   fullName: (constructor)(options)
+- uid: grammarkdown!NodeAsyncHostOptions#allowUris:member
+  name: allowUris
+  href: api/grammarkdown/nodeasynchostoptions.html#grammarkdown_NodeAsyncHostOptions_allowUris_member
+  fullName: allowUris
+- uid: grammarkdown!NodeAsyncHostOptions#ignoreCase:member
+  name: ignoreCase
+  href: api/grammarkdown/nodeasynchostoptions.html#grammarkdown_NodeAsyncHostOptions_ignoreCase_member
+  fullName: ignoreCase
+- uid: grammarkdown!NodeAsyncHostOptions#knownGrammars:member
+  name: knownGrammars
+  href: api/grammarkdown/nodeasynchostoptions.html#grammarkdown_NodeAsyncHostOptions_knownGrammars_member
+  fullName: knownGrammars
 - uid: grammarkdown!NodeAsyncHostOptions#readFile:member
   name: readFile
   href: api/grammarkdown/nodeasynchostoptions.html#grammarkdown_NodeAsyncHostOptions_readFile_member
   fullName: readFile
+- uid: grammarkdown!NodeAsyncHostOptions#useBuiltinGrammars:member
+  name: useBuiltinGrammars
+  href: api/grammarkdown/nodeasynchostoptions.html#grammarkdown_NodeAsyncHostOptions_useBuiltinGrammars_member
+  fullName: useBuiltinGrammars
 - uid: grammarkdown!NodeAsyncHostOptions#writeFile:member
   name: writeFile
   href: api/grammarkdown/nodeasynchostoptions.html#grammarkdown_NodeAsyncHostOptions_writeFile_member
@@ -2857,26 +2629,6 @@ references:
   name: (constructor)(other)
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_constructor_2_
   fullName: (constructor)(other)
-- uid: grammarkdown!NodeSyncHost:class
-  name: NodeSyncHost
-  href: api/grammarkdown/nodesynchost.html#grammarkdown_NodeSyncHost_class
-  fullName: NodeSyncHost
-- uid: grammarkdown!NodeSyncHost:constructor(1)
-  name: (constructor)(options)
-  href: api/grammarkdown/nodesynchost.html#grammarkdown_NodeSyncHost_constructor_1_
-  fullName: (constructor)(options)
-- uid: grammarkdown!NodeSyncHostOptions#readFileSync:member
-  name: readFileSync
-  href: api/grammarkdown/nodesynchostoptions.html#grammarkdown_NodeSyncHostOptions_readFileSync_member
-  fullName: readFileSync
-- uid: grammarkdown!NodeSyncHostOptions#writeFileSync:member
-  name: writeFileSync
-  href: api/grammarkdown/nodesynchostoptions.html#grammarkdown_NodeSyncHostOptions_writeFileSync_member
-  fullName: writeFileSync
-- uid: grammarkdown!NodeSyncHostOptions:interface
-  name: NodeSyncHostOptions
-  href: api/grammarkdown/nodesynchostoptions.html#grammarkdown_NodeSyncHostOptions_interface
-  fullName: NodeSyncHostOptions
 - uid: grammarkdown!NodeVisitor#visit:member(1)
   name: visit(node)
   href: api/grammarkdown/nodevisitor.html#grammarkdown_NodeVisitor_visit_member_1_
@@ -2941,6 +2693,10 @@ references:
   name: visitLexicalGoalAssertion(node)
   href: api/grammarkdown/nodevisitor.html#grammarkdown_NodeVisitor_visitLexicalGoalAssertion_member_1_
   fullName: visitLexicalGoalAssertion(node)
+- uid: grammarkdown!NodeVisitor#visitLine:member(1)
+  name: visitLine(node)
+  href: api/grammarkdown/nodevisitor.html#grammarkdown_NodeVisitor_visitLine_member_1_
+  fullName: visitLine(node)
 - uid: grammarkdown!NodeVisitor#visitLinkReference:member(1)
   name: visitLinkReference(node)
   href: api/grammarkdown/nodevisitor.html#grammarkdown_NodeVisitor_visitLinkReference_member_1_
@@ -2957,6 +2713,10 @@ references:
   name: visitNoSymbolHereAssertion(node)
   href: api/grammarkdown/nodevisitor.html#grammarkdown_NodeVisitor_visitNoSymbolHereAssertion_member_1_
   fullName: visitNoSymbolHereAssertion(node)
+- uid: grammarkdown!NodeVisitor#visitNumberLiteral:member(1)
+  name: visitNumberLiteral(node)
+  href: api/grammarkdown/nodevisitor.html#grammarkdown_NodeVisitor_visitNumberLiteral_member_1_
+  fullName: visitNumberLiteral(node)
 - uid: grammarkdown!NodeVisitor#visitOneOfList:member(1)
   name: visitOneOfList(node)
   href: api/grammarkdown/nodevisitor.html#grammarkdown_NodeVisitor_visitOneOfList_member_1_
@@ -3137,6 +2897,18 @@ references:
   name: NullDiagnosticMessages
   href: api/grammarkdown/nulldiagnosticmessages.html#grammarkdown_NullDiagnosticMessages_class
   fullName: NullDiagnosticMessages
+- uid: grammarkdown!NumberLiteral#text:member
+  name: text
+  href: api/grammarkdown/numberliteral.html#grammarkdown_NumberLiteral_text_member
+  fullName: text
+- uid: grammarkdown!NumberLiteral:class
+  name: NumberLiteral
+  href: api/grammarkdown/numberliteral.html#grammarkdown_NumberLiteral_class
+  fullName: NumberLiteral
+- uid: grammarkdown!NumberLiteral:constructor(1)
+  name: (constructor)(text)
+  href: api/grammarkdown/numberliteral.html#grammarkdown_NumberLiteral_constructor_1_
+  fullName: (constructor)(text)
 - uid: grammarkdown!OneOfList#children:member(1)
   name: children()
   href: api/grammarkdown/oneoflist.html#grammarkdown_OneOfList_children_member_1_
@@ -3277,10 +3049,10 @@ references:
   name: children()
   href: api/grammarkdown/parameterlist.html#grammarkdown_ParameterList_children_member_1_
   fullName: children()
-- uid: grammarkdown!ParameterList#closeParenToken:member
-  name: closeParenToken
-  href: api/grammarkdown/parameterlist.html#grammarkdown_ParameterList_closeParenToken_member
-  fullName: closeParenToken
+- uid: grammarkdown!ParameterList#closeBracketToken:member
+  name: closeBracketToken
+  href: api/grammarkdown/parameterlist.html#grammarkdown_ParameterList_closeBracketToken_member
+  fullName: closeBracketToken
 - uid: grammarkdown!ParameterList#elements:member
   name: elements
   href: api/grammarkdown/parameterlist.html#grammarkdown_ParameterList_elements_member
@@ -3297,10 +3069,10 @@ references:
   name: lastChild
   href: api/grammarkdown/parameterlist.html#grammarkdown_ParameterList_lastChild_member
   fullName: lastChild
-- uid: grammarkdown!ParameterList#openParenToken:member
-  name: openParenToken
-  href: api/grammarkdown/parameterlist.html#grammarkdown_ParameterList_openParenToken_member
-  fullName: openParenToken
+- uid: grammarkdown!ParameterList#openBracketToken:member
+  name: openBracketToken
+  href: api/grammarkdown/parameterlist.html#grammarkdown_ParameterList_openBracketToken_member
+  fullName: openBracketToken
 - uid: grammarkdown!ParameterList#update:member(1)
   name: update(elements)
   href: api/grammarkdown/parameterlist.html#grammarkdown_ParameterList_update_member_1_
@@ -3320,10 +3092,6 @@ references:
 - uid: grammarkdown!Parser#parseSourceFile:member(1)
   name: parseSourceFile(filename, text, cancelable)
   href: api/grammarkdown/parser.html#grammarkdown_Parser_parseSourceFile_member_1_
-  fullName: parseSourceFile(filename, text, cancelable)
-- uid: grammarkdown!Parser#parseSourceFile:member(2)
-  name: parseSourceFile(filename, text, cancelable)
-  href: api/grammarkdown/parser.html#grammarkdown_Parser_parseSourceFile_member_2_
   fullName: parseSourceFile(filename, text, cancelable)
 - uid: grammarkdown!Parser:class
   name: Parser
@@ -3609,10 +3377,10 @@ references:
   name: ReadFileCallback
   href: api/grammarkdown.html#grammarkdown_ReadFileCallback_type
   fullName: ReadFileCallback
-- uid: grammarkdown!ReadFileSyncCallback:type
-  name: ReadFileSyncCallback
-  href: api/grammarkdown.html#grammarkdown_ReadFileSyncCallback_type
-  fullName: ReadFileSyncCallback
+- uid: grammarkdown!Resolver#bindings:member
+  name: bindings
+  href: api/grammarkdown/resolver.html#grammarkdown_Resolver_bindings_member
+  fullName: bindings
 - uid: grammarkdown!Resolver#createNavigator:member(1)
   name: createNavigator(node)
   href: api/grammarkdown/resolver.html#grammarkdown_Resolver_createNavigator_member_1_
@@ -3621,6 +3389,34 @@ references:
   name: getDeclarations(node)
   href: api/grammarkdown/resolver.html#grammarkdown_Resolver_getDeclarations_member_1_
   fullName: getDeclarations(node)
+- uid: grammarkdown!Resolver#getDeclarations:member(2)
+  name: getDeclarations(name, meaning, location)
+  href: api/grammarkdown/resolver.html#grammarkdown_Resolver_getDeclarations_member_2_
+  fullName: getDeclarations(name, meaning, location)
+- uid: grammarkdown!Resolver#getDeclarations:member(3)
+  name: getDeclarations(name, meaning, location)
+  href: api/grammarkdown/resolver.html#grammarkdown_Resolver_getDeclarations_member_3_
+  fullName: getDeclarations(name, meaning, location)
+- uid: grammarkdown!Resolver#getDeclarations:member(4)
+  name: getDeclarations(name, meaning, location)
+  href: api/grammarkdown/resolver.html#grammarkdown_Resolver_getDeclarations_member_4_
+  fullName: getDeclarations(name, meaning, location)
+- uid: grammarkdown!Resolver#getDeclarations:member(5)
+  name: getDeclarations(name, meaning, location)
+  href: api/grammarkdown/resolver.html#grammarkdown_Resolver_getDeclarations_member_5_
+  fullName: getDeclarations(name, meaning, location)
+- uid: grammarkdown!Resolver#getEffectiveFilenameAtPosition:member(1)
+  name: getEffectiveFilenameAtPosition(sourceFile, position)
+  href: api/grammarkdown/resolver.html#grammarkdown_Resolver_getEffectiveFilenameAtPosition_member_1_
+  fullName: getEffectiveFilenameAtPosition(sourceFile, position)
+- uid: grammarkdown!Resolver#getEffectivePosition:member(1)
+  name: getEffectivePosition(sourceFile, position)
+  href: api/grammarkdown/resolver.html#grammarkdown_Resolver_getEffectivePosition_member_1_
+  fullName: getEffectivePosition(sourceFile, position)
+- uid: grammarkdown!Resolver#getEffectiveRange:member(1)
+  name: getEffectiveRange(sourceFile, range)
+  href: api/grammarkdown/resolver.html#grammarkdown_Resolver_getEffectiveRange_member_1_
+  fullName: getEffectiveRange(sourceFile, range)
 - uid: grammarkdown!Resolver#getParent:member(1)
   name: getParent(node)
   href: api/grammarkdown/resolver.html#grammarkdown_Resolver_getParent_member_1_
@@ -3629,10 +3425,26 @@ references:
   name: getProductionLinkId(node)
   href: api/grammarkdown/resolver.html#grammarkdown_Resolver_getProductionLinkId_member_1_
   fullName: getProductionLinkId(node)
+- uid: grammarkdown!Resolver#getRawFilenameAtEffectivePosition:member(1)
+  name: getRawFilenameAtEffectivePosition(filename, position)
+  href: api/grammarkdown/resolver.html#grammarkdown_Resolver_getRawFilenameAtEffectivePosition_member_1_
+  fullName: getRawFilenameAtEffectivePosition(filename, position)
+- uid: grammarkdown!Resolver#getRawPositionFromEffectivePosition:member(1)
+  name: getRawPositionFromEffectivePosition(filename, position)
+  href: api/grammarkdown/resolver.html#grammarkdown_Resolver_getRawPositionFromEffectivePosition_member_1_
+  fullName: getRawPositionFromEffectivePosition(filename, position)
+- uid: grammarkdown!Resolver#getRawRangeFromEffectiveRange:member(1)
+  name: getRawRangeFromEffectiveRange(filename, range)
+  href: api/grammarkdown/resolver.html#grammarkdown_Resolver_getRawRangeFromEffectiveRange_member_1_
+  fullName: getRawRangeFromEffectiveRange(filename, range)
 - uid: grammarkdown!Resolver#getReferences:member(1)
   name: getReferences(node)
   href: api/grammarkdown/resolver.html#grammarkdown_Resolver_getReferences_member_1_
   fullName: getReferences(node)
+- uid: grammarkdown!Resolver#getReferences:member(2)
+  name: getReferences(name, meaning, location)
+  href: api/grammarkdown/resolver.html#grammarkdown_Resolver_getReferences_member_2_
+  fullName: getReferences(name, meaning, location)
 - uid: grammarkdown!Resolver#getRightHandSideLinkId:member(1)
   name: getRightHandSideLinkId(node, includePrefix)
   href: api/grammarkdown/resolver.html#grammarkdown_Resolver_getRightHandSideLinkId_member_1_
@@ -3641,14 +3453,22 @@ references:
   name: getSourceFileOfNode(node)
   href: api/grammarkdown/resolver.html#grammarkdown_Resolver_getSourceFileOfNode_member_1_
   fullName: getSourceFileOfNode(node)
+- uid: grammarkdown!Resolver#getSymbolOfNode:member(1)
+  name: getSymbolOfNode(node)
+  href: api/grammarkdown/resolver.html#grammarkdown_Resolver_getSymbolOfNode_member_1_
+  fullName: getSymbolOfNode(node)
+- uid: grammarkdown!Resolver#resolveSymbol:member(1)
+  name: resolveSymbol(location, name, meaning)
+  href: api/grammarkdown/resolver.html#grammarkdown_Resolver_resolveSymbol_member_1_
+  fullName: resolveSymbol(location, name, meaning)
 - uid: grammarkdown!Resolver:class
   name: Resolver
   href: api/grammarkdown/resolver.html#grammarkdown_Resolver_class
   fullName: Resolver
 - uid: grammarkdown!Resolver:constructor(1)
-  name: (constructor)(bindings)
+  name: (constructor)(bindings, lineOffsetMap)
   href: api/grammarkdown/resolver.html#grammarkdown_Resolver_constructor_1_
-  fullName: (constructor)(bindings)
+  fullName: (constructor)(bindings, lineOffsetMap)
 - uid: grammarkdown!RightHandSide#children:member(1)
   name: children()
   href: api/grammarkdown/righthandside.html#grammarkdown_RightHandSide_children_member_1_
@@ -3797,6 +3617,10 @@ references:
   name: isLineContinuation()
   href: api/grammarkdown/scanner.html#grammarkdown_Scanner_isLineContinuation_member_1_
   fullName: isLineContinuation()
+- uid: grammarkdown!Scanner#resetIndent:member(1)
+  name: resetIndent()
+  href: api/grammarkdown/scanner.html#grammarkdown_Scanner_resetIndent_member_1_
+  fullName: resetIndent()
 - uid: grammarkdown!Scanner#scan:member(1)
   name: scan()
   href: api/grammarkdown/scanner.html#grammarkdown_Scanner_scan_member_1_
@@ -3817,98 +3641,6 @@ references:
   name: (constructor)(filename, text, diagnostics, cancelable)
   href: api/grammarkdown/scanner.html#grammarkdown_Scanner_constructor_1_
   fullName: (constructor)(filename, text, diagnostics, cancelable)
-- uid: grammarkdown!Scanner:constructor(2)
-  name: (constructor)(filename, text, diagnostics, cancelable)
-  href: api/grammarkdown/scanner.html#grammarkdown_Scanner_constructor_2_
-  fullName: (constructor)(filename, text, diagnostics, cancelable)
-- uid: grammarkdown!SingleFileHost#content:member
-  name: content
-  href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_content_member
-  fullName: content
-- uid: grammarkdown!SingleFileHost#createParser:member(1)
-  name: createParser()
-  href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_createParser_member_1_
-  fullName: createParser()
-- uid: grammarkdown!SingleFileHost#file:member
-  name: file
-  href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_file_member
-  fullName: file
-- uid: grammarkdown!SingleFileHost#getSourceFile:member(1)
-  name: getSourceFile(file, cancelable)
-  href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_getSourceFile_member_1_
-  fullName: getSourceFile(file, cancelable)
-- uid: grammarkdown!SingleFileHost#getSourceFile:member(2)
-  name: getSourceFile(file, cancelable)
-  href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_getSourceFile_member_2_
-  fullName: getSourceFile(file, cancelable)
-- uid: grammarkdown!SingleFileHost#getSourceFileSync:member(1)
-  name: getSourceFileSync(file, cancelable)
-  href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_getSourceFileSync_member_1_
-  fullName: getSourceFileSync(file, cancelable)
-- uid: grammarkdown!SingleFileHost#getSourceFileSync:member(2)
-  name: getSourceFileSync(file, cancelable)
-  href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_getSourceFileSync_member_2_
-  fullName: getSourceFileSync(file, cancelable)
-- uid: grammarkdown!SingleFileHost#normalizeFileCore:member(1)
-  name: normalizeFileCore(file)
-  href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_normalizeFileCore_member_1_
-  fullName: normalizeFileCore(file)
-- uid: grammarkdown!SingleFileHost#parser:member
-  name: parser
-  href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_parser_member
-  fullName: parser
-- uid: grammarkdown!SingleFileHost#readFile:member(1)
-  name: readFile(file, cancelable)
-  href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_readFile_member_1_
-  fullName: readFile(file, cancelable)
-- uid: grammarkdown!SingleFileHost#readFile:member(2)
-  name: readFile(file, cancelable)
-  href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_readFile_member_2_
-  fullName: readFile(file, cancelable)
-- uid: grammarkdown!SingleFileHost#readFileSync:member(1)
-  name: readFileSync(file, cancelable)
-  href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_readFileSync_member_1_
-  fullName: readFileSync(file, cancelable)
-- uid: grammarkdown!SingleFileHost#readFileSync:member(2)
-  name: readFileSync(file, cancelable)
-  href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_readFileSync_member_2_
-  fullName: readFileSync(file, cancelable)
-- uid: grammarkdown!SingleFileHost#registerKnownGrammarCore:member(1)
-  name: registerKnownGrammarCore(_name, _file)
-  href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_registerKnownGrammarCore_member_1_
-  fullName: registerKnownGrammarCore(_name, _file)
-- uid: grammarkdown!SingleFileHost#resolveFileCore:member(1)
-  name: resolveFileCore(file, referer)
-  href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_resolveFileCore_member_1_
-  fullName: resolveFileCore(file, referer)
-- uid: grammarkdown!SingleFileHost#resolveKnownGrammarCore:member(1)
-  name: resolveKnownGrammarCore(name)
-  href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_resolveKnownGrammarCore_member_1_
-  fullName: resolveKnownGrammarCore(name)
-- uid: grammarkdown!SingleFileHost#writeFile:member(1)
-  name: writeFile(file, text, cancelable)
-  href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_writeFile_member_1_
-  fullName: writeFile(file, text, cancelable)
-- uid: grammarkdown!SingleFileHost#writeFile:member(2)
-  name: writeFile(file, text, cancelable)
-  href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_writeFile_member_2_
-  fullName: writeFile(file, text, cancelable)
-- uid: grammarkdown!SingleFileHost#writeFileSync:member(1)
-  name: writeFileSync(file, text, cancelable)
-  href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_writeFileSync_member_1_
-  fullName: writeFileSync(file, text, cancelable)
-- uid: grammarkdown!SingleFileHost#writeFileSync:member(2)
-  name: writeFileSync(file, text, cancelable)
-  href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_writeFileSync_member_2_
-  fullName: writeFileSync(file, text, cancelable)
-- uid: grammarkdown!SingleFileHost:class
-  name: SingleFileHost
-  href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_class
-  fullName: SingleFileHost
-- uid: grammarkdown!SingleFileHost:constructor(1)
-  name: (constructor)(content, file, hostFallback)
-  href: api/grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_constructor_1_
-  fullName: (constructor)(content, file, hostFallback)
 - uid: grammarkdown!SingleLineCommentTrivia:class
   name: SingleLineCommentTrivia
   href: api/grammarkdown/singlelinecommenttrivia.html#grammarkdown_SingleLineCommentTrivia_class
@@ -4009,22 +3741,6 @@ references:
   name: (constructor)(text)
   href: api/grammarkdown/stringliteral.html#grammarkdown_StringLiteral_constructor_1_
   fullName: (constructor)(text)
-- uid: grammarkdown!StringSyncHost#content:member
-  name: content
-  href: api/grammarkdown/stringsynchost.html#grammarkdown_StringSyncHost_content_member
-  fullName: content
-- uid: grammarkdown!StringSyncHost#file:member
-  name: file
-  href: api/grammarkdown/stringsynchost.html#grammarkdown_StringSyncHost_file_member
-  fullName: file
-- uid: grammarkdown!StringSyncHost:class
-  name: StringSyncHost
-  href: api/grammarkdown/stringsynchost.html#grammarkdown_StringSyncHost_class
-  fullName: StringSyncHost
-- uid: grammarkdown!StringSyncHost:constructor(1)
-  name: (constructor)(file, content, hostFallback)
-  href: api/grammarkdown/stringsynchost.html#grammarkdown_StringSyncHost_constructor_1_
-  fullName: (constructor)(file, content, hostFallback)
 - uid: grammarkdown!stringToToken:function(1)
   name: stringToToken(text)
   href: api/grammarkdown.html#grammarkdown_stringToToken_function_1_
@@ -4245,6 +3961,10 @@ references:
   name: Constraints
   href: api/grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_Constraints_member
   fullName: Constraints
+- uid: grammarkdown!SyntaxKind.DefaultKeyword:member
+  name: DefaultKeyword
+  href: api/grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_DefaultKeyword_member
+  fullName: DefaultKeyword
 - uid: grammarkdown!SyntaxKind.Define:member
   name: Define
   href: api/grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_Define_member
@@ -4421,6 +4141,14 @@ references:
   name: LexicalKeyword
   href: api/grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_LexicalKeyword_member
   fullName: LexicalKeyword
+- uid: grammarkdown!SyntaxKind.Line:member
+  name: Line
+  href: api/grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_Line_member
+  fullName: Line
+- uid: grammarkdown!SyntaxKind.LineKeyword:member
+  name: LineKeyword
+  href: api/grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_LineKeyword_member
+  fullName: LineKeyword
 - uid: grammarkdown!SyntaxKind.LinkReference:member
   name: LinkReference
   href: api/grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_LinkReference_member
@@ -4461,6 +4189,10 @@ references:
   name: NotKeyword
   href: api/grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_NotKeyword_member
   fullName: NotKeyword
+- uid: grammarkdown!SyntaxKind.NumberLiteral:member
+  name: NumberLiteral
+  href: api/grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_NumberLiteral_member
+  fullName: NumberLiteral
 - uid: grammarkdown!SyntaxKind.OfKeyword:member
   name: OfKeyword
   href: api/grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_OfKeyword_member
@@ -4785,10 +4517,6 @@ references:
   name: WriteFileCallback
   href: api/grammarkdown.html#grammarkdown_WriteFileCallback_type
   fullName: WriteFileCallback
-- uid: grammarkdown!WriteFileSyncCallback:type
-  name: WriteFileSyncCallback
-  href: api/grammarkdown.html#grammarkdown_WriteFileSyncCallback_type
-  fullName: WriteFileSyncCallback
 - uid: hosts
   name: Host API
   href: api/hosts.html

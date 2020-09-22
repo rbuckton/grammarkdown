@@ -5,8 +5,8 @@
  * in the root of this repository or package.
  */
 
-import { assert } from "chai";
-import { execSync } from "child_process";
+import { assert, expect } from "chai";
+import { execSync, spawnSync } from "child_process";
 
 describe("cli", () => {
   it("exits cleanly when given good input", () => {
@@ -27,5 +27,15 @@ describe("cli", () => {
   it("prints version given --version", () => {
     let version = execSync("node bin/grammarkdown --version", { encoding: "utf8" });
     assert.strictEqual(version.trim(), process.env.npm_package_version!.trim());
+  });
+
+  it("prints diagnostics given --diagnostics", () => {
+    const { stderr } = spawnSync(process.execPath, ["bin/grammarkdown", "src/tests/resources/specs/es6.grammar", "--noEmit", "--diagnostics"], { stdio: "pipe", encoding: "utf8" });
+    expect(stderr).matches(/^ioRead:\s+\d+ms$/m);
+    expect(stderr).matches(/^ioWrite:\s+\d+ms$/m);
+    expect(stderr).matches(/^parse:\s+\d+ms$/m);
+    expect(stderr).matches(/^bind:\s+\d+ms$/m);
+    expect(stderr).matches(/^check:\s+\d+ms$/m);
+    expect(stderr).matches(/^emit:\s+\d+ms$/m);
   });
 });

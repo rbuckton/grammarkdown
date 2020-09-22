@@ -87,11 +87,6 @@
   <div class="markdown level0 summary"><p>A Host is a user-provided service that indicates how various Grammarkdown services can interact with a file system. The <code>CoreAsyncHost</code> class provides the API surface that Grammarkdown uses to interact with a host that is able to access the file system asynchronously.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
-  <div class="inheritance">
-    <h5>Inheritance</h5>
-      <div class="level0"><a class="xref" href="hostbase.html#grammarkdown_HostBase_class">HostBase</a></div>
-      <div class="level1"><span class="xref">CoreAsyncHost</span></div>
-  </div>
   <h5 id="grammarkdown_CoreAsyncHost_class_examples"><strong>Examples</strong></h5>
   <p>The following example shows how you can create a <a class="xref" href="coreasynchost.html#grammarkdown_CoreAsyncHost_class">CoreAsyncHost</a> from a <code>Map</code>:</p>
 <div class="tabGroup" id="tabgroup_vyfMPoI-Yx">
@@ -125,7 +120,7 @@ const host = new CoreAsyncHost({
   <h5 class="decalaration">Declaration</h5>
   
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">constructor(options: CoreAsyncHostOptions, hostFallback?: CoreAsyncHost | CoreSyncHost);</code></pre>
+    <pre><code class="lang-typeScript hljs">constructor(options: CoreAsyncHostOptions, hostFallback?: CoreAsyncHost);</code></pre>
   </div>
   
   
@@ -145,7 +140,7 @@ const host = new CoreAsyncHost({
     <div class="property">
       <dl class="parameter">
         <dt>hostFallback</dt>
-        <dd><a class="xref" href="coreasynchost.html#grammarkdown_CoreAsyncHost_class">CoreAsyncHost</a> | <a class="xref" href="coresynchost.html#grammarkdown_CoreSyncHost_class">CoreSyncHost</a></dd>
+        <dd><a class="xref" href="coreasynchost.html#grammarkdown_CoreAsyncHost_class">CoreAsyncHost</a></dd>
       </dl>
       <p>
         <p>An optional host to use as a fallback for operations not supported by this host.</p>
@@ -161,11 +156,95 @@ const host = new CoreAsyncHost({
   
   
   
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <h4 id="grammarkdown_CoreAsyncHost_ignoreCase_member" data-uid="grammarkdown!CoreAsyncHost#ignoreCase:member">ignoreCase</h4>
+  <div class="markdown level1 summary"><p>Indicates whether comparisons for this host should be case insensitive.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">get ignoreCase(): boolean;</code></pre>
+  </div>
+  
+  
+  
+  
+  
+  <h5 class="propertyValue">Property Value</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">boolean</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_CoreAsyncHost_parser_member" data-uid="grammarkdown!CoreAsyncHost#parser:member">parser</h4>
+  <div class="markdown level1 summary"><p>Gets the parser instance associated with this host.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">protected get parser(): Parser;</code></pre>
+  </div>
+  
+  
+  
+  
+  
+  <h5 class="propertyValue">Property Value</h5>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="parser.html#grammarkdown_Parser_class">Parser</a></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
   <h3 id="methods">Methods
   </h3>
+  
+  
+  <h4 id="grammarkdown_CoreAsyncHost_createParser_member_1_" data-uid="grammarkdown!CoreAsyncHost#createParser:member(1)">createParser()</h4>
+  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="parser.html#grammarkdown_Parser_class">Parser</a> for this host.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">/** @virtual */
+protected createParser(): Parser;</code></pre>
+  </div>
+  
+  
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="parser.html#grammarkdown_Parser_class">Parser</a></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/rbuckton/grammarkdown/blob/master/src/docs/overwrite/coreasynchost.md/#L25">Improve this Doc</a>
+    <a href="https://github.com/rbuckton/grammarkdown/blob/apiCleanup/src/docs/overwrite/coreasynchost.md/#L25">Improve this Doc</a>
   </span>
   
   <h4 id="grammarkdown_CoreAsyncHost_forFile_member_1_" data-uid="grammarkdown!CoreAsyncHost.forFile:member(1)">forFile(content, file, hostFallback)</h4>
@@ -175,7 +254,7 @@ const host = new CoreAsyncHost({
   <h5 class="decalaration">Declaration</h5>
   
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">static forFile(content: PromiseLike&lt;string&gt; | string, file?: string, hostFallback?: CoreAsyncHost | CoreSyncHost): StringAsyncHost;</code></pre>
+    <pre><code class="lang-typeScript hljs">static forFile(content: PromiseLike&lt;string&gt; | string, file?: string, hostFallback?: CoreAsyncHost): StringAsyncHost;</code></pre>
   </div>
   
   
@@ -206,7 +285,7 @@ const host = new CoreAsyncHost({
     <div class="property">
       <dl class="parameter">
         <dt>hostFallback</dt>
-        <dd><a class="xref" href="coreasynchost.html#grammarkdown_CoreAsyncHost_class">CoreAsyncHost</a> | <a class="xref" href="coresynchost.html#grammarkdown_CoreSyncHost_class">CoreSyncHost</a></dd>
+        <dd><a class="xref" href="coreasynchost.html#grammarkdown_CoreAsyncHost_class">CoreAsyncHost</a></dd>
       </dl>
       <p>
         <p>An optional host to use as a fallback for operations not supported by this host.</p>
@@ -252,7 +331,7 @@ const host = CoreAsyncHost.forFile(content);
   <h5 class="decalaration">Declaration</h5>
   
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">static from(custom: CoreAsyncHostOptions, hostFallback?: CoreAsyncHost | CoreSyncHost): CoreAsyncHost;</code></pre>
+    <pre><code class="lang-typeScript hljs">static from(custom: CoreAsyncHostOptions, hostFallback?: CoreAsyncHost): CoreAsyncHost;</code></pre>
   </div>
   
   
@@ -271,7 +350,7 @@ const host = CoreAsyncHost.forFile(content);
     <div class="property">
       <dl class="parameter">
         <dt>hostFallback</dt>
-        <dd><a class="xref" href="coreasynchost.html#grammarkdown_CoreAsyncHost_class">CoreAsyncHost</a> | <a class="xref" href="coresynchost.html#grammarkdown_CoreSyncHost_class">CoreSyncHost</a></dd>
+        <dd><a class="xref" href="coreasynchost.html#grammarkdown_CoreAsyncHost_class">CoreAsyncHost</a></dd>
       </dl>
       <p>
         <p>An optional host to use as a fallback for operations not supported by this host.</p>
@@ -349,19 +428,14 @@ const host = CoreAsyncHost.forFile(content);
   
   
   
-  <h4 id="grammarkdown_CoreAsyncHost_getSourceFile_member_2_" data-uid="grammarkdown!CoreAsyncHost#getSourceFile:member(2)">getSourceFile(file, cancelable)</h4>
-  	<div class="alert is-warning">
-  		<h5>Warning</h5>
-  		<p>Deprecated</p>
-  			since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable`
-  	</div>
-  <div class="markdown level1 summary"><p>Reads and parses a source file from the host.</p>
+  <h4 id="grammarkdown_CoreAsyncHost_normalizeFile_member_1_" data-uid="grammarkdown!CoreAsyncHost#normalizeFile:member(1)">normalizeFile(file)</h4>
+  <div class="markdown level1 summary"><p>Normalize a file path&#39;s string representation for use as a key based on the case sensitivity of the host.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">getSourceFile(file: string, cancelable?: CancellationToken | Cancelable): Promise&lt;SourceFile | undefined&gt;;</code></pre>
+    <pre><code class="lang-typeScript hljs">normalizeFile(file: string): string;</code></pre>
   </div>
   
   
@@ -373,18 +447,7 @@ const host = CoreAsyncHost.forFile(content);
         <dd><span class="xref">string</span></dd>
       </dl>
       <p>
-        <p>The path to the file.</p>
-
-        
-      </p>
-    </div>
-    <div class="property">
-      <dl class="parameter">
-        <dt>cancelable</dt>
-        <dd><a class="xref" href="https://github.com/rbuckton/prex/blob/master/docs/cancellation.md#class-cancellationtoken">CancellationToken</a> | <a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
-      </dl>
-      <p>
-        <p>A cancelable object that can be used to abort the operation.</p>
+        <p>The file path.</p>
 
         
       </p>
@@ -394,9 +457,8 @@ const host = CoreAsyncHost.forFile(content);
   <h5 class="returns">Returns</h5>
   <div>
   <div class="property">
-    <div><span class="xref">Promise</span>&lt;<a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a> | undefined&gt;</div>
-    <p><p>A <code>Promise</code> for either the parsed <a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a> of the file if the file could be read, or <code>undefined</code> if it could not be read.</p>
-</p>
+    <div><span class="xref">string</span></div>
+    <p>
   </div>
   </div>
   
@@ -414,7 +476,7 @@ const host = CoreAsyncHost.forFile(content);
   <h5 class="decalaration">Declaration</h5>
   
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">/** @override */
+    <pre><code class="lang-typeScript hljs">/** @virtual */
 protected normalizeFileCore(file: string): string;</code></pre>
   </div>
   
@@ -438,6 +500,69 @@ protected normalizeFileCore(file: string): string;</code></pre>
   <div>
   <div class="property">
     <div><span class="xref">string</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_CoreAsyncHost_parseSourceFile_member_1_" data-uid="grammarkdown!CoreAsyncHost#parseSourceFile:member(1)">parseSourceFile(file, text, cancelable)</h4>
+  <div class="markdown level1 summary"><p>Parse a source file.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">parseSourceFile(file: string, text: string, cancelable?: Cancelable): SourceFile;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>file</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The path to the source file.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>text</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The text of the source file.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>cancelable</dt>
+        <dd><a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
+      </dl>
+      <p>
+        <p>An optional cancelable object that can be used to abort a long-running parse.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></div>
     <p>
   </div>
   </div>
@@ -477,64 +602,6 @@ protected normalizeFileCore(file: string): string;</code></pre>
       <dl class="parameter">
         <dt>cancelable</dt>
         <dd><a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
-      </dl>
-      <p>
-        <p>A cancelable object that can be used to abort the operation.</p>
-
-        
-      </p>
-    </div>
-  </div>
-  
-  <h5 class="returns">Returns</h5>
-  <div>
-  <div class="property">
-    <div><span class="xref">Promise</span>&lt;string | undefined&gt;</div>
-    <p><p>A <code>Promise</code> for either a <code>string</code> containing the content if the file could be read, or <code>undefined</code> if the file could not be read.</p>
-</p>
-  </div>
-  </div>
-  
-  
-  
-  
-  
-  
-  
-  
-  <h4 id="grammarkdown_CoreAsyncHost_readFile_member_2_" data-uid="grammarkdown!CoreAsyncHost#readFile:member(2)">readFile(file, cancelable)</h4>
-  	<div class="alert is-warning">
-  		<h5>Warning</h5>
-  		<p>Deprecated</p>
-  			since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable`
-  	</div>
-  <div class="markdown level1 summary"><p>Reads a file from the host.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  
-  <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">readFile(file: string, cancelable?: CancellationToken | Cancelable): Promise&lt;string | undefined&gt;;</code></pre>
-  </div>
-  
-  
-  <h5 class="parameters">Parameters</h5>
-  <div>
-    <div class="property">
-      <dl class="parameter">
-        <dt>file</dt>
-        <dd><span class="xref">string</span></dd>
-      </dl>
-      <p>
-        <p>The path to the file.</p>
-
-        
-      </p>
-    </div>
-    <div class="property">
-      <dl class="parameter">
-        <dt>cancelable</dt>
-        <dd><a class="xref" href="https://github.com/rbuckton/prex/blob/master/docs/cancellation.md#class-cancellationtoken">CancellationToken</a> | <a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
       </dl>
       <p>
         <p>A cancelable object that can be used to abort the operation.</p>
@@ -614,6 +681,58 @@ protected readFileCore(file: string, cancelToken?: CancelToken): Promise&lt;stri
   
   
   
+  <h4 id="grammarkdown_CoreAsyncHost_registerKnownGrammar_member_1_" data-uid="grammarkdown!CoreAsyncHost#registerKnownGrammar:member(1)">registerKnownGrammar(name, file)</h4>
+  <div class="markdown level1 summary"><p>Registers a known grammar for use with <code>@import</code> directives.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">registerKnownGrammar(name: string, file: string): void;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>name</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The name for the grammar.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>file</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The file path of the grammar.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">void</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
   <h4 id="grammarkdown_CoreAsyncHost_registerKnownGrammarCore_member_1_" data-uid="grammarkdown!CoreAsyncHost#registerKnownGrammarCore:member(1)">registerKnownGrammarCore(name, file)</h4>
   <div class="markdown level1 summary"><p>When overridden in a derived clas, registers a known grammar for use with <code>@import</code> directives.</p>
 </div>
@@ -621,7 +740,7 @@ protected readFileCore(file: string, cancelToken?: CancelToken): Promise&lt;stri
   <h5 class="decalaration">Declaration</h5>
   
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">/** @override */
+    <pre><code class="lang-typeScript hljs">/** @virtual */
 protected registerKnownGrammarCore(name: string, file: string): void;</code></pre>
   </div>
   
@@ -667,15 +786,14 @@ protected registerKnownGrammarCore(name: string, file: string): void;</code></pr
   
   
   
-  <h4 id="grammarkdown_CoreAsyncHost_resolveFileCore_member_1_" data-uid="grammarkdown!CoreAsyncHost#resolveFileCore:member(1)">resolveFileCore(file, referer)</h4>
-  <div class="markdown level1 summary"><p>When overridden in a derived class, resolves the full path of a file relative to the provided referer.</p>
+  <h4 id="grammarkdown_CoreAsyncHost_resolveFile_member_1_" data-uid="grammarkdown!CoreAsyncHost#resolveFile:member(1)">resolveFile(file, referer)</h4>
+  <div class="markdown level1 summary"><p>Resolve the full path of a file relative to the provided referer.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">/** @override */
-protected resolveFileCore(file: string, referer?: string): string;</code></pre>
+    <pre><code class="lang-typeScript hljs">resolveFile(file: string, referer?: string): string;</code></pre>
   </div>
   
   
@@ -720,6 +838,100 @@ protected resolveFileCore(file: string, referer?: string): string;</code></pre>
   
   
   
+  <h4 id="grammarkdown_CoreAsyncHost_resolveFileCore_member_1_" data-uid="grammarkdown!CoreAsyncHost#resolveFileCore:member(1)">resolveFileCore(file, referrer)</h4>
+  <div class="markdown level1 summary"><p>When overridden in a derived class, resolves the full path of a file relative to the provided referer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">/** @virtual */
+protected resolveFileCore(file: string, referrer?: string): string;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>file</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The path to the requested file.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>referrer</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>An optional path indicating the file from which the path should be resolved.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">string</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_CoreAsyncHost_resolveKnownGrammar_member_1_" data-uid="grammarkdown!CoreAsyncHost#resolveKnownGrammar:member(1)">resolveKnownGrammar(name)</h4>
+  <div class="markdown level1 summary"><p>Returns the path for a known or built-in grammar based on its name (i.e., <code>&quot;es2015&quot;</code><!-- -->, etc.)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">resolveKnownGrammar(name: string): string | undefined;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>name</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The name of the grammar.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">string | undefined</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
   <h4 id="grammarkdown_CoreAsyncHost_resolveKnownGrammarCore_member_1_" data-uid="grammarkdown!CoreAsyncHost#resolveKnownGrammarCore:member(1)">resolveKnownGrammarCore(name)</h4>
   <div class="markdown level1 summary"><p>When overridden in a derived class, returns the path for a known or built-in grammar based on its name (i.e., <code>&quot;es2015&quot;</code><!-- -->, etc.)</p>
 </div>
@@ -727,7 +939,7 @@ protected resolveFileCore(file: string, referer?: string): string;</code></pre>
   <h5 class="decalaration">Declaration</h5>
   
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">/** @override */
+    <pre><code class="lang-typeScript hljs">/** @virtual */
 protected resolveKnownGrammarCore(name: string): string | undefined;</code></pre>
   </div>
   
@@ -826,75 +1038,6 @@ protected resolveKnownGrammarCore(name: string): string | undefined;</code></pre
   
   
   
-  <h4 id="grammarkdown_CoreAsyncHost_writeFile_member_2_" data-uid="grammarkdown!CoreAsyncHost#writeFile:member(2)">writeFile(file, text, cancelable)</h4>
-  	<div class="alert is-warning">
-  		<h5>Warning</h5>
-  		<p>Deprecated</p>
-  			since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable`
-  	</div>
-  <div class="markdown level1 summary"><p>Writes a file to the host.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  
-  <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">writeFile(file: string, text: string, cancelable?: CancellationToken | Cancelable): Promise&lt;void&gt;;</code></pre>
-  </div>
-  
-  
-  <h5 class="parameters">Parameters</h5>
-  <div>
-    <div class="property">
-      <dl class="parameter">
-        <dt>file</dt>
-        <dd><span class="xref">string</span></dd>
-      </dl>
-      <p>
-        <p>The path to the file.</p>
-
-        
-      </p>
-    </div>
-    <div class="property">
-      <dl class="parameter">
-        <dt>text</dt>
-        <dd><span class="xref">string</span></dd>
-      </dl>
-      <p>
-        <p>The contents of the file.</p>
-
-        
-      </p>
-    </div>
-    <div class="property">
-      <dl class="parameter">
-        <dt>cancelable</dt>
-        <dd><a class="xref" href="https://github.com/rbuckton/prex/blob/master/docs/cancellation.md#class-cancellationtoken">CancellationToken</a> | <a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
-      </dl>
-      <p>
-        <p>A cancelable object that can be used to abort the operation.</p>
-
-        
-      </p>
-    </div>
-  </div>
-  
-  <h5 class="returns">Returns</h5>
-  <div>
-  <div class="property">
-    <div><span class="xref">Promise</span>&lt;void&gt;</div>
-    <p><p>A <code>Promise</code> that is settled when the operation completes.</p>
-</p>
-  </div>
-  </div>
-  
-  
-  
-  
-  
-  
-  
-  
   <h4 id="grammarkdown_CoreAsyncHost_writeFileCore_member_1_" data-uid="grammarkdown!CoreAsyncHost#writeFileCore:member(1)">writeFileCore(file, content, cancelToken)</h4>
   <div class="markdown level1 summary"><p>When overridden in a derived class, writes a file to the host.</p>
 </div>
@@ -965,7 +1108,7 @@ protected writeFileCore(file: string, content: string, cancelToken?: CancelToken
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/rbuckton/grammarkdown/blob/master/src/docs/overwrite/coreasynchost.md/#L2" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/rbuckton/grammarkdown/blob/apiCleanup/src/docs/overwrite/coreasynchost.md/#L2" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

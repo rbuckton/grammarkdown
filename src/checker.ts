@@ -6,7 +6,6 @@
  */
 
 import { createHash } from "crypto";
-import { CancellationToken } from "prex";
 import { Cancelable } from "@esfx/cancelable";
 import { CancelToken } from "@esfx/async-canceltoken";
 import { Diagnostics, DiagnosticMessages, Diagnostic, formatList, NullDiagnosticMessages } from "./diagnostics";
@@ -53,21 +52,19 @@ import {
     Define,
     PlaceholderSymbol,
     HtmlTrivia,
-    Line
+    Line,
+    Declaration,
 } from "./nodes";
 import { NodeNavigator } from "./navigator";
 import { toCancelToken } from "./core";
 import { Position, Range } from "./types";
 import { RegionMap } from "./regionMap";
 
-// TODO: Check a Nonterminal as a call
-// TODO: Check all Productions to ensure they have the same parameters.
-
-interface NodeLinks {
+class NodeLinks {
     hasResolvedSymbols?: boolean;
 }
 
-interface SymbolLinks {
+class SymbolLinks {
     isReferenced?: boolean;
 }
 
@@ -88,53 +85,50 @@ function equateDefines(a: DefineOverrides, b: DefineOverrides) {
 
 /** {@docCategory Check} */
 export class Checker {
-    private options: CompilerOptions | undefined;
-    private checkedFileSet = new Set<string>();
-    private bindings!: BindingTable;
-    private diagnostics!: DiagnosticMessages;
-    private sourceFile!: SourceFile;
-    private noChecks!: boolean;
-    private productionParametersByName!: Map<Production, Set<string>>;
-    private cancelToken?: CancelToken;
-    private nodeLinks?: Map<Node, NodeLinks>;
-    private symbolLinks?: Map<Symbol, SymbolLinks>;
-    private lineOffsetMap: LineOffsetMap;
-    private defines: Defines;
-    private defineOverrideMap?: RegionMap<DefineOverrides>;
+    private _options: CompilerOptions | undefined;
+    private _checkedFileSet = new Set<string>();
+    private _bindings!: BindingTable;
+    private _diagnostics!: DiagnosticMessages;
+    private _sourceFile!: SourceFile;
+    private _noChecks!: boolean;
+    private _productionParametersByName!: Map<Production, Set<string>>;
+    private _cancelToken?: CancelToken;
+    private _nodeLinks?: Map<Node, NodeLinks>;
+    private _symbolLinks?: Map<Symbol, SymbolLinks>;
+    private _lineOffsetMap: LineOffsetMap;
+    private _defines: Defines;
+    private _defineOverrideMap?: RegionMap<DefineOverrides>;
 
     constructor(options?: CompilerOptions, lineOffsetMap = new LineOffsetMap()) {
-        this.options = options;
-        this.lineOffsetMap = lineOffsetMap;
-        this.defines = {
-            noStrictParametricProductions: this.options?.noStrictParametricProductions ?? false,
-            noUnusedParameters: this.options?.noUnusedParameters ?? false
+        this._options = options;
+        this._lineOffsetMap = lineOffsetMap;
+        this._defines = {
+            noStrictParametricProductions: this._options?.noStrictParametricProductions ?? false,
+            noUnusedParameters: this._options?.noUnusedParameters ?? false
         };
     }
 
-    public checkSourceFile(sourceFile: SourceFile, bindings: BindingTable, diagnostics: DiagnosticMessages, cancelable?: Cancelable): void;
-    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
-    public checkSourceFile(sourceFile: SourceFile, bindings: BindingTable, diagnostics: DiagnosticMessages, cancelable?: CancellationToken | Cancelable): void;
-    public checkSourceFile(sourceFile: SourceFile, bindings: BindingTable, diagnostics: DiagnosticMessages, cancelable?: CancellationToken | CancelToken | Cancelable): void {
+    public checkSourceFile(sourceFile: SourceFile, bindings: BindingTable, diagnostics: DiagnosticMessages, cancelable?: Cancelable): void {
         const cancelToken = toCancelToken(cancelable);
         cancelToken?.throwIfSignaled();
-        if (!this.checkedFileSet.has(sourceFile.filename)) {
-            const savedNoChecks = this.noChecks;
-            const savedCancellationToken = this.cancelToken;
-            const savedSourceFile = this.sourceFile;
-            const savedProductionParametersByName = this.productionParametersByName;
-            const savedBindings = this.bindings;
-            const savedDiagnostics = this.diagnostics;
+        if (!this._checkedFileSet.has(sourceFile.filename)) {
+            const savedNoChecks = this._noChecks;
+            const savedCancellationToken = this._cancelToken;
+            const savedSourceFile = this._sourceFile;
+            const savedProductionParametersByName = this._productionParametersByName;
+            const savedBindings = this._bindings;
+            const savedDiagnostics = this._diagnostics;
             try {
-                this.cancelToken = cancelToken;
-                this.sourceFile = sourceFile;
-                this.productionParametersByName = new Map<Production, Set<string>>();
-                this.noChecks = this.options?.noChecks ?? false;
+                this._cancelToken = cancelToken;
+                this._sourceFile = sourceFile;
+                this._productionParametersByName = new Map();
+                this._noChecks = this._options?.noChecks ?? false;
 
-                this.bindings = new BindingTable();
-                this.bindings.copyFrom(bindings);
+                this._bindings = new BindingTable();
+                this._bindings._copyFrom(bindings);
 
-                this.diagnostics = this.noChecks ? NullDiagnosticMessages.instance : new DiagnosticMessages();
-                this.diagnostics.setSourceFile(this.sourceFile);
+                this._diagnostics = this._noChecks ? NullDiagnosticMessages.instance : new DiagnosticMessages();
+                this._diagnostics.setSourceFile(this._sourceFile);
 
                 for (const element of sourceFile.elements) {
                     this.preprocessSourceElement(element);
@@ -144,33 +138,33 @@ export class Checker {
                     this.checkSourceElement(element);
                 }
 
-                diagnostics.copyFrom(this.diagnostics);
-                bindings.copyFrom(this.bindings);
-                this.checkedFileSet.add(sourceFile.filename);
+                diagnostics.copyFrom(this._diagnostics);
+                bindings._copyFrom(this._bindings);
+                this._checkedFileSet.add(sourceFile.filename);
             }
             finally {
-                this.noChecks = savedNoChecks;
-                this.cancelToken = savedCancellationToken;
-                this.sourceFile = savedSourceFile;
-                this.productionParametersByName = savedProductionParametersByName;
-                this.bindings = savedBindings;
-                this.diagnostics = savedDiagnostics;
+                this._noChecks = savedNoChecks;
+                this._cancelToken = savedCancellationToken;
+                this._sourceFile = savedSourceFile;
+                this._productionParametersByName = savedProductionParametersByName;
+                this._bindings = savedBindings;
+                this._diagnostics = savedDiagnostics;
             }
         }
     }
 
     private getDefine<K extends keyof DefineOverrides>(location: Node, key: K): NonNullable<Defines[K]>;
     private getDefine<K extends keyof DefineOverrides>(location: Node, key: K) {
-        if (this.defineOverrideMap) {
-            const position = this.sourceFile.lineMap.positionAt(location.getStart(this.sourceFile))
-            for (const region of this.defineOverrideMap.regions(this.sourceFile, position.line)) {
+        if (this._defineOverrideMap) {
+            const position = this._sourceFile.lineMap.positionAt(location.getStart(this._sourceFile))
+            for (const region of this._defineOverrideMap.regions(this._sourceFile, position.line)) {
                 const value = region.value[key];
                 if (value === "default") break;
                 if (value === undefined) continue;
                 return value;
             }
         }
-        return this.defines[key];
+        return this._defines[key];
     }
 
     private preprocessSourceElement(node: SourceElement): void {
@@ -186,21 +180,23 @@ export class Checker {
 
     private preprocessDefine(node: Define) {
         if (!this.checkGrammarDefine(node)) {
-            const position = this.sourceFile.lineMap.positionAt(node.getStart(this.sourceFile));
+            const position = this._sourceFile.lineMap.positionAt(node.getStart(this._sourceFile));
             const nodeKey = node.key;
             const nodeKeyText = nodeKey.text;
-            this.defineOverrideMap ??= new RegionMap(equateDefines);
+            this._defineOverrideMap ??= new RegionMap(equateDefines);
             switch (nodeKeyText) {
                 case "noStrictParametricProductions":
-                    this.defineOverrideMap.addRegion(this.sourceFile, position.line, {
-                        noStrictParametricProductions: node.valueToken!.kind === SyntaxKind.DefaultKeyword ? "default" :
+                    this._defineOverrideMap.addRegion(this._sourceFile, position.line, {
+                        noStrictParametricProductions:
+                            node.valueToken!.kind === SyntaxKind.DefaultKeyword ? "default" :
                             node.valueToken!.kind === SyntaxKind.TrueKeyword
                     });
                     break;
 
                 case "noUnusedParameters":
-                    this.defineOverrideMap.addRegion(this.sourceFile, position.line, {
-                        noUnusedParameters: node.valueToken!.kind === SyntaxKind.DefaultKeyword ? "default" :
+                    this._defineOverrideMap.addRegion(this._sourceFile, position.line, {
+                        noUnusedParameters:
+                            node.valueToken!.kind === SyntaxKind.DefaultKeyword ? "default" :
                             node.valueToken!.kind === SyntaxKind.TrueKeyword
                     });
                     break;
@@ -213,31 +209,36 @@ export class Checker {
     }
 
     private checkGrammarDefine(node: Define) {
-        if (!node.key || !node.key.text) {
+        if (node.key?.text === undefined) {
             return this.reportGrammarError(node, node.defineKeyword.end, Diagnostics._0_expected, tokenToString(SyntaxKind.Identifier));
         }
-
         if (!node.valueToken) {
             return this.reportGrammarError(node, node.key.end, Diagnostics._0_expected, formatList([SyntaxKind.TrueKeyword, SyntaxKind.FalseKeyword, SyntaxKind.DefaultKeyword]));
         }
+        return false;
     }
 
     private preprocessLine(node: Line) {
         if (!this.checkGrammarLine(node)) {
-            const generatedLine = this.sourceFile.lineMap.positionAt(node.end).line + 1;
+            // @line re-numbering starts with the next line
+            const generatedLine = this._sourceFile.lineMap.positionAt(node.end).line + 1;
             if (node.number?.kind === SyntaxKind.DefaultKeyword) {
-                this.lineOffsetMap.addLineOffset(this.sourceFile, generatedLine, "default");
+                this._lineOffsetMap.addLineOffset(this._sourceFile, generatedLine, "default");
             }
             else if (node.number?.kind === SyntaxKind.NumberLiteral) {
-                this.lineOffsetMap.addLineOffset(this.sourceFile, generatedLine, { line: +node.number.text! - 1, file: node.path?.text });
+                this._lineOffsetMap.addLineOffset(this._sourceFile, generatedLine, { line: +node.number.text! - 1, file: node.path?.text });
             }
         }
     }
 
     private checkGrammarLine(node: Line) {
-        if (!node.number) {
+        if (!node.number || node.number.kind === SyntaxKind.NumberLiteral && node.number.text === undefined) {
             return this.reportGrammarError(node, node.lineKeyword.end, Diagnostics._0_expected, formatList([SyntaxKind.NumberLiteral, SyntaxKind.DefaultKeyword]));
         }
+        if (node.path && node.path.text === undefined) {
+            return this.reportGrammarError(node, node.number.end, Diagnostics._0_expected, formatList([SyntaxKind.StringLiteral]));
+        }
+        return false;
     }
 
     private checkSourceElement(node: SourceElement): void {
@@ -245,10 +246,6 @@ export class Checker {
             case SyntaxKind.Production:
                 this.checkProduction(<Production>node);
                 break;
-
-            // case SyntaxKind.InvalidSourceElement:
-            //     this.reportInvalidSourceElement(<SourceElement>node);
-            //     break;
         }
     }
 
@@ -281,9 +278,9 @@ export class Checker {
         this.getNodeLinks(node, /*create*/ true).hasResolvedSymbols = true;
 
         if (this.getDefine(node, "noUnusedParameters")) {
-            const symbol = this.bindings.getSymbol(node);
+            const symbol = this._bindings.getSymbol(node);
             if (symbol) {
-                for (const decl of this.bindings.getDeclarations(symbol)) {
+                for (const decl of this._bindings.getDeclarations(symbol)) {
                     if (decl.kind === SyntaxKind.Production) {
                         this.resolveProduction(decl);
                     }
@@ -291,7 +288,7 @@ export class Checker {
             }
             if (node.parameterList?.elements) {
                 for (const param of node.parameterList.elements) {
-                    const symbol = this.bindings.getSymbol(param);
+                    const symbol = this._bindings.getSymbol(param);
                     if (symbol && !this.getSymbolLinks(symbol)?.isReferenced) {
                         this.reportError(param, Diagnostics.Parameter_0_is_unused, param.name.text);
                     }
@@ -322,16 +319,14 @@ export class Checker {
     }
 
     private getProductionParametersByName(node: Production) {
-        let parametersByName = this.productionParametersByName.get(node);
+        let parametersByName = this._productionParametersByName.get(node);
         if (parametersByName) return parametersByName;
-        this.productionParametersByName.set(node, parametersByName = new Set<string>());
+        this._productionParametersByName.set(node, parametersByName = new Set());
         const parameterList = node.parameterList;
-        const parameters = parameterList ? parameterList.elements : undefined;
+        const parameters = parameterList?.elements;
         if (parameters) {
             for (let i = 0; i < parameters.length; i++) {
-                const parameter = parameters[i];
-                const parameterName = parameter ? parameter.name : undefined;
-                const parameterNameText = parameterName ? parameterName.text : undefined;
+                const parameterNameText = parameters[i]?.name?.text;
                 if (parameterNameText) {
                     parametersByName.add(parameterNameText);
                 }
@@ -345,9 +340,9 @@ export class Checker {
         const thisProductionNameText = thisProductionName.text;
         const thisProductionSymbol = this.checkIdentifier(thisProductionName);
         const thisProductionParameterList = thisProduction.parameterList;
-        const thisProductionParameters = thisProductionParameterList ? thisProductionParameterList.elements : undefined;
-        const thisProductionParameterCount = thisProductionParameters ? thisProductionParameters.length : 0;
-        const firstProduction = <Production>this.bindings.getDeclarations(thisProductionSymbol)[0];
+        const thisProductionParameters = thisProductionParameterList?.elements;
+        const thisProductionParameterCount = thisProductionParameters?.length ?? 0;
+        const firstProduction = <Production>this._bindings.getDeclarations(thisProductionSymbol)[0];
         if (thisProductionParameterList && thisProductionParameters) {
             this.checkParameterList(thisProductionParameterList);
         }
@@ -358,8 +353,8 @@ export class Checker {
 
         const thisProductionParameterNames = this.getProductionParametersByName(thisProduction);
         const firstProductionParameterList = firstProduction.parameterList;
-        const firstProductionParameters = firstProductionParameterList ? firstProductionParameterList.elements : undefined;
-        const firstProductionParameterCount = firstProductionParameters ? firstProductionParameters.length : 0;
+        const firstProductionParameters = firstProductionParameterList?.elements;
+        const firstProductionParameterCount = firstProductionParameters?.length ?? 0;
         const firstProductionParameterNames = this.getProductionParametersByName(firstProduction);
         if (firstProductionParameters) {
             for (let i = 0; i < firstProductionParameterCount; i++) {
@@ -386,7 +381,7 @@ export class Checker {
 
     private checkGrammarProduction(node: Production): boolean {
         if (!node.colonToken) {
-            return this.reportGrammarError(node, node.parameterList ? node.parameterList.end : node.name.end, Diagnostics._0_expected, tokenToString(SyntaxKind.ColonToken));
+            return this.reportGrammarError(node, node.parameterList?.end ?? node.name.end, Diagnostics._0_expected, tokenToString(SyntaxKind.ColonToken));
         }
 
         if (!node.body) {
@@ -425,19 +420,15 @@ export class Checker {
     }
 
     private checkGrammarParameterList(node: ParameterList) {
-        if (!node.openParenToken) {
-            return this.reportGrammarError(node, node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBracketToken));
+        if (!node.openBracketToken) {
+            return this.reportGrammarError(node, node.getStart(this._sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBracketToken));
         }
 
-        if (node.openParenToken.kind === SyntaxKind.OpenParenToken) {
-            return this.reportGrammarErrorForNode(node.openParenToken, Diagnostics.Obsolete_0_, `Support for using parenthesis to enclose production parameter lists is deprecated and may be removed in a future update. Please switch to bracket's ('[', ']') when enclosing production parameter lists.`)
+        if ((node.elements?.length ?? 0) <= 0) {
+            return this.reportGrammarError(node, node.openBracketToken.end, Diagnostics._0_expected, tokenToString(SyntaxKind.Identifier));
         }
 
-        if (!node.elements) {
-            return this.reportGrammarError(node, node.openParenToken.end, Diagnostics._0_expected, tokenToString(SyntaxKind.Identifier));
-        }
-
-        if (!node.closeParenToken) {
+        if (!node.closeBracketToken) {
             return this.reportGrammarError(node, node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.CloseBracketToken));
         }
 
@@ -472,20 +463,16 @@ export class Checker {
 
     private checkGrammarOneOfList(node: OneOfList): boolean {
         if (!node.oneKeyword) {
-            return this.reportGrammarError(node, node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OneKeyword));
+            return this.reportGrammarError(node, node.getStart(this._sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OneKeyword));
         }
 
         if (!node.ofKeyword) {
             return this.reportGrammarError(node, node.oneKeyword.end, Diagnostics._0_expected, tokenToString(SyntaxKind.OfKeyword));
         }
 
-        if (!node.terminals) {
+        if ((node.terminals?.length ?? 0) <= 0) {
             return this.reportGrammarError(node, node.ofKeyword.end, Diagnostics._0_expected, tokenToString(SyntaxKind.Terminal));
         }
-
-        // if (node.openIndentToken && !node.closeIndentToken) {
-        //     return this.reportGrammarError(node, node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.DedentToken));
-        // }
 
         return false;
     }
@@ -501,10 +488,6 @@ export class Checker {
     }
 
     private checkGrammarRightHandSideList(node: RightHandSideList): boolean {
-        // if (!node.openIndentToken) {
-        //     return this.reportGrammarErrorForNode(node, Diagnostics._0_expected, tokenToString(SyntaxKind.IndentToken));
-        // }
-
         if (!node.elements || node.elements.length === 0) {
             return this.reportGrammarErrorForNode(node, Diagnostics._0_expected, formatList([
                 SyntaxKind.Terminal,
@@ -562,7 +545,7 @@ export class Checker {
     }
 
     private checkGrammarConstraints(node: Constraints): boolean {
-        if (!node.elements) {
+        if ((node.elements?.length ?? 0) <= 0) {
             return this.reportGrammarError(node, node.openBracketToken.end, Diagnostics._0_expected, formatList([SyntaxKind.TildeToken, SyntaxKind.PlusToken]));
         }
 
@@ -584,7 +567,7 @@ export class Checker {
 
     private checkGrammarSymbolSpan(node: SymbolSpan): boolean {
         if (!node.symbol) {
-            return this.reportGrammarError(node, node.getStart(this.sourceFile), Diagnostics._0_expected, formatList([
+            return this.reportGrammarError(node, node.getStart(this._sourceFile), Diagnostics._0_expected, formatList([
                 SyntaxKind.UnicodeCharacterLiteral,
                 SyntaxKind.Terminal,
                 SyntaxKind.Identifier,
@@ -593,10 +576,8 @@ export class Checker {
             ]));
         }
 
-        if (node.next) {
-            if (node.symbol.kind === SyntaxKind.Prose) {
-                return this.reportGrammarError(node, node.symbol.end, Diagnostics._0_expected, "«line terminator»");
-            }
+        if (node.next && node.symbol.kind === SyntaxKind.Prose) {
+            return this.reportGrammarError(node, node.symbol.end, Diagnostics._0_expected, "«line terminator»");
         }
 
         return false;
@@ -630,7 +611,7 @@ export class Checker {
 
     private checkGrammarSymbolSpanRest(node: SymbolSpan): boolean {
         if (!node.symbol) {
-            return this.reportGrammarError(node, node.getStart(this.sourceFile), Diagnostics._0_expected, formatList([
+            return this.reportGrammarError(node, node.getStart(this._sourceFile), Diagnostics._0_expected, formatList([
                 SyntaxKind.UnicodeCharacterLiteral,
                 SyntaxKind.Terminal,
                 SyntaxKind.Identifier,
@@ -640,10 +621,10 @@ export class Checker {
         }
 
         if (node.symbol.kind === SyntaxKind.Prose) {
-            return this.reportGrammarError(node, node.symbol.getStart(this.sourceFile), Diagnostics._0_expected, "«line terminator»");
+            return this.reportGrammarError(node, node.symbol.getStart(this._sourceFile), Diagnostics._0_expected, "«line terminator»");
         }
 
-        if (node.next && node.next.symbol.kind === SyntaxKind.Prose) {
+        if (node.next?.symbol.kind === SyntaxKind.Prose) {
             return this.reportGrammarError(node, node.symbol.end, Diagnostics._0_expected, "«line terminator»");
         }
 
@@ -689,7 +670,7 @@ export class Checker {
 
     private checkGrammarAssertionHead(node: Assertion): boolean {
         if (!node.openBracketToken) {
-            return this.reportGrammarError(node, node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBracketToken));
+            return this.reportGrammarError(node, node.getStart(this._sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBracketToken));
         }
 
         return false;
@@ -715,7 +696,6 @@ export class Checker {
 
     private checkLookaheadAssertion(node: LookaheadAssertion): void {
         this.checkGrammarAssertionHead(node) || this.checkGrammarLookaheadAssertion(node) || this.checkGrammarAssertionTail(node);
-
         if (node.lookahead) {
             if (node.lookahead.kind === SyntaxKind.SymbolSet) {
                 this.checkSymbolSet(<SymbolSet>node.lookahead);
@@ -783,7 +763,7 @@ export class Checker {
             case SyntaxKind.EqualsEqualsToken:
             case SyntaxKind.ExclamationEqualsToken:
             case SyntaxKind.NotEqualToToken:
-                if (!node.lookahead || !isTerminal(node.lookahead)) {
+                if (!node.lookahead || !isTerminalSpan(node.lookahead)) {
                     return this.reportGrammarErrorForNode(node, Diagnostics._0_expected, formatList([
                         SyntaxKind.Terminal,
                         SyntaxKind.UnicodeCharacterLiteral
@@ -808,12 +788,14 @@ export class Checker {
 
         return false;
 
-        function isTerminal(node: SymbolSpan | SymbolSet) {
-            if (node.kind !== SyntaxKind.SymbolSpan) return false;
-            switch (node.symbol.kind) {
-                case SyntaxKind.Terminal:
-                case SyntaxKind.UnicodeCharacterLiteral:
-                    return true;
+        function isTerminalSpan(node: SymbolSpan | SymbolSet) {
+            while (node.kind === SyntaxKind.SymbolSpan) {
+                switch (node.symbol.kind) {
+                    case SyntaxKind.Terminal:
+                    case SyntaxKind.UnicodeCharacterLiteral:
+                        if (!node.next) return true;
+                        node = node.next;
+                }
             }
             return false;
         }
@@ -837,10 +819,10 @@ export class Checker {
 
     private checkGrammarSymbolSet(node: SymbolSet): boolean {
         if (!node.openBraceToken) {
-            return this.reportGrammarError(node, node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBraceToken));
+            return this.reportGrammarError(node, node.getStart(this._sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBraceToken));
         }
 
-        if (!node.elements) {
+        if ((node.elements?.length ?? 0) <= 0) {
             return this.reportGrammarError(node, node.openBraceToken.end, Diagnostics._0_expected, formatList([
                 SyntaxKind.Identifier,
                 SyntaxKind.Terminal,
@@ -865,7 +847,7 @@ export class Checker {
 
     private checkGrammarLexicalGoalAssertion(node: LexicalGoalAssertion): boolean {
         if (!node.lexicalKeyword) {
-            return this.reportGrammarError(node, node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.LexicalKeyword));
+            return this.reportGrammarError(node, node.getStart(this._sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.LexicalKeyword));
         }
 
         if (!node.goalKeyword) {
@@ -891,10 +873,10 @@ export class Checker {
 
     private checkGrammarNoSymbolHereAssertion(node: NoSymbolHereAssertion): boolean {
         if (!node.noKeyword) {
-            return this.reportGrammarError(node, node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.NoKeyword));
+            return this.reportGrammarError(node, node.getStart(this._sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.NoKeyword));
         }
 
-        if (!node.symbols || node.symbols.length <= 0) {
+        if ((node.symbols?.length ?? 0) <= 0) {
             return this.reportGrammarError(node, node.noKeyword.end, Diagnostics._0_expected, formatList([
                 SyntaxKind.Identifier,
                 SyntaxKind.Terminal,
@@ -921,7 +903,7 @@ export class Checker {
 
     private checkGrammarProseAssertionHead(node: Assertion): boolean {
         if (!node.openBracketToken) {
-            return this.reportGrammarError(node, node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBracketGreaterThanToken));
+            return this.reportGrammarError(node, node.getStart(this._sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBracketGreaterThanToken));
         }
 
         return false;
@@ -947,7 +929,7 @@ export class Checker {
     }
 
     private checkProseFragmentLiteral(node: ProseFragmentLiteral): void {
-        if (typeof node.text !== "string") {
+        if (!node.text) {
             this.reportGrammarErrorForNode(node, Diagnostics._0_expected, tokenToString(SyntaxKind.UnicodeCharacterLiteral));
         }
     }
@@ -1023,14 +1005,14 @@ export class Checker {
 
     private checkGrammarOneOfSymbol(node: OneOfSymbol): boolean {
         if (!node.oneKeyword) {
-            return this.reportGrammarError(node, node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OneKeyword));
+            return this.reportGrammarError(node, node.getStart(this._sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OneKeyword));
         }
 
         if (!node.ofKeyword) {
             return this.reportGrammarError(node, node.oneKeyword.end, Diagnostics._0_expected, tokenToString(SyntaxKind.OfKeyword));
         }
 
-        if (!node.symbols || node.symbols.length <= 0) {
+        if ((node.symbols?.length ?? 0) <= 0) {
             return this.reportGrammarError(node, node.end, Diagnostics._0_expected, formatList([
                 SyntaxKind.Identifier,
                 SyntaxKind.Terminal,
@@ -1078,7 +1060,7 @@ export class Checker {
             return true;
         }
         if (!allowArguments && node.argumentList) {
-            return this.reportGrammarErrorForNode(node.argumentList, Diagnostics.Unexpected_token_0_, tokenToString(node.argumentList.openParenToken.kind));
+            return this.reportGrammarErrorForNode(node.argumentList, Diagnostics.Unexpected_token_0_, tokenToString(node.argumentList.openBracketToken.kind));
         }
         return false;
     }
@@ -1098,7 +1080,7 @@ export class Checker {
     }
 
     private checkGrammarTerminal(node: Terminal): boolean {
-        if (typeof node.text !== "string" || node.text.length === 0) {
+        if (!node.text) {
             return this.reportGrammarErrorForNode(node, Diagnostics._0_expected, tokenToString(SyntaxKind.Terminal));
         }
 
@@ -1129,7 +1111,7 @@ export class Checker {
     }
 
     private checkGrammarUnicodeCharacterLiteral(node: UnicodeCharacterLiteral): boolean {
-        if (typeof node.text !== "string" || node.text.length === 0) {
+        if (!node.text) {
             return this.reportGrammarErrorForNode(node, Diagnostics._0_expected, tokenToString(SyntaxKind.UnicodeCharacterLiteral));
         }
 
@@ -1162,18 +1144,15 @@ export class Checker {
         const nonterminalName = node.name;
         const productionSymbol = this.checkIdentifier(nonterminalName);
         if (productionSymbol) {
-            const production = <Production>this.bindings.getDeclarations(productionSymbol)[0];
-            const parameterList = production.parameterList;
-            const parameterListElements = parameterList && parameterList.elements;
-            const argumentList = node.argumentList;
-            const argumentListElements = argumentList && argumentList.elements;
+            const production = <Production>this._bindings.getDeclarations(productionSymbol)[0];
+            const parameterListElements = production.parameterList?.elements;
+            const argumentListElements = node.argumentList?.elements;
             const nameSet = new Set<string>();
 
             // Check each argument has a matching parameter.
             if (argumentListElements) {
                 for (let i = 0; i < argumentListElements.length; i++) {
-                    const argument = argumentListElements[i];
-                    const argumentName = argument.name;
+                    const argumentName = argumentListElements[i].name;
                     if (argumentName) {
                         const argumentNameText = argumentName.text;
                         if (argumentNameText) {
@@ -1195,13 +1174,9 @@ export class Checker {
             // Check each parameter has a matching argument.
             if (parameterListElements) {
                 for (let i = 0; i < parameterListElements.length; i++) {
-                    const parameter = parameterListElements[i];
-                    const parameterName = parameter.name;
-                    if (parameterName) {
-                        const parameterNameText = parameterName.text;
-                        if (parameterNameText && !nameSet.has(parameterNameText)) {
-                            this.reportError(nonterminalName, Diagnostics.There_is_no_argument_given_for_parameter_0_, parameterNameText);
-                        }
+                    const parameterNameText = parameterListElements[i].name?.text;
+                    if (parameterNameText && !nameSet.has(parameterNameText)) {
+                        this.reportError(nonterminalName, Diagnostics.There_is_no_argument_given_for_parameter_0_, parameterNameText);
                     }
                 }
             }
@@ -1223,19 +1198,15 @@ export class Checker {
     }
 
     private checkGrammarArgumentList(node: ArgumentList): boolean {
-        if (!node.openParenToken) {
-            return this.reportGrammarError(node, node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBracketToken));
+        if (!node.openBracketToken) {
+            return this.reportGrammarError(node, node.getStart(this._sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.OpenBracketToken));
         }
 
-        if (node.openParenToken.kind === SyntaxKind.OpenParenToken) {
-            return this.reportGrammarErrorForNode(node.openParenToken, Diagnostics.Obsolete_0_, `Support for using parenthesis to enclose an argument list is deprecated and may be removed in a future update. Please switch to bracket's ('[', ']') when enclosing argument lists.`)
+        if ((node.elements?.length ?? 0) <= 0) {
+            return this.reportGrammarError(node, node.openBracketToken.end, Diagnostics._0_expected, tokenToString(SyntaxKind.Identifier));
         }
 
-        if (!node.elements) {
-            return this.reportGrammarError(node, node.openParenToken.end, Diagnostics._0_expected, tokenToString(SyntaxKind.Identifier));
-        }
-
-        if (!node.closeParenToken) {
+        if (!node.closeBracketToken) {
             return this.reportGrammarError(node, node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.CloseBracketToken));
         }
 
@@ -1248,10 +1219,10 @@ export class Checker {
     }
 
     private checkGrammarArgument(node: Argument): boolean {
-        const parent = this.bindings.getParent(node);
-        if (parent && parent.kind === SyntaxKind.Constraints) {
+        const parent = this._bindings.getParent(node);
+        if (parent?.kind === SyntaxKind.Constraints) {
             if (!node.operatorToken) {
-                return this.reportGrammarError(node, node.getStart(this.sourceFile), Diagnostics._0_expected, formatList([SyntaxKind.PlusToken, SyntaxKind.TildeToken]));
+                return this.reportGrammarError(node, node.getStart(this._sourceFile), Diagnostics._0_expected, formatList([SyntaxKind.PlusToken, SyntaxKind.TildeToken]));
             }
             if (node.operatorToken.kind !== SyntaxKind.PlusToken
                 && node.operatorToken.kind !== SyntaxKind.TildeToken) {
@@ -1267,11 +1238,11 @@ export class Checker {
             }
 
             if (!node.operatorToken && !this.getDefine(node, "noStrictParametricProductions")) {
-                return this.reportGrammarError(node, node.getStart(this.sourceFile), Diagnostics._0_expected, formatList([SyntaxKind.QuestionToken, SyntaxKind.PlusToken, SyntaxKind.TildeToken]));
+                return this.reportGrammarError(node, node.getStart(this._sourceFile), Diagnostics._0_expected, formatList([SyntaxKind.QuestionToken, SyntaxKind.PlusToken, SyntaxKind.TildeToken]));
             }
         }
         if (!node.name) {
-            return this.reportGrammarError(node, node.operatorToken ? node.operatorToken.end : node.getStart(this.sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.Identifier));
+            return this.reportGrammarError(node, node.operatorToken ? node.operatorToken.end : node.getStart(this._sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.Identifier));
         }
         return false;
     }
@@ -1292,27 +1263,25 @@ export class Checker {
     }
 
     private resolveIdentifier(node: Identifier, reportErrors?: boolean): Symbol | undefined {
-        let symbol = reportErrors ? undefined : this.bindings.getSymbol(node);
+        let symbol = reportErrors ? undefined : this._bindings.getSymbol(node);
         if (!symbol && node.text) {
-            const parent = this.bindings.getParent(node);
+            const parent = this._bindings.getParent(node);
             if (parent) {
                 switch (parent.kind) {
                     case SyntaxKind.Parameter:
-                        if (!symbol) {
-                            symbol = this.resolveSymbol(node, node.text, SymbolKind.Parameter);
-                        }
+                        symbol ??= this.resolveSymbol(node, node.text, SymbolKind.Parameter);
                         if (reportErrors) {
-                            let declarationSymbol = this.bindings.getSymbol(parent);
+                            let declarationSymbol = this._bindings.getSymbol(parent);
                             if (declarationSymbol !== symbol) {
                                 this.reportError(node, Diagnostics.Duplicate_identifier_0_, node.text);
                             }
                         }
-                        this.bindings.setSymbol(node, symbol);
+                        this._bindings._setSymbol(node, symbol);
                         return symbol;
 
                     case SyntaxKind.Production:
-                        symbol = this.bindings.getSymbol(parent);
-                        this.bindings.setSymbol(node, symbol);
+                        symbol = this._bindings.getSymbol(parent);
+                        this._bindings._setSymbol(node, symbol);
                         return symbol;
 
                     case SyntaxKind.LookaheadAssertion:
@@ -1325,35 +1294,31 @@ export class Checker {
 
                     case SyntaxKind.Argument:
                         const argument = <Argument>parent;
-                        if (argument.operatorToken && argument.operatorToken.kind === SyntaxKind.QuestionToken) {
-                            if (!symbol) {
-                                symbol = this.resolveSymbol(node, node.text, SymbolKind.Parameter);
-                            }
+                        if (argument.operatorToken?.kind === SyntaxKind.QuestionToken) {
+                            symbol ??= this.resolveSymbol(node, node.text, SymbolKind.Parameter);
                             if (!symbol && reportErrors) {
-                                const production = <Production>this.bindings.getAncestor(argument, SyntaxKind.Production);
+                                const production = <Production>this._bindings.getAncestor(argument, SyntaxKind.Production);
                                 this.reportError(node, Diagnostics.Production_0_does_not_have_a_parameter_named_1_, production.name.text, node.text);
                             }
                             this.markSymbolAsReferenced(symbol);
                         }
                         else {
                             // get the symbol of the parameter of the target production
-                            const nonterminal = <Nonterminal | undefined>this.bindings.getAncestor(parent, SyntaxKind.Nonterminal);
-                            if (nonterminal && nonterminal.name && nonterminal.name.text) {
+                            const nonterminal = <Nonterminal | undefined>this._bindings.getAncestor(parent, SyntaxKind.Nonterminal);
+                            if (nonterminal?.name?.text) {
                                 const productionSymbol = this.resolveSymbol(node, nonterminal.name.text, SymbolKind.Production);
                                 if (productionSymbol) {
-                                    const production = <Production>this.bindings.getDeclarations(productionSymbol)[0];
-                                    if (!symbol) {
-                                        symbol = this.resolveSymbol(production, node.text, SymbolKind.Parameter);
-                                    }
+                                    const production = <Production>this._bindings.getDeclarations(productionSymbol)[0];
+                                    symbol ??= this.resolveSymbol(production, node.text, SymbolKind.Parameter);
                                     if (!symbol && reportErrors) {
                                         this.reportError(node, Diagnostics.Production_0_does_not_have_a_parameter_named_1_, production.name.text, node.text);
                                     }
                                 }
                             }
                             else {
-                                const constraints = <Constraints | undefined>this.bindings.getAncestor(parent, SyntaxKind.Constraints);
+                                const constraints = <Constraints | undefined>this._bindings.getAncestor(parent, SyntaxKind.Constraints);
                                 if (constraints) {
-                                    const production = <Production>this.bindings.getAncestor(constraints, SyntaxKind.Production);
+                                    const production = <Production>this._bindings.getAncestor(constraints, SyntaxKind.Production);
                                     if (!symbol) {
                                         symbol = this.resolveSymbol(production, node.text, SymbolKind.Parameter);
                                         this.markSymbolAsReferenced(symbol);
@@ -1367,7 +1332,7 @@ export class Checker {
                         break;
                 }
 
-                this.bindings.setSymbol(node, symbol);
+                this._bindings._setSymbol(node, symbol);
             }
         }
 
@@ -1379,40 +1344,31 @@ export class Checker {
         return this.resolveIdentifier(node, /*reportErrors*/ true);
     }
 
-    private checkGrammarIdentifier(node: Identifier): boolean {
-        if (typeof node.text === "undefined" || node.text.length <= 0) {
+    private checkGrammarIdentifier(node: Identifier) {
+        if (!node.text) {
             return this.reportGrammarErrorForNode(node, Diagnostics._0_expected, tokenToString(SyntaxKind.Identifier));
         }
-
         return false;
     }
-
-    // private reportInvalidSourceElement(node: SourceElement): void {
-    //     this.reportGrammarErrorForNode(node, Diagnostics._0_expected, formatList([
-    //         SyntaxKind.Production
-    //     ]));
-    // }
 
     private getNodeLinks(node: Node, create: true): NodeLinks;
     private getNodeLinks(node: Node, create?: boolean): NodeLinks | undefined;
     private getNodeLinks(node: Node, create?: boolean) {
-        if (!this.nodeLinks) this.nodeLinks = new Map();
-        let links = this.nodeLinks.get(node);
-        if (!links) this.nodeLinks.set(node, links = {});
+        let links = this._nodeLinks?.get(node);
+        if (!links && create) (this._nodeLinks ??= new Map()).set(node, links = new NodeLinks());
         return links;
     }
 
     private getSymbolLinks(symbol: Symbol, create: true): SymbolLinks;
     private getSymbolLinks(symbol: Symbol, create?: boolean): SymbolLinks | undefined;
     private getSymbolLinks(symbol: Symbol, create?: boolean) {
-        if (!this.symbolLinks) this.symbolLinks = new Map();
-        let links = this.symbolLinks.get(symbol);
-        if (!links) this.symbolLinks.set(symbol, links = {});
+        let links = this._symbolLinks?.get(symbol);
+        if (!links && create) (this._symbolLinks ??= new Map()).set(symbol, links = new SymbolLinks());
         return links;
     }
 
     private resolveSymbol(location: Node, name: string, meaning: SymbolKind, diagnosticMessage?: Diagnostic): Symbol | undefined {
-        const result = this.bindings.resolveSymbol(location, name, meaning);
+        const result = this._bindings.resolveSymbol(location, name, meaning);
         if (!result && diagnosticMessage) {
             this.reportError(location, diagnosticMessage, name);
         }
@@ -1421,26 +1377,26 @@ export class Checker {
     }
 
     private reportError(location: Node, diagnosticMessage: Diagnostic, arg0?: any, arg1?: any, arg2?: any) {
-        const sourceFile = this.bindings.getSourceFile(location) ?? this.sourceFile;
-        if (sourceFile !== this.sourceFile) {
-            this.diagnostics.setSourceFile(sourceFile);
-            this.diagnostics.reportNode(sourceFile, location, diagnosticMessage, arg0, arg1, arg2);
-            this.diagnostics.setSourceFile(this.sourceFile);
+        const sourceFile = this._bindings.getSourceFile(location) ?? this._sourceFile;
+        if (sourceFile !== this._sourceFile) {
+            this._diagnostics.setSourceFile(sourceFile);
+            this._diagnostics.reportNode(sourceFile, location, diagnosticMessage, arg0, arg1, arg2);
+            this._diagnostics.setSourceFile(this._sourceFile);
         }
         else {
-            this.diagnostics.reportNode(sourceFile, location, diagnosticMessage, arg0, arg1, arg2);
+            this._diagnostics.reportNode(sourceFile, location, diagnosticMessage, arg0, arg1, arg2);
         }
     }
 
     private reportGrammarError(context: Node, pos: number, diagnosticMessage: Diagnostic, arg0?: any, arg1?: any, arg2?: any) {
-        const sourceFile = this.bindings.getSourceFile(context) ?? this.sourceFile;
-        if (sourceFile !== this.sourceFile) {
-            this.diagnostics.setSourceFile(sourceFile);
-            this.diagnostics.report(pos, diagnosticMessage, arg0, arg1, arg2);
-            this.diagnostics.setSourceFile(this.sourceFile);
+        const sourceFile = this._bindings.getSourceFile(context) ?? this._sourceFile;
+        if (sourceFile !== this._sourceFile) {
+            this._diagnostics.setSourceFile(sourceFile);
+            this._diagnostics.report(pos, diagnosticMessage, arg0, arg1, arg2);
+            this._diagnostics.setSourceFile(this._sourceFile);
         }
         else {
-            this.diagnostics.report(pos, diagnosticMessage, arg0, arg1, arg2);
+            this._diagnostics.report(pos, diagnosticMessage, arg0, arg1, arg2);
         }
         return true;
     }
@@ -1457,7 +1413,7 @@ export class Checker {
     }
 
     private reportInvalidHtmlTrivia(nodes: HtmlTrivia[] | undefined) {
-        if (nodes && nodes.length) {
+        if (nodes?.length) {
             return this.reportGrammarErrorForNode(nodes[0], Diagnostics.HTML_trivia_not_allowed_here);
         }
         return false;
@@ -1467,59 +1423,66 @@ export class Checker {
 /** {@docCategory Check} */
 export class Resolver {
     public readonly bindings: BindingTable;
-    private lineOffsetMap: LineOffsetMap | undefined;
+
+    private _lineOffsetMap: LineOffsetMap | undefined;
 
     constructor(bindings: BindingTable, lineOffsetMap?: LineOffsetMap) {
         this.bindings = bindings;
-        this.lineOffsetMap = lineOffsetMap;
+        this._lineOffsetMap = lineOffsetMap;
     }
 
     /**
      * Gets the effective filename of a raw position within a source file, taking into account `@line` directives.
      */
     public getEffectiveFilenameAtPosition(sourceFile: SourceFile, position: Position) {
-        return this.lineOffsetMap?.getEffectiveFilenameAtPosition(sourceFile, position) ?? sourceFile.filename;
+        return this._lineOffsetMap?.getEffectiveFilenameAtPosition(sourceFile, position) ?? sourceFile.filename;
     }
 
     /**
      * Gets the effective position of a raw position within a source file, taking into account `@line` directives.
      */
     public getEffectivePosition(sourceFile: SourceFile, position: Position) {
-        return this.lineOffsetMap?.getEffectivePosition(sourceFile, position) ?? position;
+        return this._lineOffsetMap?.getEffectivePosition(sourceFile, position) ?? position;
     }
 
     /**
      * Gets the effective range of a raw range within a source file, taking into account `@line` directives.
      */
     public getEffectiveRange(sourceFile: SourceFile, range: Range) {
-        return this.lineOffsetMap?.getEffectiveRange(sourceFile, range) ?? range;
+        return this._lineOffsetMap?.getEffectiveRange(sourceFile, range) ?? range;
     }
 
     /**
      * Gets the filename of a parsed grammarkdown file for the provided effective filename and position, taking into account `@line` directives.
      */
     public getRawFilenameAtEffectivePosition(filename: string, position: Position) {
-        return this.lineOffsetMap?.getRawFilenameAtEffectivePosition(filename, position);
+        return this._lineOffsetMap?.getRawFilenameAtEffectivePosition(filename, position);
     }
 
     /**
      * Gets the position in a parsed grammarkdown file for the provided effective filename and position, taking into account `@line` directives.
      */
     public getRawPositionFromEffectivePosition(filename: string, position: Position) {
-        return this.lineOffsetMap?.getRawPositionFromEffectivePosition(filename, position);
+        return this._lineOffsetMap?.getRawPositionFromEffectivePosition(filename, position);
     }
 
     /**
      * Gets the range in a parsed grammarkdown file for the provided effective filename and position, taking into account `@line` directives.
      */
     public getRawRangeFromEffectiveRange(filename: string, range: Range) {
-        return this.lineOffsetMap?.getRawRangeFromEffectiveRange(filename, range);
+        return this._lineOffsetMap?.getRawRangeFromEffectiveRange(filename, range);
     }
 
+    /**
+     * Gets the parent `Node` for `node`.
+     */
     public getParent(node: Node): Node | undefined {
         return this.bindings.getParent(node);
     }
 
+    /**
+     * Creates a `NodeNavigator` pointing at `node`. Returns `undefined` if `node` does not have a `SourceFile` as an ancestor.
+     */
     public createNavigator(node: Node): NodeNavigator | undefined {
         if (node.kind === SyntaxKind.SourceFile) {
             return new NodeNavigator(<SourceFile>node);
@@ -1528,7 +1491,7 @@ export class Resolver {
             const parent = this.bindings.getParent(node);
             if (parent) {
                 const navigator = this.createNavigator(parent);
-                if (navigator && navigator.moveToFirstChild(child => child === node)) {
+                if (navigator?.moveToFirstChild(child => child === node)) {
                     return navigator;
                 }
             }
@@ -1537,16 +1500,60 @@ export class Resolver {
         return undefined;
     }
 
+    /**
+     * Gets the `SourceFile` of `node`, if it belongs to one.
+     */
     public getSourceFileOfNode(node: Node) {
-        return <SourceFile>this.bindings.getAncestor(node, SyntaxKind.SourceFile);
+        return this.bindings.getAncestor(node, SyntaxKind.SourceFile) as SourceFile | undefined;
     }
 
-    public getDeclarations(node: Identifier) {
-        const parent = this.bindings.getParent(node);
+    /**
+     * Gets the `Symbol` for `node`, if it has one.
+     */
+    public getSymbolOfNode(node: Node | undefined) {
+        return this.bindings.getSymbol(node);
+    }
 
-        let symbol = this.bindings.getSymbol(node);
-        if (!symbol && node.text) {
-            symbol = this.bindings.resolveSymbol(node, node.text, getSymbolMeaning(parent));
+    /**
+     * Resolves a `Symbol` for the provided `name` at the given `location` that has the provided `meaning`.
+     */
+    public resolveSymbol(location: Node, name: string, meaning: SymbolKind): Symbol | undefined {
+        return this.bindings.resolveSymbol(location, name, meaning);
+    }
+
+    /**
+     * Gets the declarations for the provided identifier.
+     */
+    public getDeclarations(node: Identifier): Declaration[];
+    /**
+     * Gets the declarations for `name` at the provided `location` that have the given `meaning`.
+     */
+    public getDeclarations(name: string, meaning: SymbolKind.SourceFile, location: Node): SourceFile[];
+    /**
+     * Gets the declarations for `name` at the provided `location` that have the given `meaning`.
+     */
+    public getDeclarations(name: string, meaning: SymbolKind.Production, location: Node): Production[];
+    /**
+     * Gets the declarations for `name` at the provided `location` that have the given `meaning`.
+     */
+    public getDeclarations(name: string, meaning: SymbolKind.Parameter, location: Node): Parameter[];
+    /**
+     * Gets the declarations for `name` at the provided `location` that have the given `meaning`.
+     */
+    public getDeclarations(name: string, meaning: SymbolKind, location: Node): Declaration[];
+    public getDeclarations(node: string | Identifier, meaning?: SymbolKind, location?: Node) {
+        let symbol: Symbol | undefined;
+        if (typeof node === "string") {
+            if (meaning === undefined) throw new TypeError("SymbolKind expected: meaning");
+            if (location === undefined) throw new TypeError("Node expected: location");
+            symbol = this.bindings.resolveSymbol(location, node, meaning);
+        }
+        else {
+            const parent = this.bindings.getParent(node);
+            symbol = this.bindings.getSymbol(node);
+            if (!symbol && node.text) {
+                symbol = this.bindings.resolveSymbol(node, node.text, getSymbolMeaning(parent));
+            }
         }
 
         if (symbol) {
@@ -1556,33 +1563,51 @@ export class Resolver {
         return [];
     }
 
-    public getReferences(node: Identifier) {
-        const parent = this.bindings.getParent(node);
-        if (parent) {
-            const symbol = parent.kind === SyntaxKind.Parameter
-                ? this.bindings.resolveSymbol(node, node.text, SymbolKind.Parameter)
-                : this.bindings.resolveSymbol(node, node.text, SymbolKind.Production);
-
-            if (symbol) {
-                return this.bindings.getReferences(symbol);
+    /**
+     * Gets the references to the provided identifier.
+     */
+    public getReferences(node: Identifier): Node[];
+    /**
+     * Gets the references to `name` at the provided `location` that have the given `meaning`.
+     */
+    public getReferences(name: string, meaning: SymbolKind, location: Node): Node[];
+    public getReferences(node: string | Identifier, meaning?: SymbolKind, location?: Node) {
+        let symbol: Symbol | undefined;
+        if (typeof node === "string") {
+            if (meaning === undefined) throw new TypeError("SymbolKind expected: meaning");
+            if (location === undefined) throw new TypeError("Node expected: location");
+            symbol = this.bindings.resolveSymbol(location, node, meaning);
+        }
+        else {
+            const parent = this.bindings.getParent(node);
+            if (parent) {
+                symbol = parent.kind === SyntaxKind.Parameter
+                    ? this.bindings.resolveSymbol(node, node.text, SymbolKind.Parameter)
+                    : this.bindings.resolveSymbol(node, node.text, SymbolKind.Production);
             }
+        }
+        if (symbol) {
+            return this.bindings.getReferences(symbol);
         }
 
         return [];
     }
 
+    /**
+     * Get the link id for the `Production` to which the provided `node` resolves.
+     */
     public getProductionLinkId(node: Identifier): string | undefined {
         const symbol = this.bindings.resolveSymbol(node, node.text, SymbolKind.Production);
-        if (symbol) {
-            return symbol.name;
-        }
-
-        return undefined;
+        return symbol?.name;
     }
 
+    /**
+     * Gets the right-hand-side link id for the provided `RightHandSide`.
+     * @param includePrefix When `true`, prepends the production link id.
+     */
     public getRightHandSideLinkId(node: RightHandSide, includePrefix: boolean): string {
         let linkId: string;
-        if (node.reference && node.reference.text) {
+        if (node.reference?.text) {
             linkId = node.reference.text.replace(/[^a-z0-9]+/g, '-');
         }
         else {

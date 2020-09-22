@@ -102,7 +102,7 @@
   <h5 class="decalaration">Declaration</h5>
   
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">constructor(atToken: Token&lt;SyntaxKind.AtToken&gt;, defineKeyword: Token&lt;SyntaxKind.DefineKeyword&gt;, key: Identifier, valueToken: Token&lt;BooleanKind&gt; | undefined);</code></pre>
+    <pre><code class="lang-typeScript hljs">constructor(atToken: Token&lt;SyntaxKind.AtToken&gt;, defineKeyword: Token&lt;SyntaxKind.DefineKeyword&gt;, key: Identifier, valueToken: Token&lt;BooleanKind&gt; | Token&lt;SyntaxKind.DefaultKeyword&gt; | undefined);</code></pre>
   </div>
   
   
@@ -141,7 +141,7 @@
     <div class="property">
       <dl class="parameter">
         <dt>valueToken</dt>
-        <dd><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="../grammarkdown.html#grammarkdown_BooleanKind_type">BooleanKind</a>&gt; | undefined</dd>
+        <dd><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="../grammarkdown.html#grammarkdown_BooleanKind_type">BooleanKind</a>&gt; | <a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_DefaultKeyword_member">SyntaxKind.DefaultKeyword</a>&gt; | undefined</dd>
       </dl>
       <p>
         
@@ -244,7 +244,7 @@
   <h5 class="decalaration">Declaration</h5>
   
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">readonly valueToken: Token&lt;BooleanKind&gt; | undefined;</code></pre>
+    <pre><code class="lang-typeScript hljs">readonly valueToken: Token&lt;BooleanKind&gt; | Token&lt;SyntaxKind.DefaultKeyword&gt; | undefined;</code></pre>
   </div>
   
   
@@ -254,7 +254,7 @@
   <h5 class="propertyValue">Property Value</h5>
   <div>
   <div class="property">
-    <div><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="../grammarkdown.html#grammarkdown_BooleanKind_type">BooleanKind</a>&gt; | undefined</div>
+    <div><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="../grammarkdown.html#grammarkdown_BooleanKind_type">BooleanKind</a>&gt; | <a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_DefaultKeyword_member">SyntaxKind.DefaultKeyword</a>&gt; | undefined</div>
     <p>
   </div>
   </div>

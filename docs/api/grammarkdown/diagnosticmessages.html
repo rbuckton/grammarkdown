@@ -86,6 +86,41 @@
   <h6><strong>Package</strong>: <a class="xref" href="../grammarkdown.html">grammarkdown</a></h6>
   <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <h4 id="grammarkdown_DiagnosticMessages_constructor_1_" data-uid="grammarkdown!DiagnosticMessages:constructor(1)">constructor(lineOffsetMap)</h4>
+  <div class="markdown level1 summary"><p>Constructs a new instance of the <code>DiagnosticMessages</code> class</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">constructor(lineOffsetMap?: LineOffsetMap);</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>lineOffsetMap</dt>
+        <dd><a class="xref" href="lineoffsetmap.html#grammarkdown_LineOffsetMap_class">LineOffsetMap</a></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
   <h3 id="properties">Properties
   </h3>
   
@@ -326,6 +361,55 @@
   
   
   
+  <h4 id="grammarkdown_DiagnosticMessages_getDiagnosticFilename_member_1_" data-uid="grammarkdown!DiagnosticMessages#getDiagnosticFilename:member(1)">getDiagnosticFilename(diagnosticIndex, raw)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">getDiagnosticFilename(diagnosticIndex: number, raw?: boolean): string | undefined;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>diagnosticIndex</dt>
+        <dd><span class="xref">number</span></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>raw</dt>
+        <dd><span class="xref">boolean</span></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">string | undefined</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
   <h4 id="grammarkdown_DiagnosticMessages_getDiagnosticInfo_member_1_" data-uid="grammarkdown!DiagnosticMessages#getDiagnosticInfo:member(1)">getDiagnosticInfo(diagnosticIndex, options)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
@@ -335,6 +419,7 @@
     <pre><code class="lang-typeScript hljs">getDiagnosticInfo(diagnosticIndex: number, options?: {
         formatMessage?: boolean;
         detailedMessage?: boolean;
+        raw?: boolean;
     }): DiagnosticInfo | undefined;</code></pre>
   </div>
   
@@ -357,6 +442,7 @@
         <dd><span class="xref">{
         formatMessage?: boolean;
         detailedMessage?: boolean;
+        raw?: boolean;
     }</span></dd>
       </dl>
       <p>
@@ -390,6 +476,7 @@
     <pre><code class="lang-typeScript hljs">getDiagnosticInfos(options?: {
         formatMessage?: boolean;
         detailedMessage?: boolean;
+        raw?: boolean;
     }): DiagnosticInfo[];</code></pre>
   </div>
   
@@ -402,6 +489,7 @@
         <dd><span class="xref">{
         formatMessage?: boolean;
         detailedMessage?: boolean;
+        raw?: boolean;
     }</span></dd>
       </dl>
       <p>
@@ -435,6 +523,7 @@
     <pre><code class="lang-typeScript hljs">getDiagnosticInfosForSourceFile(sourceFile: SourceFile, options?: {
         formatMessage?: boolean;
         detailedMessage?: boolean;
+        raw?: boolean;
     }): DiagnosticInfo[];</code></pre>
   </div>
   
@@ -457,6 +546,7 @@
         <dd><span class="xref">{
         formatMessage?: boolean;
         detailedMessage?: boolean;
+        raw?: boolean;
     }</span></dd>
       </dl>
       <p>
@@ -520,13 +610,13 @@
   
   
   
-  <h4 id="grammarkdown_DiagnosticMessages_getDiagnosticRange_member_1_" data-uid="grammarkdown!DiagnosticMessages#getDiagnosticRange:member(1)">getDiagnosticRange(diagnosticIndex)</h4>
+  <h4 id="grammarkdown_DiagnosticMessages_getDiagnosticPosition_member_1_" data-uid="grammarkdown!DiagnosticMessages#getDiagnosticPosition:member(1)">getDiagnosticPosition(diagnosticIndex, raw)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">getDiagnosticRange(diagnosticIndex: number): Range | undefined;</code></pre>
+    <pre><code class="lang-typeScript hljs">getDiagnosticPosition(diagnosticIndex: number, raw?: boolean): Position | undefined;</code></pre>
   </div>
   
   
@@ -536,6 +626,65 @@
       <dl class="parameter">
         <dt>diagnosticIndex</dt>
         <dd><span class="xref">number</span></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>raw</dt>
+        <dd><span class="xref">boolean</span></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="position-interface.html#grammarkdown_Position_interface">Position</a> | undefined</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_DiagnosticMessages_getDiagnosticRange_member_1_" data-uid="grammarkdown!DiagnosticMessages#getDiagnosticRange:member(1)">getDiagnosticRange(diagnosticIndex, raw)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">getDiagnosticRange(diagnosticIndex: number, raw?: boolean): Range | undefined;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>diagnosticIndex</dt>
+        <dd><span class="xref">number</span></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>raw</dt>
+        <dd><span class="xref">boolean</span></dd>
       </dl>
       <p>
         
@@ -606,6 +755,7 @@
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">getMessage(diagnosticIndex: number, options?: {
         detailed?: boolean;
+        raw?: boolean;
     }): string;</code></pre>
   </div>
   
@@ -627,6 +777,7 @@
         <dt>options</dt>
         <dd><span class="xref">{
         detailed?: boolean;
+        raw?: boolean;
     }</span></dd>
       </dl>
       <p>

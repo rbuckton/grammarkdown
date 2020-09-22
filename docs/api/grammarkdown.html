@@ -131,9 +131,6 @@ console.log(output);
         <h4><a class="xref" href="grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_class">CoreAsyncHost</a></h4>
         <section><p>A Host is a user-provided service that indicates how various Grammarkdown services can interact with a file system. The <code>CoreAsyncHost</code> class provides the API surface that Grammarkdown uses to interact with a host that is able to access the file system asynchronously.</p>
 </section>
-        <h4><a class="xref" href="grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_class">CoreSyncHost</a></h4>
-        <section><p>A Host is a user-provided service that indicates how various Grammarkdown services can interact with a file system. The <code>CoreSyncHost</code> class provides the API surface that Grammarkdown uses to interact with a host that is able to access the file system synchronously.</p>
-</section>
         <h4><a class="xref" href="grammarkdown/define.html#grammarkdown_Define_class">Define</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/diagnosticmessages.html#grammarkdown_DiagnosticMessages_class">DiagnosticMessages</a></h4>
@@ -146,11 +143,6 @@ console.log(output);
         <section></section>
         <h4><a class="xref" href="grammarkdown/grammar.html#grammarkdown_Grammar_class">Grammar</a></h4>
         <section><p>The primary service used to interact with one or more Grammarkdown <a class="xref" href="grammarkdown/sourcefile.html#grammarkdown_SourceFile_class">SourceFiles</a><!-- -->.</p>
-</section>
-        <h4><a class="xref" href="grammarkdown/host.html#grammarkdown_Host_class">Host</a></h4>
-        <section></section>
-        <h4><a class="xref" href="grammarkdown/hostbase.html#grammarkdown_HostBase_class">HostBase</a></h4>
-        <section><p>A Host is a user-provided service that indicates how various Grammarkdown services can interact with a file system. The <code>HostBase</code> class provides a set of common functionality shared between synchronous and asynchronous hosts (i.e., <code>SyncHost</code> and <code>AsyncHost</code> respectively).</p>
 </section>
         <h4><a class="xref" href="grammarkdown/htmlclosetagtrivia.html#grammarkdown_HtmlCloseTagTrivia_class">HtmlCloseTagTrivia</a></h4>
         <section></section>
@@ -172,7 +164,11 @@ console.log(output);
         <section></section>
         <h4><a class="xref" href="grammarkdown/lexicalsymbolbase.html#grammarkdown_LexicalSymbolBase_class">LexicalSymbolBase</a></h4>
         <section></section>
+        <h4><a class="xref" href="grammarkdown/line.html#grammarkdown_Line_class">Line</a></h4>
+        <section></section>
         <h4><a class="xref" href="grammarkdown/linemap.html#grammarkdown_LineMap_class">LineMap</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/lineoffsetmap.html#grammarkdown_LineOffsetMap_class">LineOffsetMap</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/linkreference.html#grammarkdown_LinkReference_class">LinkReference</a></h4>
         <section></section>
@@ -191,8 +187,6 @@ console.log(output);
         <h4><a class="xref" href="grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_class">NodeNavigator</a></h4>
         <section><p>Navigates the syntax-tree of a <a class="xref" href="grammarkdown/sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a><!-- -->.</p>
 </section>
-        <h4><a class="xref" href="grammarkdown/nodesynchost.html#grammarkdown_NodeSyncHost_class">NodeSyncHost</a></h4>
-        <section></section>
         <h4><a class="xref" href="grammarkdown/nodevisitor.html#grammarkdown_NodeVisitor_class">NodeVisitor</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/nonterminal.html#grammarkdown_Nonterminal_class">Nonterminal</a></h4>
@@ -200,6 +194,8 @@ console.log(output);
         <h4><a class="xref" href="grammarkdown/nosymbolhereassertion.html#grammarkdown_NoSymbolHereAssertion_class">NoSymbolHereAssertion</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/nulldiagnosticmessages.html#grammarkdown_NullDiagnosticMessages_class">NullDiagnosticMessages</a></h4>
+        <section></section>
+        <h4><a class="xref" href="grammarkdown/numberliteral.html#grammarkdown_NumberLiteral_class">NumberLiteral</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/oneoflist.html#grammarkdown_OneOfList_class">OneOfList</a></h4>
         <section></section>
@@ -235,8 +231,6 @@ console.log(output);
         <section></section>
         <h4><a class="xref" href="grammarkdown/scanner.html#grammarkdown_Scanner_class">Scanner</a></h4>
         <section></section>
-        <h4><a class="xref" href="grammarkdown/singlefilehost.html#grammarkdown_SingleFileHost_class">SingleFileHost</a></h4>
-        <section></section>
         <h4><a class="xref" href="grammarkdown/singlelinecommenttrivia.html#grammarkdown_SingleLineCommentTrivia_class">SingleLineCommentTrivia</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/sourceelementbase.html#grammarkdown_SourceElementBase_class">SourceElementBase</a></h4>
@@ -248,9 +242,6 @@ console.log(output);
 </section>
         <h4><a class="xref" href="grammarkdown/stringliteral.html#grammarkdown_StringLiteral_class">StringLiteral</a></h4>
         <section></section>
-        <h4><a class="xref" href="grammarkdown/stringsynchost.html#grammarkdown_StringSyncHost_class">StringSyncHost</a></h4>
-        <section><p>An implementation of a <a class="xref" href="grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_class">CoreSyncHost</a> to simplify creating a host for a single file.</p>
-</section>
         <h4><a class="xref" href="grammarkdown/stringwriter.html#grammarkdown_StringWriter_class">StringWriter</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/symbol.html#grammarkdown_Symbol_class">Symbol</a></h4>
@@ -279,21 +270,11 @@ console.log(output);
         <h4><a class="xref" href="grammarkdown/coreasynchostoptions.html#grammarkdown_CoreAsyncHostOptions_interface">CoreAsyncHostOptions</a></h4>
         <section><p>Options used to configure a <a class="xref" href="grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_class">CoreAsyncHost</a><!-- -->.</p>
 </section>
-        <h4><a class="xref" href="grammarkdown/coresynchostoptions.html#grammarkdown_CoreSyncHostOptions_interface">CoreSyncHostOptions</a></h4>
-        <section><p>Options used to configure a <a class="xref" href="grammarkdown/coresynchost.html#grammarkdown_CoreSyncHost_class">CoreSyncHost</a><!-- -->.</p>
-</section>
         <h4><a class="xref" href="grammarkdown/diagnostic.html#grammarkdown_Diagnostic_interface">Diagnostic</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/diagnosticinfo.html#grammarkdown_DiagnosticInfo_interface">DiagnosticInfo</a></h4>
         <section></section>
-        <h4><a class="xref" href="grammarkdown/hostbaseoptions.html#grammarkdown_HostBaseOptions_interface">HostBaseOptions</a></h4>
-        <section><p>Options used to configure a <a class="xref" href="grammarkdown/hostbase.html#grammarkdown_HostBase_class">HostBase</a><!-- -->.</p>
-</section>
-        <h4><a class="xref" href="grammarkdown/hostoptions.html#grammarkdown_HostOptions_interface">HostOptions</a></h4>
-        <section></section>
         <h4><a class="xref" href="grammarkdown/nodeasynchostoptions.html#grammarkdown_NodeAsyncHostOptions_interface">NodeAsyncHostOptions</a></h4>
-        <section></section>
-        <h4><a class="xref" href="grammarkdown/nodesynchostoptions.html#grammarkdown_NodeSyncHostOptions_interface">NodeSyncHostOptions</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/position-interface.html#grammarkdown_Position_interface">Position</a></h4>
         <section></section>
@@ -1206,83 +1187,26 @@ console.log(output);
         <h5 class="decalaration">Declaration</h5>
         <div class="codewrapper">
           <pre><code class="lang-typeScript hljs">Diagnostics: {
-    Constant_expected: {
-        code: number;
-        message: string;
-    };
-    _0_expected: {
-        code: number;
-        message: string;
-    };
-    _0_or_1_: {
-        code: number;
-        message: string;
-    };
-    Unexpected_token_0_: {
-        code: number;
-        message: string;
-    };
-    Invalid_character: {
-        code: number;
-        message: string;
-    };
-    Unterminated_string_literal: {
-        code: number;
-        message: string;
-    };
-    Invalid_escape_sequence: {
-        code: number;
-        message: string;
-    };
-    Digit_expected: {
-        code: number;
-        message: string;
-    };
-    Production_expected: {
-        code: number;
-        message: string;
-    };
-    Unterminated_identifier_literal: {
-        code: number;
-        message: string;
-    };
-    Obsolete_0_: {
-        code: number;
-        message: string;
-        warning: true;
-    };
-    Cannot_find_name_0_: {
-        code: number;
-        message: string;
-    };
-    Duplicate_identifier_0_: {
-        code: number;
-        message: string;
-    };
-    Duplicate_terminal_0_: {
-        code: number;
-        message: string;
-    };
-    Argument_0_cannot_be_specified_multiple_times: {
-        code: number;
-        message: string;
-    };
-    Production_0_does_not_have_a_parameter_named_1_: {
-        code: number;
-        message: string;
-    };
-    Production_0_is_missing_parameter_1_All_definitions_of_production_0_must_specify_the_same_formal_parameters: {
-        code: number;
-        message: string;
-    };
-    There_is_no_argument_given_for_parameter_0_: {
-        code: number;
-        message: string;
-    };
-    Parameter_0_is_unused: {
-        code: number;
-        message: string;
-    };
+    _0_or_1_: Diagnostic;
+    Constant_expected: Diagnostic;
+    _0_expected: Diagnostic;
+    Unexpected_token_0_: Diagnostic;
+    Invalid_character: Diagnostic;
+    Unterminated_string_literal: Diagnostic;
+    Invalid_escape_sequence: Diagnostic;
+    Digit_expected: Diagnostic;
+    Production_expected: Diagnostic;
+    Unterminated_identifier_literal: Diagnostic;
+    Obsolete_0_: Diagnostic;
+    HTML_trivia_not_allowed_here: Diagnostic;
+    Cannot_find_name_0_: Diagnostic;
+    Duplicate_identifier_0_: Diagnostic;
+    Duplicate_terminal_0_: Diagnostic;
+    Argument_0_cannot_be_specified_multiple_times: Diagnostic;
+    Production_0_does_not_have_a_parameter_named_1_: Diagnostic;
+    Production_0_is_missing_parameter_1_All_definitions_of_production_0_must_specify_the_same_formal_parameters: Diagnostic;
+    There_is_no_argument_given_for_parameter_0_: Diagnostic;
+    Parameter_0_is_unused: Diagnostic;
 }</code></pre>
         </div>
   
@@ -1435,91 +1359,7 @@ console.log(output);
         <div class="markdown level1 conceptual"></div>
         <h5 class="decalaration">Declaration</h5>
         <div class="codewrapper">
-          <pre><code class="lang-typeScript hljs">export declare type KeywordKind = SyntaxKind.ButKeyword | SyntaxKind.DefineKeyword | SyntaxKind.EmptyKeyword | SyntaxKind.FalseKeyword | SyntaxKind.GoalKeyword | SyntaxKind.HereKeyword | SyntaxKind.ImportKeyword | SyntaxKind.LexicalKeyword | SyntaxKind.LookaheadKeyword | SyntaxKind.NoKeyword | SyntaxKind.NotKeyword | SyntaxKind.OfKeyword | SyntaxKind.OneKeyword | SyntaxKind.OrKeyword | SyntaxKind.ThroughKeyword | SyntaxKind.TrueKeyword;</code></pre>
-        </div>
-  
-  
-  
-  
-  
-  
-  
-  
-        <h4 id="grammarkdown_LegacyReadFileCallback_type" data-uid="grammarkdown!LegacyReadFileCallback:type">LegacyReadFileCallback</h4>
-        	<div class="alert is-warning">
-  		<h5>Warning</h5>
-  		<p>Deprecated</p>
-  			since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable`
-  	</div>
-        <div class="markdown level1 summary"><p>Asynchronously read a file from the underlying host.</p>
-</div>
-        <div class="markdown level1 conceptual"></div>
-        <h5 class="decalaration">Declaration</h5>
-        <div class="codewrapper">
-          <pre><code class="lang-typeScript hljs">export declare type LegacyReadFileCallback = (this: void, file: string, cancelToken?: CancellationToken) =&gt; PromiseLike&lt;string&gt; | string;</code></pre>
-        </div>
-  
-  
-  
-  
-  
-  
-  
-  
-        <h4 id="grammarkdown_LegacyReadFileSyncCallback_type" data-uid="grammarkdown!LegacyReadFileSyncCallback:type">LegacyReadFileSyncCallback</h4>
-        	<div class="alert is-warning">
-  		<h5>Warning</h5>
-  		<p>Deprecated</p>
-  			since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable`
-  	</div>
-        <div class="markdown level1 summary"><p>Synchronously read a file from the underlying host.</p>
-</div>
-        <div class="markdown level1 conceptual"></div>
-        <h5 class="decalaration">Declaration</h5>
-        <div class="codewrapper">
-          <pre><code class="lang-typeScript hljs">export declare type LegacyReadFileSyncCallback = (this: void, file: string, cancelToken?: CancellationToken) =&gt; string | undefined;</code></pre>
-        </div>
-  
-  
-  
-  
-  
-  
-  
-  
-        <h4 id="grammarkdown_LegacyWriteFileCallback_type" data-uid="grammarkdown!LegacyWriteFileCallback:type">LegacyWriteFileCallback</h4>
-        	<div class="alert is-warning">
-  		<h5>Warning</h5>
-  		<p>Deprecated</p>
-  			since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable`
-  	</div>
-        <div class="markdown level1 summary"><p>Asynchronously write a file to the host.</p>
-</div>
-        <div class="markdown level1 conceptual"></div>
-        <h5 class="decalaration">Declaration</h5>
-        <div class="codewrapper">
-          <pre><code class="lang-typeScript hljs">export declare type LegacyWriteFileCallback = (this: void, file: string, content: string, cancelToken?: CancellationToken) =&gt; PromiseLike&lt;void&gt; | void;</code></pre>
-        </div>
-  
-  
-  
-  
-  
-  
-  
-  
-        <h4 id="grammarkdown_LegacyWriteFileSyncCallback_type" data-uid="grammarkdown!LegacyWriteFileSyncCallback:type">LegacyWriteFileSyncCallback</h4>
-        	<div class="alert is-warning">
-  		<h5>Warning</h5>
-  		<p>Deprecated</p>
-  			since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable`
-  	</div>
-        <div class="markdown level1 summary"><p>Synchronously write a file to the host.</p>
-</div>
-        <div class="markdown level1 conceptual"></div>
-        <h5 class="decalaration">Declaration</h5>
-        <div class="codewrapper">
-          <pre><code class="lang-typeScript hljs">export declare type LegacyWriteFileSyncCallback = (this: void, file: string, content: string, cancelToken?: CancellationToken) =&gt; void;</code></pre>
+          <pre><code class="lang-typeScript hljs">export declare type KeywordKind = SyntaxKind.ButKeyword | SyntaxKind.DefaultKeyword | SyntaxKind.DefineKeyword | SyntaxKind.EmptyKeyword | SyntaxKind.FalseKeyword | SyntaxKind.GoalKeyword | SyntaxKind.HereKeyword | SyntaxKind.ImportKeyword | SyntaxKind.LexicalKeyword | SyntaxKind.LineKeyword | SyntaxKind.LookaheadKeyword | SyntaxKind.NoKeyword | SyntaxKind.NotKeyword | SyntaxKind.OfKeyword | SyntaxKind.OneKeyword | SyntaxKind.OrKeyword | SyntaxKind.ThroughKeyword | SyntaxKind.TrueKeyword;</code></pre>
         </div>
   
   
@@ -1579,7 +1419,7 @@ console.log(output);
         <div class="markdown level1 conceptual"></div>
         <h5 class="decalaration">Declaration</h5>
         <div class="codewrapper">
-          <pre><code class="lang-typeScript hljs">export declare type MetaElement = Import | Define;</code></pre>
+          <pre><code class="lang-typeScript hljs">export declare type MetaElement = Import | Define | Line;</code></pre>
         </div>
   
   
@@ -1594,7 +1434,7 @@ console.log(output);
         <div class="markdown level1 conceptual"></div>
         <h5 class="decalaration">Declaration</h5>
         <div class="codewrapper">
-          <pre><code class="lang-typeScript hljs">export declare type MetaElementKind = SyntaxKind.Import | SyntaxKind.Define;</code></pre>
+          <pre><code class="lang-typeScript hljs">export declare type MetaElementKind = SyntaxKind.Import | SyntaxKind.Define | SyntaxKind.Line;</code></pre>
         </div>
   
   
@@ -1800,22 +1640,6 @@ console.log(output);
   
   
   
-        <h4 id="grammarkdown_ReadFileSyncCallback_type" data-uid="grammarkdown!ReadFileSyncCallback:type">ReadFileSyncCallback</h4>
-              <div class="markdown level1 summary"><p>Synchronously read a file from the host.</p>
-</div>
-        <div class="markdown level1 conceptual"></div>
-        <h5 class="decalaration">Declaration</h5>
-        <div class="codewrapper">
-          <pre><code class="lang-typeScript hljs">export declare type ReadFileSyncCallback = (this: void, file: string, cancelToken?: CancelToken) =&gt; string | undefined;</code></pre>
-        </div>
-  
-  
-  
-  
-  
-  
-  
-  
         <h4 id="grammarkdown_SourceElement_type" data-uid="grammarkdown!SourceElement:type">SourceElement</h4>
               <div class="markdown level1 summary"></div>
         <div class="markdown level1 conceptual"></div>
@@ -1851,7 +1675,7 @@ console.log(output);
         <div class="markdown level1 conceptual"></div>
         <h5 class="decalaration">Declaration</h5>
         <div class="codewrapper">
-          <pre><code class="lang-typeScript hljs">export declare type TextContentKind = SyntaxKind.StringLiteral | SyntaxKind.Terminal | SyntaxKind.UnicodeCharacterLiteral | ProseFragmentLiteralKind | SyntaxKind.Identifier;</code></pre>
+          <pre><code class="lang-typeScript hljs">export declare type TextContentKind = SyntaxKind.StringLiteral | SyntaxKind.NumberLiteral | SyntaxKind.Terminal | SyntaxKind.UnicodeCharacterLiteral | ProseFragmentLiteralKind | SyntaxKind.Identifier;</code></pre>
         </div>
   
   
@@ -1920,22 +1744,6 @@ console.log(output);
   
   
   
-  
-  
-        <h4 id="grammarkdown_WriteFileSyncCallback_type" data-uid="grammarkdown!WriteFileSyncCallback:type">WriteFileSyncCallback</h4>
-              <div class="markdown level1 summary"><p>Synchronously write a file to the host.</p>
-</div>
-        <div class="markdown level1 conceptual"></div>
-        <h5 class="decalaration">Declaration</h5>
-        <div class="codewrapper">
-          <pre><code class="lang-typeScript hljs">export declare type WriteFileSyncCallback = (this: void, file: string, content: string, cancelToken?: CancelToken) =&gt; void;</code></pre>
-        </div>
-  
-  
-  
-  
-  
-  
     <h3 id="namespaces">Namespaces
   </h3>
         <h4><a class="xref" href="grammarkdown/position-namespace.html#grammarkdown_Position_namespace">Position</a></h4>
@@ -1952,7 +1760,7 @@ console.log(output);
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/rbuckton/grammarkdown/blob/master/src/docs/overwrite/grammarkdown.md/#L2" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/rbuckton/grammarkdown/blob/apiCleanup/src/docs/overwrite/grammarkdown.md/#L2" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

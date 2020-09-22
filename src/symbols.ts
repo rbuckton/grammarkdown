@@ -36,10 +36,7 @@ export class SymbolTable {
 
     public resolveSymbol(name: string, kind: SymbolKind): Symbol | undefined {
         if (name) {
-            const symbols = this.getSymbols(kind, /*create*/ false);
-            if (symbols) {
-                return symbols.get(name);
-            }
+            return this.getSymbols(kind, /*create*/ false)?.get(name);
         }
 
         return undefined;
@@ -49,7 +46,7 @@ export class SymbolTable {
     public copyFrom(other: SymbolTable) {
         if (other === this || !other.nameMap) return;
         for (const [kind, otherSymbols] of other.nameMap) {
-            if (!this.nameMap) this.nameMap = new Map<SymbolKind, Map<string, Symbol>>();
+            this.nameMap ??= new Map<SymbolKind, Map<string, Symbol>>();
             let symbols = this.nameMap.get(kind);
             if (!symbols) this.nameMap.set(kind, symbols = new Map<string, Symbol>());
             for (const [name, symbol] of otherSymbols) {
@@ -80,17 +77,8 @@ export class SymbolTable {
     private getSymbols(kind: SymbolKind, create: true): Map<string, Symbol>;
     private getSymbols(kind: SymbolKind, create: boolean): Map<string, Symbol> | undefined;
     private getSymbols(kind: SymbolKind, create: boolean): Map<string, Symbol> | undefined {
-        if (!this.nameMap) {
-            if (!create) {
-                return undefined;
-            }
-
-            this.nameMap = new Map<SymbolKind, Map<string, Symbol>>();
-        }
-
-        let symbols = this.nameMap.get(kind);
-        if (symbols) return symbols;
-        if (create) this.nameMap.set(kind, symbols = new Map<string, Symbol>());
+        let symbols = this.nameMap?.get(kind);
+        if (!symbols && create) (this.nameMap ??= new Map()).set(kind, symbols = new Map<string, Symbol>());
         return symbols;
     }
 }

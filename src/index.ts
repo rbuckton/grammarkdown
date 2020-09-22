@@ -8,36 +8,14 @@
 export { TextRange, Position, Range } from "./types";
 export {
     ReadFileCallback,
-    ReadFileSyncCallback,
     WriteFileCallback,
-    WriteFileSyncCallback,
-    LegacyReadFileCallback,
-    LegacyReadFileSyncCallback,
-    LegacyWriteFileCallback,
-    LegacyWriteFileSyncCallback,
-    HostBaseOptions,
-    HostBase,
-    CoreSyncHostOptions,
-    CoreSyncHost,
     CoreAsyncHostOptions,
     CoreAsyncHost,
-    StringSyncHost,
     StringAsyncHost,
-    /** @deprecated */ StringSyncHost as SyncSingleFileHost,
-    /** @deprecated */ StringAsyncHost as AsyncSingleFileHost,
 } from "./host";
 export {
-    NodeSyncHost,
-    NodeSyncHostOptions,
     NodeAsyncHost,
     NodeAsyncHostOptions,
-    /** @deprecated */ NodeSyncHost as SyncHost,
-    /** @deprecated */ NodeSyncHostOptions as SyncHostOptions,
-    /** @deprecated */ NodeAsyncHost as AsyncHost,
-    /** @deprecated */ NodeAsyncHostOptions as AsyncHostOptions,
-    /** @deprecated */ Host,
-    /** @deprecated */ HostOptions,
-    /** @deprecated */ SingleFileHost
 } from "./hosts/node";
 export * from "./diagnostics";
 export {
@@ -46,6 +24,9 @@ export {
     NewLineKind,
     getDefaultOptions,
 } from "./options";
+export type {
+    LineOffsetMap
+} from "./lineOffsetMap";
 export * from "./tokens";
 export * from "./nodes";
 export * from "./symbols";

@@ -5,12 +5,13 @@
  * in the root of this repository or package.
  */
 
+import { CancelToken } from "@esfx/async-canceltoken";
+import { Cancelable } from "@esfx/cancelable";
 import { concat, toCancelToken } from "./core";
 import { Range, TextRange } from "./types";
 import { Diagnostics, DiagnosticMessages, NullDiagnosticMessages, LineMap, formatList } from "./diagnostics";
 import { SyntaxKind, tokenToString, ProductionSeperatorKind, ArgumentOperatorKind, LookaheadOperatorKind, ParameterOperatorKind, TokenKind } from "./tokens";
 import { Scanner } from "./scanner";
-import { CancellationToken } from "prex";
 import {
     Node,
     Token,
@@ -56,15 +57,11 @@ import {
     Line,
     NumberLiteral
 } from "./nodes";
-import { CancelToken } from "@esfx/async-canceltoken";
-import { Cancelable } from "@esfx/cancelable";
 
 enum ParsingContext {
     SourceElements,
     Parameters,
-    BracketedParameters,
     Arguments,
-    BracketedArguments,
     RightHandSideListIndented,
     SymbolSet,
     OneOfList,
@@ -76,9 +73,7 @@ enum ParsingContext {
 interface ListTypes {
     [ParsingContext.SourceElements]: SourceElement;
     [ParsingContext.Parameters]: Parameter;
-    [ParsingContext.BracketedParameters]: Parameter;
     [ParsingContext.Arguments]: Argument;
-    [ParsingContext.BracketedArguments]: Argument;
     [ParsingContext.RightHandSideListIndented]: RightHandSide;
     [ParsingContext.SymbolSet]: SymbolSpan;
     [ParsingContext.OneOfList]: Terminal;
@@ -158,10 +153,7 @@ export class Parser {
     //     // with new positions
     // }
 
-    public parseSourceFile(filename: string, text: string, cancelable?: Cancelable): SourceFile;
-    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
-    public parseSourceFile(filename: string, text: string, cancelable?: CancellationToken | Cancelable): SourceFile;
-    public parseSourceFile(filename: string, text: string, cancelable?: CancellationToken | Cancelable): SourceFile {
+    public parseSourceFile(filename: string, text: string, cancelable?: Cancelable): SourceFile {
         const cancelToken = toCancelToken(cancelable);
         cancelToken?.throwIfSignaled();
         const savedImports = this.imports;
@@ -315,11 +307,9 @@ export class Parser {
                 return this.isStartOfSourceElement();
 
             case ParsingContext.Parameters:
-            case ParsingContext.BracketedParameters:
                 return this.isStartOfParameter();
 
             case ParsingContext.Arguments:
-            case ParsingContext.BracketedArguments:
                 return this.isStartOfArgument();
 
             case ParsingContext.RightHandSideListIndented:
@@ -350,11 +340,9 @@ export class Parser {
                 return this.parseSourceElement();
 
             case ParsingContext.Parameters:
-            case ParsingContext.BracketedParameters:
                 return this.parseParameter();
 
             case ParsingContext.Arguments:
-            case ParsingContext.BracketedArguments:
                 return this.parseArgument();
 
             case ParsingContext.RightHandSideListIndented:
@@ -387,15 +375,7 @@ export class Parser {
                 this.skipUntil(isAnyParametersRecoveryToken);
                 break;
 
-            case ParsingContext.BracketedParameters:
-                this.skipUntil(isAnyParametersRecoveryToken);
-                break;
-
             case ParsingContext.Arguments:
-                this.skipUntil(isAnyArgumentsRecoveryToken);
-                break;
-
-            case ParsingContext.BracketedArguments:
                 this.skipUntil(isAnyArgumentsRecoveryToken);
                 break;
 
@@ -433,11 +413,6 @@ export class Parser {
 
             case ParsingContext.Parameters:
             case ParsingContext.Arguments:
-                this.diagnostics.report(this.scanner.getTokenPos(), Diagnostics._0_expected, formatList([SyntaxKind.CommaToken, SyntaxKind.CloseParenToken]));
-                break;
-
-            case ParsingContext.BracketedParameters:
-            case ParsingContext.BracketedArguments:
                 this.diagnostics.report(this.scanner.getTokenPos(), Diagnostics._0_expected, formatList([SyntaxKind.CommaToken, SyntaxKind.CloseBracketToken]));
                 break;
 
@@ -466,10 +441,6 @@ export class Parser {
 
             case ParsingContext.Parameters:
             case ParsingContext.Arguments:
-                return this.token === SyntaxKind.CloseParenToken;
-
-            case ParsingContext.BracketedParameters:
-            case ParsingContext.BracketedArguments:
                 return this.token === SyntaxKind.CloseBracketToken;
 
             case ParsingContext.RightHandSideListIndented:
@@ -505,9 +476,7 @@ export class Parser {
     private tryMoveToNextElement(parsedPreviousElement: boolean) {
         switch (this.parsingContext) {
             case ParsingContext.Parameters:
-            case ParsingContext.BracketedParameters:
             case ParsingContext.Arguments:
-            case ParsingContext.BracketedArguments:
             case ParsingContext.SymbolSet:
                 return this.parseOptional(SyntaxKind.CommaToken);
 
@@ -602,7 +571,7 @@ export class Parser {
         return this.finishNode(node, fullStart);
     }
 
-    private parseParameterListTail(openToken: Token<SyntaxKind.OpenParenToken | SyntaxKind.OpenBracketToken>, parsingContext: ParsingContext.Parameters | ParsingContext.BracketedParameters, closeTokenKind: SyntaxKind.CloseParenToken | SyntaxKind.CloseBracketToken): ParameterList {
+    private parseParameterListTail(openToken: Token<SyntaxKind.OpenBracketToken>, parsingContext: ParsingContext.Parameters, closeTokenKind: SyntaxKind.CloseBracketToken): ParameterList {
         const elements = this.parseList(parsingContext);
         const closeToken = this.parseToken(closeTokenKind);
         const node = new ParameterList(openToken, elements, closeToken);
@@ -610,14 +579,9 @@ export class Parser {
     }
 
     private tryParseParameterList(): ParameterList | undefined {
-        const openParenToken = this.parseToken(SyntaxKind.OpenParenToken);
-        if (openParenToken) {
-            return this.parseParameterListTail(openParenToken, ParsingContext.Parameters, SyntaxKind.CloseParenToken);
-        }
-
         const openBracketToken = this.parseToken(SyntaxKind.OpenBracketToken);
         if (openBracketToken) {
-            return this.parseParameterListTail(openBracketToken, ParsingContext.BracketedParameters, SyntaxKind.CloseBracketToken);
+            return this.parseParameterListTail(openBracketToken, ParsingContext.Parameters, SyntaxKind.CloseBracketToken);
         }
 
         return undefined;
@@ -776,7 +740,7 @@ export class Parser {
         return this.finishNode(node, fullStart);
     }
 
-    private parseArgumentListTail(openToken: Token<SyntaxKind.OpenParenToken | SyntaxKind.OpenBracketToken>, parsingContext: ParsingContext.Arguments | ParsingContext.BracketedArguments, closeTokenKind: SyntaxKind.CloseParenToken | SyntaxKind.CloseBracketToken): ArgumentList {
+    private parseArgumentListTail(openToken: Token<SyntaxKind.OpenBracketToken>, parsingContext: ParsingContext.Arguments, closeTokenKind: SyntaxKind.CloseBracketToken): ArgumentList {
         const elements = this.parseList(parsingContext);
         const closeToken = this.parseToken(closeTokenKind);
         const node = new ArgumentList(openToken, elements, closeToken);
@@ -786,15 +750,10 @@ export class Parser {
 
     private tryParseArgumentList(): ArgumentList | undefined {
         if (this.scanner.hasPrecedingLineTerminator() && !this.scanner.isLineContinuation()) return undefined;
-        const openParenToken = this.parseToken(SyntaxKind.OpenParenToken);
-        if (openParenToken) {
-            return this.parseArgumentListTail(openParenToken, ParsingContext.Arguments, SyntaxKind.CloseParenToken);
-        }
-
         if (this.isStartOfArgumentList()) {
             const openBracketToken = this.parseToken(SyntaxKind.OpenBracketToken);
             if (openBracketToken) {
-                return this.parseArgumentListTail(openBracketToken, ParsingContext.BracketedArguments, SyntaxKind.CloseBracketToken);
+                return this.parseArgumentListTail(openBracketToken, ParsingContext.Arguments, SyntaxKind.CloseBracketToken);
             }
         }
 
@@ -994,7 +953,7 @@ export class Parser {
         if (this.token === SyntaxKind.OpenBracketToken &&
             this.lookahead(() => this.nextTokenIsParameterOperatorToken())) {
             const openBracketToken = this.parseToken(SyntaxKind.OpenBracketToken)!;
-            const elements = this.parseList(ParsingContext.BracketedArguments);
+            const elements = this.parseList(ParsingContext.Arguments);
             const closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
             const node = new Constraints(openBracketToken, elements, closeBracketToken);
             return this.finishNode(node, openBracketToken.pos);

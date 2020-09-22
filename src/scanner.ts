@@ -5,7 +5,6 @@
  * in the root of this repository or package.
  */
 
-import { CancellationToken } from "prex";
 import { CharacterCodes, SyntaxKind, stringToToken, isProseFragmentLiteralKind } from "./tokens";
 import { Diagnostics, DiagnosticMessages, NullDiagnosticMessages } from "./diagnostics";
 import { HtmlTrivia, HtmlCloseTagTrivia, HtmlOpenTagTrivia, SingleLineCommentTrivia, MultiLineCommentTrivia, CommentTrivia } from './nodes';
@@ -44,10 +43,7 @@ export class Scanner {
     private currentIndentLength: number = 0;
     private proseStartToken: SyntaxKind | undefined;
 
-    constructor(filename: string, text: string, diagnostics: DiagnosticMessages, cancelable?: Cancelable);
-    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
-    constructor(filename: string, text: string, diagnostics: DiagnosticMessages, cancelable?: CancellationToken | Cancelable);
-    constructor(filename: string, text: string, diagnostics: DiagnosticMessages, cancelable?: CancellationToken | Cancelable) {
+    constructor(filename: string, text: string, diagnostics: DiagnosticMessages, cancelable?: Cancelable) {
         this.filename = filename;
         this.text = text;
         this.len = text.length;

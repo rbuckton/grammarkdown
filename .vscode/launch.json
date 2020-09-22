@@ -2,6 +2,18 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Attach by Process ID",
+            "processId": "${command:PickProcess}",
+            "request": "attach",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node",
+            "outFiles": ["${workspaceFolder}/dist/**/*"],
+            "sourceMaps": true,
+            "smartStep": true,
+        },
+        {
             "name": "Launch Mocha",
             "type": "node",
             "request": "launch",
@@ -16,7 +28,7 @@
             "runtimeExecutable": null,
             "runtimeArgs": ["--nolazy"],
             "env": { "NODE_ENV": "development" },
-            "outFiles": ["${workspaceRoot}/dist"],
+            "outFiles": ["${workspaceFolder}/dist/**/*"],
             "sourceMaps": true,
             "smartStep": true,
             "preLaunchTask": "gulp: build"
@@ -37,7 +49,7 @@
             "runtimeExecutable": null,
             "runtimeArgs": ["--nolazy"],
             "env": { "NODE_ENV": "development" },
-            "outFiles": ["${workspaceRoot}/dist"],
+            "outFiles": ["${workspaceFolder}/dist/**/*"],
             "sourceMaps": true,
             "smartStep": true,
             "preLaunchTask": "gulp: build"

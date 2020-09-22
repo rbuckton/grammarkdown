@@ -7,7 +7,6 @@
 
 import * as path from "path";
 import * as performance from "../performance";
-import { CancellationToken } from "prex";
 import { Cancelable } from "@esfx/cancelable";
 import { CancelToken } from "@esfx/async-canceltoken";
 import { DiagnosticMessages } from "../diagnostics";
@@ -15,7 +14,7 @@ import { CompilerOptions, NewLineKind } from "../options";
 import { Resolver } from "../checker";
 import { StringWriter } from "../stringwriter";
 import { SyntaxKind, tokenToString } from "../tokens";
-import { toCancelToken, wrapCancelToken } from "../core";
+import { toCancelToken } from "../core";
 import { TextRange } from "../types";
 import {
     Node,
@@ -68,30 +67,14 @@ export class Emitter {
         this.options = options;
     }
 
-    public emit(node: SourceFile, resolver: Resolver, diagnostics: DiagnosticMessages, writeFile: (file: string, text: string, cancelToken?: CancelToken) => void | PromiseLike<void>, cancelable?: Cancelable): Promise<void>;
-    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
-    public emit(node: SourceFile, resolver: Resolver, diagnostics: DiagnosticMessages, writeFile: (file: string, text: string, cancelToken?: CancellationToken & CancelToken) => void | PromiseLike<void>, cancelable?: CancellationToken | Cancelable): Promise<void>;
-    public emit(node: SourceFile, resolver: Resolver, diagnostics: DiagnosticMessages, writeFile: (file: string, text: string, cancelToken?: CancellationToken & CancelToken) => void | PromiseLike<void>, cancelable?: CancellationToken | Cancelable) {
+    public emit(node: SourceFile, resolver: Resolver, diagnostics: DiagnosticMessages, writeFile: (file: string, text: string, cancelToken?: CancelToken) => void | PromiseLike<void>, cancelable?: Cancelable): Promise<void> {
         const cancelToken = toCancelToken(cancelable);
         const file = this.getOutputFilename(node);
         const text = this.emitString(node, resolver, diagnostics, cancelToken);
-        return Promise.resolve(writeFile(file, text, wrapCancelToken(cancelToken)));
+        return Promise.resolve(writeFile(file, text, cancelToken));
     }
 
-    public emitSync(node: SourceFile, resolver: Resolver, diagnostics: DiagnosticMessages, writeFile: (file: string, text: string, cancelToken?: CancelToken) => void, cancelable?: Cancelable): void;
-    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
-    public emitSync(node: SourceFile, resolver: Resolver, diagnostics: DiagnosticMessages, writeFile: (file: string, text: string, cancelToken?: CancellationToken & CancelToken) => void, cancelable?: CancellationToken | Cancelable): void;
-    public emitSync(node: SourceFile, resolver: Resolver, diagnostics: DiagnosticMessages, writeFile: (file: string, text: string, cancelToken?: CancellationToken & CancelToken) => void, cancelable?: CancellationToken | Cancelable) {
-        const cancelToken = toCancelToken(cancelable);
-        const file = this.getOutputFilename(node);
-        const text = this.emitString(node, resolver, diagnostics, cancelToken);
-        writeFile(file, text, wrapCancelToken(cancelToken));
-    }
-
-    public emitString(node: SourceFile, resolver: Resolver, diagnostics: DiagnosticMessages, cancelable?: Cancelable): string;
-    /** @deprecated since 2.1.0 - `prex.CancellationToken` may no longer be accepted in future releases. Please use a token that implements `@esfx/cancelable.Cancelable` */
-    public emitString(node: SourceFile, resolver: Resolver, diagnostics: DiagnosticMessages, cancelable?: CancellationToken | Cancelable): string;
-    public emitString(node: SourceFile, resolver: Resolver, diagnostics: DiagnosticMessages, cancelable?: CancellationToken | Cancelable) {
+    public emitString(node: SourceFile, resolver: Resolver, diagnostics: DiagnosticMessages, cancelable?: Cancelable): string {
         const cancelToken = toCancelToken(cancelable);
         cancelToken?.throwIfSignaled();
 

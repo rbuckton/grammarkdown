@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class ArgumentList
+    <title>Class Line
    | Grammarkdown API Reference </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class ArgumentList
+    <meta name="title" content="Class Line
    | Grammarkdown API Reference ">
     <meta name="generator" content="docfx 2.52.0.0">
     
@@ -78,31 +78,31 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="grammarkdown!ArgumentList:class">
+            <article class="content wrap" id="_content" data-uid="grammarkdown!Line:class">
   
   
-  <h1 id="grammarkdown_ArgumentList_class" data-uid="grammarkdown!ArgumentList:class">Class ArgumentList
+  <h1 id="grammarkdown_Line_class" data-uid="grammarkdown!Line:class">Class Line
   </h1>
   <h6><strong>Package</strong>: <a class="xref" href="../grammarkdown.html">grammarkdown</a></h6>
   <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
-      <div class="level0"><a class="xref" href="node.html#grammarkdown_Node_class">Node</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_ArgumentList_member">SyntaxKind.ArgumentList</a>&gt; </div>
-      <div class="level1"><span class="xref">ArgumentList</span></div>
+      <div class="level0"><a class="xref" href="metaelementbase.html#grammarkdown_MetaElementBase_class">MetaElementBase</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_Line_member">SyntaxKind.Line</a>&gt; </div>
+      <div class="level1"><span class="xref">Line</span></div>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   
   
-  <h4 id="grammarkdown_ArgumentList_constructor_1_" data-uid="grammarkdown!ArgumentList:constructor(1)">constructor(openParenToken, elements, closeParenToken)</h4>
-  <div class="markdown level1 summary"><p>Constructs a new instance of the <code>ArgumentList</code> class</p>
+  <h4 id="grammarkdown_Line_constructor_1_" data-uid="grammarkdown!Line:constructor(1)">constructor(atToken, lineKeyword, number, path)</h4>
+  <div class="markdown level1 summary"><p>Constructs a new instance of the <code>Line</code> class</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">constructor(openParenToken: Token&lt;SyntaxKind.OpenBracketToken&gt;, elements: ReadonlyArray&lt;Argument&gt; | undefined, closeParenToken: Token&lt;SyntaxKind.CloseBracketToken&gt; | undefined);</code></pre>
+    <pre><code class="lang-typeScript hljs">constructor(atToken: Token&lt;SyntaxKind.AtToken&gt;, lineKeyword: Token&lt;SyntaxKind.LineKeyword&gt;, number: NumberLiteral | Token&lt;SyntaxKind.DefaultKeyword&gt; | undefined, path: StringLiteral | undefined);</code></pre>
   </div>
   
   
@@ -110,8 +110,8 @@
   <div>
     <div class="property">
       <dl class="parameter">
-        <dt>openParenToken</dt>
-        <dd><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_OpenBracketToken_member">SyntaxKind.OpenBracketToken</a>&gt;</dd>
+        <dt>atToken</dt>
+        <dd><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_AtToken_member">SyntaxKind.AtToken</a>&gt;</dd>
       </dl>
       <p>
         
@@ -120,8 +120,8 @@
     </div>
     <div class="property">
       <dl class="parameter">
-        <dt>elements</dt>
-        <dd><span class="xref">ReadonlyArray</span>&lt;<a class="xref" href="argument.html#grammarkdown_Argument_class">Argument</a>&gt; | undefined</dd>
+        <dt>lineKeyword</dt>
+        <dd><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_LineKeyword_member">SyntaxKind.LineKeyword</a>&gt;</dd>
       </dl>
       <p>
         
@@ -130,8 +130,18 @@
     </div>
     <div class="property">
       <dl class="parameter">
-        <dt>closeParenToken</dt>
-        <dd><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_CloseBracketToken_member">SyntaxKind.CloseBracketToken</a>&gt; | undefined</dd>
+        <dt>number</dt>
+        <dd><a class="xref" href="numberliteral.html#grammarkdown_NumberLiteral_class">NumberLiteral</a> | <a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_DefaultKeyword_member">SyntaxKind.DefaultKeyword</a>&gt; | undefined</dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>path</dt>
+        <dd><a class="xref" href="stringliteral.html#grammarkdown_StringLiteral_class">StringLiteral</a> | undefined</dd>
       </dl>
       <p>
         
@@ -150,85 +160,7 @@
   </h3>
   
   
-  <h4 id="grammarkdown_ArgumentList_closeBracketToken_member" data-uid="grammarkdown!ArgumentList#closeBracketToken:member">closeBracketToken</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  
-  <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">readonly closeBracketToken: Token&lt;SyntaxKind.CloseBracketToken&gt; | undefined;</code></pre>
-  </div>
-  
-  
-  
-  
-  
-  <h5 class="propertyValue">Property Value</h5>
-  <div>
-  <div class="property">
-    <div><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_CloseBracketToken_member">SyntaxKind.CloseBracketToken</a>&gt; | undefined</div>
-    <p>
-  </div>
-  </div>
-  
-  
-  
-  
-  
-  
-  <h4 id="grammarkdown_ArgumentList_elements_member" data-uid="grammarkdown!ArgumentList#elements:member">elements</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  
-  <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">readonly elements: ReadonlyArray&lt;Argument&gt; | undefined;</code></pre>
-  </div>
-  
-  
-  
-  
-  
-  <h5 class="propertyValue">Property Value</h5>
-  <div>
-  <div class="property">
-    <div><span class="xref">ReadonlyArray</span>&lt;<a class="xref" href="argument.html#grammarkdown_Argument_class">Argument</a>&gt; | undefined</div>
-    <p>
-  </div>
-  </div>
-  
-  
-  
-  
-  
-  
-  <h4 id="grammarkdown_ArgumentList_firstChild_member" data-uid="grammarkdown!ArgumentList#firstChild:member">firstChild</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  
-  <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">get firstChild(): Node | undefined;</code></pre>
-  </div>
-  
-  
-  
-  
-  
-  <h5 class="propertyValue">Property Value</h5>
-  <div>
-  <div class="property">
-    <div><a class="xref" href="node.html#grammarkdown_Node_class">Node</a> | undefined</div>
-    <p>
-  </div>
-  </div>
-  
-  
-  
-  
-  
-  
-  <h4 id="grammarkdown_ArgumentList_lastChild_member" data-uid="grammarkdown!ArgumentList#lastChild:member">lastChild</h4>
+  <h4 id="grammarkdown_Line_lastChild_member" data-uid="grammarkdown!Line#lastChild:member">lastChild</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -254,13 +186,13 @@
   
   
   
-  <h4 id="grammarkdown_ArgumentList_openBracketToken_member" data-uid="grammarkdown!ArgumentList#openBracketToken:member">openBracketToken</h4>
+  <h4 id="grammarkdown_Line_lineKeyword_member" data-uid="grammarkdown!Line#lineKeyword:member">lineKeyword</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">readonly openBracketToken: Token&lt;SyntaxKind.OpenBracketToken&gt;;</code></pre>
+    <pre><code class="lang-typeScript hljs">readonly lineKeyword: Token&lt;SyntaxKind.LineKeyword&gt;;</code></pre>
   </div>
   
   
@@ -270,7 +202,59 @@
   <h5 class="propertyValue">Property Value</h5>
   <div>
   <div class="property">
-    <div><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_OpenBracketToken_member">SyntaxKind.OpenBracketToken</a>&gt;</div>
+    <div><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_LineKeyword_member">SyntaxKind.LineKeyword</a>&gt;</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_Line_number_member" data-uid="grammarkdown!Line#number:member">number</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">readonly number: NumberLiteral | Token&lt;SyntaxKind.DefaultKeyword&gt; | undefined;</code></pre>
+  </div>
+  
+  
+  
+  
+  
+  <h5 class="propertyValue">Property Value</h5>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="numberliteral.html#grammarkdown_NumberLiteral_class">NumberLiteral</a> | <a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_DefaultKeyword_member">SyntaxKind.DefaultKeyword</a>&gt; | undefined</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_Line_path_member" data-uid="grammarkdown!Line#path:member">path</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">readonly path: StringLiteral | undefined;</code></pre>
+  </div>
+  
+  
+  
+  
+  
+  <h5 class="propertyValue">Property Value</h5>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="stringliteral.html#grammarkdown_StringLiteral_class">StringLiteral</a> | undefined</div>
     <p>
   </div>
   </div>
@@ -282,7 +266,7 @@
   </h3>
   
   
-  <h4 id="grammarkdown_ArgumentList_children_member_1_" data-uid="grammarkdown!ArgumentList#children:member(1)">children()</h4>
+  <h4 id="grammarkdown_Line_children_member_1_" data-uid="grammarkdown!Line#children:member(1)">children()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -308,7 +292,7 @@
   
   
   
-  <h4 id="grammarkdown_ArgumentList_forEachChild_member_1_" data-uid="grammarkdown!ArgumentList#forEachChild:member(1)">forEachChild(cbNode)</h4>
+  <h4 id="grammarkdown_Line_forEachChild_member_1_" data-uid="grammarkdown!Line#forEachChild:member(1)">forEachChild(cbNode)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -348,45 +332,6 @@
   <div>
   <div class="property">
     <div><span class="xref">T | undefined</span></div>
-    <p>
-  </div>
-  </div>
-  
-  
-  
-  
-  
-  
-  
-  
-  <h4 id="grammarkdown_ArgumentList_update_member_1_" data-uid="grammarkdown!ArgumentList#update:member(1)">update(elements)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  
-  <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">update(elements: ReadonlyArray&lt;Argument&gt; | undefined): ArgumentList;</code></pre>
-  </div>
-  
-  
-  <h5 class="parameters">Parameters</h5>
-  <div>
-    <div class="property">
-      <dl class="parameter">
-        <dt>elements</dt>
-        <dd><span class="xref">ReadonlyArray</span>&lt;<a class="xref" href="argument.html#grammarkdown_Argument_class">Argument</a>&gt; | undefined</dd>
-      </dl>
-      <p>
-        
-        
-      </p>
-    </div>
-  </div>
-  
-  <h5 class="returns">Returns</h5>
-  <div>
-  <div class="property">
-    <div><a class="xref" href="argumentlist.html#grammarkdown_ArgumentList_class">ArgumentList</a></div>
     <p>
   </div>
   </div>

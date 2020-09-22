@@ -7,8 +7,8 @@
 
 import { readdirSync, statSync, existsSync, readFileSync } from "fs";
 import { resolve, extname, posix } from "path";
-import { Host, HostOptions } from "../hosts/node";
 import { Cancelable } from "@esfx/cancelable";
+import { NodeAsyncHost, NodeAsyncHostOptions } from "../hosts/node";
 
 let grammarFiles: TestFile[];
 
@@ -20,10 +20,10 @@ export interface TestFile {
     readonly options: Readonly<Record<string, string>>;
 }
 
-export class TestFileHost extends Host {
+export class TestFileHost extends NodeAsyncHost {
     private file: TestFile;
 
-    constructor(file: TestFile, options?: HostOptions) {
+    constructor(file: TestFile, options?: NodeAsyncHostOptions) {
         super(options);
         this.file = file;
     }
@@ -43,10 +43,6 @@ export class TestFileHost extends Host {
 
     async readFile(file: string, cancelable?: Cancelable) {
         return this.isTestFile(file) ? this.file.content : super.readFile(file, cancelable);
-    }
-
-    readFileSync(file: string, cancelable?: Cancelable) {
-        return this.isTestFile(file) ? this.file.content : super.readFileSync(file, cancelable);
     }
 }
 

@@ -1142,35 +1142,35 @@ export class Argument extends Node<SyntaxKind.Argument> {
 
 /** {@docCategory Nodes} */
 export class ArgumentList extends Node<SyntaxKind.ArgumentList> {
-    public readonly openParenToken: Token<SyntaxKind.OpenParenToken | SyntaxKind.OpenBracketToken>;
+    public readonly openBracketToken: Token<SyntaxKind.OpenBracketToken>;
     public readonly elements: ReadonlyArray<Argument> | undefined;
-    public readonly closeParenToken: Token<SyntaxKind.CloseParenToken | SyntaxKind.CloseBracketToken> | undefined;
+    public readonly closeBracketToken: Token<SyntaxKind.CloseBracketToken> | undefined;
 
-    constructor(openParenToken: Token<SyntaxKind.OpenParenToken | SyntaxKind.OpenBracketToken>, elements: ReadonlyArray<Argument> | undefined, closeParenToken: Token<SyntaxKind.CloseParenToken | SyntaxKind.CloseBracketToken> | undefined) {
+    constructor(openParenToken: Token<SyntaxKind.OpenBracketToken>, elements: ReadonlyArray<Argument> | undefined, closeParenToken: Token<SyntaxKind.CloseBracketToken> | undefined) {
         super(SyntaxKind.ArgumentList);
-        this.openParenToken = openParenToken;
+        this.openBracketToken = openParenToken;
         this.elements = elements;
-        this.closeParenToken = closeParenToken;
+        this.closeBracketToken = closeParenToken;
     }
 
-    get firstChild(): Node | undefined { return this.openParenToken; }
-    get lastChild(): Node | undefined { return this.closeParenToken || last(this.elements) || this.openParenToken; }
+    get firstChild(): Node | undefined { return this.openBracketToken; }
+    get lastChild(): Node | undefined { return this.closeBracketToken || last(this.elements) || this.openBracketToken; }
 
     public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
-        return cbNode(this.openParenToken)
+        return cbNode(this.openBracketToken)
             || (this.elements && forEach(this.elements, cbNode))
-            || (this.closeParenToken && cbNode(this.closeParenToken));
+            || (this.closeBracketToken && cbNode(this.closeBracketToken));
     }
 
     public * children(): IterableIterator<Node> {
-        yield this.openParenToken;
+        yield this.openBracketToken;
         if (this.elements) yield* this.elements;
-        if (this.closeParenToken) yield this.closeParenToken;
+        if (this.closeBracketToken) yield this.closeBracketToken;
     }
 
     public update(elements: ReadonlyArray<Argument> | undefined) {
         return elements !== this.elements
-            ? setTextRange(new ArgumentList(this.openParenToken, elements, this.closeParenToken), this.pos, this.end)
+            ? setTextRange(new ArgumentList(this.openBracketToken, elements, this.closeBracketToken), this.pos, this.end)
             : this;
     }
 
@@ -1187,9 +1187,9 @@ export class ArgumentList extends Node<SyntaxKind.ArgumentList> {
 
     /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
         switch (offset) {
-            case 0: return this.openParenToken;
+            case 0: return this.openBracketToken;
             case 1: return this.elements;
-            case 2: return this.closeParenToken;
+            case 2: return this.closeBracketToken;
         }
         return undefined;
     }
@@ -1474,35 +1474,35 @@ export class Parameter extends Node<SyntaxKind.Parameter> {
 
 /** {@docCategory Nodes} */
 export class ParameterList extends Node<SyntaxKind.ParameterList> {
-    public readonly openParenToken: Token<SyntaxKind.OpenParenToken | SyntaxKind.OpenBracketToken>;
+    public readonly openBracketToken: Token<SyntaxKind.OpenBracketToken>;
     public readonly elements: ReadonlyArray<Parameter> | undefined;
-    public readonly closeParenToken: Token<SyntaxKind.CloseParenToken | SyntaxKind.CloseBracketToken> | undefined;
+    public readonly closeBracketToken: Token<SyntaxKind.CloseBracketToken> | undefined;
 
-    constructor(openParenToken: Token<SyntaxKind.OpenParenToken | SyntaxKind.OpenBracketToken>, elements: ReadonlyArray<Parameter> | undefined, closeParenToken: Token<SyntaxKind.CloseParenToken | SyntaxKind.CloseBracketToken> | undefined) {
+    constructor(openParenToken: Token<SyntaxKind.OpenBracketToken>, elements: ReadonlyArray<Parameter> | undefined, closeParenToken: Token<SyntaxKind.CloseBracketToken> | undefined) {
         super(SyntaxKind.ParameterList);
-        this.openParenToken = openParenToken;
+        this.openBracketToken = openParenToken;
         this.elements = elements;
-        this.closeParenToken = closeParenToken;
+        this.closeBracketToken = closeParenToken;
     }
 
-    get firstChild(): Node | undefined { return this.openParenToken; }
-    get lastChild(): Node | undefined { return this.closeParenToken || last(this.elements) || this.openParenToken; }
+    get firstChild(): Node | undefined { return this.openBracketToken; }
+    get lastChild(): Node | undefined { return this.closeBracketToken || last(this.elements) || this.openBracketToken; }
 
     public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
-        return cbNode(this.openParenToken)
+        return cbNode(this.openBracketToken)
             || (this.elements && forEach(this.elements, cbNode))
-            || (this.closeParenToken && cbNode(this.closeParenToken));
+            || (this.closeBracketToken && cbNode(this.closeBracketToken));
     }
 
     public * children(): IterableIterator<Node> {
-        yield this.openParenToken;
+        yield this.openBracketToken;
         if (this.elements) yield* this.elements;
-        if (this.closeParenToken) yield this.closeParenToken;
+        if (this.closeBracketToken) yield this.closeBracketToken;
     }
 
     public update(elements: ReadonlyArray<Parameter> | undefined) {
         return elements !== this.elements
-            ? setTextRange(new ParameterList(this.openParenToken, elements, this.closeParenToken), this.pos, this.end)
+            ? setTextRange(new ParameterList(this.openBracketToken, elements, this.closeBracketToken), this.pos, this.end)
             : this;
     }
 
@@ -1519,9 +1519,9 @@ export class ParameterList extends Node<SyntaxKind.ParameterList> {
 
     /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
         switch (offset) {
-            case 0: return this.openParenToken;
+            case 0: return this.openBracketToken;
             case 1: return this.elements;
-            case 2: return this.closeParenToken;
+            case 2: return this.closeBracketToken;
         }
         return undefined;
     }

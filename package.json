@@ -1,6 +1,6 @@
 {
   "name": "grammarkdown",
-  "version": "2.2.7",
+  "version": "3.0.0-beta.0",
   "description": "Markdown-like DSL for defining syntactic grammars for programming languages.",
   "license": "MIT",
   "keywords": [
@@ -36,13 +36,13 @@
     "prepare": "gulp test"
   },
   "devDependencies": {
-    "@microsoft/api-documenter": "^7.7.18",
-    "@microsoft/api-extractor": "^7.7.13",
-    "@microsoft/api-extractor-model": "^7.7.11",
-    "@microsoft/tsdoc": "^0.12.19",
+    "@microsoft/api-documenter": "^7.8.55",
+    "@microsoft/api-extractor": "^7.9.21",
+    "@microsoft/api-extractor-model": "^7.9.6",
+    "@microsoft/tsdoc": "^0.12.21",
     "@types/chai": "^4.2.11",
     "@types/mocha": "^7.0.2",
-    "@types/node": "^13.11.1",
+    "@types/node": "^14.11.1",
     "@types/source-map-support": "^0.5.1",
     "ajv": "^6.12.5",
     "chai": "^4.2.0",
@@ -58,12 +58,11 @@
     "jsonc-parser": "^2.3.1",
     "mocha": "^7.1.1",
     "source-map-support": "^0.5.16",
-    "typescript": "^4.0.3",
+    "typescript": "^4.1.0-beta",
     "yargs": "^15.3.1"
   },
   "dependencies": {
     "@esfx/async-canceltoken": "^1.0.0-pre.13",
-    "@esfx/cancelable": "^1.0.0-pre.13",
-    "prex": "^0.4.7"
+    "@esfx/cancelable": "^1.0.0-pre.13"
   }
 }

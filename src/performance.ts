@@ -3,49 +3,179 @@
  *
  * This file is licensed to you under the terms of the MIT License, found in the LICENSE file
  * in the root of this repository or package.
+ *
+ * THIRD PARTY LICENSE NOTICE:
+ *
+ * The following is derived from the implementation of `ts.performance` in TypeScript.
+ *
+ * TypeScript is licensed under the Apache 2.0 License, a copy of which can be found here:
+ *
+ *   https://github.com/microsoft/TypeScript/blob/b1323feb7b69acde6916889ade5415865abe9bd2/LICENSE.txt
+ *
  */
 
-const timestamp = Date.now ? () => Date.now() : () => +(new Date());
-const counts = new Map<string, number>();
-const marks = new Map<string, number>();
-const measures = new Map<string, number>();
+interface PerformanceHooks {
+    performance: Performance;
+    PerformanceObserver: PerformanceObserverConstructor;
+}
 
-let performanceStart: number;
+interface Performance {
+    readonly timeOrigin: number;
+    clearMarks(name?: string): void;
+    clearMeasures?(name?: string): void;
+    mark(name: string): void;
+    measure(name: string, startMark?: string, endMark?: string): void;
+    now(): number;
+}
+
+interface PerformanceEntry {
+    name: string;
+    entryType: string;
+    startTime: number;
+    duration: number;
+}
+
+interface PerformanceObserverEntryList {
+    getEntries(): PerformanceEntryList;
+    getEntriesByName(name: string, type?: string): PerformanceEntryList;
+    getEntriesByType(type: string): PerformanceEntryList;
+}
+
+interface PerformanceObserver {
+    disconnect(): void;
+    observe(options: { entryTypes: readonly string[] }): void;
+}
+
+type PerformanceObserverConstructor = new (callback: (list: PerformanceObserverEntryList, observer: PerformanceObserver) => void) => PerformanceObserver;
+type PerformanceEntryList = PerformanceEntry[];
+
+declare const performance: Performance | undefined;
+declare const PerformanceObserver: PerformanceObserverConstructor | undefined;
+
+function hasRequiredAPI(performance: Performance | undefined, PerformanceObserver: PerformanceObserverConstructor | undefined) {
+    return typeof performance === "object" &&
+        typeof performance.timeOrigin === "number" &&
+        typeof performance.clearMarks === "function" &&
+        (typeof performance.clearMeasures === "function" || performance.clearMeasures === undefined) &&
+        typeof performance.mark === "function" &&
+        typeof performance.measure === "function" &&
+        typeof performance.now === "function" &&
+        typeof PerformanceObserver === "function";
+}
+
+function tryGetWebPerformanceHooks(): PerformanceHooks | undefined {
+    if (typeof performance === "object" &&
+        typeof PerformanceObserver === "function" &&
+        hasRequiredAPI(performance, PerformanceObserver)) {
+        return {
+            performance,
+            PerformanceObserver
+        };
+    }
+}
+
+function tryGetNodePerformanceHooks(): PerformanceHooks | undefined {
+    if (typeof module === "object" && typeof require === "function" && typeof process === "object") {
+        try {
+            const { performance, PerformanceObserver } = require("perf_hooks") as typeof import("perf_hooks");
+            if (hasRequiredAPI(performance, PerformanceObserver)) {
+                // there is a bug in Node's performance.measure prior to 12.16.3/13.3.0
+                const match = /^(\d+)\.(\d+)\.(\d+)$/.exec(process.versions.node);
+                const major = match ? parseInt(match[1], 10) : 0;
+                const minor = match ? parseInt(match[2], 10) : 0;
+                const patch = match ? parseInt(match[3], 10) : 0;
+                if (major < 12 ||
+                    major === 12 && (minor < 16 || minor === 16 && patch < 3) ||
+                    major === 13 && (minor < 13)) {
+                    return {
+                        performance: {
+                            get timeOrigin() { return performance.timeOrigin; },
+                            now() { return performance.now(); },
+                            clearMarks(name?) { return performance.clearMarks(name); },
+                            mark(name) { return performance.mark(name); },
+                            measure(name, start = "nodeStart", end?) {
+                                if (end === undefined) {
+                                    end = "__performance.measure-fix__";
+                                    performance.mark(end);
+                                }
+                                performance.measure(name, start, end);
+                                if (end = "__performance.measure-fix__") {
+                                    performance.clearMarks("__performance.measure-fix__");
+                                }
+                            }
+                        },
+                        PerformanceObserver
+                    };
+                }
+                return {
+                    performance,
+                    PerformanceObserver
+                }
+            }
+        }
+        catch {
+            // ignore errors
+        }
+    }
+}
+
+const nativePerformanceHooks = tryGetWebPerformanceHooks() || tryGetNodePerformanceHooks();
+const nativePerformance = nativePerformanceHooks?.performance;
+let observer: PerformanceObserver | undefined;
+let entryList: PerformanceObserverEntryList | undefined;
 
 reset();
 
 export function mark(markName: string) {
-    const value = counts.get(markName) || 0;
-    counts.set(markName, value + 1);
-    marks.set(markName, timestamp());
+    nativePerformance?.mark(markName);
 }
 
 export function measure(measureName: string, startMark?: string, endMark?: string) {
-    const end = endMark && marks.get(endMark) || timestamp();
-    const start = startMark && marks.get(startMark) || performanceStart;
-    const value = measures.get(measureName) || 0;
-    measures.set(measureName, value + (end > start ? end - start : start - end));
+    if (startMark !== undefined && endMark !== undefined) {
+        nativePerformance?.measure(measureName, startMark, endMark);
+    }
+    else if (startMark !== undefined) {
+        nativePerformance?.measure(measureName, startMark);
+    }
+    else {
+        nativePerformance?.measure(measureName);
+    }
 }
 
 export function getMark(markName: string) {
-    return marks.get(markName) || 0;
-}
-
-export function getMarks() {
-    return new Map<string, number>(counts) as ReadonlyMap<string, number>;
+    const entries = entryList?.getEntriesByName(markName, "mark");
+    return entries?.length ? entries[entries.length - 1].startTime : 0;
 }
 
 export function getDuration(measureName: string) {
-    return measures.get(measureName) || 0;
+    let duration = 0;
+    const entries = entryList?.getEntriesByName(measureName, "measure");
+    if (entries) {
+        for (const entry of entries) {
+            duration += entry.duration;
+        }
+    }
+    return duration;
 }
 
 export function getMeasures() {
-    return new Map<string, number>(measures) as ReadonlyMap<string, number>;
+    const measures = new Map<string, number>();
+    const entries = entryList?.getEntriesByType("measure");
+    if (entries) {
+        for (const entry of entries) {
+            const value = measures.get(entry.name) || 0;
+            measures.set(entry.name, value + entry.duration);
+        }
+    }
+    return measures as ReadonlyMap<string, number>;
 }
 
 export function reset() {
-    counts.clear();
-    marks.clear();
-    measures.clear();
-    performanceStart = timestamp();
+    nativePerformance?.clearMarks();
+    nativePerformance?.clearMeasures?.();
+    observer?.disconnect();
+    if (nativePerformanceHooks) {
+        observer ??= new nativePerformanceHooks.PerformanceObserver(list => entryList = list);
+        observer.observe({ entryTypes: ["mark", "measure"] });
+    }
 }

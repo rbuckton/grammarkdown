@@ -1,4 +1,0 @@
-[submodule "gh-pages"]
-	path = pages
-	url = https://github.com/rbuckton/grammarkdown.git
-	branch = gh-pages

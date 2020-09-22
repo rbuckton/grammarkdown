@@ -62,7 +62,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown.html",
-          "hash": "My7R9PeFMyRLX/WHQCDO1Q=="
+          "hash": "8WUbQComVfwsdNqoEPEVFA=="
         }
       },
       "is_incremental": false,
@@ -86,7 +86,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/argumentlist.html",
-          "hash": "OMS7njcK7PCwDzLcJcfeOw=="
+          "hash": "bFkmSoWaGQKg1vejPxl5Lw=="
         }
       },
       "is_incremental": false,
@@ -110,7 +110,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/binder.html",
-          "hash": "8TVUVRqHQJSG8pj4bLsFeQ=="
+          "hash": "pcbfURlw92mnAymkFFTr0w=="
         }
       },
       "is_incremental": false,
@@ -122,7 +122,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/bindingtable.html",
-          "hash": "l31p/O+PFQjVB3Od9ZsCkQ=="
+          "hash": "Sn51EmDi046Bt8rsSpmzuQ=="
         }
       },
       "is_incremental": false,
@@ -158,7 +158,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/checker.html",
-          "hash": "0kxWbTjFkTVWDcp8ntiYFA=="
+          "hash": "klwacQZJJzcAR7bJ32e67w=="
         }
       },
       "is_incremental": false,
@@ -182,7 +182,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/compileroptions.html",
-          "hash": "smhTMT7XoKVwdUepLK75yQ=="
+          "hash": "Z4Q1Ox+kawIe5SCSjaFHYA=="
         }
       },
       "is_incremental": false,
@@ -206,7 +206,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/coreasynchost.html",
-          "hash": "wuyw4KYYtoplEeHXBerBAQ=="
+          "hash": "pe2Bmd+EEv/AuRG7A2z9tw=="
         }
       },
       "is_incremental": false,
@@ -218,31 +218,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/coreasynchostoptions.html",
-          "hash": "EDbuWARIec7fPw7jEIacxw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "UniversalReference",
-      "source_relative_path": "obj/yaml/grammarkdown/coresynchost.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/grammarkdown/coresynchost.html",
-          "hash": "PArkfRuYfuZbgPFKLneQyQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "UniversalReference",
-      "source_relative_path": "obj/yaml/grammarkdown/coresynchostoptions.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/grammarkdown/coresynchostoptions.html",
-          "hash": "pVQNZu3S6GTjSgZrRlQH8A=="
+          "hash": "IPbUod1o36GPJBrtP59UsA=="
         }
       },
       "is_incremental": false,
@@ -254,7 +230,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/define.html",
-          "hash": "CtEuOYK5WzsBi28YOtgQ1g=="
+          "hash": "/s1W9NiV+my67bC5skFJ2w=="
         }
       },
       "is_incremental": false,
@@ -278,7 +254,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/diagnosticinfo.html",
-          "hash": "KPpmj/c/EDoOLaPQBpy28w=="
+          "hash": "f/5nh87V5UwYyQk5W6IjYg=="
         }
       },
       "is_incremental": false,
@@ -290,7 +266,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/diagnosticmessages.html",
-          "hash": "ZEEHj4O7/0mZiRXMj4k0IA=="
+          "hash": "TAX/YpF5NDoDLOidtrLF6g=="
         }
       },
       "is_incremental": false,
@@ -326,7 +302,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/emitter.html",
-          "hash": "QBQGDCHVcJp6cMHdP47ruQ=="
+          "hash": "HewMTrNWW1Vx/SArHe8F4w=="
         }
       },
       "is_incremental": false,
@@ -350,55 +326,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/grammar.html",
-          "hash": "3YCiAM+7Ul35JEytVn92LA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "UniversalReference",
-      "source_relative_path": "obj/yaml/grammarkdown/host.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/grammarkdown/host.html",
-          "hash": "Z3xZuR+/FvvlguIpNO1JQg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "UniversalReference",
-      "source_relative_path": "obj/yaml/grammarkdown/hostbase.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/grammarkdown/hostbase.html",
-          "hash": "TjeI46oW/6Qbf5ZdvwO6hA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "UniversalReference",
-      "source_relative_path": "obj/yaml/grammarkdown/hostbaseoptions.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/grammarkdown/hostbaseoptions.html",
-          "hash": "KvC1LIoFkmTkVtYU3lrr/g=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "UniversalReference",
-      "source_relative_path": "obj/yaml/grammarkdown/hostoptions.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/grammarkdown/hostoptions.html",
-          "hash": "uPJtt7jHnDzuB+NizsLc7Q=="
+          "hash": "QlxdOGjcdRoE3zAHlwihWQ=="
         }
       },
       "is_incremental": false,
@@ -526,11 +454,35 @@
     },
     {
       "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/line.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/line.html",
+          "hash": "DQaxCoqguxka3ouOBcz4lw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
       "source_relative_path": "obj/yaml/grammarkdown/linemap.yml",
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/linemap.html",
           "hash": "uRxEnCviMFP3l+3hpGESJQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/lineoffsetmap.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/lineoffsetmap.html",
+          "hash": "U8zCpF91Skl9Kc884sDN5A=="
         }
       },
       "is_incremental": false,
@@ -626,7 +578,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/nodeasynchost.html",
-          "hash": "V8fMXoV1ds10Mfwg8JLqUA=="
+          "hash": "qy2IgS7aJuSm4y2mn8JXfg=="
         }
       },
       "is_incremental": false,
@@ -638,7 +590,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/nodeasynchostoptions.html",
-          "hash": "kiqnUqBpZkIPcnKl5ZhGSg=="
+          "hash": "VM8PdlRCcKbzhMsOH8KM2Q=="
         }
       },
       "is_incremental": false,
@@ -658,35 +610,11 @@
     },
     {
       "type": "UniversalReference",
-      "source_relative_path": "obj/yaml/grammarkdown/nodesynchost.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/grammarkdown/nodesynchost.html",
-          "hash": "xxqU37MMnAKeSNGQI+EkKg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "UniversalReference",
-      "source_relative_path": "obj/yaml/grammarkdown/nodesynchostoptions.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/grammarkdown/nodesynchostoptions.html",
-          "hash": "XMCSrdwRL5pjls4bae1ejg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "UniversalReference",
       "source_relative_path": "obj/yaml/grammarkdown/nodevisitor.yml",
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/nodevisitor.html",
-          "hash": "WzancpDDsMsJ2+NkMJ9WlA=="
+          "hash": "v9/zr3kXSL0vco9d0wWXvg=="
         }
       },
       "is_incremental": false,
@@ -723,6 +651,18 @@
         ".html": {
           "relative_path": "api/grammarkdown/nulldiagnosticmessages.html",
           "hash": "hqQnULpojFMg5Aom461s5w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "UniversalReference",
+      "source_relative_path": "obj/yaml/grammarkdown/numberliteral.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/grammarkdown/numberliteral.html",
+          "hash": "yxRYfnqbvBzNSeru6+SxVQ=="
         }
       },
       "is_incremental": false,
@@ -782,7 +722,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/parameterlist.html",
-          "hash": "wLsXghio2RKaokSzIvJvug=="
+          "hash": "3Hxx+CmCc9/ewDlyNcbSyw=="
         }
       },
       "is_incremental": false,
@@ -794,7 +734,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/parser.html",
-          "hash": "IXFi88Fw9kjuZ2XpI2eOZw=="
+          "hash": "mnwtInk+AuuSFFRgnyPgeg=="
         }
       },
       "is_incremental": false,
@@ -938,7 +878,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/resolver.html",
-          "hash": "ul1w5FyZEwic1Igp/yob6Q=="
+          "hash": "6Lxjapwo/LAL+Ln4EkfFiA=="
         }
       },
       "is_incremental": false,
@@ -974,19 +914,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/scanner.html",
-          "hash": "GXIGiudM9Folv2kRnGBN+w=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "UniversalReference",
-      "source_relative_path": "obj/yaml/grammarkdown/singlefilehost.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/grammarkdown/singlefilehost.html",
-          "hash": "2Ok5gWNM2YGrJLSv7JVsvw=="
+          "hash": "eZ0bS/ypmcDfUnGaN9atUA=="
         }
       },
       "is_incremental": false,
@@ -1034,7 +962,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/stringasynchost.html",
-          "hash": "+JjjWeKBhJnQJHzmoQUlIQ=="
+          "hash": "Z4zqr6Zvw2579bDS71jGdQ=="
         }
       },
       "is_incremental": false,
@@ -1047,18 +975,6 @@
         ".html": {
           "relative_path": "api/grammarkdown/stringliteral.html",
           "hash": "LG1SVgSV1dxK4A32eJxGDg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "UniversalReference",
-      "source_relative_path": "obj/yaml/grammarkdown/stringsynchost.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/grammarkdown/stringsynchost.html",
-          "hash": "qcVzCh5TXmO2hfPTB5vBSw=="
         }
       },
       "is_incremental": false,
@@ -1142,7 +1058,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/syntaxkind.html",
-          "hash": "CyQUb8m2Evfny8Gn+m0LsQ=="
+          "hash": "sLVIzwtvFAi0q0vBUg5pHA=="
         }
       },
       "is_incremental": false,
@@ -1262,7 +1178,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "1FEWoc+ZGHUZITI8SE3tAg=="
+          "hash": "W2lZpH9KchTA62rXvOpk3w=="
         }
       },
       "is_incremental": false,
@@ -1322,7 +1238,7 @@
       "output": {
         ".html": {
           "relative_path": "api/hosts.html",
-          "hash": "cMKBkMekcOdafpiQTrbBTg=="
+          "hash": "pvZt7XIZu/A8AVptqGE2xg=="
         }
       },
       "is_incremental": false,

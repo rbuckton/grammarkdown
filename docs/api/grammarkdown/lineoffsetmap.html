@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class ArgumentList
+    <title>Class LineOffsetMap
    | Grammarkdown API Reference </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class ArgumentList
+    <meta name="title" content="Class LineOffsetMap
    | Grammarkdown API Reference ">
     <meta name="generator" content="docfx 2.52.0.0">
     
@@ -78,31 +78,26 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="grammarkdown!ArgumentList:class">
+            <article class="content wrap" id="_content" data-uid="grammarkdown!LineOffsetMap:class">
   
   
-  <h1 id="grammarkdown_ArgumentList_class" data-uid="grammarkdown!ArgumentList:class">Class ArgumentList
+  <h1 id="grammarkdown_LineOffsetMap_class" data-uid="grammarkdown!LineOffsetMap:class">Class LineOffsetMap
   </h1>
   <h6><strong>Package</strong>: <a class="xref" href="../grammarkdown.html">grammarkdown</a></h6>
   <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
-  <div class="inheritance">
-    <h5>Inheritance</h5>
-      <div class="level0"><a class="xref" href="node.html#grammarkdown_Node_class">Node</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_ArgumentList_member">SyntaxKind.ArgumentList</a>&gt; </div>
-      <div class="level1"><span class="xref">ArgumentList</span></div>
-  </div>
-  <h3 id="constructors">Constructors
+  <h3 id="methods">Methods
   </h3>
   
   
-  <h4 id="grammarkdown_ArgumentList_constructor_1_" data-uid="grammarkdown!ArgumentList:constructor(1)">constructor(openParenToken, elements, closeParenToken)</h4>
-  <div class="markdown level1 summary"><p>Constructs a new instance of the <code>ArgumentList</code> class</p>
+  <h4 id="grammarkdown_LineOffsetMap_getEffectiveFilenameAtPosition_member_1_" data-uid="grammarkdown!LineOffsetMap#getEffectiveFilenameAtPosition:member(1)">getEffectiveFilenameAtPosition(sourceFile, position)</h4>
+  <div class="markdown level1 summary"><p>Gets the effective filename of a raw position within a source file, taking into account <code>@line</code> directives.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">constructor(openParenToken: Token&lt;SyntaxKind.OpenBracketToken&gt;, elements: ReadonlyArray&lt;Argument&gt; | undefined, closeParenToken: Token&lt;SyntaxKind.CloseBracketToken&gt; | undefined);</code></pre>
+    <pre><code class="lang-typeScript hljs">getEffectiveFilenameAtPosition(sourceFile: SourceFile | string, position: Position): string;</code></pre>
   </div>
   
   
@@ -110,8 +105,8 @@
   <div>
     <div class="property">
       <dl class="parameter">
-        <dt>openParenToken</dt>
-        <dd><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_OpenBracketToken_member">SyntaxKind.OpenBracketToken</a>&gt;</dd>
+        <dt>sourceFile</dt>
+        <dd><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a> | string</dd>
       </dl>
       <p>
         
@@ -120,222 +115,8 @@
     </div>
     <div class="property">
       <dl class="parameter">
-        <dt>elements</dt>
-        <dd><span class="xref">ReadonlyArray</span>&lt;<a class="xref" href="argument.html#grammarkdown_Argument_class">Argument</a>&gt; | undefined</dd>
-      </dl>
-      <p>
-        
-        
-      </p>
-    </div>
-    <div class="property">
-      <dl class="parameter">
-        <dt>closeParenToken</dt>
-        <dd><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_CloseBracketToken_member">SyntaxKind.CloseBracketToken</a>&gt; | undefined</dd>
-      </dl>
-      <p>
-        
-        
-      </p>
-    </div>
-  </div>
-  
-  
-  
-  
-  
-  
-  
-  <h3 id="properties">Properties
-  </h3>
-  
-  
-  <h4 id="grammarkdown_ArgumentList_closeBracketToken_member" data-uid="grammarkdown!ArgumentList#closeBracketToken:member">closeBracketToken</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  
-  <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">readonly closeBracketToken: Token&lt;SyntaxKind.CloseBracketToken&gt; | undefined;</code></pre>
-  </div>
-  
-  
-  
-  
-  
-  <h5 class="propertyValue">Property Value</h5>
-  <div>
-  <div class="property">
-    <div><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_CloseBracketToken_member">SyntaxKind.CloseBracketToken</a>&gt; | undefined</div>
-    <p>
-  </div>
-  </div>
-  
-  
-  
-  
-  
-  
-  <h4 id="grammarkdown_ArgumentList_elements_member" data-uid="grammarkdown!ArgumentList#elements:member">elements</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  
-  <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">readonly elements: ReadonlyArray&lt;Argument&gt; | undefined;</code></pre>
-  </div>
-  
-  
-  
-  
-  
-  <h5 class="propertyValue">Property Value</h5>
-  <div>
-  <div class="property">
-    <div><span class="xref">ReadonlyArray</span>&lt;<a class="xref" href="argument.html#grammarkdown_Argument_class">Argument</a>&gt; | undefined</div>
-    <p>
-  </div>
-  </div>
-  
-  
-  
-  
-  
-  
-  <h4 id="grammarkdown_ArgumentList_firstChild_member" data-uid="grammarkdown!ArgumentList#firstChild:member">firstChild</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  
-  <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">get firstChild(): Node | undefined;</code></pre>
-  </div>
-  
-  
-  
-  
-  
-  <h5 class="propertyValue">Property Value</h5>
-  <div>
-  <div class="property">
-    <div><a class="xref" href="node.html#grammarkdown_Node_class">Node</a> | undefined</div>
-    <p>
-  </div>
-  </div>
-  
-  
-  
-  
-  
-  
-  <h4 id="grammarkdown_ArgumentList_lastChild_member" data-uid="grammarkdown!ArgumentList#lastChild:member">lastChild</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  
-  <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">get lastChild(): Node | undefined;</code></pre>
-  </div>
-  
-  
-  
-  
-  
-  <h5 class="propertyValue">Property Value</h5>
-  <div>
-  <div class="property">
-    <div><a class="xref" href="node.html#grammarkdown_Node_class">Node</a> | undefined</div>
-    <p>
-  </div>
-  </div>
-  
-  
-  
-  
-  
-  
-  <h4 id="grammarkdown_ArgumentList_openBracketToken_member" data-uid="grammarkdown!ArgumentList#openBracketToken:member">openBracketToken</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  
-  <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">readonly openBracketToken: Token&lt;SyntaxKind.OpenBracketToken&gt;;</code></pre>
-  </div>
-  
-  
-  
-  
-  
-  <h5 class="propertyValue">Property Value</h5>
-  <div>
-  <div class="property">
-    <div><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_OpenBracketToken_member">SyntaxKind.OpenBracketToken</a>&gt;</div>
-    <p>
-  </div>
-  </div>
-  
-  
-  
-  
-  <h3 id="methods">Methods
-  </h3>
-  
-  
-  <h4 id="grammarkdown_ArgumentList_children_member_1_" data-uid="grammarkdown!ArgumentList#children:member(1)">children()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  
-  <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">children(): IterableIterator&lt;Node&gt;;</code></pre>
-  </div>
-  
-  
-  
-  <h5 class="returns">Returns</h5>
-  <div>
-  <div class="property">
-    <div><span class="xref">IterableIterator</span>&lt;<a class="xref" href="node.html#grammarkdown_Node_class">Node</a>&gt;</div>
-    <p>
-  </div>
-  </div>
-  
-  
-  
-  
-  
-  
-  
-  
-  <h4 id="grammarkdown_ArgumentList_forEachChild_member_1_" data-uid="grammarkdown!ArgumentList#forEachChild:member(1)">forEachChild(cbNode)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  
-  <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">forEachChild&lt;T&gt;(cbNode: (node: Node) =&gt; T | undefined): T | undefined;</code></pre>
-  </div>
-  
-  <h5 class="typeParameters">Type Parameters</h5>
-  <div>
-    <div class="property">
-      <dl class="parameter">
-        <dt>T</dt>
-        <dd></dd>
-      </dl>
-      <p>
-        
-      </p>
-    </div>
-  </div>
-  
-  <h5 class="parameters">Parameters</h5>
-  <div>
-    <div class="property">
-      <dl class="parameter">
-        <dt>cbNode</dt>
-        <dd>(node: <a class="xref" href="node.html#grammarkdown_Node_class">Node</a>) =&gt; T | undefined</dd>
+        <dt>position</dt>
+        <dd><a class="xref" href="position-interface.html#grammarkdown_Position_interface">Position</a></dd>
       </dl>
       <p>
         
@@ -347,7 +128,7 @@
   <h5 class="returns">Returns</h5>
   <div>
   <div class="property">
-    <div><span class="xref">T | undefined</span></div>
+    <div><span class="xref">string</span></div>
     <p>
   </div>
   </div>
@@ -359,13 +140,14 @@
   
   
   
-  <h4 id="grammarkdown_ArgumentList_update_member_1_" data-uid="grammarkdown!ArgumentList#update:member(1)">update(elements)</h4>
-  <div class="markdown level1 summary"></div>
+  <h4 id="grammarkdown_LineOffsetMap_getEffectivePosition_member_1_" data-uid="grammarkdown!LineOffsetMap#getEffectivePosition:member(1)">getEffectivePosition(sourceFile, position)</h4>
+  <div class="markdown level1 summary"><p>Gets the effective position of a raw position within a source file, taking into account <code>@line</code> directives.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">update(elements: ReadonlyArray&lt;Argument&gt; | undefined): ArgumentList;</code></pre>
+    <pre><code class="lang-typeScript hljs">getEffectivePosition(sourceFile: SourceFile | string, position: Position): Position;</code></pre>
   </div>
   
   
@@ -373,8 +155,18 @@
   <div>
     <div class="property">
       <dl class="parameter">
-        <dt>elements</dt>
-        <dd><span class="xref">ReadonlyArray</span>&lt;<a class="xref" href="argument.html#grammarkdown_Argument_class">Argument</a>&gt; | undefined</dd>
+        <dt>sourceFile</dt>
+        <dd><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a> | string</dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>position</dt>
+        <dd><a class="xref" href="position-interface.html#grammarkdown_Position_interface">Position</a></dd>
       </dl>
       <p>
         
@@ -386,7 +178,204 @@
   <h5 class="returns">Returns</h5>
   <div>
   <div class="property">
-    <div><a class="xref" href="argumentlist.html#grammarkdown_ArgumentList_class">ArgumentList</a></div>
+    <div><a class="xref" href="position-interface.html#grammarkdown_Position_interface">Position</a></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_LineOffsetMap_getEffectiveRange_member_1_" data-uid="grammarkdown!LineOffsetMap#getEffectiveRange:member(1)">getEffectiveRange(sourceFile, range)</h4>
+  <div class="markdown level1 summary"><p>Gets the effective range of a raw range within a source file, taking into account <code>@line</code> directives.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">getEffectiveRange(sourceFile: SourceFile | string, range: Range): Range;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>sourceFile</dt>
+        <dd><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a> | string</dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>range</dt>
+        <dd><a class="xref" href="range-interface.html#grammarkdown_Range_interface">Range</a></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="range-interface.html#grammarkdown_Range_interface">Range</a></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_LineOffsetMap_getRawFilenameAtEffectivePosition_member_1_" data-uid="grammarkdown!LineOffsetMap#getRawFilenameAtEffectivePosition:member(1)">getRawFilenameAtEffectivePosition(filename, position)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">getRawFilenameAtEffectivePosition(filename: string, position: Position): string;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>filename</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>position</dt>
+        <dd><a class="xref" href="position-interface.html#grammarkdown_Position_interface">Position</a></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">string</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_LineOffsetMap_getRawPositionFromEffectivePosition_member_1_" data-uid="grammarkdown!LineOffsetMap#getRawPositionFromEffectivePosition:member(1)">getRawPositionFromEffectivePosition(filename, position)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">getRawPositionFromEffectivePosition(filename: string, position: Position): Position;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>filename</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>position</dt>
+        <dd><a class="xref" href="position-interface.html#grammarkdown_Position_interface">Position</a></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="position-interface.html#grammarkdown_Position_interface">Position</a></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_LineOffsetMap_getRawRangeFromEffectiveRange_member_1_" data-uid="grammarkdown!LineOffsetMap#getRawRangeFromEffectiveRange:member(1)">getRawRangeFromEffectiveRange(filename, range)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">getRawRangeFromEffectiveRange(filename: string, range: Range): Range;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>filename</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>range</dt>
+        <dd><a class="xref" href="range-interface.html#grammarkdown_Range_interface">Range</a></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="range-interface.html#grammarkdown_Range_interface">Range</a></div>
     <p>
   </div>
   </div>
