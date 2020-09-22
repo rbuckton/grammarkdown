@@ -338,7 +338,7 @@ export class SharedOperation<T> {
             const promise = Promise.resolve((void 0, this._callback)(operation.cancelable));
             const sharedOperation = this._sharedOperation = [operation, promise];
             try {
-                await this._invokeWorker(sharedOperation, cancelToken);
+                return await this._invokeWorker(sharedOperation, cancelToken);
             }
             finally {
                 this._sharedOperation = undefined;
