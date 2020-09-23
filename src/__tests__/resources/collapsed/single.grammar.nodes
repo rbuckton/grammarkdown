@@ -1,8 +1,0 @@
-/// C:\dev\grammarkdown\src\__tests__\resources\collapsed\single.grammar:
-(1,1)SyntaxKind[SourceFile](filename = "single.grammar")
-  (1,1)SyntaxKind[Production]
-    (1,1)SyntaxKind[Identifier](text = "A")
-    (1,2)SyntaxKind[ColonToken]
-    (1,4)SyntaxKind[RightHandSide]
-      (1,4)SyntaxKind[SymbolSpan]
-        (1,4)SyntaxKind[Terminal](text = "a")
