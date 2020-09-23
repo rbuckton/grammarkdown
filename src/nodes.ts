@@ -172,6 +172,15 @@ export class Identifier extends Node<SyntaxKind.Identifier> implements TextConte
 }
 
 /** {@docCategory Nodes} */
+export type TextContentNode =
+    | StringLiteral
+    | NumberLiteral
+    | Identifier
+    | UnicodeCharacterLiteral
+    | Terminal
+    | ProseFragmentLiteral<ProseFragmentLiteralKind>;
+
+/** {@docCategory Nodes} */
 export class SymbolSet extends Node<SyntaxKind.SymbolSet> {
     public readonly openBraceToken: Token<SyntaxKind.OpenBraceToken>;
     public readonly elements: ReadonlyArray<SymbolSpan> | undefined;

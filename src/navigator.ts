@@ -7,7 +7,8 @@
 
 import {
     SourceFile,
-    Node
+    Node,
+    TextContentNode
 } from "./nodes";
 import {
     Position
@@ -15,7 +16,8 @@ import {
 import {
     isTextContentKind,
     isTokenKind,
-    SyntaxKind
+    SyntaxKind,
+    tokenToString
 } from "./tokens";
 
 /**
@@ -58,18 +60,18 @@ export class NodeNavigator {
         if (sourceFileOrNavigator instanceof NodeNavigator) {
             const navigator = <NodeNavigator>sourceFileOrNavigator;
             this._sourceFile = navigator._sourceFile;
-            this._nodeStack = navigator._nodeStack.slice();
             this._edgeStack = navigator._edgeStack.slice();
             this._arrayStack = navigator._arrayStack.slice();
             this._offsetStack = navigator._offsetStack.slice();
+            this._nodeStack = navigator._nodeStack.slice();
             this._currentDepth = this._nodeStack.length - 1;
         }
         else {
             this._sourceFile = <SourceFile>sourceFileOrNavigator;
-            this._nodeStack = [this._sourceFile];
             this._edgeStack = [-1];
             this._arrayStack = [undefined];
             this._offsetStack = [0];
+            this._nodeStack = [this._sourceFile];
             this._currentDepth = 0;
         }
         this._afterNavigate();
@@ -104,6 +106,16 @@ export class NodeNavigator {
     }
 
     /**
+     * If the {@link Node} the navigator is currently focused on is a {@link TextContentNode}, returns the `text` of the node;
+     * Otherwise, returns `undefined`.
+     */
+    public getTextContent() {
+        if (isTextContentKind(this.getKind())) {
+            return (this._currentNode as TextContentNode).text;
+        }
+    }
+
+    /**
      * Gets the {@link SyntaxKind} of the {@link Node} the navigator is currently focused on.
      */
     public getKind() {
@@ -111,10 +123,17 @@ export class NodeNavigator {
     }
 
     /**
+     * Gets the string representation of the {@link SyntaxKind} of the {@link Node} the navigator is currently focused on.
+     */
+    public getKindString() {
+        return tokenToString(this.getKind());
+    }
+
+    /**
      * Gets the name of the property on the parent {@link Node} the navigator is currently focused on.
      */
     public getName() {
-        return this._parentNode && this._parentNode.edgeName(this._currentEdge);
+        return this._parentNode?.edgeName(this._currentEdge);
     }
 
     /**
@@ -244,10 +263,11 @@ export class NodeNavigator {
         }
 
         return this._sourceFile === other._sourceFile
-            && this._currentNode === other._currentNode
             && this._currentDepth === other._currentDepth
             && this._currentEdge === other._currentEdge
-            && this._currentOffset === other._currentOffset;
+            && this._currentArray === other._currentArray
+            && this._currentOffset === other._currentOffset
+            && this._currentNode === other._currentNode;
     }
 
     /**
@@ -260,10 +280,10 @@ export class NodeNavigator {
     public moveToPosition(position: Position, outermost?: boolean) {
         const pos = this._sourceFile.lineMap.offsetAt(position);
         const currentDepth = this._currentDepth;
-        const nodeStack = this._nodeStack;
         const edgeStack = this._edgeStack;
         const arrayStack = this._arrayStack;
         const offsetStack = this._offsetStack;
+        const nodeStack = this._nodeStack;
         const hasChild = this._hasAnyChildren;
 
         this._copyOnNavigate = true;
@@ -273,10 +293,10 @@ export class NodeNavigator {
         }
 
         this._currentDepth = currentDepth;
-        this._nodeStack = nodeStack;
         this._edgeStack = edgeStack;
         this._arrayStack = arrayStack;
         this._offsetStack = offsetStack;
+        this._nodeStack = nodeStack;
         this._hasAnyChildren = hasChild;
         this._afterNavigate();
         return false;
@@ -317,10 +337,10 @@ export class NodeNavigator {
         }
 
         this._currentDepth = other._currentDepth;
-        this._nodeStack = other._nodeStack.slice();
         this._edgeStack = other._edgeStack.slice();
         this._arrayStack = other._arrayStack.slice();
         this._offsetStack = other._offsetStack.slice();
+        this._nodeStack = other._nodeStack.slice();
         this._afterNavigate();
         return true;
     }
@@ -565,7 +585,7 @@ export class NodeNavigator {
      */
     public moveToFirstElement(kind: SyntaxKind): boolean;
     public moveToFirstElement(predicateOrKind?: SyntaxKind | ((node: Node) => boolean)): boolean {
-        return this._moveToElement(Navigation.first, Navigation.next, this._currentArray, this._currentOffset, predicateOrKind);
+        return this._moveToElement(Navigation.first, Navigation.next, this._currentEdge, this._currentArray, this._currentOffset, predicateOrKind);
     }
 
     /**
@@ -581,7 +601,7 @@ export class NodeNavigator {
      */
     public moveToPreviousElement(kind: SyntaxKind): boolean;
     public moveToPreviousElement(predicateOrKind?: SyntaxKind | ((node: Node) => boolean)): boolean {
-        return this._moveToElement(Navigation.previous, Navigation.previous, this._currentArray, this._currentOffset, predicateOrKind);
+        return this._moveToElement(Navigation.previous, Navigation.previous, this._currentEdge, this._currentArray, this._currentOffset, predicateOrKind);
     }
 
     /**
@@ -597,7 +617,7 @@ export class NodeNavigator {
      */
     public moveToNextElement(kind: SyntaxKind): boolean;
     public moveToNextElement(predicateOrKind?: SyntaxKind | ((node: Node) => boolean)): boolean {
-        return this._moveToElement(Navigation.next, Navigation.next, this._currentArray, this._currentOffset, predicateOrKind);
+        return this._moveToElement(Navigation.next, Navigation.next, this._currentEdge, this._currentArray, this._currentOffset, predicateOrKind);
     }
 
     /**
@@ -613,7 +633,7 @@ export class NodeNavigator {
      */
     public moveToLastElement(kind: SyntaxKind): boolean;
     public moveToLastElement(predicateOrKind?: SyntaxKind | ((node: Node) => boolean)): boolean {
-        return this._moveToElement(Navigation.last, Navigation.previous, this._currentArray, this._currentOffset, predicateOrKind);
+        return this._moveToElement(Navigation.last, Navigation.previous, this._currentEdge, this._currentArray, this._currentOffset, predicateOrKind);
     }
 
     /**
@@ -724,48 +744,112 @@ export class NodeNavigator {
         return this._moveToSibling(Navigation.last, undefined, Navigation.last, Navigation.previous, this._parentNode, predicateOrNameOrKind);
     }
 
+    /**
+     * Moves the focus of the navigator to the first {@link Token} or {@link TextContent} descendant (or self) of the focused {@link Node}.
+     * @returns `true` if the current focus is a {@link Token} or {@link TextContent} or if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToFirstToken() {
+        if (this.isToken()) return true;
+        const navigator = this.clone();
+        while (!navigator.isToken()) {
+            if (!navigator.moveToFirstChild()) {
+                return false;
+            }
+        }
+        return this.moveTo(navigator);
+    }
+
+    /**
+     * Moves the focus of the navigator to the last {@link Token} or {@link TextContent} descendant (or self) of the focused {@link Node}.
+     * @returns `true` if the current focus is a {@link Token} or {@link TextContent} or if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToLastToken() {
+        if (this.isToken()) return true;
+        const navigator = this.clone();
+        while (!navigator.isToken()) {
+            if (!navigator.moveToLastChild()) {
+                return false;
+            }
+        }
+        return this.moveTo(navigator);
+    }
+
+    /**
+     * Moves the focus of the navigator to the next {@link Token} or {@link TextContent} following the focused {@link Node} in document order.
+     * @returns `true` if the current focus is a {@link Token} or {@link TextContent} or if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToNextToken() {
+        const navigator = this.clone();
+        while (!navigator.moveToNextSibling()) {
+            if (!navigator.moveToParent()) {
+                return false;
+            }
+        }
+        if (!navigator.moveToFirstToken()) {
+            return false;
+        }
+        return this.moveTo(navigator);
+    }
+
+    /**
+     * Moves the focus of the navigator to the previous {@link Token} or {@link TextContent} preceding the focused {@link Node} in document order.
+     * @returns `true` if the current focus is a {@link Token} or {@link TextContent} or if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToPreviousToken() {
+        const navigator = this.clone();
+        while (!navigator.moveToPreviousSibling()) {
+            if (!navigator.moveToParent()) {
+                return false;
+            }
+        }
+        if (!navigator.moveToLastToken()) {
+            return false;
+        }
+        return this.moveTo(navigator);
+    }
+
     private _beforeNavigate() {
         if (this._copyOnNavigate) {
-            this._nodeStack = this._nodeStack.slice();
             this._edgeStack = this._edgeStack.slice();
             this._arrayStack = this._arrayStack.slice();
             this._offsetStack = this._offsetStack.slice();
+            this._nodeStack = this._nodeStack.slice();
             this._copyOnNavigate = false;
         }
     }
 
     private _afterNavigate() {
-        this._currentNode = this._nodeStack[this._currentDepth]!;
         this._currentEdge = this._edgeStack[this._currentDepth]!;
         this._currentArray = this._arrayStack[this._currentDepth];
         this._currentOffset = this._offsetStack[this._currentDepth]!;
+        this._currentNode = this._nodeStack[this._currentDepth]!;
         this._parentNode = this._currentDepth > 0 ? this._nodeStack[this._currentDepth - 1] : undefined;
         this._copyOnNavigate = false;
     }
 
     private _pushEdge() {
-        this._nodeStack.push(undefined);
         this._edgeStack.push(undefined);
         this._arrayStack.push(undefined);
-        this._offsetStack.push(1);
+        this._offsetStack.push(undefined);
+        this._nodeStack.push(undefined);
         this._hasAnyChildren = undefined;
         this._currentDepth++;
     }
 
-    private _setEdge(node: Node, edge: number, array: ReadonlyArray<Node> | undefined, offset: number | undefined) {
-        this._nodeStack[this._currentDepth] = node;
+    private _setEdge(edge: number, array: ReadonlyArray<Node> | undefined, offset: number | undefined, node: Node) {
         this._edgeStack[this._currentDepth] = edge;
         this._arrayStack[this._currentDepth] = array;
         this._offsetStack[this._currentDepth] = offset;
+        this._nodeStack[this._currentDepth] = node;
         this._hasAnyChildren = undefined;
     }
 
     private _popEdge() {
         this._currentDepth--;
-        this._nodeStack.pop();
         this._edgeStack.pop();
         this._arrayStack.pop();
         this._offsetStack.pop();
+        this._nodeStack.pop();
         this._hasAnyChildren = this._currentNode !== undefined;
     }
 
@@ -784,7 +868,7 @@ export class NodeNavigator {
                         if (nextNode && matchPredicateOrKind(nextNode, predicateOrKind)) {
                             this._beforeNavigate();
                             this._pushEdge();
-                            this._setEdge(nextNode, nextEdge, next, nextOffset);
+                            this._setEdge(nextEdge, next, nextOffset, nextNode);
                             this._afterNavigate();
                             return true;
                         }
@@ -793,7 +877,7 @@ export class NodeNavigator {
                 else if (next && matchPredicateOrKind(next, predicateOrKind)) {
                     this._beforeNavigate();
                     this._pushEdge();
-                    this._setEdge(next, nextEdge, /*array*/ undefined, /*offset*/ undefined);
+                    this._setEdge(nextEdge, /*array*/ undefined, /*offset*/ undefined, next);
                     this._afterNavigate();
                     return true;
                 }
@@ -802,7 +886,7 @@ export class NodeNavigator {
         return false;
     }
 
-    private _moveToElement(currentArrayInitializer: SeekOperation, seekDirection: SeekOperation, currentArray: ReadonlyArray<Node> | undefined, currentOffset: number, predicateOrKind: SyntaxKind | ((node: Node) => boolean) | undefined) {
+    private _moveToElement(currentArrayInitializer: SeekOperation, seekDirection: SeekOperation, currentEdge: number, currentArray: ReadonlyArray<Node> | undefined, currentOffset: number, predicateOrKind: SyntaxKind | ((node: Node) => boolean) | undefined) {
         if (!currentArray) {
             return false;
         }
@@ -813,7 +897,7 @@ export class NodeNavigator {
             const nextNode = currentArray[nextOffset];
             if (nextNode && matchPredicateOrKind(nextNode, predicateOrKind)) {
                 this._beforeNavigate();
-                this._setEdge(nextNode, this._currentEdge, currentArray, nextOffset);
+                this._setEdge(currentEdge, currentArray, nextOffset, nextNode);
                 this._afterNavigate();
                 return true;
             }
@@ -830,7 +914,7 @@ export class NodeNavigator {
         const name = typeof predicateOrNameOrKind === "string" ? predicateOrNameOrKind : undefined;
         const predicateOrKind = typeof predicateOrNameOrKind !== "string" ? predicateOrNameOrKind : undefined;
 
-        if (currentArrayInitializer && this._moveToElement(currentArrayInitializer, seekDirection, this._currentArray, this._currentOffset, predicateOrKind)) {
+        if (currentArrayInitializer && this._moveToElement(currentArrayInitializer, seekDirection, this._currentEdge, this._currentArray, this._currentOffset, predicateOrKind)) {
             return true;
         }
 
@@ -840,14 +924,14 @@ export class NodeNavigator {
             if (!name || parentNode.edgeName(nextEdge) === name) {
                 const next = parentNode.edgeValue(nextEdge);
                 if (isNodeArray(next)) {
-                    if (this._moveToElement(nextArrayInitializer, seekDirection, next, 0, predicateOrKind)) {
+                    if (this._moveToElement(nextArrayInitializer, seekDirection, nextEdge, next, 0, predicateOrKind)) {
                         return true;
                     }
                 }
                 else {
                     if (next && matchPredicateOrKind(next, predicateOrKind)) {
                         this._beforeNavigate();
-                        this._setEdge(next, nextEdge, /*array*/ undefined, /*offset*/ undefined);
+                        this._setEdge(nextEdge, /*array*/ undefined, /*offset*/ undefined, next);
                         this._afterNavigate();
                         return true;
                     }

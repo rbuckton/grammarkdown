@@ -177,4 +177,66 @@ ExportSpecifier :
         const symbol = <Nonterminal>rhs.head!.symbol;
         expect(navigator.getNode()).toStrictEqual(symbol.name);
     });
+
+    it("moveToFirstToken", () => {
+        const { sourceFile, navigator } = getNavigator();
+        expect(navigator.moveToFirstToken()).toEqual(true);
+        expect(navigator.isToken()).toStrictEqual(true);
+        expect(navigator.getKind()).toStrictEqual(SyntaxKind.Identifier);
+        expect(navigator.getNode()).toStrictEqual((sourceFile.elements[0] as Production).name);
+    });
+
+    it("moveToLastToken", () => {
+        const { sourceFile, navigator } = getNavigator();
+        expect(navigator.moveToLastToken()).toEqual(true);
+        expect(navigator.isToken()).toStrictEqual(true);
+        expect(navigator.getKind()).toStrictEqual(SyntaxKind.Identifier);
+        expect(navigator.getNode().end === sourceFile.end)
+    });
+
+    it("moveToNextToken", () => {
+        const { navigator } = getNavigator();
+        expect(navigator.moveToFirstToken()).toBe(true);
+        expect(navigator.getKind()).toBe(SyntaxKind.Identifier);        // SourceCharacter
+        expect(navigator.getTextContent()).toBe("SourceCharacter");
+        expect(navigator.moveToNextToken()).toBe(true);
+        expect(navigator.getKind()).toBe(SyntaxKind.ColonColonToken);   // ::
+        expect(navigator.moveToNextToken()).toBe(true);
+        expect(navigator.getKind()).toBe(SyntaxKind.GreaterThanToken);  // >
+        expect(navigator.moveToNextToken()).toBe(true);
+        expect(navigator.getKind()).toBe(SyntaxKind.ProseFull);         // any Unicode code point
+        expect(navigator.getTextContent()).toBe("any Unicode code point");
+        expect(navigator.moveToNextToken()).toBe(true);
+        expect(navigator.getKind()).toBe(SyntaxKind.Identifier);        // InputElementDiv
+        expect(navigator.getTextContent()).toBe("InputElementDiv");
+        expect(navigator.moveToNextToken()).toBe(true);
+        expect(navigator.getKind()).toBe(SyntaxKind.ColonColonToken);   // ::
+        expect(navigator.moveToNextToken()).toBe(true);
+        expect(navigator.getKind()).toBe(SyntaxKind.Identifier);        // WhiteSpace
+        expect(navigator.getTextContent()).toBe("WhiteSpace");
+    });
+
+    it("moveToPreviousToken", () => {
+        const { navigator } = getNavigator();
+        expect(navigator.moveToLastToken()).toBe(true);
+        expect(navigator.getKind()).toBe(SyntaxKind.Identifier);        // IdentifierName
+        expect(navigator.getTextContent()).toBe("IdentifierName");
+        expect(navigator.moveToPreviousToken()).toBe(true);
+        expect(navigator.getKind()).toBe(SyntaxKind.Terminal);          // `as`
+        expect(navigator.getTextContent()).toBe("as");
+        expect(navigator.moveToPreviousToken()).toBe(true);
+        expect(navigator.getKind()).toBe(SyntaxKind.Identifier);        // IdentifierName
+        expect(navigator.getTextContent()).toBe("IdentifierName");
+        expect(navigator.moveToPreviousToken()).toBe(true);
+        expect(navigator.getKind()).toBe(SyntaxKind.Identifier);        // IdentifierName
+        expect(navigator.getTextContent()).toBe("IdentifierName");
+        expect(navigator.moveToPreviousToken()).toBe(true);
+        expect(navigator.getKind()).toBe(SyntaxKind.ColonToken);        // :
+        expect(navigator.moveToPreviousToken()).toBe(true);
+        expect(navigator.getKind()).toBe(SyntaxKind.Identifier);        // ExportSpecifier
+        expect(navigator.getTextContent()).toBe("ExportSpecifier");
+        expect(navigator.moveToPreviousToken()).toBe(true);
+        expect(navigator.getKind()).toBe(SyntaxKind.Identifier);        // RegularExpressionLiteral
+        expect(navigator.getTextContent()).toBe("RegularExpressionLiteral");
+    });
 });

@@ -33,7 +33,7 @@
   "scripts": {
     "test": "gulp test",
     "build": "gulp build",
-    "prepare": "gulp test"
+    "prepare": "gulp --series build test"
   },
   "devDependencies": {
     "@microsoft/api-documenter": "^7.8.55",

@@ -274,7 +274,7 @@ export enum SyntaxKind {
     FirstProseFragmentLiteral = ProseHead,
     LastProseFragmentLiteral = ProseFull,
     FirstTextContent = StringLiteral,
-    LastTextContent = ProseFull,
+    LastTextContent = Identifier,
     FirstErrorNode = InvalidSymbol,
     LastErrorNode = InvalidAssertion,
     FirstTrivia = SingleLineCommentTrivia,

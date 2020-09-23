@@ -77,7 +77,6 @@ const runTests = () => runTestsWithOptions(argv);
 const watchTests = () => runTestsWithOptions({ watch: true });
 
 const test = gulp.series(preTest, runTests);
-test.name = "test";
 gulp.task("test", test);
 
 const watch = gulp.series(preTest, gulp.parallel(watchDiagnostics, watchTests));
@@ -88,7 +87,7 @@ const accept_baselines = () => gulp
     .pipe(gulp.dest("baselines/reference"));
 gulp.task("accept-baselines", accept_baselines);
 
-gulp.task("default", test);
+gulp.task("default", gulp.series(build, test));
 
 gulp.task("diff", () => diff("baselines/reference/", "baselines/local/"));
 
