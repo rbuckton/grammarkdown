@@ -411,9 +411,9 @@ ArrayLiteral[Yield] :
 	`[` ElementList[?Yield] `,` Elision? `]`
 
 ElementList[Yield] :
-	Elision? AssignmentExpression[In, ?Yield]
+	Elision? AssignmentExpression[+In, ?Yield]
 	Elision? SpreadElement[?Yield]
-	ElementList[?Yield] `,` Elision? AssignmentExpression[In, ?Yield]
+	ElementList[?Yield] `,` Elision? AssignmentExpression[+In, ?Yield]
 	ElementList[?Yield] `,` Elision? SpreadElement[?Yield]
 
 Elision :
@@ -421,7 +421,7 @@ Elision :
 	Elision `,`
 
 SpreadElement[Yield] :
-	`...` AssignmentExpression[In, ?Yield]
+	`...` AssignmentExpression[+In, ?Yield]
 
 ObjectLiteral[Yield] :
 	`{` `}`
@@ -435,7 +435,7 @@ PropertyDefinitionList[Yield] :
 PropertyDefinition[Yield] :
 	IdentifierReference[?Yield]
 	CoverInitializedName[?Yield]
-	PropertyName[?Yield] `:` AssignmentExpression[In, ?Yield]
+	PropertyName[?Yield] `:` AssignmentExpression[+In, ?Yield]
 	MethodDefinition[?Yield]
 
 PropertyName[Yield] :
@@ -448,29 +448,29 @@ LiteralPropertyName :
 	NumericLiteral
 
 ComputedPropertyName[Yield] :
-	`[` AssignmentExpression[In, ?Yield]  `]`
+	`[` AssignmentExpression[+In, ?Yield]  `]`
 
 CoverInitializedName[Yield] :
-	IdentifierReference[?Yield] Initializer[In, ?Yield]
+	IdentifierReference[?Yield] Initializer[+In, ?Yield]
 
 Initializer[In, Yield] :
 	`=` AssignmentExpression[?In, ?Yield]
 
 TemplateLiteral[Yield] :
 	NoSubstitutionTemplate
-	TemplateHead Expression[In, ?Yield] TemplateSpans[?Yield]
+	TemplateHead Expression[+In, ?Yield] TemplateSpans[?Yield]
 
 TemplateSpans[Yield] :
 	TemplateTail
 	TemplateMiddleList[?Yield] TemplateTail
 
 TemplateMiddleList[Yield] :
-	TemplateMiddle  Expression[In, ?Yield]
-	TemplateMiddleList[?Yield]  TemplateMiddle  Expression[In, ?Yield]
+	TemplateMiddle  Expression[+In, ?Yield]
+	TemplateMiddleList[?Yield]  TemplateMiddle  Expression[+In, ?Yield]
 
 MemberExpression[Yield] :
 	PrimaryExpression[?Yield]
-	MemberExpression[?Yield] `[` Expression[In, ?Yield] `]`
+	MemberExpression[?Yield] `[` Expression[+In, ?Yield] `]`
 	MemberExpression[?Yield] `.` IdentifierName
 	MemberExpression[?Yield] TemplateLiteral[?Yield]
 	SuperProperty[?Yield]
@@ -478,7 +478,7 @@ MemberExpression[Yield] :
 	`new` MemberExpression[?Yield] Arguments[?Yield]
 
 SuperProperty[Yield] :
-	`super` `[` Expression[In, ?Yield] `]`
+	`super` `[` Expression[+In, ?Yield] `]`
 	`super` `.` IdentifierName
 
 MetaProperty :
@@ -495,7 +495,7 @@ CallExpression[Yield] :
 	MemberExpression[?Yield] Arguments[?Yield]
 	SuperCall[?Yield]
 	CallExpression[?Yield] Arguments[?Yield]
-	CallExpression[?Yield] `[` Expression[In, ?Yield] `]`
+	CallExpression[?Yield] `[` Expression[+In, ?Yield] `]`
 	CallExpression[?Yield] `.` IdentifierName
 	CallExpression[?Yield] TemplateLiteral[?Yield]
 
@@ -507,10 +507,10 @@ Arguments[Yield] :
 	`(` ArgumentList[?Yield]  `)`
 
 ArgumentList[Yield] :
-	AssignmentExpression[In, ?Yield]
-	`...` AssignmentExpression[In, ?Yield]
-	ArgumentList[?Yield] `,` AssignmentExpression[In, ?Yield]
-	ArgumentList[?Yield] `,` `...` AssignmentExpression[In, ?Yield]
+	AssignmentExpression[+In, ?Yield]
+	`...` AssignmentExpression[+In, ?Yield]
+	ArgumentList[?Yield] `,` AssignmentExpression[+In, ?Yield]
+	ArgumentList[?Yield] `,` `...` AssignmentExpression[+In, ?Yield]
 
 LeftHandSideExpression[Yield] :
 	NewExpression[?Yield]
@@ -558,7 +558,7 @@ RelationalExpression[In, Yield] :
 	RelationalExpression[?In, ?Yield] `<=` ShiftExpression[?Yield]
 	RelationalExpression[?In, ?Yield] `>=` ShiftExpression[?Yield]
 	RelationalExpression[?In, ?Yield] `instanceof` ShiftExpression[?Yield]
-	[+In] RelationalExpression[In, ?Yield] `in` ShiftExpression[?Yield]
+	[+In] RelationalExpression[+In, ?Yield] `in` ShiftExpression[?Yield]
 
 EqualityExpression[In, Yield] :
 	RelationalExpression[?In, ?Yield]
@@ -589,7 +589,7 @@ LogicalORExpression[In, Yield] :
 
 ConditionalExpression[In, Yield] :
 	LogicalORExpression[?In, ?Yield]
-	LogicalORExpression[?In, ?Yield] `?` AssignmentExpression[In, ?Yield] `:` AssignmentExpression[?In, ?Yield]
+	LogicalORExpression[?In, ?Yield] `?` AssignmentExpression[+In, ?Yield] `:` AssignmentExpression[?In, ?Yield]
 
 AssignmentExpression[In, Yield] :
 	ConditionalExpression[?In, ?Yield]
@@ -626,7 +626,7 @@ Statement[Yield, Return] :
 Declaration[Yield] :
 	HoistableDeclaration[?Yield]
 	ClassDeclaration[?Yield]
-	LexicalDeclaration[In, ?Yield]
+	LexicalDeclaration[+In, ?Yield]
 
 HoistableDeclaration[Yield, Default] :
 	FunctionDeclaration[?Yield, ?Default]
@@ -666,7 +666,7 @@ LexicalBinding[In, Yield]  :
 	BindingPattern[?Yield] Initializer[?In, ?Yield]
 
 VariableStatement[Yield] :
-	`var` VariableDeclarationList[In, ?Yield] `;`
+	`var` VariableDeclarationList[+In, ?Yield] `;`
 
 VariableDeclarationList[In, Yield] :
 	VariableDeclaration[?In, ?Yield]
@@ -707,10 +707,10 @@ BindingProperty[Yield] :
 
 BindingElement[Yield] :
 	SingleNameBinding[?Yield]
-	BindingPattern[?Yield] Initializer[In, ?Yield]?
+	BindingPattern[?Yield] Initializer[+In, ?Yield]?
 
 SingleNameBinding[Yield] :
-	BindingIdentifier[?Yield] Initializer[In, ?Yield]?
+	BindingIdentifier[?Yield] Initializer[+In, ?Yield]?
 
 BindingRestElement[Yield] :
 	`...` BindingIdentifier[?Yield]
@@ -719,24 +719,24 @@ EmptyStatement :
 	`;`
 
 ExpressionStatement[Yield] :
-	[lookahead <! { `{`, `function`, `class`, `let` `[` }] Expression[In, ?Yield] `;`
+	[lookahead <! { `{`, `function`, `class`, `let` `[` }] Expression[+In, ?Yield] `;`
 
 IfStatement[Yield, Return] :
-	`if` `(` Expression[In, ?Yield] `)` Statement[?Yield, ?Return] `else` Statement[?Yield, ?Return]
-	`if` `(` Expression[In, ?Yield] `)` Statement[?Yield, ?Return]
+	`if` `(` Expression[+In, ?Yield] `)` Statement[?Yield, ?Return] `else` Statement[?Yield, ?Return]
+	`if` `(` Expression[+In, ?Yield] `)` Statement[?Yield, ?Return]
 
 IterationStatement[Yield, Return] :
-	`do` Statement[?Yield, ?Return] `while` `(` Expression[In, ?Yield] `)` `;`
-	`while` `(` Expression[In, ?Yield] `)` Statement[?Yield, ?Return]
-	`for` `(` [lookahead <! { `let` `[` }] Expression[?Yield]? `;` Expression[In, ?Yield]? `;` Expression[In, ?Yield]? `)` Statement[?Yield, ?Return]
-	`for` `(` `var` VariableDeclarationList[?Yield] `;` Expression[In, ?Yield]? `;` Expression[In, ?Yield]? `)` Statement[?Yield, ?Return]
-	`for` `(` LexicalDeclaration[?Yield] Expression[In, ?Yield]? `;` Expression[In, ?Yield]? `)` Statement[?Yield, ?Return]
-	`for` `(` [lookahead <! { `let` `[` }] LeftHandSideExpression[?Yield] `in` Expression[In, ?Yield] `)` Statement[?Yield, ?Return]
-	`for` `(` `var` ForBinding[?Yield] `in` Expression[In, ?Yield] `)` Statement[?Yield, ?Return]
-	`for` `(` ForDeclaration[?Yield] `in` Expression[In, ?Yield] `)` Statement[?Yield, ?Return]
-	`for` `(` [lookahead != `let`] LeftHandSideExpression[?Yield] `of` AssignmentExpression[In, ?Yield] `)` Statement[?Yield, ?Return]
-	`for` `(` `var` ForBinding[?Yield] `of` AssignmentExpression[In, ?Yield] `)` Statement[?Yield, ?Return]
-	`for` `(` ForDeclaration[?Yield] `of` AssignmentExpression[In, ?Yield] `)` Statement[?Yield, ?Return]
+	`do` Statement[?Yield, ?Return] `while` `(` Expression[+In, ?Yield] `)` `;`
+	`while` `(` Expression[+In, ?Yield] `)` Statement[?Yield, ?Return]
+	`for` `(` [lookahead <! { `let` `[` }] Expression[?Yield]? `;` Expression[+In, ?Yield]? `;` Expression[+In, ?Yield]? `)` Statement[?Yield, ?Return]
+	`for` `(` `var` VariableDeclarationList[?Yield] `;` Expression[+In, ?Yield]? `;` Expression[+In, ?Yield]? `)` Statement[?Yield, ?Return]
+	`for` `(` LexicalDeclaration[?Yield] Expression[+In, ?Yield]? `;` Expression[+In, ?Yield]? `)` Statement[?Yield, ?Return]
+	`for` `(` [lookahead <! { `let` `[` }] LeftHandSideExpression[?Yield] `in` Expression[+In, ?Yield] `)` Statement[?Yield, ?Return]
+	`for` `(` `var` ForBinding[?Yield] `in` Expression[+In, ?Yield] `)` Statement[?Yield, ?Return]
+	`for` `(` ForDeclaration[?Yield] `in` Expression[+In, ?Yield] `)` Statement[?Yield, ?Return]
+	`for` `(` [lookahead != `let`] LeftHandSideExpression[?Yield] `of` AssignmentExpression[+In, ?Yield] `)` Statement[?Yield, ?Return]
+	`for` `(` `var` ForBinding[?Yield] `of` AssignmentExpression[+In, ?Yield] `)` Statement[?Yield, ?Return]
+	`for` `(` ForDeclaration[?Yield] `of` AssignmentExpression[+In, ?Yield] `)` Statement[?Yield, ?Return]
 
 ForDeclaration[Yield] :
 	LetOrConst ForBinding[?Yield]
@@ -755,13 +755,13 @@ BreakStatement[Yield]  :
 
 ReturnStatement[Yield] :
 	`return` `;`
-	`return` [no LineTerminator here] Expression[In, ?Yield] `;`
+	`return` [no LineTerminator here] Expression[+In, ?Yield] `;`
 
 WithStatement[Yield, Return] :
-	`with` `(` Expression[In, ?Yield] `)` Statement[?Yield, ?Return]
+	`with` `(` Expression[+In, ?Yield] `)` Statement[?Yield, ?Return]
 
 SwitchStatement[Yield, Return] :
-	`switch` `(` Expression[In, ?Yield] `)` CaseBlock[?Yield, ?Return]
+	`switch` `(` Expression[+In, ?Yield] `)` CaseBlock[?Yield, ?Return]
 
 CaseBlock[Yield, Return] :
 	`{` CaseClauses[?Yield, ?Return]? `}`
@@ -772,7 +772,7 @@ CaseClauses[Yield, Return] :
 	CaseClauses[?Yield, ?Return] CaseClause[?Yield, ?Return]
 
 CaseClause[Yield, Return] :
-	`case` Expression[In, ?Yield] `:` StatementList[?Yield, ?Return]?
+	`case` Expression[+In, ?Yield] `:` StatementList[?Yield, ?Return]?
 
 DefaultClause[Yield, Return] :
 	`default` `:` StatementList[?Yield, ?Return]?
@@ -785,7 +785,7 @@ LabelledItem[Yield, Return] :
 	FunctionDeclaration[?Yield]
 
 ThrowStatement[Yield] :
-	`throw` [no LineTerminator here] Expression[In, ?Yield] `;`
+	`throw` [no LineTerminator here] Expression[+In, ?Yield] `;`
 
 TryStatement[Yield, Return] :
 	`try` Block[?Yield, ?Return] Catch[?Yield, ?Return]
@@ -840,7 +840,7 @@ FunctionBody[Yield] :
 	FunctionStatementList[?Yield]
 
 FunctionStatementList[Yield] :
-	StatementList[?Yield, Return]?
+	StatementList[?Yield, +Return]?
 
 ArrowFunction[In, Yield]  :
 	ArrowParameters[?Yield] [no LineTerminator here] `=>` ConciseBody[?In]
@@ -863,22 +863,22 @@ PropertySetParameterList :
 	FormalParameter
 
 GeneratorMethod[Yield] :
-	`*` PropertyName[?Yield] `(` StrictFormalParameters[Yield] `)` `{` GeneratorBody `}`
+	`*` PropertyName[?Yield] `(` StrictFormalParameters[+Yield] `)` `{` GeneratorBody `}`
 
 GeneratorDeclaration[Yield, Default] :
-	`function` `*` BindingIdentifier[?Yield] `(` FormalParameters[Yield] `)` `{` GeneratorBody `}`
-	[+Default] `function` `*` `(` FormalParameters[Yield] `)` `{` GeneratorBody `}`
+	`function` `*` BindingIdentifier[?Yield] `(` FormalParameters[+Yield] `)` `{` GeneratorBody `}`
+	[+Default] `function` `*` `(` FormalParameters[+Yield] `)` `{` GeneratorBody `}`
 
 GeneratorExpression :
-	`function` `*` BindingIdentifier[Yield]? `(` FormalParameters[Yield] `)` `{` GeneratorBody `}`
+	`function` `*` BindingIdentifier[+Yield]? `(` FormalParameters[+Yield] `)` `{` GeneratorBody `}`
 
 GeneratorBody :
-	FunctionBody[Yield]
+	FunctionBody[+Yield]
 
 YieldExpression[In] :
 	`yield`
-	`yield` [no LineTerminator here] AssignmentExpression[?In, Yield]
-	`yield` [no LineTerminator here] `*` AssignmentExpression[?In, Yield]
+	`yield` [no LineTerminator here] AssignmentExpression[?In, +Yield]
+	`yield` [no LineTerminator here] `*` AssignmentExpression[?In, +Yield]
 
 ClassDeclaration[Yield, Default] :
 	`class` BindingIdentifier[?Yield] ClassTail[?Yield]
@@ -972,9 +972,9 @@ ExportDeclaration :
 	`export` ExportClause `;`
 	`export` VariableStatement
 	`export` Declaration
-	`export` `default` HoistableDeclaration[Default]
-	`export` `default` ClassDeclaration[Default]
-	`export` `default` [lookahead <! { `function`, `class` }] AssignmentExpression[In] `;`
+	`export` `default` HoistableDeclaration[+Default]
+	`export` `default` ClassDeclaration[+Default]
+	`export` `default` [lookahead <! { `function`, `class` }] AssignmentExpression[+In] `;`
 
 ExportClause :
 	`{` `}`

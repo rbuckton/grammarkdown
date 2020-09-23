@@ -1240,7 +1240,7 @@ export class Checker {
                 return this.reportGrammarErrorForNode(node.operatorToken, Diagnostics.Unexpected_token_0_, tokenToString(node.operatorToken.kind));
             }
 
-            if (!node.operatorToken && !this.getDefine(node, "noStrictParametricProductions")) {
+            if (!node.operatorToken) {
                 return this.reportGrammarError(node, node.getStart(this._sourceFile), Diagnostics._0_expected, formatList([SyntaxKind.QuestionToken, SyntaxKind.PlusToken, SyntaxKind.TildeToken]));
             }
         }
