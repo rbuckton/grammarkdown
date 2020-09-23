@@ -1,0 +1,4 @@
+/// C:\dev\grammarkdown\src\__tests__\resources\meta\line\lineMeta.grammar:
+foo(5,5): error GM2000: Cannot find name: 'B'.
+C:/dev/grammarkdown/src/__tests__/resources/meta/line/lineMeta.grammar(25,9): error GM2000: Cannot find name: 'D'.
+C:/dev/grammarkdown/src/__tests__/resources/meta/line/lineMeta.grammar(8,5): error GM2000: Cannot find name: 'F'.

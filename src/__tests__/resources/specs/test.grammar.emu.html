@@ -1,0 +1,51 @@
+<emu-production name="A" collapsed>
+    <emu-rhs a="28e20fea">
+        <emu-nt>A</emu-nt>
+        <emu-t placeholder>@</emu-t>
+        <emu-nt>A</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="B" collapsed>
+    <emu-rhs a="e29ca65b"><emu-nt>A</emu-nt> <emu-gmod>but not one of <emu-t>&quot;</emu-t> or <emu-t>\</emu-t> or <emu-gprose>U+0000 through U+001F</emu-gprose></emu-gmod></emu-rhs>
+</emu-production>
+<emu-production name="C" collapsed>
+    <emu-rhs a="f583ba73">
+        <emu-nt>A</emu-nt>
+        <emu-gmod>full prose span</emu-gmod>
+    </emu-rhs>
+</emu-production>
+<emu-production name="C" collapsed>
+    <emu-rhs a="ef487e52">
+        <emu-nt>A</emu-nt>
+        <emu-gmod>head <emu-t>terminal</emu-t> middle <emu-nt>B</emu-nt> tail</emu-gmod>
+    </emu-rhs>
+</emu-production>
+<emu-production name="D" params="A" collapsed>
+    <emu-rhs a="6dcd4ce2"><emu-nt>A</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="D" params="B" collapsed>
+    <emu-rhs a="6dcd4ce2"><emu-nt>A</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="E" params="A" collapsed>
+    <emu-rhs a="6dcd4ce2"><emu-nt>A</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="F" params="A">
+    <emu-rhs a="e0184ade"><emu-nt>E</emu-nt></emu-rhs>
+    <emu-rhs a="bb8a9ecb"><emu-nt params="A">E</emu-nt></emu-rhs>
+    <emu-rhs a="d1775c31"><emu-nt params="A, B">E</emu-nt></emu-rhs>
+    <emu-rhs a="18e8f2aa"><emu-nt params="?B">E</emu-nt></emu-rhs>
+    <emu-rhs a="a177ed2b"><emu-nt params="+A">E</emu-nt></emu-rhs>
+    <emu-rhs a="d1c03b34"><emu-nt params="~A">E</emu-nt></emu-rhs>
+    <emu-rhs a="3541f047"><emu-nt params="?A">E</emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="G">
+    <emu-rhs a="df188a5e"><emu-gprose>&lt;LF&gt;</emu-gprose></emu-rhs>
+    <emu-rhs a="6bb44f60"><emu-gprose>&lt;CR&gt;</emu-gprose></emu-rhs>
+</emu-production>
+<emu-production name="Z">
+    <del><emu-rhs a="6dcd4ce2"><emu-nt>A</emu-nt></emu-rhs></del>
+    <ins><emu-rhs a="ae4f281d"><emu-nt>B</emu-nt></emu-rhs></ins>
+</emu-production>
+<emu-production name="LookaheadRestriction">
+    <emu-rhs a="5c1008f6"><emu-gann>lookahead ∉ <emu-nt>A</emu-nt></emu-gann></emu-rhs>
+</emu-production>

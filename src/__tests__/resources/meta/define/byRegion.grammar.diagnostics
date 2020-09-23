@@ -1,0 +1,3 @@
+/// C:\dev\grammarkdown\src\__tests__\resources\meta\define\byRegion.grammar:
+C:/dev/grammarkdown/src/__tests__/resources/meta/define/byRegion.grammar(6,3): error GM2008: Parameter 'A' is unused.
+C:/dev/grammarkdown/src/__tests__/resources/meta/define/byRegion.grammar(12,3): error GM2008: Parameter 'A' is unused.

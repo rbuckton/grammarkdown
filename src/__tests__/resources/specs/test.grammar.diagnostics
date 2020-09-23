@@ -1,0 +1,11 @@
+/// C:\dev\grammarkdown\src\__tests__\resources\specs\test.grammar:
+C:/dev/grammarkdown/src/__tests__/resources/specs/test.grammar(8,1): error GM2006: Production 'D' is missing parameter 'B'. All definitions of production 'D' must specify the same formal parameters.
+C:/dev/grammarkdown/src/__tests__/resources/specs/test.grammar(9,1): error GM2006: Production 'D' is missing parameter 'A'. All definitions of production 'D' must specify the same formal parameters.
+C:/dev/grammarkdown/src/__tests__/resources/specs/test.grammar(13,5): error GM2007: There is no argument given for parameter 'A'.
+C:/dev/grammarkdown/src/__tests__/resources/specs/test.grammar(14,7): error GM1001: '?', '+', or '~' expected.
+C:/dev/grammarkdown/src/__tests__/resources/specs/test.grammar(15,7): error GM1001: '?', '+', or '~' expected.
+C:/dev/grammarkdown/src/__tests__/resources/specs/test.grammar(15,10): error GM1001: '?', '+', or '~' expected.
+C:/dev/grammarkdown/src/__tests__/resources/specs/test.grammar(15,10): error GM2004: Production 'E' does not have a parameter named 'B'.
+C:/dev/grammarkdown/src/__tests__/resources/specs/test.grammar(16,5): error GM2007: There is no argument given for parameter 'A'.
+C:/dev/grammarkdown/src/__tests__/resources/specs/test.grammar(16,8): error GM2004: Production 'E' does not have a parameter named 'B'.
+C:/dev/grammarkdown/src/__tests__/resources/specs/test.grammar(16,8): error GM2004: Production 'F' does not have a parameter named 'B'.

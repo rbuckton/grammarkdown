@@ -1,0 +1,638 @@
+<div class="grammar">
+    <a name="SourceCharacter"></a><div class="production">
+        <span class="nonterminal">SourceCharacter</span><span class="punctuation"> ::</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="c64b38bd"></a><span class="rhs"><span class="prose">any Unicode code point</span></span>
+            </div>
+        </div>
+    </div>
+    <a name="LineTerminator"></a><div class="production">
+        <span class="nonterminal">LineTerminator</span><span class="punctuation"> ::</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="7b39d525"></a><span class="rhs"><span class="unicode-character-literal">&lt;LF&gt;</span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="435c91d5"></a><span class="rhs"><span class="unicode-character-literal">&lt;CR&gt;</span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="10022ab3"></a><span class="rhs"><span class="unicode-character-literal">&lt;LS&gt;</span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="cfc875d1"></a><span class="rhs"><span class="unicode-character-literal">&lt;PS&gt;</span></span>
+            </div>
+        </div>
+    </div>
+    <a name="LineTerminatorSequence"></a><div class="production">
+        <span class="nonterminal">LineTerminatorSequence</span><span class="punctuation"> ::</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="7b39d525"></a><span class="rhs"><span class="unicode-character-literal">&lt;LF&gt;</span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="1e22ed49"></a><span class="rhs"><span class="unicode-character-literal">&lt;CR&gt;</span> <span class="assertion">[<span class="keyword">lookahead</span> ≠ <span class="unicode-character-literal">&lt;LF&gt;</span>]</span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="10022ab3"></a><span class="rhs"><span class="unicode-character-literal">&lt;LS&gt;</span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="cfc875d1"></a><span class="rhs"><span class="unicode-character-literal">&lt;PS&gt;</span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="2da252ec"></a><span class="rhs"><span class="unicode-character-literal">&lt;CR&gt;</span> <span class="unicode-character-literal">&lt;LF&gt;</span></span>
+            </div>
+        </div>
+    </div>
+    <a name="IdentifierName"></a><div class="production">
+        <span class="nonterminal">IdentifierName</span><span class="punctuation"> ::</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="434685ab"></a><span class="rhs"><span class="nonterminal"><a href="#IdentifierStart">IdentifierStart</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="700c1cee"></a><span class="rhs"><span class="nonterminal"><a href="#IdentifierName">IdentifierName</a></span> <span class="nonterminal"><a href="#IdentifierPart">IdentifierPart</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="IdentifierStart"></a><div class="production">
+        <span class="nonterminal">IdentifierStart</span><span class="punctuation"> ::</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="0862e30c"></a><span class="rhs"><span class="nonterminal"><a href="#UnicodeIDStart">UnicodeIDStart</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="07564b94"></a><span class="rhs"><span class="terminal">_</span></span>
+            </div>
+        </div>
+    </div>
+    <a name="IdentifierPart"></a><div class="production">
+        <span class="nonterminal">IdentifierPart</span><span class="punctuation"> ::</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="364ac675"></a><span class="rhs"><span class="nonterminal"><a href="#UnicodeIDContinue">UnicodeIDContinue</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="07564b94"></a><span class="rhs"><span class="terminal">_</span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="60d2dd13"></a><span class="rhs"><span class="unicode-character-literal">&lt;ZWNJ&gt;</span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="cdf80ff5"></a><span class="rhs"><span class="unicode-character-literal">&lt;ZWJ&gt;</span></span>
+            </div>
+        </div>
+    </div>
+    <a name="UnicodeIDStart"></a><div class="production">
+        <span class="nonterminal">UnicodeIDStart</span><span class="punctuation"> ::</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="d2e8afad"></a><span class="rhs"><span class="prose">any Unicode code point with the Unicode property &quot;ID_Start&quot; or &quot;Other_ID_Start&quot;</span></span>
+            </div>
+        </div>
+    </div>
+    <a name="UnicodeIDContinue"></a><div class="production">
+        <span class="nonterminal">UnicodeIDContinue</span><span class="punctuation"> ::</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="75cd6b24"></a><span class="rhs"><span class="prose">any Unicode code point with the Unicode property &quot;ID_Continue&quot; or &quot;Other_ID_Continue&quot;, or &quot;Other_ID_Start&quot;</span></span>
+            </div>
+        </div>
+    </div>
+    <a name="ReservedWord"></a><div class="production">
+        <span class="nonterminal">ReservedWord</span><span class="punctuation"> ::</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="a3926e03"></a><span class="rhs"><span class="nonterminal"><a href="#Keyword">Keyword</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="Keyword"></a><div class="production">
+        <span class="nonterminal">Keyword</span><span class="punctuation"> ::</span>
+        <span class="keyword">one</span> <span class="keyword">of</span>
+        <div class="one-of-list"><span class="terminal">empty</span> <span class="terminal">lookahead</span> <span class="terminal">lexical</span> <span class="terminal">goal</span> <span class="terminal">no</span> <span class="terminal">here</span> <span class="terminal">one</span> <span class="terminal">of</span> <span class="terminal">or</span> <span class="terminal">but</span> <span class="terminal">not</span></div>
+    </div>
+    <a name="DecimalDigit"></a><div class="production">
+        <span class="nonterminal">DecimalDigit</span><span class="punctuation"> ::</span>
+        <span class="keyword">one</span> <span class="keyword">of</span>
+        <div class="one-of-list"><span class="terminal">0</span> <span class="terminal">1</span> <span class="terminal">2</span> <span class="terminal">3</span> <span class="terminal">4</span> <span class="terminal">5</span> <span class="terminal">6</span> <span class="terminal">7</span> <span class="terminal">8</span> <span class="terminal">9</span></div>
+    </div>
+    <a name="HexDigit"></a><div class="production">
+        <span class="nonterminal">HexDigit</span><span class="punctuation"> ::</span>
+        <span class="keyword">one</span> <span class="keyword">of</span>
+        <div class="one-of-list"><span class="terminal">0</span> <span class="terminal">1</span> <span class="terminal">2</span> <span class="terminal">3</span> <span class="terminal">4</span> <span class="terminal">5</span> <span class="terminal">6</span> <span class="terminal">7</span> <span class="terminal">8</span> <span class="terminal">9</span> <span class="terminal">a</span> <span class="terminal">b</span> <span class="terminal">c</span> <span class="terminal">d</span> <span class="terminal">e</span> <span class="terminal">f</span> <span class="terminal">A</span> <span class="terminal">B</span> <span class="terminal">C</span> <span class="terminal">D</span> <span class="terminal">E</span> <span class="terminal">F</span></div>
+    </div>
+    <a name="UnicodeCharacterLiteral"></a><div class="production">
+        <span class="nonterminal">UnicodeCharacterLiteral</span><span class="punctuation"> ::</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="eb4a6a4b"></a><span class="rhs"><span class="terminal">&lt;</span> <span class="nonterminal"><a href="#UnicodeCharacterLiteralChars">UnicodeCharacterLiteralChars</a></span> <span class="terminal">&gt;</span></span>
+            </div>
+        </div>
+    </div>
+    <a name="UnicodeCharacterLiteralChars"></a><div class="production">
+        <span class="nonterminal">UnicodeCharacterLiteralChars</span><span class="punctuation"> ::</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="38ed7616"></a><span class="rhs"><span class="nonterminal"><a href="#UnicodeCharacterLiteralChar">UnicodeCharacterLiteralChar</a></span> <span class="nonterminal"><a href="#UnicodeCharacterLiteralChars">UnicodeCharacterLiteralChars</a></span><span class="opt">opt</span></span>
+            </div>
+        </div>
+    </div>
+    <a name="UnicodeCharacterLiteralChar"></a><div class="production">
+        <span class="nonterminal">UnicodeCharacterLiteralChar</span><span class="punctuation"> ::</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="22948f2e"></a><span class="rhs"><span class="nonterminal"><a href="#SourceCharacter">SourceCharacter</a></span> <span class="keyword">but</span> <span class="keyword">not</span> <span class="keyword">one</span> <span class="keyword">of</span> <span class="terminal">&lt;</span> <span class="keyword">or</span> <span class="terminal">&gt;</span> <span class="keyword">or</span> <span class="nonterminal"><a href="#LineTerminator">LineTerminator</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="Indent"></a><div class="production">
+        <span class="nonterminal">Indent</span><span class="punctuation"> ::</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="e1ed22ce"></a><span class="rhs"><span class="prose">An increase in the indentation depth from the previous line.</span></span>
+            </div>
+        </div>
+    </div>
+    <a name="Dedent"></a><div class="production">
+        <span class="nonterminal">Dedent</span><span class="punctuation"> ::</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="300a16b0"></a><span class="rhs"><span class="prose">A decrease in the indentation depth from the previous line.</span></span>
+            </div>
+        </div>
+    </div>
+    <a name="Terminal"></a><div class="production">
+        <span class="nonterminal">Terminal</span><span class="punctuation"> ::</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="212dbddf"></a><span class="rhs"><span class="terminal">`</span> <span class="terminal">`</span> <span class="terminal">`</span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="242c39ec"></a><span class="rhs"><span class="terminal">`</span> <span class="nonterminal"><a href="#TerminalChars">TerminalChars</a></span> <span class="terminal">`</span></span>
+            </div>
+        </div>
+    </div>
+    <a name="TerminalChars"></a><div class="production">
+        <span class="nonterminal">TerminalChars</span><span class="punctuation"> ::</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="cfc72e14"></a><span class="rhs"><span class="nonterminal"><a href="#TerminalChar">TerminalChar</a></span> <span class="nonterminal"><a href="#TerminalChars">TerminalChars</a></span><span class="opt">opt</span></span>
+            </div>
+        </div>
+    </div>
+    <a name="TerminalChar"></a><div class="production">
+        <span class="nonterminal">TerminalChar</span><span class="punctuation"> ::</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="94153dfd"></a><span class="rhs"><span class="nonterminal"><a href="#SourceCharacter">SourceCharacter</a></span> <span class="keyword">but</span> <span class="keyword">not</span> <span class="keyword">one</span> <span class="keyword">of</span> <span class="terminal">`</span> <span class="keyword">or</span> <span class="nonterminal"><a href="#LineTerminator">LineTerminator</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="Prose"></a><div class="production">
+        <span class="nonterminal">Prose</span><span class="punctuation"> ::</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="a4d5e18a"></a><span class="rhs"><span class="nonterminal"><a href="#ProseLines">ProseLines</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="ProseLines"></a><div class="production">
+        <span class="nonterminal">ProseLines</span><span class="punctuation"> ::</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="5a8416e5"></a><span class="rhs"><span class="nonterminal"><a href="#ProseLine">ProseLine</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="7381e3e8"></a><span class="rhs"><span class="nonterminal"><a href="#ProseLine">ProseLine</a></span> <span class="nonterminal"><a href="#LineTerminatorSequence">LineTerminatorSequence</a></span> <span class="nonterminal"><a href="#ProseLines">ProseLines</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="ProseLine"></a><div class="production">
+        <span class="nonterminal">ProseLine</span><span class="punctuation"> ::</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="a16b392e"></a><span class="rhs"><span class="terminal">&gt;</span> <span class="nonterminal"><a href="#ProseChars">ProseChars</a></span><span class="opt">opt</span></span>
+            </div>
+        </div>
+    </div>
+    <a name="ProseChars"></a><div class="production">
+        <span class="nonterminal">ProseChars</span><span class="punctuation"> ::</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="68b7c295"></a><span class="rhs"><span class="nonterminal"><a href="#ProseChar">ProseChar</a></span> <span class="nonterminal"><a href="#ProseChars">ProseChars</a></span><span class="opt">opt</span></span>
+            </div>
+        </div>
+    </div>
+    <a name="ProseChar"></a><div class="production">
+        <span class="nonterminal">ProseChar</span><span class="punctuation"> ::</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="2d5bdfa7"></a><span class="rhs"><span class="nonterminal"><a href="#SourceCharacter">SourceCharacter</a></span> <span class="keyword">but</span> <span class="keyword">not</span> <span class="nonterminal"><a href="#LineTerminator">LineTerminator</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="Identifier"></a><div class="production">
+        <span class="nonterminal">Identifier</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="bfa5c374"></a><span class="rhs"><span class="nonterminal"><a href="#IdentifierName">IdentifierName</a></span> <span class="keyword">but</span> <span class="keyword">not</span> <span class="nonterminal"><a href="#ReservedWord">ReservedWord</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="Argument"></a><div class="production">
+        <span class="nonterminal">Argument</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="06b6ace8"></a><span class="rhs"><span class="nonterminal"><a href="#Identifier">Identifier</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="Arguments"></a><div class="production">
+        <span class="nonterminal">Arguments</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="78e44c33"></a><span class="rhs"><span class="terminal">(</span> <span class="terminal">)</span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="234fb96b"></a><span class="rhs"><span class="terminal">(</span> <span class="nonterminal"><a href="#ArgumentList">ArgumentList</a></span> <span class="terminal">)</span></span>
+            </div>
+        </div>
+    </div>
+    <a name="ArgumentList"></a><div class="production">
+        <span class="nonterminal">ArgumentList</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="ce5e5792"></a><span class="rhs"><span class="nonterminal"><a href="#Argument">Argument</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="581c256a"></a><span class="rhs"><span class="nonterminal"><a href="#ArgumentList">ArgumentList</a></span> <span class="terminal">,</span> <span class="nonterminal"><a href="#Argument">Argument</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="PrimarySymbol"></a><div class="production">
+        <span class="nonterminal">PrimarySymbol</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="a1f52cdc"></a><span class="rhs"><span class="nonterminal"><a href="#Terminal">Terminal</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="793f8970"></a><span class="rhs"><span class="nonterminal"><a href="#UnicodeCharacterLiteral">UnicodeCharacterLiteral</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="025060f9"></a><span class="rhs"><span class="nonterminal"><a href="#Nonterminal">Nonterminal</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="Nonterminal"></a><div class="production">
+        <span class="nonterminal">Nonterminal</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="967632df"></a><span class="rhs"><span class="nonterminal"><a href="#Identifier">Identifier</a></span> <span class="nonterminal"><a href="#Arguments">Arguments</a></span><span class="opt">opt</span></span>
+            </div>
+        </div>
+    </div>
+    <a name="OptionalSymbol"></a><div class="production">
+        <span class="nonterminal">OptionalSymbol</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="05c72298"></a><span class="rhs"><span class="nonterminal"><a href="#PrimarySymbol">PrimarySymbol</a></span> <span class="terminal">?</span><span class="opt">opt</span></span>
+            </div>
+        </div>
+    </div>
+    <a name="OrClause"></a><div class="production">
+        <span class="nonterminal">OrClause</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="3f20f9ae"></a><span class="rhs"><span class="nonterminal"><a href="#PrimarySymbol">PrimarySymbol</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="01c87b7a"></a><span class="rhs"><span class="nonterminal"><a href="#OrClause">OrClause</a></span> <span class="terminal">or</span> <span class="nonterminal"><a href="#PrimarySymbol">PrimarySymbol</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="OneOfSymbol"></a><div class="production">
+        <span class="nonterminal">OneOfSymbol</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="3f20f9ae"></a><span class="rhs"><span class="nonterminal"><a href="#PrimarySymbol">PrimarySymbol</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="c573547e"></a><span class="rhs"><span class="terminal">one</span> <span class="terminal">of</span> <span class="nonterminal"><a href="#OrClause">OrClause</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="UnarySymbol"></a><div class="production">
+        <span class="nonterminal">UnarySymbol</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="1ea4c20a"></a><span class="rhs"><span class="nonterminal"><a href="#OneOfSymbol">OneOfSymbol</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="ButNotSymbol"></a><div class="production">
+        <span class="nonterminal">ButNotSymbol</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="7b400d1b"></a><span class="rhs"><span class="nonterminal"><a href="#UnarySymbol">UnarySymbol</a></span> <span class="terminal">but</span> <span class="terminal">not</span> <span class="nonterminal"><a href="#UnarySymbol">UnarySymbol</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="BinarySymbol"></a><div class="production">
+        <span class="nonterminal">BinarySymbol</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="711fdb04"></a><span class="rhs"><span class="nonterminal"><a href="#ButNotSymbol">ButNotSymbol</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="4336266b"></a><span class="rhs"><span class="nonterminal"><a href="#UnarySymbol">UnarySymbol</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="SymbolList"></a><div class="production">
+        <span class="nonterminal">SymbolList</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="3f20f9ae"></a><span class="rhs"><span class="nonterminal"><a href="#PrimarySymbol">PrimarySymbol</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="45dd22d9"></a><span class="rhs"><span class="nonterminal"><a href="#SymbolList">SymbolList</a></span> <span class="terminal">,</span> <span class="nonterminal"><a href="#PrimarySymbol">PrimarySymbol</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="SymbolSet"></a><div class="production">
+        <span class="nonterminal">SymbolSet</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="3f4042cc"></a><span class="rhs"><span class="terminal">{</span> <span class="nonterminal"><a href="#SymbolList">SymbolList</a></span> <span class="terminal">}</span></span>
+            </div>
+        </div>
+    </div>
+    <a name="EmptyAssertionClause"></a><div class="production">
+        <span class="nonterminal">EmptyAssertionClause</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="a6f2a968"></a><span class="rhs"><span class="terminal">empty</span></span>
+            </div>
+        </div>
+    </div>
+    <a name="LookaheadEqualsAssertionClause"></a><div class="production">
+        <span class="nonterminal">LookaheadEqualsAssertionClause</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="0594dce2"></a><span class="rhs"><span class="terminal">lookahead</span> <span class="terminal">==</span> <span class="nonterminal"><a href="#PrimarySymbol">PrimarySymbol</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="LookaheadNotEqualsAssertionClause"></a><div class="production">
+        <span class="nonterminal">LookaheadNotEqualsAssertionClause</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="21afcb5a"></a><span class="rhs"><span class="terminal">lookahead</span> <span class="terminal">!=</span> <span class="nonterminal"><a href="#PrimarySymbol">PrimarySymbol</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="LookaheadInAssertionClause"></a><div class="production">
+        <span class="nonterminal">LookaheadInAssertionClause</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="d21a8670"></a><span class="rhs"><span class="terminal">lookahead</span> <span class="terminal">&lt;-</span> <span class="nonterminal"><a href="#SymbolSet">SymbolSet</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="LookaheadNotInAssertionClause"></a><div class="production">
+        <span class="nonterminal">LookaheadNotInAssertionClause</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="175dd806"></a><span class="rhs"><span class="terminal">lookahead</span> <span class="terminal">&lt;!</span> <span class="nonterminal"><a href="#SymbolSet">SymbolSet</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="LookaheadAssertionClause"></a><div class="production">
+        <span class="nonterminal">LookaheadAssertionClause</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="ea4c3682"></a><span class="rhs"><span class="nonterminal"><a href="#LookaheadEqualsAssertionClause">LookaheadEqualsAssertionClause</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="40d68bcb"></a><span class="rhs"><span class="nonterminal"><a href="#LookaheadNotEqualsAssertionClause">LookaheadNotEqualsAssertionClause</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="b407a314"></a><span class="rhs"><span class="nonterminal"><a href="#LookaheadInAssertionClause">LookaheadInAssertionClause</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="bccafc6f"></a><span class="rhs"><span class="nonterminal"><a href="#LookaheadNotInAssertionClause">LookaheadNotInAssertionClause</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="NoSymbolAssertionClause"></a><div class="production">
+        <span class="nonterminal">NoSymbolAssertionClause</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="93da6768"></a><span class="rhs"><span class="terminal">no</span> <span class="nonterminal"><a href="#OrClause">OrClause</a></span> <span class="terminal">here</span></span>
+            </div>
+        </div>
+    </div>
+    <a name="LexicalGoalAssertionClause"></a><div class="production">
+        <span class="nonterminal">LexicalGoalAssertionClause</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="75dfd5be"></a><span class="rhs"><span class="terminal">lexical</span> <span class="terminal">goal</span> <span class="nonterminal"><a href="#PrimarySymbol">PrimarySymbol</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="ParameterValueAssertionClause"></a><div class="production">
+        <span class="nonterminal">ParameterValueAssertionClause</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="0d65c0ec"></a><span class="rhs"><span class="terminal">~</span> <span class="nonterminal"><a href="#Identifier">Identifier</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="4324796f"></a><span class="rhs"><span class="terminal">+</span> <span class="nonterminal"><a href="#Identifier">Identifier</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="AssertionClause"></a><div class="production">
+        <span class="nonterminal">AssertionClause</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="677faf63"></a><span class="rhs"><span class="nonterminal"><a href="#EmptyAssertionClause">EmptyAssertionClause</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="2e322246"></a><span class="rhs"><span class="nonterminal"><a href="#LookaheadAssertionClause">LookaheadAssertionClause</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="9dc22c42"></a><span class="rhs"><span class="nonterminal"><a href="#NoSymbolAssertionClause">NoSymbolAssertionClause</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="1594107c"></a><span class="rhs"><span class="nonterminal"><a href="#LexicalGoalAssertionClause">LexicalGoalAssertionClause</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="83a4e5cc"></a><span class="rhs"><span class="nonterminal"><a href="#ParameterValueAssertionClause">ParameterValueAssertionClause</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="Assertion"></a><div class="production">
+        <span class="nonterminal">Assertion</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="a05028e9"></a><span class="rhs"><span class="terminal">[</span> <span class="nonterminal"><a href="#AssertionClause">AssertionClause</a></span> <span class="terminal">]</span></span>
+            </div>
+        </div>
+    </div>
+    <a name="ProseSpan"></a><div class="production">
+        <span class="nonterminal">ProseSpan</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="097d0715"></a><span class="rhs"><span class="nonterminal"><a href="#Prose">Prose</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="177e1aec"></a><span class="rhs"><span class="nonterminal"><a href="#ProseSpan">ProseSpan</a></span> <span class="nonterminal"><a href="#LineTerminatorSequence">LineTerminatorSequence</a></span> <span class="nonterminal"><a href="#Prose">Prose</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="Symbol"></a><div class="production">
+        <span class="nonterminal">Symbol</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="e03dc251"></a><span class="rhs"><span class="nonterminal"><a href="#Assertion">Assertion</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="db35a295"></a><span class="rhs"><span class="nonterminal"><a href="#BinarySymbol">BinarySymbol</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="SymbolSpan"></a><div class="production">
+        <span class="nonterminal">SymbolSpan</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="e959bc2b"></a><span class="rhs"><span class="nonterminal"><a href="#ProseSpan">ProseSpan</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="695ced9a"></a><span class="rhs"><span class="nonterminal"><a href="#SymbolSpanRest">SymbolSpanRest</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="SymbolSpanRest"></a><div class="production">
+        <span class="nonterminal">SymbolSpanRest</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="f1442de0"></a><span class="rhs"><span class="nonterminal"><a href="#Symbol">Symbol</a></span> <span class="nonterminal"><a href="#SymbolSpanRest">SymbolSpanRest</a></span><span class="opt">opt</span></span>
+            </div>
+        </div>
+    </div>
+    <a name="RightHandSideList"></a><div class="production">
+        <span class="nonterminal">RightHandSideList</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="34e2c10c"></a><span class="rhs"><span class="nonterminal"><a href="#RightHandSide">RightHandSide</a></span> <span class="nonterminal"><a href="#RightHandSideList">RightHandSideList</a></span><span class="opt">opt</span></span>
+            </div>
+        </div>
+    </div>
+    <a name="RightHandSide"></a><div class="production">
+        <span class="nonterminal">RightHandSide</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="5379227e"></a><span class="rhs"><span class="nonterminal"><a href="#SymbolSpan">SymbolSpan</a></span> <span class="nonterminal"><a href="#LineTerminatorSequence">LineTerminatorSequence</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="Terminals"></a><div class="production">
+        <span class="nonterminal">Terminals</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="1a4d4441"></a><span class="rhs"><span class="nonterminal"><a href="#Terminal">Terminal</a></span> <span class="nonterminal"><a href="#Terminals">Terminals</a></span><span class="opt">opt</span></span>
+            </div>
+        </div>
+    </div>
+    <a name="TerminalList"></a><div class="production">
+        <span class="nonterminal">TerminalList</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="814b2520"></a><span class="rhs"><span class="nonterminal"><a href="#Terminals">Terminals</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="19e4c069"></a><span class="rhs"><span class="nonterminal"><a href="#TerminalList">TerminalList</a></span> <span class="nonterminal"><a href="#LineTerminatorSequence">LineTerminatorSequence</a></span> <span class="nonterminal"><a href="#Terminals">Terminals</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="OneOfList"></a><div class="production">
+        <span class="nonterminal">OneOfList</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="f888749c"></a><span class="rhs"><span class="terminal">one</span> <span class="terminal">of</span> <span class="nonterminal"><a href="#Terminals">Terminals</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="32da5eff"></a><span class="rhs"><span class="terminal">one</span> <span class="terminal">of</span> <span class="nonterminal"><a href="#LineTerminatorSequence">LineTerminatorSequence</a></span> <span class="nonterminal"><a href="#Indent">Indent</a></span> <span class="nonterminal"><a href="#TerminalList">TerminalList</a></span> <span class="nonterminal"><a href="#Dedent">Dedent</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="Parameter"></a><div class="production">
+        <span class="nonterminal">Parameter</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="06b6ace8"></a><span class="rhs"><span class="nonterminal"><a href="#Identifier">Identifier</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="ParameterList"></a><div class="production">
+        <span class="nonterminal">ParameterList</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="f699f295"></a><span class="rhs"><span class="nonterminal"><a href="#Parameter">Parameter</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="7a714dd4"></a><span class="rhs"><span class="nonterminal"><a href="#ParameterList">ParameterList</a></span> <span class="terminal">,</span> <span class="nonterminal"><a href="#Parameter">Parameter</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="Parameters"></a><div class="production">
+        <span class="nonterminal">Parameters</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="9fe02178"></a><span class="rhs"><span class="terminal">(</span> <span class="nonterminal"><a href="#ParameterList">ParameterList</a></span> <span class="terminal">)</span></span>
+            </div>
+        </div>
+    </div>
+    <a name="Production"></a><div class="production">
+        <span class="nonterminal">Production</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="d2040e0a"></a><span class="rhs"><span class="nonterminal"><a href="#Identifier">Identifier</a></span> <span class="nonterminal"><a href="#Parameters">Parameters</a></span><span class="opt">opt</span> <span class="terminal">:</span> <span class="nonterminal"><a href="#OneOfList">OneOfList</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="5478e70a"></a><span class="rhs"><span class="nonterminal"><a href="#Identifier">Identifier</a></span> <span class="nonterminal"><a href="#Parameters">Parameters</a></span><span class="opt">opt</span> <span class="terminal">:</span> <span class="nonterminal"><a href="#RightHandSide">RightHandSide</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="baa427d7"></a><span class="rhs"><span class="nonterminal"><a href="#Identifier">Identifier</a></span> <span class="nonterminal"><a href="#Parameters">Parameters</a></span><span class="opt">opt</span> <span class="terminal">:</span> <span class="nonterminal"><a href="#LineTerminatorSequence">LineTerminatorSequence</a></span> <span class="nonterminal"><a href="#Indent">Indent</a></span> <span class="nonterminal"><a href="#RightHandSideList">RightHandSideList</a></span> <span class="nonterminal"><a href="#Dedent">Dedent</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="SourceElement"></a><div class="production">
+        <span class="nonterminal">SourceElement</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="37b9c04c"></a><span class="rhs"><span class="assertion">[empty]</span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="df70fc79"></a><span class="rhs"><span class="nonterminal"><a href="#Production">Production</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="SourceElements"></a><div class="production">
+        <span class="nonterminal">SourceElements</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="3e0c8782"></a><span class="rhs"><span class="nonterminal"><a href="#SourceElement">SourceElement</a></span> <span class="nonterminal"><a href="#SourceElements">SourceElements</a></span><span class="opt">opt</span></span>
+            </div>
+        </div>
+    </div>
+    <a name="SourceFile"></a><div class="production">
+        <span class="nonterminal">SourceFile</span><span class="punctuation"> :</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="63962636"></a><span class="rhs"><span class="nonterminal"><a href="#SourceElements">SourceElements</a></span></span>
+            </div>
+        </div>
+    </div>
+</div>

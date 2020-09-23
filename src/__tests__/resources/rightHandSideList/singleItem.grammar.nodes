@@ -1,0 +1,9 @@
+/// C:\dev\grammarkdown\src\__tests__\resources\rightHandSideList\singleItem.grammar:
+(1,1)SyntaxKind[SourceFile](filename = "singleItem.grammar")
+  (1,1)SyntaxKind[Production]
+    (1,1)SyntaxKind[Identifier](text = "A")
+    (1,2)SyntaxKind[ColonToken]
+    (2,5)SyntaxKind[RightHandSideList]
+      (2,5)SyntaxKind[RightHandSide]
+        (2,5)SyntaxKind[SymbolSpan]
+          (2,5)SyntaxKind[Terminal](text = "a")

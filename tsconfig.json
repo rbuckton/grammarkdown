@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "target": "es2018",
+        "lib": ["es2018"],
+        "module": "commonjs",
+        "outDir": "dist",
+        "rootDir": "src",
+        "types": ["node", "jest"],
+        "sourceMap": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "declaration": true,
+        "strict": true,
+        "stripInternal": true,
+        "noUnusedLocals": true
+    },
+    "include": [
+        "src/**/*.ts"
+    ]
+}

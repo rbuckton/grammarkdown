@@ -1,0 +1,3 @@
+/// C:\dev\grammarkdown\src\__tests__\resources\html\aroundProduction.grammar:
+C:/dev/grammarkdown/src/__tests__/resources/html/aroundProduction.grammar(9,16): error GM1010: HTML trivia not allowed here.
+C:/dev/grammarkdown/src/__tests__/resources/html/aroundProduction.grammar(12,16): error GM1010: HTML trivia not allowed here.

@@ -1,0 +1,8 @@
+/// C:\dev\grammarkdown\src\__tests__\resources\collapsed\multiple.grammar:
+SyntaxKind[Identifier](1,1): A
+SyntaxKind[ColonToken](1,2): :
+SyntaxKind[Terminal](1,4): `a`
+SyntaxKind[Identifier](2,1): B
+SyntaxKind[ColonToken](2,2): :
+SyntaxKind[Terminal](2,4): `b`
+SyntaxKind[EndOfFileToken](2,7): «EndOfFileToken»

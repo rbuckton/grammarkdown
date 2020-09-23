@@ -1,0 +1,3 @@
+/// C:\dev\grammarkdown\src\__tests__\resources\parameters\noUnusedParameters.grammar:
+C:/dev/grammarkdown/src/__tests__/resources/parameters/noUnusedParameters.grammar(4,5): error GM2008: Parameter 'A' is unused.
+C:/dev/grammarkdown/src/__tests__/resources/parameters/noUnusedParameters.grammar(7,5): error GM2008: Parameter 'A' is unused.

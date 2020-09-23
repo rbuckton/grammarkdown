@@ -13,6 +13,8 @@ import {
     Position
 } from "./types";
 import {
+    isTextContentKind,
+    isTokenKind,
     SyntaxKind
 } from "./tokens";
 
@@ -141,6 +143,15 @@ export class NodeNavigator {
      */
     public isArray(): boolean {
         return this._currentArray !== undefined;
+    }
+
+    /**
+     * Returns a value indicating whether the focus of the navigator points to either a {@link Token} or a {@link TextContent}.
+     */
+    public isToken(): boolean {
+        const kind = this.getKind();
+        return isTokenKind(kind)
+            || isTextContentKind(kind);
     }
 
     /**

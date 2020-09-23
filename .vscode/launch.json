@@ -14,45 +14,48 @@
             "smartStep": true,
         },
         {
-            "name": "Launch Mocha",
             "type": "node",
             "request": "launch",
-            "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
-            "stopOnEntry": false,
+            "name": "Jest All",
+            "program": "${workspaceFolder}/node_modules/.bin/jest",
             "args": [
-                "--no-timeouts",
-                "--colors",
-                "${workspaceRoot}/dist/tests/index.js"
+                "--runInBand",
             ],
-            "cwd": "${workspaceRoot}",
-            "runtimeExecutable": null,
-            "runtimeArgs": ["--nolazy"],
-            "env": { "NODE_ENV": "development" },
-            "outFiles": ["${workspaceFolder}/dist/**/*"],
-            "sourceMaps": true,
+            "console": "internalConsole",
+            "disableOptimisticBPs": true,
+            "windows": {
+                "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+            },
             "smartStep": true,
-            "preLaunchTask": "gulp: build"
+            "skipFiles": [
+                "<node_internals>/**",
+                "async_hooks.js",
+                "${workspaceFolder}/node_modules/jest/**",
+                "${workspaceFolder}/node_modules/jest-util/**"
+            ]
         },
         {
-            "name": "Launch Mocha (current file)",
             "type": "node",
             "request": "launch",
-            "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
-            "stopOnEntry": false,
+            "name": "Jest Current File",
+            "program": "${workspaceFolder}/node_modules/.bin/jest",
             "args": [
-                "--no-timeouts",
-                "--colors",
-                "-g", "${fileBasenameNoExtension}",
-                "${workspaceRoot}/dist/tests/index.js"
+                "--runInBand",
+                "--testPathPattern",
+                "${fileBasename}"
             ],
-            "cwd": "${workspaceRoot}",
-            "runtimeExecutable": null,
-            "runtimeArgs": ["--nolazy"],
-            "env": { "NODE_ENV": "development" },
-            "outFiles": ["${workspaceFolder}/dist/**/*"],
-            "sourceMaps": true,
+            "console": "internalConsole",
+            "disableOptimisticBPs": true,
+            "windows": {
+                "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+            },
             "smartStep": true,
-            "preLaunchTask": "gulp: build"
+            "skipFiles": [
+                "<node_internals>/**",
+                "async_hooks.js",
+                "${workspaceFolder}/node_modules/jest/**",
+                "${workspaceFolder}/node_modules/jest-util/**"
+            ]
         }
     ]
 }
