@@ -1765,7 +1765,7 @@ export class Line extends MetaElementBase<SyntaxKind.Line> {
             case 0: return this.atToken;
             case 1: return this.lineKeyword;
             case 2: return this.number;
-            case 4: return this.path;
+            case 3: return this.path;
         }
         return undefined;
     }
