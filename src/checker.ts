@@ -795,6 +795,9 @@ export class Checker {
                     case SyntaxKind.UnicodeCharacterLiteral:
                         if (!node.next) return true;
                         node = node.next;
+                        break;
+                    default:
+                        return false;
                 }
             }
             return false;

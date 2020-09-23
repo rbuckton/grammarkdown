@@ -165,12 +165,13 @@ export class NodeNavigator {
     }
 
     /**
-     * Returns a value indicating whether the focus of the navigator points to either a {@link Token} or a {@link TextContent}.
+     * Returns a value indicating whether the focus of the navigator points to either a {@link Token}, {@link TextContentNode}, or {@link InvalidSymbol}.
      */
     public isToken(): boolean {
         const kind = this.getKind();
         return isTokenKind(kind)
-            || isTextContentKind(kind);
+            || isTextContentKind(kind)
+            || kind === SyntaxKind.InvalidSymbol;
     }
 
     /**
@@ -247,6 +248,8 @@ export class NodeNavigator {
      * @returns `true` if the focused {@link Node} matches; otherwise, `false`.
      */
     public isMatch(kind: SyntaxKind): boolean;
+    /* @internal */
+    public isMatch(predicateOrKind?: SyntaxKind | ((node: Node) => boolean)): boolean;
     public isMatch(predicateOrKind: SyntaxKind | ((node: Node) => boolean)): boolean {
         return matchPredicateOrKind(this._currentNode, predicateOrKind);
     }
@@ -745,10 +748,23 @@ export class NodeNavigator {
     }
 
     /**
-     * Moves the focus of the navigator to the first {@link Token} or {@link TextContent} descendant (or self) of the focused {@link Node}.
-     * @returns `true` if the current focus is a {@link Token} or {@link TextContent} or if the navigator's focus changed; otherwise, `false`.
+     * Moves the focus of the navigator to the first {@link Token}, {@link TextContent} or {@link InvalidSymbol} descendant (or self) of the focused {@link Node}.
+     * @returns `true` if the current focus is a {@link Token}, {@link TextContent} or {@link InvalidSymbol} or if the navigator's focus changed; otherwise, `false`.
      */
-    public moveToFirstToken() {
+    public moveToFirstToken(): boolean;
+    /**
+     * Moves the focus of the navigator to the first {@link Token}, {@link TextContent} or {@link InvalidSymbol} descendant (or self) of the focused {@link Node}.
+     * @param predicate A callback used to match a token node.
+     * @returns `true` if the current focus is a {@link Token}, {@link TextContent} or {@link InvalidSymbol} or if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToFirstToken(predicate: (node: Node) => boolean): boolean;
+    /**
+     * Moves the focus of the navigator to the first {@link Token}, {@link TextContent} or {@link InvalidSymbol} descendant (or self) of the focused {@link Node}.
+     * @param kind The {@link SyntaxKind} that the previous token must match.
+     * @returns `true` if the current focus is a {@link Token}, {@link TextContent} or {@link InvalidSymbol} or if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToFirstToken(kind: SyntaxKind): boolean;
+    public moveToFirstToken(predicateOrKind?: SyntaxKind | ((node: Node) => boolean)) {
         if (this.isToken()) return true;
         const navigator = this.clone();
         while (!navigator.isToken()) {
@@ -756,14 +772,27 @@ export class NodeNavigator {
                 return false;
             }
         }
-        return this.moveTo(navigator);
+        return navigator.isMatch(predicateOrKind) && this.moveTo(navigator);
     }
 
     /**
-     * Moves the focus of the navigator to the last {@link Token} or {@link TextContent} descendant (or self) of the focused {@link Node}.
-     * @returns `true` if the current focus is a {@link Token} or {@link TextContent} or if the navigator's focus changed; otherwise, `false`.
+     * Moves the focus of the navigator to the last {@link Token}, {@link TextContent} or {@link InvalidSymbol} descendant (or self) of the focused {@link Node}.
+     * @returns `true` if the current focus is a {@link Token}, {@link TextContent} or {@link InvalidSymbol} or if the navigator's focus changed; otherwise, `false`.
      */
-    public moveToLastToken() {
+    public moveToLastToken(): boolean;
+    /**
+     * Moves the focus of the navigator to the last {@link Token}, {@link TextContent} or {@link InvalidSymbol} descendant (or self) of the focused {@link Node}.
+     * @param predicate A callback used to match a token node.
+     * @returns `true` if the current focus is a {@link Token}, {@link TextContent} or {@link InvalidSymbol} or if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToLastToken(predicate: (node: Node) => boolean): boolean;
+    /**
+     * Moves the focus of the navigator to the last {@link Token}, {@link TextContent} or {@link InvalidSymbol} descendant (or self) of the focused {@link Node}.
+     * @param kind The {@link SyntaxKind} that the previous token must match.
+     * @returns `true` if the current focus is a {@link Token}, {@link TextContent} or {@link InvalidSymbol} or if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToLastToken(kind: SyntaxKind): boolean;
+    public moveToLastToken(predicateOrKind?: SyntaxKind | ((node: Node) => boolean)) {
         if (this.isToken()) return true;
         const navigator = this.clone();
         while (!navigator.isToken()) {
@@ -771,14 +800,27 @@ export class NodeNavigator {
                 return false;
             }
         }
-        return this.moveTo(navigator);
+        return navigator.isMatch(predicateOrKind) && this.moveTo(navigator);
     }
 
     /**
-     * Moves the focus of the navigator to the next {@link Token} or {@link TextContent} following the focused {@link Node} in document order.
-     * @returns `true` if the current focus is a {@link Token} or {@link TextContent} or if the navigator's focus changed; otherwise, `false`.
+     * Moves the focus of the navigator to the next {@link Token}, {@link TextContent} or {@link InvalidSymbol} following the focused {@link Node} in document order.
+     * @returns `true` if the current focus is a {@link Token}, {@link TextContent} or {@link InvalidSymbol} or if the navigator's focus changed; otherwise, `false`.
      */
-    public moveToNextToken() {
+    public moveToNextToken(): boolean;
+    /**
+     * Moves the focus of the navigator to the next {@link Token}, {@link TextContent} or {@link InvalidSymbol} following the focused {@link Node} in document order.
+     * @param predicate A callback used to match a token node.
+     * @returns `true` if the current focus is a {@link Token}, {@link TextContent} or {@link InvalidSymbol} or if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToNextToken(predicate: (node: Node) => boolean): boolean;
+    /**
+     * Moves the focus of the navigator to the next {@link Token}, {@link TextContent} or {@link InvalidSymbol} following the focused {@link Node} in document order.
+     * @param kind The {@link SyntaxKind} that the previous token must match.
+     * @returns `true` if the current focus is a {@link Token}, {@link TextContent} or {@link InvalidSymbol} or if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToNextToken(kind: SyntaxKind): boolean;
+    public moveToNextToken(predicateOrKind?: SyntaxKind | ((node: Node) => boolean)) {
         const navigator = this.clone();
         while (!navigator.moveToNextSibling()) {
             if (!navigator.moveToParent()) {
@@ -788,14 +830,27 @@ export class NodeNavigator {
         if (!navigator.moveToFirstToken()) {
             return false;
         }
-        return this.moveTo(navigator);
+        return navigator.isMatch(predicateOrKind) && this.moveTo(navigator);
     }
 
     /**
-     * Moves the focus of the navigator to the previous {@link Token} or {@link TextContent} preceding the focused {@link Node} in document order.
-     * @returns `true` if the current focus is a {@link Token} or {@link TextContent} or if the navigator's focus changed; otherwise, `false`.
+     * Moves the focus of the navigator to the previous {@link Token}, {@link TextContent} or {@link InvalidSymbol} preceding the focused {@link Node} in document order.
+     * @returns `true` if the current focus is a {@link Token}, {@link TextContent} or {@link InvalidSymbol} or if the navigator's focus changed; otherwise, `false`.
      */
-    public moveToPreviousToken() {
+    public moveToPreviousToken(): boolean;
+    /**
+     * Moves the focus of the navigator to the previous {@link Token}, {@link TextContent} or {@link InvalidSymbol} preceding the focused {@link Node} in document order.
+     * @param predicate A callback used to match a token node.
+     * @returns `true` if the current focus is a {@link Token}, {@link TextContent} or {@link InvalidSymbol} or if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToPreviousToken(predicate: (node: Node) => boolean): boolean;
+    /**
+     * Moves the focus of the navigator to the previous {@link Token}, {@link TextContent} or {@link InvalidSymbol} preceding the focused {@link Node} in document order.
+     * @param kind The {@link SyntaxKind} that the previous token must match.
+     * @returns `true` if the current focus is a {@link Token}, {@link TextContent} or {@link InvalidSymbol} or if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToPreviousToken(kind: SyntaxKind): boolean;
+    public moveToPreviousToken(predicateOrKind?: SyntaxKind | ((node: Node) => boolean)) {
         const navigator = this.clone();
         while (!navigator.moveToPreviousSibling()) {
             if (!navigator.moveToParent()) {
@@ -805,7 +860,7 @@ export class NodeNavigator {
         if (!navigator.moveToLastToken()) {
             return false;
         }
-        return this.moveTo(navigator);
+        return navigator.isMatch(predicateOrKind) && this.moveTo(navigator);
     }
 
     private _beforeNavigate() {

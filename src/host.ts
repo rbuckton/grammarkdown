@@ -422,6 +422,7 @@ function resolveBuiltInGrammar(name: string) {
         builtinGrammars = new Map<string, string>([
             ["ES6", require.resolve("../grammars/es2015.grammar")],
             ["ES2015", require.resolve("../grammars/es2015.grammar")],
+            ["ES2020", require.resolve("../grammars/es2020.grammar")],
             ["TS", require.resolve("../grammars/typescript.grammar")],
             ["TYPESCRIPT", require.resolve("../grammars/typescript.grammar")],
         ]);

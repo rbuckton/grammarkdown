@@ -74,7 +74,7 @@ export class Emitter {
         return Promise.resolve(writeFile(file, text, cancelToken));
     }
 
-    public emitString(node: SourceFile, resolver: Resolver, diagnostics: DiagnosticMessages, cancelable?: Cancelable): string {
+    public emitString(sourceFile: SourceFile, resolver: Resolver, diagnostics: DiagnosticMessages, cancelable?: Cancelable, node: Node = sourceFile): string {
         const cancelToken = toCancelToken(cancelable);
         cancelToken?.throwIfSignaled();
 
@@ -93,7 +93,7 @@ export class Emitter {
             this.resolver = resolver;
             this.diagnostics = new DiagnosticMessages();
             this.writer = this.createWriter(this.options);
-            this.sourceFile = node;
+            this.sourceFile = sourceFile;
             this.triviaPos = 0;
             this.emitNode(node);
             text = this.writer.toString();
@@ -188,10 +188,18 @@ export class Emitter {
         this.afterEmitNode(node);
     }
 
-    protected emitSourceFile(node: SourceFile) {
-        for (const element of node.elements) {
-            this.emitNode(element);
+    protected emitChildren(node: Node) {
+        this.emitNodes(node.children());
+    }
+
+    protected emitNodes(nodes: Iterable<Node>) {
+        for (const node of nodes) {
+            this.emitNode(node);
         }
+    }
+
+    protected emitSourceFile(node: SourceFile) {
+        this.emitChildren(node);
     }
 
     protected emitKeyword(node: Node) {
@@ -200,8 +208,12 @@ export class Emitter {
 
     protected emitToken(node: Node | undefined) {
         if (node) {
-            this.writer.write(tokenToString(node.kind));
+            this.emitTokenKind(node.kind);
         }
+    }
+
+    protected emitTokenKind(kind: SyntaxKind) {
+        this.writer.write(tokenToString(kind));
     }
 
     protected emitPlaceholder(node: PlaceholderSymbol) {
@@ -223,9 +235,7 @@ export class Emitter {
     }
 
     protected emitProse(node: Prose) {
-        for (const child of node.children()) {
-            this.emitNode(child);
-        }
+        this.emitChildren(node);
     }
 
     protected emitIdentifier(node: Identifier) {
@@ -233,33 +243,23 @@ export class Emitter {
     }
 
     protected emitParameter(node: Parameter): void {
-        for (const child of node.children()) {
-            this.emitNode(child);
-        }
+        this.emitChildren(node);
     }
 
     protected emitParameterList(node: ParameterList): void {
-        for (const child of node.children()) {
-            this.emitNode(child);
-        }
+        this.emitChildren(node);
     }
 
     protected emitArgument(node: Argument): void {
-        for (const child of node.children()) {
-            this.emitNode(child);
-        }
+        this.emitChildren(node);
     }
 
     protected emitArgumentList(node: ArgumentList): void {
-        for (const child of node.children()) {
-            this.emitNode(child);
-        }
+        this.emitChildren(node);
     }
 
     protected emitProduction(node: Production): void {
-        for (const child of node.children()) {
-            this.emitNode(child);
-        }
+        this.emitChildren(node);
     }
 
     protected emitImport(node: Import): void {
@@ -272,90 +272,62 @@ export class Emitter {
     }
 
     protected emitOneOfList(node: OneOfList): void {
-        for (const child of node.children()) {
-            this.emitNode(child);
-        }
+        this.emitChildren(node);
     }
 
     protected emitRightHandSideList(node: RightHandSideList): void {
-        for (const child of node.children()) {
-            this.emitNode(child);
-        }
+        this.emitChildren(node);
     }
 
     protected emitRightHandSide(node: RightHandSide): void {
-        for (const child of node.children()) {
-            this.emitNode(child);
-        }
+        this.emitChildren(node);
     }
 
     protected emitSymbolSpan(node: SymbolSpan): void {
-        for (const child of node.children()) {
-            this.emitNode(child);
-        }
+        this.emitChildren(node);
     }
 
     protected emitUnicodeCharacterRange(node: UnicodeCharacterRange): void {
-        for (const child of node.children()) {
-            this.emitNode(child);
-        }
+        this.emitChildren(node);
     }
 
     protected emitButNotSymbol(node: ButNotSymbol): void {
-        for (const child of node.children()) {
-            this.emitNode(child);
-        }
+        this.emitChildren(node);
     }
 
     protected emitOneOfSymbol(node: OneOfSymbol): void {
-        for (const child of node.children()) {
-            this.emitNode(child);
-        }
+        this.emitChildren(node);
     }
 
     protected emitNonterminal(node: Nonterminal): void {
-        for (const child of node.children()) {
-            this.emitNode(child);
-        }
+        this.emitChildren(node);
     }
 
     protected emitSymbolSet(node: SymbolSet): void {
-        for (const child of node.children()) {
-            this.emitNode(child);
-        }
+        this.emitChildren(node);
     }
 
     protected emitEmptyAssertion(node: EmptyAssertion): void {
     }
 
     protected emitLookaheadAssertion(node: LookaheadAssertion): void {
-        for (const child of node.children()) {
-            this.emitNode(child);
-        }
+        this.emitChildren(node);
     }
 
     protected emitLexicalGoalAssertion(node: LexicalGoalAssertion): void {
-        for (const child of node.children()) {
-            this.emitNode(child);
-        }
+        this.emitChildren(node);
     }
 
     protected emitNoSymbolHereAssertion(node: NoSymbolHereAssertion): void {
-        for (const child of node.children()) {
-            this.emitNode(child);
-        }
+        this.emitChildren(node);
     }
 
     protected emitConstraints(node: Constraints): void {
-        for (const child of node.children()) {
-            this.emitNode(child);
-        }
+        this.emitChildren(node);
     }
 
     protected emitProseAssertion(node: ProseAssertion): void {
-        for (const child of node.children()) {
-            this.emitNode(child);
-        }
+        this.emitChildren(node);
     }
 
     protected emitProseFragmentLiteral(node: ProseFragmentLiteral): void {

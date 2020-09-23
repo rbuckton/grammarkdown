@@ -34,7 +34,7 @@ export * from "./scanner";
 export * from "./parser";
 export * from "./binder";
 export * from "./checker";
-export * from "./emitter/index";
+export * from "./emitter";
 export * from "./stringwriter";
 export * from "./grammar";
 export * from "./navigator";

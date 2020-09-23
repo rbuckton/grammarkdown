@@ -9,3 +9,4 @@ export * from "./emitter";
 export * from "./ecmarkup";
 export * from "./html";
 export * from "./markdown";
+export * from "./grammarkdown";
