@@ -23,6 +23,7 @@ import {
 } from "../nodes";
 
 export function writeTokens(test: string, scanner: Scanner, lineMap: LineMap, baselines?: string[]) {
+    debugger;
     let text: string = `/// ${test}:\r\n`;
     let token: SyntaxKind;
     do {
@@ -58,6 +59,7 @@ export function writeTokens(test: string, scanner: Scanner, lineMap: LineMap, ba
 }
 
 export function writeDiagnostics(test: string, diagnostics: DiagnosticMessages, baselines?: string[]) {
+    debugger;
     let text: string | undefined = undefined;
     diagnostics.forEach(message => {
         if (!text) {
@@ -70,6 +72,7 @@ export function writeDiagnostics(test: string, diagnostics: DiagnosticMessages, 
 }
 
 export function writeNodes(test: string, sourceFile: SourceFile, baselines?: string[]) {
+    debugger;
     let text = `/// ${test}:\r\n`;
     let indents = ["", "  "];
     let indentDepth = 0;
@@ -95,6 +98,7 @@ export function writeNodes(test: string, sourceFile: SourceFile, baselines?: str
 }
 
 export function writeOutput(test: string, extname: string, text: string | undefined, baselines?: string[]) {
+    debugger;
     return writeBaseline(test + extname, text, baselines);
 }
 
@@ -128,6 +132,7 @@ export function compareBaselines(baselines: string[]) {
 }
 
 export function compareBaseline(file: string) {
+    debugger;
     let { localFile, referenceFile } = resolveBaseline(file);
     let localText = existsSync(localFile) ? readFileSync(localFile, "utf8") : undefined;
     let referenceText = existsSync(referenceFile) ? readFileSync(referenceFile, "utf8") : undefined;

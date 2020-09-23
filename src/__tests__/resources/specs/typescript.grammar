@@ -1,6 +1,6 @@
 // @full: true
 @define noStrictParametricProductions true
-@import "es6.grammar"
+@import "es2015"
 
 // A.1 Types
 TypeParameters :
