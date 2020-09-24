@@ -29,7 +29,7 @@
 @line 10352 "https://github.com/tc39/ecma262/raw/es2020/spec.html"
 
       SourceCharacter ::
-        &gt; any Unicode code point
+        > any Unicode code point
 
 @line 10510 "https://github.com/tc39/ecma262/raw/es2020/spec.html"
 
@@ -68,28 +68,28 @@
 @line 10718 "https://github.com/tc39/ecma262/raw/es2020/spec.html"
 
       WhiteSpace ::
-        &lt;TAB&gt;
-        &lt;VT&gt;
-        &lt;FF&gt;
-        &lt;SP&gt;
-        &lt;NBSP&gt;
-        &lt;ZWNBSP&gt;
-        &lt;USP&gt;
+        <TAB>
+        <VT>
+        <FF>
+        <SP>
+        <NBSP>
+        <ZWNBSP>
+        <USP>
 
 @line 10799 "https://github.com/tc39/ecma262/raw/es2020/spec.html"
 
       LineTerminator ::
-        &lt;LF&gt;
-        &lt;CR&gt;
-        &lt;LS&gt;
-        &lt;PS&gt;
+        <LF>
+        <CR>
+        <LS>
+        <PS>
 
       LineTerminatorSequence ::
-        &lt;LF&gt;
-        &lt;CR&gt; [lookahead != &lt;LF&gt;]
-        &lt;LS&gt;
-        &lt;PS&gt;
-        &lt;CR&gt; &lt;LF&gt;
+        <LF>
+        <CR> [lookahead != <LF>]
+        <LS>
+        <PS>
+        <CR> <LF>
 
 @line 10821 "https://github.com/tc39/ecma262/raw/es2020/spec.html"
 
@@ -148,14 +148,14 @@
         UnicodeIDContinue
         `$`
         `\` UnicodeEscapeSequence
-        &lt;ZWNJ&gt;
-        &lt;ZWJ&gt;
+        <ZWNJ>
+        <ZWJ>
 
       UnicodeIDStart ::
-        &gt; any Unicode code point with the Unicode property &ldquo;ID_Start&rdquo;
+        > any Unicode code point with the Unicode property “ID_Start”
 
       UnicodeIDContinue ::
-        &gt; any Unicode code point with the Unicode property &ldquo;ID_Continue&rdquo;
+        > any Unicode code point with the Unicode property “ID_Continue”
 
 @line 10970 "https://github.com/tc39/ecma262/raw/es2020/spec.html"
 
@@ -182,22 +182,22 @@
         OtherPunctuator
 
       OptionalChainingPunctuator ::
-        `?.` [lookahead &lt;! DecimalDigit]
+        `?.` [lookahead <! DecimalDigit]
 
       OtherPunctuator :: one of
         `{` `(` `)` `[` `]`
         `.` `...` `;` `,`
-        `&lt;` `&gt;` `&lt;=` `&gt;=`
+        `<` `>` `<=` `>=`
         `==` `!=` `===` `!==`
         `+` `-` `*` `%` `**`
         `++` `--`
-        `&lt;&lt;` `&gt;&gt;` `&gt;&gt;&gt;`
-        `&amp;` `|` `^`
+        `<<` `>>` `>>>`
+        `&` `|` `^`
         `!` `~`
-        `&amp;&amp;` `||` `??`
+        `&&` `||` `??`
         `?` `:`
-        `=` `+=` `-=` `*=` `%=` `**=` `&lt;&lt;=` `&gt;&gt;=` `&gt;&gt;&gt;=` `&amp;=` `|=` `^=`
-        `=&gt;`
+        `=` `+=` `-=` `*=` `%=` `**=` `<<=` `>>=` `>>>=` `&=` `|=` `^=`
+        `=>`
 
       DivPunctuator ::
         `/`
@@ -314,15 +314,15 @@
 
         DoubleStringCharacter ::
           SourceCharacter but not one of `"` or `\` or LineTerminator
-          &lt;LS&gt;
-          &lt;PS&gt;
+          <LS>
+          <PS>
           `\` EscapeSequence
           LineContinuation
 
         SingleStringCharacter ::
           SourceCharacter but not one of `'` or `\` or LineTerminator
-          &lt;LS&gt;
-          &lt;PS&gt;
+          <LS>
+          <PS>
           `\` EscapeSequence
           LineContinuation
 
@@ -331,7 +331,7 @@
 
         EscapeSequence ::
           CharacterEscapeSequence
-          `0` [lookahead &lt;! DecimalDigit]
+          `0` [lookahead <! DecimalDigit]
           HexEscapeSequence
           UnicodeEscapeSequence
 
@@ -442,21 +442,21 @@
         NotEscapeSequence ::
           `0` DecimalDigit
           DecimalDigit but not `0`
-          `x` [lookahead &lt;! HexDigit]
-          `x` HexDigit [lookahead &lt;! HexDigit]
-          `u` [lookahead &lt;! HexDigit] [lookahead != `{`]
-          `u` HexDigit [lookahead &lt;! HexDigit]
-          `u` HexDigit HexDigit [lookahead &lt;! HexDigit]
-          `u` HexDigit HexDigit HexDigit [lookahead &lt;! HexDigit]
-          `u` `{` [lookahead &lt;! HexDigit]
-          `u` `{` NotCodePoint [lookahead &lt;! HexDigit]
-          `u` `{` CodePoint [lookahead &lt;! HexDigit] [lookahead != `}`]
+          `x` [lookahead <! HexDigit]
+          `x` HexDigit [lookahead <! HexDigit]
+          `u` [lookahead <! HexDigit] [lookahead != `{`]
+          `u` HexDigit [lookahead <! HexDigit]
+          `u` HexDigit HexDigit [lookahead <! HexDigit]
+          `u` HexDigit HexDigit HexDigit [lookahead <! HexDigit]
+          `u` `{` [lookahead <! HexDigit]
+          `u` `{` NotCodePoint [lookahead <! HexDigit]
+          `u` `{` CodePoint [lookahead <! HexDigit] [lookahead != `}`]
 
         NotCodePoint ::
-          HexDigits [> but only if MV of |HexDigits| &gt; 0x10FFFF]
+          HexDigits [> but only if MV of |HexDigits| > 0x10FFFF]
 
         CodePoint ::
-          HexDigits [> but only if MV of |HexDigits| &le; 0x10FFFF]
+          HexDigits [> but only if MV of |HexDigits| < 0x10FFFF]
 
 @line 12204 "https://github.com/tc39/ecma262/raw/es2020/spec.html"
 
@@ -718,18 +718,18 @@
 
       ShiftExpression[Yield, Await] :
         AdditiveExpression[?Yield, ?Await]
-        ShiftExpression[?Yield, ?Await] `&lt;&lt;` AdditiveExpression[?Yield, ?Await]
-        ShiftExpression[?Yield, ?Await] `&gt;&gt;` AdditiveExpression[?Yield, ?Await]
-        ShiftExpression[?Yield, ?Await] `&gt;&gt;&gt;` AdditiveExpression[?Yield, ?Await]
+        ShiftExpression[?Yield, ?Await] `<` AdditiveExpression[?Yield, ?Await]
+        ShiftExpression[?Yield, ?Await] `>` AdditiveExpression[?Yield, ?Await]
+        ShiftExpression[?Yield, ?Await] `>` AdditiveExpression[?Yield, ?Await]
 
 @line 14901 "https://github.com/tc39/ecma262/raw/es2020/spec.html"
 
       RelationalExpression[In, Yield, Await] :
         ShiftExpression[?Yield, ?Await]
-        RelationalExpression[?In, ?Yield, ?Await] `&lt;` ShiftExpression[?Yield, ?Await]
-        RelationalExpression[?In, ?Yield, ?Await] `&gt;` ShiftExpression[?Yield, ?Await]
-        RelationalExpression[?In, ?Yield, ?Await] `&lt;=` ShiftExpression[?Yield, ?Await]
-        RelationalExpression[?In, ?Yield, ?Await] `&gt;=` ShiftExpression[?Yield, ?Await]
+        RelationalExpression[?In, ?Yield, ?Await] `<` ShiftExpression[?Yield, ?Await]
+        RelationalExpression[?In, ?Yield, ?Await] `>` ShiftExpression[?Yield, ?Await]
+        RelationalExpression[?In, ?Yield, ?Await] `<=` ShiftExpression[?Yield, ?Await]
+        RelationalExpression[?In, ?Yield, ?Await] `>=` ShiftExpression[?Yield, ?Await]
         RelationalExpression[?In, ?Yield, ?Await] `instanceof` ShiftExpression[?Yield, ?Await]
         [+In] RelationalExpression[+In, ?Yield, ?Await] `in` ShiftExpression[?Yield, ?Await]
 
@@ -746,7 +746,7 @@
 
       BitwiseANDExpression[In, Yield, Await] :
         EqualityExpression[?In, ?Yield, ?Await]
-        BitwiseANDExpression[?In, ?Yield, ?Await] `&amp;` EqualityExpression[?In, ?Yield, ?Await]
+        BitwiseANDExpression[?In, ?Yield, ?Await] `&` EqualityExpression[?In, ?Yield, ?Await]
 
       BitwiseXORExpression[In, Yield, Await] :
         BitwiseANDExpression[?In, ?Yield, ?Await]
@@ -760,7 +760,7 @@
 
       LogicalANDExpression[In, Yield, Await] :
         BitwiseORExpression[?In, ?Yield, ?Await]
-        LogicalANDExpression[?In, ?Yield, ?Await] `&amp;&amp;` BitwiseORExpression[?In, ?Yield, ?Await]
+        LogicalANDExpression[?In, ?Yield, ?Await] `&` BitwiseORExpression[?In, ?Yield, ?Await]
 
       LogicalORExpression[In, Yield, Await] :
         LogicalANDExpression[?In, ?Yield, ?Await]
@@ -794,7 +794,7 @@
         LeftHandSideExpression[?Yield, ?Await] AssignmentOperator AssignmentExpression[?In, ?Yield, ?Await]
 
       AssignmentOperator : one of
-        `*=` `/=` `%=` `+=` `-=` `&lt;&lt;=` `&gt;&gt;=` `&gt;&gt;&gt;=` `&amp;=` `^=` `|=` `**=`
+        `*=` `/=` `%=` `+=` `-=` `<<=` `>>=` `>>>=` `&=` `^=` `|=` `**=`
 
 @line 15475 "https://github.com/tc39/ecma262/raw/es2020/spec.html"
 
@@ -979,7 +979,7 @@
 @line 17159 "https://github.com/tc39/ecma262/raw/es2020/spec.html"
 
       ExpressionStatement[Yield, Await] :
-        [lookahead &lt;! {`{`, `function`, `async` [no |LineTerminator| here] `function`, `class`, `let` `[`}] Expression[+In, ?Yield, ?Await] `;`
+        [lookahead <! {`{`, `function`, `async` [no |LineTerminator| here] `function`, `class`, `let` `[`}] Expression[+In, ?Yield, ?Await] `;`
 
 @line 17180 "https://github.com/tc39/ecma262/raw/es2020/spec.html"
 
@@ -1129,7 +1129,7 @@
 @line 19954 "https://github.com/tc39/ecma262/raw/es2020/spec.html"
 
       ArrowFunction[In, Yield, Await] :
-        ArrowParameters[?Yield, ?Await] [no LineTerminator here] `=&gt;` ConciseBody[?In]
+        ArrowParameters[?Yield, ?Await] [no LineTerminator here] `=>` ConciseBody[?In]
 
       ArrowParameters[Yield, Await] :
         BindingIdentifier[?Yield, ?Await]
@@ -1337,7 +1337,7 @@
           `export` Declaration[~Yield, ~Await]
           `export` `default` HoistableDeclaration[~Yield, ~Await, +Default]
           `export` `default` ClassDeclaration[~Yield, ~Await, +Default]
-          `export` `default` [lookahead &lt;! {`function`, `async` [no |LineTerminator| here] `function`, `class`}] AssignmentExpression[+In, ~Yield, ~Await] `;`
+          `export` `default` [lookahead <! {`function`, `async` [no |LineTerminator| here] `function`, `class`}] AssignmentExpression[+In, ~Yield, ~Await] `;`
 
         ExportFromClause :
           `*`
@@ -1371,7 +1371,7 @@
             uriEscaped
 
           uriReserved ::: one of
-            `;` `/` `?` `:` `@` `&amp;` `=` `+` `$` `,`
+            `;` `/` `?` `:` `@` `&` `=` `+` `$` `,`
 
           uriUnescaped :::
             uriAlpha
@@ -1418,8 +1418,8 @@
           `\` `B`
           `(` `?` `=` Disjunction[?U, ?N] `)`
           `(` `?` `!` Disjunction[?U, ?N] `)`
-          `(` `?` `&lt;=` Disjunction[?U, ?N] `)`
-          `(` `?` `&lt;!` Disjunction[?U, ?N] `)`
+          `(` `?` `<=` Disjunction[?U, ?N] `)`
+          `(` `?` `<!` Disjunction[?U, ?N] `)`
 
         Quantifier ::
           QuantifierPrefix
@@ -1456,7 +1456,7 @@
         CharacterEscape[U] ::
           ControlEscape
           `c` ControlLetter
-          `0` [lookahead &lt;! DecimalDigit]
+          `0` [lookahead <! DecimalDigit]
           HexEscapeSequence
           RegExpUnicodeEscapeSequence[?U]
           IdentityEscape[?U]
@@ -1473,7 +1473,7 @@
           `?` GroupName[?U]
 
         GroupName[U] ::
-          `&lt;` RegExpIdentifierName[?U] `&gt;`
+          `<` RegExpIdentifierName[?U] `>`
 
         RegExpIdentifierName[U] ::
           RegExpIdentifierStart[?U]
@@ -1491,8 +1491,8 @@
           `$`
           `\` RegExpUnicodeEscapeSequence[+U]
           [~U] UnicodeLeadSurrogate UnicodeTrailSurrogate
-          &lt;ZWNJ&gt;
-          &lt;ZWJ&gt;
+          <ZWNJ>
+          <ZWJ>
 
         RegExpUnicodeEscapeSequence[U] ::
           [+U] `u` LeadSurrogate `\u` TrailSurrogate
@@ -1503,10 +1503,10 @@
           [+U] `u{` CodePoint `}`
 
         UnicodeLeadSurrogate ::
-          any Unicode code point in the inclusive range 0xD800 to 0xDBFF
+          > any Unicode code point in the inclusive range 0xD800 to 0xDBFF
 
         UnicodeTrailSurrogate ::
-          any Unicode code point in the inclusive range 0xDC00 to 0xDFFF
+          > any Unicode code point in the inclusive range 0xDC00 to 0xDFFF
 
 @line 30966 "https://github.com/tc39/ecma262/raw/es2020/spec.html"
 
@@ -1525,7 +1525,7 @@
           [~U] SourceCharacter but not UnicodeIDContinue
 
         DecimalEscape ::
-          NonZeroDigit DecimalDigits? [lookahead &lt;! DecimalDigit]
+          NonZeroDigit DecimalDigits? [lookahead <! DecimalDigit]
 
         CharacterClassEscape[U] ::
           `d`
@@ -1595,198 +1595,3 @@
           [+U] `-`
           CharacterClassEscape[?U]
           CharacterEscape[?U]
-
-@line 42006 "https://github.com/tc39/ecma262/raw/es2020/spec.html"
-
-        NumericLiteral ::
-          DecimalLiteral
-          DecimalBigIntegerLiteral
-          NonDecimalIntegerLiteral
-          NonDecimalIntegerLiteral BigIntLiteralSuffix
-          LegacyOctalIntegerLiteral
-
-        LegacyOctalIntegerLiteral ::
-          `0` OctalDigit
-          LegacyOctalIntegerLiteral OctalDigit
-
-        DecimalIntegerLiteral ::
-          `0`
-          NonZeroDigit DecimalDigits?
-          NonOctalDecimalIntegerLiteral
-
-        NonOctalDecimalIntegerLiteral ::
-          `0` NonOctalDigit
-          LegacyOctalLikeDecimalIntegerLiteral NonOctalDigit
-          NonOctalDecimalIntegerLiteral DecimalDigit
-
-        LegacyOctalLikeDecimalIntegerLiteral ::
-          `0` OctalDigit
-          LegacyOctalLikeDecimalIntegerLiteral OctalDigit
-
-        NonOctalDigit :: one of
-          `8` `9`
-
-@line 42077 "https://github.com/tc39/ecma262/raw/es2020/spec.html"
-
-        EscapeSequence ::
-          CharacterEscapeSequence
-          LegacyOctalEscapeSequence
-          HexEscapeSequence
-          UnicodeEscapeSequence
-
-        LegacyOctalEscapeSequence ::
-          OctalDigit [lookahead &lt;! OctalDigit]
-          ZeroToThree OctalDigit [lookahead &lt;! OctalDigit]
-          FourToSeven OctalDigit
-          ZeroToThree OctalDigit OctalDigit
-
-        ZeroToThree :: one of
-          `0` `1` `2` `3`
-
-        FourToSeven :: one of
-          `4` `5` `6` `7`
-
-@line 42148 "https://github.com/tc39/ecma262/raw/es2020/spec.html"
-
-        Comment ::
-          MultiLineComment
-          SingleLineComment
-          SingleLineHTMLOpenComment
-          SingleLineHTMLCloseComment
-          SingleLineDelimitedComment
-
-        MultiLineComment ::
-          `/*` FirstCommentLine? LineTerminator MultiLineCommentChars? `*/` HTMLCloseComment?
-
-        FirstCommentLine ::
-          SingleLineDelimitedCommentChars
-
-        SingleLineHTMLOpenComment ::
-          `&lt;!--` SingleLineCommentChars?
-
-        SingleLineHTMLCloseComment ::
-          LineTerminatorSequence HTMLCloseComment
-
-        SingleLineDelimitedComment ::
-          `/*` SingleLineDelimitedCommentChars? `*/`
-
-        HTMLCloseComment ::
-          WhiteSpaceSequence? SingleLineDelimitedCommentSequence? `--&gt;` SingleLineCommentChars?
-
-        SingleLineDelimitedCommentChars ::
-          SingleLineNotAsteriskChar SingleLineDelimitedCommentChars?
-          `*` SingleLinePostAsteriskCommentChars?
-
-        SingleLineNotAsteriskChar ::
-          SourceCharacter but not one of `*` or LineTerminator
-
-        SingleLinePostAsteriskCommentChars ::
-          SingleLineNotForwardSlashOrAsteriskChar SingleLineDelimitedCommentChars?
-          `*` SingleLinePostAsteriskCommentChars?
-
-        SingleLineNotForwardSlashOrAsteriskChar ::
-          SourceCharacter but not one of `/` or `*` or LineTerminator
-
-        WhiteSpaceSequence ::
-          WhiteSpace WhiteSpaceSequence?
-
-        SingleLineDelimitedCommentSequence ::
-          SingleLineDelimitedComment WhiteSpaceSequence? SingleLineDelimitedCommentSequence?
-
-@line 42202 "https://github.com/tc39/ecma262/raw/es2020/spec.html"
-
-        Term[U, N] ::
-          [+U] Assertion[+U, ?N]
-          [+U] Atom[+U, ?N]
-          [+U] Atom[+U, ?N] Quantifier
-          [~U] QuantifiableAssertion[?N] Quantifier
-          [~U] Assertion[~U, ?N]
-          [~U] ExtendedAtom[?N] Quantifier
-          [~U] ExtendedAtom[?N]
-
-        Assertion[U, N] ::
-          `^`
-          `$`
-          `\` `b`
-          `\` `B`
-          [+U] `(` `?` `=` Disjunction[+U, ?N] `)`
-          [+U] `(` `?` `!` Disjunction[+U, ?N] `)`
-          [~U] QuantifiableAssertion[?N]
-          `(` `?` `&lt;=` Disjunction[?U, ?N] `)`
-          `(` `?` `&lt;!` Disjunction[?U, ?N] `)`
-
-        QuantifiableAssertion[N] ::
-          `(` `?` `=` Disjunction[~U, ?N] `)`
-          `(` `?` `!` Disjunction[~U, ?N] `)`
-
-        ExtendedAtom[N] ::
-          `.`
-          `\` AtomEscape[~U, ?N]
-          `\` [lookahead == `c`]
-          CharacterClass[~U]
-          `(` Disjunction[~U, ?N] `)`
-          `(` `?` `:` Disjunction[~U, ?N] `)`
-          InvalidBracedQuantifier
-          ExtendedPatternCharacter
-
-        InvalidBracedQuantifier ::
-          `{` DecimalDigits `}`
-          `{` DecimalDigits `,` `}`
-          `{` DecimalDigits `,` DecimalDigits `}`
-
-        ExtendedPatternCharacter ::
-          SourceCharacter but not one of `^` `$` `\` `.` `*` `+` `?` `(` `)` `[` `|`
-
-        AtomEscape[U, N] ::
-          [+U] DecimalEscape
-          [~U] DecimalEscape [> but only if the CapturingGroupNumber of |DecimalEscape| is &lt;= _NcapturingParens_]
-          CharacterClassEscape[?U]
-          CharacterEscape[~U, ?N]
-          [+N] `k` GroupName[?U]
-
-        CharacterEscape[U, N] ::
-          ControlEscape
-          `c` ControlLetter
-          `0` [lookahead &lt;! DecimalDigit]
-          HexEscapeSequence
-          RegExpUnicodeEscapeSequence[?U]
-          [~U] LegacyOctalEscapeSequence
-          IdentityEscape[?U, ?N]
-
-        IdentityEscape[U, N] ::
-          [+U] SyntaxCharacter
-          [+U] `/`
-          [~U] SourceCharacterIdentityEscape[?N]
-
-        SourceCharacterIdentityEscape[N] ::
-          [~N] SourceCharacter but not `c`
-          [+N] SourceCharacter but not one of `c` or `k`
-
-        ClassAtomNoDash[U, N] ::
-          SourceCharacter but not one of `\` or `]` or `-`
-          `\` ClassEscape[?U, ?N]
-          `\` [lookahead == `c`]
-
-        ClassEscape[U, N] ::
-          `b`
-          [+U] `-`
-          [~U] `c` ClassControlLetter
-          CharacterClassEscape[?U]
-          CharacterEscape[?U, ?N]
-
-        ClassControlLetter ::
-          DecimalDigit
-          `_`
-
-@line 43146 "https://github.com/tc39/ecma262/raw/es2020/spec.html"
-
-        IfStatement[Yield, Await, Return] :
-          `if` `(` Expression[+In, ?Yield, ?Await] `)` FunctionDeclaration[?Yield, ?Await, ~Default] `else` Statement[?Yield, ?Await, ?Return]
-          `if` `(` Expression[+In, ?Yield, ?Await] `)` Statement[?Yield, ?Await, ?Return] `else` FunctionDeclaration[?Yield, ?Await, ~Default]
-          `if` `(` Expression[+In, ?Yield, ?Await] `)` FunctionDeclaration[?Yield, ?Await, ~Default] `else` FunctionDeclaration[?Yield, ?Await, ~Default]
-          `if` `(` Expression[+In, ?Yield, ?Await] `)` FunctionDeclaration[?Yield, ?Await, ~Default]
-
-@line 43188 "https://github.com/tc39/ecma262/raw/es2020/spec.html"
-
-        IterationStatement[Yield, Await, Return] :
-          `for` `(` `var` BindingIdentifier[?Yield, ?Await] Initializer[~In, ?Yield, ?Await] `in` Expression[+In, ?Yield, ?Await] `)` Statement[?Yield, ?Await, ?Return]

@@ -121,13 +121,19 @@ console.log(output);
         <h4><a class="xref" href="grammarkdown/bindingtable.html#grammarkdown_BindingTable_class">BindingTable</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/butnotsymbol.html#grammarkdown_ButNotSymbol_class">ButNotSymbol</a></h4>
-        <section></section>
+        <section><p>The `<!-- -->but not<!-- -->` operator allows you to reference a *Nonterminal* on the left, excluding some part of that production.</p>
+<pre><code class="lang-grammarkdown">A but not B
+</code></pre></section>
         <h4><a class="xref" href="grammarkdown/checker.html#grammarkdown_Checker_class">Checker</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/commenttriviabase.html#grammarkdown_CommentTriviaBase_class">CommentTriviaBase</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/constraints.html#grammarkdown_Constraints_class">Constraints</a></h4>
-        <section></section>
+        <section><p>Represents a set of constraints for a right-hand-side of a Production.</p>
+<pre><code class="lang-grammarkdown">Production[A] ::
+  [+A] A
+  [~A] B
+</code></pre></section>
         <h4><a class="xref" href="grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_class">CoreAsyncHost</a></h4>
         <section><p>A Host is a user-provided service that indicates how various Grammarkdown services can interact with a file system. The <code>CoreAsyncHost</code> class provides the API surface that Grammarkdown uses to interact with a host that is able to access the file system asynchronously.</p>
 </section>
@@ -140,20 +146,33 @@ console.log(output);
         <h4><a class="xref" href="grammarkdown/emitter.html#grammarkdown_Emitter_class">Emitter</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/emptyassertion.html#grammarkdown_EmptyAssertion_class">EmptyAssertion</a></h4>
-        <section></section>
+        <section><p>Represents the <code>empty</code> assertion, which matches exactly zero tokens.</p>
+<pre><code class="lang-grammarkdown">[empty]
+</code></pre></section>
         <h4><a class="xref" href="grammarkdown/grammar.html#grammarkdown_Grammar_class">Grammar</a></h4>
         <section><p>The primary service used to interact with one or more Grammarkdown <a class="xref" href="grammarkdown/sourcefile.html#grammarkdown_SourceFile_class">SourceFiles</a><!-- -->.</p>
 </section>
-        <h4><a class="xref" href="grammarkdown/htmlclosetagtrivia.html#grammarkdown_HtmlCloseTagTrivia_class">HtmlCloseTagTrivia</a></h4>
+        <h4><a class="xref" href="grammarkdown/grammarkdownemitter.html#grammarkdown_GrammarkdownEmitter_class">GrammarkdownEmitter</a></h4>
         <section></section>
+        <h4><a class="xref" href="grammarkdown/htmlclosetagtrivia.html#grammarkdown_HtmlCloseTagTrivia_class">HtmlCloseTagTrivia</a></h4>
+        <section><p>Represents an HTML close-tag trivia token:</p>
+<pre><code class="lang-grammarkdown">Production ::
+  &lt;ins&gt;Inserted&lt;/ins&gt;
+  &lt;del&gt;Deleted&lt;/del&gt;
+</code></pre></section>
         <h4><a class="xref" href="grammarkdown/htmlemitter.html#grammarkdown_HtmlEmitter_class">HtmlEmitter</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/htmlopentagtrivia.html#grammarkdown_HtmlOpenTagTrivia_class">HtmlOpenTagTrivia</a></h4>
-        <section></section>
+        <section><p>Represents an HTML open-tag trivia token:</p>
+<pre><code class="lang-grammarkdown">Production ::
+  &lt;ins&gt;Inserted&lt;/ins&gt;
+  &lt;del&gt;Deleted&lt;/del&gt;
+</code></pre></section>
         <h4><a class="xref" href="grammarkdown/htmltriviabase.html#grammarkdown_HtmlTriviaBase_class">HtmlTriviaBase</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/identifier.html#grammarkdown_Identifier_class">Identifier</a></h4>
-        <section></section>
+        <section><p>Represents an identifier such as a Production or Parameter.</p>
+</section>
         <h4><a class="xref" href="grammarkdown/import.html#grammarkdown_Import_class">Import</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/invalidassertion.html#grammarkdown_InvalidAssertion_class">InvalidAssertion</a></h4>
@@ -161,7 +180,9 @@ console.log(output);
         <h4><a class="xref" href="grammarkdown/invalidsymbol.html#grammarkdown_InvalidSymbol_class">InvalidSymbol</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/lexicalgoalassertion.html#grammarkdown_LexicalGoalAssertion_class">LexicalGoalAssertion</a></h4>
-        <section></section>
+        <section><p>Represens a <code>lexical-goal</code> assertion which verifies that current lexical goal is the supplied *Nonterminal*.</p>
+<pre><code class="lang-grammarkdown">[lexical goal Module]
+</code></pre></section>
         <h4><a class="xref" href="grammarkdown/lexicalsymbolbase.html#grammarkdown_LexicalSymbolBase_class">LexicalSymbolBase</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/line.html#grammarkdown_Line_class">Line</a></h4>
@@ -173,13 +194,16 @@ console.log(output);
         <h4><a class="xref" href="grammarkdown/linkreference.html#grammarkdown_LinkReference_class">LinkReference</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/lookaheadassertion.html#grammarkdown_LookaheadAssertion_class">LookaheadAssertion</a></h4>
-        <section></section>
+        <section><p>Represents a <code>lookahead</code> assertion, which is a zero-width assertion that only matches if the next token is in the requested set.</p>
+<pre><code class="lang-grammarkdown">[lookahead ∉ { `class`, `let` }]
+</code></pre></section>
         <h4><a class="xref" href="grammarkdown/markdownemitter.html#grammarkdown_MarkdownEmitter_class">MarkdownEmitter</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/metaelementbase.html#grammarkdown_MetaElementBase_class">MetaElementBase</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/multilinecommenttrivia.html#grammarkdown_MultiLineCommentTrivia_class">MultiLineCommentTrivia</a></h4>
-        <section></section>
+        <section><p>Represents a multi-line comment trivia token.</p>
+</section>
         <h4><a class="xref" href="grammarkdown/node.html#grammarkdown_Node_class">Node</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/nodeasynchost.html#grammarkdown_NodeAsyncHost_class">NodeAsyncHost</a></h4>
@@ -190,17 +214,26 @@ console.log(output);
         <h4><a class="xref" href="grammarkdown/nodevisitor.html#grammarkdown_NodeVisitor_class">NodeVisitor</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/nonterminal.html#grammarkdown_Nonterminal_class">Nonterminal</a></h4>
-        <section></section>
+        <section><p>Represents a non-terminal reference to another Production.</p>
+<pre><code class="lang-grammarkdown">IdentifierReference[~Yield, ~Await]
+</code></pre></section>
         <h4><a class="xref" href="grammarkdown/nosymbolhereassertion.html#grammarkdown_NoSymbolHereAssertion_class">NoSymbolHereAssertion</a></h4>
-        <section></section>
+        <section><p>Represents a <code>no Symbol here</code> assertion, which disallows the provided symbol.</p>
+<pre><code class="lang-grammarkdown">[no LineTerminator here]
+</code></pre></section>
         <h4><a class="xref" href="grammarkdown/nulldiagnosticmessages.html#grammarkdown_NullDiagnosticMessages_class">NullDiagnosticMessages</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/numberliteral.html#grammarkdown_NumberLiteral_class">NumberLiteral</a></h4>
-        <section></section>
+        <section><p>Represents a number literal (used by <code>@line</code><!-- -->)</p>
+<pre><code class="lang-grammarkdown">@line 500
+Production :: Nonterminal
+</code></pre></section>
         <h4><a class="xref" href="grammarkdown/oneoflist.html#grammarkdown_OneOfList_class">OneOfList</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/oneofsymbol.html#grammarkdown_OneOfSymbol_class">OneOfSymbol</a></h4>
-        <section></section>
+        <section><p>Represents a set of symbols used to restrict a <code>but not</code> operator.</p>
+<pre><code class="lang-grammarkdown">A but not one of `a` or `b`
+</code></pre></section>
         <h4><a class="xref" href="grammarkdown/optionalsymbolbase.html#grammarkdown_OptionalSymbolBase_class">OptionalSymbolBase</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/parameter.html#grammarkdown_Parameter_class">Parameter</a></h4>
@@ -210,7 +243,8 @@ console.log(output);
         <h4><a class="xref" href="grammarkdown/parser.html#grammarkdown_Parser_class">Parser</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/placeholdersymbol.html#grammarkdown_PlaceholderSymbol_class">PlaceholderSymbol</a></h4>
-        <section></section>
+        <section><p>Represents a placeholder symbol (<code>@</code><!-- -->) used in some grammars.</p>
+</section>
         <h4><a class="xref" href="grammarkdown/primarysymbolbase.html#grammarkdown_PrimarySymbolBase_class">PrimarySymbolBase</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/production.html#grammarkdown_Production_class">Production</a></h4>
@@ -218,9 +252,13 @@ console.log(output);
         <h4><a class="xref" href="grammarkdown/productionbodybase.html#grammarkdown_ProductionBodyBase_class">ProductionBodyBase</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/prose.html#grammarkdown_Prose_class">Prose</a></h4>
-        <section></section>
+        <section><p>Represents a section of Prose, which indicates handling of syntax outside the scope of the Grammarkdown parser.</p>
+<pre><code class="lang-grammarkdown">&gt; This is a section of Prose with |Nonterminals| and `terminals`
+</code></pre></section>
         <h4><a class="xref" href="grammarkdown/proseassertion.html#grammarkdown_ProseAssertion_class">ProseAssertion</a></h4>
-        <section></section>
+        <section><p>Represents an assertion containing Prose, which indicates handling of syntax outside the scope of the Grammarkdown parser.</p>
+<pre><code class="lang-grammarkdown">HexDigits [&gt; but only if MV of |HexDigits| &gt; 0x10FFFF]
+</code></pre></section>
         <h4><a class="xref" href="grammarkdown/prosefragmentliteral.html#grammarkdown_ProseFragmentLiteral_class">ProseFragmentLiteral</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/resolver.html#grammarkdown_Resolver_class">Resolver</a></h4>
@@ -232,7 +270,9 @@ console.log(output);
         <h4><a class="xref" href="grammarkdown/scanner.html#grammarkdown_Scanner_class">Scanner</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/singlelinecommenttrivia.html#grammarkdown_SingleLineCommentTrivia_class">SingleLineCommentTrivia</a></h4>
-        <section></section>
+        <section><p>Represent a single-line comment trivia token.</p>
+<pre><code class="lang-grammarkdown">// comment
+</code></pre></section>
         <h4><a class="xref" href="grammarkdown/sourceelementbase.html#grammarkdown_SourceElementBase_class">SourceElementBase</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></h4>
@@ -241,27 +281,39 @@ console.log(output);
         <section><p>An implementation of a <a class="xref" href="grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_class">CoreAsyncHost</a> to simplify creating a host for a single file.</p>
 </section>
         <h4><a class="xref" href="grammarkdown/stringliteral.html#grammarkdown_StringLiteral_class">StringLiteral</a></h4>
-        <section></section>
+        <section><p>Represents a single- or double-quoted string literal (used by <code>@import</code> and <code>@line</code><!-- -->)</p>
+<pre><code class="lang-grammarkdown">@import &quot;file&quot;
+</code></pre></section>
         <h4><a class="xref" href="grammarkdown/stringwriter.html#grammarkdown_StringWriter_class">StringWriter</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/symbol.html#grammarkdown_Symbol_class">Symbol</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/symbolset.html#grammarkdown_SymbolSet_class">SymbolSet</a></h4>
-        <section></section>
+        <section><p>Represents a set of symbols in a <code>lookahead</code> assertion.</p>
+<pre><code class="lang-grammarkdown">[lookahead ∈ { `a`, `b` }]
+</code></pre></section>
         <h4><a class="xref" href="grammarkdown/symbolspan.html#grammarkdown_SymbolSpan_class">SymbolSpan</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/symboltable.html#grammarkdown_SymbolTable_class">SymbolTable</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/terminal.html#grammarkdown_Terminal_class">Terminal</a></h4>
-        <section></section>
+        <section><p>Represents a terminal token in the grammar.</p>
+<pre><code class="lang-grammarkdown">`yield` `*`?
+</code></pre></section>
         <h4><a class="xref" href="grammarkdown/token.html#grammarkdown_Token_class">Token</a></h4>
-        <section></section>
+        <section><p>Represents a token such as a keyword or operator.</p>
+</section>
         <h4><a class="xref" href="grammarkdown/triviabase.html#grammarkdown_TriviaBase_class">TriviaBase</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/unicodecharacterliteral.html#grammarkdown_UnicodeCharacterLiteral_class">UnicodeCharacterLiteral</a></h4>
-        <section></section>
+        <section><p>Represents a Unicode character literal in one of two forms:</p>
+<pre><code class="lang-grammarkdown">&lt;TAB&gt;
+U+0000
+</code></pre></section>
         <h4><a class="xref" href="grammarkdown/unicodecharacterrange.html#grammarkdown_UnicodeCharacterRange_class">UnicodeCharacterRange</a></h4>
-        <section></section>
+        <section><p>Represents a range of unicode characters.</p>
+<pre><code class="lang-grammarkdown">U+0000 through U+001F
+</code></pre></section>
     <h3 id="interfaces">Interfaces
   </h3>
         <h4><a class="xref" href="grammarkdown/compileroptions.html#grammarkdown_CompilerOptions_interface">CompilerOptions</a></h4>
@@ -1685,6 +1737,21 @@ console.log(output);
   
   
   
+        <h4 id="grammarkdown_TextContentNode_type" data-uid="grammarkdown!TextContentNode:type">TextContentNode</h4>
+              <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type TextContentNode = StringLiteral | NumberLiteral | Identifier | UnicodeCharacterLiteral | Terminal | ProseFragmentLiteral&lt;ProseFragmentLiteralKind&gt;;</code></pre>
+        </div>
+  
+  
+  
+  
+  
+  
+  
+  
         <h4 id="grammarkdown_TokenKind_type" data-uid="grammarkdown!TokenKind:type">TokenKind</h4>
               <div class="markdown level1 summary"></div>
         <div class="markdown level1 conceptual"></div>
@@ -1760,7 +1827,7 @@ console.log(output);
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/rbuckton/grammarkdown/blob/apiCleanup/src/docs/overwrite/grammarkdown.md/#L2" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/rbuckton/grammarkdown/blob/master/src/docs/overwrite/grammarkdown.md/#L2" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

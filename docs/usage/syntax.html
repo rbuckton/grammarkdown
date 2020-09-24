@@ -84,23 +84,23 @@ however using multiple spaces for indentation is supported as long as all nested
 <h4 id="productions">Productions</h4>
 <p>A <em>Production</em> consists of a left-hand-side <em>Nonterminal</em> followed by a colon (<code>:</code>) separator and one or more <em>right-hand-side</em> sentences consisting of
 various forms of <em>terminal</em> and <em>nonterminal</em> symbols. For example:</p>
-<pre><code>NameSpaceImport : `*` `as` ImportedBinding
+<pre><code class="lang-grammarkdown">NameSpaceImport : `*` `as` ImportedBinding
 </code></pre><p>It is recommended that <em>Productions</em> should follow pascal-case naming conventions, to avoid collision with reserved keywords.</p>
 <p>You may specify multiple productions for a <em>Nonterminal</em> on multiple lines, as follows:</p>
-<pre><code>NamedImports : `{` `}`
+<pre><code class="lang-grammarkdown">NamedImports : `{` `}`
 NamedImports : `{` ImportList `}`
 NamedImports : `{` ImportList `,` `}`
 </code></pre><p>You may also specify multiple left-hand-side sentences for a single production by indenting them:</p>
-<pre><code>NamedImports :
+<pre><code class="lang-grammarkdown">NamedImports :
     `{` `}`
     `{` ImportList `}`
     `{` ImportList `,` `}`
 </code></pre><p>A <em>Production</em> may specify one or more <em>parameters</em> that can be used to reuse a <em>Nonterminal</em> in various circumstances:</p>
-<pre><code>IdentifierReference[Yield] :
+<pre><code class="lang-grammarkdown">IdentifierReference[Yield] :
     Identifier
     [~Yield] `yield`
 </code></pre><p>A <em>Production</em> may also specify a limited set of terminals, by using the <code>one of</code> keyphrase:</p>
-<pre><code>Keyword :: one of
+<pre><code class="lang-grammarkdown">Keyword :: one of
     `break`     `do`        `in`            `typeof`
     `case`      `else`      `instanceof`    `var`
     `catch`     `export`    `new`           `void`
@@ -111,13 +111,20 @@ NamedImports : `{` ImportList `,` `}`
     `default`   `if`        `throw`
     `delete`    `import`    `try`
 </code></pre><h4 id="parameters">Parameters</h4>
-<p>If a <em>Nonterminal</em> on the right-hand-side of a production needs to set a parameter, they supply it in an argument list.
-Supplying the name of the argument sets the parameter, prefixing the name with a question mark (&#39;?) passes the current value of the parameter, and eliding the argument clears the parameter:</p>
-<pre><code>Declaration[Yield] :
+<p><em>Productions</em> in Grammarkdown can be parametric, allowing you to define syntax that can be conditionally modified by passing arguments. To pass an argument to a <em>Production</em>, you must provide
+the name of a <em>Parameter</em> in a bracketed argument list. <em>Parameters</em> are both positional and named, so to provide an argument you must supply the name of the argument along with one of the following
+prefixes:</p>
+<ul>
+<li><code>+</code> - Indicates the named parameter is <em>set</em> in the referenced production. For example: <code>+In</code></li>
+<li><code>~</code> - Indicates the named parameter is <em>unset</em> in the referenced production. For example: <code>~Async</code></li>
+<li><code>?</code> - Indicates the current state of the named parameter is used in the referenced production. For example: <code>?Yield</code></li>
+</ul>
+<pre><code class="lang-grammarkdown">Declaration[Yield] :
     HoistableDeclaration[?Yield]
     ClassDeclaration[?Yield]
-    LexicalDeclaration[In, ?Yield]
-</code></pre><p>The right-hand-side of a <em>Production</em> consists of one or more <em>Terminal</em> or <em>Nonterminal</em> symbols, a sentence of <em>Prose</em>, or an <em>Assertion</em>.</p>
+    LexicalDeclaration[+In, ?Yield]
+</code></pre><h3 id="right-hand-sides">Right-Hand-Sides</h3>
+<p>The right-hand-side of a <em>Production</em> consists of one or more <em>Terminal</em> or <em>Nonterminal</em> symbols, a sentence of <em>Prose</em>, or an <em>Assertion</em>.</p>
 <h4 id="terminals">Terminals</h4>
 <p>A <em>Terminal</em> symbol can be one of the following:</p>
 <ul>
@@ -135,19 +142,24 @@ The identifier may optionally be enclosed in <code>|</code> characters, if it ha
 <li>A Unicode code point, of the form <code>U+00A0</code></li>
 </ul>
 <p>Character ranges may be specified using the <code>through</code> keyword:</p>
-<pre><code>    SourceCharacter but not one of `&quot;` or `\` or U+0000 through U+001F
+<pre><code class="lang-grammarkdown">    SourceCharacter but not one of `&quot;` or `\` or U+0000 through U+001F
 </code></pre><h4 id="prose">Prose</h4>
-<p>A sentence of <em>Prose</em> is a single line with a leading greater-than (&#39;&gt;&#39;) character. For example: <code>&gt; any Unicode code point</code></p>
-<h4 id="the-but-not-condition">The <code>but not</code> Condition</h4>
+<p>A sentence of <em>Prose</em> is a single line with a leading greater-than (&#39;&gt;&#39;) character. For example:</p>
+<pre><code class="lang-grammarkdown">&gt; any Unicode code point
+</code></pre><h4 id="the-but-not-condition">The <code>but not</code> Condition</h4>
 <p>The <code>but not</code> condition allows you to reference a production, excluding some part of that production. For example:</p>
-<pre><code>MultiLineNotAsteriskChar ::
+<pre><code class="lang-grammarkdown">MultiLineNotAsteriskChar ::
     SourceCharacter but not `*`
 </code></pre><p>Here, <em>MultiLineNotAsteriskChar</em> may contain any alternative from <em>SourceCharacter</em>, except the terminal <code>`*` </code>.</p>
 <h4 id="the-one-of-condition">The <code>one of</code> Condition</h4>
 <p>You can exclude multiple alternatives by including a list of symbols to exclude through the use of the <code>one of</code> keyphrase.
 Each entry in the list is separated by <code>or</code>:</p>
-<pre><code>MultiLineNotForwardSlashOrAsteriskChar ::
+<pre><code class="lang-grammarkdown">MultiLineNotForwardSlashOrAsteriskChar ::
     SourceCharacter but not one of `/` or `*`
+</code></pre><h4 id="constraint">Constraint</h4>
+<p>A <em>Constraint</em> is a zero-width test at the start of a right-hand-side that indicates that the right-hand-side is only matched
+when the specified <em>Parameter</em> is either <em>set</em> (using the <code>+</code> prefix), or <em>unset</em> (using the <code>~</code> prefix). For example:</p>
+<pre><code class="lang-grammarkdown">[~Yield] `yield`
 </code></pre><h4 id="assertions">Assertions</h4>
 <p>An <em>Assertion</em> is a zero-width test that must evaluate successfully for the <em>Production</em> to be considered.
 <em>Assertions</em> are enclosed in a leading open bracket (&#39;[&#39;) character and a trailing close-bracket (&#39;]&#39;) character.</p>
@@ -157,7 +169,6 @@ Each entry in the list is separated by <code>or</code>:</p>
 <li>The <em>lookahead assertion</em>, which verifies the next tokens in the stream: <code>[lookahead != `function`]</code></li>
 <li>The <em>no-symbol-here assertion</em>, which verifies the next token is not the provided symbol: <code>[no LineTerminator here]</code></li>
 <li>The <em>lexical-goal assertion</em>, which states that the current lexical goal is the supplied <em>Nonterminal</em>: <code>[lexical goal InputElementRegExp]</code></li>
-<li>The <em>parameter assertion</em>, which states the supplied parameter to the current production is either set (using the plus (&#39;+&#39;) character), or cleared (using the tilde (&#39;~&#39;) character): <code>[~Yield] `yield` </code></li>
 <li>The <em>prose assertion</em>, which allows for arbitrary prose, mixed with terminals and nonterminals: <code>[&gt; prose text `terminal` prose text |NonTerminal| prose text]</code></li>
 </ul>
 <p>A <em>lookahead assertion</em> has the following operators:</p>
@@ -170,15 +181,40 @@ Each entry in the list is separated by <code>or</code>:</p>
 <h4 id="linking">Linking</h4>
 <p>During emit, <code>grammarkdown</code> implicitly adds a generated name for each <em>Production</em> and <em>Right-hand side</em> that can be used to
 link directly to the production using a URI fragment. You can explicitly set the name for a production by tagging it with a custom link name:</p>
-<pre><code>Declaration[Yield] :
+<pre><code class="lang-grammarkdown">Declaration[Yield] :
     HoistableDeclaration[?Yield]       #declaration-hoistable
     ClassDeclaration[?Yield]           #declaration-class
     LexicalDeclaration[In, ?Yield]     #declaration-lexical
 </code></pre><h4 id="comments">Comments</h4>
 <p>You can also annotate your grammar with C-style single-line and multi-line comments.</p>
+<h4 id="-directives"><code>@</code>-Directives</h4>
+<p>Grammarkdown provides several directives for customizing the behavior of the grammar checker from within the grammar file itself:</p>
+<ul>
+<li><code>@import &quot;path&quot;</code> - Import another grammar.</li>
+<li><code>@define &lt;setting&gt; &lt;value&gt;</code> - Override a limited set of grammar options.<ul>
+<li><code>setting</code> can be:<ul>
+<li><code>noStrictParametricProductions</code> - Disables strict checking of parameters.</li>
+<li><code>noUnusedParameters</code> - Determines whether to report errors when parameters are unused.</li>
+</ul>
+</li>
+<li><code>value</code> can be:<ul>
+<li><code>true</code> - Sets the provided setting to <code>true</code>.</li>
+<li><code>false</code> - Sets the provided setting to <code>false</code>.</li>
+<li><code>default</code> - Sets the provided setting to the value provided in the grammar options.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>@line &lt;number&gt; [&quot;path&quot;]</code> or <code>@line default</code> - Changes the grammar checker to report errors using the provided line number and path, or resets line numbering to the current line number in the file.</li>
+</ul>
 <h4 id="examples">Examples</h4>
 <p>For comprehensive examples of <code>grammarkdown</code> syntax and output, you can review the following samples:</p>
 <ul>
+<li>ECMA-262 version 2020 (ES2020) Grammar<ul>
+<li><a href="https://github.com/rbuckton/grammarkdown/blob/master/spec/es2020.grammar">Plain-text</a></li>
+<li><a href="https://rbuckton.github.io/grammarkdown/es2020.html">HTML</a></li>
+</ul>
+</li>
 <li>ECMA-262 version 2015 (ES6) Grammar<ul>
 <li><a href="https://github.com/rbuckton/grammarkdown/blob/master/spec/es6.grammar">Plain-text</a></li>
 <li><a href="https://rbuckton.github.io/grammarkdown/es6.html">HTML</a></li>

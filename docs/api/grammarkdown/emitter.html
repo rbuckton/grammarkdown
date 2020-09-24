@@ -544,6 +544,45 @@
   
   
   
+  <h4 id="grammarkdown_Emitter_emitChildren_member_1_" data-uid="grammarkdown!Emitter#emitChildren:member(1)">emitChildren(node)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">protected emitChildren(node: Node): void;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>node</dt>
+        <dd><a class="xref" href="node.html#grammarkdown_Node_class">Node</a></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">void</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
   <h4 id="grammarkdown_Emitter_emitConstraints_member_1_" data-uid="grammarkdown!Emitter#emitConstraints:member(1)">emitConstraints(node)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
@@ -989,6 +1028,45 @@
       <dl class="parameter">
         <dt>node</dt>
         <dd><a class="xref" href="node.html#grammarkdown_Node_class">Node</a> | undefined</dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">void</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_Emitter_emitNodes_member_1_" data-uid="grammarkdown!Emitter#emitNodes:member(1)">emitNodes(nodes)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">protected emitNodes(nodes: Iterable&lt;Node&gt;): void;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>nodes</dt>
+        <dd><span class="xref">Iterable</span>&lt;<a class="xref" href="node.html#grammarkdown_Node_class">Node</a>&gt;</dd>
       </dl>
       <p>
         
@@ -1558,13 +1636,13 @@
   
   
   
-  <h4 id="grammarkdown_Emitter_emitString_member_1_" data-uid="grammarkdown!Emitter#emitString:member(1)">emitString(node, resolver, diagnostics, cancelable)</h4>
+  <h4 id="grammarkdown_Emitter_emitString_member_1_" data-uid="grammarkdown!Emitter#emitString:member(1)">emitString(sourceFile, resolver, diagnostics, cancelable, node)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">emitString(node: SourceFile, resolver: Resolver, diagnostics: DiagnosticMessages, cancelable?: Cancelable): string;</code></pre>
+    <pre><code class="lang-typeScript hljs">emitString(sourceFile: SourceFile, resolver: Resolver, diagnostics: DiagnosticMessages, cancelable?: Cancelable, node?: Node): string;</code></pre>
   </div>
   
   
@@ -1572,7 +1650,7 @@
   <div>
     <div class="property">
       <dl class="parameter">
-        <dt>node</dt>
+        <dt>sourceFile</dt>
         <dd><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></dd>
       </dl>
       <p>
@@ -1604,6 +1682,16 @@
       <dl class="parameter">
         <dt>cancelable</dt>
         <dd><a class="xref" href="https://esfx.js.org/esfx/api/cancelable/cancelable-interface.html#_esfx_cancelable_Cancelable_interface">Cancelable</a></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>node</dt>
+        <dd><a class="xref" href="node.html#grammarkdown_Node_class">Node</a></dd>
       </dl>
       <p>
         
@@ -1799,6 +1887,45 @@
       <dl class="parameter">
         <dt>node</dt>
         <dd><a class="xref" href="node.html#grammarkdown_Node_class">Node</a> | undefined</dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">void</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_Emitter_emitTokenKind_member_1_" data-uid="grammarkdown!Emitter#emitTokenKind:member(1)">emitTokenKind(kind)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">protected emitTokenKind(kind: SyntaxKind): void;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>kind</dt>
+        <dd><a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a></dd>
       </dl>
       <p>
         

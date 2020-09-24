@@ -87,14 +87,23 @@ export type CommentTrivia =
     | MultiLineCommentTrivia
     ;
 
-/** {@docCategory Nodes} */
+/**
+ * Represent a single-line comment trivia token.
+ * ```grammarkdown
+ * // comment
+ * ```
+ * {@docCategory Nodes}
+ */
 export class SingleLineCommentTrivia extends CommentTriviaBase<SyntaxKind.SingleLineCommentTrivia> {
     constructor() {
         super(SyntaxKind.SingleLineCommentTrivia);
     }
 }
 
-/** {@docCategory Nodes} */
+/**
+ * Represents a multi-line comment trivia token.
+ * {@docCategory Nodes}
+ */
 export class MultiLineCommentTrivia extends CommentTriviaBase<SyntaxKind.MultiLineCommentTrivia> {
     constructor() {
         super(SyntaxKind.MultiLineCommentTrivia);
@@ -116,26 +125,51 @@ export type HtmlTrivia =
     | HtmlCloseTagTrivia
     ;
 
-/** {@docCategory Nodes} */
+/**
+ * Represents an HTML open-tag trivia token:
+ * ```grammarkdown
+ * Production ::
+ *   <ins>Inserted</ins>
+ *   <del>Deleted</del>
+ * ```
+ * {@docCategory Nodes}
+ */
 export class HtmlOpenTagTrivia extends HtmlTriviaBase<SyntaxKind.HtmlOpenTagTrivia> {
     constructor(tagName: string) {
         super(SyntaxKind.HtmlOpenTagTrivia, tagName);
     }
 }
 
-/** {@docCategory Nodes} */
+/**
+ * Represents an HTML close-tag trivia token:
+ * ```grammarkdown
+ * Production ::
+ *   <ins>Inserted</ins>
+ *   <del>Deleted</del>
+ * ```
+ * {@docCategory Nodes}
+ */
 export class HtmlCloseTagTrivia extends HtmlTriviaBase<SyntaxKind.HtmlCloseTagTrivia> {
     constructor(tagName: string) {
         super(SyntaxKind.HtmlCloseTagTrivia, tagName);
     }
 }
 
-/** {@docCategory Nodes} */
+/**
+ * Represents a token such as a keyword or operator.
+ * {@docCategory Nodes}
+ */
 export class Token<TKind extends TokenKind = TokenKind> extends Node<TKind> {
     /*@internal*/ accept(visitor: NodeVisitor): Token<TKind> { return visitor.visitToken(this); }
 }
 
-/** {@docCategory Nodes} */
+/**
+ * Represents a single- or double-quoted string literal (used by `@import` and `@line`)
+ * ```grammarkdown
+ * @import "file"
+ * ```
+ * {@docCategory Nodes}
+ */
 export class StringLiteral extends Node<SyntaxKind.StringLiteral> implements TextContent {
     public readonly text: string | undefined;
 
@@ -147,7 +181,14 @@ export class StringLiteral extends Node<SyntaxKind.StringLiteral> implements Tex
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitStringLiteral(this); }
 }
 
-/** {@docCategory Nodes} */
+/**
+ * Represents a number literal (used by `@line`)
+ * ```grammarkdown
+ * @line 500
+ * Production :: Nonterminal
+ * ```
+ * {@docCategory Nodes}
+ */
 export class NumberLiteral extends Node<SyntaxKind.NumberLiteral> implements TextContent {
     public readonly text: string | undefined;
 
@@ -159,7 +200,10 @@ export class NumberLiteral extends Node<SyntaxKind.NumberLiteral> implements Tex
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitNumberLiteral(this); }
 }
 
-/** {@docCategory Nodes} */
+/**
+ * Represents an identifier such as a Production or Parameter.
+ * {@docCategory Nodes}
+ */
 export class Identifier extends Node<SyntaxKind.Identifier> implements TextContent {
     public readonly text: string | undefined;
 
@@ -180,7 +224,13 @@ export type TextContentNode =
     | Terminal
     | ProseFragmentLiteral<ProseFragmentLiteralKind>;
 
-/** {@docCategory Nodes} */
+/**
+ * Represents a set of symbols in a `lookahead` assertion.
+ * ```grammarkdown
+ * [lookahead ∈ { `a`, `b` }]
+ * ```
+ * {@docCategory Nodes}
+ */
 export class SymbolSet extends Node<SyntaxKind.SymbolSet> {
     public readonly openBraceToken: Token<SyntaxKind.OpenBraceToken>;
     public readonly elements: ReadonlyArray<SymbolSpan> | undefined;
@@ -237,7 +287,15 @@ export class SymbolSet extends Node<SyntaxKind.SymbolSet> {
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitSymbolSet(this); }
 }
 
-/** {@docCategory Nodes} */
+/**
+ * Represents a set of constraints for a right-hand-side of a Production.
+ * ```grammarkdown
+ * Production[A] ::
+ *   [+A] A
+ *   [~A] B
+ * ```
+ * {@docCategory Nodes}
+ */
 export class Constraints extends Node<SyntaxKind.Constraints> {
     public readonly openBracketToken: Token<SyntaxKind.OpenBracketToken>;
     public readonly elements: ReadonlyArray<Argument> | undefined;
@@ -302,7 +360,10 @@ export class Constraints extends Node<SyntaxKind.Constraints> {
 export abstract class LexicalSymbolBase<TKind extends LexicalSymbolKind> extends Node<TKind> {
 }
 
-/** {@docCategory Nodes} */
+/**
+ * Represents a placeholder symbol (`@`) used in some grammars.
+ * {@docCategory Nodes}
+ */
 export class PlaceholderSymbol extends LexicalSymbolBase<SyntaxKind.PlaceholderSymbol> {
     public readonly placeholderToken: Token<SyntaxKind.AtToken>;
 
@@ -329,7 +390,13 @@ export class PlaceholderSymbol extends LexicalSymbolBase<SyntaxKind.PlaceholderS
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitPlaceholderSymbol(this); }
 }
 
-/** {@docCategory Nodes} */
+/**
+ * Represents a range of unicode characters.
+ * ```grammarkdown
+ * U+0000 through U+001F
+ * ```
+ * {@docCategory Nodes}
+ */
 export class UnicodeCharacterRange extends LexicalSymbolBase<SyntaxKind.UnicodeCharacterRange> {
     public readonly left: UnicodeCharacterLiteral;
     public readonly throughKeyword: Token<SyntaxKind.ThroughKeyword>;
@@ -385,7 +452,13 @@ export class UnicodeCharacterRange extends LexicalSymbolBase<SyntaxKind.UnicodeC
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitUnicodeCharacterRange(this); }
 }
 
-/** {@docCategory Nodes} */
+/**
+ * The \`but not\` operator allows you to reference a *Nonterminal* on the left, excluding some part of that production.
+ * ```grammarkdown
+ * A but not B
+ * ```
+ * {@docCategory Nodes}
+ */
 export class ButNotSymbol extends LexicalSymbolBase<SyntaxKind.ButNotSymbol> {
     public readonly left: LexicalSymbol;
     public readonly butKeyword: Token<SyntaxKind.ButKeyword> | undefined;
@@ -447,7 +520,13 @@ export class ButNotSymbol extends LexicalSymbolBase<SyntaxKind.ButNotSymbol> {
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitButNotSymbol(this); }
 }
 
-/** {@docCategory Nodes} */
+/**
+ * Represents a section of Prose, which indicates handling of syntax outside the scope of the Grammarkdown parser.
+ * ```grammarkdown
+ * > This is a section of Prose with |Nonterminals| and `terminals`
+ * ```
+ * {@docCategory Nodes}
+ */
 export class Prose extends LexicalSymbolBase<SyntaxKind.Prose> {
     public readonly greaterThanToken: Token<SyntaxKind.GreaterThanToken>;
     public readonly fragments: ReadonlyArray<ProseFragment> | undefined;
@@ -498,7 +577,13 @@ export class Prose extends LexicalSymbolBase<SyntaxKind.Prose> {
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitProse(this); }
 }
 
-/** {@docCategory Nodes} */
+/**
+ * Represents a set of symbols used to restrict a `but not` operator.
+ * ```grammarkdown
+ * A but not one of `a` or `b`
+ * ```
+ * {@docCategory Nodes}
+ */
 export class OneOfSymbol extends LexicalSymbolBase<SyntaxKind.OneOfSymbol> {
     public readonly oneKeyword: Token<SyntaxKind.OneKeyword>;
     public readonly ofKeyword: Token<SyntaxKind.OfKeyword> | undefined;
@@ -598,7 +683,14 @@ export abstract class OptionalSymbolBase<TKind extends OptionalSymbolKind> exten
     }
 }
 
-/** {@docCategory Nodes} */
+/**
+ * Represents a Unicode character literal in one of two forms:
+ * ```grammarkdown
+ * <TAB>
+ * U+0000
+ * ```
+ * {@docCategory Nodes}
+ */
 export class UnicodeCharacterLiteral extends OptionalSymbolBase<SyntaxKind.UnicodeCharacterLiteral> implements TextContent {
     public readonly text: string | undefined;
 
@@ -625,7 +717,13 @@ export class UnicodeCharacterLiteral extends OptionalSymbolBase<SyntaxKind.Unico
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitUnicodeCharacterLiteral(this); }
 }
 
-/** {@docCategory Nodes} */
+/**
+ * Represents a terminal token in the grammar.
+ * ```grammarkdown
+ * `yield` `*`?
+ * ```
+ * {@docCategory Nodes}
+ */
 export class Terminal extends OptionalSymbolBase<SyntaxKind.Terminal> implements TextContent {
     public readonly text: string | undefined;
 
@@ -652,7 +750,13 @@ export class Terminal extends OptionalSymbolBase<SyntaxKind.Terminal> implements
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitTerminal(this); }
 }
 
-/** {@docCategory Nodes} */
+/**
+ * Represents a non-terminal reference to another Production.
+ * ```grammarkdown
+ * IdentifierReference[~Yield, ~Await]
+ * ```
+ * {@docCategory Nodes}
+ */
 export class Nonterminal extends OptionalSymbolBase<SyntaxKind.Nonterminal> {
     public readonly name: Identifier;
     public readonly argumentList: ArgumentList | undefined;
@@ -737,7 +841,13 @@ export abstract class AssertionBase<TKind extends AssertionKind, TBracket extend
     abstract get lastChild(): Node | undefined;
 }
 
-/** {@docCategory Nodes} */
+/**
+ * Represents the `empty` assertion, which matches exactly zero tokens.
+ * ```grammarkdown
+ * [empty]
+ * ```
+ * {@docCategory Nodes}
+ */
 export class EmptyAssertion extends AssertionBase<SyntaxKind.EmptyAssertion, SyntaxKind.OpenBracketToken> {
     public readonly emptyKeyword: Token<SyntaxKind.EmptyKeyword>;
 
@@ -783,7 +893,13 @@ export class EmptyAssertion extends AssertionBase<SyntaxKind.EmptyAssertion, Syn
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitEmptyAssertion(this); }
 }
 
-/** {@docCategory Nodes} */
+/**
+ * Represents a `lookahead` assertion, which is a zero-width assertion that only matches if the next token is in the requested set.
+ * ```grammarkdown
+ * [lookahead ∉ { `class`, `let` }]
+ * ```
+ * {@docCategory Nodes}
+ */
 export class LookaheadAssertion extends AssertionBase<SyntaxKind.LookaheadAssertion, SyntaxKind.OpenBracketToken> {
     public readonly lookaheadKeyword: Token<SyntaxKind.LookaheadKeyword>;
     public readonly operatorToken: Token<LookaheadOperatorKind> | undefined;
@@ -847,7 +963,13 @@ export class LookaheadAssertion extends AssertionBase<SyntaxKind.LookaheadAssert
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitLookaheadAssertion(this); }
 }
 
-/** {@docCategory Nodes} */
+/**
+ * Represens a `lexical-goal` assertion which verifies that current lexical goal is the supplied *Nonterminal*.
+ * ```grammarkdown
+ * [lexical goal Module]
+ * ```
+ * {@docCategory Nodes}
+ */
 export class LexicalGoalAssertion extends AssertionBase<SyntaxKind.LexicalGoalAssertion, SyntaxKind.OpenBracketToken> {
     public readonly lexicalKeyword: Token<SyntaxKind.LexicalKeyword>;
     public readonly goalKeyword: Token<SyntaxKind.GoalKeyword> | undefined;
@@ -911,7 +1033,13 @@ export class LexicalGoalAssertion extends AssertionBase<SyntaxKind.LexicalGoalAs
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitLexicalGoalAssertion(this); }
 }
 
-/** {@docCategory Nodes} */
+/**
+ * Represents a `no Symbol here` assertion, which disallows the provided symbol.
+ * ```grammarkdown
+ * [no LineTerminator here]
+ * ```
+ * {@docCategory Nodes}
+ */
 export class NoSymbolHereAssertion extends AssertionBase<SyntaxKind.NoSymbolHereAssertion, SyntaxKind.OpenBracketToken> {
     public readonly noKeyword: Token<SyntaxKind.NoKeyword>;
     public readonly symbols: ReadonlyArray<PrimarySymbol> | undefined;
@@ -975,7 +1103,13 @@ export class NoSymbolHereAssertion extends AssertionBase<SyntaxKind.NoSymbolHere
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitNoSymbolHereAssertion(this); }
 }
 
-/** {@docCategory Nodes} */
+/**
+ * Represents an assertion containing Prose, which indicates handling of syntax outside the scope of the Grammarkdown parser.
+ * ```grammarkdown
+ * HexDigits [> but only if MV of |HexDigits| > 0x10FFFF]
+ * ```
+ * {@docCategory Nodes}
+ */
 export class ProseAssertion extends AssertionBase<SyntaxKind.ProseAssertion, SyntaxKind.OpenBracketGreaterThanToken> {
     public readonly fragments: ReadonlyArray<ProseFragment> | undefined;
 

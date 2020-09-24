@@ -94,8 +94,10 @@ gulp.task("diff", () => diff("baselines/reference/", "baselines/local/"));
 const emu = async () => {
     await exec(process.execPath, [require.resolve("./dist/cli.js"), "spec/es6.grammar", "-o", "spec/es6.grammar.html", "-f", "ecmarkup", "--emitLinks"]);
     await exec(process.execPath, [require.resolve("./dist/cli.js"), "spec/typescript.grammar", "-o", "spec/typescript.grammar.html", "-f", "ecmarkup", "--emitLinks"]);
+    await exec(process.execPath, [require.resolve("./dist/cli.js"), "spec/es2020.grammar", "-o", "spec/es2020.grammar.html", "-f", "ecmarkup", "--emitLinks"]);
     try { await fs.mkdirSync("obj/resources", { recursive: true }); } catch { }
     await exec(process.execPath, [require.resolve("ecmarkup/bin/ecmarkup.js"), "spec/es6.html", "obj/resources/es6.html", "--css-out", "obj/resources/elements.css", "--js-out", "obj/resources/menu.js"]);
+    await exec(process.execPath, [require.resolve("ecmarkup/bin/ecmarkup.js"), "spec/es2020.html", "obj/resources/es2020.html"]);
     await exec(process.execPath, [require.resolve("ecmarkup/bin/ecmarkup.js"), "spec/typescript.html", "obj/resources/typescript.html"]);
 }
 

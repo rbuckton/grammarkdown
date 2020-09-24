@@ -273,6 +273,33 @@
   
   
   
+  <h4 id="grammarkdown_NodeNavigator_getKindString_member_1_" data-uid="grammarkdown!NodeNavigator#getKindString:member(1)">getKindString()</h4>
+  <div class="markdown level1 summary"><p>Gets the string representation of the <a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a> of the <a class="xref" href="node.html#grammarkdown_Node_class">Node</a> the navigator is currently focused on.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">getKindString(): string;</code></pre>
+  </div>
+  
+  
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">string</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
   <h4 id="grammarkdown_NodeNavigator_getName_member_1_" data-uid="grammarkdown!NodeNavigator#getName:member(1)">getName()</h4>
   <div class="markdown level1 summary"><p>Gets the name of the property on the parent <a class="xref" href="node.html#grammarkdown_Node_class">Node</a> the navigator is currently focused on.</p>
 </div>
@@ -397,6 +424,33 @@
   <div>
   <div class="property">
     <div><a class="xref" href="sourcefile.html#grammarkdown_SourceFile_class">SourceFile</a></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_NodeNavigator_getTextContent_member_1_" data-uid="grammarkdown!NodeNavigator#getTextContent:member(1)">getTextContent()</h4>
+  <div class="markdown level1 summary"><p>If the <a class="xref" href="node.html#grammarkdown_Node_class">Node</a> the navigator is currently focused on is a <a class="xref" href="../grammarkdown.html#grammarkdown_TextContentNode_type">TextContentNode</a><!-- -->, returns the <code>text</code> of the node; Otherwise, returns <code>undefined</code><!-- -->.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">getTextContent(): string | undefined;</code></pre>
+  </div>
+  
+  
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">string | undefined</span></div>
     <p>
   </div>
   </div>
@@ -718,6 +772,33 @@
     <div><span class="xref">boolean</span></div>
     <p><p><code>true</code> if both navigators are focused on the same location within the tree; otherwise, <code>false</code><!-- -->.</p>
 </p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_NodeNavigator_isToken_member_1_" data-uid="grammarkdown!NodeNavigator#isToken:member(1)">isToken()</h4>
+  <div class="markdown level1 summary"><p>Returns a value indicating whether the focus of the navigator points to either a <a class="xref" href="token.html#grammarkdown_Token_class">Token</a><!-- -->, <a class="xref" href="../grammarkdown.html#grammarkdown_TextContentNode_type">TextContentNode</a><!-- -->, or <a class="xref" href="invalidsymbol.html#grammarkdown_InvalidSymbol_class">InvalidSymbol</a><!-- -->.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">isToken(): boolean;</code></pre>
+  </div>
+  
+  
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">boolean</span></div>
+    <p>
   </div>
   </div>
   
@@ -1358,6 +1439,118 @@
   
   
   
+  <h4 id="grammarkdown_NodeNavigator_moveToFirstToken_member_1_" data-uid="grammarkdown!NodeNavigator#moveToFirstToken:member(1)">moveToFirstToken()</h4>
+  <div class="markdown level1 summary"><p>Moves the focus of the navigator to the first <a class="xref" href="token.html#grammarkdown_Token_class">Token</a><!-- -->, <a class="xref" href="textcontent.html#grammarkdown_TextContent_interface">TextContent</a> or <a class="xref" href="invalidsymbol.html#grammarkdown_InvalidSymbol_class">InvalidSymbol</a> descendant (or self) of the focused <a class="xref" href="node.html#grammarkdown_Node_class">Node</a><!-- -->.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">moveToFirstToken(): boolean;</code></pre>
+  </div>
+  
+  
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">boolean</span></div>
+    <p><p><code>true</code> if the current focus is a <a class="xref" href="token.html#grammarkdown_Token_class">Token</a><!-- -->, <a class="xref" href="textcontent.html#grammarkdown_TextContent_interface">TextContent</a> or <a class="xref" href="invalidsymbol.html#grammarkdown_InvalidSymbol_class">InvalidSymbol</a> or if the navigator&#39;s focus changed; otherwise, <code>false</code><!-- -->.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_NodeNavigator_moveToFirstToken_member_2_" data-uid="grammarkdown!NodeNavigator#moveToFirstToken:member(2)">moveToFirstToken(predicate)</h4>
+  <div class="markdown level1 summary"><p>Moves the focus of the navigator to the first <a class="xref" href="token.html#grammarkdown_Token_class">Token</a><!-- -->, <a class="xref" href="textcontent.html#grammarkdown_TextContent_interface">TextContent</a> or <a class="xref" href="invalidsymbol.html#grammarkdown_InvalidSymbol_class">InvalidSymbol</a> descendant (or self) of the focused <a class="xref" href="node.html#grammarkdown_Node_class">Node</a><!-- -->.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">moveToFirstToken(predicate: (node: Node) =&gt; boolean): boolean;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>predicate</dt>
+        <dd>(node: <a class="xref" href="node.html#grammarkdown_Node_class">Node</a>) =&gt; boolean</dd>
+      </dl>
+      <p>
+        <p>A callback used to match a token node.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">boolean</span></div>
+    <p><p><code>true</code> if the current focus is a <a class="xref" href="token.html#grammarkdown_Token_class">Token</a><!-- -->, <a class="xref" href="textcontent.html#grammarkdown_TextContent_interface">TextContent</a> or <a class="xref" href="invalidsymbol.html#grammarkdown_InvalidSymbol_class">InvalidSymbol</a> or if the navigator&#39;s focus changed; otherwise, <code>false</code><!-- -->.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_NodeNavigator_moveToFirstToken_member_3_" data-uid="grammarkdown!NodeNavigator#moveToFirstToken:member(3)">moveToFirstToken(kind)</h4>
+  <div class="markdown level1 summary"><p>Moves the focus of the navigator to the first <a class="xref" href="token.html#grammarkdown_Token_class">Token</a><!-- -->, <a class="xref" href="textcontent.html#grammarkdown_TextContent_interface">TextContent</a> or <a class="xref" href="invalidsymbol.html#grammarkdown_InvalidSymbol_class">InvalidSymbol</a> descendant (or self) of the focused <a class="xref" href="node.html#grammarkdown_Node_class">Node</a><!-- -->.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">moveToFirstToken(kind: SyntaxKind): boolean;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>kind</dt>
+        <dd><a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a></dd>
+      </dl>
+      <p>
+        <p>The <a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a> that the previous token must match.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">boolean</span></div>
+    <p><p><code>true</code> if the current focus is a <a class="xref" href="token.html#grammarkdown_Token_class">Token</a><!-- -->, <a class="xref" href="textcontent.html#grammarkdown_TextContent_interface">TextContent</a> or <a class="xref" href="invalidsymbol.html#grammarkdown_InvalidSymbol_class">InvalidSymbol</a> or if the navigator&#39;s focus changed; otherwise, <code>false</code><!-- -->.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
   <h4 id="grammarkdown_NodeNavigator_moveToLastChild_member_1_" data-uid="grammarkdown!NodeNavigator#moveToLastChild:member(1)">moveToLastChild()</h4>
   <div class="markdown level1 summary"><p>Moves the focus of the navigator to the last child of the focused <a class="xref" href="node.html#grammarkdown_Node_class">Node</a><!-- -->.</p>
 </div>
@@ -1750,6 +1943,118 @@
   
   
   
+  <h4 id="grammarkdown_NodeNavigator_moveToLastToken_member_1_" data-uid="grammarkdown!NodeNavigator#moveToLastToken:member(1)">moveToLastToken()</h4>
+  <div class="markdown level1 summary"><p>Moves the focus of the navigator to the last <a class="xref" href="token.html#grammarkdown_Token_class">Token</a><!-- -->, <a class="xref" href="textcontent.html#grammarkdown_TextContent_interface">TextContent</a> or <a class="xref" href="invalidsymbol.html#grammarkdown_InvalidSymbol_class">InvalidSymbol</a> descendant (or self) of the focused <a class="xref" href="node.html#grammarkdown_Node_class">Node</a><!-- -->.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">moveToLastToken(): boolean;</code></pre>
+  </div>
+  
+  
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">boolean</span></div>
+    <p><p><code>true</code> if the current focus is a <a class="xref" href="token.html#grammarkdown_Token_class">Token</a><!-- -->, <a class="xref" href="textcontent.html#grammarkdown_TextContent_interface">TextContent</a> or <a class="xref" href="invalidsymbol.html#grammarkdown_InvalidSymbol_class">InvalidSymbol</a> or if the navigator&#39;s focus changed; otherwise, <code>false</code><!-- -->.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_NodeNavigator_moveToLastToken_member_2_" data-uid="grammarkdown!NodeNavigator#moveToLastToken:member(2)">moveToLastToken(predicate)</h4>
+  <div class="markdown level1 summary"><p>Moves the focus of the navigator to the last <a class="xref" href="token.html#grammarkdown_Token_class">Token</a><!-- -->, <a class="xref" href="textcontent.html#grammarkdown_TextContent_interface">TextContent</a> or <a class="xref" href="invalidsymbol.html#grammarkdown_InvalidSymbol_class">InvalidSymbol</a> descendant (or self) of the focused <a class="xref" href="node.html#grammarkdown_Node_class">Node</a><!-- -->.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">moveToLastToken(predicate: (node: Node) =&gt; boolean): boolean;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>predicate</dt>
+        <dd>(node: <a class="xref" href="node.html#grammarkdown_Node_class">Node</a>) =&gt; boolean</dd>
+      </dl>
+      <p>
+        <p>A callback used to match a token node.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">boolean</span></div>
+    <p><p><code>true</code> if the current focus is a <a class="xref" href="token.html#grammarkdown_Token_class">Token</a><!-- -->, <a class="xref" href="textcontent.html#grammarkdown_TextContent_interface">TextContent</a> or <a class="xref" href="invalidsymbol.html#grammarkdown_InvalidSymbol_class">InvalidSymbol</a> or if the navigator&#39;s focus changed; otherwise, <code>false</code><!-- -->.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_NodeNavigator_moveToLastToken_member_3_" data-uid="grammarkdown!NodeNavigator#moveToLastToken:member(3)">moveToLastToken(kind)</h4>
+  <div class="markdown level1 summary"><p>Moves the focus of the navigator to the last <a class="xref" href="token.html#grammarkdown_Token_class">Token</a><!-- -->, <a class="xref" href="textcontent.html#grammarkdown_TextContent_interface">TextContent</a> or <a class="xref" href="invalidsymbol.html#grammarkdown_InvalidSymbol_class">InvalidSymbol</a> descendant (or self) of the focused <a class="xref" href="node.html#grammarkdown_Node_class">Node</a><!-- -->.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">moveToLastToken(kind: SyntaxKind): boolean;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>kind</dt>
+        <dd><a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a></dd>
+      </dl>
+      <p>
+        <p>The <a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a> that the previous token must match.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">boolean</span></div>
+    <p><p><code>true</code> if the current focus is a <a class="xref" href="token.html#grammarkdown_Token_class">Token</a><!-- -->, <a class="xref" href="textcontent.html#grammarkdown_TextContent_interface">TextContent</a> or <a class="xref" href="invalidsymbol.html#grammarkdown_InvalidSymbol_class">InvalidSymbol</a> or if the navigator&#39;s focus changed; otherwise, <code>false</code><!-- -->.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
   <h4 id="grammarkdown_NodeNavigator_moveToName_member_1_" data-uid="grammarkdown!NodeNavigator#moveToName:member(1)">moveToName()</h4>
   <div class="markdown level1 summary"><p>Moves the focus of the navigator to the nearest <a class="xref" href="identifier.html#grammarkdown_Identifier_class">Identifier</a><!-- -->.</p>
 </div>
@@ -2008,6 +2313,118 @@
   <div class="property">
     <div><span class="xref">boolean</span></div>
     <p><p><code>true</code> if the navigator&#39;s focus changed; otherwise, <code>false</code><!-- -->.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_NodeNavigator_moveToNextToken_member_1_" data-uid="grammarkdown!NodeNavigator#moveToNextToken:member(1)">moveToNextToken()</h4>
+  <div class="markdown level1 summary"><p>Moves the focus of the navigator to the next <a class="xref" href="token.html#grammarkdown_Token_class">Token</a><!-- -->, <a class="xref" href="textcontent.html#grammarkdown_TextContent_interface">TextContent</a> or <a class="xref" href="invalidsymbol.html#grammarkdown_InvalidSymbol_class">InvalidSymbol</a> following the focused <a class="xref" href="node.html#grammarkdown_Node_class">Node</a> in document order.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">moveToNextToken(): boolean;</code></pre>
+  </div>
+  
+  
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">boolean</span></div>
+    <p><p><code>true</code> if the current focus is a <a class="xref" href="token.html#grammarkdown_Token_class">Token</a><!-- -->, <a class="xref" href="textcontent.html#grammarkdown_TextContent_interface">TextContent</a> or <a class="xref" href="invalidsymbol.html#grammarkdown_InvalidSymbol_class">InvalidSymbol</a> or if the navigator&#39;s focus changed; otherwise, <code>false</code><!-- -->.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_NodeNavigator_moveToNextToken_member_2_" data-uid="grammarkdown!NodeNavigator#moveToNextToken:member(2)">moveToNextToken(predicate)</h4>
+  <div class="markdown level1 summary"><p>Moves the focus of the navigator to the next <a class="xref" href="token.html#grammarkdown_Token_class">Token</a><!-- -->, <a class="xref" href="textcontent.html#grammarkdown_TextContent_interface">TextContent</a> or <a class="xref" href="invalidsymbol.html#grammarkdown_InvalidSymbol_class">InvalidSymbol</a> following the focused <a class="xref" href="node.html#grammarkdown_Node_class">Node</a> in document order.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">moveToNextToken(predicate: (node: Node) =&gt; boolean): boolean;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>predicate</dt>
+        <dd>(node: <a class="xref" href="node.html#grammarkdown_Node_class">Node</a>) =&gt; boolean</dd>
+      </dl>
+      <p>
+        <p>A callback used to match a token node.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">boolean</span></div>
+    <p><p><code>true</code> if the current focus is a <a class="xref" href="token.html#grammarkdown_Token_class">Token</a><!-- -->, <a class="xref" href="textcontent.html#grammarkdown_TextContent_interface">TextContent</a> or <a class="xref" href="invalidsymbol.html#grammarkdown_InvalidSymbol_class">InvalidSymbol</a> or if the navigator&#39;s focus changed; otherwise, <code>false</code><!-- -->.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_NodeNavigator_moveToNextToken_member_3_" data-uid="grammarkdown!NodeNavigator#moveToNextToken:member(3)">moveToNextToken(kind)</h4>
+  <div class="markdown level1 summary"><p>Moves the focus of the navigator to the next <a class="xref" href="token.html#grammarkdown_Token_class">Token</a><!-- -->, <a class="xref" href="textcontent.html#grammarkdown_TextContent_interface">TextContent</a> or <a class="xref" href="invalidsymbol.html#grammarkdown_InvalidSymbol_class">InvalidSymbol</a> following the focused <a class="xref" href="node.html#grammarkdown_Node_class">Node</a> in document order.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">moveToNextToken(kind: SyntaxKind): boolean;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>kind</dt>
+        <dd><a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a></dd>
+      </dl>
+      <p>
+        <p>The <a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a> that the previous token must match.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">boolean</span></div>
+    <p><p><code>true</code> if the current focus is a <a class="xref" href="token.html#grammarkdown_Token_class">Token</a><!-- -->, <a class="xref" href="textcontent.html#grammarkdown_TextContent_interface">TextContent</a> or <a class="xref" href="invalidsymbol.html#grammarkdown_InvalidSymbol_class">InvalidSymbol</a> or if the navigator&#39;s focus changed; otherwise, <code>false</code><!-- -->.</p>
 </p>
   </div>
   </div>
@@ -2383,6 +2800,118 @@
   <div class="property">
     <div><span class="xref">boolean</span></div>
     <p><p><code>true</code> if the navigator&#39;s focus changed; otherwise, <code>false</code><!-- -->.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_NodeNavigator_moveToPreviousToken_member_1_" data-uid="grammarkdown!NodeNavigator#moveToPreviousToken:member(1)">moveToPreviousToken()</h4>
+  <div class="markdown level1 summary"><p>Moves the focus of the navigator to the previous <a class="xref" href="token.html#grammarkdown_Token_class">Token</a><!-- -->, <a class="xref" href="textcontent.html#grammarkdown_TextContent_interface">TextContent</a> or <a class="xref" href="invalidsymbol.html#grammarkdown_InvalidSymbol_class">InvalidSymbol</a> preceding the focused <a class="xref" href="node.html#grammarkdown_Node_class">Node</a> in document order.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">moveToPreviousToken(): boolean;</code></pre>
+  </div>
+  
+  
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">boolean</span></div>
+    <p><p><code>true</code> if the current focus is a <a class="xref" href="token.html#grammarkdown_Token_class">Token</a><!-- -->, <a class="xref" href="textcontent.html#grammarkdown_TextContent_interface">TextContent</a> or <a class="xref" href="invalidsymbol.html#grammarkdown_InvalidSymbol_class">InvalidSymbol</a> or if the navigator&#39;s focus changed; otherwise, <code>false</code><!-- -->.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_NodeNavigator_moveToPreviousToken_member_2_" data-uid="grammarkdown!NodeNavigator#moveToPreviousToken:member(2)">moveToPreviousToken(predicate)</h4>
+  <div class="markdown level1 summary"><p>Moves the focus of the navigator to the previous <a class="xref" href="token.html#grammarkdown_Token_class">Token</a><!-- -->, <a class="xref" href="textcontent.html#grammarkdown_TextContent_interface">TextContent</a> or <a class="xref" href="invalidsymbol.html#grammarkdown_InvalidSymbol_class">InvalidSymbol</a> preceding the focused <a class="xref" href="node.html#grammarkdown_Node_class">Node</a> in document order.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">moveToPreviousToken(predicate: (node: Node) =&gt; boolean): boolean;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>predicate</dt>
+        <dd>(node: <a class="xref" href="node.html#grammarkdown_Node_class">Node</a>) =&gt; boolean</dd>
+      </dl>
+      <p>
+        <p>A callback used to match a token node.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">boolean</span></div>
+    <p><p><code>true</code> if the current focus is a <a class="xref" href="token.html#grammarkdown_Token_class">Token</a><!-- -->, <a class="xref" href="textcontent.html#grammarkdown_TextContent_interface">TextContent</a> or <a class="xref" href="invalidsymbol.html#grammarkdown_InvalidSymbol_class">InvalidSymbol</a> or if the navigator&#39;s focus changed; otherwise, <code>false</code><!-- -->.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_NodeNavigator_moveToPreviousToken_member_3_" data-uid="grammarkdown!NodeNavigator#moveToPreviousToken:member(3)">moveToPreviousToken(kind)</h4>
+  <div class="markdown level1 summary"><p>Moves the focus of the navigator to the previous <a class="xref" href="token.html#grammarkdown_Token_class">Token</a><!-- -->, <a class="xref" href="textcontent.html#grammarkdown_TextContent_interface">TextContent</a> or <a class="xref" href="invalidsymbol.html#grammarkdown_InvalidSymbol_class">InvalidSymbol</a> preceding the focused <a class="xref" href="node.html#grammarkdown_Node_class">Node</a> in document order.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">moveToPreviousToken(kind: SyntaxKind): boolean;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>kind</dt>
+        <dd><a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a></dd>
+      </dl>
+      <p>
+        <p>The <a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a> that the previous token must match.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">boolean</span></div>
+    <p><p><code>true</code> if the current focus is a <a class="xref" href="token.html#grammarkdown_Token_class">Token</a><!-- -->, <a class="xref" href="textcontent.html#grammarkdown_TextContent_interface">TextContent</a> or <a class="xref" href="invalidsymbol.html#grammarkdown_InvalidSymbol_class">InvalidSymbol</a> or if the navigator&#39;s focus changed; otherwise, <code>false</code><!-- -->.</p>
 </p>
   </div>
   </div>
