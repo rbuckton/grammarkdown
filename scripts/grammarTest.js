@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
 const tests = path.resolve(__dirname, "../src/__tests__");
+const thisFileContents = fs.readFileSync(__filename, "utf8");
 class Transformer {
     process(content, filename, config, options) {
         let file = parseTestFile(content);
@@ -14,7 +15,7 @@ class Transformer {
                     tokens: "true",
                     nodes: "true",
                     diagnostics: "true",
-                    emit: "ecmarkup,html,markdown",
+                    emit: "ecmarkup,html,markdown,grammarkdown",
                     ...file.options
                 }
             };
@@ -44,8 +45,10 @@ class Transformer {
     getCacheKey(content, filename, config, options) {
         return crypto
             .createHash("SHA1")
-            .update(content, "utf8")
+            .update(__filename, "utf8")
             .update(filename, "utf8")
+            .update(thisFileContents, "utf8") // invalidate cache when this file changes
+            .update(content, "utf8")
             .digest()
             .toString("base64");
     }
@@ -91,6 +94,7 @@ const header = (file, filename, relative, resolve) => `
     const { DiagnosticMessages } = require(${resolve("../diagnostics")});
     const { Scanner } = require(${resolve("../scanner")});
     const { Parser } = require(${resolve("../parser")});
+    const { EcmarkupEmitter, HtmlEmitter, MarkdownEmitter, GrammarkdownEmitter } = require(${resolve("../emitter")});
     const { Grammar } = require(${resolve("../grammar")});
     const { writeTokens, compareBaseline, writeNodes, writeDiagnostics, writeOutput } = require(${resolve("./diff")});
     const { EmitFormat, NewLineKind } = require(${resolve("../options")});
@@ -120,15 +124,22 @@ const checker = `
     });`;
 
 const emitter = (mode) => `
-    (() => {
-        const mode = ${JSON.stringify(mode)};
-        const format = mode === "html" ? EmitFormat.html : mode === "markdown" ? EmitFormat.markdown : EmitFormat.ecmarkup;
-        const extname = mode === "html" ? ".html" : mode === "markdown" ? ".md" : ".emu.html";
-        const emitLinks = mode === "html";
-        it(\`emit \${EmitFormat[format]}\`, async () => {
-            let output;
-            const grammar = new Grammar([file.relative], { format, emitLinks, newLine: NewLineKind.CarriageReturnLineFeed }, new TestFileHost(file));
-            await grammar.emit(/*sourceFile*/ undefined, async (_, _output) => { output = _output; });
-            compareBaseline(writeOutput(file.relative, extname, output));
-        });
-    })();`;
+    it(\`emit ${mode}\`, async () => {
+        const extname = ${JSON.stringify(
+            mode === "html" ? ".html" :
+            mode === "markdown" ? ".md" :
+            mode === "grammarkdown" ? ".grammar" :
+            ".emu.html")};
+        const emitLinks = ${mode === "html"};
+        const grammar = new Grammar([file.relative], { emitLinks, newLine: NewLineKind.CarriageReturnLineFeed }, new TestFileHost(file));
+        await grammar.check();
+        const sourceFile = grammar.getSourceFile(file.relative);
+        expect(sourceFile).toBeDefined();
+        const emitter = new ${
+            mode === "html" ? "HtmlEmitter" :
+            mode === "markdown" ? "MarkdownEmitter" :
+            mode === "grammarkdown" ? "GrammarkdownEmitter" :
+            "EcmarkupEmitter"}(grammar.options);
+        const output = emitter.emitString(sourceFile, grammar.resolver, grammar.diagnostics);
+        compareBaseline(writeOutput(file.relative, extname, output));
+    });`;

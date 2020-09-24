@@ -358,7 +358,7 @@ TemplateCharacters ::
 	TemplateCharacter TemplateCharacters?
 
 TemplateCharacter ::
-	`$` [lookahead != `{` ]
+	`$` [lookahead != `{`]
 	`\` EscapeSequence
 	LineContinuation
 	LineTerminatorSequence
@@ -448,7 +448,7 @@ LiteralPropertyName :
 	NumericLiteral
 
 ComputedPropertyName[Yield] :
-	`[` AssignmentExpression[+In, ?Yield]  `]`
+	`[` AssignmentExpression[+In, ?Yield] `]`
 
 CoverInitializedName[Yield] :
 	IdentifierReference[?Yield] Initializer[+In, ?Yield]
@@ -465,8 +465,8 @@ TemplateSpans[Yield] :
 	TemplateMiddleList[?Yield] TemplateTail
 
 TemplateMiddleList[Yield] :
-	TemplateMiddle  Expression[+In, ?Yield]
-	TemplateMiddleList[?Yield]  TemplateMiddle  Expression[+In, ?Yield]
+	TemplateMiddle Expression[+In, ?Yield]
+	TemplateMiddleList[?Yield] TemplateMiddle Expression[+In, ?Yield]
 
 MemberExpression[Yield] :
 	PrimaryExpression[?Yield]
@@ -504,7 +504,7 @@ SuperCall[Yield] :
 
 Arguments[Yield] :
 	`(` `)`
-	`(` ArgumentList[?Yield]  `)`
+	`(` ArgumentList[?Yield] `)`
 
 ArgumentList[Yield] :
 	AssignmentExpression[+In, ?Yield]
@@ -661,7 +661,7 @@ BindingList[In, Yield] :
 	LexicalBinding[?In, ?Yield]
 	BindingList[?In, ?Yield] `,` LexicalBinding[?In, ?Yield]
 
-LexicalBinding[In, Yield]  :
+LexicalBinding[In, Yield] :
 	BindingIdentifier[?Yield] Initializer[?In, ?Yield]?
 	BindingPattern[?Yield] Initializer[?In, ?Yield]
 
@@ -749,7 +749,7 @@ ContinueStatement[Yield] :
 	`continue` `;`
 	`continue` [no LineTerminator here] LabelIdentifier[?Yield] `;`
 
-BreakStatement[Yield]  :
+BreakStatement[Yield] :
 	`break` `;`
 	`break` [no LineTerminator here] LabelIdentifier[?Yield] `;`
 
@@ -807,7 +807,7 @@ DebuggerStatement :
 
 // A.4 - Functions and Classes
 
-FunctionDeclaration[Yield, Default]  :
+FunctionDeclaration[Yield, Default] :
 	`function` BindingIdentifier[?Yield] `(` FormalParameters `)` `{` FunctionBody `}`
 	[+Default] `function` `(` FormalParameters `)` `{` FunctionBody `}`
 
@@ -821,7 +821,7 @@ FormalParameters[Yield] :
 	[empty]
 	FormalParameterList[?Yield]
 
-FormalParameterList[Yield]  :
+FormalParameterList[Yield] :
 	FunctionRestParameter[?Yield]
 	FormalsList[?Yield]
 	FormalsList[?Yield] `,` FunctionRestParameter[?Yield]
@@ -842,10 +842,10 @@ FunctionBody[Yield] :
 FunctionStatementList[Yield] :
 	StatementList[?Yield, +Return]?
 
-ArrowFunction[In, Yield]  :
+ArrowFunction[In, Yield] :
 	ArrowParameters[?Yield] [no LineTerminator here] `=>` ConciseBody[?In]
 
-ArrowParameters[Yield]  :
+ArrowParameters[Yield] :
 	BindingIdentifier[?Yield]
 	CoverParenthesizedExpressionAndArrowParameterList[?Yield]
 
@@ -898,7 +898,7 @@ ClassBody[Yield] :
 
 ClassElementList[Yield] :
 	ClassElement[?Yield]
-	ClassElementList[?Yield]  ClassElement[?Yield]
+	ClassElementList[?Yield] ClassElement[?Yield]
 
 ClassElement[Yield] :
 	MethodDefinition[?Yield]
@@ -920,7 +920,7 @@ ModuleBody :
 
 ModuleItemList :
 	ModuleItem
-	ModuleItemList  ModuleItem
+	ModuleItemList ModuleItem
 
 ModuleItem :
 	ImportDeclaration
@@ -928,8 +928,8 @@ ModuleItem :
 	StatementListItem
 
 ImportDeclaration :
-	`import`  ImportClause FromClause `;`
-	`import`  ModuleSpecifier `;`
+	`import` ImportClause FromClause `;`
+	`import` ModuleSpecifier `;`
 
 ImportClause :
 	ImportedDefaultBinding

@@ -66,7 +66,7 @@ ModuleName :
 	ModuleName `.` Identifier
 
 ObjectType :
-	`{`   TypeBody?   `}`
+	`{` TypeBody? `}`
 
 TypeBody :
 	TypeMemberList `;`?
@@ -164,7 +164,7 @@ IndexSignature :
 	`[` Identifier `:` `number` `]` TypeAnnotation
 
 MethodSignature :
-	PropertyName   `?`?   CallSignature
+	PropertyName `?`? CallSignature
 
 TypeAliasDeclaration :
 	`type` Identifier `=` Type `;`
@@ -184,8 +184,8 @@ SetAccessor:
 	`set` PropertyName `(` Identifier TypeAnnotation? `)` `{` FunctionBody `}`
 
 ElementList : // (Modified)
-	Elision?  AssignmentExpression
-	Elision?  SpreadElement
+	Elision? AssignmentExpression
+	Elision? SpreadElement
 	ElementList `,` Elision? AssignmentExpression
 	ElementList `,` Elision? SpreadElement
 
@@ -300,7 +300,7 @@ ClassHeritage :
 	ClassExtendsClause? ImplementsClause?
 
 ClassExtendsClause :
-	`extends`  ClassType
+	`extends` ClassType
 
 ClassType :
 	TypeReference
@@ -311,90 +311,90 @@ ImplementsClause :
 ClassBody :
 	ClassElements?
 
-ClassElements:
+ClassElements :
 	ClassElement
 	ClassElements ClassElement
 
-ClassElement:
+ClassElement :
 	ConstructorDeclaration
 	PropertyMemberDeclaration
 	IndexMemberDeclaration
 
-ConstructorDeclaration:
+ConstructorDeclaration :
 	ConstructorOverloads? ConstructorImplementation
 
-ConstructorOverloads:
+ConstructorOverloads :
 	ConstructorOverload
 	ConstructorOverloads ConstructorOverload
 
-ConstructorOverload:
+ConstructorOverload :
 	AccessibilityModifier? `constructor` `(` ParameterList? `)` `;`
 
-ConstructorImplementation:
+ConstructorImplementation :
 	AccessibilityModifier? `constructor` `(` ParameterList? `)` `{` FunctionBody `}`
 
-PropertyMemberDeclaration:
+PropertyMemberDeclaration :
 	MemberVariableDeclaration
 	MemberFunctionDeclaration
 	MemberAccessorDeclaration
 
-MemberVariableDeclaration:
+MemberVariableDeclaration :
 	AccessibilityModifier? `static`? PropertyName TypeAnnotation? Initializer? `;`
 
-MemberFunctionDeclaration:
+MemberFunctionDeclaration :
 	MemberFunctionOverloads? MemberFunctionImplementation
 
-MemberFunctionOverloads:
+MemberFunctionOverloads :
 	MemberFunctionOverload
 	MemberFunctionOverloads MemberFunctionOverload
 
-MemberFunctionOverload:
+MemberFunctionOverload :
 	AccessibilityModifier? `static`? PropertyName CallSignature `;`
 
-MemberFunctionImplementation:
+MemberFunctionImplementation :
 	AccessibilityModifier? `static`? PropertyName CallSignature `{` FunctionBody `}`
 
-MemberAccessorDeclaration:
+MemberAccessorDeclaration :
 	AccessibilityModifier? `static`? GetAccessor
 	AccessibilityModifier? `static`? SetAccessor
 
-IndexMemberDeclaration:
+IndexMemberDeclaration :
 	IndexSignature `;`
 
 // A.7 Enums
-EnumDeclaration:
+EnumDeclaration :
 	`const`? `enum` Identifier `{` EnumBody? `}`
 
-EnumBody:
+EnumBody :
 	EnumMemberList `,`?
 
-EnumMemberList:
+EnumMemberList :
 	EnumMember
 	EnumMemberList `,` EnumMember
 
-EnumMember:
+EnumMember :
 	PropertyName
 	PropertyName `=` EnumValue
 
-EnumValue:
+EnumValue :
 	AssignmentExpression
 
 // A.8 Internal Modules
-ModuleDeclaration:
+ModuleDeclaration :
 	`module` IdentifierPath `{` ModuleBody `}`
 
-IdentifierPath:
+IdentifierPath :
 	Identifier
 	IdentifierPath `.` Identifier
 
-ModuleBody:
+ModuleBody :
 	ModuleElements?
 
-ModuleElements:
+ModuleElements :
 	ModuleElement
 	ModuleElements ModuleElement
 
-ModuleElement:
+ModuleElement :
 	Statement
 	`export`? VariableDeclaration
 	`export`? FunctionDeclaration
@@ -406,39 +406,39 @@ ModuleElement:
 	`export`? ImportDeclaration
 	`export`? AmbientDeclaration
 
-ImportDeclaration:
+ImportDeclaration :
 	`import` Identifier `=` EntityName `;`
 
-EntityName:
+EntityName :
 	ModuleName
 	ModuleName `.` Identifier
 
 // A.9 Source Files and External Modules
-SourceFile:
+SourceFile :
 	ImplementationSourceFile
 	DeclarationSourceFile
 
-ImplementationSourceFile:
+ImplementationSourceFile :
 	ImplementationElements?
 
-ImplementationElements:
+ImplementationElements :
 	ImplementationElement
 	ImplementationElements ImplementationElement
 
-ImplementationElement:
+ImplementationElement :
 	ModuleElement
 	ExportAssignment
 	AmbientExternalModuleDeclaration
 	`export`? ExternalImportDeclaration
 
-DeclarationSourceFile:
+DeclarationSourceFile :
 	DeclarationElements?
 
-DeclarationElements:
+DeclarationElements :
 	DeclarationElement
 	DeclarationElements DeclarationElement
 
-DeclarationElement:
+DeclarationElement :
 	ExportAssignment
 	AmbientExternalModuleDeclaration
 	`export`? InterfaceDeclaration
@@ -447,65 +447,65 @@ DeclarationElement:
 	`export`? AmbientDeclaration
 	`export`? ExternalImportDeclaration
 
-ExternalImportDeclaration:
+ExternalImportDeclaration :
 	`import` Identifier `=` ExternalModuleReference `;`
 
-ExternalModuleReference:
+ExternalModuleReference :
 	`require` `(` StringLiteral `)`
 
-ExportAssignment:
+ExportAssignment :
 	`export` `=` Identifier `;`
 
 // A.10 - Ambients
-AmbientDeclaration:
+AmbientDeclaration :
 	`declare` AmbientVariableDeclaration
 	`declare` AmbientFunctionDeclaration
 	`declare` AmbientClassDeclaration
 	`declare` AmbientEnumDeclaration
 	`declare` AmbientModuleDeclaration
 
-AmbientVariableDeclaration:
+AmbientVariableDeclaration :
 	`var` Identifier TypeAnnotation? `;`
 
-AmbientFunctionDeclaration:
+AmbientFunctionDeclaration :
 	`function` Identifier CallSignature `;`
 
-AmbientClassDeclaration:
+AmbientClassDeclaration :
 	`class` Identifier TypeParameters? ClassHeritage `{` AmbientClassBody `}`
 
-AmbientClassBody:
+AmbientClassBody :
 	AmbientClassBodyElements?
 
-AmbientClassBodyElements:
+AmbientClassBodyElements :
 	AmbientClassBodyElement
 	AmbientClassBodyElements AmbientClassBodyElement
 
-AmbientClassBodyElement:
+AmbientClassBodyElement :
 	AmbientConstructorDeclaration
 	AmbientPropertyMemberDeclaration
 	IndexSignature
 
-AmbientConstructorDeclaration:
+AmbientConstructorDeclaration :
 	`constructor` `(` ParameterList? `)` `;`
 
-AmbientPropertyMemberDeclaration:
+AmbientPropertyMemberDeclaration :
 	AccessibilityModifier? `static`? PropertyName TypeAnnotation? `;`
 	AccessibilityModifier? `static`? PropertyName CallSignature `;`
 
-AmbientEnumDeclaration:
+AmbientEnumDeclaration :
 	EnumDeclaration
 
-AmbientModuleDeclaration:
+AmbientModuleDeclaration :
 	`module` IdentifierPath `{` AmbientModuleBody `}`
 
-AmbientModuleBody:
+AmbientModuleBody :
 	AmbientModuleElements?
 
-AmbientModuleElements:
+AmbientModuleElements :
 	AmbientModuleElement
 	AmbientModuleElements AmbientModuleElement
 
-AmbientModuleElement:
+AmbientModuleElement :
 	`export`? AmbientVariableDeclaration
 	`export`? AmbientFunctionDeclaration
 	`export`? AmbientClassDeclaration
@@ -514,17 +514,17 @@ AmbientModuleElement:
 	`export`? AmbientModuleDeclaration
 	`export`? ImportDeclaration
 
-AmbientExternalModuleDeclaration:
+AmbientExternalModuleDeclaration :
 	`declare` `module` StringLiteral `{` AmbientExternalModuleBody `}`
 
-AmbientExternalModuleBody:
+AmbientExternalModuleBody :
 	AmbientExternalModuleElements?
 
-AmbientExternalModuleElements:
+AmbientExternalModuleElements :
 	AmbientExternalModuleElement
 	AmbientExternalModuleElements AmbientExternalModuleElement
 
-AmbientExternalModuleElement:
+AmbientExternalModuleElement :
 	AmbientModuleElement
 	ExportAssignment
 	`export`? ExternalImportDeclaration

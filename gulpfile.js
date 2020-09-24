@@ -33,7 +33,10 @@ gulp.task("clean:baselines", cleanBaselines);
 const cleanObj = () => del(["obj"]);
 gulp.task("clean:obj", cleanObj);
 
-const clean = gulp.parallel(cleanDist, cleanBaselines, cleanObj);
+const cleanTest = () => exec(process.execPath, [require.resolve("jest/bin/jest"), "--clearCache"], { verbose: true });
+gulp.task("clean:test", cleanTest);
+
+const clean = gulp.parallel(cleanDist, cleanBaselines, cleanObj, cleanTest);
 gulp.task("clean", clean);
 
 const generateDiagnostics = () => exec(process.execPath, ["./scripts/generateDiagnostics.js", "./src/diagnostics.json", "./src/diagnostics.generated.ts"]);

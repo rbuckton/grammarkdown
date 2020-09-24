@@ -6,7 +6,7 @@
  */
 
 import { Emitter } from "./emitter";
-import { SyntaxKind } from "../tokens";
+import { isMetaElementKind, isTokenKind, SyntaxKind } from "../tokens";
 import {
     UnicodeCharacterLiteral,
     UnicodeCharacterRange,
@@ -32,19 +32,74 @@ import {
     RightHandSide,
     RightHandSideList,
     Production,
-    TextContent
+    TextContent,
+    Define,
+    Line,
+    Import,
+    SourceFile,
+    Node,
+    StringLiteral,
+    NumberLiteral
 } from "../nodes";
 
 /** {@docCategory Emit} */
 export class GrammarkdownEmitter extends Emitter {
     protected extension = ".grammar";
 
+    protected emitNode(node: Node | undefined) {
+        if (node && isTokenKind(node.kind)) {
+            return this.emitToken(node);
+        }
+        switch (node?.kind) {
+            case SyntaxKind.StringLiteral: return this.emitStringLiteral(node as StringLiteral);
+            case SyntaxKind.NumberLiteral: return this.emitNumberLiteral(node as NumberLiteral);
+        }
+        return super.emitNode(node);
+    }
+
+    protected emitSourceFile(node: SourceFile) {
+        let lastElementWasMeta = false;
+        let lastCollapsedProduction: Production | undefined;
+        let hasWrittenElement = false;
+        for (const element of node.elements) {
+            const thisElementIsMeta = isMetaElementKind(element.kind);
+            const thisCollapsedProduction = element.kind === SyntaxKind.Production && element.body?.kind === SyntaxKind.RightHandSide ? element : undefined;
+            if (hasWrittenElement) {
+                if (!(thisElementIsMeta && lastElementWasMeta) &&
+                    !(thisCollapsedProduction && lastCollapsedProduction && thisCollapsedProduction.name.text === lastCollapsedProduction.name.text)) {
+                    this.writer.commitLine();
+                    this.writer.writeln();
+                }
+            }
+            this.emitNode(element);
+            lastElementWasMeta = thisElementIsMeta;
+            lastCollapsedProduction = thisCollapsedProduction;
+            hasWrittenElement = true;
+        }
+        this.writer.writeln();
+    }
+
+    private emitStringLiteral(node: StringLiteral) {
+        this.writer.write(JSON.stringify(node.text ?? ""));
+    }
+
+    private emitNumberLiteral(node: NumberLiteral) {
+        this.emitTextContent(node);
+    }
+
     protected emitProduction(node: Production) {
         this.emitIdentifier(node.name);
         this.emitNode(node.parameterList);
         this.writer.write(" ");
         this.emitTokenKind(node.colonToken?.kind ?? SyntaxKind.ColonToken);
+        switch (node.body?.kind) {
+            case SyntaxKind.OneOfList:
+            case SyntaxKind.RightHandSide:
+                this.writer.write(" ");
+                break;
+        }
         this.emitNode(node.body);
+        this.writer.writeln();
     }
 
     protected emitParameterList(node: ParameterList) {
@@ -65,18 +120,37 @@ export class GrammarkdownEmitter extends Emitter {
     }
 
     protected emitOneOfList(node: OneOfList) {
-        this.writer.write(" ");
         this.emitTokenKind(SyntaxKind.OneKeyword);
         this.writer.write(" ");
         this.emitTokenKind(SyntaxKind.OfKeyword);
-        this.writer.writeln();
-        this.writer.indent();
         if (node.terminals?.length) {
+            let maxLength = 1;
             for (const child of node.terminals) {
-                this.emitNode(child);
+                const len = child.text?.length ?? 0;
+                if (len > maxLength) maxLength = len;
             }
+            const columnCount = Math.max(1, Math.floor(56 / (maxLength + 2)));
+            this.writer.writeln();
+            this.writer.indent();
+            const columnSizes = Array<number>(columnCount).fill(0);
+            for (let i = 0; i < node.terminals.length; i++) {
+                columnSizes[i % columnCount] = Math.max(columnSizes[i % columnCount], node.terminals[i].text?.length ?? 0);
+            }
+            for (let i = 0; i < node.terminals.length; i++) {
+                if (i > 0) {
+                    if ((i % columnCount) === 0) {
+                        this.writer.writeln();
+                    }
+                    else {
+                        const lastColumnSize = columnSizes[(i % columnCount) - 1];
+                        const lastLen = node.terminals[i - 1].text?.length ?? 1;
+                        this.writer.write(" ".repeat(lastColumnSize - lastLen + 1));
+                    }
+                }
+                this.emitNode(node.terminals[i]);
+            }
+            this.writer.dedent();
         }
-        this.writer.dedent();
     }
 
     protected emitRightHandSideList(node: RightHandSideList) {
@@ -177,30 +251,10 @@ export class GrammarkdownEmitter extends Emitter {
 
     protected emitLookaheadAssertion(node: LookaheadAssertion) {
         this.writer.write(`[`);
-        if (node.operatorToken) {
-            switch (node.operatorToken.kind) {
-                case SyntaxKind.ExclamationEqualsToken:
-                case SyntaxKind.NotEqualToToken:
-                    this.writer.write(`lookahead ≠ `);
-                    break;
-
-                case SyntaxKind.EqualsToken:
-                case SyntaxKind.EqualsEqualsToken:
-                    this.writer.write(`lookahead = `);
-                    break;
-
-                case SyntaxKind.ElementOfToken:
-                case SyntaxKind.LessThanMinusToken:
-                    this.writer.write(`lookahead ∈ `);
-                    break;
-
-                case SyntaxKind.NotAnElementOfToken:
-                case SyntaxKind.LessThanExclamationToken:
-                    this.writer.write(`lookahead ∉ `);
-                    break;
-            }
-        }
-
+        this.emitToken(node.lookaheadKeyword);
+        this.writer.write(" ");
+        this.emitTokenKind(node.operatorToken?.kind ?? SyntaxKind.EqualsToken);
+        this.writer.write(" ");
         this.emitNode(node.lookahead);
         this.writer.write(`]`);
     }
@@ -237,7 +291,7 @@ export class GrammarkdownEmitter extends Emitter {
                 this.emitNode(node.elements[i]);
             }
         }
-        this.writer.write("]");
+        this.writer.write("] ");
     }
 
     protected emitProseAssertion(node: ProseAssertion): void {
@@ -274,5 +328,35 @@ export class GrammarkdownEmitter extends Emitter {
         if (node?.text) {
             this.writer.write(node.text);
         }
+    }
+
+    protected emitDefine(node: Define) {
+        this.emitNode(node.atToken);
+        this.emitNode(node.defineKeyword);
+        this.writer.write(" ");
+        this.emitNode(node.key);
+        this.writer.write(" ");
+        this.emitNode(node.valueToken);
+        this.writer.writeln();
+    }
+
+    protected emitLine(node: Line) {
+        this.emitNode(node.atToken);
+        this.emitNode(node.lineKeyword);
+        this.writer.write(" ");
+        this.emitNode(node.number);
+        if (node.path) {
+            this.writer.write(" ");
+            this.emitNode(node.path);
+        }
+        this.writer.writeln();
+    }
+
+    protected emitImport(node: Import) {
+        this.emitNode(node.atToken);
+        this.emitNode(node.importKeyword);
+        this.writer.write(" ");
+        this.emitNode(node.path);
+        this.writer.writeln();
     }
 }

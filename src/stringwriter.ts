@@ -20,7 +20,7 @@ export class StringWriter {
     }
 
     public get size(): number {
-        return this._text.length;
+        return this._text.length + (this._newLine ? this._eol.length : 0);
     }
 
     public indent(): void {
@@ -38,13 +38,17 @@ export class StringWriter {
         }
     }
 
+    public commitLine() {
+        this.flushNewLine();
+    }
+
     public writeln(text?: string) {
         this.write(text);
         this._newLine = true;
     }
 
     public toString(): string {
-        return this._text;
+        return this._text + (this._newLine ? this._eol : "");
     }
 
     private flushNewLine(): void {

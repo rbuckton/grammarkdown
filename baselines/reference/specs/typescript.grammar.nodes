@@ -249,12 +249,12 @@
       (68,2)SyntaxKind[RightHandSide]
         (68,2)SyntaxKind[SymbolSpan]
           (68,2)SyntaxKind[Terminal](text = "{")
-          (68,8)SyntaxKind[SymbolSpan]
-            (68,8)SyntaxKind[Nonterminal]?
-              (68,8)SyntaxKind[Identifier](text = "TypeBody")
-              (68,16)SyntaxKind[QuestionToken]
-            (68,20)SyntaxKind[SymbolSpan]
-              (68,20)SyntaxKind[Terminal](text = "}")
+          (68,6)SyntaxKind[SymbolSpan]
+            (68,6)SyntaxKind[Nonterminal]?
+              (68,6)SyntaxKind[Identifier](text = "TypeBody")
+              (68,14)SyntaxKind[QuestionToken]
+            (68,16)SyntaxKind[SymbolSpan]
+              (68,16)SyntaxKind[Terminal](text = "}")
   (70,1)SyntaxKind[Production]
     (70,1)SyntaxKind[Identifier](text = "TypeBody")
     (70,10)SyntaxKind[ColonToken]
@@ -754,12 +754,12 @@
         (166,2)SyntaxKind[SymbolSpan]
           (166,2)SyntaxKind[Nonterminal]
             (166,2)SyntaxKind[Identifier](text = "PropertyName")
-          (166,17)SyntaxKind[SymbolSpan]
-            (166,17)SyntaxKind[Terminal](text = "?")?
-              (166,20)SyntaxKind[QuestionToken]
-            (166,24)SyntaxKind[SymbolSpan]
-              (166,24)SyntaxKind[Nonterminal]
-                (166,24)SyntaxKind[Identifier](text = "CallSignature")
+          (166,15)SyntaxKind[SymbolSpan]
+            (166,15)SyntaxKind[Terminal](text = "?")?
+              (166,18)SyntaxKind[QuestionToken]
+            (166,20)SyntaxKind[SymbolSpan]
+              (166,20)SyntaxKind[Nonterminal]
+                (166,20)SyntaxKind[Identifier](text = "CallSignature")
   (168,1)SyntaxKind[Production]
     (168,1)SyntaxKind[Identifier](text = "TypeAliasDeclaration")
     (168,22)SyntaxKind[ColonToken]
@@ -874,17 +874,17 @@
           (186,2)SyntaxKind[Nonterminal]?
             (186,2)SyntaxKind[Identifier](text = "Elision")
             (186,9)SyntaxKind[QuestionToken]
-          (186,12)SyntaxKind[SymbolSpan]
-            (186,12)SyntaxKind[Nonterminal]
-              (186,12)SyntaxKind[Identifier](text = "AssignmentExpression")
+          (186,11)SyntaxKind[SymbolSpan]
+            (186,11)SyntaxKind[Nonterminal]
+              (186,11)SyntaxKind[Identifier](text = "AssignmentExpression")
       (187,2)SyntaxKind[RightHandSide]
         (187,2)SyntaxKind[SymbolSpan]
           (187,2)SyntaxKind[Nonterminal]?
             (187,2)SyntaxKind[Identifier](text = "Elision")
             (187,9)SyntaxKind[QuestionToken]
-          (187,12)SyntaxKind[SymbolSpan]
-            (187,12)SyntaxKind[Nonterminal]
-              (187,12)SyntaxKind[Identifier](text = "SpreadElement")
+          (187,11)SyntaxKind[SymbolSpan]
+            (187,11)SyntaxKind[Nonterminal]
+              (187,11)SyntaxKind[Identifier](text = "SpreadElement")
       (188,2)SyntaxKind[RightHandSide]
         (188,2)SyntaxKind[SymbolSpan]
           (188,2)SyntaxKind[Nonterminal]
@@ -1439,9 +1439,9 @@
       (302,2)SyntaxKind[RightHandSide]
         (302,2)SyntaxKind[SymbolSpan]
           (302,2)SyntaxKind[Terminal](text = "extends")
-          (302,13)SyntaxKind[SymbolSpan]
-            (302,13)SyntaxKind[Nonterminal]
-              (302,13)SyntaxKind[Identifier](text = "ClassType")
+          (302,12)SyntaxKind[SymbolSpan]
+            (302,12)SyntaxKind[Nonterminal]
+              (302,12)SyntaxKind[Identifier](text = "ClassType")
   (304,1)SyntaxKind[Production]
     (304,1)SyntaxKind[Identifier](text = "ClassType")
     (304,11)SyntaxKind[ColonToken]
@@ -1471,7 +1471,7 @@
             (311,15)SyntaxKind[QuestionToken]
   (313,1)SyntaxKind[Production]
     (313,1)SyntaxKind[Identifier](text = "ClassElements")
-    (313,14)SyntaxKind[ColonToken]
+    (313,15)SyntaxKind[ColonToken]
     (314,2)SyntaxKind[RightHandSideList]
       (314,2)SyntaxKind[RightHandSide]
         (314,2)SyntaxKind[SymbolSpan]
@@ -1486,7 +1486,7 @@
               (315,16)SyntaxKind[Identifier](text = "ClassElement")
   (317,1)SyntaxKind[Production]
     (317,1)SyntaxKind[Identifier](text = "ClassElement")
-    (317,13)SyntaxKind[ColonToken]
+    (317,14)SyntaxKind[ColonToken]
     (318,2)SyntaxKind[RightHandSideList]
       (318,2)SyntaxKind[RightHandSide]
         (318,2)SyntaxKind[SymbolSpan]
@@ -1502,7 +1502,7 @@
             (320,2)SyntaxKind[Identifier](text = "IndexMemberDeclaration")
   (322,1)SyntaxKind[Production]
     (322,1)SyntaxKind[Identifier](text = "ConstructorDeclaration")
-    (322,23)SyntaxKind[ColonToken]
+    (322,24)SyntaxKind[ColonToken]
     (323,2)SyntaxKind[RightHandSideList]
       (323,2)SyntaxKind[RightHandSide]
         (323,2)SyntaxKind[SymbolSpan]
@@ -1514,7 +1514,7 @@
               (323,24)SyntaxKind[Identifier](text = "ConstructorImplementation")
   (325,1)SyntaxKind[Production]
     (325,1)SyntaxKind[Identifier](text = "ConstructorOverloads")
-    (325,21)SyntaxKind[ColonToken]
+    (325,22)SyntaxKind[ColonToken]
     (326,2)SyntaxKind[RightHandSideList]
       (326,2)SyntaxKind[RightHandSide]
         (326,2)SyntaxKind[SymbolSpan]
@@ -1529,7 +1529,7 @@
               (327,23)SyntaxKind[Identifier](text = "ConstructorOverload")
   (329,1)SyntaxKind[Production]
     (329,1)SyntaxKind[Identifier](text = "ConstructorOverload")
-    (329,20)SyntaxKind[ColonToken]
+    (329,21)SyntaxKind[ColonToken]
     (330,2)SyntaxKind[RightHandSideList]
       (330,2)SyntaxKind[RightHandSide]
         (330,2)SyntaxKind[SymbolSpan]
@@ -1550,7 +1550,7 @@
                     (330,62)SyntaxKind[Terminal](text = ";")
   (332,1)SyntaxKind[Production]
     (332,1)SyntaxKind[Identifier](text = "ConstructorImplementation")
-    (332,26)SyntaxKind[ColonToken]
+    (332,27)SyntaxKind[ColonToken]
     (333,2)SyntaxKind[RightHandSideList]
       (333,2)SyntaxKind[RightHandSide]
         (333,2)SyntaxKind[SymbolSpan]
@@ -1576,7 +1576,7 @@
                         (333,79)SyntaxKind[Terminal](text = "}")
   (335,1)SyntaxKind[Production]
     (335,1)SyntaxKind[Identifier](text = "PropertyMemberDeclaration")
-    (335,26)SyntaxKind[ColonToken]
+    (335,27)SyntaxKind[ColonToken]
     (336,2)SyntaxKind[RightHandSideList]
       (336,2)SyntaxKind[RightHandSide]
         (336,2)SyntaxKind[SymbolSpan]
@@ -1592,7 +1592,7 @@
             (338,2)SyntaxKind[Identifier](text = "MemberAccessorDeclaration")
   (340,1)SyntaxKind[Production]
     (340,1)SyntaxKind[Identifier](text = "MemberVariableDeclaration")
-    (340,26)SyntaxKind[ColonToken]
+    (340,27)SyntaxKind[ColonToken]
     (341,2)SyntaxKind[RightHandSideList]
       (341,2)SyntaxKind[RightHandSide]
         (341,2)SyntaxKind[SymbolSpan]
@@ -1617,7 +1617,7 @@
                     (341,77)SyntaxKind[Terminal](text = ";")
   (343,1)SyntaxKind[Production]
     (343,1)SyntaxKind[Identifier](text = "MemberFunctionDeclaration")
-    (343,26)SyntaxKind[ColonToken]
+    (343,27)SyntaxKind[ColonToken]
     (344,2)SyntaxKind[RightHandSideList]
       (344,2)SyntaxKind[RightHandSide]
         (344,2)SyntaxKind[SymbolSpan]
@@ -1629,7 +1629,7 @@
               (344,27)SyntaxKind[Identifier](text = "MemberFunctionImplementation")
   (346,1)SyntaxKind[Production]
     (346,1)SyntaxKind[Identifier](text = "MemberFunctionOverloads")
-    (346,24)SyntaxKind[ColonToken]
+    (346,25)SyntaxKind[ColonToken]
     (347,2)SyntaxKind[RightHandSideList]
       (347,2)SyntaxKind[RightHandSide]
         (347,2)SyntaxKind[SymbolSpan]
@@ -1644,7 +1644,7 @@
               (348,26)SyntaxKind[Identifier](text = "MemberFunctionOverload")
   (350,1)SyntaxKind[Production]
     (350,1)SyntaxKind[Identifier](text = "MemberFunctionOverload")
-    (350,23)SyntaxKind[ColonToken]
+    (350,24)SyntaxKind[ColonToken]
     (351,2)SyntaxKind[RightHandSideList]
       (351,2)SyntaxKind[RightHandSide]
         (351,2)SyntaxKind[SymbolSpan]
@@ -1664,7 +1664,7 @@
                   (351,62)SyntaxKind[Terminal](text = ";")
   (353,1)SyntaxKind[Production]
     (353,1)SyntaxKind[Identifier](text = "MemberFunctionImplementation")
-    (353,29)SyntaxKind[ColonToken]
+    (353,30)SyntaxKind[ColonToken]
     (354,2)SyntaxKind[RightHandSideList]
       (354,2)SyntaxKind[RightHandSide]
         (354,2)SyntaxKind[SymbolSpan]
@@ -1689,7 +1689,7 @@
                       (354,79)SyntaxKind[Terminal](text = "}")
   (356,1)SyntaxKind[Production]
     (356,1)SyntaxKind[Identifier](text = "MemberAccessorDeclaration")
-    (356,26)SyntaxKind[ColonToken]
+    (356,27)SyntaxKind[ColonToken]
     (357,2)SyntaxKind[RightHandSideList]
       (357,2)SyntaxKind[RightHandSide]
         (357,2)SyntaxKind[SymbolSpan]
@@ -1715,7 +1715,7 @@
                 (358,35)SyntaxKind[Identifier](text = "SetAccessor")
   (360,1)SyntaxKind[Production]
     (360,1)SyntaxKind[Identifier](text = "IndexMemberDeclaration")
-    (360,23)SyntaxKind[ColonToken]
+    (360,24)SyntaxKind[ColonToken]
     (361,2)SyntaxKind[RightHandSideList]
       (361,2)SyntaxKind[RightHandSide]
         (361,2)SyntaxKind[SymbolSpan]
@@ -1725,7 +1725,7 @@
             (361,17)SyntaxKind[Terminal](text = ";")
   (364,1)SyntaxKind[Production]
     (364,1)SyntaxKind[Identifier](text = "EnumDeclaration")
-    (364,16)SyntaxKind[ColonToken]
+    (364,17)SyntaxKind[ColonToken]
     (365,2)SyntaxKind[RightHandSideList]
       (365,2)SyntaxKind[RightHandSide]
         (365,2)SyntaxKind[SymbolSpan]
@@ -1746,7 +1746,7 @@
                     (365,43)SyntaxKind[Terminal](text = "}")
   (367,1)SyntaxKind[Production]
     (367,1)SyntaxKind[Identifier](text = "EnumBody")
-    (367,9)SyntaxKind[ColonToken]
+    (367,10)SyntaxKind[ColonToken]
     (368,2)SyntaxKind[RightHandSideList]
       (368,2)SyntaxKind[RightHandSide]
         (368,2)SyntaxKind[SymbolSpan]
@@ -1757,7 +1757,7 @@
               (368,20)SyntaxKind[QuestionToken]
   (370,1)SyntaxKind[Production]
     (370,1)SyntaxKind[Identifier](text = "EnumMemberList")
-    (370,15)SyntaxKind[ColonToken]
+    (370,16)SyntaxKind[ColonToken]
     (371,2)SyntaxKind[RightHandSideList]
       (371,2)SyntaxKind[RightHandSide]
         (371,2)SyntaxKind[SymbolSpan]
@@ -1774,7 +1774,7 @@
                 (372,21)SyntaxKind[Identifier](text = "EnumMember")
   (374,1)SyntaxKind[Production]
     (374,1)SyntaxKind[Identifier](text = "EnumMember")
-    (374,11)SyntaxKind[ColonToken]
+    (374,12)SyntaxKind[ColonToken]
     (375,2)SyntaxKind[RightHandSideList]
       (375,2)SyntaxKind[RightHandSide]
         (375,2)SyntaxKind[SymbolSpan]
@@ -1791,7 +1791,7 @@
                 (376,19)SyntaxKind[Identifier](text = "EnumValue")
   (378,1)SyntaxKind[Production]
     (378,1)SyntaxKind[Identifier](text = "EnumValue")
-    (378,10)SyntaxKind[ColonToken]
+    (378,11)SyntaxKind[ColonToken]
     (379,2)SyntaxKind[RightHandSideList]
       (379,2)SyntaxKind[RightHandSide]
         (379,2)SyntaxKind[SymbolSpan]
@@ -1799,7 +1799,7 @@
             (379,2)SyntaxKind[Identifier](text = "AssignmentExpression")
   (382,1)SyntaxKind[Production]
     (382,1)SyntaxKind[Identifier](text = "ModuleDeclaration")
-    (382,18)SyntaxKind[ColonToken]
+    (382,19)SyntaxKind[ColonToken]
     (383,2)SyntaxKind[RightHandSideList]
       (383,2)SyntaxKind[RightHandSide]
         (383,2)SyntaxKind[SymbolSpan]
@@ -1816,7 +1816,7 @@
                   (383,41)SyntaxKind[Terminal](text = "}")
   (385,1)SyntaxKind[Production]
     (385,1)SyntaxKind[Identifier](text = "IdentifierPath")
-    (385,15)SyntaxKind[ColonToken]
+    (385,16)SyntaxKind[ColonToken]
     (386,2)SyntaxKind[RightHandSideList]
       (386,2)SyntaxKind[RightHandSide]
         (386,2)SyntaxKind[SymbolSpan]
@@ -1833,7 +1833,7 @@
                 (387,21)SyntaxKind[Identifier](text = "Identifier")
   (389,1)SyntaxKind[Production]
     (389,1)SyntaxKind[Identifier](text = "ModuleBody")
-    (389,11)SyntaxKind[ColonToken]
+    (389,12)SyntaxKind[ColonToken]
     (390,2)SyntaxKind[RightHandSideList]
       (390,2)SyntaxKind[RightHandSide]
         (390,2)SyntaxKind[SymbolSpan]
@@ -1842,7 +1842,7 @@
             (390,16)SyntaxKind[QuestionToken]
   (392,1)SyntaxKind[Production]
     (392,1)SyntaxKind[Identifier](text = "ModuleElements")
-    (392,15)SyntaxKind[ColonToken]
+    (392,16)SyntaxKind[ColonToken]
     (393,2)SyntaxKind[RightHandSideList]
       (393,2)SyntaxKind[RightHandSide]
         (393,2)SyntaxKind[SymbolSpan]
@@ -1857,7 +1857,7 @@
               (394,17)SyntaxKind[Identifier](text = "ModuleElement")
   (396,1)SyntaxKind[Production]
     (396,1)SyntaxKind[Identifier](text = "ModuleElement")
-    (396,14)SyntaxKind[ColonToken]
+    (396,15)SyntaxKind[ColonToken]
     (397,2)SyntaxKind[RightHandSideList]
       (397,2)SyntaxKind[RightHandSide]
         (397,2)SyntaxKind[SymbolSpan]
@@ -1928,7 +1928,7 @@
               (406,12)SyntaxKind[Identifier](text = "AmbientDeclaration")
   (408,1)SyntaxKind[Production]
     (408,1)SyntaxKind[Identifier](text = "ImportDeclaration")
-    (408,18)SyntaxKind[ColonToken]
+    (408,19)SyntaxKind[ColonToken]
     (409,2)SyntaxKind[RightHandSideList]
       (409,2)SyntaxKind[RightHandSide]
         (409,2)SyntaxKind[SymbolSpan]
@@ -1945,7 +1945,7 @@
                   (409,37)SyntaxKind[Terminal](text = ";")
   (411,1)SyntaxKind[Production]
     (411,1)SyntaxKind[Identifier](text = "EntityName")
-    (411,11)SyntaxKind[ColonToken]
+    (411,12)SyntaxKind[ColonToken]
     (412,2)SyntaxKind[RightHandSideList]
       (412,2)SyntaxKind[RightHandSide]
         (412,2)SyntaxKind[SymbolSpan]
@@ -1962,7 +1962,7 @@
                 (413,17)SyntaxKind[Identifier](text = "Identifier")
   (416,1)SyntaxKind[Production]
     (416,1)SyntaxKind[Identifier](text = "SourceFile")
-    (416,11)SyntaxKind[ColonToken]
+    (416,12)SyntaxKind[ColonToken]
     (417,2)SyntaxKind[RightHandSideList]
       (417,2)SyntaxKind[RightHandSide]
         (417,2)SyntaxKind[SymbolSpan]
@@ -1974,7 +1974,7 @@
             (418,2)SyntaxKind[Identifier](text = "DeclarationSourceFile")
   (420,1)SyntaxKind[Production]
     (420,1)SyntaxKind[Identifier](text = "ImplementationSourceFile")
-    (420,25)SyntaxKind[ColonToken]
+    (420,26)SyntaxKind[ColonToken]
     (421,2)SyntaxKind[RightHandSideList]
       (421,2)SyntaxKind[RightHandSide]
         (421,2)SyntaxKind[SymbolSpan]
@@ -1983,7 +1983,7 @@
             (421,24)SyntaxKind[QuestionToken]
   (423,1)SyntaxKind[Production]
     (423,1)SyntaxKind[Identifier](text = "ImplementationElements")
-    (423,23)SyntaxKind[ColonToken]
+    (423,24)SyntaxKind[ColonToken]
     (424,2)SyntaxKind[RightHandSideList]
       (424,2)SyntaxKind[RightHandSide]
         (424,2)SyntaxKind[SymbolSpan]
@@ -1998,7 +1998,7 @@
               (425,25)SyntaxKind[Identifier](text = "ImplementationElement")
   (427,1)SyntaxKind[Production]
     (427,1)SyntaxKind[Identifier](text = "ImplementationElement")
-    (427,22)SyntaxKind[ColonToken]
+    (427,23)SyntaxKind[ColonToken]
     (428,2)SyntaxKind[RightHandSideList]
       (428,2)SyntaxKind[RightHandSide]
         (428,2)SyntaxKind[SymbolSpan]
@@ -2021,7 +2021,7 @@
               (431,12)SyntaxKind[Identifier](text = "ExternalImportDeclaration")
   (433,1)SyntaxKind[Production]
     (433,1)SyntaxKind[Identifier](text = "DeclarationSourceFile")
-    (433,22)SyntaxKind[ColonToken]
+    (433,23)SyntaxKind[ColonToken]
     (434,2)SyntaxKind[RightHandSideList]
       (434,2)SyntaxKind[RightHandSide]
         (434,2)SyntaxKind[SymbolSpan]
@@ -2030,7 +2030,7 @@
             (434,21)SyntaxKind[QuestionToken]
   (436,1)SyntaxKind[Production]
     (436,1)SyntaxKind[Identifier](text = "DeclarationElements")
-    (436,20)SyntaxKind[ColonToken]
+    (436,21)SyntaxKind[ColonToken]
     (437,2)SyntaxKind[RightHandSideList]
       (437,2)SyntaxKind[RightHandSide]
         (437,2)SyntaxKind[SymbolSpan]
@@ -2045,7 +2045,7 @@
               (438,22)SyntaxKind[Identifier](text = "DeclarationElement")
   (440,1)SyntaxKind[Production]
     (440,1)SyntaxKind[Identifier](text = "DeclarationElement")
-    (440,19)SyntaxKind[ColonToken]
+    (440,20)SyntaxKind[ColonToken]
     (441,2)SyntaxKind[RightHandSideList]
       (441,2)SyntaxKind[RightHandSide]
         (441,2)SyntaxKind[SymbolSpan]
@@ -2092,7 +2092,7 @@
               (447,12)SyntaxKind[Identifier](text = "ExternalImportDeclaration")
   (449,1)SyntaxKind[Production]
     (449,1)SyntaxKind[Identifier](text = "ExternalImportDeclaration")
-    (449,26)SyntaxKind[ColonToken]
+    (449,27)SyntaxKind[ColonToken]
     (450,2)SyntaxKind[RightHandSideList]
       (450,2)SyntaxKind[RightHandSide]
         (450,2)SyntaxKind[SymbolSpan]
@@ -2109,7 +2109,7 @@
                   (450,50)SyntaxKind[Terminal](text = ";")
   (452,1)SyntaxKind[Production]
     (452,1)SyntaxKind[Identifier](text = "ExternalModuleReference")
-    (452,24)SyntaxKind[ColonToken]
+    (452,25)SyntaxKind[ColonToken]
     (453,2)SyntaxKind[RightHandSideList]
       (453,2)SyntaxKind[RightHandSide]
         (453,2)SyntaxKind[SymbolSpan]
@@ -2123,7 +2123,7 @@
                 (453,30)SyntaxKind[Terminal](text = ")")
   (455,1)SyntaxKind[Production]
     (455,1)SyntaxKind[Identifier](text = "ExportAssignment")
-    (455,17)SyntaxKind[ColonToken]
+    (455,18)SyntaxKind[ColonToken]
     (456,2)SyntaxKind[RightHandSideList]
       (456,2)SyntaxKind[RightHandSide]
         (456,2)SyntaxKind[SymbolSpan]
@@ -2137,7 +2137,7 @@
                 (456,26)SyntaxKind[Terminal](text = ";")
   (459,1)SyntaxKind[Production]
     (459,1)SyntaxKind[Identifier](text = "AmbientDeclaration")
-    (459,19)SyntaxKind[ColonToken]
+    (459,20)SyntaxKind[ColonToken]
     (460,2)SyntaxKind[RightHandSideList]
       (460,2)SyntaxKind[RightHandSide]
         (460,2)SyntaxKind[SymbolSpan]
@@ -2171,7 +2171,7 @@
               (464,12)SyntaxKind[Identifier](text = "AmbientModuleDeclaration")
   (466,1)SyntaxKind[Production]
     (466,1)SyntaxKind[Identifier](text = "AmbientVariableDeclaration")
-    (466,27)SyntaxKind[ColonToken]
+    (466,28)SyntaxKind[ColonToken]
     (467,2)SyntaxKind[RightHandSideList]
       (467,2)SyntaxKind[RightHandSide]
         (467,2)SyntaxKind[SymbolSpan]
@@ -2187,7 +2187,7 @@
                 (467,35)SyntaxKind[Terminal](text = ";")
   (469,1)SyntaxKind[Production]
     (469,1)SyntaxKind[Identifier](text = "AmbientFunctionDeclaration")
-    (469,27)SyntaxKind[ColonToken]
+    (469,28)SyntaxKind[ColonToken]
     (470,2)SyntaxKind[RightHandSideList]
       (470,2)SyntaxKind[RightHandSide]
         (470,2)SyntaxKind[SymbolSpan]
@@ -2202,7 +2202,7 @@
                 (470,38)SyntaxKind[Terminal](text = ";")
   (472,1)SyntaxKind[Production]
     (472,1)SyntaxKind[Identifier](text = "AmbientClassDeclaration")
-    (472,24)SyntaxKind[ColonToken]
+    (472,25)SyntaxKind[ColonToken]
     (473,2)SyntaxKind[RightHandSideList]
       (473,2)SyntaxKind[RightHandSide]
         (473,2)SyntaxKind[SymbolSpan]
@@ -2226,7 +2226,7 @@
                       (473,72)SyntaxKind[Terminal](text = "}")
   (475,1)SyntaxKind[Production]
     (475,1)SyntaxKind[Identifier](text = "AmbientClassBody")
-    (475,17)SyntaxKind[ColonToken]
+    (475,18)SyntaxKind[ColonToken]
     (476,2)SyntaxKind[RightHandSideList]
       (476,2)SyntaxKind[RightHandSide]
         (476,2)SyntaxKind[SymbolSpan]
@@ -2235,7 +2235,7 @@
             (476,26)SyntaxKind[QuestionToken]
   (478,1)SyntaxKind[Production]
     (478,1)SyntaxKind[Identifier](text = "AmbientClassBodyElements")
-    (478,25)SyntaxKind[ColonToken]
+    (478,26)SyntaxKind[ColonToken]
     (479,2)SyntaxKind[RightHandSideList]
       (479,2)SyntaxKind[RightHandSide]
         (479,2)SyntaxKind[SymbolSpan]
@@ -2250,7 +2250,7 @@
               (480,27)SyntaxKind[Identifier](text = "AmbientClassBodyElement")
   (482,1)SyntaxKind[Production]
     (482,1)SyntaxKind[Identifier](text = "AmbientClassBodyElement")
-    (482,24)SyntaxKind[ColonToken]
+    (482,25)SyntaxKind[ColonToken]
     (483,2)SyntaxKind[RightHandSideList]
       (483,2)SyntaxKind[RightHandSide]
         (483,2)SyntaxKind[SymbolSpan]
@@ -2266,7 +2266,7 @@
             (485,2)SyntaxKind[Identifier](text = "IndexSignature")
   (487,1)SyntaxKind[Production]
     (487,1)SyntaxKind[Identifier](text = "AmbientConstructorDeclaration")
-    (487,30)SyntaxKind[ColonToken]
+    (487,31)SyntaxKind[ColonToken]
     (488,2)SyntaxKind[RightHandSideList]
       (488,2)SyntaxKind[RightHandSide]
         (488,2)SyntaxKind[SymbolSpan]
@@ -2283,7 +2283,7 @@
                   (488,39)SyntaxKind[Terminal](text = ";")
   (490,1)SyntaxKind[Production]
     (490,1)SyntaxKind[Identifier](text = "AmbientPropertyMemberDeclaration")
-    (490,33)SyntaxKind[ColonToken]
+    (490,34)SyntaxKind[ColonToken]
     (491,2)SyntaxKind[RightHandSideList]
       (491,2)SyntaxKind[RightHandSide]
         (491,2)SyntaxKind[SymbolSpan]
@@ -2320,7 +2320,7 @@
                   (492,62)SyntaxKind[Terminal](text = ";")
   (494,1)SyntaxKind[Production]
     (494,1)SyntaxKind[Identifier](text = "AmbientEnumDeclaration")
-    (494,23)SyntaxKind[ColonToken]
+    (494,24)SyntaxKind[ColonToken]
     (495,2)SyntaxKind[RightHandSideList]
       (495,2)SyntaxKind[RightHandSide]
         (495,2)SyntaxKind[SymbolSpan]
@@ -2328,7 +2328,7 @@
             (495,2)SyntaxKind[Identifier](text = "EnumDeclaration")
   (497,1)SyntaxKind[Production]
     (497,1)SyntaxKind[Identifier](text = "AmbientModuleDeclaration")
-    (497,25)SyntaxKind[ColonToken]
+    (497,26)SyntaxKind[ColonToken]
     (498,2)SyntaxKind[RightHandSideList]
       (498,2)SyntaxKind[RightHandSide]
         (498,2)SyntaxKind[SymbolSpan]
@@ -2345,7 +2345,7 @@
                   (498,48)SyntaxKind[Terminal](text = "}")
   (500,1)SyntaxKind[Production]
     (500,1)SyntaxKind[Identifier](text = "AmbientModuleBody")
-    (500,18)SyntaxKind[ColonToken]
+    (500,19)SyntaxKind[ColonToken]
     (501,2)SyntaxKind[RightHandSideList]
       (501,2)SyntaxKind[RightHandSide]
         (501,2)SyntaxKind[SymbolSpan]
@@ -2354,7 +2354,7 @@
             (501,23)SyntaxKind[QuestionToken]
   (503,1)SyntaxKind[Production]
     (503,1)SyntaxKind[Identifier](text = "AmbientModuleElements")
-    (503,22)SyntaxKind[ColonToken]
+    (503,23)SyntaxKind[ColonToken]
     (504,2)SyntaxKind[RightHandSideList]
       (504,2)SyntaxKind[RightHandSide]
         (504,2)SyntaxKind[SymbolSpan]
@@ -2369,7 +2369,7 @@
               (505,24)SyntaxKind[Identifier](text = "AmbientModuleElement")
   (507,1)SyntaxKind[Production]
     (507,1)SyntaxKind[Identifier](text = "AmbientModuleElement")
-    (507,21)SyntaxKind[ColonToken]
+    (507,22)SyntaxKind[ColonToken]
     (508,2)SyntaxKind[RightHandSideList]
       (508,2)SyntaxKind[RightHandSide]
         (508,2)SyntaxKind[SymbolSpan]
@@ -2422,7 +2422,7 @@
               (514,12)SyntaxKind[Identifier](text = "ImportDeclaration")
   (516,1)SyntaxKind[Production]
     (516,1)SyntaxKind[Identifier](text = "AmbientExternalModuleDeclaration")
-    (516,33)SyntaxKind[ColonToken]
+    (516,34)SyntaxKind[ColonToken]
     (517,2)SyntaxKind[RightHandSideList]
       (517,2)SyntaxKind[RightHandSide]
         (517,2)SyntaxKind[SymbolSpan]
@@ -2441,7 +2441,7 @@
                     (517,65)SyntaxKind[Terminal](text = "}")
   (519,1)SyntaxKind[Production]
     (519,1)SyntaxKind[Identifier](text = "AmbientExternalModuleBody")
-    (519,26)SyntaxKind[ColonToken]
+    (519,27)SyntaxKind[ColonToken]
     (520,2)SyntaxKind[RightHandSideList]
       (520,2)SyntaxKind[RightHandSide]
         (520,2)SyntaxKind[SymbolSpan]
@@ -2450,7 +2450,7 @@
             (520,31)SyntaxKind[QuestionToken]
   (522,1)SyntaxKind[Production]
     (522,1)SyntaxKind[Identifier](text = "AmbientExternalModuleElements")
-    (522,30)SyntaxKind[ColonToken]
+    (522,31)SyntaxKind[ColonToken]
     (523,2)SyntaxKind[RightHandSideList]
       (523,2)SyntaxKind[RightHandSide]
         (523,2)SyntaxKind[SymbolSpan]
@@ -2465,7 +2465,7 @@
               (524,32)SyntaxKind[Identifier](text = "AmbientExternalModuleElement")
   (526,1)SyntaxKind[Production]
     (526,1)SyntaxKind[Identifier](text = "AmbientExternalModuleElement")
-    (526,29)SyntaxKind[ColonToken]
+    (526,30)SyntaxKind[ColonToken]
     (527,2)SyntaxKind[RightHandSideList]
       (527,2)SyntaxKind[RightHandSide]
         (527,2)SyntaxKind[SymbolSpan]

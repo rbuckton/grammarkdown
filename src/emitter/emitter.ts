@@ -13,7 +13,7 @@ import { DiagnosticMessages } from "../diagnostics";
 import { CompilerOptions, NewLineKind } from "../options";
 import { Resolver } from "../checker";
 import { StringWriter } from "../stringwriter";
-import { SyntaxKind, tokenToString } from "../tokens";
+import { isTokenKind, SyntaxKind, tokenToString } from "../tokens";
 import { toCancelToken } from "../core";
 import { TextRange } from "../types";
 import {
