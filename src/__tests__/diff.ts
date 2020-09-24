@@ -142,27 +142,9 @@ function resolveBaseline(file: string) {
     let localFile = resolve(localPath, file);
     let referencePath = resolve(baselinePath, "reference");
     let referenceFile = resolve(referencePath, file);
-    ensureDirectory(dirname(localFile));
-    ensureDirectory(dirname(referenceFile));
+    try { mkdirSync(dirname(localFile), { recursive: true }); } catch {}
+    try { mkdirSync(dirname(referenceFile), { recursive: true }); } catch {}
     return { localFile, referenceFile };
-}
-
-function ensureDirectory(path: string) {
-    try {
-        mkdirSync(path);
-    }
-    catch (e) {
-        if (e.code === "EEXIST") return;
-        if (e.code === "ENOENT") {
-            const parent = dirname(path);
-            if (parent !== "" && parent !== path) {
-                ensureDirectory(parent);
-                mkdirSync(path);
-                return;
-            }
-        }
-        throw e;
-    }
 }
 
 function formatNode(node: Node, sourceFile: SourceFile) {
