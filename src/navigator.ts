@@ -291,6 +291,24 @@ export class NodeNavigator {
 
         this._copyOnNavigate = true;
         this.moveToRoot();
+        if (pos === 0) {
+            if (outermost) {
+                this.moveToFirstChild();
+            }
+            else {
+                this.moveToFirstToken();
+            }
+            return true;
+        }
+        if (pos === this._sourceFile.text.length) {
+            if (outermost) {
+                this.moveToLastChild();
+            }
+            else {
+                this.moveToLastToken();
+            }
+            return true;
+        }
         if (this._moveToPositionWorker(pos, outermost)) {
             return true;
         }
@@ -545,7 +563,7 @@ export class NodeNavigator {
      */
     public moveToFirstChild(kind: SyntaxKind): boolean;
     public moveToFirstChild(predicateOrNameOrKind?: string | SyntaxKind | ((node: Node) => boolean)): boolean {
-        return this._moveToChild(Navigation.first, Navigation.next, predicateOrNameOrKind);
+        return this._moveToChild(Navigation.first, Navigation.next, predicateOrNameOrKind, /*speculative*/ false);
     }
 
     /**
@@ -572,7 +590,7 @@ export class NodeNavigator {
      */
     public moveToLastChild(kind: SyntaxKind): boolean;
     public moveToLastChild(predicateOrNameOrKind?: string | SyntaxKind | ((node: Node) => boolean)): boolean {
-        return this._moveToChild(Navigation.last, Navigation.previous, predicateOrNameOrKind);
+        return this._moveToChild(Navigation.last, Navigation.previous, predicateOrNameOrKind, /*speculative*/ false);
     }
 
     /**
@@ -588,7 +606,7 @@ export class NodeNavigator {
      */
     public moveToFirstElement(kind: SyntaxKind): boolean;
     public moveToFirstElement(predicateOrKind?: SyntaxKind | ((node: Node) => boolean)): boolean {
-        return this._moveToElement(Navigation.first, Navigation.next, this._currentEdge, this._currentArray, this._currentOffset, predicateOrKind);
+        return this._moveToElement(Navigation.first, Navigation.next, this._currentEdge, this._currentArray, this._currentOffset, predicateOrKind, /*speculative*/ false);
     }
 
     /**
@@ -604,7 +622,7 @@ export class NodeNavigator {
      */
     public moveToPreviousElement(kind: SyntaxKind): boolean;
     public moveToPreviousElement(predicateOrKind?: SyntaxKind | ((node: Node) => boolean)): boolean {
-        return this._moveToElement(Navigation.previous, Navigation.previous, this._currentEdge, this._currentArray, this._currentOffset, predicateOrKind);
+        return this._moveToElement(Navigation.previous, Navigation.previous, this._currentEdge, this._currentArray, this._currentOffset, predicateOrKind, /*speculative*/ false);
     }
 
     /**
@@ -620,7 +638,7 @@ export class NodeNavigator {
      */
     public moveToNextElement(kind: SyntaxKind): boolean;
     public moveToNextElement(predicateOrKind?: SyntaxKind | ((node: Node) => boolean)): boolean {
-        return this._moveToElement(Navigation.next, Navigation.next, this._currentEdge, this._currentArray, this._currentOffset, predicateOrKind);
+        return this._moveToElement(Navigation.next, Navigation.next, this._currentEdge, this._currentArray, this._currentOffset, predicateOrKind, /*speculative*/ false);
     }
 
     /**
@@ -636,7 +654,7 @@ export class NodeNavigator {
      */
     public moveToLastElement(kind: SyntaxKind): boolean;
     public moveToLastElement(predicateOrKind?: SyntaxKind | ((node: Node) => boolean)): boolean {
-        return this._moveToElement(Navigation.last, Navigation.previous, this._currentEdge, this._currentArray, this._currentOffset, predicateOrKind);
+        return this._moveToElement(Navigation.last, Navigation.previous, this._currentEdge, this._currentArray, this._currentOffset, predicateOrKind, /*speculative*/ false);
     }
 
     /**
@@ -663,7 +681,7 @@ export class NodeNavigator {
      */
     public moveToFirstSibling(kind: SyntaxKind): boolean;
     public moveToFirstSibling(predicateOrNameOrKind?: string | SyntaxKind | ((node: Node) => boolean)): boolean {
-        return this._moveToSibling(Navigation.first, undefined, Navigation.first, Navigation.next, this._parentNode, predicateOrNameOrKind);
+        return this._moveToSibling(Navigation.first, undefined, Navigation.first, Navigation.next, this._parentNode, predicateOrNameOrKind, /*speculative*/ false);
     }
 
     /**
@@ -690,7 +708,34 @@ export class NodeNavigator {
      */
     public moveToPreviousSibling(kind: SyntaxKind): boolean;
     public moveToPreviousSibling(predicateOrNameOrKind?: string | SyntaxKind | ((node: Node) => boolean)): boolean {
-        return this._moveToSibling(Navigation.previous, Navigation.previous, Navigation.last, Navigation.previous, this._parentNode, predicateOrNameOrKind);
+        return this._moveToSibling(Navigation.previous, Navigation.previous, Navigation.last, Navigation.previous, this._parentNode, predicateOrNameOrKind, /*speculative*/ false);
+    }
+
+    /**
+     * Tests whether the navigator can move the focus of the navigator to the previous sibling of the focused {@link Node}.
+     * @returns `true` if the navigator's focus can change; otherwise, `false`.
+     */
+    public hasPreviousSibling(): boolean;
+    /**
+     * Tests whether the navigator can move the focus of the navigator to the previous sibling of the focused {@link Node} with the provided property name.
+     * @param name The name of a property on the parent of the focused {@link Node}.
+     * @returns `true` if the navigator's focus can change; otherwise, `false`.
+     */
+    public hasPreviousSibling(name: string): boolean;
+    /**
+     * Tests whether the navigator can move the focus of the navigator to the previous sibling of the focused {@link Node} that matches the provided predicate.
+     * @param predicate A callback used to match a sibling node.
+     * @returns `true` if the navigator's focus can change; otherwise, `false`.
+     */
+    public hasPreviousSibling(predicate: (sibling: Node) => boolean): boolean;
+    /**
+     * Tests whether the navigator can move the focus of the navigator to the previous sibling of the focused {@link Node} matching the provided {@link SyntaxKind}.
+     * @param kind The {@link SyntaxKind} that the sibling must match.
+     * @returns `true` if the navigator's focus can change; otherwise, `false`.
+     */
+    public hasPreviousSibling(kind: SyntaxKind): boolean;
+    public hasPreviousSibling(predicateOrNameOrKind?: string | SyntaxKind | ((node: Node) => boolean)): boolean {
+        return this._moveToSibling(Navigation.previous, Navigation.previous, Navigation.last, Navigation.previous, this._parentNode, predicateOrNameOrKind, /*speculative*/ true);
     }
 
     /**
@@ -717,7 +762,34 @@ export class NodeNavigator {
      */
     public moveToNextSibling(kind: SyntaxKind): boolean;
     public moveToNextSibling(predicateOrNameOrKind?: string | SyntaxKind | ((node: Node) => boolean)): boolean {
-        return this._moveToSibling(Navigation.next, Navigation.next, Navigation.first, Navigation.next, this._parentNode, predicateOrNameOrKind);
+        return this._moveToSibling(Navigation.next, Navigation.next, Navigation.first, Navigation.next, this._parentNode, predicateOrNameOrKind, /*speculative*/ false);
+    }
+
+    /**
+     * Tests whether the navigator can move the focus of the navigator to the next sibling of the focused {@link Node}.
+     * @returns `true` if the navigator's focus can change; otherwise, `false`.
+     */
+    public hasNextSibling(): boolean;
+    /**
+     * Tests whether the navigator can move the focus of the navigator to the next sibling of the focused {@link Node} with the provided property name.
+     * @param name The name of a property on the parent of the focused {@link Node}.
+     * @returns `true` if the navigator's focus can change; otherwise, `false`.
+     */
+    public hasNextSibling(name: string): boolean;
+    /**
+     * Tests whether the navigator can move the focus of the navigator to the next sibling of the focused {@link Node} that matches the provided predicate.
+     * @param predicate A callback used to match a sibling node.
+     * @returns `true` if the navigator's focus can change; otherwise, `false`.
+     */
+    public hasNextSibling(predicate: (node: Node) => boolean): boolean;
+    /**
+     * Tests whether the navigator can move the focus of the navigator to the next sibling of the focused {@link Node} matching the provided {@link SyntaxKind}.
+     * @param kind The {@link SyntaxKind} that the sibling must match.
+     * @returns `true` if the navigator's focus can change; otherwise, `false`.
+     */
+    public hasNextSibling(kind: SyntaxKind): boolean;
+    public hasNextSibling(predicateOrNameOrKind?: string | SyntaxKind | ((node: Node) => boolean)): boolean {
+        return this._moveToSibling(Navigation.next, Navigation.next, Navigation.first, Navigation.next, this._parentNode, predicateOrNameOrKind, /*speculative*/ true);
     }
 
     /**
@@ -744,7 +816,7 @@ export class NodeNavigator {
      */
     public moveToLastSibling(kind: SyntaxKind): boolean;
     public moveToLastSibling(predicateOrNameOrKind?: string | SyntaxKind | ((node: Node) => boolean)): boolean {
-        return this._moveToSibling(Navigation.last, undefined, Navigation.last, Navigation.previous, this._parentNode, predicateOrNameOrKind);
+        return this._moveToSibling(Navigation.last, undefined, Navigation.last, Navigation.previous, this._parentNode, predicateOrNameOrKind, /*speculative*/ false);
     }
 
     /**
@@ -908,7 +980,7 @@ export class NodeNavigator {
         this._hasAnyChildren = this._currentNode !== undefined;
     }
 
-    private _moveToChild(initializer: SeekOperation, seekDirection: SeekOperation, predicateOrNameOrKind: string | SyntaxKind | ((node: Node) => boolean) | undefined) {
+    private _moveToChild(initializer: SeekOperation, seekDirection: SeekOperation, predicateOrNameOrKind: string | SyntaxKind | ((node: Node) => boolean) | undefined, speculative: boolean) {
         const name = typeof predicateOrNameOrKind === "string" ? predicateOrNameOrKind : undefined;
         const predicateOrKind = typeof predicateOrNameOrKind !== "string" ? predicateOrNameOrKind : undefined;
         const offset = this._currentEdge;
@@ -921,19 +993,23 @@ export class NodeNavigator {
                     for (let nextOffset = initializer(0, length); bounded(nextOffset, length); nextOffset = seekDirection(nextOffset, length)) {
                         const nextNode = next[nextOffset];
                         if (nextNode && matchPredicateOrKind(nextNode, predicateOrKind)) {
-                            this._beforeNavigate();
-                            this._pushEdge();
-                            this._setEdge(nextEdge, next, nextOffset, nextNode);
-                            this._afterNavigate();
+                            if (!speculative) {
+                                this._beforeNavigate();
+                                this._pushEdge();
+                                this._setEdge(nextEdge, next, nextOffset, nextNode);
+                                this._afterNavigate();
+                            }
                             return true;
                         }
                     }
                 }
                 else if (next && matchPredicateOrKind(next, predicateOrKind)) {
-                    this._beforeNavigate();
-                    this._pushEdge();
-                    this._setEdge(nextEdge, /*array*/ undefined, /*offset*/ undefined, next);
-                    this._afterNavigate();
+                    if (!speculative) {
+                        this._beforeNavigate();
+                        this._pushEdge();
+                        this._setEdge(nextEdge, /*array*/ undefined, /*offset*/ undefined, next);
+                        this._afterNavigate();
+                    }
                     return true;
                 }
             }
@@ -941,7 +1017,7 @@ export class NodeNavigator {
         return false;
     }
 
-    private _moveToElement(currentArrayInitializer: SeekOperation, seekDirection: SeekOperation, currentEdge: number, currentArray: ReadonlyArray<Node> | undefined, currentOffset: number, predicateOrKind: SyntaxKind | ((node: Node) => boolean) | undefined) {
+    private _moveToElement(currentArrayInitializer: SeekOperation, seekDirection: SeekOperation, currentEdge: number, currentArray: ReadonlyArray<Node> | undefined, currentOffset: number, predicateOrKind: SyntaxKind | ((node: Node) => boolean) | undefined, speculative: boolean) {
         if (!currentArray) {
             return false;
         }
@@ -951,9 +1027,11 @@ export class NodeNavigator {
         for (let nextOffset = currentArrayInitializer(offset, length); bounded(nextOffset, length); nextOffset = seekDirection(nextOffset, length)) {
             const nextNode = currentArray[nextOffset];
             if (nextNode && matchPredicateOrKind(nextNode, predicateOrKind)) {
-                this._beforeNavigate();
-                this._setEdge(currentEdge, currentArray, nextOffset, nextNode);
-                this._afterNavigate();
+                if (!speculative) {
+                    this._beforeNavigate();
+                    this._setEdge(currentEdge, currentArray, nextOffset, nextNode);
+                    this._afterNavigate();
+                }
                 return true;
             }
         }
@@ -961,7 +1039,7 @@ export class NodeNavigator {
         return false;
     }
 
-    private _moveToSibling(currentEdgeInitializer: SeekOperation, currentArrayInitializer: SeekOperation | undefined, nextArrayInitializer: SeekOperation, seekDirection: SeekOperation, parentNode: Node | undefined, predicateOrNameOrKind: string | SyntaxKind | ((node: Node) => boolean) | undefined) {
+    private _moveToSibling(currentEdgeInitializer: SeekOperation, currentArrayInitializer: SeekOperation | undefined, nextArrayInitializer: SeekOperation, seekDirection: SeekOperation, parentNode: Node | undefined, predicateOrNameOrKind: string | SyntaxKind | ((node: Node) => boolean) | undefined, speculative: boolean) {
         if (!parentNode) {
             return false;
         }
@@ -969,7 +1047,7 @@ export class NodeNavigator {
         const name = typeof predicateOrNameOrKind === "string" ? predicateOrNameOrKind : undefined;
         const predicateOrKind = typeof predicateOrNameOrKind !== "string" ? predicateOrNameOrKind : undefined;
 
-        if (currentArrayInitializer && this._moveToElement(currentArrayInitializer, seekDirection, this._currentEdge, this._currentArray, this._currentOffset, predicateOrKind)) {
+        if (currentArrayInitializer && this._moveToElement(currentArrayInitializer, seekDirection, this._currentEdge, this._currentArray, this._currentOffset, predicateOrKind, speculative)) {
             return true;
         }
 
@@ -979,15 +1057,17 @@ export class NodeNavigator {
             if (!name || parentNode.edgeName(nextEdge) === name) {
                 const next = parentNode.edgeValue(nextEdge);
                 if (isNodeArray(next)) {
-                    if (this._moveToElement(nextArrayInitializer, seekDirection, nextEdge, next, 0, predicateOrKind)) {
+                    if (this._moveToElement(nextArrayInitializer, seekDirection, nextEdge, next, 0, predicateOrKind, speculative)) {
                         return true;
                     }
                 }
                 else {
                     if (next && matchPredicateOrKind(next, predicateOrKind)) {
-                        this._beforeNavigate();
-                        this._setEdge(nextEdge, /*array*/ undefined, /*offset*/ undefined, next);
-                        this._afterNavigate();
+                        if (!speculative) {
+                            this._beforeNavigate();
+                            this._setEdge(nextEdge, /*array*/ undefined, /*offset*/ undefined, next);
+                            this._afterNavigate();
+                        }
                         return true;
                     }
                 }
