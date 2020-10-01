@@ -300,6 +300,10 @@ Production :: Nonterminal
         <section><p>Represents a terminal token in the grammar.</p>
 <pre><code class="lang-grammarkdown">`yield` `*`?
 </code></pre></section>
+        <h4><a class="xref" href="grammarkdown/terminalliteral.html#grammarkdown_TerminalLiteral_class">TerminalLiteral</a></h4>
+        <section><p>Represents a terminal token in the grammar.</p>
+<pre><code class="lang-grammarkdown">`yield`
+</code></pre></section>
         <h4><a class="xref" href="grammarkdown/token.html#grammarkdown_Token_class">Token</a></h4>
         <section><p>Represents a token such as a keyword or operator.</p>
 </section>
@@ -1501,7 +1505,7 @@ U+0000
         <div class="markdown level1 conceptual"></div>
         <h5 class="decalaration">Declaration</h5>
         <div class="codewrapper">
-          <pre><code class="lang-typeScript hljs">export declare type OptionalSymbol = UnicodeCharacterLiteral | Terminal | Nonterminal;</code></pre>
+          <pre><code class="lang-typeScript hljs">export declare type OptionalSymbol = Terminal | Nonterminal;</code></pre>
         </div>
   
   
@@ -1516,7 +1520,7 @@ U+0000
         <div class="markdown level1 conceptual"></div>
         <h5 class="decalaration">Declaration</h5>
         <div class="codewrapper">
-          <pre><code class="lang-typeScript hljs">export declare type OptionalSymbolKind = SyntaxKind.UnicodeCharacterLiteral | SyntaxKind.Terminal | SyntaxKind.Nonterminal;</code></pre>
+          <pre><code class="lang-typeScript hljs">export declare type OptionalSymbolKind = SyntaxKind.Terminal | SyntaxKind.Nonterminal;</code></pre>
         </div>
   
   
@@ -1727,7 +1731,7 @@ U+0000
         <div class="markdown level1 conceptual"></div>
         <h5 class="decalaration">Declaration</h5>
         <div class="codewrapper">
-          <pre><code class="lang-typeScript hljs">export declare type TextContentKind = SyntaxKind.StringLiteral | SyntaxKind.NumberLiteral | SyntaxKind.Terminal | SyntaxKind.UnicodeCharacterLiteral | ProseFragmentLiteralKind | SyntaxKind.Identifier;</code></pre>
+          <pre><code class="lang-typeScript hljs">export declare type TextContentKind = SyntaxKind.StringLiteral | SyntaxKind.NumberLiteral | SyntaxKind.TerminalLiteral | SyntaxKind.UnicodeCharacterLiteral | ProseFragmentLiteralKind | SyntaxKind.Identifier;</code></pre>
         </div>
   
   
@@ -1742,7 +1746,7 @@ U+0000
         <div class="markdown level1 conceptual"></div>
         <h5 class="decalaration">Declaration</h5>
         <div class="codewrapper">
-          <pre><code class="lang-typeScript hljs">export declare type TextContentNode = StringLiteral | NumberLiteral | Identifier | UnicodeCharacterLiteral | Terminal | ProseFragmentLiteral&lt;ProseFragmentLiteralKind&gt;;</code></pre>
+          <pre><code class="lang-typeScript hljs">export declare type TextContentNode = StringLiteral | NumberLiteral | Identifier | UnicodeCharacterLiteral | TerminalLiteral | ProseFragmentLiteral&lt;ProseFragmentLiteralKind&gt;;</code></pre>
         </div>
   
   

@@ -19,7 +19,7 @@ import {
     Argument,
     ProseFragmentLiteral,
     Terminal,
-    UnicodeCharacterLiteral,
+    TerminalLiteral,
 } from "../nodes";
 
 export function writeTokens(test: string, scanner: Scanner, lineMap: LineMap, baselines?: string[]) {
@@ -38,7 +38,7 @@ export function writeTokens(test: string, scanner: Scanner, lineMap: LineMap, ba
             case SyntaxKind.Identifier:
                 message += `${scanner.getTokenValue()}`;
                 break;
-            case SyntaxKind.Terminal:
+            case SyntaxKind.TerminalLiteral:
                 message += `\`${scanner.getTokenValue()}\``;
                 break;
             case SyntaxKind.StringLiteral:
@@ -152,13 +152,13 @@ function formatNode(node: Node, sourceFile: SourceFile) {
     text += `SyntaxKind[${formatKind(node.kind)}]`;
     switch (node.kind) {
         case SyntaxKind.Identifier:
-        case SyntaxKind.Terminal:
+        case SyntaxKind.TerminalLiteral:
         case SyntaxKind.ProseFull:
         case SyntaxKind.ProseHead:
         case SyntaxKind.ProseMiddle:
         case SyntaxKind.ProseTail:
         case SyntaxKind.StringLiteral:
-            text += `(text = "${(<ProseFragmentLiteral | Identifier | StringLiteral | Terminal>node).text}")`;
+            text += `(text = "${(<ProseFragmentLiteral | Identifier | StringLiteral | TerminalLiteral>node).text}")`;
             break;
         case SyntaxKind.UnicodeCharacterLiteral:
             text += `(text = ${sourceFile.text.slice(node.getStart(sourceFile), node.end)})`;
@@ -170,8 +170,7 @@ function formatNode(node: Node, sourceFile: SourceFile) {
     switch (node.kind) {
         case SyntaxKind.Terminal:
         case SyntaxKind.Nonterminal:
-        case SyntaxKind.UnicodeCharacterLiteral:
-            if ((<Terminal | Nonterminal | UnicodeCharacterLiteral>node).questionToken) {
+            if ((<Terminal | Nonterminal>node).questionToken) {
                 text += "?";
             }
             break;

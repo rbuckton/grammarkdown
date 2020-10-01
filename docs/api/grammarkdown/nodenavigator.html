@@ -165,6 +165,176 @@
   </h3>
   
   
+  <h4 id="grammarkdown_NodeNavigator_ancestors_member_1_" data-uid="grammarkdown!NodeNavigator#ancestors:member(1)">ancestors(predicate)</h4>
+  <div class="markdown level1 summary"><p>Creates an iterator for the ancestors of the focused <a class="xref" href="node.html#grammarkdown_Node_class">Node</a><!-- -->.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">ancestors(predicate?: (ancestor: Node) =&gt; boolean): IterableIterator&lt;Node&gt;;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>predicate</dt>
+        <dd>(ancestor: <a class="xref" href="node.html#grammarkdown_Node_class">Node</a>) =&gt; boolean</dd>
+      </dl>
+      <p>
+        <p>An optional callback that can be used to filter the ancestors of the node.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">IterableIterator</span>&lt;<a class="xref" href="node.html#grammarkdown_Node_class">Node</a>&gt;</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_NodeNavigator_ancestors_member_2_" data-uid="grammarkdown!NodeNavigator#ancestors:member(2)">ancestors(kind)</h4>
+  <div class="markdown level1 summary"><p>Creates an iterator for the parse tree ancestors of the focused <a class="xref" href="node.html#grammarkdown_Node_class">Node</a><!-- -->.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">ancestors(kind: SyntaxKind): IterableIterator&lt;Node&gt;;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>kind</dt>
+        <dd><a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a></dd>
+      </dl>
+      <p>
+        <p>The <a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a> that any yielded ancestor must match.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">IterableIterator</span>&lt;<a class="xref" href="node.html#grammarkdown_Node_class">Node</a>&gt;</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_NodeNavigator_children_member_1_" data-uid="grammarkdown!NodeNavigator#children:member(1)">children(predicate)</h4>
+  <div class="markdown level1 summary"><p>Creates an iterator for the parse tree children of the focused <a class="xref" href="node.html#grammarkdown_Node_class">Node</a><!-- -->.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">children(predicate?: (child: Node) =&gt; boolean): IterableIterator&lt;Node&gt;;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>predicate</dt>
+        <dd>(child: <a class="xref" href="node.html#grammarkdown_Node_class">Node</a>) =&gt; boolean</dd>
+      </dl>
+      <p>
+        <p>An optional callback that can be used to filter the children of the node.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">IterableIterator</span>&lt;<a class="xref" href="node.html#grammarkdown_Node_class">Node</a>&gt;</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  <h5 id="grammarkdown_NodeNavigator_children_member_1__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This does not account for tokens not included in the parse tree.</p>
+</div>
+  
+  
+  <h4 id="grammarkdown_NodeNavigator_children_member_2_" data-uid="grammarkdown!NodeNavigator#children:member(2)">children(kind)</h4>
+  <div class="markdown level1 summary"><p>Creates an iterator for the parse tree children of the focused <a class="xref" href="node.html#grammarkdown_Node_class">Node</a><!-- -->.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">children(kind: SyntaxKind): IterableIterator&lt;Node&gt;;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>kind</dt>
+        <dd><a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a></dd>
+      </dl>
+      <p>
+        <p>The <a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a> that any yielded child must match.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">IterableIterator</span>&lt;<a class="xref" href="node.html#grammarkdown_Node_class">Node</a>&gt;</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  <h5 id="grammarkdown_NodeNavigator_children_member_2__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This does not account for tokens not included in the parse tree.</p>
+</div>
+  
+  
   <h4 id="grammarkdown_NodeNavigator_clone_member_1_" data-uid="grammarkdown!NodeNavigator#clone:member(1)">clone()</h4>
   <div class="markdown level1 summary"><p>Creates a copy of this <a class="xref" href="nodenavigator.html#grammarkdown_NodeNavigator_class">NodeNavigator</a> at the same position.</p>
 </div>
@@ -585,6 +755,9 @@
   
   
   
+  <h5 id="grammarkdown_NodeNavigator_hasChildren_member_1__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This does not account for tokens not included in the parse tree.</p>
+</div>
   
   
   <h4 id="grammarkdown_NodeNavigator_hasChildren_member_2_" data-uid="grammarkdown!NodeNavigator#hasChildren:member(2)">hasChildren(kind)</h4>
@@ -627,6 +800,317 @@
   
   
   
+  <h5 id="grammarkdown_NodeNavigator_hasChildren_member_2__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This does not account for tokens not included in the parse tree.</p>
+</div>
+  
+  
+  <h4 id="grammarkdown_NodeNavigator_hasNextSibling_member_1_" data-uid="grammarkdown!NodeNavigator#hasNextSibling:member(1)">hasNextSibling()</h4>
+  <div class="markdown level1 summary"><p>Tests whether the navigator can move the focus of the navigator to the next sibling of the focused <a class="xref" href="node.html#grammarkdown_Node_class">Node</a><!-- -->.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">hasNextSibling(): boolean;</code></pre>
+  </div>
+  
+  
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">boolean</span></div>
+    <p><p><code>true</code> if the navigator&#39;s focus can change; otherwise, <code>false</code><!-- -->.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_NodeNavigator_hasNextSibling_member_2_" data-uid="grammarkdown!NodeNavigator#hasNextSibling:member(2)">hasNextSibling(name)</h4>
+  <div class="markdown level1 summary"><p>Tests whether the navigator can move the focus of the navigator to the next sibling of the focused <a class="xref" href="node.html#grammarkdown_Node_class">Node</a> with the provided property name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">hasNextSibling(name: string): boolean;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>name</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The name of a property on the parent of the focused <a class="xref" href="node.html#grammarkdown_Node_class">Node</a><!-- -->.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">boolean</span></div>
+    <p><p><code>true</code> if the navigator&#39;s focus can change; otherwise, <code>false</code><!-- -->.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_NodeNavigator_hasNextSibling_member_3_" data-uid="grammarkdown!NodeNavigator#hasNextSibling:member(3)">hasNextSibling(predicate)</h4>
+  <div class="markdown level1 summary"><p>Tests whether the navigator can move the focus of the navigator to the next sibling of the focused <a class="xref" href="node.html#grammarkdown_Node_class">Node</a> that matches the provided predicate.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">hasNextSibling(predicate: (node: Node) =&gt; boolean): boolean;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>predicate</dt>
+        <dd>(node: <a class="xref" href="node.html#grammarkdown_Node_class">Node</a>) =&gt; boolean</dd>
+      </dl>
+      <p>
+        <p>A callback used to match a sibling node.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">boolean</span></div>
+    <p><p><code>true</code> if the navigator&#39;s focus can change; otherwise, <code>false</code><!-- -->.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_NodeNavigator_hasNextSibling_member_4_" data-uid="grammarkdown!NodeNavigator#hasNextSibling:member(4)">hasNextSibling(kind)</h4>
+  <div class="markdown level1 summary"><p>Tests whether the navigator can move the focus of the navigator to the next sibling of the focused <a class="xref" href="node.html#grammarkdown_Node_class">Node</a> matching the provided <a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a><!-- -->.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">hasNextSibling(kind: SyntaxKind): boolean;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>kind</dt>
+        <dd><a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a></dd>
+      </dl>
+      <p>
+        <p>The <a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a> that the sibling must match.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">boolean</span></div>
+    <p><p><code>true</code> if the navigator&#39;s focus can change; otherwise, <code>false</code><!-- -->.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_NodeNavigator_hasPreviousSibling_member_1_" data-uid="grammarkdown!NodeNavigator#hasPreviousSibling:member(1)">hasPreviousSibling()</h4>
+  <div class="markdown level1 summary"><p>Tests whether the navigator can move the focus of the navigator to the previous sibling of the focused <a class="xref" href="node.html#grammarkdown_Node_class">Node</a><!-- -->.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">hasPreviousSibling(): boolean;</code></pre>
+  </div>
+  
+  
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">boolean</span></div>
+    <p><p><code>true</code> if the navigator&#39;s focus can change; otherwise, <code>false</code><!-- -->.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_NodeNavigator_hasPreviousSibling_member_2_" data-uid="grammarkdown!NodeNavigator#hasPreviousSibling:member(2)">hasPreviousSibling(name)</h4>
+  <div class="markdown level1 summary"><p>Tests whether the navigator can move the focus of the navigator to the previous sibling of the focused <a class="xref" href="node.html#grammarkdown_Node_class">Node</a> with the provided property name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">hasPreviousSibling(name: string): boolean;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>name</dt>
+        <dd><span class="xref">string</span></dd>
+      </dl>
+      <p>
+        <p>The name of a property on the parent of the focused <a class="xref" href="node.html#grammarkdown_Node_class">Node</a><!-- -->.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">boolean</span></div>
+    <p><p><code>true</code> if the navigator&#39;s focus can change; otherwise, <code>false</code><!-- -->.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_NodeNavigator_hasPreviousSibling_member_3_" data-uid="grammarkdown!NodeNavigator#hasPreviousSibling:member(3)">hasPreviousSibling(predicate)</h4>
+  <div class="markdown level1 summary"><p>Tests whether the navigator can move the focus of the navigator to the previous sibling of the focused <a class="xref" href="node.html#grammarkdown_Node_class">Node</a> that matches the provided predicate.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">hasPreviousSibling(predicate: (sibling: Node) =&gt; boolean): boolean;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>predicate</dt>
+        <dd>(sibling: <a class="xref" href="node.html#grammarkdown_Node_class">Node</a>) =&gt; boolean</dd>
+      </dl>
+      <p>
+        <p>A callback used to match a sibling node.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">boolean</span></div>
+    <p><p><code>true</code> if the navigator&#39;s focus can change; otherwise, <code>false</code><!-- -->.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_NodeNavigator_hasPreviousSibling_member_4_" data-uid="grammarkdown!NodeNavigator#hasPreviousSibling:member(4)">hasPreviousSibling(kind)</h4>
+  <div class="markdown level1 summary"><p>Tests whether the navigator can move the focus of the navigator to the previous sibling of the focused <a class="xref" href="node.html#grammarkdown_Node_class">Node</a> matching the provided <a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a><!-- -->.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">hasPreviousSibling(kind: SyntaxKind): boolean;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>kind</dt>
+        <dd><a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a></dd>
+      </dl>
+      <p>
+        <p>The <a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a> that the sibling must match.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">boolean</span></div>
+    <p><p><code>true</code> if the navigator&#39;s focus can change; otherwise, <code>false</code><!-- -->.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_NodeNavigator_isArray_member_1_" data-uid="grammarkdown!NodeNavigator#isArray:member(1)">isArray()</h4>
@@ -637,6 +1121,33 @@
   
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">isArray(): boolean;</code></pre>
+  </div>
+  
+  
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">boolean</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_NodeNavigator_isLeadingToken_member_1_" data-uid="grammarkdown!NodeNavigator#isLeadingToken:member(1)">isLeadingToken()</h4>
+  <div class="markdown level1 summary"><p>Returns a value indicating whether the navigator is focused on a leading token of the actual current node.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">isLeadingToken(): boolean;</code></pre>
   </div>
   
   
@@ -783,13 +1294,40 @@
   
   
   <h4 id="grammarkdown_NodeNavigator_isToken_member_1_" data-uid="grammarkdown!NodeNavigator#isToken:member(1)">isToken()</h4>
-  <div class="markdown level1 summary"><p>Returns a value indicating whether the focus of the navigator points to either a <a class="xref" href="token.html#grammarkdown_Token_class">Token</a><!-- -->, <a class="xref" href="../grammarkdown.html#grammarkdown_TextContentNode_type">TextContentNode</a><!-- -->, or <a class="xref" href="invalidsymbol.html#grammarkdown_InvalidSymbol_class">InvalidSymbol</a><!-- -->.</p>
+  <div class="markdown level1 summary"><p>Returns a value indicating whether the focus of the navigator points to either a <a class="xref" href="token.html#grammarkdown_Token_class">Token</a><!-- -->, <a class="xref" href="../grammarkdown.html#grammarkdown_TextContentNode_type">TextContentNode</a><!-- -->, or <a class="xref" href="invalidsymbol.html#grammarkdown_InvalidSymbol_class">InvalidSymbol</a> (as long as that <code>InvalidSymbol</code> has no trailing tokens).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   
   <div class="codewrapper">
     <pre><code class="lang-typeScript hljs">isToken(): boolean;</code></pre>
+  </div>
+  
+  
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">boolean</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_NodeNavigator_isTrailingToken_member_1_" data-uid="grammarkdown!NodeNavigator#isTrailingToken:member(1)">isTrailingToken()</h4>
+  <div class="markdown level1 summary"><p>Returns a value indicating whether the navigator is focused on a trailing token of the actual current node.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">isTrailingToken(): boolean;</code></pre>
   </div>
   
   
@@ -2969,6 +3507,194 @@
     <div><span class="xref">boolean</span></div>
     <p><p><code>true</code> if the navigator&#39;s focus changed; otherwise, <code>false</code><!-- -->.</p>
 </p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_NodeNavigator_moveToTouchingToken_member_1_" data-uid="grammarkdown!NodeNavigator#moveToTouchingToken:member(1)">moveToTouchingToken(position, predicate)</h4>
+  <div class="markdown level1 summary"><p>Moves the focus of the navigator to the nearest <a class="xref" href="token.html#grammarkdown_Token_class">Token</a><!-- -->, <a class="xref" href="../grammarkdown.html#grammarkdown_TextContentNode_type">TextContentNode</a><!-- -->, or <a class="xref" href="invalidsymbol.html#grammarkdown_InvalidSymbol_class">InvalidSymbol</a> that is touching the provided [Position](xref:grammarkdown!Position:interface).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">moveToTouchingToken(position: Position, predicate?: SyntaxKind): boolean;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>position</dt>
+        <dd><a class="xref" href="position-interface.html#grammarkdown_Position_interface">Position</a></dd>
+      </dl>
+      <p>
+        <p>The [Position](xref:grammarkdown!Position:interface) at which to focus the navigator.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>predicate</dt>
+        <dd><a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a></dd>
+      </dl>
+      <p>
+        <p>A callback used to match a token node.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">boolean</span></div>
+    <p><p><code>true</code> if the navigator&#39;s focus changed; otherwise, <code>false</code><!-- -->.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_NodeNavigator_moveToTouchingToken_member_2_" data-uid="grammarkdown!NodeNavigator#moveToTouchingToken:member(2)">moveToTouchingToken(position, kind)</h4>
+  <div class="markdown level1 summary"><p>Moves the focus of the navigator to the nearest <a class="xref" href="token.html#grammarkdown_Token_class">Token</a><!-- -->, <a class="xref" href="../grammarkdown.html#grammarkdown_TextContentNode_type">TextContentNode</a><!-- -->, or <a class="xref" href="invalidsymbol.html#grammarkdown_InvalidSymbol_class">InvalidSymbol</a> that is touching the provided [Position](xref:grammarkdown!Position:interface).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">moveToTouchingToken(position: Position, kind: SyntaxKind): boolean;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>position</dt>
+        <dd><a class="xref" href="position-interface.html#grammarkdown_Position_interface">Position</a></dd>
+      </dl>
+      <p>
+        <p>The [Position](xref:grammarkdown!Position:interface) at which to focus the navigator.</p>
+
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>kind</dt>
+        <dd><a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a></dd>
+      </dl>
+      <p>
+        <p>The <a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a> that the previous token must match.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">boolean</span></div>
+    <p><p><code>true</code> if the navigator&#39;s focus changed; otherwise, <code>false</code><!-- -->.</p>
+</p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_NodeNavigator_tokens_member_1_" data-uid="grammarkdown!NodeNavigator#tokens:member(1)">tokens(predicate)</h4>
+  <div class="markdown level1 summary"><p>Creates an iterator for the tokens of the focused <a class="xref" href="node.html#grammarkdown_Node_class">Node</a><!-- -->.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">tokens(predicate?: (token: Node) =&gt; boolean): IterableIterator&lt;Node&gt;;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>predicate</dt>
+        <dd>(token: <a class="xref" href="node.html#grammarkdown_Node_class">Node</a>) =&gt; boolean</dd>
+      </dl>
+      <p>
+        <p>An optional callback that can be used to filter the tokens of the node.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">IterableIterator</span>&lt;<a class="xref" href="node.html#grammarkdown_Node_class">Node</a>&gt;</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_NodeNavigator_tokens_member_2_" data-uid="grammarkdown!NodeNavigator#tokens:member(2)">tokens(kind)</h4>
+  <div class="markdown level1 summary"><p>Creates an iterator for the tokens of the focused <a class="xref" href="node.html#grammarkdown_Node_class">Node</a><!-- -->.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">tokens(kind: SyntaxKind): IterableIterator&lt;Node&gt;;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>kind</dt>
+        <dd><a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a></dd>
+      </dl>
+      <p>
+        <p>The <a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a> that any yielded token must match.</p>
+
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">IterableIterator</span>&lt;<a class="xref" href="node.html#grammarkdown_Node_class">Node</a>&gt;</div>
+    <p>
   </div>
   </div>
   

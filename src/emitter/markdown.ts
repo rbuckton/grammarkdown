@@ -31,7 +31,8 @@ import {
     RightHandSide,
     RightHandSideList,
     Production,
-    TextContent
+    TextContent,
+    TerminalLiteral
 } from "../nodes";
 
 /** {@docCategory Emit} */
@@ -173,10 +174,7 @@ export class MarkdownEmitter extends Emitter {
     }
 
     protected emitTerminal(node: Terminal) {
-        this.writer.write("`` ");
-        this.writer.write(node.text);
-        this.writer.write(" ``");
-
+        this.emitNode(node.literal);
         if (node.questionToken) {
             this.writer.write(`<sub>opt</sub>`);
         }
@@ -217,9 +215,12 @@ export class MarkdownEmitter extends Emitter {
         if (node.text) {
             this.writer.write(this.encode(node.text));
         }
-        if (node.questionToken) {
-            this.writer.write(`<sub>opt</sub>`);
-        }
+    }
+
+    protected emitTerminalLiteral(node: TerminalLiteral) {
+        this.writer.write("`` ");
+        this.writer.write(node.text);
+        this.writer.write(" ``");
     }
 
     protected emitEmptyAssertion(node: EmptyAssertion) {

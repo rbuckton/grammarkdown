@@ -54,6 +54,7 @@ import {
     HtmlTrivia,
     Line,
     Declaration,
+    TerminalLiteral,
 } from "./nodes";
 import { NodeNavigator } from "./navigator";
 import { toCancelToken } from "./core";
@@ -454,7 +455,7 @@ export class Checker {
                     }
                     else {
                         terminalSet.add(text);
-                        this.checkTerminal(terminal);
+                        this.checkTerminalLiteral(terminal);
                     }
                 }
             }
@@ -471,7 +472,7 @@ export class Checker {
         }
 
         if ((node.terminals?.length ?? 0) <= 0) {
-            return this.reportGrammarError(node, node.ofKeyword.end, Diagnostics._0_expected, tokenToString(SyntaxKind.Terminal));
+            return this.reportGrammarError(node, node.ofKeyword.end, Diagnostics._0_expected, tokenToString(SyntaxKind.TerminalLiteral));
         }
 
         return false;
@@ -490,7 +491,7 @@ export class Checker {
     private checkGrammarRightHandSideList(node: RightHandSideList): boolean {
         if (!node.elements || node.elements.length === 0) {
             return this.reportGrammarErrorForNode(node, Diagnostics._0_expected, formatList([
-                SyntaxKind.Terminal,
+                SyntaxKind.TerminalLiteral,
                 SyntaxKind.Identifier,
                 SyntaxKind.OpenBracketToken
             ]));
@@ -518,7 +519,7 @@ export class Checker {
 
     private checkGrammarRightHandSide(node: RightHandSide): boolean {
         if (!node.head) {
-            return this.reportGrammarErrorForNode(node, Diagnostics._0_expected, formatList([SyntaxKind.GreaterThanToken, SyntaxKind.OpenBracketToken, SyntaxKind.Identifier, SyntaxKind.Terminal, SyntaxKind.UnicodeCharacterLiteral]));
+            return this.reportGrammarErrorForNode(node, Diagnostics._0_expected, formatList([SyntaxKind.GreaterThanToken, SyntaxKind.OpenBracketToken, SyntaxKind.Identifier, SyntaxKind.TerminalLiteral, SyntaxKind.UnicodeCharacterLiteral]));
         }
         return false;
     }
@@ -569,7 +570,7 @@ export class Checker {
         if (!node.symbol) {
             return this.reportGrammarError(node, node.getStart(this._sourceFile), Diagnostics._0_expected, formatList([
                 SyntaxKind.UnicodeCharacterLiteral,
-                SyntaxKind.Terminal,
+                SyntaxKind.TerminalLiteral,
                 SyntaxKind.Identifier,
                 SyntaxKind.OpenBracketToken,
                 SyntaxKind.Prose
@@ -613,7 +614,7 @@ export class Checker {
         if (!node.symbol) {
             return this.reportGrammarError(node, node.getStart(this._sourceFile), Diagnostics._0_expected, formatList([
                 SyntaxKind.UnicodeCharacterLiteral,
-                SyntaxKind.Terminal,
+                SyntaxKind.TerminalLiteral,
                 SyntaxKind.Identifier,
                 SyntaxKind.OpenBracketToken,
                 "«line terminator»"
@@ -748,7 +749,7 @@ export class Checker {
                 case SyntaxKind.EqualsEqualsToken:
                 case SyntaxKind.ExclamationEqualsToken:
                 case SyntaxKind.NotEqualToToken:
-                    return this.reportGrammarError(node, node.operatorToken.end, Diagnostics._0_expected, tokenToString(SyntaxKind.Terminal));
+                    return this.reportGrammarError(node, node.operatorToken.end, Diagnostics._0_expected, tokenToString(SyntaxKind.TerminalLiteral));
 
                 case SyntaxKind.LessThanMinusToken:
                 case SyntaxKind.ElementOfToken:
@@ -765,7 +766,7 @@ export class Checker {
             case SyntaxKind.NotEqualToToken:
                 if (!node.lookahead || !isTerminalSpan(node.lookahead)) {
                     return this.reportGrammarErrorForNode(node, Diagnostics._0_expected, formatList([
-                        SyntaxKind.Terminal,
+                        SyntaxKind.TerminalLiteral,
                         SyntaxKind.UnicodeCharacterLiteral
                     ]));
                 }
@@ -792,7 +793,6 @@ export class Checker {
             while (node.kind === SyntaxKind.SymbolSpan) {
                 switch (node.symbol.kind) {
                     case SyntaxKind.Terminal:
-                    case SyntaxKind.UnicodeCharacterLiteral:
                         if (!node.next) return true;
                         node = node.next;
                         break;
@@ -828,7 +828,7 @@ export class Checker {
         if ((node.elements?.length ?? 0) <= 0) {
             return this.reportGrammarError(node, node.openBraceToken.end, Diagnostics._0_expected, formatList([
                 SyntaxKind.Identifier,
-                SyntaxKind.Terminal,
+                SyntaxKind.TerminalLiteral,
                 SyntaxKind.UnicodeCharacterLiteral
             ]));
         }
@@ -882,7 +882,7 @@ export class Checker {
         if ((node.symbols?.length ?? 0) <= 0) {
             return this.reportGrammarError(node, node.noKeyword.end, Diagnostics._0_expected, formatList([
                 SyntaxKind.Identifier,
-                SyntaxKind.Terminal,
+                SyntaxKind.TerminalLiteral,
                 SyntaxKind.UnicodeCharacterLiteral
             ]));
         }
@@ -978,7 +978,7 @@ export class Checker {
         if (!node.right) {
             return this.reportGrammarError(node, node.end, Diagnostics._0_expected, formatList([
                 SyntaxKind.Identifier,
-                SyntaxKind.Terminal,
+                SyntaxKind.TerminalLiteral,
                 SyntaxKind.UnicodeCharacterLiteral,
                 SyntaxKind.OneKeyword
             ]));
@@ -1018,7 +1018,7 @@ export class Checker {
         if ((node.symbols?.length ?? 0) <= 0) {
             return this.reportGrammarError(node, node.end, Diagnostics._0_expected, formatList([
                 SyntaxKind.Identifier,
-                SyntaxKind.Terminal,
+                SyntaxKind.TerminalLiteral,
                 SyntaxKind.UnicodeCharacterLiteral
             ]));
         }
@@ -1034,10 +1034,6 @@ export class Checker {
         switch (node.kind) {
             case SyntaxKind.Terminal:
                 this.checkTerminal(<Terminal>node, allowOptional);
-                break;
-
-            case SyntaxKind.UnicodeCharacterLiteral:
-                this.checkUnicodeCharacterLiteral(<UnicodeCharacterLiteral>node, allowOptional);
                 break;
 
             case SyntaxKind.UnicodeCharacterRange:
@@ -1079,12 +1075,24 @@ export class Checker {
     }
 
     private checkTerminal(node: Terminal, allowOptional: boolean = false): void {
-        this.checkGrammarOptionalSymbol(node, allowOptional) || this.checkGrammarTerminal(node);
+        this.checkGrammarOptionalSymbol(node, allowOptional);
+        switch (node.literal.kind) {
+            case SyntaxKind.TerminalLiteral:
+                this.checkTerminalLiteral(node.literal);
+                break;
+            case SyntaxKind.UnicodeCharacterLiteral:
+                this.checkUnicodeCharacterLiteral(node.literal);
+                break;
+        }
     }
 
-    private checkGrammarTerminal(node: Terminal): boolean {
+    private checkTerminalLiteral(node: TerminalLiteral) {
+        this.checkGrammarTerminalLiteral(node);
+    }
+
+    private checkGrammarTerminalLiteral(node: TerminalLiteral): boolean {
         if (!node.text) {
-            return this.reportGrammarErrorForNode(node, Diagnostics._0_expected, tokenToString(SyntaxKind.Terminal));
+            return this.reportGrammarErrorForNode(node, Diagnostics._0_expected, tokenToString(SyntaxKind.TerminalLiteral));
         }
 
         return false;
@@ -1109,8 +1117,8 @@ export class Checker {
         this.checkUnicodeCharacterLiteral(node.right);
     }
 
-    private checkUnicodeCharacterLiteral(node: UnicodeCharacterLiteral, allowOptional: boolean = false): void {
-        this.checkGrammarOptionalSymbol(node, allowOptional) || this.checkGrammarUnicodeCharacterLiteral(node);
+    private checkUnicodeCharacterLiteral(node: UnicodeCharacterLiteral): void {
+        this.checkGrammarUnicodeCharacterLiteral(node);
     }
 
     private checkGrammarUnicodeCharacterLiteral(node: UnicodeCharacterLiteral): boolean {
@@ -1252,7 +1260,7 @@ export class Checker {
 
     private reportInvalidSymbol(node: LexicalSymbol): void {
         this.reportGrammarErrorForNode(node, Diagnostics._0_expected, formatList([
-            SyntaxKind.Terminal,
+            SyntaxKind.TerminalLiteral,
             SyntaxKind.Identifier,
             SyntaxKind.OpenBracketToken,
             SyntaxKind.OneKeyword
@@ -1651,10 +1659,11 @@ class RightHandSideDigest {
 
         switch (node.kind) {
             case SyntaxKind.Constraints: this.writeConstraints(<Constraints>node); break;
-            case SyntaxKind.Terminal: this.writeTerminal(<Terminal>node); break;
+            case SyntaxKind.TerminalLiteral: this.writeTerminalLiteral(<TerminalLiteral>node); break;
             case SyntaxKind.UnicodeCharacterLiteral: this.writeUnicodeCharacterLiteral(<UnicodeCharacterLiteral>node); break;
             case SyntaxKind.Prose: this.writeProse(<Prose>node); break;
             case SyntaxKind.Nonterminal: this.writeNonterminal(<Nonterminal>node); break;
+            case SyntaxKind.Terminal: this.writeTerminal(<Terminal>node); break;
             case SyntaxKind.EmptyAssertion: this.writeEmptyAssertion(<EmptyAssertion>node); break;
             case SyntaxKind.LexicalGoalAssertion: this.writeLexicalGoalAssertion(<LexicalGoalAssertion>node); break;
             case SyntaxKind.LookaheadAssertion: this.writeLookaheadAssertion(<LookaheadAssertion>node); break;
@@ -1722,10 +1731,16 @@ class RightHandSideDigest {
     }
 
     private writeTerminal(node: Terminal) {
+        this.writeNode(node.literal);
+        this.spaceRequested = false;
+        this.writeNode(node.questionToken);
+        this.spaceRequested = true;
+    }
+
+    private writeTerminalLiteral(node: TerminalLiteral) {
         this.write("`");
         this.write(node.text);
         this.write("`");
-        this.writeNode(node.questionToken);
         this.spaceRequested = true;
     }
 
@@ -1733,7 +1748,6 @@ class RightHandSideDigest {
         this.write("<");
         this.write(node.text);
         this.write(">");
-        this.writeNode(node.questionToken);
         this.spaceRequested = true;
     }
 

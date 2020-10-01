@@ -26,8 +26,10 @@
           (2,17)SyntaxKind[OneOfSymbol]
             (2,17)SyntaxKind[OneKeyword]
             (2,21)SyntaxKind[OfKeyword]
-            (2,24)SyntaxKind[Terminal](text = """)
-            (2,31)SyntaxKind[Terminal](text = "\")
+            (2,24)SyntaxKind[Terminal]
+              (2,24)SyntaxKind[TerminalLiteral](text = """)
+            (2,31)SyntaxKind[Terminal]
+              (2,31)SyntaxKind[TerminalLiteral](text = "\")
             (2,38)SyntaxKind[UnicodeCharacterRange]
               (2,38)SyntaxKind[UnicodeCharacterLiteral](text = U+0000)
               (2,45)SyntaxKind[ThroughKeyword]
@@ -55,7 +57,8 @@
           (5,7)SyntaxKind[ProseAssertion]
             (5,7)SyntaxKind[OpenBracketGreaterThanToken]
             (5,9)SyntaxKind[ProseHead](text = "head ")
-            (5,14)SyntaxKind[Terminal](text = "terminal")
+            (5,14)SyntaxKind[Terminal]
+              (5,14)SyntaxKind[TerminalLiteral](text = "terminal")
             (5,25)SyntaxKind[ProseMiddle](text = " middle ")
             (5,32)SyntaxKind[Nonterminal]
               (5,32)SyntaxKind[Identifier](text = "B")
@@ -176,10 +179,12 @@
     (21,5)SyntaxKind[RightHandSideList]
       (21,5)SyntaxKind[RightHandSide]
         (21,5)SyntaxKind[SymbolSpan]
-          (21,5)SyntaxKind[UnicodeCharacterLiteral](text = &lt;LF&gt;)
+          (21,5)SyntaxKind[Terminal]
+            (21,5)SyntaxKind[UnicodeCharacterLiteral](text = &lt;LF&gt;)
       (22,5)SyntaxKind[RightHandSide]
         (22,5)SyntaxKind[SymbolSpan]
-          (22,5)SyntaxKind[UnicodeCharacterLiteral](text = &lt;CR&gt;)
+          (22,5)SyntaxKind[Terminal]
+            (22,5)SyntaxKind[UnicodeCharacterLiteral](text = &lt;CR&gt;)
   (24,1)SyntaxKind[Production]
     (24,1)SyntaxKind[Identifier](text = "Z")
     (24,3)SyntaxKind[ColonToken]

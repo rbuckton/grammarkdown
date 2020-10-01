@@ -34,7 +34,8 @@ import {
     RightHandSide,
     RightHandSideList,
     Production,
-    TextContent
+    TextContent,
+    TerminalLiteral
 } from "../nodes";
 
 /** {@docCategory Emit} */
@@ -122,9 +123,7 @@ export class HtmlEmitter extends Emitter {
                     this.writer.write(` `);
                 }
 
-                this.writer.write(`<span class="terminal">`);
-                this.emitTextContent(node.terminals[i]);
-                this.writer.write(`</span>`);
+                this.emitTerminalLiteral(node.terminals[i]);
             }
         }
 
@@ -190,9 +189,7 @@ export class HtmlEmitter extends Emitter {
     }
 
     protected emitTerminal(node: Terminal) {
-        this.writer.write(`<span class="terminal">`);
-        this.emitTextContent(node);
-        this.writer.write(`</span>`);
+        this.emitNode(node.literal);
         if (node.questionToken) {
             this.writer.write(`<span class="opt">opt</span>`);
         }
@@ -247,9 +244,12 @@ export class HtmlEmitter extends Emitter {
         this.writer.write(`<span class="unicode-character-literal">`);
         this.emitTextContent(node);
         this.writer.write(`</span>`);
-        if (node.questionToken) {
-            this.writer.write(`<span class="opt">opt</span>`);
-        }
+    }
+
+    protected emitTerminalLiteral(node: TerminalLiteral) {
+        this.writer.write(`<span class="terminal">`);
+        this.emitTextContent(node);
+        this.writer.write(`</span>`);
     }
 
     protected emitProse(node: Prose) {

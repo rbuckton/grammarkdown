@@ -209,7 +209,7 @@ export enum SyntaxKind {
     // TextContent, Literals
     StringLiteral, // FirstLiteral, FirstTextContent
     NumberLiteral,
-    Terminal,
+    TerminalLiteral,
     UnicodeCharacterLiteral, // LastLiteral
 
     // TextContent, Literals, Prose Fragments
@@ -248,7 +248,8 @@ export enum SyntaxKind {
     UnicodeCharacterRange, // `x through y`
     OneOfSymbol, // `one of OrClause`
     PlaceholderSymbol, // `@`
-    Nonterminal, // `` `a` ``
+    Nonterminal, // `A`
+    Terminal, // `` `a` ``
     Prose, // > head |NonTerminal| middle `terminal` tail
 
     // Nodes, Symbols, Assertions
@@ -421,7 +422,7 @@ export function isProseFragmentLiteralKind(kind: SyntaxKind): kind is ProseFragm
 export type TextContentKind =
     | SyntaxKind.StringLiteral
     | SyntaxKind.NumberLiteral
-    | SyntaxKind.Terminal
+    | SyntaxKind.TerminalLiteral
     | SyntaxKind.UnicodeCharacterLiteral
     | ProseFragmentLiteralKind
     | SyntaxKind.Identifier;
@@ -450,14 +451,12 @@ export function isAssertionKind(kind: SyntaxKind): kind is AssertionKind {
 }
 
 export type OptionalSymbolKind =
-    | SyntaxKind.UnicodeCharacterLiteral
     | SyntaxKind.Terminal
     | SyntaxKind.Nonterminal
     ;
 
 export function isOptionalSymbolKind(kind: SyntaxKind): kind is OptionalSymbolKind {
-    return kind === SyntaxKind.UnicodeCharacterLiteral
-        || kind === SyntaxKind.Terminal
+    return kind === SyntaxKind.Terminal
         || kind === SyntaxKind.Nonterminal;
 }
 
@@ -607,7 +606,7 @@ export function tokenToString(kind: SyntaxKind | string, quoted?: boolean) {
     switch (kind) {
         case SyntaxKind.Identifier:
             return "«identifier»";
-        case SyntaxKind.Terminal:
+        case SyntaxKind.TerminalLiteral:
             return "«terminal»";
         case SyntaxKind.UnicodeCharacterLiteral:
             return "«unicode character literal»";

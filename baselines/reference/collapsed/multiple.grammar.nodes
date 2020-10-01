@@ -5,10 +5,12 @@
     (1,2)SyntaxKind[ColonToken]
     (1,4)SyntaxKind[RightHandSide]
       (1,4)SyntaxKind[SymbolSpan]
-        (1,4)SyntaxKind[Terminal](text = "a")
+        (1,4)SyntaxKind[Terminal]
+          (1,4)SyntaxKind[TerminalLiteral](text = "a")
   (2,1)SyntaxKind[Production]
     (2,1)SyntaxKind[Identifier](text = "B")
     (2,2)SyntaxKind[ColonToken]
     (2,4)SyntaxKind[RightHandSide]
       (2,4)SyntaxKind[SymbolSpan]
-        (2,4)SyntaxKind[Terminal](text = "b")
+        (2,4)SyntaxKind[Terminal]
+          (2,4)SyntaxKind[TerminalLiteral](text = "b")

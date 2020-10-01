@@ -33,7 +33,8 @@ import {
     RightHandSide,
     RightHandSideList,
     Production,
-    TextContent
+    TextContent,
+    TerminalLiteral
 } from "../nodes";
 
 /** {@docCategory Emit} */
@@ -178,13 +179,14 @@ export class EcmarkupEmitter extends Emitter {
     }
 
     protected emitTerminal(node: Terminal) {
-        this.writer.write(`<emu-t`);
+        const isUnicodeCharacter = node.literal.kind === SyntaxKind.UnicodeCharacterLiteral;
+        this.writer.write(isUnicodeCharacter ? `<emu-gprose` : `<emu-t`);
         if (node.questionToken) {
             this.writer.write(` optional`);
         }
         this.writer.write(`>`);
-        this.emitTextContent(node);
-        this.writer.write(`</emu-t>`);
+        this.emitTextContent(node.literal);
+        this.writer.write(isUnicodeCharacter ? `</emu-gprose>` : `</emu-t>`);
     }
 
     protected emitNonterminal(node: Nonterminal) {
@@ -220,6 +222,12 @@ export class EcmarkupEmitter extends Emitter {
         this.emitNode(node.name);
     }
 
+    protected emitTerminalLiteral(node: TerminalLiteral) {
+        this.writer.write(`<emu-t>`);
+        this.emitTextContent(node);
+        this.writer.write(`</emu-t>`);
+    }
+
     protected emitUnicodeCharacterRange(node: UnicodeCharacterRange) {
         this.writer.write(`<emu-gprose>`);
         this.emitTextContent(node.left);
@@ -229,12 +237,7 @@ export class EcmarkupEmitter extends Emitter {
     }
 
     protected emitUnicodeCharacterLiteral(node: UnicodeCharacterLiteral) {
-        this.writer.write(`<emu-gprose`);
-        if (node.questionToken) {
-            this.writer.write(` optional`);
-        }
-
-        this.writer.write(`>`);
+        this.writer.write(`<emu-gprose>`);
         this.emitTextContent(node);
         this.writer.write(`</emu-gprose>`);
     }

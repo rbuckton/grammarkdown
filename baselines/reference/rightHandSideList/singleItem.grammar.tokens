@@ -1,5 +1,5 @@
 /// rightHandSideList/singleItem.grammar:
 SyntaxKind[Identifier](1,1): A
 SyntaxKind[ColonToken](1,2): :
-SyntaxKind[Terminal](2,5): `a`
+SyntaxKind[TerminalLiteral](2,5): `a`
 SyntaxKind[EndOfFileToken](2,8): «EndOfFileToken»

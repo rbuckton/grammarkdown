@@ -1,6 +1,6 @@
 /// rightHandSideList/multipleItems.grammar:
 SyntaxKind[Identifier](1,1): A
 SyntaxKind[ColonToken](1,2): :
-SyntaxKind[Terminal](2,5): `a`
-SyntaxKind[Terminal](3,5): `b`
+SyntaxKind[TerminalLiteral](2,5): `a`
+SyntaxKind[TerminalLiteral](3,5): `b`
 SyntaxKind[EndOfFileToken](3,8): «EndOfFileToken»

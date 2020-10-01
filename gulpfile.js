@@ -16,6 +16,7 @@ const yargs = require("yargs")
     .option("runInBand", { type: "boolean", alias: "i", default: false })
     .option("watch", { type: "boolean", default: false })
     .option("watchAll", { type: "boolean", default: false })
+    .option("notify", { type: "boolean", default: false })
     .option("fix", { type: "boolean", default: false })
     .option("interactive", { type: "boolean", default: true })
     .option("docPackagePattern", { type: "string" })
@@ -61,6 +62,7 @@ const watchDiagnostics = () => gulp.watch(["./src/diagnostics.json"], { persiste
  * @param {boolean} [argv.runInBand]
  * @param {boolean} [argv.watch]
  * @param {boolean} [argv.watchAll]
+ * @param {boolean} [argv.notify]
  */
 const runTestsWithOptions = (argv) => {
     const args = new ArgsBuilder();
@@ -73,6 +75,7 @@ const runTestsWithOptions = (argv) => {
     args.addSwitch("--runInBand", argv.runInBand, false);
     args.addSwitch("--watch", argv.watch, false);
     args.addSwitch("--watchAll", argv.watchAll, false);
+    args.addSwitch("--notify", argv.notify, false);
     return exec(process.execPath, [require.resolve("jest/bin/jest"), ...args], { verbose: true });
 };
 

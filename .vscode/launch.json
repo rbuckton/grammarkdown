@@ -56,7 +56,10 @@
                 "<node_internals>/**",
                 "async_hooks.js",
                 "${workspaceFolder}/node_modules/jest/**",
-                "${workspaceFolder}/node_modules/jest-util/**"
+                "${workspaceFolder}/node_modules/jest-util/**",
+                "${workspaceFolder}/node_modules/expect/**",
+                "${workspaceFolder}/src/__tests__/navigatorUtils.*",
+                "${workspaceFolder}/src/__tests__/matchers.*",
             ]
         }
     ]

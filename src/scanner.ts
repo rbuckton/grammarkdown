@@ -342,7 +342,7 @@ export class Scanner {
                     return this.tokenValue = this.scanString(ch, this.token = SyntaxKind.StringLiteral), this.token;
 
                 case CharacterCodes.Backtick:
-                    return this.tokenValue = this.scanString(ch, this.token = SyntaxKind.Terminal), this.token;
+                    return this.tokenValue = this.scanString(ch, this.token = SyntaxKind.TerminalLiteral), this.token;
 
                 case CharacterCodes.Bar:
                     return this.tokenValue = this.scanString(ch, this.token = SyntaxKind.Identifier), this.token;
@@ -471,6 +471,33 @@ export class Scanner {
         }
     }
 
+    public scanRange<T>(pos: number, cb: () => T) {
+        if (pos < 0) throw new RangeError();
+        pos = Math.min(pos, this.len);
+        return this.speculate(() => {
+            // if pos - 1 is whitespace, walk back the whitespace to rescan indentation
+            if (pos > 0 && pos < this.len) {
+                let start = pos - 1;
+                while (isWhiteSpace(this.text.charCodeAt(start))) {
+                    start--;
+                }
+                if (isLineTerminator(this.text.charCodeAt(start))) {
+                    pos = start + 1;
+                }
+            }
+            this.pos = pos;
+            this.startPos = pos;
+            this.tokenPos = pos;
+            this.tokenValue = "";
+            this.tokenFlags = 0;
+            this.htmlTrivia = undefined;
+            this.insignificantIndentLength = 0;
+            this.significantIndentLength = 0;
+            this.currentIndentLength = 0;
+            return cb();
+        }, /*isLookahead*/ true);
+    }
+
     private scanLine(): string {
         const start = this.pos;
         while (this.pos < this.len) {
@@ -537,7 +564,7 @@ export class Scanner {
             const ch = this.text.charCodeAt(this.pos);
             if (previousTokenWasFragment) {
                 if (ch === CharacterCodes.Backtick) {
-                    return this.pos++ , this.tokenValue = this.scanString(ch, this.token = SyntaxKind.Terminal), this.token;
+                    return this.pos++ , this.tokenValue = this.scanString(ch, this.token = SyntaxKind.TerminalLiteral), this.token;
                 }
                 else if (ch === CharacterCodes.Bar) {
                     return this.pos++ , this.tokenValue = this.scanString(ch, this.token = SyntaxKind.Identifier), this.token;
@@ -658,9 +685,9 @@ export class Scanner {
         return CharacterCodes.Ampersand;
     }
 
-    private scanString(quote: number, kind: SyntaxKind.StringLiteral | SyntaxKind.Terminal | SyntaxKind.Identifier | SyntaxKind.UnicodeCharacterLiteral): string {
+    private scanString(quote: number, kind: SyntaxKind.StringLiteral | SyntaxKind.TerminalLiteral | SyntaxKind.Identifier | SyntaxKind.UnicodeCharacterLiteral): string {
         const diagnostic = kind === SyntaxKind.Identifier ? Diagnostics.Unterminated_identifier_literal : Diagnostics.Unterminated_string_literal;
-        const decodeEscapeSequences = kind !== SyntaxKind.Terminal;
+        const decodeEscapeSequences = kind !== SyntaxKind.TerminalLiteral;
 
         let result = "";
         let start = this.pos;
@@ -874,6 +901,21 @@ export class Scanner {
     }
 }
 
+function isLineTerminator(ch: number): boolean {
+    return ch === CharacterCodes.CarriageReturn || ch === CharacterCodes.LineFeed;
+}
+
+function isWhiteSpace(ch: number) {
+    switch (ch) {
+        case CharacterCodes.Space:
+        case CharacterCodes.Tab:
+        case CharacterCodes.VerticalTab:
+        case CharacterCodes.FormFeed:
+            return true;
+    }
+    return false;
+}
+
 function isUpperAlpha(ch: number): boolean {
     return ch >= CharacterCodes.UpperA && ch <= CharacterCodes.UpperZ;
 }
@@ -908,10 +950,6 @@ function isIdentifierStart(ch: number): boolean {
 function isIdentifierPart(ch: number): boolean {
     return isAlphaNum(ch)
         || ch === CharacterCodes.Underscore;
-}
-
-function isLineTerminator(ch: number): boolean {
-    return ch === CharacterCodes.CarriageReturn || ch === CharacterCodes.LineFeed;
 }
 
 function isHtmlTagNameStart(ch: number): boolean {
@@ -1294,4 +1332,4 @@ const htmlCharacterEntities: Record<string, number> = {
     clubs: 0x2663,
     hearts: 0x2665,
     diams: 0x2666
-}
+};

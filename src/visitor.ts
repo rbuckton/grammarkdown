@@ -44,6 +44,7 @@ import {
     Define,
     NumberLiteral,
     Line,
+    TerminalLiteral,
 } from "./nodes";
 
 /** {@docCategory Other} */
@@ -117,7 +118,7 @@ export abstract class NodeVisitor {
         return node.update(this.visit(node.left), this.visit(node.right));
     }
 
-    public visitTerminal(node: Terminal): Terminal {
+    public visitTerminalLiteral(node: TerminalLiteral): TerminalLiteral {
         return node;
     }
 
@@ -167,6 +168,10 @@ export abstract class NodeVisitor {
 
     public visitNonterminal(node: Nonterminal): Nonterminal {
         return node.update(this.visit(node.name), this.visit(node.argumentList));
+    }
+
+    public visitTerminal(node: Terminal): Terminal {
+        return node.update(this.visit(node.literal), this.visit(node.questionToken));
     }
 
     public visitProse(node: Prose): Prose {

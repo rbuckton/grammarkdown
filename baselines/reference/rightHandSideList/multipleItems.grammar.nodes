@@ -6,7 +6,9 @@
     (2,5)SyntaxKind[RightHandSideList]
       (2,5)SyntaxKind[RightHandSide]
         (2,5)SyntaxKind[SymbolSpan]
-          (2,5)SyntaxKind[Terminal](text = "a")
+          (2,5)SyntaxKind[Terminal]
+            (2,5)SyntaxKind[TerminalLiteral](text = "a")
       (3,5)SyntaxKind[RightHandSide]
         (3,5)SyntaxKind[SymbolSpan]
-          (3,5)SyntaxKind[Terminal](text = "b")
+          (3,5)SyntaxKind[Terminal]
+            (3,5)SyntaxKind[TerminalLiteral](text = "b")

@@ -97,14 +97,14 @@
   </h3>
   
   
-  <h4 id="grammarkdown_Terminal_constructor_1_" data-uid="grammarkdown!Terminal:constructor(1)">constructor(text, questionToken)</h4>
+  <h4 id="grammarkdown_Terminal_constructor_1_" data-uid="grammarkdown!Terminal:constructor(1)">constructor(literal, questionToken)</h4>
   <div class="markdown level1 summary"><p>Constructs a new instance of the <code>Terminal</code> class</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">constructor(text: string | undefined, questionToken: Token&lt;SyntaxKind.QuestionToken&gt; | undefined);</code></pre>
+    <pre><code class="lang-typeScript hljs">constructor(literal: UnicodeCharacterLiteral | TerminalLiteral, questionToken: Token&lt;SyntaxKind.QuestionToken&gt; | undefined);</code></pre>
   </div>
   
   
@@ -112,8 +112,8 @@
   <div>
     <div class="property">
       <dl class="parameter">
-        <dt>text</dt>
-        <dd><span class="xref">string | undefined</span></dd>
+        <dt>literal</dt>
+        <dd><a class="xref" href="unicodecharacterliteral.html#grammarkdown_UnicodeCharacterLiteral_class">UnicodeCharacterLiteral</a> | <a class="xref" href="terminalliteral.html#grammarkdown_TerminalLiteral_class">TerminalLiteral</a></dd>
       </dl>
       <p>
         
@@ -194,13 +194,13 @@
   
   
   
-  <h4 id="grammarkdown_Terminal_text_member" data-uid="grammarkdown!Terminal#text:member">text</h4>
+  <h4 id="grammarkdown_Terminal_literal_member" data-uid="grammarkdown!Terminal#literal:member">literal</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">readonly text: string | undefined;</code></pre>
+    <pre><code class="lang-typeScript hljs">readonly literal: UnicodeCharacterLiteral | TerminalLiteral;</code></pre>
   </div>
   
   
@@ -210,7 +210,7 @@
   <h5 class="propertyValue">Property Value</h5>
   <div>
   <div class="property">
-    <div><span class="xref">string | undefined</span></div>
+    <div><a class="xref" href="unicodecharacterliteral.html#grammarkdown_UnicodeCharacterLiteral_class">UnicodeCharacterLiteral</a> | <a class="xref" href="terminalliteral.html#grammarkdown_TerminalLiteral_class">TerminalLiteral</a></div>
     <p>
   </div>
   </div>
@@ -288,6 +288,55 @@
   <div>
   <div class="property">
     <div><span class="xref">T | undefined</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_Terminal_update_member_1_" data-uid="grammarkdown!Terminal#update:member(1)">update(literal, questionToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">update(literal: UnicodeCharacterLiteral | TerminalLiteral, questionToken: Token&lt;SyntaxKind.QuestionToken&gt; | undefined): Terminal;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>literal</dt>
+        <dd><a class="xref" href="unicodecharacterliteral.html#grammarkdown_UnicodeCharacterLiteral_class">UnicodeCharacterLiteral</a> | <a class="xref" href="terminalliteral.html#grammarkdown_TerminalLiteral_class">TerminalLiteral</a></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>questionToken</dt>
+        <dd><a class="xref" href="token.html#grammarkdown_Token_class">Token</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_QuestionToken_member">SyntaxKind.QuestionToken</a>&gt; | undefined</dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="terminal.html#grammarkdown_Terminal_class">Terminal</a></div>
     <p>
   </div>
   </div>

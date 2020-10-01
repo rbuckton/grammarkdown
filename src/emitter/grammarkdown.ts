@@ -39,7 +39,8 @@ import {
     SourceFile,
     Node,
     StringLiteral,
-    NumberLiteral
+    NumberLiteral,
+    TerminalLiteral
 } from "../nodes";
 
 /** {@docCategory Emit} */
@@ -181,14 +182,7 @@ export class GrammarkdownEmitter extends Emitter {
     }
 
     protected emitTerminal(node: Terminal) {
-        if (node.text === "`") {
-            this.writer.write("```");
-        }
-        else {
-            this.writer.write("`");
-            this.writer.write(node.text ?? "");
-            this.writer.write("`");
-        }
+        this.emitNode(node.literal);
         this.emitNode(node.questionToken);
     }
 
@@ -222,7 +216,17 @@ export class GrammarkdownEmitter extends Emitter {
 
     protected emitUnicodeCharacterLiteral(node: UnicodeCharacterLiteral) {
         this.emitTextContent(node);
-        this.emitNode(node.questionToken);
+    }
+
+    protected emitTerminalLiteral(node: TerminalLiteral) {
+        if (node.text === "`") {
+            this.writer.write("```");
+        }
+        else {
+            this.writer.write("`");
+            this.writer.write(node.text ?? "");
+            this.writer.write("`");
+        }
     }
 
     protected emitProse(node: Prose) {

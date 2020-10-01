@@ -15,12 +15,14 @@
     (6,2)SyntaxKind[RightHandSideList]
       (6,2)SyntaxKind[RightHandSide]
         (6,2)SyntaxKind[SymbolSpan]
-          (6,2)SyntaxKind[Terminal](text = "<")
+          (6,2)SyntaxKind[Terminal]
+            (6,2)SyntaxKind[TerminalLiteral](text = "<")
           (6,6)SyntaxKind[SymbolSpan]
             (6,6)SyntaxKind[Nonterminal]
               (6,6)SyntaxKind[Identifier](text = "TypeParameterList")
             (6,24)SyntaxKind[SymbolSpan]
-              (6,24)SyntaxKind[Terminal](text = ">")
+              (6,24)SyntaxKind[Terminal]
+                (6,24)SyntaxKind[TerminalLiteral](text = ">")
   (8,1)SyntaxKind[Production]
     (8,1)SyntaxKind[Identifier](text = "TypeParameterList")
     (8,19)SyntaxKind[ColonToken]
@@ -34,7 +36,8 @@
           (10,2)SyntaxKind[Nonterminal]
             (10,2)SyntaxKind[Identifier](text = "TypeParameterList")
           (10,20)SyntaxKind[SymbolSpan]
-            (10,20)SyntaxKind[Terminal](text = ",")
+            (10,20)SyntaxKind[Terminal]
+              (10,20)SyntaxKind[TerminalLiteral](text = ",")
             (10,24)SyntaxKind[SymbolSpan]
               (10,24)SyntaxKind[Nonterminal]
                 (10,24)SyntaxKind[Identifier](text = "TypeParameter")
@@ -56,7 +59,8 @@
     (16,2)SyntaxKind[RightHandSideList]
       (16,2)SyntaxKind[RightHandSide]
         (16,2)SyntaxKind[SymbolSpan]
-          (16,2)SyntaxKind[Terminal](text = "extends")
+          (16,2)SyntaxKind[Terminal]
+            (16,2)SyntaxKind[TerminalLiteral](text = "extends")
           (16,12)SyntaxKind[SymbolSpan]
             (16,12)SyntaxKind[Nonterminal]
               (16,12)SyntaxKind[Identifier](text = "Type")
@@ -66,12 +70,14 @@
     (19,2)SyntaxKind[RightHandSideList]
       (19,2)SyntaxKind[RightHandSide]
         (19,2)SyntaxKind[SymbolSpan]
-          (19,2)SyntaxKind[Terminal](text = "<")
+          (19,2)SyntaxKind[Terminal]
+            (19,2)SyntaxKind[TerminalLiteral](text = "<")
           (19,6)SyntaxKind[SymbolSpan]
             (19,6)SyntaxKind[Nonterminal]
               (19,6)SyntaxKind[Identifier](text = "TypeArgumentList")
             (19,23)SyntaxKind[SymbolSpan]
-              (19,23)SyntaxKind[Terminal](text = ">")
+              (19,23)SyntaxKind[Terminal]
+                (19,23)SyntaxKind[TerminalLiteral](text = ">")
   (21,1)SyntaxKind[Production]
     (21,1)SyntaxKind[Identifier](text = "TypeArgumentList")
     (21,18)SyntaxKind[ColonToken]
@@ -85,7 +91,8 @@
           (23,2)SyntaxKind[Nonterminal]
             (23,2)SyntaxKind[Identifier](text = "TypeArgumentList")
           (23,19)SyntaxKind[SymbolSpan]
-            (23,19)SyntaxKind[Terminal](text = ",")
+            (23,19)SyntaxKind[Terminal]
+              (23,19)SyntaxKind[TerminalLiteral](text = ",")
             (23,23)SyntaxKind[SymbolSpan]
               (23,23)SyntaxKind[Nonterminal]
                 (23,23)SyntaxKind[Identifier](text = "TypeArgument")
@@ -163,31 +170,38 @@
     (47,2)SyntaxKind[RightHandSideList]
       (47,2)SyntaxKind[RightHandSide]
         (47,2)SyntaxKind[SymbolSpan]
-          (47,2)SyntaxKind[Terminal](text = "(")
+          (47,2)SyntaxKind[Terminal]
+            (47,2)SyntaxKind[TerminalLiteral](text = "(")
           (47,6)SyntaxKind[SymbolSpan]
             (47,6)SyntaxKind[Nonterminal]
               (47,6)SyntaxKind[Identifier](text = "Type")
             (47,11)SyntaxKind[SymbolSpan]
-              (47,11)SyntaxKind[Terminal](text = ")")
+              (47,11)SyntaxKind[Terminal]
+                (47,11)SyntaxKind[TerminalLiteral](text = ")")
   (49,1)SyntaxKind[Production]
     (49,1)SyntaxKind[Identifier](text = "PredefinedType")
     (49,16)SyntaxKind[ColonToken]
     (50,2)SyntaxKind[RightHandSideList]
       (50,2)SyntaxKind[RightHandSide]
         (50,2)SyntaxKind[SymbolSpan]
-          (50,2)SyntaxKind[Terminal](text = "any")
+          (50,2)SyntaxKind[Terminal]
+            (50,2)SyntaxKind[TerminalLiteral](text = "any")
       (51,2)SyntaxKind[RightHandSide]
         (51,2)SyntaxKind[SymbolSpan]
-          (51,2)SyntaxKind[Terminal](text = "number")
+          (51,2)SyntaxKind[Terminal]
+            (51,2)SyntaxKind[TerminalLiteral](text = "number")
       (52,2)SyntaxKind[RightHandSide]
         (52,2)SyntaxKind[SymbolSpan]
-          (52,2)SyntaxKind[Terminal](text = "boolean")
+          (52,2)SyntaxKind[Terminal]
+            (52,2)SyntaxKind[TerminalLiteral](text = "boolean")
       (53,2)SyntaxKind[RightHandSide]
         (53,2)SyntaxKind[SymbolSpan]
-          (53,2)SyntaxKind[Terminal](text = "string")
+          (53,2)SyntaxKind[Terminal]
+            (53,2)SyntaxKind[TerminalLiteral](text = "string")
       (54,2)SyntaxKind[RightHandSide]
         (54,2)SyntaxKind[SymbolSpan]
-          (54,2)SyntaxKind[Terminal](text = "void")
+          (54,2)SyntaxKind[Terminal]
+            (54,2)SyntaxKind[TerminalLiteral](text = "void")
   (56,1)SyntaxKind[Production]
     (56,1)SyntaxKind[Identifier](text = "TypeReference")
     (56,15)SyntaxKind[ColonToken]
@@ -221,7 +235,8 @@
           (61,2)SyntaxKind[Nonterminal]
             (61,2)SyntaxKind[Identifier](text = "ModuleName")
           (61,13)SyntaxKind[SymbolSpan]
-            (61,13)SyntaxKind[Terminal](text = ".")
+            (61,13)SyntaxKind[Terminal]
+              (61,13)SyntaxKind[TerminalLiteral](text = ".")
             (61,17)SyntaxKind[SymbolSpan]
               (61,17)SyntaxKind[Nonterminal]
                 (61,17)SyntaxKind[Identifier](text = "Identifier")
@@ -238,7 +253,8 @@
           (65,2)SyntaxKind[Nonterminal]
             (65,2)SyntaxKind[Identifier](text = "ModuleName")
           (65,13)SyntaxKind[SymbolSpan]
-            (65,13)SyntaxKind[Terminal](text = ".")
+            (65,13)SyntaxKind[Terminal]
+              (65,13)SyntaxKind[TerminalLiteral](text = ".")
             (65,17)SyntaxKind[SymbolSpan]
               (65,17)SyntaxKind[Nonterminal]
                 (65,17)SyntaxKind[Identifier](text = "Identifier")
@@ -248,13 +264,15 @@
     (68,2)SyntaxKind[RightHandSideList]
       (68,2)SyntaxKind[RightHandSide]
         (68,2)SyntaxKind[SymbolSpan]
-          (68,2)SyntaxKind[Terminal](text = "{")
+          (68,2)SyntaxKind[Terminal]
+            (68,2)SyntaxKind[TerminalLiteral](text = "{")
           (68,6)SyntaxKind[SymbolSpan]
             (68,6)SyntaxKind[Nonterminal]?
               (68,6)SyntaxKind[Identifier](text = "TypeBody")
               (68,14)SyntaxKind[QuestionToken]
             (68,16)SyntaxKind[SymbolSpan]
-              (68,16)SyntaxKind[Terminal](text = "}")
+              (68,16)SyntaxKind[Terminal]
+                (68,16)SyntaxKind[TerminalLiteral](text = "}")
   (70,1)SyntaxKind[Production]
     (70,1)SyntaxKind[Identifier](text = "TypeBody")
     (70,10)SyntaxKind[ColonToken]
@@ -264,7 +282,8 @@
           (71,2)SyntaxKind[Nonterminal]
             (71,2)SyntaxKind[Identifier](text = "TypeMemberList")
           (71,17)SyntaxKind[SymbolSpan]
-            (71,17)SyntaxKind[Terminal](text = ";")?
+            (71,17)SyntaxKind[Terminal]?
+              (71,17)SyntaxKind[TerminalLiteral](text = ";")
               (71,20)SyntaxKind[QuestionToken]
   (73,1)SyntaxKind[Production]
     (73,1)SyntaxKind[Identifier](text = "TypeMemberList")
@@ -279,7 +298,8 @@
           (75,2)SyntaxKind[Nonterminal]
             (75,2)SyntaxKind[Identifier](text = "TypeMemberList")
           (75,17)SyntaxKind[SymbolSpan]
-            (75,17)SyntaxKind[Terminal](text = ";")
+            (75,17)SyntaxKind[Terminal]
+              (75,17)SyntaxKind[TerminalLiteral](text = ";")
             (75,21)SyntaxKind[SymbolSpan]
               (75,21)SyntaxKind[Nonterminal]
                 (75,21)SyntaxKind[Identifier](text = "TypeMember")
@@ -324,21 +344,25 @@
               (85,33)SyntaxKind[HereKeyword]
               (85,37)SyntaxKind[CloseBracketToken]
             (85,39)SyntaxKind[SymbolSpan]
-              (85,39)SyntaxKind[Terminal](text = "[")
+              (85,39)SyntaxKind[Terminal]
+                (85,39)SyntaxKind[TerminalLiteral](text = "[")
               (85,43)SyntaxKind[SymbolSpan]
-                (85,43)SyntaxKind[Terminal](text = "]")
+                (85,43)SyntaxKind[Terminal]
+                  (85,43)SyntaxKind[TerminalLiteral](text = "]")
   (87,1)SyntaxKind[Production]
     (87,1)SyntaxKind[Identifier](text = "TupleType")
     (87,11)SyntaxKind[ColonToken]
     (88,2)SyntaxKind[RightHandSideList]
       (88,2)SyntaxKind[RightHandSide]
         (88,2)SyntaxKind[SymbolSpan]
-          (88,2)SyntaxKind[Terminal](text = "[")
+          (88,2)SyntaxKind[Terminal]
+            (88,2)SyntaxKind[TerminalLiteral](text = "[")
           (88,6)SyntaxKind[SymbolSpan]
             (88,6)SyntaxKind[Nonterminal]
               (88,6)SyntaxKind[Identifier](text = "TupleElementTypes")
             (88,24)SyntaxKind[SymbolSpan]
-              (88,24)SyntaxKind[Terminal](text = "]")
+              (88,24)SyntaxKind[Terminal]
+                (88,24)SyntaxKind[TerminalLiteral](text = "]")
   (90,1)SyntaxKind[Production]
     (90,1)SyntaxKind[Identifier](text = "TupleElementTypes")
     (90,19)SyntaxKind[ColonToken]
@@ -352,7 +376,8 @@
           (92,2)SyntaxKind[Nonterminal]
             (92,2)SyntaxKind[Identifier](text = "TupleElementTypes")
           (92,20)SyntaxKind[SymbolSpan]
-            (92,20)SyntaxKind[Terminal](text = ",")
+            (92,20)SyntaxKind[Terminal]
+              (92,20)SyntaxKind[TerminalLiteral](text = ",")
             (92,24)SyntaxKind[SymbolSpan]
               (92,24)SyntaxKind[Nonterminal]
                 (92,24)SyntaxKind[Identifier](text = "TupleElementType")
@@ -373,7 +398,8 @@
           (98,2)SyntaxKind[Nonterminal]
             (98,2)SyntaxKind[Identifier](text = "PrimaryOrUnionType")
           (98,21)SyntaxKind[SymbolSpan]
-            (98,21)SyntaxKind[Terminal](text = "|")
+            (98,21)SyntaxKind[Terminal]
+              (98,21)SyntaxKind[TerminalLiteral](text = "|")
             (98,25)SyntaxKind[SymbolSpan]
               (98,25)SyntaxKind[Nonterminal]
                 (98,25)SyntaxKind[Identifier](text = "PrimaryType")
@@ -387,15 +413,18 @@
             (101,2)SyntaxKind[Identifier](text = "TypeParameters")
             (101,16)SyntaxKind[QuestionToken]
           (101,18)SyntaxKind[SymbolSpan]
-            (101,18)SyntaxKind[Terminal](text = "(")
+            (101,18)SyntaxKind[Terminal]
+              (101,18)SyntaxKind[TerminalLiteral](text = "(")
             (101,22)SyntaxKind[SymbolSpan]
               (101,22)SyntaxKind[Nonterminal]?
                 (101,22)SyntaxKind[Identifier](text = "ParameterList")
                 (101,35)SyntaxKind[QuestionToken]
               (101,37)SyntaxKind[SymbolSpan]
-                (101,37)SyntaxKind[Terminal](text = ")")
+                (101,37)SyntaxKind[Terminal]
+                  (101,37)SyntaxKind[TerminalLiteral](text = ")")
                 (101,41)SyntaxKind[SymbolSpan]
-                  (101,41)SyntaxKind[Terminal](text = "=>")
+                  (101,41)SyntaxKind[Terminal]
+                    (101,41)SyntaxKind[TerminalLiteral](text = "=>")
                   (101,46)SyntaxKind[SymbolSpan]
                     (101,46)SyntaxKind[Nonterminal]
                       (101,46)SyntaxKind[Identifier](text = "Type")
@@ -405,21 +434,25 @@
     (104,2)SyntaxKind[RightHandSideList]
       (104,2)SyntaxKind[RightHandSide]
         (104,2)SyntaxKind[SymbolSpan]
-          (104,2)SyntaxKind[Terminal](text = "new")
+          (104,2)SyntaxKind[Terminal]
+            (104,2)SyntaxKind[TerminalLiteral](text = "new")
           (104,8)SyntaxKind[SymbolSpan]
             (104,8)SyntaxKind[Nonterminal]?
               (104,8)SyntaxKind[Identifier](text = "TypeParameters")
               (104,22)SyntaxKind[QuestionToken]
             (104,24)SyntaxKind[SymbolSpan]
-              (104,24)SyntaxKind[Terminal](text = "(")
+              (104,24)SyntaxKind[Terminal]
+                (104,24)SyntaxKind[TerminalLiteral](text = "(")
               (104,28)SyntaxKind[SymbolSpan]
                 (104,28)SyntaxKind[Nonterminal]?
                   (104,28)SyntaxKind[Identifier](text = "ParameterList")
                   (104,41)SyntaxKind[QuestionToken]
                 (104,43)SyntaxKind[SymbolSpan]
-                  (104,43)SyntaxKind[Terminal](text = ")")
+                  (104,43)SyntaxKind[Terminal]
+                    (104,43)SyntaxKind[TerminalLiteral](text = ")")
                   (104,47)SyntaxKind[SymbolSpan]
-                    (104,47)SyntaxKind[Terminal](text = "=>")
+                    (104,47)SyntaxKind[Terminal]
+                      (104,47)SyntaxKind[TerminalLiteral](text = "=>")
                     (104,52)SyntaxKind[SymbolSpan]
                       (104,52)SyntaxKind[Nonterminal]
                         (104,52)SyntaxKind[Identifier](text = "Type")
@@ -429,7 +462,8 @@
     (107,2)SyntaxKind[RightHandSideList]
       (107,2)SyntaxKind[RightHandSide]
         (107,2)SyntaxKind[SymbolSpan]
-          (107,2)SyntaxKind[Terminal](text = "typeof")
+          (107,2)SyntaxKind[Terminal]
+            (107,2)SyntaxKind[TerminalLiteral](text = "typeof")
           (107,11)SyntaxKind[SymbolSpan]
             (107,11)SyntaxKind[Nonterminal]
               (107,11)SyntaxKind[Identifier](text = "TypeQueryExpression")
@@ -446,7 +480,8 @@
           (111,2)SyntaxKind[Nonterminal]
             (111,2)SyntaxKind[Identifier](text = "TypeQueryExpression")
           (111,22)SyntaxKind[SymbolSpan]
-            (111,22)SyntaxKind[Terminal](text = ".")
+            (111,22)SyntaxKind[Terminal]
+              (111,22)SyntaxKind[TerminalLiteral](text = ".")
             (111,26)SyntaxKind[SymbolSpan]
               (111,26)SyntaxKind[Nonterminal]
                 (111,26)SyntaxKind[Identifier](text = "IdentifierName")
@@ -459,7 +494,8 @@
           (114,2)SyntaxKind[Nonterminal]
             (114,2)SyntaxKind[Identifier](text = "PropertyName")
           (114,15)SyntaxKind[SymbolSpan]
-            (114,15)SyntaxKind[Terminal](text = "?")?
+            (114,15)SyntaxKind[Terminal]?
+              (114,15)SyntaxKind[TerminalLiteral](text = "?")
               (114,18)SyntaxKind[QuestionToken]
             (114,20)SyntaxKind[SymbolSpan]
               (114,20)SyntaxKind[Nonterminal]?
@@ -491,13 +527,15 @@
             (122,2)SyntaxKind[Identifier](text = "TypeParameters")
             (122,16)SyntaxKind[QuestionToken]
           (122,18)SyntaxKind[SymbolSpan]
-            (122,18)SyntaxKind[Terminal](text = "(")
+            (122,18)SyntaxKind[Terminal]
+              (122,18)SyntaxKind[TerminalLiteral](text = "(")
             (122,22)SyntaxKind[SymbolSpan]
               (122,22)SyntaxKind[Nonterminal]?
                 (122,22)SyntaxKind[Identifier](text = "ParameterList")
                 (122,35)SyntaxKind[QuestionToken]
               (122,37)SyntaxKind[SymbolSpan]
-                (122,37)SyntaxKind[Terminal](text = ")")
+                (122,37)SyntaxKind[Terminal]
+                  (122,37)SyntaxKind[TerminalLiteral](text = ")")
                 (122,41)SyntaxKind[SymbolSpan]
                   (122,41)SyntaxKind[Nonterminal]?
                     (122,41)SyntaxKind[Identifier](text = "TypeAnnotation")
@@ -523,7 +561,8 @@
           (128,2)SyntaxKind[Nonterminal]
             (128,2)SyntaxKind[Identifier](text = "RequiredParameterList")
           (128,24)SyntaxKind[SymbolSpan]
-            (128,24)SyntaxKind[Terminal](text = ",")
+            (128,24)SyntaxKind[Terminal]
+              (128,24)SyntaxKind[TerminalLiteral](text = ",")
             (128,28)SyntaxKind[SymbolSpan]
               (128,28)SyntaxKind[Nonterminal]
                 (128,28)SyntaxKind[Identifier](text = "OptionalParameterList")
@@ -532,7 +571,8 @@
           (129,2)SyntaxKind[Nonterminal]
             (129,2)SyntaxKind[Identifier](text = "RequiredParameterList")
           (129,24)SyntaxKind[SymbolSpan]
-            (129,24)SyntaxKind[Terminal](text = ",")
+            (129,24)SyntaxKind[Terminal]
+              (129,24)SyntaxKind[TerminalLiteral](text = ",")
             (129,28)SyntaxKind[SymbolSpan]
               (129,28)SyntaxKind[Nonterminal]
                 (129,28)SyntaxKind[Identifier](text = "RestParameter")
@@ -541,7 +581,8 @@
           (130,2)SyntaxKind[Nonterminal]
             (130,2)SyntaxKind[Identifier](text = "OptionalParameterList")
           (130,24)SyntaxKind[SymbolSpan]
-            (130,24)SyntaxKind[Terminal](text = ",")
+            (130,24)SyntaxKind[Terminal]
+              (130,24)SyntaxKind[TerminalLiteral](text = ",")
             (130,28)SyntaxKind[SymbolSpan]
               (130,28)SyntaxKind[Nonterminal]
                 (130,28)SyntaxKind[Identifier](text = "RestParameter")
@@ -550,12 +591,14 @@
           (131,2)SyntaxKind[Nonterminal]
             (131,2)SyntaxKind[Identifier](text = "RequiredParameterList")
           (131,24)SyntaxKind[SymbolSpan]
-            (131,24)SyntaxKind[Terminal](text = ",")
+            (131,24)SyntaxKind[Terminal]
+              (131,24)SyntaxKind[TerminalLiteral](text = ",")
             (131,28)SyntaxKind[SymbolSpan]
               (131,28)SyntaxKind[Nonterminal]
                 (131,28)SyntaxKind[Identifier](text = "OptionalParameterList")
               (131,50)SyntaxKind[SymbolSpan]
-                (131,50)SyntaxKind[Terminal](text = ",")
+                (131,50)SyntaxKind[Terminal]
+                  (131,50)SyntaxKind[TerminalLiteral](text = ",")
                 (131,54)SyntaxKind[SymbolSpan]
                   (131,54)SyntaxKind[Nonterminal]
                     (131,54)SyntaxKind[Identifier](text = "RestParameter")
@@ -572,7 +615,8 @@
           (135,2)SyntaxKind[Nonterminal]
             (135,2)SyntaxKind[Identifier](text = "RequiredParameterList")
           (135,24)SyntaxKind[SymbolSpan]
-            (135,24)SyntaxKind[Terminal](text = ",")
+            (135,24)SyntaxKind[Terminal]
+              (135,24)SyntaxKind[TerminalLiteral](text = ",")
             (135,28)SyntaxKind[SymbolSpan]
               (135,28)SyntaxKind[Nonterminal]
                 (135,28)SyntaxKind[Identifier](text = "RequiredParameter")
@@ -597,7 +641,8 @@
           (139,2)SyntaxKind[Nonterminal]
             (139,2)SyntaxKind[Identifier](text = "Identifier")
           (139,13)SyntaxKind[SymbolSpan]
-            (139,13)SyntaxKind[Terminal](text = ":")
+            (139,13)SyntaxKind[Terminal]
+              (139,13)SyntaxKind[TerminalLiteral](text = ":")
             (139,17)SyntaxKind[SymbolSpan]
               (139,17)SyntaxKind[Nonterminal]
                 (139,17)SyntaxKind[Identifier](text = "StringLiteral")
@@ -607,13 +652,16 @@
     (142,2)SyntaxKind[RightHandSideList]
       (142,2)SyntaxKind[RightHandSide]
         (142,2)SyntaxKind[SymbolSpan]
-          (142,2)SyntaxKind[Terminal](text = "public")
+          (142,2)SyntaxKind[Terminal]
+            (142,2)SyntaxKind[TerminalLiteral](text = "public")
       (143,2)SyntaxKind[RightHandSide]
         (143,2)SyntaxKind[SymbolSpan]
-          (143,2)SyntaxKind[Terminal](text = "private")
+          (143,2)SyntaxKind[Terminal]
+            (143,2)SyntaxKind[TerminalLiteral](text = "private")
       (144,2)SyntaxKind[RightHandSide]
         (144,2)SyntaxKind[SymbolSpan]
-          (144,2)SyntaxKind[Terminal](text = "protected")
+          (144,2)SyntaxKind[Terminal]
+            (144,2)SyntaxKind[TerminalLiteral](text = "protected")
   (146,1)SyntaxKind[Production]
     (146,1)SyntaxKind[Identifier](text = "OptionalParameterList")
     (146,23)SyntaxKind[ColonToken]
@@ -627,7 +675,8 @@
           (148,2)SyntaxKind[Nonterminal]
             (148,2)SyntaxKind[Identifier](text = "OptionalParameterList")
           (148,24)SyntaxKind[SymbolSpan]
-            (148,24)SyntaxKind[Terminal](text = ",")
+            (148,24)SyntaxKind[Terminal]
+              (148,24)SyntaxKind[TerminalLiteral](text = ",")
             (148,28)SyntaxKind[SymbolSpan]
               (148,28)SyntaxKind[Nonterminal]
                 (148,28)SyntaxKind[Identifier](text = "OptionalParameter")
@@ -644,7 +693,8 @@
             (151,25)SyntaxKind[Nonterminal]
               (151,25)SyntaxKind[Identifier](text = "Identifier")
             (151,36)SyntaxKind[SymbolSpan]
-              (151,36)SyntaxKind[Terminal](text = "?")
+              (151,36)SyntaxKind[Terminal]
+                (151,36)SyntaxKind[TerminalLiteral](text = "?")
               (151,40)SyntaxKind[SymbolSpan]
                 (151,40)SyntaxKind[Nonterminal]?
                   (151,40)SyntaxKind[Identifier](text = "TypeAnnotation")
@@ -669,9 +719,11 @@
           (153,2)SyntaxKind[Nonterminal]
             (153,2)SyntaxKind[Identifier](text = "Identifier")
           (153,13)SyntaxKind[SymbolSpan]
-            (153,13)SyntaxKind[Terminal](text = "?")
+            (153,13)SyntaxKind[Terminal]
+              (153,13)SyntaxKind[TerminalLiteral](text = "?")
             (153,17)SyntaxKind[SymbolSpan]
-              (153,17)SyntaxKind[Terminal](text = ":")
+              (153,17)SyntaxKind[Terminal]
+                (153,17)SyntaxKind[TerminalLiteral](text = ":")
               (153,21)SyntaxKind[SymbolSpan]
                 (153,21)SyntaxKind[Nonterminal]
                   (153,21)SyntaxKind[Identifier](text = "StringLiteral")
@@ -681,7 +733,8 @@
     (156,2)SyntaxKind[RightHandSideList]
       (156,2)SyntaxKind[RightHandSide]
         (156,2)SyntaxKind[SymbolSpan]
-          (156,2)SyntaxKind[Terminal](text = "...")
+          (156,2)SyntaxKind[Terminal]
+            (156,2)SyntaxKind[TerminalLiteral](text = "...")
           (156,8)SyntaxKind[SymbolSpan]
             (156,8)SyntaxKind[Nonterminal]
               (156,8)SyntaxKind[Identifier](text = "Identifier")
@@ -695,19 +748,22 @@
     (159,2)SyntaxKind[RightHandSideList]
       (159,2)SyntaxKind[RightHandSide]
         (159,2)SyntaxKind[SymbolSpan]
-          (159,2)SyntaxKind[Terminal](text = "new")
+          (159,2)SyntaxKind[Terminal]
+            (159,2)SyntaxKind[TerminalLiteral](text = "new")
           (159,8)SyntaxKind[SymbolSpan]
             (159,8)SyntaxKind[Nonterminal]?
               (159,8)SyntaxKind[Identifier](text = "TypeParameters")
               (159,22)SyntaxKind[QuestionToken]
             (159,24)SyntaxKind[SymbolSpan]
-              (159,24)SyntaxKind[Terminal](text = "(")
+              (159,24)SyntaxKind[Terminal]
+                (159,24)SyntaxKind[TerminalLiteral](text = "(")
               (159,28)SyntaxKind[SymbolSpan]
                 (159,28)SyntaxKind[Nonterminal]?
                   (159,28)SyntaxKind[Identifier](text = "ParameterList")
                   (159,41)SyntaxKind[QuestionToken]
                 (159,43)SyntaxKind[SymbolSpan]
-                  (159,43)SyntaxKind[Terminal](text = ")")
+                  (159,43)SyntaxKind[Terminal]
+                    (159,43)SyntaxKind[TerminalLiteral](text = ")")
                   (159,47)SyntaxKind[SymbolSpan]
                     (159,47)SyntaxKind[Nonterminal]?
                       (159,47)SyntaxKind[Identifier](text = "TypeAnnotation")
@@ -718,31 +774,39 @@
     (162,2)SyntaxKind[RightHandSideList]
       (162,2)SyntaxKind[RightHandSide]
         (162,2)SyntaxKind[SymbolSpan]
-          (162,2)SyntaxKind[Terminal](text = "[")
+          (162,2)SyntaxKind[Terminal]
+            (162,2)SyntaxKind[TerminalLiteral](text = "[")
           (162,6)SyntaxKind[SymbolSpan]
             (162,6)SyntaxKind[Nonterminal]
               (162,6)SyntaxKind[Identifier](text = "Identifier")
             (162,17)SyntaxKind[SymbolSpan]
-              (162,17)SyntaxKind[Terminal](text = ":")
+              (162,17)SyntaxKind[Terminal]
+                (162,17)SyntaxKind[TerminalLiteral](text = ":")
               (162,21)SyntaxKind[SymbolSpan]
-                (162,21)SyntaxKind[Terminal](text = "string")
+                (162,21)SyntaxKind[Terminal]
+                  (162,21)SyntaxKind[TerminalLiteral](text = "string")
                 (162,30)SyntaxKind[SymbolSpan]
-                  (162,30)SyntaxKind[Terminal](text = "]")
+                  (162,30)SyntaxKind[Terminal]
+                    (162,30)SyntaxKind[TerminalLiteral](text = "]")
                   (162,34)SyntaxKind[SymbolSpan]
                     (162,34)SyntaxKind[Nonterminal]
                       (162,34)SyntaxKind[Identifier](text = "TypeAnnotation")
       (163,2)SyntaxKind[RightHandSide]
         (163,2)SyntaxKind[SymbolSpan]
-          (163,2)SyntaxKind[Terminal](text = "[")
+          (163,2)SyntaxKind[Terminal]
+            (163,2)SyntaxKind[TerminalLiteral](text = "[")
           (163,6)SyntaxKind[SymbolSpan]
             (163,6)SyntaxKind[Nonterminal]
               (163,6)SyntaxKind[Identifier](text = "Identifier")
             (163,17)SyntaxKind[SymbolSpan]
-              (163,17)SyntaxKind[Terminal](text = ":")
+              (163,17)SyntaxKind[Terminal]
+                (163,17)SyntaxKind[TerminalLiteral](text = ":")
               (163,21)SyntaxKind[SymbolSpan]
-                (163,21)SyntaxKind[Terminal](text = "number")
+                (163,21)SyntaxKind[Terminal]
+                  (163,21)SyntaxKind[TerminalLiteral](text = "number")
                 (163,30)SyntaxKind[SymbolSpan]
-                  (163,30)SyntaxKind[Terminal](text = "]")
+                  (163,30)SyntaxKind[Terminal]
+                    (163,30)SyntaxKind[TerminalLiteral](text = "]")
                   (163,34)SyntaxKind[SymbolSpan]
                     (163,34)SyntaxKind[Nonterminal]
                       (163,34)SyntaxKind[Identifier](text = "TypeAnnotation")
@@ -755,7 +819,8 @@
           (166,2)SyntaxKind[Nonterminal]
             (166,2)SyntaxKind[Identifier](text = "PropertyName")
           (166,15)SyntaxKind[SymbolSpan]
-            (166,15)SyntaxKind[Terminal](text = "?")?
+            (166,15)SyntaxKind[Terminal]?
+              (166,15)SyntaxKind[TerminalLiteral](text = "?")
               (166,18)SyntaxKind[QuestionToken]
             (166,20)SyntaxKind[SymbolSpan]
               (166,20)SyntaxKind[Nonterminal]
@@ -766,17 +831,20 @@
     (169,2)SyntaxKind[RightHandSideList]
       (169,2)SyntaxKind[RightHandSide]
         (169,2)SyntaxKind[SymbolSpan]
-          (169,2)SyntaxKind[Terminal](text = "type")
+          (169,2)SyntaxKind[Terminal]
+            (169,2)SyntaxKind[TerminalLiteral](text = "type")
           (169,9)SyntaxKind[SymbolSpan]
             (169,9)SyntaxKind[Nonterminal]
               (169,9)SyntaxKind[Identifier](text = "Identifier")
             (169,20)SyntaxKind[SymbolSpan]
-              (169,20)SyntaxKind[Terminal](text = "=")
+              (169,20)SyntaxKind[Terminal]
+                (169,20)SyntaxKind[TerminalLiteral](text = "=")
               (169,24)SyntaxKind[SymbolSpan]
                 (169,24)SyntaxKind[Nonterminal]
                   (169,24)SyntaxKind[Identifier](text = "Type")
                 (169,29)SyntaxKind[SymbolSpan]
-                  (169,29)SyntaxKind[Terminal](text = ";")
+                  (169,29)SyntaxKind[Terminal]
+                    (169,29)SyntaxKind[TerminalLiteral](text = ";")
   (173,1)SyntaxKind[Production]
     (173,1)SyntaxKind[Identifier](text = "PropertyAssignment")
     (173,20)SyntaxKind[ColonToken]
@@ -786,7 +854,8 @@
           (174,2)SyntaxKind[Nonterminal]
             (174,2)SyntaxKind[Identifier](text = "PropertyName")
           (174,15)SyntaxKind[SymbolSpan]
-            (174,15)SyntaxKind[Terminal](text = ":")
+            (174,15)SyntaxKind[Terminal]
+              (174,15)SyntaxKind[TerminalLiteral](text = ":")
             (174,19)SyntaxKind[SymbolSpan]
               (174,19)SyntaxKind[Nonterminal]
                 (174,19)SyntaxKind[Identifier](text = "AssignmentExpression")
@@ -798,12 +867,14 @@
             (175,15)SyntaxKind[Nonterminal]
               (175,15)SyntaxKind[Identifier](text = "CallSignature")
             (175,29)SyntaxKind[SymbolSpan]
-              (175,29)SyntaxKind[Terminal](text = "{")
+              (175,29)SyntaxKind[Terminal]
+                (175,29)SyntaxKind[TerminalLiteral](text = "{")
               (175,33)SyntaxKind[SymbolSpan]
                 (175,33)SyntaxKind[Nonterminal]
                   (175,33)SyntaxKind[Identifier](text = "FunctionBody")
                 (175,46)SyntaxKind[SymbolSpan]
-                  (175,46)SyntaxKind[Terminal](text = "}")
+                  (175,46)SyntaxKind[Terminal]
+                    (175,46)SyntaxKind[TerminalLiteral](text = "}")
       (176,2)SyntaxKind[RightHandSide]
         (176,2)SyntaxKind[SymbolSpan]
           (176,2)SyntaxKind[Nonterminal]
@@ -818,37 +889,44 @@
     (180,2)SyntaxKind[RightHandSideList]
       (180,2)SyntaxKind[RightHandSide]
         (180,2)SyntaxKind[SymbolSpan]
-          (180,2)SyntaxKind[Terminal](text = "get")
+          (180,2)SyntaxKind[Terminal]
+            (180,2)SyntaxKind[TerminalLiteral](text = "get")
           (180,8)SyntaxKind[SymbolSpan]
             (180,8)SyntaxKind[Nonterminal]
               (180,8)SyntaxKind[Identifier](text = "PropertyName")
             (180,21)SyntaxKind[SymbolSpan]
-              (180,21)SyntaxKind[Terminal](text = "(")
+              (180,21)SyntaxKind[Terminal]
+                (180,21)SyntaxKind[TerminalLiteral](text = "(")
               (180,25)SyntaxKind[SymbolSpan]
-                (180,25)SyntaxKind[Terminal](text = ")")
+                (180,25)SyntaxKind[Terminal]
+                  (180,25)SyntaxKind[TerminalLiteral](text = ")")
                 (180,29)SyntaxKind[SymbolSpan]
                   (180,29)SyntaxKind[Nonterminal]?
                     (180,29)SyntaxKind[Identifier](text = "TypeAnnotation")
                     (180,43)SyntaxKind[QuestionToken]
                   (180,45)SyntaxKind[SymbolSpan]
-                    (180,45)SyntaxKind[Terminal](text = "{")
+                    (180,45)SyntaxKind[Terminal]
+                      (180,45)SyntaxKind[TerminalLiteral](text = "{")
                     (180,49)SyntaxKind[SymbolSpan]
                       (180,49)SyntaxKind[Nonterminal]
                         (180,49)SyntaxKind[Identifier](text = "FunctionBody")
                       (180,62)SyntaxKind[SymbolSpan]
-                        (180,62)SyntaxKind[Terminal](text = "}")
+                        (180,62)SyntaxKind[Terminal]
+                          (180,62)SyntaxKind[TerminalLiteral](text = "}")
   (182,1)SyntaxKind[Production]
     (182,1)SyntaxKind[Identifier](text = "SetAccessor")
     (182,12)SyntaxKind[ColonToken]
     (183,2)SyntaxKind[RightHandSideList]
       (183,2)SyntaxKind[RightHandSide]
         (183,2)SyntaxKind[SymbolSpan]
-          (183,2)SyntaxKind[Terminal](text = "set")
+          (183,2)SyntaxKind[Terminal]
+            (183,2)SyntaxKind[TerminalLiteral](text = "set")
           (183,8)SyntaxKind[SymbolSpan]
             (183,8)SyntaxKind[Nonterminal]
               (183,8)SyntaxKind[Identifier](text = "PropertyName")
             (183,21)SyntaxKind[SymbolSpan]
-              (183,21)SyntaxKind[Terminal](text = "(")
+              (183,21)SyntaxKind[Terminal]
+                (183,21)SyntaxKind[TerminalLiteral](text = "(")
               (183,25)SyntaxKind[SymbolSpan]
                 (183,25)SyntaxKind[Nonterminal]
                   (183,25)SyntaxKind[Identifier](text = "Identifier")
@@ -857,14 +935,17 @@
                     (183,36)SyntaxKind[Identifier](text = "TypeAnnotation")
                     (183,50)SyntaxKind[QuestionToken]
                   (183,52)SyntaxKind[SymbolSpan]
-                    (183,52)SyntaxKind[Terminal](text = ")")
+                    (183,52)SyntaxKind[Terminal]
+                      (183,52)SyntaxKind[TerminalLiteral](text = ")")
                     (183,56)SyntaxKind[SymbolSpan]
-                      (183,56)SyntaxKind[Terminal](text = "{")
+                      (183,56)SyntaxKind[Terminal]
+                        (183,56)SyntaxKind[TerminalLiteral](text = "{")
                       (183,60)SyntaxKind[SymbolSpan]
                         (183,60)SyntaxKind[Nonterminal]
                           (183,60)SyntaxKind[Identifier](text = "FunctionBody")
                         (183,73)SyntaxKind[SymbolSpan]
-                          (183,73)SyntaxKind[Terminal](text = "}")
+                          (183,73)SyntaxKind[Terminal]
+                            (183,73)SyntaxKind[TerminalLiteral](text = "}")
   (185,1)SyntaxKind[Production]
     (185,1)SyntaxKind[Identifier](text = "ElementList")
     (185,13)SyntaxKind[ColonToken]
@@ -890,7 +971,8 @@
           (188,2)SyntaxKind[Nonterminal]
             (188,2)SyntaxKind[Identifier](text = "ElementList")
           (188,14)SyntaxKind[SymbolSpan]
-            (188,14)SyntaxKind[Terminal](text = ",")
+            (188,14)SyntaxKind[Terminal]
+              (188,14)SyntaxKind[TerminalLiteral](text = ",")
             (188,18)SyntaxKind[SymbolSpan]
               (188,18)SyntaxKind[Nonterminal]?
                 (188,18)SyntaxKind[Identifier](text = "Elision")
@@ -903,7 +985,8 @@
           (189,2)SyntaxKind[Nonterminal]
             (189,2)SyntaxKind[Identifier](text = "ElementList")
           (189,14)SyntaxKind[SymbolSpan]
-            (189,14)SyntaxKind[Terminal](text = ",")
+            (189,14)SyntaxKind[Terminal]
+              (189,14)SyntaxKind[TerminalLiteral](text = ",")
             (189,18)SyntaxKind[SymbolSpan]
               (189,18)SyntaxKind[Nonterminal]?
                 (189,18)SyntaxKind[Identifier](text = "Elision")
@@ -917,7 +1000,8 @@
     (192,2)SyntaxKind[RightHandSideList]
       (192,2)SyntaxKind[RightHandSide]
         (192,2)SyntaxKind[SymbolSpan]
-          (192,2)SyntaxKind[Terminal](text = "...")
+          (192,2)SyntaxKind[Terminal]
+            (192,2)SyntaxKind[TerminalLiteral](text = "...")
           (192,8)SyntaxKind[SymbolSpan]
             (192,8)SyntaxKind[Nonterminal]
               (192,8)SyntaxKind[Identifier](text = "AssignmentExpression")
@@ -927,20 +1011,25 @@
     (195,2)SyntaxKind[RightHandSideList]
       (195,2)SyntaxKind[RightHandSide]
         (195,2)SyntaxKind[SymbolSpan]
-          (195,2)SyntaxKind[Terminal](text = "super")
+          (195,2)SyntaxKind[Terminal]
+            (195,2)SyntaxKind[TerminalLiteral](text = "super")
           (195,10)SyntaxKind[SymbolSpan]
-            (195,10)SyntaxKind[Terminal](text = "(")
+            (195,10)SyntaxKind[Terminal]
+              (195,10)SyntaxKind[TerminalLiteral](text = "(")
             (195,14)SyntaxKind[SymbolSpan]
               (195,14)SyntaxKind[Nonterminal]?
                 (195,14)SyntaxKind[Identifier](text = "ArgumentList")
                 (195,26)SyntaxKind[QuestionToken]
               (195,28)SyntaxKind[SymbolSpan]
-                (195,28)SyntaxKind[Terminal](text = ")")
+                (195,28)SyntaxKind[Terminal]
+                  (195,28)SyntaxKind[TerminalLiteral](text = ")")
       (196,2)SyntaxKind[RightHandSide]
         (196,2)SyntaxKind[SymbolSpan]
-          (196,2)SyntaxKind[Terminal](text = "super")
+          (196,2)SyntaxKind[Terminal]
+            (196,2)SyntaxKind[TerminalLiteral](text = "super")
           (196,10)SyntaxKind[SymbolSpan]
-            (196,10)SyntaxKind[Terminal](text = ".")
+            (196,10)SyntaxKind[Terminal]
+              (196,10)SyntaxKind[TerminalLiteral](text = ".")
             (196,14)SyntaxKind[SymbolSpan]
               (196,14)SyntaxKind[Nonterminal]
                 (196,14)SyntaxKind[Identifier](text = "IdentifierName")
@@ -950,7 +1039,8 @@
     (199,2)SyntaxKind[RightHandSideList]
       (199,2)SyntaxKind[RightHandSide]
         (199,2)SyntaxKind[SymbolSpan]
-          (199,2)SyntaxKind[Terminal](text = "function")
+          (199,2)SyntaxKind[Terminal]
+            (199,2)SyntaxKind[TerminalLiteral](text = "function")
           (199,13)SyntaxKind[SymbolSpan]
             (199,13)SyntaxKind[Nonterminal]?
               (199,13)SyntaxKind[Identifier](text = "Identifier")
@@ -959,12 +1049,14 @@
               (199,25)SyntaxKind[Nonterminal]
                 (199,25)SyntaxKind[Identifier](text = "CallSignature")
               (199,39)SyntaxKind[SymbolSpan]
-                (199,39)SyntaxKind[Terminal](text = "{")
+                (199,39)SyntaxKind[Terminal]
+                  (199,39)SyntaxKind[TerminalLiteral](text = "{")
                 (199,43)SyntaxKind[SymbolSpan]
                   (199,43)SyntaxKind[Nonterminal]
                     (199,43)SyntaxKind[Identifier](text = "FunctionBody")
                   (199,56)SyntaxKind[SymbolSpan]
-                    (199,56)SyntaxKind[Terminal](text = "}")
+                    (199,56)SyntaxKind[Terminal]
+                      (199,56)SyntaxKind[TerminalLiteral](text = "}")
   (201,1)SyntaxKind[Production]
     (201,1)SyntaxKind[Identifier](text = "AssignmentExpression")
     (201,22)SyntaxKind[ColonToken]
@@ -982,7 +1074,8 @@
           (205,2)SyntaxKind[Nonterminal]
             (205,2)SyntaxKind[Identifier](text = "ArrowFormalParameters")
           (205,24)SyntaxKind[SymbolSpan]
-            (205,24)SyntaxKind[Terminal](text = "=>")
+            (205,24)SyntaxKind[Terminal]
+              (205,24)SyntaxKind[TerminalLiteral](text = "=>")
             (205,29)SyntaxKind[SymbolSpan]
               (205,29)SyntaxKind[Nonterminal]
                 (205,29)SyntaxKind[Identifier](text = "Block")
@@ -991,7 +1084,8 @@
           (206,2)SyntaxKind[Nonterminal]
             (206,2)SyntaxKind[Identifier](text = "ArrowFormalParameters")
           (206,24)SyntaxKind[SymbolSpan]
-            (206,24)SyntaxKind[Terminal](text = "=>")
+            (206,24)SyntaxKind[Terminal]
+              (206,24)SyntaxKind[TerminalLiteral](text = "=>")
             (206,29)SyntaxKind[SymbolSpan]
               (206,29)SyntaxKind[Nonterminal]
                 (206,29)SyntaxKind[Identifier](text = "AssignmentExpression")
@@ -1017,25 +1111,29 @@
             (213,2)SyntaxKind[Identifier](text = "TypeArguments")
             (213,15)SyntaxKind[QuestionToken]
           (213,17)SyntaxKind[SymbolSpan]
-            (213,17)SyntaxKind[Terminal](text = "(")
+            (213,17)SyntaxKind[Terminal]
+              (213,17)SyntaxKind[TerminalLiteral](text = "(")
             (213,21)SyntaxKind[SymbolSpan]
               (213,21)SyntaxKind[Nonterminal]?
                 (213,21)SyntaxKind[Identifier](text = "ArgumentList")
                 (213,33)SyntaxKind[QuestionToken]
               (213,35)SyntaxKind[SymbolSpan]
-                (213,35)SyntaxKind[Terminal](text = ")")
+                (213,35)SyntaxKind[Terminal]
+                  (213,35)SyntaxKind[TerminalLiteral](text = ")")
   (215,1)SyntaxKind[Production]
     (215,1)SyntaxKind[Identifier](text = "UnaryExpression")
     (215,17)SyntaxKind[ColonToken]
     (216,2)SyntaxKind[RightHandSideList]
       (216,2)SyntaxKind[RightHandSide]
         (216,2)SyntaxKind[SymbolSpan]
-          (216,2)SyntaxKind[Terminal](text = "<")
+          (216,2)SyntaxKind[Terminal]
+            (216,2)SyntaxKind[TerminalLiteral](text = "<")
           (216,6)SyntaxKind[SymbolSpan]
             (216,6)SyntaxKind[Nonterminal]
               (216,6)SyntaxKind[Identifier](text = "Type")
             (216,11)SyntaxKind[SymbolSpan]
-              (216,11)SyntaxKind[Terminal](text = ">")
+              (216,11)SyntaxKind[Terminal]
+                (216,11)SyntaxKind[TerminalLiteral](text = ">")
               (216,15)SyntaxKind[SymbolSpan]
                 (216,15)SyntaxKind[Nonterminal]
                   (216,15)SyntaxKind[Identifier](text = "UnaryExpression")
@@ -1073,7 +1171,8 @@
     (228,2)SyntaxKind[RightHandSideList]
       (228,2)SyntaxKind[RightHandSide]
         (228,2)SyntaxKind[SymbolSpan]
-          (228,2)SyntaxKind[Terminal](text = ":")
+          (228,2)SyntaxKind[Terminal]
+            (228,2)SyntaxKind[TerminalLiteral](text = ":")
           (228,6)SyntaxKind[SymbolSpan]
             (228,6)SyntaxKind[Nonterminal]
               (228,6)SyntaxKind[Identifier](text = "Type")
@@ -1110,20 +1209,25 @@
     (238,2)SyntaxKind[RightHandSideList]
       (238,2)SyntaxKind[RightHandSide]
         (238,2)SyntaxKind[SymbolSpan]
-          (238,2)SyntaxKind[Terminal](text = "{")
+          (238,2)SyntaxKind[Terminal]
+            (238,2)SyntaxKind[TerminalLiteral](text = "{")
           (238,6)SyntaxKind[SymbolSpan]
-            (238,6)SyntaxKind[Terminal](text = "}")
+            (238,6)SyntaxKind[Terminal]
+              (238,6)SyntaxKind[TerminalLiteral](text = "}")
       (239,2)SyntaxKind[RightHandSide]
         (239,2)SyntaxKind[SymbolSpan]
-          (239,2)SyntaxKind[Terminal](text = "{")
+          (239,2)SyntaxKind[Terminal]
+            (239,2)SyntaxKind[TerminalLiteral](text = "{")
           (239,6)SyntaxKind[SymbolSpan]
             (239,6)SyntaxKind[Nonterminal]
               (239,6)SyntaxKind[Identifier](text = "BindingPropertyList")
             (239,26)SyntaxKind[SymbolSpan]
-              (239,26)SyntaxKind[Terminal](text = ",")?
+              (239,26)SyntaxKind[Terminal]?
+                (239,26)SyntaxKind[TerminalLiteral](text = ",")
                 (239,29)SyntaxKind[QuestionToken]
               (239,31)SyntaxKind[SymbolSpan]
-                (239,31)SyntaxKind[Terminal](text = "}")
+                (239,31)SyntaxKind[Terminal]
+                  (239,31)SyntaxKind[TerminalLiteral](text = "}")
   (241,1)SyntaxKind[Production]
     (241,1)SyntaxKind[Identifier](text = "BindingPropertyList")
     (241,21)SyntaxKind[ColonToken]
@@ -1137,7 +1241,8 @@
           (243,2)SyntaxKind[Nonterminal]
             (243,2)SyntaxKind[Identifier](text = "BindingPropertyList")
           (243,22)SyntaxKind[SymbolSpan]
-            (243,22)SyntaxKind[Terminal](text = ",")
+            (243,22)SyntaxKind[Terminal]
+              (243,22)SyntaxKind[TerminalLiteral](text = ",")
             (243,26)SyntaxKind[SymbolSpan]
               (243,26)SyntaxKind[Nonterminal]
                 (243,26)SyntaxKind[Identifier](text = "BindingProperty")
@@ -1158,7 +1263,8 @@
           (247,2)SyntaxKind[Nonterminal]
             (247,2)SyntaxKind[Identifier](text = "PropertyName")
           (247,15)SyntaxKind[SymbolSpan]
-            (247,15)SyntaxKind[Terminal](text = ":")
+            (247,15)SyntaxKind[Terminal]
+              (247,15)SyntaxKind[TerminalLiteral](text = ":")
             (247,19)SyntaxKind[SymbolSpan]
               (247,19)SyntaxKind[Nonterminal]
                 (247,19)SyntaxKind[Identifier](text = "Identifier")
@@ -1171,7 +1277,8 @@
           (248,2)SyntaxKind[Nonterminal]
             (248,2)SyntaxKind[Identifier](text = "PropertyName")
           (248,15)SyntaxKind[SymbolSpan]
-            (248,15)SyntaxKind[Terminal](text = ":")
+            (248,15)SyntaxKind[Terminal]
+              (248,15)SyntaxKind[TerminalLiteral](text = ":")
             (248,19)SyntaxKind[SymbolSpan]
               (248,19)SyntaxKind[Nonterminal]
                 (248,19)SyntaxKind[Identifier](text = "BindingPattern")
@@ -1185,7 +1292,8 @@
     (251,2)SyntaxKind[RightHandSideList]
       (251,2)SyntaxKind[RightHandSide]
         (251,2)SyntaxKind[SymbolSpan]
-          (251,2)SyntaxKind[Terminal](text = "[")
+          (251,2)SyntaxKind[Terminal]
+            (251,2)SyntaxKind[TerminalLiteral](text = "[")
           (251,6)SyntaxKind[SymbolSpan]
             (251,6)SyntaxKind[Nonterminal]?
               (251,6)SyntaxKind[Identifier](text = "Elision")
@@ -1195,23 +1303,28 @@
                 (251,15)SyntaxKind[Identifier](text = "BindingRestElement")
                 (251,33)SyntaxKind[QuestionToken]
               (251,35)SyntaxKind[SymbolSpan]
-                (251,35)SyntaxKind[Terminal](text = "]")
+                (251,35)SyntaxKind[Terminal]
+                  (251,35)SyntaxKind[TerminalLiteral](text = "]")
       (252,2)SyntaxKind[RightHandSide]
         (252,2)SyntaxKind[SymbolSpan]
-          (252,2)SyntaxKind[Terminal](text = "[")
+          (252,2)SyntaxKind[Terminal]
+            (252,2)SyntaxKind[TerminalLiteral](text = "[")
           (252,6)SyntaxKind[SymbolSpan]
             (252,6)SyntaxKind[Nonterminal]
               (252,6)SyntaxKind[Identifier](text = "BindingElementList")
             (252,25)SyntaxKind[SymbolSpan]
-              (252,25)SyntaxKind[Terminal](text = "]")
+              (252,25)SyntaxKind[Terminal]
+                (252,25)SyntaxKind[TerminalLiteral](text = "]")
       (253,2)SyntaxKind[RightHandSide]
         (253,2)SyntaxKind[SymbolSpan]
-          (253,2)SyntaxKind[Terminal](text = "[")
+          (253,2)SyntaxKind[Terminal]
+            (253,2)SyntaxKind[TerminalLiteral](text = "[")
           (253,6)SyntaxKind[SymbolSpan]
             (253,6)SyntaxKind[Nonterminal]
               (253,6)SyntaxKind[Identifier](text = "BindingElementList")
             (253,25)SyntaxKind[SymbolSpan]
-              (253,25)SyntaxKind[Terminal](text = ",")
+              (253,25)SyntaxKind[Terminal]
+                (253,25)SyntaxKind[TerminalLiteral](text = ",")
               (253,29)SyntaxKind[SymbolSpan]
                 (253,29)SyntaxKind[Nonterminal]?
                   (253,29)SyntaxKind[Identifier](text = "Elision")
@@ -1221,7 +1334,8 @@
                     (253,38)SyntaxKind[Identifier](text = "BindingRestElement")
                     (253,56)SyntaxKind[QuestionToken]
                   (253,58)SyntaxKind[SymbolSpan]
-                    (253,58)SyntaxKind[Terminal](text = "]")
+                    (253,58)SyntaxKind[Terminal]
+                      (253,58)SyntaxKind[TerminalLiteral](text = "]")
   (255,1)SyntaxKind[Production]
     (255,1)SyntaxKind[Identifier](text = "BindingElementList")
     (255,20)SyntaxKind[ColonToken]
@@ -1239,7 +1353,8 @@
           (257,2)SyntaxKind[Nonterminal]
             (257,2)SyntaxKind[Identifier](text = "BindingElementList")
           (257,21)SyntaxKind[SymbolSpan]
-            (257,21)SyntaxKind[Terminal](text = ",")
+            (257,21)SyntaxKind[Terminal]
+              (257,21)SyntaxKind[TerminalLiteral](text = ",")
             (257,25)SyntaxKind[SymbolSpan]
               (257,25)SyntaxKind[Nonterminal]?
                 (257,25)SyntaxKind[Identifier](text = "Elision")
@@ -1273,7 +1388,8 @@
     (264,2)SyntaxKind[RightHandSideList]
       (264,2)SyntaxKind[RightHandSide]
         (264,2)SyntaxKind[SymbolSpan]
-          (264,2)SyntaxKind[Terminal](text = "...")
+          (264,2)SyntaxKind[Terminal]
+            (264,2)SyntaxKind[TerminalLiteral](text = "...")
           (264,8)SyntaxKind[SymbolSpan]
             (264,8)SyntaxKind[Nonterminal]
               (264,8)SyntaxKind[Identifier](text = "Identifier")
@@ -1310,7 +1426,8 @@
     (275,2)SyntaxKind[RightHandSideList]
       (275,2)SyntaxKind[RightHandSide]
         (275,2)SyntaxKind[SymbolSpan]
-          (275,2)SyntaxKind[Terminal](text = "function")
+          (275,2)SyntaxKind[Terminal]
+            (275,2)SyntaxKind[TerminalLiteral](text = "function")
           (275,13)SyntaxKind[SymbolSpan]
             (275,13)SyntaxKind[Nonterminal]
               (275,13)SyntaxKind[Identifier](text = "Identifier")
@@ -1318,14 +1435,16 @@
               (275,24)SyntaxKind[Nonterminal]
                 (275,24)SyntaxKind[Identifier](text = "CallSignature")
               (275,38)SyntaxKind[SymbolSpan]
-                (275,38)SyntaxKind[Terminal](text = ";")
+                (275,38)SyntaxKind[Terminal]
+                  (275,38)SyntaxKind[TerminalLiteral](text = ";")
   (277,1)SyntaxKind[Production]
     (277,1)SyntaxKind[Identifier](text = "FunctionImplementation")
     (277,24)SyntaxKind[ColonToken]
     (278,2)SyntaxKind[RightHandSideList]
       (278,2)SyntaxKind[RightHandSide]
         (278,2)SyntaxKind[SymbolSpan]
-          (278,2)SyntaxKind[Terminal](text = "function")
+          (278,2)SyntaxKind[Terminal]
+            (278,2)SyntaxKind[TerminalLiteral](text = "function")
           (278,13)SyntaxKind[SymbolSpan]
             (278,13)SyntaxKind[Nonterminal]
               (278,13)SyntaxKind[Identifier](text = "Identifier")
@@ -1333,19 +1452,22 @@
               (278,24)SyntaxKind[Nonterminal]
                 (278,24)SyntaxKind[Identifier](text = "CallSignature")
               (278,38)SyntaxKind[SymbolSpan]
-                (278,38)SyntaxKind[Terminal](text = "{")
+                (278,38)SyntaxKind[Terminal]
+                  (278,38)SyntaxKind[TerminalLiteral](text = "{")
                 (278,42)SyntaxKind[SymbolSpan]
                   (278,42)SyntaxKind[Nonterminal]
                     (278,42)SyntaxKind[Identifier](text = "FunctionBody")
                   (278,55)SyntaxKind[SymbolSpan]
-                    (278,55)SyntaxKind[Terminal](text = "}")
+                    (278,55)SyntaxKind[Terminal]
+                      (278,55)SyntaxKind[TerminalLiteral](text = "}")
   (281,1)SyntaxKind[Production]
     (281,1)SyntaxKind[Identifier](text = "InterfaceDeclaration")
     (281,22)SyntaxKind[ColonToken]
     (282,2)SyntaxKind[RightHandSideList]
       (282,2)SyntaxKind[RightHandSide]
         (282,2)SyntaxKind[SymbolSpan]
-          (282,2)SyntaxKind[Terminal](text = "interface")
+          (282,2)SyntaxKind[Terminal]
+            (282,2)SyntaxKind[TerminalLiteral](text = "interface")
           (282,14)SyntaxKind[SymbolSpan]
             (282,14)SyntaxKind[Nonterminal]
               (282,14)SyntaxKind[Identifier](text = "Identifier")
@@ -1366,7 +1488,8 @@
     (285,2)SyntaxKind[RightHandSideList]
       (285,2)SyntaxKind[RightHandSide]
         (285,2)SyntaxKind[SymbolSpan]
-          (285,2)SyntaxKind[Terminal](text = "extends")
+          (285,2)SyntaxKind[Terminal]
+            (285,2)SyntaxKind[TerminalLiteral](text = "extends")
           (285,12)SyntaxKind[SymbolSpan]
             (285,12)SyntaxKind[Nonterminal]
               (285,12)SyntaxKind[Identifier](text = "ClassOrInterfaceTypeList")
@@ -1383,7 +1506,8 @@
           (289,2)SyntaxKind[Nonterminal]
             (289,2)SyntaxKind[Identifier](text = "ClassOrInterfaceTypeList")
           (289,27)SyntaxKind[SymbolSpan]
-            (289,27)SyntaxKind[Terminal](text = ",")
+            (289,27)SyntaxKind[Terminal]
+              (289,27)SyntaxKind[TerminalLiteral](text = ",")
             (289,31)SyntaxKind[SymbolSpan]
               (289,31)SyntaxKind[Nonterminal]
                 (289,31)SyntaxKind[Identifier](text = "ClassOrInterfaceType")
@@ -1401,7 +1525,8 @@
     (296,2)SyntaxKind[RightHandSideList]
       (296,2)SyntaxKind[RightHandSide]
         (296,2)SyntaxKind[SymbolSpan]
-          (296,2)SyntaxKind[Terminal](text = "class")
+          (296,2)SyntaxKind[Terminal]
+            (296,2)SyntaxKind[TerminalLiteral](text = "class")
           (296,10)SyntaxKind[SymbolSpan]
             (296,10)SyntaxKind[Nonterminal]
               (296,10)SyntaxKind[Identifier](text = "Identifier")
@@ -1413,12 +1538,14 @@
                 (296,37)SyntaxKind[Nonterminal]
                   (296,37)SyntaxKind[Identifier](text = "ClassHeritage")
                 (296,51)SyntaxKind[SymbolSpan]
-                  (296,51)SyntaxKind[Terminal](text = "{")
+                  (296,51)SyntaxKind[Terminal]
+                    (296,51)SyntaxKind[TerminalLiteral](text = "{")
                   (296,55)SyntaxKind[SymbolSpan]
                     (296,55)SyntaxKind[Nonterminal]
                       (296,55)SyntaxKind[Identifier](text = "ClassBody")
                     (296,65)SyntaxKind[SymbolSpan]
-                      (296,65)SyntaxKind[Terminal](text = "}")
+                      (296,65)SyntaxKind[Terminal]
+                        (296,65)SyntaxKind[TerminalLiteral](text = "}")
   (298,1)SyntaxKind[Production]
     (298,1)SyntaxKind[Identifier](text = "ClassHeritage")
     (298,15)SyntaxKind[ColonToken]
@@ -1438,7 +1565,8 @@
     (302,2)SyntaxKind[RightHandSideList]
       (302,2)SyntaxKind[RightHandSide]
         (302,2)SyntaxKind[SymbolSpan]
-          (302,2)SyntaxKind[Terminal](text = "extends")
+          (302,2)SyntaxKind[Terminal]
+            (302,2)SyntaxKind[TerminalLiteral](text = "extends")
           (302,12)SyntaxKind[SymbolSpan]
             (302,12)SyntaxKind[Nonterminal]
               (302,12)SyntaxKind[Identifier](text = "ClassType")
@@ -1456,7 +1584,8 @@
     (308,2)SyntaxKind[RightHandSideList]
       (308,2)SyntaxKind[RightHandSide]
         (308,2)SyntaxKind[SymbolSpan]
-          (308,2)SyntaxKind[Terminal](text = "implements")
+          (308,2)SyntaxKind[Terminal]
+            (308,2)SyntaxKind[TerminalLiteral](text = "implements")
           (308,15)SyntaxKind[SymbolSpan]
             (308,15)SyntaxKind[Nonterminal]
               (308,15)SyntaxKind[Identifier](text = "ClassOrInterfaceTypeList")
@@ -1537,17 +1666,21 @@
             (330,2)SyntaxKind[Identifier](text = "AccessibilityModifier")
             (330,23)SyntaxKind[QuestionToken]
           (330,25)SyntaxKind[SymbolSpan]
-            (330,25)SyntaxKind[Terminal](text = "constructor")
+            (330,25)SyntaxKind[Terminal]
+              (330,25)SyntaxKind[TerminalLiteral](text = "constructor")
             (330,39)SyntaxKind[SymbolSpan]
-              (330,39)SyntaxKind[Terminal](text = "(")
+              (330,39)SyntaxKind[Terminal]
+                (330,39)SyntaxKind[TerminalLiteral](text = "(")
               (330,43)SyntaxKind[SymbolSpan]
                 (330,43)SyntaxKind[Nonterminal]?
                   (330,43)SyntaxKind[Identifier](text = "ParameterList")
                   (330,56)SyntaxKind[QuestionToken]
                 (330,58)SyntaxKind[SymbolSpan]
-                  (330,58)SyntaxKind[Terminal](text = ")")
+                  (330,58)SyntaxKind[Terminal]
+                    (330,58)SyntaxKind[TerminalLiteral](text = ")")
                   (330,62)SyntaxKind[SymbolSpan]
-                    (330,62)SyntaxKind[Terminal](text = ";")
+                    (330,62)SyntaxKind[Terminal]
+                      (330,62)SyntaxKind[TerminalLiteral](text = ";")
   (332,1)SyntaxKind[Production]
     (332,1)SyntaxKind[Identifier](text = "ConstructorImplementation")
     (332,27)SyntaxKind[ColonToken]
@@ -1558,22 +1691,27 @@
             (333,2)SyntaxKind[Identifier](text = "AccessibilityModifier")
             (333,23)SyntaxKind[QuestionToken]
           (333,25)SyntaxKind[SymbolSpan]
-            (333,25)SyntaxKind[Terminal](text = "constructor")
+            (333,25)SyntaxKind[Terminal]
+              (333,25)SyntaxKind[TerminalLiteral](text = "constructor")
             (333,39)SyntaxKind[SymbolSpan]
-              (333,39)SyntaxKind[Terminal](text = "(")
+              (333,39)SyntaxKind[Terminal]
+                (333,39)SyntaxKind[TerminalLiteral](text = "(")
               (333,43)SyntaxKind[SymbolSpan]
                 (333,43)SyntaxKind[Nonterminal]?
                   (333,43)SyntaxKind[Identifier](text = "ParameterList")
                   (333,56)SyntaxKind[QuestionToken]
                 (333,58)SyntaxKind[SymbolSpan]
-                  (333,58)SyntaxKind[Terminal](text = ")")
+                  (333,58)SyntaxKind[Terminal]
+                    (333,58)SyntaxKind[TerminalLiteral](text = ")")
                   (333,62)SyntaxKind[SymbolSpan]
-                    (333,62)SyntaxKind[Terminal](text = "{")
+                    (333,62)SyntaxKind[Terminal]
+                      (333,62)SyntaxKind[TerminalLiteral](text = "{")
                     (333,66)SyntaxKind[SymbolSpan]
                       (333,66)SyntaxKind[Nonterminal]
                         (333,66)SyntaxKind[Identifier](text = "FunctionBody")
                       (333,79)SyntaxKind[SymbolSpan]
-                        (333,79)SyntaxKind[Terminal](text = "}")
+                        (333,79)SyntaxKind[Terminal]
+                          (333,79)SyntaxKind[TerminalLiteral](text = "}")
   (335,1)SyntaxKind[Production]
     (335,1)SyntaxKind[Identifier](text = "PropertyMemberDeclaration")
     (335,27)SyntaxKind[ColonToken]
@@ -1600,7 +1738,8 @@
             (341,2)SyntaxKind[Identifier](text = "AccessibilityModifier")
             (341,23)SyntaxKind[QuestionToken]
           (341,25)SyntaxKind[SymbolSpan]
-            (341,25)SyntaxKind[Terminal](text = "static")?
+            (341,25)SyntaxKind[Terminal]?
+              (341,25)SyntaxKind[TerminalLiteral](text = "static")
               (341,33)SyntaxKind[QuestionToken]
             (341,35)SyntaxKind[SymbolSpan]
               (341,35)SyntaxKind[Nonterminal]
@@ -1614,7 +1753,8 @@
                     (341,64)SyntaxKind[Identifier](text = "Initializer")
                     (341,75)SyntaxKind[QuestionToken]
                   (341,77)SyntaxKind[SymbolSpan]
-                    (341,77)SyntaxKind[Terminal](text = ";")
+                    (341,77)SyntaxKind[Terminal]
+                      (341,77)SyntaxKind[TerminalLiteral](text = ";")
   (343,1)SyntaxKind[Production]
     (343,1)SyntaxKind[Identifier](text = "MemberFunctionDeclaration")
     (343,27)SyntaxKind[ColonToken]
@@ -1652,7 +1792,8 @@
             (351,2)SyntaxKind[Identifier](text = "AccessibilityModifier")
             (351,23)SyntaxKind[QuestionToken]
           (351,25)SyntaxKind[SymbolSpan]
-            (351,25)SyntaxKind[Terminal](text = "static")?
+            (351,25)SyntaxKind[Terminal]?
+              (351,25)SyntaxKind[TerminalLiteral](text = "static")
               (351,33)SyntaxKind[QuestionToken]
             (351,35)SyntaxKind[SymbolSpan]
               (351,35)SyntaxKind[Nonterminal]
@@ -1661,7 +1802,8 @@
                 (351,48)SyntaxKind[Nonterminal]
                   (351,48)SyntaxKind[Identifier](text = "CallSignature")
                 (351,62)SyntaxKind[SymbolSpan]
-                  (351,62)SyntaxKind[Terminal](text = ";")
+                  (351,62)SyntaxKind[Terminal]
+                    (351,62)SyntaxKind[TerminalLiteral](text = ";")
   (353,1)SyntaxKind[Production]
     (353,1)SyntaxKind[Identifier](text = "MemberFunctionImplementation")
     (353,30)SyntaxKind[ColonToken]
@@ -1672,7 +1814,8 @@
             (354,2)SyntaxKind[Identifier](text = "AccessibilityModifier")
             (354,23)SyntaxKind[QuestionToken]
           (354,25)SyntaxKind[SymbolSpan]
-            (354,25)SyntaxKind[Terminal](text = "static")?
+            (354,25)SyntaxKind[Terminal]?
+              (354,25)SyntaxKind[TerminalLiteral](text = "static")
               (354,33)SyntaxKind[QuestionToken]
             (354,35)SyntaxKind[SymbolSpan]
               (354,35)SyntaxKind[Nonterminal]
@@ -1681,12 +1824,14 @@
                 (354,48)SyntaxKind[Nonterminal]
                   (354,48)SyntaxKind[Identifier](text = "CallSignature")
                 (354,62)SyntaxKind[SymbolSpan]
-                  (354,62)SyntaxKind[Terminal](text = "{")
+                  (354,62)SyntaxKind[Terminal]
+                    (354,62)SyntaxKind[TerminalLiteral](text = "{")
                   (354,66)SyntaxKind[SymbolSpan]
                     (354,66)SyntaxKind[Nonterminal]
                       (354,66)SyntaxKind[Identifier](text = "FunctionBody")
                     (354,79)SyntaxKind[SymbolSpan]
-                      (354,79)SyntaxKind[Terminal](text = "}")
+                      (354,79)SyntaxKind[Terminal]
+                        (354,79)SyntaxKind[TerminalLiteral](text = "}")
   (356,1)SyntaxKind[Production]
     (356,1)SyntaxKind[Identifier](text = "MemberAccessorDeclaration")
     (356,27)SyntaxKind[ColonToken]
@@ -1697,7 +1842,8 @@
             (357,2)SyntaxKind[Identifier](text = "AccessibilityModifier")
             (357,23)SyntaxKind[QuestionToken]
           (357,25)SyntaxKind[SymbolSpan]
-            (357,25)SyntaxKind[Terminal](text = "static")?
+            (357,25)SyntaxKind[Terminal]?
+              (357,25)SyntaxKind[TerminalLiteral](text = "static")
               (357,33)SyntaxKind[QuestionToken]
             (357,35)SyntaxKind[SymbolSpan]
               (357,35)SyntaxKind[Nonterminal]
@@ -1708,7 +1854,8 @@
             (358,2)SyntaxKind[Identifier](text = "AccessibilityModifier")
             (358,23)SyntaxKind[QuestionToken]
           (358,25)SyntaxKind[SymbolSpan]
-            (358,25)SyntaxKind[Terminal](text = "static")?
+            (358,25)SyntaxKind[Terminal]?
+              (358,25)SyntaxKind[TerminalLiteral](text = "static")
               (358,33)SyntaxKind[QuestionToken]
             (358,35)SyntaxKind[SymbolSpan]
               (358,35)SyntaxKind[Nonterminal]
@@ -1722,28 +1869,33 @@
           (361,2)SyntaxKind[Nonterminal]
             (361,2)SyntaxKind[Identifier](text = "IndexSignature")
           (361,17)SyntaxKind[SymbolSpan]
-            (361,17)SyntaxKind[Terminal](text = ";")
+            (361,17)SyntaxKind[Terminal]
+              (361,17)SyntaxKind[TerminalLiteral](text = ";")
   (364,1)SyntaxKind[Production]
     (364,1)SyntaxKind[Identifier](text = "EnumDeclaration")
     (364,17)SyntaxKind[ColonToken]
     (365,2)SyntaxKind[RightHandSideList]
       (365,2)SyntaxKind[RightHandSide]
         (365,2)SyntaxKind[SymbolSpan]
-          (365,2)SyntaxKind[Terminal](text = "const")?
+          (365,2)SyntaxKind[Terminal]?
+            (365,2)SyntaxKind[TerminalLiteral](text = "const")
             (365,9)SyntaxKind[QuestionToken]
           (365,11)SyntaxKind[SymbolSpan]
-            (365,11)SyntaxKind[Terminal](text = "enum")
+            (365,11)SyntaxKind[Terminal]
+              (365,11)SyntaxKind[TerminalLiteral](text = "enum")
             (365,18)SyntaxKind[SymbolSpan]
               (365,18)SyntaxKind[Nonterminal]
                 (365,18)SyntaxKind[Identifier](text = "Identifier")
               (365,29)SyntaxKind[SymbolSpan]
-                (365,29)SyntaxKind[Terminal](text = "{")
+                (365,29)SyntaxKind[Terminal]
+                  (365,29)SyntaxKind[TerminalLiteral](text = "{")
                 (365,33)SyntaxKind[SymbolSpan]
                   (365,33)SyntaxKind[Nonterminal]?
                     (365,33)SyntaxKind[Identifier](text = "EnumBody")
                     (365,41)SyntaxKind[QuestionToken]
                   (365,43)SyntaxKind[SymbolSpan]
-                    (365,43)SyntaxKind[Terminal](text = "}")
+                    (365,43)SyntaxKind[Terminal]
+                      (365,43)SyntaxKind[TerminalLiteral](text = "}")
   (367,1)SyntaxKind[Production]
     (367,1)SyntaxKind[Identifier](text = "EnumBody")
     (367,10)SyntaxKind[ColonToken]
@@ -1753,7 +1905,8 @@
           (368,2)SyntaxKind[Nonterminal]
             (368,2)SyntaxKind[Identifier](text = "EnumMemberList")
           (368,17)SyntaxKind[SymbolSpan]
-            (368,17)SyntaxKind[Terminal](text = ",")?
+            (368,17)SyntaxKind[Terminal]?
+              (368,17)SyntaxKind[TerminalLiteral](text = ",")
               (368,20)SyntaxKind[QuestionToken]
   (370,1)SyntaxKind[Production]
     (370,1)SyntaxKind[Identifier](text = "EnumMemberList")
@@ -1768,7 +1921,8 @@
           (372,2)SyntaxKind[Nonterminal]
             (372,2)SyntaxKind[Identifier](text = "EnumMemberList")
           (372,17)SyntaxKind[SymbolSpan]
-            (372,17)SyntaxKind[Terminal](text = ",")
+            (372,17)SyntaxKind[Terminal]
+              (372,17)SyntaxKind[TerminalLiteral](text = ",")
             (372,21)SyntaxKind[SymbolSpan]
               (372,21)SyntaxKind[Nonterminal]
                 (372,21)SyntaxKind[Identifier](text = "EnumMember")
@@ -1785,7 +1939,8 @@
           (376,2)SyntaxKind[Nonterminal]
             (376,2)SyntaxKind[Identifier](text = "PropertyName")
           (376,15)SyntaxKind[SymbolSpan]
-            (376,15)SyntaxKind[Terminal](text = "=")
+            (376,15)SyntaxKind[Terminal]
+              (376,15)SyntaxKind[TerminalLiteral](text = "=")
             (376,19)SyntaxKind[SymbolSpan]
               (376,19)SyntaxKind[Nonterminal]
                 (376,19)SyntaxKind[Identifier](text = "EnumValue")
@@ -1803,17 +1958,20 @@
     (383,2)SyntaxKind[RightHandSideList]
       (383,2)SyntaxKind[RightHandSide]
         (383,2)SyntaxKind[SymbolSpan]
-          (383,2)SyntaxKind[Terminal](text = "module")
+          (383,2)SyntaxKind[Terminal]
+            (383,2)SyntaxKind[TerminalLiteral](text = "module")
           (383,11)SyntaxKind[SymbolSpan]
             (383,11)SyntaxKind[Nonterminal]
               (383,11)SyntaxKind[Identifier](text = "IdentifierPath")
             (383,26)SyntaxKind[SymbolSpan]
-              (383,26)SyntaxKind[Terminal](text = "{")
+              (383,26)SyntaxKind[Terminal]
+                (383,26)SyntaxKind[TerminalLiteral](text = "{")
               (383,30)SyntaxKind[SymbolSpan]
                 (383,30)SyntaxKind[Nonterminal]
                   (383,30)SyntaxKind[Identifier](text = "ModuleBody")
                 (383,41)SyntaxKind[SymbolSpan]
-                  (383,41)SyntaxKind[Terminal](text = "}")
+                  (383,41)SyntaxKind[Terminal]
+                    (383,41)SyntaxKind[TerminalLiteral](text = "}")
   (385,1)SyntaxKind[Production]
     (385,1)SyntaxKind[Identifier](text = "IdentifierPath")
     (385,16)SyntaxKind[ColonToken]
@@ -1827,7 +1985,8 @@
           (387,2)SyntaxKind[Nonterminal]
             (387,2)SyntaxKind[Identifier](text = "IdentifierPath")
           (387,17)SyntaxKind[SymbolSpan]
-            (387,17)SyntaxKind[Terminal](text = ".")
+            (387,17)SyntaxKind[Terminal]
+              (387,17)SyntaxKind[TerminalLiteral](text = ".")
             (387,21)SyntaxKind[SymbolSpan]
               (387,21)SyntaxKind[Nonterminal]
                 (387,21)SyntaxKind[Identifier](text = "Identifier")
@@ -1865,63 +2024,72 @@
             (397,2)SyntaxKind[Identifier](text = "Statement")
       (398,2)SyntaxKind[RightHandSide]
         (398,2)SyntaxKind[SymbolSpan]
-          (398,2)SyntaxKind[Terminal](text = "export")?
+          (398,2)SyntaxKind[Terminal]?
+            (398,2)SyntaxKind[TerminalLiteral](text = "export")
             (398,10)SyntaxKind[QuestionToken]
           (398,12)SyntaxKind[SymbolSpan]
             (398,12)SyntaxKind[Nonterminal]
               (398,12)SyntaxKind[Identifier](text = "VariableDeclaration")
       (399,2)SyntaxKind[RightHandSide]
         (399,2)SyntaxKind[SymbolSpan]
-          (399,2)SyntaxKind[Terminal](text = "export")?
+          (399,2)SyntaxKind[Terminal]?
+            (399,2)SyntaxKind[TerminalLiteral](text = "export")
             (399,10)SyntaxKind[QuestionToken]
           (399,12)SyntaxKind[SymbolSpan]
             (399,12)SyntaxKind[Nonterminal]
               (399,12)SyntaxKind[Identifier](text = "FunctionDeclaration")
       (400,2)SyntaxKind[RightHandSide]
         (400,2)SyntaxKind[SymbolSpan]
-          (400,2)SyntaxKind[Terminal](text = "export")?
+          (400,2)SyntaxKind[Terminal]?
+            (400,2)SyntaxKind[TerminalLiteral](text = "export")
             (400,10)SyntaxKind[QuestionToken]
           (400,12)SyntaxKind[SymbolSpan]
             (400,12)SyntaxKind[Nonterminal]
               (400,12)SyntaxKind[Identifier](text = "ClassDeclaration")
       (401,2)SyntaxKind[RightHandSide]
         (401,2)SyntaxKind[SymbolSpan]
-          (401,2)SyntaxKind[Terminal](text = "export")?
+          (401,2)SyntaxKind[Terminal]?
+            (401,2)SyntaxKind[TerminalLiteral](text = "export")
             (401,10)SyntaxKind[QuestionToken]
           (401,12)SyntaxKind[SymbolSpan]
             (401,12)SyntaxKind[Nonterminal]
               (401,12)SyntaxKind[Identifier](text = "InterfaceDeclaration")
       (402,2)SyntaxKind[RightHandSide]
         (402,2)SyntaxKind[SymbolSpan]
-          (402,2)SyntaxKind[Terminal](text = "export")?
+          (402,2)SyntaxKind[Terminal]?
+            (402,2)SyntaxKind[TerminalLiteral](text = "export")
             (402,10)SyntaxKind[QuestionToken]
           (402,12)SyntaxKind[SymbolSpan]
             (402,12)SyntaxKind[Nonterminal]
               (402,12)SyntaxKind[Identifier](text = "TypeAliasDeclaration")
       (403,2)SyntaxKind[RightHandSide]
         (403,2)SyntaxKind[SymbolSpan]
-          (403,2)SyntaxKind[Terminal](text = "export")?
+          (403,2)SyntaxKind[Terminal]?
+            (403,2)SyntaxKind[TerminalLiteral](text = "export")
             (403,10)SyntaxKind[QuestionToken]
           (403,12)SyntaxKind[SymbolSpan]
             (403,12)SyntaxKind[Nonterminal]
               (403,12)SyntaxKind[Identifier](text = "EnumDeclaration")
       (404,2)SyntaxKind[RightHandSide]
         (404,2)SyntaxKind[SymbolSpan]
-          (404,2)SyntaxKind[Terminal](text = "export")?
+          (404,2)SyntaxKind[Terminal]?
+            (404,2)SyntaxKind[TerminalLiteral](text = "export")
             (404,10)SyntaxKind[QuestionToken]
           (404,12)SyntaxKind[SymbolSpan]
             (404,12)SyntaxKind[Nonterminal]
               (404,12)SyntaxKind[Identifier](text = "ModuleDeclaration")
       (405,2)SyntaxKind[RightHandSide]
         (405,2)SyntaxKind[SymbolSpan]
-          (405,2)SyntaxKind[Terminal](text = "export")?
+          (405,2)SyntaxKind[Terminal]?
+            (405,2)SyntaxKind[TerminalLiteral](text = "export")
             (405,10)SyntaxKind[QuestionToken]
           (405,12)SyntaxKind[SymbolSpan]
             (405,12)SyntaxKind[Nonterminal]
               (405,12)SyntaxKind[Identifier](text = "ImportDeclaration")
       (406,2)SyntaxKind[RightHandSide]
         (406,2)SyntaxKind[SymbolSpan]
-          (406,2)SyntaxKind[Terminal](text = "export")?
+          (406,2)SyntaxKind[Terminal]?
+            (406,2)SyntaxKind[TerminalLiteral](text = "export")
             (406,10)SyntaxKind[QuestionToken]
           (406,12)SyntaxKind[SymbolSpan]
             (406,12)SyntaxKind[Nonterminal]
@@ -1932,17 +2100,20 @@
     (409,2)SyntaxKind[RightHandSideList]
       (409,2)SyntaxKind[RightHandSide]
         (409,2)SyntaxKind[SymbolSpan]
-          (409,2)SyntaxKind[Terminal](text = "import")
+          (409,2)SyntaxKind[Terminal]
+            (409,2)SyntaxKind[TerminalLiteral](text = "import")
           (409,11)SyntaxKind[SymbolSpan]
             (409,11)SyntaxKind[Nonterminal]
               (409,11)SyntaxKind[Identifier](text = "Identifier")
             (409,22)SyntaxKind[SymbolSpan]
-              (409,22)SyntaxKind[Terminal](text = "=")
+              (409,22)SyntaxKind[Terminal]
+                (409,22)SyntaxKind[TerminalLiteral](text = "=")
               (409,26)SyntaxKind[SymbolSpan]
                 (409,26)SyntaxKind[Nonterminal]
                   (409,26)SyntaxKind[Identifier](text = "EntityName")
                 (409,37)SyntaxKind[SymbolSpan]
-                  (409,37)SyntaxKind[Terminal](text = ";")
+                  (409,37)SyntaxKind[Terminal]
+                    (409,37)SyntaxKind[TerminalLiteral](text = ";")
   (411,1)SyntaxKind[Production]
     (411,1)SyntaxKind[Identifier](text = "EntityName")
     (411,12)SyntaxKind[ColonToken]
@@ -1956,7 +2127,8 @@
           (413,2)SyntaxKind[Nonterminal]
             (413,2)SyntaxKind[Identifier](text = "ModuleName")
           (413,13)SyntaxKind[SymbolSpan]
-            (413,13)SyntaxKind[Terminal](text = ".")
+            (413,13)SyntaxKind[Terminal]
+              (413,13)SyntaxKind[TerminalLiteral](text = ".")
             (413,17)SyntaxKind[SymbolSpan]
               (413,17)SyntaxKind[Nonterminal]
                 (413,17)SyntaxKind[Identifier](text = "Identifier")
@@ -2014,7 +2186,8 @@
             (430,2)SyntaxKind[Identifier](text = "AmbientExternalModuleDeclaration")
       (431,2)SyntaxKind[RightHandSide]
         (431,2)SyntaxKind[SymbolSpan]
-          (431,2)SyntaxKind[Terminal](text = "export")?
+          (431,2)SyntaxKind[Terminal]?
+            (431,2)SyntaxKind[TerminalLiteral](text = "export")
             (431,10)SyntaxKind[QuestionToken]
           (431,12)SyntaxKind[SymbolSpan]
             (431,12)SyntaxKind[Nonterminal]
@@ -2057,35 +2230,40 @@
             (442,2)SyntaxKind[Identifier](text = "AmbientExternalModuleDeclaration")
       (443,2)SyntaxKind[RightHandSide]
         (443,2)SyntaxKind[SymbolSpan]
-          (443,2)SyntaxKind[Terminal](text = "export")?
+          (443,2)SyntaxKind[Terminal]?
+            (443,2)SyntaxKind[TerminalLiteral](text = "export")
             (443,10)SyntaxKind[QuestionToken]
           (443,12)SyntaxKind[SymbolSpan]
             (443,12)SyntaxKind[Nonterminal]
               (443,12)SyntaxKind[Identifier](text = "InterfaceDeclaration")
       (444,2)SyntaxKind[RightHandSide]
         (444,2)SyntaxKind[SymbolSpan]
-          (444,2)SyntaxKind[Terminal](text = "export")?
+          (444,2)SyntaxKind[Terminal]?
+            (444,2)SyntaxKind[TerminalLiteral](text = "export")
             (444,10)SyntaxKind[QuestionToken]
           (444,12)SyntaxKind[SymbolSpan]
             (444,12)SyntaxKind[Nonterminal]
               (444,12)SyntaxKind[Identifier](text = "TypeAliasDeclaration")
       (445,2)SyntaxKind[RightHandSide]
         (445,2)SyntaxKind[SymbolSpan]
-          (445,2)SyntaxKind[Terminal](text = "export")?
+          (445,2)SyntaxKind[Terminal]?
+            (445,2)SyntaxKind[TerminalLiteral](text = "export")
             (445,10)SyntaxKind[QuestionToken]
           (445,12)SyntaxKind[SymbolSpan]
             (445,12)SyntaxKind[Nonterminal]
               (445,12)SyntaxKind[Identifier](text = "ImportDeclaration")
       (446,2)SyntaxKind[RightHandSide]
         (446,2)SyntaxKind[SymbolSpan]
-          (446,2)SyntaxKind[Terminal](text = "export")?
+          (446,2)SyntaxKind[Terminal]?
+            (446,2)SyntaxKind[TerminalLiteral](text = "export")
             (446,10)SyntaxKind[QuestionToken]
           (446,12)SyntaxKind[SymbolSpan]
             (446,12)SyntaxKind[Nonterminal]
               (446,12)SyntaxKind[Identifier](text = "AmbientDeclaration")
       (447,2)SyntaxKind[RightHandSide]
         (447,2)SyntaxKind[SymbolSpan]
-          (447,2)SyntaxKind[Terminal](text = "export")?
+          (447,2)SyntaxKind[Terminal]?
+            (447,2)SyntaxKind[TerminalLiteral](text = "export")
             (447,10)SyntaxKind[QuestionToken]
           (447,12)SyntaxKind[SymbolSpan]
             (447,12)SyntaxKind[Nonterminal]
@@ -2096,76 +2274,90 @@
     (450,2)SyntaxKind[RightHandSideList]
       (450,2)SyntaxKind[RightHandSide]
         (450,2)SyntaxKind[SymbolSpan]
-          (450,2)SyntaxKind[Terminal](text = "import")
+          (450,2)SyntaxKind[Terminal]
+            (450,2)SyntaxKind[TerminalLiteral](text = "import")
           (450,11)SyntaxKind[SymbolSpan]
             (450,11)SyntaxKind[Nonterminal]
               (450,11)SyntaxKind[Identifier](text = "Identifier")
             (450,22)SyntaxKind[SymbolSpan]
-              (450,22)SyntaxKind[Terminal](text = "=")
+              (450,22)SyntaxKind[Terminal]
+                (450,22)SyntaxKind[TerminalLiteral](text = "=")
               (450,26)SyntaxKind[SymbolSpan]
                 (450,26)SyntaxKind[Nonterminal]
                   (450,26)SyntaxKind[Identifier](text = "ExternalModuleReference")
                 (450,50)SyntaxKind[SymbolSpan]
-                  (450,50)SyntaxKind[Terminal](text = ";")
+                  (450,50)SyntaxKind[Terminal]
+                    (450,50)SyntaxKind[TerminalLiteral](text = ";")
   (452,1)SyntaxKind[Production]
     (452,1)SyntaxKind[Identifier](text = "ExternalModuleReference")
     (452,25)SyntaxKind[ColonToken]
     (453,2)SyntaxKind[RightHandSideList]
       (453,2)SyntaxKind[RightHandSide]
         (453,2)SyntaxKind[SymbolSpan]
-          (453,2)SyntaxKind[Terminal](text = "require")
+          (453,2)SyntaxKind[Terminal]
+            (453,2)SyntaxKind[TerminalLiteral](text = "require")
           (453,12)SyntaxKind[SymbolSpan]
-            (453,12)SyntaxKind[Terminal](text = "(")
+            (453,12)SyntaxKind[Terminal]
+              (453,12)SyntaxKind[TerminalLiteral](text = "(")
             (453,16)SyntaxKind[SymbolSpan]
               (453,16)SyntaxKind[Nonterminal]
                 (453,16)SyntaxKind[Identifier](text = "StringLiteral")
               (453,30)SyntaxKind[SymbolSpan]
-                (453,30)SyntaxKind[Terminal](text = ")")
+                (453,30)SyntaxKind[Terminal]
+                  (453,30)SyntaxKind[TerminalLiteral](text = ")")
   (455,1)SyntaxKind[Production]
     (455,1)SyntaxKind[Identifier](text = "ExportAssignment")
     (455,18)SyntaxKind[ColonToken]
     (456,2)SyntaxKind[RightHandSideList]
       (456,2)SyntaxKind[RightHandSide]
         (456,2)SyntaxKind[SymbolSpan]
-          (456,2)SyntaxKind[Terminal](text = "export")
+          (456,2)SyntaxKind[Terminal]
+            (456,2)SyntaxKind[TerminalLiteral](text = "export")
           (456,11)SyntaxKind[SymbolSpan]
-            (456,11)SyntaxKind[Terminal](text = "=")
+            (456,11)SyntaxKind[Terminal]
+              (456,11)SyntaxKind[TerminalLiteral](text = "=")
             (456,15)SyntaxKind[SymbolSpan]
               (456,15)SyntaxKind[Nonterminal]
                 (456,15)SyntaxKind[Identifier](text = "Identifier")
               (456,26)SyntaxKind[SymbolSpan]
-                (456,26)SyntaxKind[Terminal](text = ";")
+                (456,26)SyntaxKind[Terminal]
+                  (456,26)SyntaxKind[TerminalLiteral](text = ";")
   (459,1)SyntaxKind[Production]
     (459,1)SyntaxKind[Identifier](text = "AmbientDeclaration")
     (459,20)SyntaxKind[ColonToken]
     (460,2)SyntaxKind[RightHandSideList]
       (460,2)SyntaxKind[RightHandSide]
         (460,2)SyntaxKind[SymbolSpan]
-          (460,2)SyntaxKind[Terminal](text = "declare")
+          (460,2)SyntaxKind[Terminal]
+            (460,2)SyntaxKind[TerminalLiteral](text = "declare")
           (460,12)SyntaxKind[SymbolSpan]
             (460,12)SyntaxKind[Nonterminal]
               (460,12)SyntaxKind[Identifier](text = "AmbientVariableDeclaration")
       (461,2)SyntaxKind[RightHandSide]
         (461,2)SyntaxKind[SymbolSpan]
-          (461,2)SyntaxKind[Terminal](text = "declare")
+          (461,2)SyntaxKind[Terminal]
+            (461,2)SyntaxKind[TerminalLiteral](text = "declare")
           (461,12)SyntaxKind[SymbolSpan]
             (461,12)SyntaxKind[Nonterminal]
               (461,12)SyntaxKind[Identifier](text = "AmbientFunctionDeclaration")
       (462,2)SyntaxKind[RightHandSide]
         (462,2)SyntaxKind[SymbolSpan]
-          (462,2)SyntaxKind[Terminal](text = "declare")
+          (462,2)SyntaxKind[Terminal]
+            (462,2)SyntaxKind[TerminalLiteral](text = "declare")
           (462,12)SyntaxKind[SymbolSpan]
             (462,12)SyntaxKind[Nonterminal]
               (462,12)SyntaxKind[Identifier](text = "AmbientClassDeclaration")
       (463,2)SyntaxKind[RightHandSide]
         (463,2)SyntaxKind[SymbolSpan]
-          (463,2)SyntaxKind[Terminal](text = "declare")
+          (463,2)SyntaxKind[Terminal]
+            (463,2)SyntaxKind[TerminalLiteral](text = "declare")
           (463,12)SyntaxKind[SymbolSpan]
             (463,12)SyntaxKind[Nonterminal]
               (463,12)SyntaxKind[Identifier](text = "AmbientEnumDeclaration")
       (464,2)SyntaxKind[RightHandSide]
         (464,2)SyntaxKind[SymbolSpan]
-          (464,2)SyntaxKind[Terminal](text = "declare")
+          (464,2)SyntaxKind[Terminal]
+            (464,2)SyntaxKind[TerminalLiteral](text = "declare")
           (464,12)SyntaxKind[SymbolSpan]
             (464,12)SyntaxKind[Nonterminal]
               (464,12)SyntaxKind[Identifier](text = "AmbientModuleDeclaration")
@@ -2175,7 +2367,8 @@
     (467,2)SyntaxKind[RightHandSideList]
       (467,2)SyntaxKind[RightHandSide]
         (467,2)SyntaxKind[SymbolSpan]
-          (467,2)SyntaxKind[Terminal](text = "var")
+          (467,2)SyntaxKind[Terminal]
+            (467,2)SyntaxKind[TerminalLiteral](text = "var")
           (467,8)SyntaxKind[SymbolSpan]
             (467,8)SyntaxKind[Nonterminal]
               (467,8)SyntaxKind[Identifier](text = "Identifier")
@@ -2184,14 +2377,16 @@
                 (467,19)SyntaxKind[Identifier](text = "TypeAnnotation")
                 (467,33)SyntaxKind[QuestionToken]
               (467,35)SyntaxKind[SymbolSpan]
-                (467,35)SyntaxKind[Terminal](text = ";")
+                (467,35)SyntaxKind[Terminal]
+                  (467,35)SyntaxKind[TerminalLiteral](text = ";")
   (469,1)SyntaxKind[Production]
     (469,1)SyntaxKind[Identifier](text = "AmbientFunctionDeclaration")
     (469,28)SyntaxKind[ColonToken]
     (470,2)SyntaxKind[RightHandSideList]
       (470,2)SyntaxKind[RightHandSide]
         (470,2)SyntaxKind[SymbolSpan]
-          (470,2)SyntaxKind[Terminal](text = "function")
+          (470,2)SyntaxKind[Terminal]
+            (470,2)SyntaxKind[TerminalLiteral](text = "function")
           (470,13)SyntaxKind[SymbolSpan]
             (470,13)SyntaxKind[Nonterminal]
               (470,13)SyntaxKind[Identifier](text = "Identifier")
@@ -2199,14 +2394,16 @@
               (470,24)SyntaxKind[Nonterminal]
                 (470,24)SyntaxKind[Identifier](text = "CallSignature")
               (470,38)SyntaxKind[SymbolSpan]
-                (470,38)SyntaxKind[Terminal](text = ";")
+                (470,38)SyntaxKind[Terminal]
+                  (470,38)SyntaxKind[TerminalLiteral](text = ";")
   (472,1)SyntaxKind[Production]
     (472,1)SyntaxKind[Identifier](text = "AmbientClassDeclaration")
     (472,25)SyntaxKind[ColonToken]
     (473,2)SyntaxKind[RightHandSideList]
       (473,2)SyntaxKind[RightHandSide]
         (473,2)SyntaxKind[SymbolSpan]
-          (473,2)SyntaxKind[Terminal](text = "class")
+          (473,2)SyntaxKind[Terminal]
+            (473,2)SyntaxKind[TerminalLiteral](text = "class")
           (473,10)SyntaxKind[SymbolSpan]
             (473,10)SyntaxKind[Nonterminal]
               (473,10)SyntaxKind[Identifier](text = "Identifier")
@@ -2218,12 +2415,14 @@
                 (473,37)SyntaxKind[Nonterminal]
                   (473,37)SyntaxKind[Identifier](text = "ClassHeritage")
                 (473,51)SyntaxKind[SymbolSpan]
-                  (473,51)SyntaxKind[Terminal](text = "{")
+                  (473,51)SyntaxKind[Terminal]
+                    (473,51)SyntaxKind[TerminalLiteral](text = "{")
                   (473,55)SyntaxKind[SymbolSpan]
                     (473,55)SyntaxKind[Nonterminal]
                       (473,55)SyntaxKind[Identifier](text = "AmbientClassBody")
                     (473,72)SyntaxKind[SymbolSpan]
-                      (473,72)SyntaxKind[Terminal](text = "}")
+                      (473,72)SyntaxKind[Terminal]
+                        (473,72)SyntaxKind[TerminalLiteral](text = "}")
   (475,1)SyntaxKind[Production]
     (475,1)SyntaxKind[Identifier](text = "AmbientClassBody")
     (475,18)SyntaxKind[ColonToken]
@@ -2270,17 +2469,21 @@
     (488,2)SyntaxKind[RightHandSideList]
       (488,2)SyntaxKind[RightHandSide]
         (488,2)SyntaxKind[SymbolSpan]
-          (488,2)SyntaxKind[Terminal](text = "constructor")
+          (488,2)SyntaxKind[Terminal]
+            (488,2)SyntaxKind[TerminalLiteral](text = "constructor")
           (488,16)SyntaxKind[SymbolSpan]
-            (488,16)SyntaxKind[Terminal](text = "(")
+            (488,16)SyntaxKind[Terminal]
+              (488,16)SyntaxKind[TerminalLiteral](text = "(")
             (488,20)SyntaxKind[SymbolSpan]
               (488,20)SyntaxKind[Nonterminal]?
                 (488,20)SyntaxKind[Identifier](text = "ParameterList")
                 (488,33)SyntaxKind[QuestionToken]
               (488,35)SyntaxKind[SymbolSpan]
-                (488,35)SyntaxKind[Terminal](text = ")")
+                (488,35)SyntaxKind[Terminal]
+                  (488,35)SyntaxKind[TerminalLiteral](text = ")")
                 (488,39)SyntaxKind[SymbolSpan]
-                  (488,39)SyntaxKind[Terminal](text = ";")
+                  (488,39)SyntaxKind[Terminal]
+                    (488,39)SyntaxKind[TerminalLiteral](text = ";")
   (490,1)SyntaxKind[Production]
     (490,1)SyntaxKind[Identifier](text = "AmbientPropertyMemberDeclaration")
     (490,34)SyntaxKind[ColonToken]
@@ -2291,7 +2494,8 @@
             (491,2)SyntaxKind[Identifier](text = "AccessibilityModifier")
             (491,23)SyntaxKind[QuestionToken]
           (491,25)SyntaxKind[SymbolSpan]
-            (491,25)SyntaxKind[Terminal](text = "static")?
+            (491,25)SyntaxKind[Terminal]?
+              (491,25)SyntaxKind[TerminalLiteral](text = "static")
               (491,33)SyntaxKind[QuestionToken]
             (491,35)SyntaxKind[SymbolSpan]
               (491,35)SyntaxKind[Nonterminal]
@@ -2301,14 +2505,16 @@
                   (491,48)SyntaxKind[Identifier](text = "TypeAnnotation")
                   (491,62)SyntaxKind[QuestionToken]
                 (491,64)SyntaxKind[SymbolSpan]
-                  (491,64)SyntaxKind[Terminal](text = ";")
+                  (491,64)SyntaxKind[Terminal]
+                    (491,64)SyntaxKind[TerminalLiteral](text = ";")
       (492,2)SyntaxKind[RightHandSide]
         (492,2)SyntaxKind[SymbolSpan]
           (492,2)SyntaxKind[Nonterminal]?
             (492,2)SyntaxKind[Identifier](text = "AccessibilityModifier")
             (492,23)SyntaxKind[QuestionToken]
           (492,25)SyntaxKind[SymbolSpan]
-            (492,25)SyntaxKind[Terminal](text = "static")?
+            (492,25)SyntaxKind[Terminal]?
+              (492,25)SyntaxKind[TerminalLiteral](text = "static")
               (492,33)SyntaxKind[QuestionToken]
             (492,35)SyntaxKind[SymbolSpan]
               (492,35)SyntaxKind[Nonterminal]
@@ -2317,7 +2523,8 @@
                 (492,48)SyntaxKind[Nonterminal]
                   (492,48)SyntaxKind[Identifier](text = "CallSignature")
                 (492,62)SyntaxKind[SymbolSpan]
-                  (492,62)SyntaxKind[Terminal](text = ";")
+                  (492,62)SyntaxKind[Terminal]
+                    (492,62)SyntaxKind[TerminalLiteral](text = ";")
   (494,1)SyntaxKind[Production]
     (494,1)SyntaxKind[Identifier](text = "AmbientEnumDeclaration")
     (494,24)SyntaxKind[ColonToken]
@@ -2332,17 +2539,20 @@
     (498,2)SyntaxKind[RightHandSideList]
       (498,2)SyntaxKind[RightHandSide]
         (498,2)SyntaxKind[SymbolSpan]
-          (498,2)SyntaxKind[Terminal](text = "module")
+          (498,2)SyntaxKind[Terminal]
+            (498,2)SyntaxKind[TerminalLiteral](text = "module")
           (498,11)SyntaxKind[SymbolSpan]
             (498,11)SyntaxKind[Nonterminal]
               (498,11)SyntaxKind[Identifier](text = "IdentifierPath")
             (498,26)SyntaxKind[SymbolSpan]
-              (498,26)SyntaxKind[Terminal](text = "{")
+              (498,26)SyntaxKind[Terminal]
+                (498,26)SyntaxKind[TerminalLiteral](text = "{")
               (498,30)SyntaxKind[SymbolSpan]
                 (498,30)SyntaxKind[Nonterminal]
                   (498,30)SyntaxKind[Identifier](text = "AmbientModuleBody")
                 (498,48)SyntaxKind[SymbolSpan]
-                  (498,48)SyntaxKind[Terminal](text = "}")
+                  (498,48)SyntaxKind[Terminal]
+                    (498,48)SyntaxKind[TerminalLiteral](text = "}")
   (500,1)SyntaxKind[Production]
     (500,1)SyntaxKind[Identifier](text = "AmbientModuleBody")
     (500,19)SyntaxKind[ColonToken]
@@ -2373,49 +2583,56 @@
     (508,2)SyntaxKind[RightHandSideList]
       (508,2)SyntaxKind[RightHandSide]
         (508,2)SyntaxKind[SymbolSpan]
-          (508,2)SyntaxKind[Terminal](text = "export")?
+          (508,2)SyntaxKind[Terminal]?
+            (508,2)SyntaxKind[TerminalLiteral](text = "export")
             (508,10)SyntaxKind[QuestionToken]
           (508,12)SyntaxKind[SymbolSpan]
             (508,12)SyntaxKind[Nonterminal]
               (508,12)SyntaxKind[Identifier](text = "AmbientVariableDeclaration")
       (509,2)SyntaxKind[RightHandSide]
         (509,2)SyntaxKind[SymbolSpan]
-          (509,2)SyntaxKind[Terminal](text = "export")?
+          (509,2)SyntaxKind[Terminal]?
+            (509,2)SyntaxKind[TerminalLiteral](text = "export")
             (509,10)SyntaxKind[QuestionToken]
           (509,12)SyntaxKind[SymbolSpan]
             (509,12)SyntaxKind[Nonterminal]
               (509,12)SyntaxKind[Identifier](text = "AmbientFunctionDeclaration")
       (510,2)SyntaxKind[RightHandSide]
         (510,2)SyntaxKind[SymbolSpan]
-          (510,2)SyntaxKind[Terminal](text = "export")?
+          (510,2)SyntaxKind[Terminal]?
+            (510,2)SyntaxKind[TerminalLiteral](text = "export")
             (510,10)SyntaxKind[QuestionToken]
           (510,12)SyntaxKind[SymbolSpan]
             (510,12)SyntaxKind[Nonterminal]
               (510,12)SyntaxKind[Identifier](text = "AmbientClassDeclaration")
       (511,2)SyntaxKind[RightHandSide]
         (511,2)SyntaxKind[SymbolSpan]
-          (511,2)SyntaxKind[Terminal](text = "export")?
+          (511,2)SyntaxKind[Terminal]?
+            (511,2)SyntaxKind[TerminalLiteral](text = "export")
             (511,10)SyntaxKind[QuestionToken]
           (511,12)SyntaxKind[SymbolSpan]
             (511,12)SyntaxKind[Nonterminal]
               (511,12)SyntaxKind[Identifier](text = "InterfaceDeclaration")
       (512,2)SyntaxKind[RightHandSide]
         (512,2)SyntaxKind[SymbolSpan]
-          (512,2)SyntaxKind[Terminal](text = "export")?
+          (512,2)SyntaxKind[Terminal]?
+            (512,2)SyntaxKind[TerminalLiteral](text = "export")
             (512,10)SyntaxKind[QuestionToken]
           (512,12)SyntaxKind[SymbolSpan]
             (512,12)SyntaxKind[Nonterminal]
               (512,12)SyntaxKind[Identifier](text = "AmbientEnumDeclaration")
       (513,2)SyntaxKind[RightHandSide]
         (513,2)SyntaxKind[SymbolSpan]
-          (513,2)SyntaxKind[Terminal](text = "export")?
+          (513,2)SyntaxKind[Terminal]?
+            (513,2)SyntaxKind[TerminalLiteral](text = "export")
             (513,10)SyntaxKind[QuestionToken]
           (513,12)SyntaxKind[SymbolSpan]
             (513,12)SyntaxKind[Nonterminal]
               (513,12)SyntaxKind[Identifier](text = "AmbientModuleDeclaration")
       (514,2)SyntaxKind[RightHandSide]
         (514,2)SyntaxKind[SymbolSpan]
-          (514,2)SyntaxKind[Terminal](text = "export")?
+          (514,2)SyntaxKind[Terminal]?
+            (514,2)SyntaxKind[TerminalLiteral](text = "export")
             (514,10)SyntaxKind[QuestionToken]
           (514,12)SyntaxKind[SymbolSpan]
             (514,12)SyntaxKind[Nonterminal]
@@ -2426,19 +2643,23 @@
     (517,2)SyntaxKind[RightHandSideList]
       (517,2)SyntaxKind[RightHandSide]
         (517,2)SyntaxKind[SymbolSpan]
-          (517,2)SyntaxKind[Terminal](text = "declare")
+          (517,2)SyntaxKind[Terminal]
+            (517,2)SyntaxKind[TerminalLiteral](text = "declare")
           (517,12)SyntaxKind[SymbolSpan]
-            (517,12)SyntaxKind[Terminal](text = "module")
+            (517,12)SyntaxKind[Terminal]
+              (517,12)SyntaxKind[TerminalLiteral](text = "module")
             (517,21)SyntaxKind[SymbolSpan]
               (517,21)SyntaxKind[Nonterminal]
                 (517,21)SyntaxKind[Identifier](text = "StringLiteral")
               (517,35)SyntaxKind[SymbolSpan]
-                (517,35)SyntaxKind[Terminal](text = "{")
+                (517,35)SyntaxKind[Terminal]
+                  (517,35)SyntaxKind[TerminalLiteral](text = "{")
                 (517,39)SyntaxKind[SymbolSpan]
                   (517,39)SyntaxKind[Nonterminal]
                     (517,39)SyntaxKind[Identifier](text = "AmbientExternalModuleBody")
                   (517,65)SyntaxKind[SymbolSpan]
-                    (517,65)SyntaxKind[Terminal](text = "}")
+                    (517,65)SyntaxKind[Terminal]
+                      (517,65)SyntaxKind[TerminalLiteral](text = "}")
   (519,1)SyntaxKind[Production]
     (519,1)SyntaxKind[Identifier](text = "AmbientExternalModuleBody")
     (519,27)SyntaxKind[ColonToken]
@@ -2477,7 +2698,8 @@
             (528,2)SyntaxKind[Identifier](text = "ExportAssignment")
       (529,2)SyntaxKind[RightHandSide]
         (529,2)SyntaxKind[SymbolSpan]
-          (529,2)SyntaxKind[Terminal](text = "export")?
+          (529,2)SyntaxKind[Terminal]?
+            (529,2)SyntaxKind[TerminalLiteral](text = "export")
             (529,10)SyntaxKind[QuestionToken]
           (529,12)SyntaxKind[SymbolSpan]
             (529,12)SyntaxKind[Nonterminal]

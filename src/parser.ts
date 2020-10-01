@@ -55,7 +55,8 @@ import {
     PrimarySymbol,
     HtmlTrivia,
     Line,
-    NumberLiteral
+    NumberLiteral,
+    TerminalLiteral
 } from "./nodes";
 
 enum ParsingContext {
@@ -76,8 +77,8 @@ interface ListTypes {
     [ParsingContext.Arguments]: Argument;
     [ParsingContext.RightHandSideListIndented]: RightHandSide;
     [ParsingContext.SymbolSet]: SymbolSpan;
-    [ParsingContext.OneOfList]: Terminal;
-    [ParsingContext.OneOfListIndented]: Terminal;
+    [ParsingContext.OneOfList]: TerminalLiteral;
+    [ParsingContext.OneOfListIndented]: TerminalLiteral;
     [ParsingContext.OneOfSymbolList]: LexicalSymbol;
     [ParsingContext.NoSymbolHere]: PrimarySymbol;
 }
@@ -316,17 +317,17 @@ export class Parser {
                 return this.isStartOfRightHandSide();
 
             case ParsingContext.SymbolSet:
-                return this.token === SyntaxKind.Terminal || this.token === SyntaxKind.Identifier || this.token === SyntaxKind.UnicodeCharacterLiteral;
+                return this.token === SyntaxKind.TerminalLiteral || this.token === SyntaxKind.Identifier || this.token === SyntaxKind.UnicodeCharacterLiteral;
 
             case ParsingContext.OneOfList:
             case ParsingContext.OneOfListIndented:
-                return this.token === SyntaxKind.Terminal || this.token === SyntaxKind.UnicodeCharacterLiteral;
+                return this.token === SyntaxKind.TerminalLiteral || this.token === SyntaxKind.UnicodeCharacterLiteral;
 
             case ParsingContext.OneOfSymbolList:
-                return this.token === SyntaxKind.Terminal || this.token === SyntaxKind.Identifier || this.token === SyntaxKind.UnicodeCharacterLiteral;
+                return this.token === SyntaxKind.TerminalLiteral || this.token === SyntaxKind.Identifier || this.token === SyntaxKind.UnicodeCharacterLiteral;
 
             case ParsingContext.NoSymbolHere:
-                return this.token === SyntaxKind.Terminal || this.token === SyntaxKind.Identifier || this.token === SyntaxKind.UnicodeCharacterLiteral;
+                return this.token === SyntaxKind.TerminalLiteral || this.token === SyntaxKind.Identifier || this.token === SyntaxKind.UnicodeCharacterLiteral;
 
             default:
                 return false;
@@ -353,7 +354,7 @@ export class Parser {
 
             case ParsingContext.OneOfList:
             case ParsingContext.OneOfListIndented:
-                return this.parseTerminal(/*allowOptional*/ false);
+                return this.parseTerminalLiteral();
 
             case ParsingContext.OneOfSymbolList:
             case ParsingContext.NoSymbolHere:
@@ -421,11 +422,11 @@ export class Parser {
                 break;
 
             case ParsingContext.OneOfList:
-                this.diagnostics.report(this.scanner.getTokenPos(), Diagnostics._0_expected, formatList([SyntaxKind.Terminal, "«line terminator»"]));
+                this.diagnostics.report(this.scanner.getTokenPos(), Diagnostics._0_expected, formatList([SyntaxKind.TerminalLiteral, "«line terminator»"]));
                 break;
 
             case ParsingContext.OneOfListIndented:
-                this.diagnostics.report(this.scanner.getTokenPos(), Diagnostics._0_expected, formatList([SyntaxKind.Terminal, "«dedent»"]));
+                this.diagnostics.report(this.scanner.getTokenPos(), Diagnostics._0_expected, formatList([SyntaxKind.TerminalLiteral, "«dedent»"]));
                 break;
 
             case ParsingContext.RightHandSideListIndented:
@@ -545,11 +546,10 @@ export class Parser {
         return this.finishNode(node, fullStart);
     }
 
-    private parseUnicodeCharacterLiteral(allowOptional: boolean): UnicodeCharacterLiteral {
+    private parseUnicodeCharacterLiteral(): UnicodeCharacterLiteral {
         const fullStart = this.scanner.getStartPos();
         const text = this.readTokenText(SyntaxKind.UnicodeCharacterLiteral);
-        const questionToken = allowOptional ? this.parseToken(SyntaxKind.QuestionToken) : undefined;
-        const node = new UnicodeCharacterLiteral(text, questionToken);
+        const node = new UnicodeCharacterLiteral(text);
         return this.finishNode(node, fullStart);
     }
 
@@ -646,11 +646,10 @@ export class Parser {
     }
 
     private parseInvalidAssertionTail(openBracketToken: Token<SyntaxKind.OpenBracketToken>): Assertion {
-        const fullStart = this.scanner.getStartPos();
         this.skipUntil(isInvalidConstraintTailRecoveryToken);
         const closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
         const node = new InvalidAssertion(openBracketToken, closeBracketToken);
-        return this.finishNode(node, fullStart);
+        return this.finishNode(node, openBracketToken.pos);
     }
 
     private parseAssertion(openBracketToken: Token<SyntaxKind.OpenBracketToken>): Assertion {
@@ -696,7 +695,7 @@ export class Parser {
                 if (!fragments) fragments = [];
                 fragments.push(this.parseProseFragmentLiteral(this.token));
             }
-            else if (this.token === SyntaxKind.Terminal) {
+            else if (this.token === SyntaxKind.TerminalLiteral) {
                 if (!fragments) fragments = [];
                 fragments.push(this.parseTerminal(/*allowOptional*/ false));
             }
@@ -719,11 +718,18 @@ export class Parser {
         return this.finishNode(node, fullStart);
     }
 
+    private parseTerminalLiteral(): TerminalLiteral {
+        const fullStart = this.scanner.getStartPos();
+        const text = this.readTokenValue(SyntaxKind.TerminalLiteral);
+        const node = new TerminalLiteral(text);
+        return this.finishNode(node, fullStart);
+    }
+
     private parseTerminal(allowOptional: boolean): Terminal {
         const fullStart = this.scanner.getStartPos();
-        const text = this.readTokenValue(SyntaxKind.Terminal);
+        const literal = this.parseTerminalLiteral();
         const questionToken = allowOptional ? this.parseToken(SyntaxKind.QuestionToken) : undefined;
-        const node = new Terminal(text, questionToken);
+        const node = new Terminal(literal, questionToken);
         return this.finishNode(node, fullStart);
     }
 
@@ -804,19 +810,22 @@ export class Parser {
         return this.finishNode(node, fullStart);
     }
 
-    private parseUnicodeCharacterRangeOrHigher(allowOptional: boolean): UnicodeCharacterLiteral | UnicodeCharacterRange {
-        const symbol = this.parseUnicodeCharacterLiteral(allowOptional);
+    private parseUnicodeCharacterRangeOrHigher(allowOptional: boolean): Terminal | UnicodeCharacterRange {
+        const fullStart = this.scanner.getStartPos();
+        const literal = this.parseUnicodeCharacterLiteral();
+        const questionToken = allowOptional ? this.parseToken(SyntaxKind.QuestionToken) : undefined;
         if (!allowOptional) {
             const throughKeyword = this.parseToken(SyntaxKind.ThroughKeyword);
             if (throughKeyword) {
-                return this.parseUnicodeCharacterRangeTail(symbol, throughKeyword);
+                return this.parseUnicodeCharacterRangeTail(literal, throughKeyword);
             }
         }
-        return symbol;
+        const node = new Terminal(literal, questionToken);
+        return this.finishNode(node, fullStart);
     }
 
     private parseUnicodeCharacterRangeTail(left: UnicodeCharacterLiteral, throughKeyword: Token<SyntaxKind.ThroughKeyword>): UnicodeCharacterRange {
-        const right = this.parseUnicodeCharacterLiteral(/*allowOptional*/ false);
+        const right = this.parseUnicodeCharacterLiteral();
         const node = new UnicodeCharacterRange(left, throughKeyword, right);
         this.finishNode(node, left.pos);
         return node;
@@ -827,7 +836,7 @@ export class Parser {
             case SyntaxKind.UnicodeCharacterLiteral:
                 return this.parseUnicodeCharacterRangeOrHigher(allowOptional);
 
-            case SyntaxKind.Terminal:
+            case SyntaxKind.TerminalLiteral:
                 return this.parseTerminal(allowOptional);
 
             case SyntaxKind.Identifier:
@@ -916,7 +925,7 @@ export class Parser {
     private isStartOfSymbolSpan(): boolean {
         switch (this.token) {
             case SyntaxKind.UnicodeCharacterLiteral:
-            case SyntaxKind.Terminal:
+            case SyntaxKind.TerminalLiteral:
             case SyntaxKind.Identifier:
             case SyntaxKind.OpenBracketToken:
             case SyntaxKind.OpenBracketGreaterThanToken:
@@ -1151,27 +1160,27 @@ function isRightHandSideListIndentedRecoveryToken(scanner: Scanner) {
 function isSymbolSetRecoveryToken(scanner: Scanner) {
     const token = scanner.getToken();
     return token === SyntaxKind.CommaToken
-        || token === SyntaxKind.Terminal
+        || token === SyntaxKind.TerminalLiteral
         || token === SyntaxKind.CloseBraceToken
         || scanner.hasPrecedingLineTerminator() && !scanner.isLineContinuation();
 }
 
 function isOneOfListRecoveryToken(scanner: Scanner) {
     const token = scanner.getToken();
-    return token === SyntaxKind.Terminal
+    return token === SyntaxKind.TerminalLiteral
         || scanner.hasPrecedingLineTerminator();
 }
 
 function isOneOfListIndentedRecoveryToken(scanner: Scanner) {
     const token = scanner.getToken();
-    return token === SyntaxKind.Terminal
+    return token === SyntaxKind.TerminalLiteral
         || scanner.hasPrecedingLineTerminator();
 }
 
 function isOneOfSymbolListRecoveryToken(scanner: Scanner) {
     const token = scanner.getToken();
     return token === SyntaxKind.OrKeyword
-        || token === SyntaxKind.Terminal
+        || token === SyntaxKind.TerminalLiteral
         || token === SyntaxKind.Identifier
         || token === SyntaxKind.OpenBracketToken
         || token === SyntaxKind.QuestionToken
@@ -1182,7 +1191,7 @@ function isNoSymbolHereRecoveryToken(scanner: Scanner) {
     const token = scanner.getToken();
     return token === SyntaxKind.OrKeyword
         || token === SyntaxKind.HereKeyword
-        || token === SyntaxKind.Terminal
+        || token === SyntaxKind.TerminalLiteral
         || token === SyntaxKind.Identifier
         || token === SyntaxKind.CloseBracketToken
         || token === SyntaxKind.QuestionToken
@@ -1192,7 +1201,7 @@ function isNoSymbolHereRecoveryToken(scanner: Scanner) {
 function isInvalidSymbolRecoveryToken(scanner: Scanner) {
     const token = scanner.getToken();
     return token === SyntaxKind.OpenBracketToken
-        || token === SyntaxKind.Terminal
+        || token === SyntaxKind.TerminalLiteral
         || token === SyntaxKind.Identifier
         || scanner.hasPrecedingLineTerminator();
 }
@@ -1200,7 +1209,7 @@ function isInvalidSymbolRecoveryToken(scanner: Scanner) {
 function isInvalidConstraintTailRecoveryToken(scanner: Scanner) {
     const token = scanner.getToken();
     return token === SyntaxKind.CloseBracketToken
-        || token === SyntaxKind.Terminal
+        || token === SyntaxKind.TerminalLiteral
         || scanner.hasPrecedingLineTerminator();
 }
 

@@ -5,4 +5,5 @@
     (1,2)SyntaxKind[ColonToken]
     (1,4)SyntaxKind[RightHandSide]
       (1,4)SyntaxKind[SymbolSpan]
-        (1,4)SyntaxKind[Terminal](text = "a")
+        (1,4)SyntaxKind[Terminal]
+          (1,4)SyntaxKind[TerminalLiteral](text = "a")

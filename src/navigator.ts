@@ -8,7 +8,8 @@
 import {
     SourceFile,
     Node,
-    TextContentNode
+    TextContentNode,
+    Token
 } from "./nodes";
 import {
     Position
@@ -19,6 +20,11 @@ import {
     SyntaxKind,
     tokenToString
 } from "./tokens";
+import { Scanner } from "./scanner";
+import { NullDiagnosticMessages } from "./diagnostics";
+
+const perFileLeadingTokensMap = new WeakMap<SourceFile, Map<Node, readonly Token[] | null>>();
+const perFileTrailingTokensMap = new WeakMap<SourceFile, Map<Node, readonly Token[] | null>>();
 
 /**
  * Navigates the syntax-tree of a {@link SourceFile}.
@@ -34,18 +40,21 @@ import {
  * navigate to any other node within the syntax tree.
  */
 export class NodeNavigator {
-    private _sourceFile!: SourceFile;
-    private _nodeStack!: (Node | undefined)[];
-    private _edgeStack!: (number | undefined)[];
-    private _arrayStack!: (ReadonlyArray<Node> | undefined)[];
-    private _offsetStack!: (number | undefined)[];
-    private _currentDepth!: number;
+    private _sourceFile: SourceFile;
+    private _nodeStack: (Node | undefined)[];
+    private _edgeStack: (number | undefined)[];
+    private _arrayStack: (ReadonlyArray<Node> | undefined)[];
+    private _offsetStack: (number | undefined)[];
+    private _currentDepth: number;
     private _currentNode!: Node;
     private _currentEdge!: number;
     private _currentOffset!: number;
     private _currentArray: ReadonlyArray<Node> | undefined;
     private _parentNode: Node | undefined;
     private _hasAnyChildren: boolean | undefined;
+    private _leadingTokens: readonly Token[] | undefined | null;
+    private _trailingTokens: readonly Token[] | undefined | null;
+    private _tokenOffset: number;
     private _copyOnNavigate: boolean = false;
 
     /**
@@ -65,6 +74,9 @@ export class NodeNavigator {
             this._offsetStack = navigator._offsetStack.slice();
             this._nodeStack = navigator._nodeStack.slice();
             this._currentDepth = this._nodeStack.length - 1;
+            this._leadingTokens = navigator._leadingTokens;
+            this._trailingTokens = navigator._trailingTokens;
+            this._tokenOffset = navigator._tokenOffset;
         }
         else {
             this._sourceFile = <SourceFile>sourceFileOrNavigator;
@@ -73,6 +85,9 @@ export class NodeNavigator {
             this._offsetStack = [0];
             this._nodeStack = [this._sourceFile];
             this._currentDepth = 0;
+            this._leadingTokens = undefined;
+            this._trailingTokens = undefined;
+            this._tokenOffset = -1;
         }
         this._afterNavigate();
     }
@@ -133,57 +148,161 @@ export class NodeNavigator {
      * Gets the name of the property on the parent {@link Node} the navigator is currently focused on.
      */
     public getName() {
-        return this._parentNode?.edgeName(this._currentEdge);
+        return this._leadingTokens ? "(leadingTokens)" :
+            this._trailingTokens ? "(trailingTokens)" :
+            this._parentNode?.edgeName(this._currentEdge);
     }
 
     /**
      * Gets the containing node array of {@link Node} the navigator is currently focused on.
      */
     public getArray() {
-        return this._currentArray;
+        return this._leadingTokens || this._trailingTokens || this._currentArray;
     }
 
     /**
      * Gets the ordinal offset within the containing node array of {@link Node} the navigator is currently focused on.
      */
     public getOffset() {
-        return this._currentOffset;
+        return this._leadingTokens || this._trailingTokens ? this._tokenOffset : this._currentOffset;
     }
 
     /**
      * Gets the current depth within the syntax-tree of the current focus of the navigator.
      */
     public getDepth() {
-        return this._currentDepth;
+        return this._getDepth();
     }
 
     /**
      * Returns a value indicating whether the focus of the navigator points to a {@link Node} in an array.
      */
     public isArray(): boolean {
-        return this._currentArray !== undefined;
+        return this._leadingTokens !== undefined ||
+            this._trailingTokens !== undefined ||
+            this._currentArray !== undefined;
     }
 
     /**
-     * Returns a value indicating whether the focus of the navigator points to either a {@link Token}, {@link TextContentNode}, or {@link InvalidSymbol}.
+     * Returns a value indicating whether the navigator is focused on a leading token of the actual current node.
+     */
+    public isLeadingToken() {
+        return !!this._leadingTokens;
+    }
+
+    /**
+     * Returns a value indicating whether the navigator is focused on a trailing token of the actual current node.
+     */
+    public isTrailingToken() {
+        return !!this._trailingTokens;
+    }
+
+    /**
+     * Returns a value indicating whether the focus of the navigator points to either a {@link Token}, {@link TextContentNode}, or {@link InvalidSymbol} (as long as that `InvalidSymbol` has no trailing tokens).
      */
     public isToken(): boolean {
         const kind = this.getKind();
         return isTokenKind(kind)
             || isTextContentKind(kind)
-            || kind === SyntaxKind.InvalidSymbol;
+            || !!this._leadingTokens
+            || !!this._trailingTokens
+            || kind === SyntaxKind.InvalidSymbol && !(scanInterveningTokens(this._currentNode, this._sourceFile), getTrailingTokens(this._currentNode, this._sourceFile));
+    }
+
+    /**
+     * Creates an iterator for the ancestors of the focused {@link Node}.
+     * @param predicate An optional callback that can be used to filter the ancestors of the node.
+     */
+    public ancestors(predicate?: (ancestor: Node) => boolean): IterableIterator<Node>;
+    /**
+     * Creates an iterator for the parse tree ancestors of the focused {@link Node}.
+     * @param kind The {@link SyntaxKind} that any yielded ancestor must match.
+     */
+    public ancestors(kind: SyntaxKind): IterableIterator<Node>;
+    public * ancestors(predicateOrKind?: SyntaxKind | ((ancestor: Node) => boolean)): IterableIterator<Node> {
+        const navigator = this.clone();
+        while (navigator.moveToParent()) {
+            if (matchPredicateOrKind(navigator._currentNode, predicateOrKind)) yield navigator._currentNode;
+        }
+    }
+
+    /**
+     * Creates an iterator for the parse tree children of the focused {@link Node}.
+     * @param predicate An optional callback that can be used to filter the children of the node.
+     * @remarks This does not account for tokens not included in the parse tree.
+     */
+    public children(predicate?: (child: Node) => boolean): IterableIterator<Node>;
+    /**
+     * Creates an iterator for the parse tree children of the focused {@link Node}.
+     * @param kind The {@link SyntaxKind} that any yielded child must match.
+     * @remarks This does not account for tokens not included in the parse tree.
+     */
+    public children(kind: SyntaxKind): IterableIterator<Node>;
+    public * children(predicateOrKind?: SyntaxKind | ((child: Node) => boolean)): IterableIterator<Node> {
+        const navigator = this.clone();
+        if (navigator.moveToFirstChild()) {
+            do {
+                if (matchPredicateOrKind(navigator._currentNode, predicateOrKind)) yield navigator._currentNode;
+            }
+            while (navigator.moveToNextSibling());
+        }
+    }
+
+    /**
+     * Creates an iterator for the tokens of the focused {@link Node}.
+     * @param predicate An optional callback that can be used to filter the tokens of the node.
+     */
+    public tokens(predicate?: (token: Node) => boolean): IterableIterator<Node>;
+    /**
+     * Creates an iterator for the tokens of the focused {@link Node}.
+     * @param kind The {@link SyntaxKind} that any yielded token must match.
+     */
+    public tokens(kind: SyntaxKind): IterableIterator<Node>;
+    public * tokens(predicateOrKind?: SyntaxKind | ((child: Node) => boolean)): IterableIterator<Node> {
+        const navigator = this.clone();
+        if (navigator.moveToFirstToken()) {
+            do {
+                if (matchPredicateOrKind(navigator._currentNode, predicateOrKind)) yield navigator._currentNode;
+            }
+            while (navigator.moveToNextToken());
+        }
+    }
+
+    /**
+     * Determines whether the focused {@link Node} has an ancestor that matches the supplied predicate.
+     * @param predicate An optional callback used to filter the ancestors of the node.
+     * @returns `true` if the focused {@link Node} contains an ancestor that matches the supplied predicate; otherwise, `false`.
+     */
+    public hasAncestor(predicate?: (ancestor: Node) => boolean): boolean;
+    /**
+     * Determines whether the focused {@link Node} has an ancestor that matches the supplied predicate.
+     * @param predicate An optional callback used to filter the ancestors of the node.
+     * @returns `true` if the focused {@link Node} contains an ancestor that matches the supplied predicate; otherwise, `false`.
+     */
+    public hasAncestor(kind: SyntaxKind): boolean;
+    public hasAncestor(predicateOrKind?: SyntaxKind | ((ancestor: Node) => boolean)): boolean {
+        for (let nextDepth = this._getDepth() - 1; nextDepth >= 0; nextDepth--) {
+            const nextNode = this._nodeStack[nextDepth]!;
+            if (matchPredicateOrKind(nextNode, predicateOrKind)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
      * Determines whether the focused {@link Node} has any children that match the supplied predicate.
      * @param predicate An optional callback that can be used to filter the children of the node.
      * @returns `true` if the focused {@link Node} contains a child that matches the supplied predicate; otherwise, `false`.
+     * @remarks This does not account for tokens not included in the parse tree.
      */
     public hasChildren(predicate?: (child: Node) => boolean): boolean;
     /**
      * Determines whether the focused {@link Node} has any children with the provided {@link SyntaxKind}.
      * @param kind The {@link SyntaxKind} that at least one child must match.
      * @returns `true` if the focused {@link Node} contains a matching child; otherwise, `false`.
+     * @remarks This does not account for tokens not included in the parse tree.
      */
     public hasChildren(kind: SyntaxKind): boolean;
     public hasChildren(predicateOrKind?: SyntaxKind | ((child: Node) => boolean)): boolean {
@@ -214,29 +333,6 @@ export class NodeNavigator {
     }
 
     /**
-     * Determines whether the focused {@link Node} has an ancestor that matches the supplied predicate.
-     * @param predicate An optional callback used to filter the ancestors of the node.
-     * @returns `true` if the focused {@link Node} contains an ancestor that matches the supplied predicate; otherwise, `false`.
-     */
-    public hasAncestor(predicate?: (ancestor: Node) => boolean): boolean;
-    /**
-     * Determines whether the focused {@link Node} has an ancestor that matches the supplied predicate.
-     * @param predicate An optional callback used to filter the ancestors of the node.
-     * @returns `true` if the focused {@link Node} contains an ancestor that matches the supplied predicate; otherwise, `false`.
-     */
-    public hasAncestor(kind: SyntaxKind): boolean;
-    public hasAncestor(predicateOrKind?: SyntaxKind | ((ancestor: Node) => boolean)): boolean {
-        for (let nextDepth = this._currentDepth - 1; nextDepth >= 0; nextDepth--) {
-            const nextNode = this._nodeStack[nextDepth]!;
-            if (matchPredicateOrKind(nextNode, predicateOrKind)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Determines whether the focused {@link Node} matches the supplied predicate.
      * @param predicate A callback used to match the focused {@link Node}.
      * @returns `true` if the focused {@link Node} matches; otherwise, `false`.
@@ -248,12 +344,9 @@ export class NodeNavigator {
      * @returns `true` if the focused {@link Node} matches; otherwise, `false`.
      */
     public isMatch(kind: SyntaxKind): boolean;
-    /* @internal */
-    public isMatch(predicateOrKind?: SyntaxKind | ((node: Node) => boolean)): boolean;
     public isMatch(predicateOrKind: SyntaxKind | ((node: Node) => boolean)): boolean {
-        return matchPredicateOrKind(this._currentNode, predicateOrKind);
+        return this._isMatch(predicateOrKind);
     }
-
 
     /**
      * Determines whether this navigator is focused on the same location within the tree as another navigator.
@@ -270,77 +363,10 @@ export class NodeNavigator {
             && this._currentEdge === other._currentEdge
             && this._currentArray === other._currentArray
             && this._currentOffset === other._currentOffset
-            && this._currentNode === other._currentNode;
-    }
-
-    /**
-     * Moves the focus of the navigator to the {@link Node} that contains the provided [Position](xref:grammarkdown!Position:interface).
-     * @param position The [Position](xref:grammarkdown!Position:interface) at which to focus the navigator.
-     * @param outermost When `true`, moves to the outermost node containing the provided position.
-     * When `false` or not specified, moves to the innermost node containing the provided position.
-     * @returns `true` if the navigator's focus changed; otherwise, `false`.
-     */
-    public moveToPosition(position: Position, outermost?: boolean) {
-        const pos = this._sourceFile.lineMap.offsetAt(position);
-        const currentDepth = this._currentDepth;
-        const edgeStack = this._edgeStack;
-        const arrayStack = this._arrayStack;
-        const offsetStack = this._offsetStack;
-        const nodeStack = this._nodeStack;
-        const hasChild = this._hasAnyChildren;
-
-        this._copyOnNavigate = true;
-        this.moveToRoot();
-        if (pos === 0) {
-            if (outermost) {
-                this.moveToFirstChild();
-            }
-            else {
-                this.moveToFirstToken();
-            }
-            return true;
-        }
-        if (pos === this._sourceFile.text.length) {
-            if (outermost) {
-                this.moveToLastChild();
-            }
-            else {
-                this.moveToLastToken();
-            }
-            return true;
-        }
-        if (this._moveToPositionWorker(pos, outermost)) {
-            return true;
-        }
-
-        this._currentDepth = currentDepth;
-        this._edgeStack = edgeStack;
-        this._arrayStack = arrayStack;
-        this._offsetStack = offsetStack;
-        this._nodeStack = nodeStack;
-        this._hasAnyChildren = hasChild;
-        this._afterNavigate();
-        return false;
-    }
-
-    private _moveToPositionWorker(pos: number, outermost?: boolean) {
-        if (pos >= this._currentNode.pos && pos < this._currentNode.end) {
-            if (!outermost) {
-                if (this.moveToFirstChild()) {
-                    do {
-                        if (this._moveToPositionWorker(pos)) {
-                            return true;
-                        }
-                    }
-                    while (this.moveToNextSibling());
-                    this.moveToParent();
-                }
-            }
-
-            return true;
-        }
-
-        return false;
+            && this._currentNode === other._currentNode
+            && this._leadingTokens === other._leadingTokens
+            && this._trailingTokens === other._trailingTokens
+            && this._tokenOffset === other._tokenOffset;
     }
 
     /**
@@ -362,6 +388,9 @@ export class NodeNavigator {
         this._arrayStack = other._arrayStack.slice();
         this._offsetStack = other._offsetStack.slice();
         this._nodeStack = other._nodeStack.slice();
+        this._leadingTokens = other._leadingTokens;
+        this._trailingTokens = other._trailingTokens;
+        this._tokenOffset = other._tokenOffset;
         this._afterNavigate();
         return true;
     }
@@ -371,7 +400,7 @@ export class NodeNavigator {
      * @returns `true` if the navigator's focus changed; otherwise, `false`.
      */
     public moveToRoot(): boolean {
-        if (this._currentDepth > 0) {
+        if (this._getDepth() > 0) {
             this._beforeNavigate();
             this._reset();
             this._afterNavigate();
@@ -393,7 +422,7 @@ export class NodeNavigator {
      */
     public moveToParent(kind: SyntaxKind): boolean;
     public moveToParent(predicateOrKind?: SyntaxKind | ((node: Node) => boolean)): boolean {
-        if (this._currentDepth > 0) {
+        if (this._getDepth() > 0) {
             if (matchPredicateOrKind(this._parentNode!, predicateOrKind)) {
                 this._beforeNavigate();
                 this._popEdge();
@@ -420,7 +449,7 @@ export class NodeNavigator {
      */
     public moveToAncestorOrSelf(kind: SyntaxKind): boolean;
     public moveToAncestorOrSelf(predicateOrKind: SyntaxKind | ((node: Node) => boolean)): boolean {
-        return this.isMatch(predicateOrKind as SyntaxKind)
+        return this._isMatch(predicateOrKind as SyntaxKind)
             || this.moveToAncestor(predicateOrKind as SyntaxKind);
     }
 
@@ -437,11 +466,11 @@ export class NodeNavigator {
      */
     public moveToAncestor(kind: SyntaxKind): boolean;
     public moveToAncestor(predicateOrKind: SyntaxKind | ((node: Node) => boolean)): boolean {
-        for (let nextDepth = this._currentDepth - 1; nextDepth >= 0; nextDepth--) {
+        for (let nextDepth = this._getDepth() - 1; nextDepth >= 0; nextDepth--) {
             const nextNode = this._nodeStack[nextDepth]!;
             if (matchPredicateOrKind(nextNode, predicateOrKind)) {
                 this._beforeNavigate();
-                while (this._currentDepth !== nextDepth) {
+                while (this._getDepth() !== nextDepth) {
                     this._popEdge();
                 }
                 this._afterNavigate();
@@ -837,14 +866,7 @@ export class NodeNavigator {
      */
     public moveToFirstToken(kind: SyntaxKind): boolean;
     public moveToFirstToken(predicateOrKind?: SyntaxKind | ((node: Node) => boolean)) {
-        if (this.isToken()) return true;
-        const navigator = this.clone();
-        while (!navigator.isToken()) {
-            if (!navigator.moveToFirstChild()) {
-                return false;
-            }
-        }
-        return navigator.isMatch(predicateOrKind) && this.moveTo(navigator);
+        return this._speculate(() => this._moveToFirstTokenWorker() && this._isMatch(predicateOrKind));
     }
 
     /**
@@ -865,14 +887,7 @@ export class NodeNavigator {
      */
     public moveToLastToken(kind: SyntaxKind): boolean;
     public moveToLastToken(predicateOrKind?: SyntaxKind | ((node: Node) => boolean)) {
-        if (this.isToken()) return true;
-        const navigator = this.clone();
-        while (!navigator.isToken()) {
-            if (!navigator.moveToLastChild()) {
-                return false;
-            }
-        }
-        return navigator.isMatch(predicateOrKind) && this.moveTo(navigator);
+        return this._speculate(() => this._moveToLastTokenWorker() && this._isMatch(predicateOrKind));
     }
 
     /**
@@ -893,16 +908,7 @@ export class NodeNavigator {
      */
     public moveToNextToken(kind: SyntaxKind): boolean;
     public moveToNextToken(predicateOrKind?: SyntaxKind | ((node: Node) => boolean)) {
-        const navigator = this.clone();
-        while (!navigator.moveToNextSibling()) {
-            if (!navigator.moveToParent()) {
-                return false;
-            }
-        }
-        if (!navigator.moveToFirstToken()) {
-            return false;
-        }
-        return navigator.isMatch(predicateOrKind) && this.moveTo(navigator);
+        return this._speculate(() => this._moveToNextTokenWorker() && this._isMatch(predicateOrKind));
     }
 
     /**
@@ -923,16 +929,355 @@ export class NodeNavigator {
      */
     public moveToPreviousToken(kind: SyntaxKind): boolean;
     public moveToPreviousToken(predicateOrKind?: SyntaxKind | ((node: Node) => boolean)) {
-        const navigator = this.clone();
-        while (!navigator.moveToPreviousSibling()) {
-            if (!navigator.moveToParent()) {
-                return false;
+        return this._speculate(() => this._moveToPreviousTokenWorker() && this._isMatch(predicateOrKind));
+    }
+
+    /**
+     * Moves the focus of the navigator to the {@link Node} that contains the provided [Position](xref:grammarkdown!Position:interface).
+     * @param position The [Position](xref:grammarkdown!Position:interface) at which to focus the navigator.
+     * @param outermost When `true`, moves to the outermost node containing the provided position.
+     * When `false` or not specified, moves to the innermost node containing the provided position.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToPosition(position: Position, outermost?: boolean) {
+        const pos = this._sourceFile.lineMap.offsetAt(position);
+        return this._speculate(() => {
+            this.moveToRoot();
+            if (pos === 0) {
+                if (outermost) {
+                    this.moveToFirstChild();
+                }
+                else {
+                    this.moveToFirstToken();
+                }
+                return true;
+            }
+            if (pos === this._sourceFile.text.length) {
+                if (outermost) {
+                    this.moveToLastChild();
+                }
+                else {
+                    this.moveToLastToken();
+                }
+                return true;
+            }
+            if (this._moveToPositionWorker(pos, outermost)) {
+                return true;
+            }
+            return false;
+        });
+    }
+
+    /**
+     * Moves the focus of the navigator to the nearest {@link Token}, {@link TextContentNode}, or {@link InvalidSymbol} that is touching the provided [Position](xref:grammarkdown!Position:interface).
+     * @param position The [Position](xref:grammarkdown!Position:interface) at which to focus the navigator.
+     * @param predicate A callback used to match a token node.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToTouchingToken(position: Position, predicate?: SyntaxKind): boolean;
+    /**
+     * Moves the focus of the navigator to the nearest {@link Token}, {@link TextContentNode}, or {@link InvalidSymbol} that is touching the provided [Position](xref:grammarkdown!Position:interface).
+     * @param position The [Position](xref:grammarkdown!Position:interface) at which to focus the navigator.
+     * @param kind The {@link SyntaxKind} that the previous token must match.
+     * @returns `true` if the navigator's focus changed; otherwise, `false`.
+     */
+    public moveToTouchingToken(position: Position, kind: SyntaxKind): boolean;
+    public moveToTouchingToken(position: Position, predicateOrKind?: SyntaxKind | ((node: Node) => boolean)): boolean {
+        return this._speculate(() => this._moveToTouchingTokenWorker(position) && this._isMatch(predicateOrKind));
+    }
+
+    private _isMatch(predicateOrKind?: SyntaxKind | ((node: Node) => boolean)): boolean {
+        return matchPredicateOrKind(this._currentNode, predicateOrKind);
+    }
+
+    private _moveToPositionWorker(pos: number, outermost?: boolean) {
+        if (pos >= this._currentNode.pos && pos < this._currentNode.end) {
+            if (!outermost) {
+                if (this.moveToFirstChild()) {
+                    do {
+                        if (this._moveToPositionWorker(pos)) {
+                            return true;
+                        }
+                    }
+                    while (this.moveToNextSibling());
+                    this.moveToParent();
+                }
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private _moveToTouchingTokenWorker(position: Position) {
+        if (this.moveToPosition(position)) {
+            // If the position is inside the trivia of the current node, move to the previous node.
+            const tokenPosition = this._sourceFile.lineMap.positionAt(this._currentNode.getStart(this._sourceFile));
+            if (Position.compare(position, tokenPosition) < 0) {
+                return this.moveToPreviousToken();
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private _moveToFirstLeadingToken() {
+        if (this._parentNode) scanInterveningTokens(this._parentNode, this._sourceFile);
+        const leadingTokens = getLeadingTokens(this._currentNode, this._sourceFile);
+        if (leadingTokens) {
+            this._beforeNavigate();
+            this._leadingTokens = leadingTokens;
+            this._trailingTokens = undefined;
+            this._tokenOffset = 0;
+            this._afterNavigate();
+            return true;
+        }
+        return false;
+    }
+
+    private _moveToPreviousLeadingToken() {
+        if (this._leadingTokens && this._tokenOffset > 0) {
+            this._beforeNavigate();
+            this._tokenOffset--;
+            this._afterNavigate();
+            return true;
+        }
+        return false;
+    }
+
+    private _moveToNextLeadingToken() {
+        if (this._leadingTokens && this._tokenOffset < this._leadingTokens.length - 1) {
+            this._beforeNavigate();
+            this._tokenOffset++;
+            this._afterNavigate();
+            return true;
+        }
+        return false;
+    }
+
+    private _moveToLastLeadingToken() {
+        if (this._parentNode) scanInterveningTokens(this._parentNode, this._sourceFile);
+        const leadingTokens = getLeadingTokens(this._currentNode, this._sourceFile);
+        if (leadingTokens) {
+            this._beforeNavigate();
+            this._leadingTokens = leadingTokens;
+            this._trailingTokens = undefined;
+            this._tokenOffset = leadingTokens.length - 1;
+            this._afterNavigate();
+            return true;
+        }
+        return false;
+    }
+
+    private _moveToFirstTrailingToken() {
+        scanInterveningTokens(this._currentNode, this._sourceFile);
+        const trailingTokens = getTrailingTokens(this._currentNode, this._sourceFile);
+        if (trailingTokens) {
+            this._beforeNavigate();
+            this._leadingTokens = undefined;
+            this._trailingTokens = trailingTokens;
+            this._tokenOffset = 0;
+            this._afterNavigate();
+            return true;
+        }
+        return false;
+    }
+
+    private _moveToLastTrailingToken() {
+        scanInterveningTokens(this._currentNode, this._sourceFile);
+        const trailingTokens = getTrailingTokens(this._currentNode, this._sourceFile);
+        if (trailingTokens) {
+            this._beforeNavigate();
+            this._leadingTokens = undefined;
+            this._trailingTokens = trailingTokens;
+            this._tokenOffset = trailingTokens.length - 1;
+            this._afterNavigate();
+            return true;
+        }
+        return false;
+    }
+
+    private _moveToPreviousTrailingToken() {
+        if (this._trailingTokens && this._tokenOffset > 0) {
+            this._beforeNavigate();
+            this._tokenOffset--;
+            this._afterNavigate();
+            return true;
+        }
+        return false;
+    }
+
+    private _moveToNextTrailingToken() {
+        if (this._trailingTokens && this._tokenOffset < this._trailingTokens.length - 1) {
+            this._beforeNavigate();
+            this._tokenOffset++;
+            this._afterNavigate();
+            return true;
+        }
+        return false;
+    }
+
+    private _moveToFirstTokenWorker() {
+        // find the first token within the `pos` and `end` of the current node.
+        while (!this.isToken()) {
+            // not a token, try its children
+            if (!this.moveToFirstChild()) {
+                // no children, try trailing tokens...
+                return this._moveToFirstTrailingToken();
+            }
+            // found a child, try leading tokens...
+            if (this._moveToFirstLeadingToken()) return true;
+            // try again with the child...
+        }
+        return true;
+    }
+
+    private _moveToLastTokenWorker() {
+        // find the last token within the `pos` and `end` of the current node
+        while (!this.isToken()) {
+            // not a token, try this node's trailing tokens...
+            if (this._moveToLastTrailingToken()) return true;
+            // no trailing tokens...
+            if (!this.moveToLastChild()) return false; // no children, nothing else to try
+            // try again with the child...
+        }
+        return true;
+    }
+
+    private _moveToNextTokenWorker() {
+        if (this._leadingTokens) {
+            if (this._moveToNextLeadingToken()) return true; // we got the next leading token
+
+            // done processing leading tokens
+            this._beforeNavigate();
+            this._leadingTokens = undefined;
+            this._tokenOffset = -1;
+            this._afterNavigate();
+
+            // we should now be on the node following the leading tokens
+            return this._moveToFirstTokenWorker();
+        }
+        else if (this._trailingTokens) {
+            if (this._moveToNextTrailingToken()) return true; // we got the next trailing token
+
+            // done processing trailing tokens
+            this._beforeNavigate();
+            this._trailingTokens = undefined;
+            this._tokenOffset = -1;
+            this._afterNavigate();
+
+            // we should now be on the parent node containing the trailing tokens,
+            // need to try with its next sibling...
+        }
+
+        // move to the next sibling of this node
+        while (!this.moveToNextSibling()) {
+            // no sibling, try parents...
+            if (!this.moveToParent()) return false; // no parent, nothing else to try
+            // found parent, try trailing tokens...
+            if (this._moveToFirstTrailingToken()) return true; // moved to first trailing token
+            // no trailing token, try next sibling of parent...
+        }
+
+        // we are at the next sibling, start with its leading tokens (if any)
+        if (this._moveToFirstLeadingToken()) return true;
+
+        // If we are here, we are in some node adjacent to the starting node
+        return this._moveToFirstTokenWorker();
+    }
+
+    private _moveToPreviousTokenWorker() {
+        if (this._leadingTokens) {
+            if (this._moveToPreviousLeadingToken()) return true; // we got the previous leading token
+
+            // done processing leading tokens
+            this._beforeNavigate();
+            this._leadingTokens = undefined;
+            this._tokenOffset = -1;
+            this._afterNavigate();
+
+            // we should now be on the node following the leading tokens, need to try with
+            // the previous sibling...
+        }
+        else {
+            if (this._trailingTokens) {
+                if (this._moveToPreviousTrailingToken()) return true; // we got the previous trailing token
+
+                // done processing trailing tokens
+                this._beforeNavigate();
+                this._trailingTokens = undefined;
+                this._tokenOffset = -1;
+                this._afterNavigate();
+
+                // we should now be on the parent node containing the trailing tokens, need to try
+                // with the last child...
+                if (this.moveToLastChild()) {
+                    // move to the last token of the last child
+                    return this._moveToLastTokenWorker();
+                }
+            }
+
+            // current node is a token, move to any leading tokens
+            if (this._moveToLastLeadingToken()) return true;
+
+            // no leading tokens, need to try with the previous sibling...
+        }
+
+        while (!this.moveToPreviousSibling()) {
+            // no sibling, try parents...
+            if (!this.moveToParent()) return false; // no parent, nothing else to try
+            // found parent, try leading tokens...
+            if (this._moveToLastLeadingToken()) return true; // found leading token of parent
+            // no leading token, try next sibling of parent...
+        }
+
+        // If we are here, we are in some node adjacent to the starting node
+        return this._moveToLastTokenWorker();
+    }
+
+    private _getDepth() {
+        return (this._leadingTokens || this._trailingTokens) ?
+            this._currentDepth + 1 :
+            this._currentDepth;
+    }
+
+    private _speculate(cb: () => boolean) {
+        const currentDepth = this._currentDepth;
+        const edgeStack = this._edgeStack;
+        const arrayStack = this._arrayStack;
+        const offsetStack = this._offsetStack;
+        const nodeStack = this._nodeStack;
+        const hasChild = this._hasAnyChildren;
+        const leadingTokens = this._leadingTokens;
+        const trailingTokens = this._trailingTokens;
+        const tokenOffset = this._tokenOffset;
+        // The following nodes are set by _afterNavigate based on the saved information above:
+        //   this._currentEdge
+        //   this._currentArray
+        //   this._currentOffset
+        //   this._currentNode
+        //   this._parentNode
+        this._copyOnNavigate = true;
+        let result = false;
+        try {
+            result = cb();
+        }
+        finally {
+            if (!result) {
+                this._currentDepth = currentDepth;
+                this._edgeStack = edgeStack;
+                this._arrayStack = arrayStack;
+                this._offsetStack = offsetStack;
+                this._nodeStack = nodeStack;
+                this._hasAnyChildren = hasChild;
+                this._leadingTokens = leadingTokens;
+                this._trailingTokens = trailingTokens;
+                this._tokenOffset = tokenOffset;
+                this._afterNavigate();
             }
         }
-        if (!navigator.moveToLastToken()) {
-            return false;
-        }
-        return navigator.isMatch(predicateOrKind) && this.moveTo(navigator);
+        return result;
     }
 
     private _beforeNavigate() {
@@ -949,8 +1294,14 @@ export class NodeNavigator {
         this._currentEdge = this._edgeStack[this._currentDepth]!;
         this._currentArray = this._arrayStack[this._currentDepth];
         this._currentOffset = this._offsetStack[this._currentDepth]!;
-        this._currentNode = this._nodeStack[this._currentDepth]!;
-        this._parentNode = this._currentDepth > 0 ? this._nodeStack[this._currentDepth - 1] : undefined;
+        this._currentNode =
+            this._leadingTokens ? this._leadingTokens[this._tokenOffset] :
+            this._trailingTokens ? this._trailingTokens[this._tokenOffset] :
+            this._nodeStack[this._currentDepth]!;
+        this._parentNode =
+            (this._leadingTokens || this._trailingTokens) ? this._nodeStack[this._currentDepth] :
+            this._currentDepth > 0 ? this._nodeStack[this._currentDepth - 1] :
+            undefined;
         this._copyOnNavigate = false;
     }
 
@@ -960,6 +1311,9 @@ export class NodeNavigator {
         this._offsetStack.push(undefined);
         this._nodeStack.push(undefined);
         this._hasAnyChildren = undefined;
+        this._leadingTokens = undefined;
+        this._trailingTokens = undefined;
+        this._tokenOffset = -1;
         this._currentDepth++;
     }
 
@@ -968,16 +1322,28 @@ export class NodeNavigator {
         this._arrayStack[this._currentDepth] = array;
         this._offsetStack[this._currentDepth] = offset;
         this._nodeStack[this._currentDepth] = node;
+        this._leadingTokens = undefined;
+        this._trailingTokens = undefined;
+        this._tokenOffset = -1;
         this._hasAnyChildren = undefined;
     }
 
     private _popEdge() {
-        this._currentDepth--;
-        this._edgeStack.pop();
-        this._arrayStack.pop();
-        this._offsetStack.pop();
-        this._nodeStack.pop();
-        this._hasAnyChildren = this._currentNode !== undefined;
+        // if we have trailing tokens we are in a virtual edge. There's no need to reset the depth.
+        if (this._trailingTokens) {
+            this._trailingTokens = undefined;
+            this._tokenOffset = -1;
+        }
+        else {
+            this._currentDepth--;
+            this._edgeStack.pop();
+            this._arrayStack.pop();
+            this._offsetStack.pop();
+            this._nodeStack.pop();
+            this._leadingTokens = undefined;
+            this._tokenOffset = -1;
+            this._hasAnyChildren = this._currentNode !== undefined;
+        }
     }
 
     private _moveToChild(initializer: SeekOperation, seekDirection: SeekOperation, predicateOrNameOrKind: string | SyntaxKind | ((node: Node) => boolean) | undefined, speculative: boolean) {
@@ -1083,6 +1449,9 @@ export class NodeNavigator {
         this._edgeStack.length = 1;
         this._arrayStack.length = 1;
         this._offsetStack.length = 1;
+        this._leadingTokens = undefined;
+        this._trailingTokens = undefined;
+        this._tokenOffset = -1;
     }
 }
 
@@ -1133,4 +1502,69 @@ function matchPredicateOrKind(node: Node, predicateOrKind: SyntaxKind | ((node: 
     return typeof predicateOrKind === "function" ? predicateOrKind(node) :
         typeof predicateOrKind === "number" ? node.kind === predicateOrKind :
         true;
+}
+
+function getLeadingTokensMap(sourceFile: SourceFile) {
+    let leadingTokensMap = perFileLeadingTokensMap.get(sourceFile);
+    if (!leadingTokensMap) perFileLeadingTokensMap.set(sourceFile, leadingTokensMap = new Map());
+    return leadingTokensMap;
+}
+
+function getTrailingTokensMap(sourceFile: SourceFile) {
+    let trailingTokensMap = perFileTrailingTokensMap.get(sourceFile);
+    if (!trailingTokensMap) perFileTrailingTokensMap.set(sourceFile, trailingTokensMap = new Map());
+    return trailingTokensMap;
+}
+
+function getLeadingTokens(node: Node, sourceFile: SourceFile) {
+    return perFileLeadingTokensMap.get(sourceFile)?.get(node);
+}
+
+function getTrailingTokens(node: Node, sourceFile: SourceFile) {
+    return perFileTrailingTokensMap.get(sourceFile)?.get(node);
+}
+
+function scanInterveningTokens(parent: Node, sourceFile: SourceFile) {
+    const trailingTokensMap = getTrailingTokensMap(sourceFile);
+    if (trailingTokensMap.has(parent)) return;
+    const leadingTokensMap = getLeadingTokensMap(sourceFile);
+    const scanner = new Scanner(sourceFile.filename, sourceFile.text, NullDiagnosticMessages.instance);
+    let pos = parent.pos;
+    const processNode = (child: Node) => {
+        const tokens = getTokens(pos, child.pos);
+        leadingTokensMap.set(child, tokens);
+        pos = child.end;
+    };
+    const processNodes = (nodes: readonly Node[]) => {
+        for (const child of nodes) {
+            const tokens = getTokens(pos, child.pos);
+            leadingTokensMap.set(child, tokens);
+            pos = child.end;
+        }
+    };
+    const getTokens = (pos: number, end: number) => {
+        let tokens: Token[] | null = null;
+        scanner.scanRange(pos, () => {
+            while (pos < end) {
+                const token = scanner.scan();
+                if (token === SyntaxKind.EndOfFileToken) break;
+                if (!isTokenKind(token)) throw new Error("Unexpected non-token in trivia");
+                const node = new Token(token);
+                node.pos = pos;
+                node.end = pos = scanner.getPos();
+                (tokens ??= []).push(node);
+            }
+        });
+        return tokens;
+    };
+    for (let i = 0; i < parent.edgeCount; i++) {
+        const edge = parent.edgeValue(i);
+        if ((Array.isArray as (array: any) => array is readonly any[])(edge)) {
+            processNodes(edge);
+        }
+        else if (edge) {
+            processNode(edge);
+        }
+    }
+    trailingTokensMap.set(parent, getTokens(pos, parent.end));
 }

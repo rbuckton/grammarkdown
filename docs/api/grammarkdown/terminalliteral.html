@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class StringWriter
+    <title>Class TerminalLiteral
    | Grammarkdown API Reference </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class StringWriter
+    <meta name="title" content="Class TerminalLiteral
    | Grammarkdown API Reference ">
     <meta name="generator" content="docfx 2.52.0.0">
     
@@ -78,26 +78,33 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="grammarkdown!StringWriter:class">
+            <article class="content wrap" id="_content" data-uid="grammarkdown!TerminalLiteral:class">
   
   
-  <h1 id="grammarkdown_StringWriter_class" data-uid="grammarkdown!StringWriter:class">Class StringWriter
+  <h1 id="grammarkdown_TerminalLiteral_class" data-uid="grammarkdown!TerminalLiteral:class">Class TerminalLiteral
   </h1>
   <h6><strong>Package</strong>: <a class="xref" href="../grammarkdown.html">grammarkdown</a></h6>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Represents a terminal token in the grammar.</p>
+<pre><code class="lang-grammarkdown">`yield`
+</code></pre></div>
   <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+      <div class="level0"><a class="xref" href="node.html#grammarkdown_Node_class">Node</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_TerminalLiteral_member">SyntaxKind.TerminalLiteral</a>&gt; </div>
+      <div class="level1"><span class="xref">TerminalLiteral</span></div>
+  </div>
   <h3 id="constructors">Constructors
   </h3>
   
   
-  <h4 id="grammarkdown_StringWriter_constructor_1_" data-uid="grammarkdown!StringWriter:constructor(1)">constructor(eol)</h4>
-  <div class="markdown level1 summary"><p>Constructs a new instance of the <code>StringWriter</code> class</p>
+  <h4 id="grammarkdown_TerminalLiteral_constructor_1_" data-uid="grammarkdown!TerminalLiteral:constructor(1)">constructor(text)</h4>
+  <div class="markdown level1 summary"><p>Constructs a new instance of the <code>TerminalLiteral</code> class</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">constructor(eol?: string);</code></pre>
+    <pre><code class="lang-typeScript hljs">constructor(text: string | undefined);</code></pre>
   </div>
   
   
@@ -105,8 +112,8 @@
   <div>
     <div class="property">
       <dl class="parameter">
-        <dt>eol</dt>
-        <dd><span class="xref">string</span></dd>
+        <dt>text</dt>
+        <dd><span class="xref">string | undefined</span></dd>
       </dl>
       <p>
         
@@ -125,13 +132,13 @@
   </h3>
   
   
-  <h4 id="grammarkdown_StringWriter_size_member" data-uid="grammarkdown!StringWriter#size:member">size</h4>
+  <h4 id="grammarkdown_TerminalLiteral_text_member" data-uid="grammarkdown!TerminalLiteral#text:member">text</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">get size(): number;</code></pre>
+    <pre><code class="lang-typeScript hljs">readonly text: string | undefined;</code></pre>
   </div>
   
   
@@ -141,194 +148,10 @@
   <h5 class="propertyValue">Property Value</h5>
   <div>
   <div class="property">
-    <div><span class="xref">number</span></div>
+    <div><span class="xref">string | undefined</span></div>
     <p>
   </div>
   </div>
-  
-  
-  
-  
-  <h3 id="methods">Methods
-  </h3>
-  
-  
-  <h4 id="grammarkdown_StringWriter_commitLine_member_1_" data-uid="grammarkdown!StringWriter#commitLine:member(1)">commitLine()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  
-  <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">commitLine(): void;</code></pre>
-  </div>
-  
-  
-  
-  <h5 class="returns">Returns</h5>
-  <div>
-  <div class="property">
-    <div><span class="xref">void</span></div>
-    <p>
-  </div>
-  </div>
-  
-  
-  
-  
-  
-  
-  
-  
-  <h4 id="grammarkdown_StringWriter_dedent_member_1_" data-uid="grammarkdown!StringWriter#dedent:member(1)">dedent()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  
-  <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">dedent(): void;</code></pre>
-  </div>
-  
-  
-  
-  <h5 class="returns">Returns</h5>
-  <div>
-  <div class="property">
-    <div><span class="xref">void</span></div>
-    <p>
-  </div>
-  </div>
-  
-  
-  
-  
-  
-  
-  
-  
-  <h4 id="grammarkdown_StringWriter_indent_member_1_" data-uid="grammarkdown!StringWriter#indent:member(1)">indent()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  
-  <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">indent(): void;</code></pre>
-  </div>
-  
-  
-  
-  <h5 class="returns">Returns</h5>
-  <div>
-  <div class="property">
-    <div><span class="xref">void</span></div>
-    <p>
-  </div>
-  </div>
-  
-  
-  
-  
-  
-  
-  
-  
-  <h4 id="grammarkdown_StringWriter_toString_member_1_" data-uid="grammarkdown!StringWriter#toString:member(1)">toString()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  
-  <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">toString(): string;</code></pre>
-  </div>
-  
-  
-  
-  <h5 class="returns">Returns</h5>
-  <div>
-  <div class="property">
-    <div><span class="xref">string</span></div>
-    <p>
-  </div>
-  </div>
-  
-  
-  
-  
-  
-  
-  
-  
-  <h4 id="grammarkdown_StringWriter_write_member_1_" data-uid="grammarkdown!StringWriter#write:member(1)">write(text)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  
-  <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">write(text?: string): void;</code></pre>
-  </div>
-  
-  
-  <h5 class="parameters">Parameters</h5>
-  <div>
-    <div class="property">
-      <dl class="parameter">
-        <dt>text</dt>
-        <dd><span class="xref">string</span></dd>
-      </dl>
-      <p>
-        
-        
-      </p>
-    </div>
-  </div>
-  
-  <h5 class="returns">Returns</h5>
-  <div>
-  <div class="property">
-    <div><span class="xref">void</span></div>
-    <p>
-  </div>
-  </div>
-  
-  
-  
-  
-  
-  
-  
-  
-  <h4 id="grammarkdown_StringWriter_writeln_member_1_" data-uid="grammarkdown!StringWriter#writeln:member(1)">writeln(text)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  
-  <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">writeln(text?: string): void;</code></pre>
-  </div>
-  
-  
-  <h5 class="parameters">Parameters</h5>
-  <div>
-    <div class="property">
-      <dl class="parameter">
-        <dt>text</dt>
-        <dd><span class="xref">string</span></dd>
-      </dl>
-      <p>
-        
-        
-      </p>
-    </div>
-  </div>
-  
-  <h5 class="returns">Returns</h5>
-  <div>
-  <div class="property">
-    <div><span class="xref">void</span></div>
-    <p>
-  </div>
-  </div>
-  
-  
   
   
   

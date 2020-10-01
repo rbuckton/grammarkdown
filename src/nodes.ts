@@ -201,6 +201,43 @@ export class NumberLiteral extends Node<SyntaxKind.NumberLiteral> implements Tex
 }
 
 /**
+ * Represents a Unicode character literal in one of two forms:
+ * ```grammarkdown
+ * <TAB>
+ * U+0000
+ * ```
+ * {@docCategory Nodes}
+ */
+export class UnicodeCharacterLiteral extends Node<SyntaxKind.UnicodeCharacterLiteral> implements TextContent {
+    public readonly text: string | undefined;
+
+    constructor(text: string | undefined) {
+        super(SyntaxKind.UnicodeCharacterLiteral);
+        this.text = text;
+    }
+
+    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitUnicodeCharacterLiteral(this); }
+}
+
+/**
+ * Represents a terminal token in the grammar.
+ * ```grammarkdown
+ * `yield`
+ * ```
+ * {@docCategory Nodes}
+ */
+export class TerminalLiteral extends Node<SyntaxKind.TerminalLiteral> implements TextContent {
+    public readonly text: string | undefined;
+
+    constructor(text: string | undefined) {
+        super(SyntaxKind.TerminalLiteral);
+        this.text = text;
+    }
+
+    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitTerminalLiteral(this); }
+}
+
+/**
  * Represents an identifier such as a Production or Parameter.
  * {@docCategory Nodes}
  */
@@ -221,7 +258,7 @@ export type TextContentNode =
     | NumberLiteral
     | Identifier
     | UnicodeCharacterLiteral
-    | Terminal
+    | TerminalLiteral
     | ProseFragmentLiteral<ProseFragmentLiteralKind>;
 
 /**
@@ -684,69 +721,55 @@ export abstract class OptionalSymbolBase<TKind extends OptionalSymbolKind> exten
 }
 
 /**
- * Represents a Unicode character literal in one of two forms:
- * ```grammarkdown
- * <TAB>
- * U+0000
- * ```
- * {@docCategory Nodes}
- */
-export class UnicodeCharacterLiteral extends OptionalSymbolBase<SyntaxKind.UnicodeCharacterLiteral> implements TextContent {
-    public readonly text: string | undefined;
-
-    constructor(text: string | undefined, questionToken: Token<SyntaxKind.QuestionToken> | undefined) {
-        super(SyntaxKind.UnicodeCharacterLiteral, questionToken);
-        this.text = text;
-    }
-
-    get firstChild(): Node | undefined { return undefined; }
-    get lastChild(): Node | undefined { return this.questionToken; }
-
-    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
-        return this.questionToken && cbNode(this.questionToken);
-    }
-
-    public * children(): IterableIterator<Node> {
-        if (this.questionToken) yield this.questionToken;
-    }
-
-    /*@internal*/ get edgeCount() { return 1; }
-    /*@internal*/ edgeIsArray(_offset: number): boolean { return false; }
-    /*@internal*/ edgeName(offset: number): string | undefined { return offset === 0 ? "questionToken" : undefined; }
-    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined { return offset === 0 ? this.questionToken : undefined; }
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitUnicodeCharacterLiteral(this); }
-}
-
-/**
  * Represents a terminal token in the grammar.
  * ```grammarkdown
  * `yield` `*`?
  * ```
  * {@docCategory Nodes}
  */
-export class Terminal extends OptionalSymbolBase<SyntaxKind.Terminal> implements TextContent {
-    public readonly text: string | undefined;
+export class Terminal extends OptionalSymbolBase<SyntaxKind.Terminal> {
+    public readonly literal: UnicodeCharacterLiteral | TerminalLiteral;
 
-    constructor(text: string | undefined, questionToken: Token<SyntaxKind.QuestionToken> | undefined) {
+    constructor(literal: UnicodeCharacterLiteral | TerminalLiteral, questionToken: Token<SyntaxKind.QuestionToken> | undefined) {
         super(SyntaxKind.Terminal, questionToken);
-        this.text = text;
+        this.literal = literal;
     }
 
-    get firstChild(): Node | undefined { return undefined; }
-    get lastChild(): Node | undefined { return this.questionToken; }
+    get firstChild(): Node | undefined { return this.literal; }
+    get lastChild(): Node | undefined { return this.questionToken ?? this.literal; }
 
     public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
-        return (this.questionToken && cbNode(this.questionToken));
+        return cbNode(this.literal)
+            || (this.questionToken && cbNode(this.questionToken));
     }
 
     public * children(): IterableIterator<Node> {
+        yield this.literal;
         if (this.questionToken) yield this.questionToken;
     }
 
-    /*@internal*/ get edgeCount() { return 1; }
+    public update(literal: UnicodeCharacterLiteral | TerminalLiteral, questionToken: Token<SyntaxKind.QuestionToken> | undefined) {
+        return literal !== this.literal || questionToken !== this.questionToken
+            ? setTextRange(new Terminal(literal, questionToken), this.pos, this.end)
+            : this;
+    }
+
+    /*@internal*/ get edgeCount() { return 2; }
     /*@internal*/ edgeIsArray(_offset: number): boolean { return false; }
-    /*@internal*/ edgeName(offset: number): string | undefined { return offset === 0 ? "questionToken" : undefined; }
-    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined { return offset === 0 ? this.questionToken : undefined; }
+    /*@internal*/ edgeName(offset: number): string | undefined {
+        switch (offset) {
+            case 0: return "literal";
+            case 1: return "questionToken";
+        }
+    }
+
+    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
+        switch (offset) {
+            case 0: return this.literal;
+            case 1: return this.questionToken;
+        }
+    }
+
     /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitTerminal(this); }
 }
 
@@ -813,7 +836,6 @@ export class Nonterminal extends OptionalSymbolBase<SyntaxKind.Nonterminal> {
 
 /** {@docCategory Nodes} */
 export type OptionalSymbol =
-    | UnicodeCharacterLiteral
     | Terminal
     | Nonterminal
     ;
@@ -1521,9 +1543,9 @@ export class OneOfList extends ProductionBodyBase<SyntaxKind.OneOfList> {
     public readonly oneKeyword: Token<SyntaxKind.OneKeyword>;
     public readonly ofKeyword: Token<SyntaxKind.OfKeyword> | undefined;
     public readonly indented: boolean;
-    public readonly terminals: ReadonlyArray<Terminal> | undefined;
+    public readonly terminals: ReadonlyArray<TerminalLiteral> | undefined;
 
-    constructor(oneKeyword: Token<SyntaxKind.OneKeyword>, ofKeyword: Token<SyntaxKind.OfKeyword> | undefined, indented: boolean, terminals: ReadonlyArray<Terminal> | undefined) {
+    constructor(oneKeyword: Token<SyntaxKind.OneKeyword>, ofKeyword: Token<SyntaxKind.OfKeyword> | undefined, indented: boolean, terminals: ReadonlyArray<TerminalLiteral> | undefined) {
         super(SyntaxKind.OneOfList);
         this.oneKeyword = oneKeyword;
         this.ofKeyword = ofKeyword;
@@ -1546,7 +1568,7 @@ export class OneOfList extends ProductionBodyBase<SyntaxKind.OneOfList> {
         if (this.terminals) yield* this.terminals;
     }
 
-    public update(terminals: ReadonlyArray<Terminal> | undefined) {
+    public update(terminals: ReadonlyArray<TerminalLiteral> | undefined) {
         return terminals !== this.terminals
             ? setTextRange(new OneOfList(this.oneKeyword, this.ofKeyword, this.indented, terminals), this.pos, this.end)
             : this;
@@ -1719,8 +1741,8 @@ export class Production extends SourceElementBase<SyntaxKind.Production> {
     /*@internal*/ edgeName(offset: number): string | undefined {
         switch (offset) {
             case 0: return "name";
-            case 1: return "colonToken";
-            case 2: return "parameterList";
+            case 1: return "parameterList";
+            case 2: return "colonToken";
             case 3: return "body";
         }
         return undefined;
@@ -1729,8 +1751,8 @@ export class Production extends SourceElementBase<SyntaxKind.Production> {
     /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
         switch (offset) {
             case 0: return this.name;
-            case 1: return this.colonToken;
-            case 2: return this.parameterList;
+            case 1: return this.parameterList;
+            case 2: return this.colonToken;
             case 3: return this.body;
         }
         return undefined;

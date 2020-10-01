@@ -1249,6 +1249,10 @@ references:
   name: emitTerminal(node)
   href: api/grammarkdown/ecmarkupemitter.html#grammarkdown_EcmarkupEmitter_emitTerminal_member_1_
   fullName: emitTerminal(node)
+- uid: grammarkdown!EcmarkupEmitter#emitTerminalLiteral:member(1)
+  name: emitTerminalLiteral(node)
+  href: api/grammarkdown/ecmarkupemitter.html#grammarkdown_EcmarkupEmitter_emitTerminalLiteral_member_1_
+  fullName: emitTerminalLiteral(node)
 - uid: grammarkdown!EcmarkupEmitter#emitTextContent:member(1)
   name: emitTextContent(node)
   href: api/grammarkdown/ecmarkupemitter.html#grammarkdown_EcmarkupEmitter_emitTextContent_member_1_
@@ -1441,6 +1445,10 @@ references:
   name: emitTerminal(node)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitTerminal_member_1_
   fullName: emitTerminal(node)
+- uid: grammarkdown!Emitter#emitTerminalLiteral:member(1)
+  name: emitTerminalLiteral(node)
+  href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitTerminalLiteral_member_1_
+  fullName: emitTerminalLiteral(node)
 - uid: grammarkdown!Emitter#emitTextContent:member(1)
   name: emitTextContent(node)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitTextContent_member_1_
@@ -1661,18 +1669,34 @@ references:
   name: emitConstraints(node)
   href: api/grammarkdown/grammarkdownemitter.html#grammarkdown_GrammarkdownEmitter_emitConstraints_member_1_
   fullName: emitConstraints(node)
+- uid: grammarkdown!GrammarkdownEmitter#emitDefine:member(1)
+  name: emitDefine(node)
+  href: api/grammarkdown/grammarkdownemitter.html#grammarkdown_GrammarkdownEmitter_emitDefine_member_1_
+  fullName: emitDefine(node)
 - uid: grammarkdown!GrammarkdownEmitter#emitEmptyAssertion:member(1)
   name: emitEmptyAssertion(node)
   href: api/grammarkdown/grammarkdownemitter.html#grammarkdown_GrammarkdownEmitter_emitEmptyAssertion_member_1_
   fullName: emitEmptyAssertion(node)
+- uid: grammarkdown!GrammarkdownEmitter#emitImport:member(1)
+  name: emitImport(node)
+  href: api/grammarkdown/grammarkdownemitter.html#grammarkdown_GrammarkdownEmitter_emitImport_member_1_
+  fullName: emitImport(node)
 - uid: grammarkdown!GrammarkdownEmitter#emitLexicalGoalAssertion:member(1)
   name: emitLexicalGoalAssertion(node)
   href: api/grammarkdown/grammarkdownemitter.html#grammarkdown_GrammarkdownEmitter_emitLexicalGoalAssertion_member_1_
   fullName: emitLexicalGoalAssertion(node)
+- uid: grammarkdown!GrammarkdownEmitter#emitLine:member(1)
+  name: emitLine(node)
+  href: api/grammarkdown/grammarkdownemitter.html#grammarkdown_GrammarkdownEmitter_emitLine_member_1_
+  fullName: emitLine(node)
 - uid: grammarkdown!GrammarkdownEmitter#emitLookaheadAssertion:member(1)
   name: emitLookaheadAssertion(node)
   href: api/grammarkdown/grammarkdownemitter.html#grammarkdown_GrammarkdownEmitter_emitLookaheadAssertion_member_1_
   fullName: emitLookaheadAssertion(node)
+- uid: grammarkdown!GrammarkdownEmitter#emitNode:member(1)
+  name: emitNode(node)
+  href: api/grammarkdown/grammarkdownemitter.html#grammarkdown_GrammarkdownEmitter_emitNode_member_1_
+  fullName: emitNode(node)
 - uid: grammarkdown!GrammarkdownEmitter#emitNonterminal:member(1)
   name: emitNonterminal(node)
   href: api/grammarkdown/grammarkdownemitter.html#grammarkdown_GrammarkdownEmitter_emitNonterminal_member_1_
@@ -1721,6 +1745,10 @@ references:
   name: emitRightHandSideList(node)
   href: api/grammarkdown/grammarkdownemitter.html#grammarkdown_GrammarkdownEmitter_emitRightHandSideList_member_1_
   fullName: emitRightHandSideList(node)
+- uid: grammarkdown!GrammarkdownEmitter#emitSourceFile:member(1)
+  name: emitSourceFile(node)
+  href: api/grammarkdown/grammarkdownemitter.html#grammarkdown_GrammarkdownEmitter_emitSourceFile_member_1_
+  fullName: emitSourceFile(node)
 - uid: grammarkdown!GrammarkdownEmitter#emitSymbolSet:member(1)
   name: emitSymbolSet(node)
   href: api/grammarkdown/grammarkdownemitter.html#grammarkdown_GrammarkdownEmitter_emitSymbolSet_member_1_
@@ -1733,6 +1761,10 @@ references:
   name: emitTerminal(node)
   href: api/grammarkdown/grammarkdownemitter.html#grammarkdown_GrammarkdownEmitter_emitTerminal_member_1_
   fullName: emitTerminal(node)
+- uid: grammarkdown!GrammarkdownEmitter#emitTerminalLiteral:member(1)
+  name: emitTerminalLiteral(node)
+  href: api/grammarkdown/grammarkdownemitter.html#grammarkdown_GrammarkdownEmitter_emitTerminalLiteral_member_1_
+  fullName: emitTerminalLiteral(node)
 - uid: grammarkdown!GrammarkdownEmitter#emitTextContent:member(1)
   name: emitTextContent(node)
   href: api/grammarkdown/grammarkdownemitter.html#grammarkdown_GrammarkdownEmitter_emitTextContent_member_1_
@@ -1857,6 +1889,10 @@ references:
   name: emitTerminal(node)
   href: api/grammarkdown/htmlemitter.html#grammarkdown_HtmlEmitter_emitTerminal_member_1_
   fullName: emitTerminal(node)
+- uid: grammarkdown!HtmlEmitter#emitTerminalLiteral:member(1)
+  name: emitTerminalLiteral(node)
+  href: api/grammarkdown/htmlemitter.html#grammarkdown_HtmlEmitter_emitTerminalLiteral_member_1_
+  fullName: emitTerminalLiteral(node)
 - uid: grammarkdown!HtmlEmitter#emitTextContent:member(1)
   name: emitTextContent(node)
   href: api/grammarkdown/htmlemitter.html#grammarkdown_HtmlEmitter_emitTextContent_member_1_
@@ -2321,6 +2357,10 @@ references:
   name: emitTerminal(node)
   href: api/grammarkdown/markdownemitter.html#grammarkdown_MarkdownEmitter_emitTerminal_member_1_
   fullName: emitTerminal(node)
+- uid: grammarkdown!MarkdownEmitter#emitTerminalLiteral:member(1)
+  name: emitTerminalLiteral(node)
+  href: api/grammarkdown/markdownemitter.html#grammarkdown_MarkdownEmitter_emitTerminalLiteral_member_1_
+  fullName: emitTerminalLiteral(node)
 - uid: grammarkdown!MarkdownEmitter#emitTextContent:member(1)
   name: emitTextContent(node)
   href: api/grammarkdown/markdownemitter.html#grammarkdown_MarkdownEmitter_emitTextContent_member_1_
@@ -2493,6 +2533,22 @@ references:
   name: NodeAsyncHostOptions
   href: api/grammarkdown/nodeasynchostoptions.html#grammarkdown_NodeAsyncHostOptions_interface
   fullName: NodeAsyncHostOptions
+- uid: grammarkdown!NodeNavigator#ancestors:member(1)
+  name: ancestors(predicate)
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_ancestors_member_1_
+  fullName: ancestors(predicate)
+- uid: grammarkdown!NodeNavigator#ancestors:member(2)
+  name: ancestors(kind)
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_ancestors_member_2_
+  fullName: ancestors(kind)
+- uid: grammarkdown!NodeNavigator#children:member(1)
+  name: children(predicate)
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_children_member_1_
+  fullName: children(predicate)
+- uid: grammarkdown!NodeNavigator#children:member(2)
+  name: children(kind)
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_children_member_2_
+  fullName: children(kind)
 - uid: grammarkdown!NodeNavigator#clone:member(1)
   name: clone()
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_clone_member_1_
@@ -2553,10 +2609,46 @@ references:
   name: hasChildren(kind)
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_hasChildren_member_2_
   fullName: hasChildren(kind)
+- uid: grammarkdown!NodeNavigator#hasNextSibling:member(1)
+  name: hasNextSibling()
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_hasNextSibling_member_1_
+  fullName: hasNextSibling()
+- uid: grammarkdown!NodeNavigator#hasNextSibling:member(2)
+  name: hasNextSibling(name)
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_hasNextSibling_member_2_
+  fullName: hasNextSibling(name)
+- uid: grammarkdown!NodeNavigator#hasNextSibling:member(3)
+  name: hasNextSibling(predicate)
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_hasNextSibling_member_3_
+  fullName: hasNextSibling(predicate)
+- uid: grammarkdown!NodeNavigator#hasNextSibling:member(4)
+  name: hasNextSibling(kind)
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_hasNextSibling_member_4_
+  fullName: hasNextSibling(kind)
+- uid: grammarkdown!NodeNavigator#hasPreviousSibling:member(1)
+  name: hasPreviousSibling()
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_hasPreviousSibling_member_1_
+  fullName: hasPreviousSibling()
+- uid: grammarkdown!NodeNavigator#hasPreviousSibling:member(2)
+  name: hasPreviousSibling(name)
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_hasPreviousSibling_member_2_
+  fullName: hasPreviousSibling(name)
+- uid: grammarkdown!NodeNavigator#hasPreviousSibling:member(3)
+  name: hasPreviousSibling(predicate)
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_hasPreviousSibling_member_3_
+  fullName: hasPreviousSibling(predicate)
+- uid: grammarkdown!NodeNavigator#hasPreviousSibling:member(4)
+  name: hasPreviousSibling(kind)
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_hasPreviousSibling_member_4_
+  fullName: hasPreviousSibling(kind)
 - uid: grammarkdown!NodeNavigator#isArray:member(1)
   name: isArray()
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_isArray_member_1_
   fullName: isArray()
+- uid: grammarkdown!NodeNavigator#isLeadingToken:member(1)
+  name: isLeadingToken()
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_isLeadingToken_member_1_
+  fullName: isLeadingToken()
 - uid: grammarkdown!NodeNavigator#isMatch:member(1)
   name: isMatch(predicate)
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_isMatch_member_1_
@@ -2573,6 +2665,10 @@ references:
   name: isToken()
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_isToken_member_1_
   fullName: isToken()
+- uid: grammarkdown!NodeNavigator#isTrailingToken:member(1)
+  name: isTrailingToken()
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_isTrailingToken_member_1_
+  fullName: isTrailingToken()
 - uid: grammarkdown!NodeNavigator#moveTo:member(1)
   name: moveTo(other)
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveTo_member_1_
@@ -2797,6 +2893,22 @@ references:
   name: moveToSourceElement()
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToSourceElement_member_1_
   fullName: moveToSourceElement()
+- uid: grammarkdown!NodeNavigator#moveToTouchingToken:member(1)
+  name: moveToTouchingToken(position, predicate)
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToTouchingToken_member_1_
+  fullName: moveToTouchingToken(position, predicate)
+- uid: grammarkdown!NodeNavigator#moveToTouchingToken:member(2)
+  name: moveToTouchingToken(position, kind)
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_moveToTouchingToken_member_2_
+  fullName: moveToTouchingToken(position, kind)
+- uid: grammarkdown!NodeNavigator#tokens:member(1)
+  name: tokens(predicate)
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_tokens_member_1_
+  fullName: tokens(predicate)
+- uid: grammarkdown!NodeNavigator#tokens:member(2)
+  name: tokens(kind)
+  href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_tokens_member_2_
+  fullName: tokens(kind)
 - uid: grammarkdown!NodeNavigator:class
   name: NodeNavigator
   href: api/grammarkdown/nodenavigator.html#grammarkdown_NodeNavigator_class
@@ -2961,6 +3073,10 @@ references:
   name: visitTerminal(node)
   href: api/grammarkdown/nodevisitor.html#grammarkdown_NodeVisitor_visitTerminal_member_1_
   fullName: visitTerminal(node)
+- uid: grammarkdown!NodeVisitor#visitTerminalLiteral:member(1)
+  name: visitTerminalLiteral(node)
+  href: api/grammarkdown/nodevisitor.html#grammarkdown_NodeVisitor_visitTerminalLiteral_member_1_
+  fullName: visitTerminalLiteral(node)
 - uid: grammarkdown!NodeVisitor#visitToken:member(1)
   name: visitToken(node)
   href: api/grammarkdown/nodevisitor.html#grammarkdown_NodeVisitor_visitToken_member_1_
@@ -3805,6 +3921,10 @@ references:
   name: scan()
   href: api/grammarkdown/scanner.html#grammarkdown_Scanner_scan_member_1_
   fullName: scan()
+- uid: grammarkdown!Scanner#scanRange:member(1)
+  name: scanRange(pos, cb)
+  href: api/grammarkdown/scanner.html#grammarkdown_Scanner_scanRange_member_1_
+  fullName: scanRange(pos, cb)
 - uid: grammarkdown!Scanner#speculate:member(1)
   name: speculate(callback, isLookahead)
   href: api/grammarkdown/scanner.html#grammarkdown_Scanner_speculate_member_1_
@@ -3925,6 +4045,10 @@ references:
   name: stringToToken(text)
   href: api/grammarkdown.html#grammarkdown_stringToToken_function_1_
   fullName: stringToToken(text)
+- uid: grammarkdown!StringWriter#commitLine:member(1)
+  name: commitLine()
+  href: api/grammarkdown/stringwriter.html#grammarkdown_StringWriter_commitLine_member_1_
+  fullName: commitLine()
 - uid: grammarkdown!StringWriter#dedent:member(1)
   name: dedent()
   href: api/grammarkdown/stringwriter.html#grammarkdown_StringWriter_dedent_member_1_
@@ -4493,6 +4617,10 @@ references:
   name: Terminal
   href: api/grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_Terminal_member
   fullName: Terminal
+- uid: grammarkdown!SyntaxKind.TerminalLiteral:member
+  name: TerminalLiteral
+  href: api/grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_TerminalLiteral_member
+  fullName: TerminalLiteral
 - uid: grammarkdown!SyntaxKind.ThroughKeyword:member
   name: ThroughKeyword
   href: api/grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_ThroughKeyword_member
@@ -4537,18 +4665,34 @@ references:
   name: lastChild
   href: api/grammarkdown/terminal.html#grammarkdown_Terminal_lastChild_member
   fullName: lastChild
-- uid: grammarkdown!Terminal#text:member
-  name: text
-  href: api/grammarkdown/terminal.html#grammarkdown_Terminal_text_member
-  fullName: text
+- uid: grammarkdown!Terminal#literal:member
+  name: literal
+  href: api/grammarkdown/terminal.html#grammarkdown_Terminal_literal_member
+  fullName: literal
+- uid: grammarkdown!Terminal#update:member(1)
+  name: update(literal, questionToken)
+  href: api/grammarkdown/terminal.html#grammarkdown_Terminal_update_member_1_
+  fullName: update(literal, questionToken)
 - uid: grammarkdown!Terminal:class
   name: Terminal
   href: api/grammarkdown/terminal.html#grammarkdown_Terminal_class
   fullName: Terminal
 - uid: grammarkdown!Terminal:constructor(1)
-  name: (constructor)(text, questionToken)
+  name: (constructor)(literal, questionToken)
   href: api/grammarkdown/terminal.html#grammarkdown_Terminal_constructor_1_
-  fullName: (constructor)(text, questionToken)
+  fullName: (constructor)(literal, questionToken)
+- uid: grammarkdown!TerminalLiteral#text:member
+  name: text
+  href: api/grammarkdown/terminalliteral.html#grammarkdown_TerminalLiteral_text_member
+  fullName: text
+- uid: grammarkdown!TerminalLiteral:class
+  name: TerminalLiteral
+  href: api/grammarkdown/terminalliteral.html#grammarkdown_TerminalLiteral_class
+  fullName: TerminalLiteral
+- uid: grammarkdown!TerminalLiteral:constructor(1)
+  name: (constructor)(text)
+  href: api/grammarkdown/terminalliteral.html#grammarkdown_TerminalLiteral_constructor_1_
+  fullName: (constructor)(text)
 - uid: grammarkdown!TextChange#range:member
   name: range
   href: api/grammarkdown/textchange-interface.html#grammarkdown_TextChange_range_member
@@ -4633,22 +4777,6 @@ references:
   name: TriviaKind
   href: api/grammarkdown.html#grammarkdown_TriviaKind_type
   fullName: TriviaKind
-- uid: grammarkdown!UnicodeCharacterLiteral#children:member(1)
-  name: children()
-  href: api/grammarkdown/unicodecharacterliteral.html#grammarkdown_UnicodeCharacterLiteral_children_member_1_
-  fullName: children()
-- uid: grammarkdown!UnicodeCharacterLiteral#firstChild:member
-  name: firstChild
-  href: api/grammarkdown/unicodecharacterliteral.html#grammarkdown_UnicodeCharacterLiteral_firstChild_member
-  fullName: firstChild
-- uid: grammarkdown!UnicodeCharacterLiteral#forEachChild:member(1)
-  name: forEachChild(cbNode)
-  href: api/grammarkdown/unicodecharacterliteral.html#grammarkdown_UnicodeCharacterLiteral_forEachChild_member_1_
-  fullName: forEachChild(cbNode)
-- uid: grammarkdown!UnicodeCharacterLiteral#lastChild:member
-  name: lastChild
-  href: api/grammarkdown/unicodecharacterliteral.html#grammarkdown_UnicodeCharacterLiteral_lastChild_member
-  fullName: lastChild
 - uid: grammarkdown!UnicodeCharacterLiteral#text:member
   name: text
   href: api/grammarkdown/unicodecharacterliteral.html#grammarkdown_UnicodeCharacterLiteral_text_member
@@ -4658,9 +4786,9 @@ references:
   href: api/grammarkdown/unicodecharacterliteral.html#grammarkdown_UnicodeCharacterLiteral_class
   fullName: UnicodeCharacterLiteral
 - uid: grammarkdown!UnicodeCharacterLiteral:constructor(1)
-  name: (constructor)(text, questionToken)
+  name: (constructor)(text)
   href: api/grammarkdown/unicodecharacterliteral.html#grammarkdown_UnicodeCharacterLiteral_constructor_1_
-  fullName: (constructor)(text, questionToken)
+  fullName: (constructor)(text)
 - uid: grammarkdown!UnicodeCharacterRange#children:member(1)
   name: children()
   href: api/grammarkdown/unicodecharacterrange.html#grammarkdown_UnicodeCharacterRange_children_member_1_

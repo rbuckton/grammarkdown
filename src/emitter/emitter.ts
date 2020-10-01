@@ -48,7 +48,8 @@ import {
     TextContent,
     PlaceholderSymbol,
     Define,
-    Line
+    Line,
+    TerminalLiteral
 } from "../nodes";
 
 /** {@docCategory Emit} */
@@ -150,7 +151,7 @@ export class Emitter {
 
         switch (node.kind) {
             case SyntaxKind.SourceFile: this.emitSourceFile(<SourceFile>node); break;
-            case SyntaxKind.Terminal: this.emitTerminal(<Terminal>node); break;
+            case SyntaxKind.TerminalLiteral: this.emitTerminalLiteral(<TerminalLiteral>node); break;
             case SyntaxKind.UnicodeCharacterLiteral: this.emitUnicodeCharacterLiteral(<UnicodeCharacterLiteral>node); break;
             case SyntaxKind.UnicodeCharacterRange: this.emitUnicodeCharacterRange(<UnicodeCharacterRange>node); break;
             case SyntaxKind.Prose: this.emitProse(<Prose>node); break;
@@ -172,6 +173,7 @@ export class Emitter {
             case SyntaxKind.ButNotSymbol: this.emitButNotSymbol(<ButNotSymbol>node); break;
             case SyntaxKind.OneOfSymbol: this.emitOneOfSymbol(<OneOfSymbol>node); break;
             case SyntaxKind.Nonterminal: this.emitNonterminal(<Nonterminal>node); break;
+            case SyntaxKind.Terminal: this.emitTerminal(<Terminal>node); break;
             case SyntaxKind.SymbolSet: this.emitSymbolSet(<SymbolSet>node); break;
             case SyntaxKind.PlaceholderSymbol: this.emitPlaceholder(<PlaceholderSymbol>node); break;
             case SyntaxKind.EmptyAssertion: this.emitEmptyAssertion(<EmptyAssertion>node); break;
@@ -220,14 +222,12 @@ export class Emitter {
         this.emitToken(node.placeholderToken);
     }
 
-    protected emitTerminal(node: Terminal) {
+    protected emitTerminalLiteral(node: TerminalLiteral) {
         this.emitTextContent(node);
-        this.emitNode(node.questionToken);
     }
 
     protected emitUnicodeCharacterLiteral(node: UnicodeCharacterLiteral) {
         this.emitTextContent(node);
-        this.emitNode(node.questionToken);
     }
 
     protected emitTextContent(node: TextContent) {
@@ -301,6 +301,11 @@ export class Emitter {
 
     protected emitNonterminal(node: Nonterminal): void {
         this.emitChildren(node);
+    }
+
+    protected emitTerminal(node: Terminal) {
+        this.emitNode(node.literal);
+        this.emitNode(node.questionToken);
     }
 
     protected emitSymbolSet(node: SymbolSet): void {
