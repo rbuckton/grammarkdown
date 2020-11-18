@@ -1,0 +1,8 @@
+// @diagnostics: false
+
+AtomEscape[U, N] ::
+    [+U] DecimalEscape
+    [~U] DecimalEscape [> but only if the CapturingGroupNumber of |DecimalEscape| is &lt;= _NcapturingParens_]
+    CharacterClassEscape[?U]
+    CharacterEscape[~U, ?N]
+    [+N] `k` GroupName[?U]
