@@ -381,6 +381,13 @@ export class Scanner {
                     if (this.text.charCodeAt(this.pos) === CharacterCodes.GreaterThan) {
                         return this.pos++, this.skipWhiteSpace(), this.proseStartToken = this.token = SyntaxKind.OpenBracketGreaterThanToken;
                     }
+                    else if (this.text.charCodeAt(this.pos) === CharacterCodes.Ampersand) {
+                        const pos = this.pos++;
+                        if (this.scanCharacterEntity() === CharacterCodes.GreaterThan) {
+                            return this.skipWhiteSpace(), this.proseStartToken = this.token = SyntaxKind.OpenBracketGreaterThanToken;
+                        }
+                        this.pos = pos;
+                    }
                     return this.token = SyntaxKind.OpenBracketToken;
 
                 case CharacterCodes.CloseBracket:
