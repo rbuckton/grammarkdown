@@ -107,12 +107,12 @@ async function performCompilation(options: ParsedCommandLine): Promise<void> {
     grammar.diagnostics.forEach(message => console.log(message));
 
     if (compilerOptions.diagnostics) {
-        process.stderr.write(`ioRead:  ${performance.getDuration("ioRead")}ms${EOL}`);
-        process.stderr.write(`ioWrite: ${performance.getDuration("ioWrite")}ms${EOL}`);
-        process.stderr.write(`parse:   ${performance.getDuration("parse")}ms${EOL}`);
-        process.stderr.write(`bind:    ${performance.getDuration("bind")}ms${EOL}`);
-        process.stderr.write(`check:   ${performance.getDuration("check")}ms${EOL}`);
-        process.stderr.write(`emit:    ${performance.getDuration("emit")}ms${EOL}`);
+        process.stderr.write(`ioRead:  ${Math.round(performance.getDuration("ioRead"))}ms${EOL}`);
+        process.stderr.write(`ioWrite: ${Math.round(performance.getDuration("ioWrite"))}ms${EOL}`);
+        process.stderr.write(`parse:   ${Math.round(performance.getDuration("parse"))}ms${EOL}`);
+        process.stderr.write(`bind:    ${Math.round(performance.getDuration("bind"))}ms${EOL}`);
+        process.stderr.write(`check:   ${Math.round(performance.getDuration("check"))}ms${EOL}`);
+        process.stderr.write(`emit:    ${Math.round(performance.getDuration("emit"))}ms${EOL}`);
     }
 
     if (grammar.diagnostics.size > 0) {
