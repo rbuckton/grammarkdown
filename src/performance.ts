@@ -79,7 +79,7 @@ function tryGetNodePerformanceHooks(): PerformanceHooks | undefined {
         try {
             const { performance, PerformanceObserver } = require("perf_hooks") as typeof import("perf_hooks");
             if (hasRequiredAPI(performance, PerformanceObserver)) {
-                // there is a bug in Node's performance.measure prior to 12.16.3/13.3.0
+                // there is a bug in Node's performance.measure prior to 12.16.3/13.13.0
                 const match = /^(\d+)\.(\d+)\.(\d+)$/.exec(process.versions.node);
                 const major = match ? parseInt(match[1], 10) : 0;
                 const minor = match ? parseInt(match[2], 10) : 0;
@@ -121,8 +121,9 @@ function tryGetNodePerformanceHooks(): PerformanceHooks | undefined {
 
 const nativePerformanceHooks = tryGetWebPerformanceHooks() || tryGetNodePerformanceHooks();
 const nativePerformance = nativePerformanceHooks?.performance;
+const marks = new Map<string, number>();
+const measures = new Map<string, number>();
 let observer: PerformanceObserver | undefined;
-let entryList: PerformanceObserverEntryList | undefined;
 
 reset();
 
@@ -143,30 +144,14 @@ export function measure(measureName: string, startMark?: string, endMark?: strin
 }
 
 export function getMark(markName: string) {
-    const entries = entryList?.getEntriesByName(markName, "mark");
-    return entries?.length ? entries[entries.length - 1].startTime : 0;
+    return marks.get(markName) ?? 0;
 }
 
 export function getDuration(measureName: string) {
-    let duration = 0;
-    const entries = entryList?.getEntriesByName(measureName, "measure");
-    if (entries) {
-        for (const entry of entries) {
-            duration += entry.duration;
-        }
-    }
-    return duration;
+    return measures.get(measureName) ?? 0;
 }
 
 export function getMeasures() {
-    const measures = new Map<string, number>();
-    const entries = entryList?.getEntriesByType("measure");
-    if (entries) {
-        for (const entry of entries) {
-            const value = measures.get(entry.name) || 0;
-            measures.set(entry.name, value + entry.duration);
-        }
-    }
     return measures as ReadonlyMap<string, number>;
 }
 
@@ -174,8 +159,19 @@ export function reset() {
     nativePerformance?.clearMarks();
     nativePerformance?.clearMeasures?.();
     observer?.disconnect();
+    marks.clear();
+    measures.clear();
     if (nativePerformanceHooks) {
-        observer ??= new nativePerformanceHooks.PerformanceObserver(list => entryList = list);
+        observer ??= new nativePerformanceHooks.PerformanceObserver(observePerformance);
         observer.observe({ entryTypes: ["mark", "measure"] });
+    }
+}
+
+function observePerformance(list: PerformanceObserverEntryList) {
+    for (const mark of list.getEntriesByType("mark")) {
+        marks.set(mark.name, mark.startTime);
+    }
+    for (const measure of list.getEntriesByType("measure")) {
+        measures.set(measure.name, (measures.get(measure.name) || 0) + measure.duration);
     }
 }
