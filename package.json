@@ -1,6 +1,6 @@
 {
   "name": "grammarkdown",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "Markdown-like DSL for defining syntactic grammars for programming languages.",
   "license": "MIT",
   "keywords": [
