@@ -1648,8 +1648,9 @@ class RightHandSideDigest {
         const hash = createHash("sha1");
         hash.update(this.writer.toString(), "utf8");
 
-        const digest = hash.digest("hex");
-        return digest.substr(0, 8);
+        const digest = hash.digest().toString("base64");
+        const digestUrlSafe = digest.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+        return digestUrlSafe.slice(0, 8);
     }
 
     private writeNode(node: Node | undefined) {
