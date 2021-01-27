@@ -1642,6 +1642,7 @@ class RightHandSideDigest {
 
     public computeHash(node: RightHandSide): string {
         this.writer = new StringWriter("\n");
+        this.writeNode(node.constraints);
         this.writeNode(node.head);
 
         const hash = createHash("sha1");
@@ -1658,7 +1659,7 @@ class RightHandSideDigest {
         }
 
         switch (node.kind) {
-            case SyntaxKind.Constraints: break;
+            case SyntaxKind.Constraints: this.writeConstraints(<Constraints>node); break;
             case SyntaxKind.TerminalLiteral: this.writeTerminalLiteral(<TerminalLiteral>node); break;
             case SyntaxKind.UnicodeCharacterLiteral: this.writeUnicodeCharacterLiteral(<UnicodeCharacterLiteral>node); break;
             case SyntaxKind.Prose: this.writeProse(<Prose>node); break;
@@ -1666,8 +1667,8 @@ class RightHandSideDigest {
             case SyntaxKind.Terminal: this.writeTerminal(<Terminal>node); break;
             case SyntaxKind.EmptyAssertion: this.writeEmptyAssertion(<EmptyAssertion>node); break;
             case SyntaxKind.LexicalGoalAssertion: this.writeLexicalGoalAssertion(<LexicalGoalAssertion>node); break;
-            case SyntaxKind.LookaheadAssertion: break;
-            case SyntaxKind.NoSymbolHereAssertion: break;
+            case SyntaxKind.LookaheadAssertion: this.writeLookaheadAssertion(<LookaheadAssertion>node); break;
+            case SyntaxKind.NoSymbolHereAssertion: this.writeNoSymbolHereAssertion(<NoSymbolHereAssertion>node); break;
             case SyntaxKind.ProseAssertion: this.writeProseAssertion(<ProseAssertion>node); break;
             case SyntaxKind.ProseFull: this.writeProseFragmentLiteral(<ProseFragmentLiteral>node); break;
             case SyntaxKind.ProseHead: this.writeProseFragmentLiteral(<ProseFragmentLiteral>node); break;
@@ -1678,8 +1679,8 @@ class RightHandSideDigest {
             case SyntaxKind.OneOfSymbol: this.writeOneOfSymbol(<OneOfSymbol>node); break;
             case SyntaxKind.SymbolSpan: this.writeSymbolSpan(<SymbolSpan>node); break;
             case SyntaxKind.SymbolSet: this.writeSymbolSet(<SymbolSet>node); break;
-            case SyntaxKind.ArgumentList: break;
-            case SyntaxKind.Argument: break;
+            case SyntaxKind.ArgumentList: this.writeArgumentList(<ArgumentList>node); break;
+            case SyntaxKind.Argument: this.writeArgument(<Argument>node); break;
             case SyntaxKind.Identifier: this.writeIdentifier(<Identifier>node); break;
             default:
                 if ((node.kind >= SyntaxKind.FirstKeyword && node.kind <= SyntaxKind.LastKeyword) ||
@@ -1712,6 +1713,22 @@ class RightHandSideDigest {
             this.write(tokenToString(node.kind));
             this.spaceRequested = true;
         }
+    }
+
+    private writeConstraints(node: Constraints) {
+        this.write("[");
+        if (node.elements) {
+            for (let i = 0; i < node.elements.length; ++i) {
+                if (i > 0) {
+                    this.write(", ");
+                }
+
+                this.writeNode(node.elements[i]);
+            }
+        }
+
+        this.write("]");
+        this.spaceRequested = true;
     }
 
     private writeTerminal(node: Terminal) {
@@ -1751,6 +1768,26 @@ class RightHandSideDigest {
         this.spaceRequested = true;
     }
 
+    private writeArgumentList(node: ArgumentList) {
+        this.write("[");
+        if (node.elements) {
+            for (let i = 0; i < node.elements.length; ++i) {
+                if (i > 0) {
+                    this.write(", ");
+                }
+
+                this.writeNode(node.elements[i]);
+            }
+        }
+
+        this.write("]");
+    }
+
+    private writeArgument(node: Argument) {
+        this.writeNode(node.operatorToken);
+        this.writeNode(node.name);
+    }
+
     private writeEmptyAssertion(node: EmptyAssertion) {
         this.write("[empty]");
         this.spaceRequested = true;
@@ -1762,6 +1799,31 @@ class RightHandSideDigest {
         this.spaceRequested = false;
         this.write("]");
         this.spaceRequested = true;
+    }
+
+    private writeLookaheadAssertion(node: LookaheadAssertion) {
+        this.write("[lookahead ");
+        this.writeNode(node.operatorToken);
+        this.writeNode(node.lookahead);
+        this.spaceRequested = false;
+        this.write("]");
+        this.spaceRequested = true;
+    }
+
+    private writeNoSymbolHereAssertion(node: NoSymbolHereAssertion) {
+        this.write("[no ");
+        if (node.symbols) {
+            for (let i = 0; i < node.symbols.length; ++i) {
+                if (i > 0) {
+                    this.write(" or ");
+                }
+
+                this.writeNode(node.symbols[i]);
+                this.spaceRequested = false;
+            }
+        }
+
+        this.write(" here]");
     }
 
     private writeProseAssertion(node: ProseAssertion) {
