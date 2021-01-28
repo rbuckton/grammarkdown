@@ -79,30 +79,13 @@
             <article class="content wrap" id="_content" data-uid="hosts">
 <h1 id="host-api">Host API</h1>
 
-<p>The Host API provides the mechanism through which other Grammarkdown Service APIs can interact with the file system.</p>
-<p>There are two kinds of hosts: Synchronous and Asynchronous.</p>
-<ul>
-<li><p><strong>Synchronous Hosts</strong> &mdash; Can be used to interact with the file system synchronously, allowing API operations to access the file system
-in the same tick. Asynchronous API operations will use synchronous host methods if an async host is not available.</p>
-</li>
-<li><p><strong>Asynchronous Hosts</strong> &mdash; Can be used to interact with the file system asynchronously. API operations using an asynchronous host use
-the native ECMAScript <code>Promise</code> to signal the completion of operations. Synchronous API operations will throw when using an
-asynchronous host.</p>
-</li>
-</ul>
+<p>The Host API provides the mechanism through which other Grammarkdown Service APIs can interact with the file system asynchronously.
+API operations using an asynchronous host use the native ECMAScript <code>Promise</code> to signal the completion of operations.</p>
 <h1 id="host-class-hierarchy">Host Class Hierarchy</h1>
 <ul>
-<li>@grammarkdown!HostBase:class<ul>
-<li>@grammarkdown!CoreSyncHost:class<ul>
-<li>@grammarkdown!NodeSyncHost:class</li>
-<li>@grammarkdown!StringSyncHost:class</li>
-</ul>
-</li>
 <li><a class="xref" href="grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_class">CoreAsyncHost</a><ul>
 <li><a class="xref" href="grammarkdown/nodeasynchost.html#grammarkdown_NodeAsyncHost_class">NodeAsyncHost</a></li>
 <li><a class="xref" href="grammarkdown/stringasynchost.html#grammarkdown_StringAsyncHost_class">StringAsyncHost</a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
