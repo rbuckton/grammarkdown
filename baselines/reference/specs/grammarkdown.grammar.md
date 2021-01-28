@@ -9,7 +9,7 @@
   
 &emsp;&emsp;<a name="LineTerminatorSequence"></a>*LineTerminatorSequence* **::**  
 &emsp;&emsp;&emsp;<a name="LineTerminatorSequence-eznvjwhz"></a>&lt;LF&gt;  
-&emsp;&emsp;&emsp;<a name="LineTerminatorSequence-q1yr1eki"></a>&lt;CR&gt;&emsp;[lookahead ≠ &lt;LF&gt;]  
+&emsp;&emsp;&emsp;<a name="LineTerminatorSequence-hiltsszk"></a>&lt;CR&gt;&emsp;[lookahead ≠ &lt;LF&gt;]  
 &emsp;&emsp;&emsp;<a name="LineTerminatorSequence-eaiqsw9w"></a>&lt;LS&gt;  
 &emsp;&emsp;&emsp;<a name="LineTerminatorSequence-z8h10fxn"></a>&lt;PS&gt;  
 &emsp;&emsp;&emsp;<a name="LineTerminatorSequence-lajs7kyd"></a>&lt;CR&gt;&emsp;&lt;LF&gt;  

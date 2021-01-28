@@ -50,7 +50,7 @@
   
 &emsp;&emsp;<a name="LineTerminatorSequence"></a>*LineTerminatorSequence* **::**  
 &emsp;&emsp;&emsp;<a name="LineTerminatorSequence-eznvjwhz"></a>&lt;LF&gt;  
-&emsp;&emsp;&emsp;<a name="LineTerminatorSequence-q1yr1eki"></a>&lt;CR&gt;&emsp;[lookahead ≠ &lt;LF&gt;]  
+&emsp;&emsp;&emsp;<a name="LineTerminatorSequence-hiltsszk"></a>&lt;CR&gt;&emsp;[lookahead ≠ &lt;LF&gt;]  
 &emsp;&emsp;&emsp;<a name="LineTerminatorSequence-eaiqsw9w"></a>&lt;LS&gt;  
 &emsp;&emsp;&emsp;<a name="LineTerminatorSequence-z8h10fxn"></a>&lt;PS&gt;  
 &emsp;&emsp;&emsp;<a name="LineTerminatorSequence-lajs7kyd"></a>&lt;CR&gt;&emsp;&lt;LF&gt;  
@@ -251,7 +251,7 @@
   
 &emsp;&emsp;<a name="EscapeSequence"></a>*EscapeSequence* **::**  
 &emsp;&emsp;&emsp;<a name="EscapeSequence-6ehvb3kw"></a>*[CharacterEscapeSequence](#CharacterEscapeSequence)*  
-&emsp;&emsp;&emsp;<a name="EscapeSequence-ulmkmvlx"></a>`` 0 ``&emsp;[lookahead ∉ *[DecimalDigit](#DecimalDigit)*]  
+&emsp;&emsp;&emsp;<a name="EscapeSequence-awshns7m"></a>`` 0 ``&emsp;[lookahead ∉ *[DecimalDigit](#DecimalDigit)*]  
 &emsp;&emsp;&emsp;<a name="EscapeSequence-qacbhaps"></a>*[HexEscapeSequence](#HexEscapeSequence)*  
 &emsp;&emsp;&emsp;<a name="EscapeSequence-rl1vvdtr"></a>*[UnicodeEscapeSequence](#UnicodeEscapeSequence)*  
   
@@ -346,7 +346,7 @@
 &emsp;&emsp;&emsp;<a name="TemplateCharacters--mjqxz72"></a>*[TemplateCharacter](#TemplateCharacter)*&emsp;*[TemplateCharacters](#TemplateCharacters)*<sub>opt</sub>  
   
 &emsp;&emsp;<a name="TemplateCharacter"></a>*TemplateCharacter* **::**  
-&emsp;&emsp;&emsp;<a name="TemplateCharacter-emlmkqfm"></a>`` $ ``&emsp;[lookahead ≠ `` { ``]  
+&emsp;&emsp;&emsp;<a name="TemplateCharacter-a8o1qsam"></a>`` $ ``&emsp;[lookahead ≠ `` { ``]  
 &emsp;&emsp;&emsp;<a name="TemplateCharacter-6n2njt_x"></a>`` \ ``&emsp;*[EscapeSequence](#EscapeSequence)*  
 &emsp;&emsp;&emsp;<a name="TemplateCharacter-ajkpm2ja"></a>*[LineContinuation](#LineContinuation)*  
 &emsp;&emsp;&emsp;<a name="TemplateCharacter-vegl2qv9"></a>*[LineTerminatorSequence](#LineTerminatorSequence)*  
@@ -354,37 +354,37 @@
   
 &emsp;&emsp;<a name="IdentifierReference"></a>*IdentifierReference*<sub>[Yield]</sub> **:**  
 &emsp;&emsp;&emsp;<a name="IdentifierReference-bras6mo_"></a>*[Identifier](#Identifier)*  
-&emsp;&emsp;&emsp;<a name="IdentifierReference-0d8zyjn8"></a>[~Yield]&emsp;`` yield ``  
+&emsp;&emsp;&emsp;<a name="IdentifierReference-zobe2rzz"></a>[~Yield]&emsp;`` yield ``  
   
 &emsp;&emsp;<a name="BindingIdentifier"></a>*BindingIdentifier*<sub>[Yield]</sub> **:**  
 &emsp;&emsp;&emsp;<a name="BindingIdentifier-bras6mo_"></a>*[Identifier](#Identifier)*  
-&emsp;&emsp;&emsp;<a name="BindingIdentifier-0d8zyjn8"></a>[~Yield]&emsp;`` yield ``  
+&emsp;&emsp;&emsp;<a name="BindingIdentifier-zobe2rzz"></a>[~Yield]&emsp;`` yield ``  
   
 &emsp;&emsp;<a name="LabelIdentifier"></a>*LabelIdentifier*<sub>[Yield]</sub> **:**  
 &emsp;&emsp;&emsp;<a name="LabelIdentifier-bras6mo_"></a>*[Identifier](#Identifier)*  
-&emsp;&emsp;&emsp;<a name="LabelIdentifier-0d8zyjn8"></a>[~Yield]&emsp;`` yield ``  
+&emsp;&emsp;&emsp;<a name="LabelIdentifier-zobe2rzz"></a>[~Yield]&emsp;`` yield ``  
   
 &emsp;&emsp;<a name="Identifier"></a>*Identifier* **:**  
 &emsp;&emsp;&emsp;<a name="Identifier-v6xddc2h"></a>*[IdentifierName](#IdentifierName)* **but not** *[ReservedWord](#ReservedWord)*  
   
 &emsp;&emsp;<a name="PrimaryExpression"></a>*PrimaryExpression*<sub>[Yield]</sub> **:**  
 &emsp;&emsp;&emsp;<a name="PrimaryExpression-jo4mwtvh"></a>`` this ``  
-&emsp;&emsp;&emsp;<a name="PrimaryExpression-i2hxnrih"></a>*[IdentifierReference](#IdentifierReference)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="PrimaryExpression-ogexu7hv"></a>*[IdentifierReference](#IdentifierReference)*<sub>[?Yield]</sub>  
 &emsp;&emsp;&emsp;<a name="PrimaryExpression-kul-a19e"></a>*[Literal](#Literal)*  
-&emsp;&emsp;&emsp;<a name="PrimaryExpression-g_mjk5cm"></a>*[ArrayLiteral](#ArrayLiteral)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="PrimaryExpression-zreje_zz"></a>*[ObjectLiteral](#ObjectLiteral)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="PrimaryExpression-ree7a8sl"></a>*[ArrayLiteral](#ArrayLiteral)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="PrimaryExpression-a5lakpgn"></a>*[ObjectLiteral](#ObjectLiteral)*<sub>[?Yield]</sub>  
 &emsp;&emsp;&emsp;<a name="PrimaryExpression-jc7szv1s"></a>*[FunctionExpression](#FunctionExpression)*  
-&emsp;&emsp;&emsp;<a name="PrimaryExpression-2m5tsvzv"></a>*[ClassExpression](#ClassExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="PrimaryExpression-wmzaiyqm"></a>*[ClassExpression](#ClassExpression)*<sub>[?Yield]</sub>  
 &emsp;&emsp;&emsp;<a name="PrimaryExpression-q7f39ayg"></a>*[GeneratorExpression](#GeneratorExpression)*  
 &emsp;&emsp;&emsp;<a name="PrimaryExpression-mbzy6lvr"></a>*[RegularExpressionLiteral](#RegularExpressionLiteral)*  
-&emsp;&emsp;&emsp;<a name="PrimaryExpression-2zis6bbu"></a>*[TemplateLiteral](#TemplateLiteral)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="PrimaryExpression-yrb110hm"></a>*[CoverParenthesizedExpressionAndArrowParameterList](#CoverParenthesizedExpressionAndArrowParameterList)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="PrimaryExpression-lskw0dik"></a>*[TemplateLiteral](#TemplateLiteral)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="PrimaryExpression-s_2ppiz3"></a>*[CoverParenthesizedExpressionAndArrowParameterList](#CoverParenthesizedExpressionAndArrowParameterList)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="CoverParenthesizedExpressionAndArrowParameterList"></a>*CoverParenthesizedExpressionAndArrowParameterList*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="CoverParenthesizedExpressionAndArrowParameterList-s6bvnd5v"></a>`` ( ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` ) ``  
+&emsp;&emsp;&emsp;<a name="CoverParenthesizedExpressionAndArrowParameterList-r_i_2qfp"></a>`` ( ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` ) ``  
 &emsp;&emsp;&emsp;<a name="CoverParenthesizedExpressionAndArrowParameterList-eormm5tk"></a>`` ( ``&emsp;`` ) ``  
-&emsp;&emsp;&emsp;<a name="CoverParenthesizedExpressionAndArrowParameterList-lr2tpcvq"></a>`` ( ``&emsp;`` ... ``&emsp;*[BindingIdentifier](#BindingIdentifier)*<sub>[?Yield]</sub>&emsp;`` ) ``  
-&emsp;&emsp;&emsp;<a name="CoverParenthesizedExpressionAndArrowParameterList-8guaj-ks"></a>`` ( ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` , ``&emsp;`` ... ``&emsp;*[BindingIdentifier](#BindingIdentifier)*<sub>[?Yield]</sub>&emsp;`` ) ``  
+&emsp;&emsp;&emsp;<a name="CoverParenthesizedExpressionAndArrowParameterList-hz4wekf2"></a>`` ( ``&emsp;`` ... ``&emsp;*[BindingIdentifier](#BindingIdentifier)*<sub>[?Yield]</sub>&emsp;`` ) ``  
+&emsp;&emsp;&emsp;<a name="CoverParenthesizedExpressionAndArrowParameterList-k5-himtb"></a>`` ( ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` , ``&emsp;`` ... ``&emsp;*[BindingIdentifier](#BindingIdentifier)*<sub>[?Yield]</sub>&emsp;`` ) ``  
   
 &emsp;&emsp;<a name="Literal"></a>*Literal* **:**  
 &emsp;&emsp;&emsp;<a name="Literal-vphbieby"></a>*[NullLiteral](#NullLiteral)*  
@@ -394,40 +394,40 @@
   
 &emsp;&emsp;<a name="ArrayLiteral"></a>*ArrayLiteral*<sub>[Yield]</sub> **:**  
 &emsp;&emsp;&emsp;<a name="ArrayLiteral-kg5ha7xc"></a>`` [ ``&emsp;*[Elision](#Elision)*<sub>opt</sub>&emsp;`` ] ``  
-&emsp;&emsp;&emsp;<a name="ArrayLiteral-cqjjuksr"></a>`` [ ``&emsp;*[ElementList](#ElementList)*<sub>[?Yield]</sub>&emsp;`` ] ``  
-&emsp;&emsp;&emsp;<a name="ArrayLiteral-yjc94a7j"></a>`` [ ``&emsp;*[ElementList](#ElementList)*<sub>[?Yield]</sub>&emsp;`` , ``&emsp;*[Elision](#Elision)*<sub>opt</sub>&emsp;`` ] ``  
+&emsp;&emsp;&emsp;<a name="ArrayLiteral-ceantaig"></a>`` [ ``&emsp;*[ElementList](#ElementList)*<sub>[?Yield]</sub>&emsp;`` ] ``  
+&emsp;&emsp;&emsp;<a name="ArrayLiteral-6q8zhw-j"></a>`` [ ``&emsp;*[ElementList](#ElementList)*<sub>[?Yield]</sub>&emsp;`` , ``&emsp;*[Elision](#Elision)*<sub>opt</sub>&emsp;`` ] ``  
   
 &emsp;&emsp;<a name="ElementList"></a>*ElementList*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="ElementList-2aa1epou"></a>*[Elision](#Elision)*<sub>opt</sub>&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[+In, ?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="ElementList-fbpz0ate"></a>*[Elision](#Elision)*<sub>opt</sub>&emsp;*[SpreadElement](#SpreadElement)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="ElementList-_sr5sq6t"></a>*[ElementList](#ElementList)*<sub>[?Yield]</sub>&emsp;`` , ``&emsp;*[Elision](#Elision)*<sub>opt</sub>&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[+In, ?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="ElementList-aleaauxs"></a>*[ElementList](#ElementList)*<sub>[?Yield]</sub>&emsp;`` , ``&emsp;*[Elision](#Elision)*<sub>opt</sub>&emsp;*[SpreadElement](#SpreadElement)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="ElementList-wybjwp51"></a>*[Elision](#Elision)*<sub>opt</sub>&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[+In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="ElementList-bfqqsa9f"></a>*[Elision](#Elision)*<sub>opt</sub>&emsp;*[SpreadElement](#SpreadElement)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="ElementList-hhzfel7x"></a>*[ElementList](#ElementList)*<sub>[?Yield]</sub>&emsp;`` , ``&emsp;*[Elision](#Elision)*<sub>opt</sub>&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[+In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="ElementList-3whht7cs"></a>*[ElementList](#ElementList)*<sub>[?Yield]</sub>&emsp;`` , ``&emsp;*[Elision](#Elision)*<sub>opt</sub>&emsp;*[SpreadElement](#SpreadElement)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="Elision"></a>*Elision* **:**  
 &emsp;&emsp;&emsp;<a name="Elision-lhh3u7f7"></a>`` , ``  
 &emsp;&emsp;&emsp;<a name="Elision-gg0bjle3"></a>*[Elision](#Elision)*&emsp;`` , ``  
   
 &emsp;&emsp;<a name="SpreadElement"></a>*SpreadElement*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="SpreadElement-w7ifpmpd"></a>`` ... ``&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[+In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="SpreadElement-vobtdpsw"></a>`` ... ``&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[+In, ?Yield]</sub>  
   
 &emsp;&emsp;<a name="ObjectLiteral"></a>*ObjectLiteral*<sub>[Yield]</sub> **:**  
 &emsp;&emsp;&emsp;<a name="ObjectLiteral-gbpaspne"></a>`` { ``&emsp;`` } ``  
-&emsp;&emsp;&emsp;<a name="ObjectLiteral-g--o073w"></a>`` { ``&emsp;*[PropertyDefinitionList](#PropertyDefinitionList)*<sub>[?Yield]</sub>&emsp;`` } ``  
-&emsp;&emsp;&emsp;<a name="ObjectLiteral-hwnsf_iz"></a>`` { ``&emsp;*[PropertyDefinitionList](#PropertyDefinitionList)*<sub>[?Yield]</sub>&emsp;`` , ``&emsp;`` } ``  
+&emsp;&emsp;&emsp;<a name="ObjectLiteral-6mq5m09j"></a>`` { ``&emsp;*[PropertyDefinitionList](#PropertyDefinitionList)*<sub>[?Yield]</sub>&emsp;`` } ``  
+&emsp;&emsp;&emsp;<a name="ObjectLiteral-83maqmaa"></a>`` { ``&emsp;*[PropertyDefinitionList](#PropertyDefinitionList)*<sub>[?Yield]</sub>&emsp;`` , ``&emsp;`` } ``  
   
 &emsp;&emsp;<a name="PropertyDefinitionList"></a>*PropertyDefinitionList*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="PropertyDefinitionList-zxofg8tg"></a>*[PropertyDefinition](#PropertyDefinition)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="PropertyDefinitionList-mvlwazei"></a>*[PropertyDefinitionList](#PropertyDefinitionList)*<sub>[?Yield]</sub>&emsp;`` , ``&emsp;*[PropertyDefinition](#PropertyDefinition)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="PropertyDefinitionList-nfq3odvn"></a>*[PropertyDefinition](#PropertyDefinition)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="PropertyDefinitionList--lteomgf"></a>*[PropertyDefinitionList](#PropertyDefinitionList)*<sub>[?Yield]</sub>&emsp;`` , ``&emsp;*[PropertyDefinition](#PropertyDefinition)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="PropertyDefinition"></a>*PropertyDefinition*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="PropertyDefinition-i2hxnrih"></a>*[IdentifierReference](#IdentifierReference)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="PropertyDefinition-3wg6qczf"></a>*[CoverInitializedName](#CoverInitializedName)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="PropertyDefinition-8tkldtak"></a>*[PropertyName](#PropertyName)*<sub>[?Yield]</sub>&emsp;`` : ``&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[+In, ?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="PropertyDefinition-s8ilfl9g"></a>*[MethodDefinition](#MethodDefinition)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="PropertyDefinition-ogexu7hv"></a>*[IdentifierReference](#IdentifierReference)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="PropertyDefinition-akttn_hw"></a>*[CoverInitializedName](#CoverInitializedName)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="PropertyDefinition-iuxrf0je"></a>*[PropertyName](#PropertyName)*<sub>[?Yield]</sub>&emsp;`` : ``&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[+In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="PropertyDefinition-2mvdtmtw"></a>*[MethodDefinition](#MethodDefinition)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="PropertyName"></a>*PropertyName*<sub>[Yield]</sub> **:**  
 &emsp;&emsp;&emsp;<a name="PropertyName-5x4jbee2"></a>*[LiteralPropertyName](#LiteralPropertyName)*  
-&emsp;&emsp;&emsp;<a name="PropertyName-nimmmso5"></a>*[ComputedPropertyName](#ComputedPropertyName)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="PropertyName-yykj7f71"></a>*[ComputedPropertyName](#ComputedPropertyName)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="LiteralPropertyName"></a>*LiteralPropertyName* **:**  
 &emsp;&emsp;&emsp;<a name="LiteralPropertyName-drsx4tka"></a>*[IdentifierName](#IdentifierName)*  
@@ -435,37 +435,37 @@
 &emsp;&emsp;&emsp;<a name="LiteralPropertyName-pui0b1rt"></a>*[NumericLiteral](#NumericLiteral)*  
   
 &emsp;&emsp;<a name="ComputedPropertyName"></a>*ComputedPropertyName*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="ComputedPropertyName-ltvvc-5a"></a>`` [ ``&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[+In, ?Yield]</sub>&emsp;`` ] ``  
+&emsp;&emsp;&emsp;<a name="ComputedPropertyName-bdlhpbiz"></a>`` [ ``&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[+In, ?Yield]</sub>&emsp;`` ] ``  
   
 &emsp;&emsp;<a name="CoverInitializedName"></a>*CoverInitializedName*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="CoverInitializedName-wtjotzwk"></a>*[IdentifierReference](#IdentifierReference)*<sub>[?Yield]</sub>&emsp;*[Initializer](#Initializer)*<sub>[+In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="CoverInitializedName-htptjtrk"></a>*[IdentifierReference](#IdentifierReference)*<sub>[?Yield]</sub>&emsp;*[Initializer](#Initializer)*<sub>[+In, ?Yield]</sub>  
   
 &emsp;&emsp;<a name="Initializer"></a>*Initializer*<sub>[In, Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="Initializer-_d0ijvnh"></a>`` = ``&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[?In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="Initializer-nf3vr8r6"></a>`` = ``&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[?In, ?Yield]</sub>  
   
 &emsp;&emsp;<a name="TemplateLiteral"></a>*TemplateLiteral*<sub>[Yield]</sub> **:**  
 &emsp;&emsp;&emsp;<a name="TemplateLiteral-e_otk8es"></a>*[NoSubstitutionTemplate](#NoSubstitutionTemplate)*  
-&emsp;&emsp;&emsp;<a name="TemplateLiteral-vpxmqc6d"></a>*[TemplateHead](#TemplateHead)*&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;*[TemplateSpans](#TemplateSpans)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="TemplateLiteral-x4gkegtn"></a>*[TemplateHead](#TemplateHead)*&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;*[TemplateSpans](#TemplateSpans)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="TemplateSpans"></a>*TemplateSpans*<sub>[Yield]</sub> **:**  
 &emsp;&emsp;&emsp;<a name="TemplateSpans-v_5hijma"></a>*[TemplateTail](#TemplateTail)*  
-&emsp;&emsp;&emsp;<a name="TemplateSpans-slt0jvdm"></a>*[TemplateMiddleList](#TemplateMiddleList)*<sub>[?Yield]</sub>&emsp;*[TemplateTail](#TemplateTail)*  
+&emsp;&emsp;&emsp;<a name="TemplateSpans-kn-dkoxt"></a>*[TemplateMiddleList](#TemplateMiddleList)*<sub>[?Yield]</sub>&emsp;*[TemplateTail](#TemplateTail)*  
   
 &emsp;&emsp;<a name="TemplateMiddleList"></a>*TemplateMiddleList*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="TemplateMiddleList-3h7jyz9j"></a>*[TemplateMiddle](#TemplateMiddle)*&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="TemplateMiddleList-r6zwqruv"></a>*[TemplateMiddleList](#TemplateMiddleList)*<sub>[?Yield]</sub>&emsp;*[TemplateMiddle](#TemplateMiddle)*&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="TemplateMiddleList--_zqphtb"></a>*[TemplateMiddle](#TemplateMiddle)*&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="TemplateMiddleList-ngwv7nt_"></a>*[TemplateMiddleList](#TemplateMiddleList)*<sub>[?Yield]</sub>&emsp;*[TemplateMiddle](#TemplateMiddle)*&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>  
   
 &emsp;&emsp;<a name="MemberExpression"></a>*MemberExpression*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="MemberExpression-jvcvemtw"></a>*[PrimaryExpression](#PrimaryExpression)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="MemberExpression-a74xd7de"></a>*[MemberExpression](#MemberExpression)*<sub>[?Yield]</sub>&emsp;`` [ ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` ] ``  
-&emsp;&emsp;&emsp;<a name="MemberExpression-frbj984t"></a>*[MemberExpression](#MemberExpression)*<sub>[?Yield]</sub>&emsp;`` . ``&emsp;*[IdentifierName](#IdentifierName)*  
-&emsp;&emsp;&emsp;<a name="MemberExpression-fj52gjle"></a>*[MemberExpression](#MemberExpression)*<sub>[?Yield]</sub>&emsp;*[TemplateLiteral](#TemplateLiteral)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="MemberExpression-x4tzletw"></a>*[SuperProperty](#SuperProperty)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="MemberExpression-cvlyy6e7"></a>*[PrimaryExpression](#PrimaryExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="MemberExpression-optgyqih"></a>*[MemberExpression](#MemberExpression)*<sub>[?Yield]</sub>&emsp;`` [ ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` ] ``  
+&emsp;&emsp;&emsp;<a name="MemberExpression-yp4w7t5b"></a>*[MemberExpression](#MemberExpression)*<sub>[?Yield]</sub>&emsp;`` . ``&emsp;*[IdentifierName](#IdentifierName)*  
+&emsp;&emsp;&emsp;<a name="MemberExpression-eok1sjmw"></a>*[MemberExpression](#MemberExpression)*<sub>[?Yield]</sub>&emsp;*[TemplateLiteral](#TemplateLiteral)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="MemberExpression-_mbci_ck"></a>*[SuperProperty](#SuperProperty)*<sub>[?Yield]</sub>  
 &emsp;&emsp;&emsp;<a name="MemberExpression-yb7id2be"></a>*[MetaProperty](#MetaProperty)*  
-&emsp;&emsp;&emsp;<a name="MemberExpression-cfq-hbbx"></a>`` new ``&emsp;*[MemberExpression](#MemberExpression)*<sub>[?Yield]</sub>&emsp;*[Arguments](#Arguments)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="MemberExpression-1eadqb9u"></a>`` new ``&emsp;*[MemberExpression](#MemberExpression)*<sub>[?Yield]</sub>&emsp;*[Arguments](#Arguments)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="SuperProperty"></a>*SuperProperty*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="SuperProperty-tpjzdyqv"></a>`` super ``&emsp;`` [ ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` ] ``  
+&emsp;&emsp;&emsp;<a name="SuperProperty-awhcbdrc"></a>`` super ``&emsp;`` [ ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` ] ``  
 &emsp;&emsp;&emsp;<a name="SuperProperty-9pdsslwb"></a>`` super ``&emsp;`` . ``&emsp;*[IdentifierName](#IdentifierName)*  
   
 &emsp;&emsp;<a name="MetaProperty"></a>*MetaProperty* **:**  
@@ -475,418 +475,418 @@
 &emsp;&emsp;&emsp;<a name="NewTarget-0t4hpsv9"></a>`` new ``&emsp;`` . ``&emsp;`` target ``  
   
 &emsp;&emsp;<a name="NewExpression"></a>*NewExpression*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="NewExpression-cnogaraa"></a>*[MemberExpression](#MemberExpression)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="NewExpression-51p618ta"></a>`` new ``&emsp;*[NewExpression](#NewExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="NewExpression-jrbadqrh"></a>*[MemberExpression](#MemberExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="NewExpression-4hhudeg2"></a>`` new ``&emsp;*[NewExpression](#NewExpression)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="CallExpression"></a>*CallExpression*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="CallExpression-vks-z6n3"></a>*[MemberExpression](#MemberExpression)*<sub>[?Yield]</sub>&emsp;*[Arguments](#Arguments)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="CallExpression-ljkqw-iw"></a>*[SuperCall](#SuperCall)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="CallExpression-qugahahu"></a>*[CallExpression](#CallExpression)*<sub>[?Yield]</sub>&emsp;*[Arguments](#Arguments)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="CallExpression-2u2urbmg"></a>*[CallExpression](#CallExpression)*<sub>[?Yield]</sub>&emsp;`` [ ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` ] ``  
-&emsp;&emsp;&emsp;<a name="CallExpression-u6lsbvgu"></a>*[CallExpression](#CallExpression)*<sub>[?Yield]</sub>&emsp;`` . ``&emsp;*[IdentifierName](#IdentifierName)*  
-&emsp;&emsp;&emsp;<a name="CallExpression-rc744wey"></a>*[CallExpression](#CallExpression)*<sub>[?Yield]</sub>&emsp;*[TemplateLiteral](#TemplateLiteral)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="CallExpression-7tsroatz"></a>*[MemberExpression](#MemberExpression)*<sub>[?Yield]</sub>&emsp;*[Arguments](#Arguments)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="CallExpression-kf-ocps7"></a>*[SuperCall](#SuperCall)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="CallExpression-e_gcdt8v"></a>*[CallExpression](#CallExpression)*<sub>[?Yield]</sub>&emsp;*[Arguments](#Arguments)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="CallExpression-rchhgell"></a>*[CallExpression](#CallExpression)*<sub>[?Yield]</sub>&emsp;`` [ ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` ] ``  
+&emsp;&emsp;&emsp;<a name="CallExpression-cqcz9384"></a>*[CallExpression](#CallExpression)*<sub>[?Yield]</sub>&emsp;`` . ``&emsp;*[IdentifierName](#IdentifierName)*  
+&emsp;&emsp;&emsp;<a name="CallExpression-41j2nyau"></a>*[CallExpression](#CallExpression)*<sub>[?Yield]</sub>&emsp;*[TemplateLiteral](#TemplateLiteral)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="SuperCall"></a>*SuperCall*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="SuperCall-qdmdlzzo"></a>`` super ``&emsp;*[Arguments](#Arguments)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="SuperCall-76fjo1b-"></a>`` super ``&emsp;*[Arguments](#Arguments)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="Arguments"></a>*Arguments*<sub>[Yield]</sub> **:**  
 &emsp;&emsp;&emsp;<a name="Arguments-eormm5tk"></a>`` ( ``&emsp;`` ) ``  
-&emsp;&emsp;&emsp;<a name="Arguments-i0-5a5el"></a>`` ( ``&emsp;*[ArgumentList](#ArgumentList)*<sub>[?Yield]</sub>&emsp;`` ) ``  
+&emsp;&emsp;&emsp;<a name="Arguments-ncamqbez"></a>`` ( ``&emsp;*[ArgumentList](#ArgumentList)*<sub>[?Yield]</sub>&emsp;`` ) ``  
   
 &emsp;&emsp;<a name="ArgumentList"></a>*ArgumentList*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="ArgumentList-1px9pijq"></a>*[AssignmentExpression](#AssignmentExpression)*<sub>[+In, ?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="ArgumentList-w7ifpmpd"></a>`` ... ``&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[+In, ?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="ArgumentList-f_i_7oqe"></a>*[ArgumentList](#ArgumentList)*<sub>[?Yield]</sub>&emsp;`` , ``&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[+In, ?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="ArgumentList-z4rq-va3"></a>*[ArgumentList](#ArgumentList)*<sub>[?Yield]</sub>&emsp;`` , ``&emsp;`` ... ``&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[+In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="ArgumentList-h4-5hy99"></a>*[AssignmentExpression](#AssignmentExpression)*<sub>[+In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="ArgumentList-vobtdpsw"></a>`` ... ``&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[+In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="ArgumentList-lymlhe6i"></a>*[ArgumentList](#ArgumentList)*<sub>[?Yield]</sub>&emsp;`` , ``&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[+In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="ArgumentList-kmzoxwpg"></a>*[ArgumentList](#ArgumentList)*<sub>[?Yield]</sub>&emsp;`` , ``&emsp;`` ... ``&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[+In, ?Yield]</sub>  
   
 &emsp;&emsp;<a name="LeftHandSideExpression"></a>*LeftHandSideExpression*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="LeftHandSideExpression-rq6tm1h6"></a>*[NewExpression](#NewExpression)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="LeftHandSideExpression-i8det4ck"></a>*[CallExpression](#CallExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="LeftHandSideExpression-0jie9jyf"></a>*[NewExpression](#NewExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="LeftHandSideExpression-9ogd2ngr"></a>*[CallExpression](#CallExpression)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="PostfixExpression"></a>*PostfixExpression*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="PostfixExpression-glqbepvz"></a>*[LeftHandSideExpression](#LeftHandSideExpression)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="PostfixExpression-i_jjg0ex"></a>*[LeftHandSideExpression](#LeftHandSideExpression)*<sub>[?Yield]</sub>&emsp;[no *[LineTerminator](#LineTerminator)* here]&emsp;`` ++ ``  
-&emsp;&emsp;&emsp;<a name="PostfixExpression-jr0tcoqg"></a>*[LeftHandSideExpression](#LeftHandSideExpression)*<sub>[?Yield]</sub>&emsp;[no *[LineTerminator](#LineTerminator)* here]&emsp;`` -- ``  
+&emsp;&emsp;&emsp;<a name="PostfixExpression-n3-uhpku"></a>*[LeftHandSideExpression](#LeftHandSideExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="PostfixExpression-aed5cr1a"></a>*[LeftHandSideExpression](#LeftHandSideExpression)*<sub>[?Yield]</sub>&emsp;[no *[LineTerminator](#LineTerminator)* here]&emsp;`` ++ ``  
+&emsp;&emsp;&emsp;<a name="PostfixExpression-8a1mxapx"></a>*[LeftHandSideExpression](#LeftHandSideExpression)*<sub>[?Yield]</sub>&emsp;[no *[LineTerminator](#LineTerminator)* here]&emsp;`` -- ``  
   
 &emsp;&emsp;<a name="UnaryExpression"></a>*UnaryExpression*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="UnaryExpression-tnvm6wcz"></a>*[PostfixExpression](#PostfixExpression)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="UnaryExpression-v9wiw5nl"></a>`` delete ``&emsp;*[UnaryExpression](#UnaryExpression)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="UnaryExpression-5dgdjy7z"></a>`` void ``&emsp;*[UnaryExpression](#UnaryExpression)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="UnaryExpression-qxosuesc"></a>`` typeof ``&emsp;*[UnaryExpression](#UnaryExpression)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="UnaryExpression-vwgxygda"></a>`` ++ ``&emsp;*[UnaryExpression](#UnaryExpression)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="UnaryExpression-onrvwudi"></a>`` -- ``&emsp;*[UnaryExpression](#UnaryExpression)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="UnaryExpression-o0kdmush"></a>`` + ``&emsp;*[UnaryExpression](#UnaryExpression)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="UnaryExpression-odzkxnu5"></a>`` - ``&emsp;*[UnaryExpression](#UnaryExpression)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="UnaryExpression-b9nqec7b"></a>`` ~ ``&emsp;*[UnaryExpression](#UnaryExpression)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="UnaryExpression-ulcvcjyx"></a>`` ! ``&emsp;*[UnaryExpression](#UnaryExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="UnaryExpression-nrg8kgmo"></a>*[PostfixExpression](#PostfixExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="UnaryExpression-ekxo1pza"></a>`` delete ``&emsp;*[UnaryExpression](#UnaryExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="UnaryExpression-_s1043hp"></a>`` void ``&emsp;*[UnaryExpression](#UnaryExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="UnaryExpression-7wloqxsu"></a>`` typeof ``&emsp;*[UnaryExpression](#UnaryExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="UnaryExpression-wal5uw-k"></a>`` ++ ``&emsp;*[UnaryExpression](#UnaryExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="UnaryExpression-spagk8pc"></a>`` -- ``&emsp;*[UnaryExpression](#UnaryExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="UnaryExpression-shobcd6w"></a>`` + ``&emsp;*[UnaryExpression](#UnaryExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="UnaryExpression-18xuleg3"></a>`` - ``&emsp;*[UnaryExpression](#UnaryExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="UnaryExpression-4uv8dqfd"></a>`` ~ ``&emsp;*[UnaryExpression](#UnaryExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="UnaryExpression-brtnogpq"></a>`` ! ``&emsp;*[UnaryExpression](#UnaryExpression)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="MultiplicativeExpression"></a>*MultiplicativeExpression*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="MultiplicativeExpression-1lzwwxvc"></a>*[UnaryExpression](#UnaryExpression)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="MultiplicativeExpression-qxlmttl0"></a>*[MultiplicativeExpression](#MultiplicativeExpression)*<sub>[?Yield]</sub>&emsp;*[MultiplicativeOperator](#MultiplicativeOperator)*&emsp;*[UnaryExpression](#UnaryExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="MultiplicativeExpression-1jnnpt53"></a>*[UnaryExpression](#UnaryExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="MultiplicativeExpression-3ecqbx-e"></a>*[MultiplicativeExpression](#MultiplicativeExpression)*<sub>[?Yield]</sub>&emsp;*[MultiplicativeOperator](#MultiplicativeOperator)*&emsp;*[UnaryExpression](#UnaryExpression)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="MultiplicativeOperator"></a>*MultiplicativeOperator* **:** **one of**  
 <pre>&emsp;&emsp;&emsp;<code>*</code>     <code>/</code>     <code>%</code></pre>
   
 &emsp;&emsp;<a name="AdditiveExpression"></a>*AdditiveExpression*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="AdditiveExpression-zj3_9bui"></a>*[MultiplicativeExpression](#MultiplicativeExpression)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="AdditiveExpression-dkl7f70y"></a>*[AdditiveExpression](#AdditiveExpression)*<sub>[?Yield]</sub>&emsp;`` + ``&emsp;*[MultiplicativeExpression](#MultiplicativeExpression)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="AdditiveExpression-7gvefllu"></a>*[AdditiveExpression](#AdditiveExpression)*<sub>[?Yield]</sub>&emsp;`` - ``&emsp;*[MultiplicativeExpression](#MultiplicativeExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="AdditiveExpression-l7gk14bj"></a>*[MultiplicativeExpression](#MultiplicativeExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="AdditiveExpression-w6bmgtvb"></a>*[AdditiveExpression](#AdditiveExpression)*<sub>[?Yield]</sub>&emsp;`` + ``&emsp;*[MultiplicativeExpression](#MultiplicativeExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="AdditiveExpression-vwwrgzf4"></a>*[AdditiveExpression](#AdditiveExpression)*<sub>[?Yield]</sub>&emsp;`` - ``&emsp;*[MultiplicativeExpression](#MultiplicativeExpression)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="ShiftExpression"></a>*ShiftExpression*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="ShiftExpression-gcpjaxbx"></a>*[AdditiveExpression](#AdditiveExpression)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="ShiftExpression-s1cueleg"></a>*[ShiftExpression](#ShiftExpression)*<sub>[?Yield]</sub>&emsp;`` << ``&emsp;*[AdditiveExpression](#AdditiveExpression)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="ShiftExpression-gabc2w-s"></a>*[ShiftExpression](#ShiftExpression)*<sub>[?Yield]</sub>&emsp;`` >> ``&emsp;*[AdditiveExpression](#AdditiveExpression)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="ShiftExpression-bfpitn7a"></a>*[ShiftExpression](#ShiftExpression)*<sub>[?Yield]</sub>&emsp;`` >>> ``&emsp;*[AdditiveExpression](#AdditiveExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="ShiftExpression-k66120oo"></a>*[AdditiveExpression](#AdditiveExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="ShiftExpression-hm2-srvz"></a>*[ShiftExpression](#ShiftExpression)*<sub>[?Yield]</sub>&emsp;`` << ``&emsp;*[AdditiveExpression](#AdditiveExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="ShiftExpression-y5zcjmmx"></a>*[ShiftExpression](#ShiftExpression)*<sub>[?Yield]</sub>&emsp;`` >> ``&emsp;*[AdditiveExpression](#AdditiveExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="ShiftExpression-nsl__v-m"></a>*[ShiftExpression](#ShiftExpression)*<sub>[?Yield]</sub>&emsp;`` >>> ``&emsp;*[AdditiveExpression](#AdditiveExpression)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="RelationalExpression"></a>*RelationalExpression*<sub>[In, Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="RelationalExpression-5o0jutoh"></a>*[ShiftExpression](#ShiftExpression)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="RelationalExpression--hocaojj"></a>*[RelationalExpression](#RelationalExpression)*<sub>[?In, ?Yield]</sub>&emsp;`` < ``&emsp;*[ShiftExpression](#ShiftExpression)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="RelationalExpression-owny7otd"></a>*[RelationalExpression](#RelationalExpression)*<sub>[?In, ?Yield]</sub>&emsp;`` > ``&emsp;*[ShiftExpression](#ShiftExpression)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="RelationalExpression-_ymfijdt"></a>*[RelationalExpression](#RelationalExpression)*<sub>[?In, ?Yield]</sub>&emsp;`` <= ``&emsp;*[ShiftExpression](#ShiftExpression)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="RelationalExpression-sy_fnjl1"></a>*[RelationalExpression](#RelationalExpression)*<sub>[?In, ?Yield]</sub>&emsp;`` >= ``&emsp;*[ShiftExpression](#ShiftExpression)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="RelationalExpression-1ec9rmdp"></a>*[RelationalExpression](#RelationalExpression)*<sub>[?In, ?Yield]</sub>&emsp;`` instanceof ``&emsp;*[ShiftExpression](#ShiftExpression)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="RelationalExpression-9mtjpkmx"></a>[+In]&emsp;*[RelationalExpression](#RelationalExpression)*<sub>[+In, ?Yield]</sub>&emsp;`` in ``&emsp;*[ShiftExpression](#ShiftExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="RelationalExpression-fmvhrjz5"></a>*[ShiftExpression](#ShiftExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="RelationalExpression-hi-l77g6"></a>*[RelationalExpression](#RelationalExpression)*<sub>[?In, ?Yield]</sub>&emsp;`` < ``&emsp;*[ShiftExpression](#ShiftExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="RelationalExpression-4bmjyhj9"></a>*[RelationalExpression](#RelationalExpression)*<sub>[?In, ?Yield]</sub>&emsp;`` > ``&emsp;*[ShiftExpression](#ShiftExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="RelationalExpression-chw4vzzr"></a>*[RelationalExpression](#RelationalExpression)*<sub>[?In, ?Yield]</sub>&emsp;`` <= ``&emsp;*[ShiftExpression](#ShiftExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="RelationalExpression-zgwy-gbf"></a>*[RelationalExpression](#RelationalExpression)*<sub>[?In, ?Yield]</sub>&emsp;`` >= ``&emsp;*[ShiftExpression](#ShiftExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="RelationalExpression-o9nal8ov"></a>*[RelationalExpression](#RelationalExpression)*<sub>[?In, ?Yield]</sub>&emsp;`` instanceof ``&emsp;*[ShiftExpression](#ShiftExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="RelationalExpression-e1orqltk"></a>[+In]&emsp;*[RelationalExpression](#RelationalExpression)*<sub>[+In, ?Yield]</sub>&emsp;`` in ``&emsp;*[ShiftExpression](#ShiftExpression)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="EqualityExpression"></a>*EqualityExpression*<sub>[In, Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="EqualityExpression-hwqbsk2b"></a>*[RelationalExpression](#RelationalExpression)*<sub>[?In, ?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="EqualityExpression-dxo0lfgu"></a>*[EqualityExpression](#EqualityExpression)*<sub>[?In, ?Yield]</sub>&emsp;`` == ``&emsp;*[RelationalExpression](#RelationalExpression)*<sub>[?In, ?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="EqualityExpression-cn2twrby"></a>*[EqualityExpression](#EqualityExpression)*<sub>[?In, ?Yield]</sub>&emsp;`` != ``&emsp;*[RelationalExpression](#RelationalExpression)*<sub>[?In, ?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="EqualityExpression-4hu79ipe"></a>*[EqualityExpression](#EqualityExpression)*<sub>[?In, ?Yield]</sub>&emsp;`` === ``&emsp;*[RelationalExpression](#RelationalExpression)*<sub>[?In, ?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="EqualityExpression-irptryux"></a>*[EqualityExpression](#EqualityExpression)*<sub>[?In, ?Yield]</sub>&emsp;`` !== ``&emsp;*[RelationalExpression](#RelationalExpression)*<sub>[?In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="EqualityExpression-lwclk_zl"></a>*[RelationalExpression](#RelationalExpression)*<sub>[?In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="EqualityExpression-to7pvmlv"></a>*[EqualityExpression](#EqualityExpression)*<sub>[?In, ?Yield]</sub>&emsp;`` == ``&emsp;*[RelationalExpression](#RelationalExpression)*<sub>[?In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="EqualityExpression-c7qtdtzh"></a>*[EqualityExpression](#EqualityExpression)*<sub>[?In, ?Yield]</sub>&emsp;`` != ``&emsp;*[RelationalExpression](#RelationalExpression)*<sub>[?In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="EqualityExpression-xagph1jh"></a>*[EqualityExpression](#EqualityExpression)*<sub>[?In, ?Yield]</sub>&emsp;`` === ``&emsp;*[RelationalExpression](#RelationalExpression)*<sub>[?In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="EqualityExpression-h1eqfkvi"></a>*[EqualityExpression](#EqualityExpression)*<sub>[?In, ?Yield]</sub>&emsp;`` !== ``&emsp;*[RelationalExpression](#RelationalExpression)*<sub>[?In, ?Yield]</sub>  
   
 &emsp;&emsp;<a name="BitwiseANDExpression"></a>*BitwiseANDExpression*<sub>[In, Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="BitwiseANDExpression-lun9ukxu"></a>*[EqualityExpression](#EqualityExpression)*<sub>[?In, ?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="BitwiseANDExpression-5qnlcti0"></a>*[BitwiseANDExpression](#BitwiseANDExpression)*<sub>[?In, ?Yield]</sub>&emsp;`` & ``&emsp;*[EqualityExpression](#EqualityExpression)*<sub>[?In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="BitwiseANDExpression-ad5n1cg9"></a>*[EqualityExpression](#EqualityExpression)*<sub>[?In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="BitwiseANDExpression-3dskfyk7"></a>*[BitwiseANDExpression](#BitwiseANDExpression)*<sub>[?In, ?Yield]</sub>&emsp;`` & ``&emsp;*[EqualityExpression](#EqualityExpression)*<sub>[?In, ?Yield]</sub>  
   
 &emsp;&emsp;<a name="BitwiseXORExpression"></a>*BitwiseXORExpression*<sub>[In, Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="BitwiseXORExpression-xpbduqqp"></a>*[BitwiseANDExpression](#BitwiseANDExpression)*<sub>[?In, ?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="BitwiseXORExpression-tgmxlg5x"></a>*[BitwiseXORExpression](#BitwiseXORExpression)*<sub>[?In, ?Yield]</sub>&emsp;`` ^ ``&emsp;*[BitwiseANDExpression](#BitwiseANDExpression)*<sub>[?In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="BitwiseXORExpression-z7lnb3se"></a>*[BitwiseANDExpression](#BitwiseANDExpression)*<sub>[?In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="BitwiseXORExpression-jrnzbnmv"></a>*[BitwiseXORExpression](#BitwiseXORExpression)*<sub>[?In, ?Yield]</sub>&emsp;`` ^ ``&emsp;*[BitwiseANDExpression](#BitwiseANDExpression)*<sub>[?In, ?Yield]</sub>  
   
 &emsp;&emsp;<a name="BitwiseORExpression"></a>*BitwiseORExpression*<sub>[In, Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="BitwiseORExpression-cey9dti3"></a>*[BitwiseXORExpression](#BitwiseXORExpression)*<sub>[?In, ?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="BitwiseORExpression-aw36khwc"></a>*[BitwiseORExpression](#BitwiseORExpression)*<sub>[?In, ?Yield]</sub>&emsp;`` | ``&emsp;*[BitwiseXORExpression](#BitwiseXORExpression)*<sub>[?In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="BitwiseORExpression-nfrr9i0n"></a>*[BitwiseXORExpression](#BitwiseXORExpression)*<sub>[?In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="BitwiseORExpression-r7rviva5"></a>*[BitwiseORExpression](#BitwiseORExpression)*<sub>[?In, ?Yield]</sub>&emsp;`` | ``&emsp;*[BitwiseXORExpression](#BitwiseXORExpression)*<sub>[?In, ?Yield]</sub>  
   
 &emsp;&emsp;<a name="LogicalANDExpression"></a>*LogicalANDExpression*<sub>[In, Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="LogicalANDExpression-w3t6vbyj"></a>*[BitwiseORExpression](#BitwiseORExpression)*<sub>[?In, ?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="LogicalANDExpression-pfhxsi49"></a>*[LogicalANDExpression](#LogicalANDExpression)*<sub>[?In, ?Yield]</sub>&emsp;`` && ``&emsp;*[BitwiseORExpression](#BitwiseORExpression)*<sub>[?In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="LogicalANDExpression-q-hpp_wa"></a>*[BitwiseORExpression](#BitwiseORExpression)*<sub>[?In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="LogicalANDExpression-3g1ufdqd"></a>*[LogicalANDExpression](#LogicalANDExpression)*<sub>[?In, ?Yield]</sub>&emsp;`` && ``&emsp;*[BitwiseORExpression](#BitwiseORExpression)*<sub>[?In, ?Yield]</sub>  
   
 &emsp;&emsp;<a name="LogicalORExpression"></a>*LogicalORExpression*<sub>[In, Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="LogicalORExpression-3tsdtkb_"></a>*[LogicalANDExpression](#LogicalANDExpression)*<sub>[?In, ?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="LogicalORExpression-tku92t5q"></a>*[LogicalORExpression](#LogicalORExpression)*<sub>[?In, ?Yield]</sub>&emsp;`` || ``&emsp;*[LogicalANDExpression](#LogicalANDExpression)*<sub>[?In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="LogicalORExpression-arwbyeue"></a>*[LogicalANDExpression](#LogicalANDExpression)*<sub>[?In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="LogicalORExpression-a1r9tsg5"></a>*[LogicalORExpression](#LogicalORExpression)*<sub>[?In, ?Yield]</sub>&emsp;`` || ``&emsp;*[LogicalANDExpression](#LogicalANDExpression)*<sub>[?In, ?Yield]</sub>  
   
 &emsp;&emsp;<a name="ConditionalExpression"></a>*ConditionalExpression*<sub>[In, Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="ConditionalExpression-c0t3dfmv"></a>*[LogicalORExpression](#LogicalORExpression)*<sub>[?In, ?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="ConditionalExpression-quxiu2pr"></a>*[LogicalORExpression](#LogicalORExpression)*<sub>[?In, ?Yield]</sub>&emsp;`` ? ``&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[+In, ?Yield]</sub>&emsp;`` : ``&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[?In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="ConditionalExpression-ytlyfxys"></a>*[LogicalORExpression](#LogicalORExpression)*<sub>[?In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="ConditionalExpression-lwhio-eu"></a>*[LogicalORExpression](#LogicalORExpression)*<sub>[?In, ?Yield]</sub>&emsp;`` ? ``&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[+In, ?Yield]</sub>&emsp;`` : ``&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[?In, ?Yield]</sub>  
   
 &emsp;&emsp;<a name="AssignmentExpression"></a>*AssignmentExpression*<sub>[In, Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="AssignmentExpression-p6xtyrzd"></a>*[ConditionalExpression](#ConditionalExpression)*<sub>[?In, ?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="AssignmentExpression-uglis9ea"></a>[+Yield]&emsp;*[YieldExpression](#YieldExpression)*<sub>[?In]</sub>  
-&emsp;&emsp;&emsp;<a name="AssignmentExpression-k987eemp"></a>*[ArrowFunction](#ArrowFunction)*<sub>[?In, ?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="AssignmentExpression-ijpo4eaq"></a>*[LeftHandSideExpression](#LeftHandSideExpression)*<sub>[?Yield]</sub>&emsp;`` = ``&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[?In, ?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="AssignmentExpression-xzqhr---"></a>*[LeftHandSideExpression](#LeftHandSideExpression)*<sub>[?Yield]</sub>&emsp;*[AssignmentOperator](#AssignmentOperator)*&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[?In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="AssignmentExpression-dp4xalde"></a>*[ConditionalExpression](#ConditionalExpression)*<sub>[?In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="AssignmentExpression-p1-rj9ba"></a>[+Yield]&emsp;*[YieldExpression](#YieldExpression)*<sub>[?In]</sub>  
+&emsp;&emsp;&emsp;<a name="AssignmentExpression-qfyu1jve"></a>*[ArrowFunction](#ArrowFunction)*<sub>[?In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="AssignmentExpression-sjsudkni"></a>*[LeftHandSideExpression](#LeftHandSideExpression)*<sub>[?Yield]</sub>&emsp;`` = ``&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[?In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="AssignmentExpression-empku8pb"></a>*[LeftHandSideExpression](#LeftHandSideExpression)*<sub>[?Yield]</sub>&emsp;*[AssignmentOperator](#AssignmentOperator)*&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[?In, ?Yield]</sub>  
   
 &emsp;&emsp;<a name="AssignmentOperator"></a>*AssignmentOperator* **:** **one of**  
 <pre>&emsp;&emsp;&emsp;<code>*=</code>    <code>/=</code>    <code>%=</code>    <code>+=</code>    <code>-=</code>    <code>&lt;&lt;=</code>   <code>&gt;&gt;=</code>   <code>&gt;&gt;&gt;=</code>  <code>&amp;=</code>    <code>^=</code>  
 &emsp;&emsp;&emsp;<code>|=</code></pre>
   
 &emsp;&emsp;<a name="Expression"></a>*Expression*<sub>[In, Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="Expression-1px9pijq"></a>*[AssignmentExpression](#AssignmentExpression)*<sub>[?In, ?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="Expression-cwoazx1t"></a>*[Expression](#Expression)*<sub>[?In, ?Yield]</sub>&emsp;`` , ``&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[?In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="Expression-eg-dv18w"></a>*[AssignmentExpression](#AssignmentExpression)*<sub>[?In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="Expression-kd_zcsec"></a>*[Expression](#Expression)*<sub>[?In, ?Yield]</sub>&emsp;`` , ``&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[?In, ?Yield]</sub>  
   
 &emsp;&emsp;<a name="Statement"></a>*Statement*<sub>[Yield, Return]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="Statement-gre9qn6e"></a>*[BlockStatement](#BlockStatement)*<sub>[?Yield, ?Return]</sub>  
-&emsp;&emsp;&emsp;<a name="Statement-iwwn8atx"></a>*[VariableStatement](#VariableStatement)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="Statement-ohjewau2"></a>*[BlockStatement](#BlockStatement)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="Statement-ccnmvmgi"></a>*[VariableStatement](#VariableStatement)*<sub>[?Yield]</sub>  
 &emsp;&emsp;&emsp;<a name="Statement-cziqu-45"></a>*[EmptyStatement](#EmptyStatement)*  
-&emsp;&emsp;&emsp;<a name="Statement-gsqkt2bv"></a>*[ExpressionStatement](#ExpressionStatement)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="Statement-skawbrez"></a>*[IfStatement](#IfStatement)*<sub>[?Yield, ?Return]</sub>  
-&emsp;&emsp;&emsp;<a name="Statement-cdyywqxx"></a>*[BreakableStatement](#BreakableStatement)*<sub>[?Yield, ?Return]</sub>  
-&emsp;&emsp;&emsp;<a name="Statement-hx0ynljx"></a>*[ContinueStatement](#ContinueStatement)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="Statement-q4uv-sm3"></a>*[BreakStatement](#BreakStatement)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="Statement-qm95e4wi"></a>[+Return]&emsp;*[ReturnStatement](#ReturnStatement)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="Statement-ye6wwgts"></a>*[WithStatement](#WithStatement)*<sub>[?Yield, ?Return]</sub>  
-&emsp;&emsp;&emsp;<a name="Statement-cij_anje"></a>*[LabelledStatement](#LabelledStatement)*<sub>[?Yield, ?Return]</sub>  
-&emsp;&emsp;&emsp;<a name="Statement-hntake-o"></a>*[ThrowStatement](#ThrowStatement)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="Statement-ex_crokj"></a>*[TryStatement](#TryStatement)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="Statement-v4pre5qe"></a>*[ExpressionStatement](#ExpressionStatement)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="Statement-doh7ayfp"></a>*[IfStatement](#IfStatement)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="Statement-3cokaffg"></a>*[BreakableStatement](#BreakableStatement)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="Statement-uawld5eq"></a>*[ContinueStatement](#ContinueStatement)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="Statement-ymt8zkjm"></a>*[BreakStatement](#BreakStatement)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="Statement-9hhjfiuw"></a>[+Return]&emsp;*[ReturnStatement](#ReturnStatement)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="Statement-ztcijwlg"></a>*[WithStatement](#WithStatement)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="Statement-hrdxm37v"></a>*[LabelledStatement](#LabelledStatement)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="Statement-a3ugpxig"></a>*[ThrowStatement](#ThrowStatement)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="Statement-hwttwnnj"></a>*[TryStatement](#TryStatement)*<sub>[?Yield, ?Return]</sub>  
 &emsp;&emsp;&emsp;<a name="Statement-iseu28qi"></a>*[DebuggerStatement](#DebuggerStatement)*  
   
 &emsp;&emsp;<a name="Declaration"></a>*Declaration*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="Declaration-ykusttdk"></a>*[HoistableDeclaration](#HoistableDeclaration)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="Declaration-bwk3zfoi"></a>*[ClassDeclaration](#ClassDeclaration)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="Declaration-jxaobega"></a>*[LexicalDeclaration](#LexicalDeclaration)*<sub>[+In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="Declaration-vjexyl9b"></a>*[HoistableDeclaration](#HoistableDeclaration)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="Declaration-xlgtvkjl"></a>*[ClassDeclaration](#ClassDeclaration)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="Declaration-iifspriu"></a>*[LexicalDeclaration](#LexicalDeclaration)*<sub>[+In, ?Yield]</sub>  
   
 &emsp;&emsp;<a name="HoistableDeclaration"></a>*HoistableDeclaration*<sub>[Yield, Default]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="HoistableDeclaration--nqupnlb"></a>*[FunctionDeclaration](#FunctionDeclaration)*<sub>[?Yield, ?Default]</sub>  
-&emsp;&emsp;&emsp;<a name="HoistableDeclaration-r3zmbc2x"></a>*[GeneratorDeclaration](#GeneratorDeclaration)*<sub>[?Yield, ?Default]</sub>  
+&emsp;&emsp;&emsp;<a name="HoistableDeclaration-ovr4ix9y"></a>*[FunctionDeclaration](#FunctionDeclaration)*<sub>[?Yield, ?Default]</sub>  
+&emsp;&emsp;&emsp;<a name="HoistableDeclaration-lnwantup"></a>*[GeneratorDeclaration](#GeneratorDeclaration)*<sub>[?Yield, ?Default]</sub>  
   
 &emsp;&emsp;<a name="BreakableStatement"></a>*BreakableStatement*<sub>[Yield, Return]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="BreakableStatement-kmxl4yum"></a>*[IterationStatement](#IterationStatement)*<sub>[?Yield, ?Return]</sub>  
-&emsp;&emsp;&emsp;<a name="BreakableStatement-nuio-xfp"></a>*[SwitchStatement](#SwitchStatement)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="BreakableStatement-otk1x8s7"></a>*[IterationStatement](#IterationStatement)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="BreakableStatement-zplgtuub"></a>*[SwitchStatement](#SwitchStatement)*<sub>[?Yield, ?Return]</sub>  
   
 &emsp;&emsp;<a name="BlockStatement"></a>*BlockStatement*<sub>[Yield, Return]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="BlockStatement-gt0s3zb5"></a>*[Block](#Block)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="BlockStatement-b98fh5ll"></a>*[Block](#Block)*<sub>[?Yield, ?Return]</sub>  
   
 &emsp;&emsp;<a name="Block"></a>*Block*<sub>[Yield, Return]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="Block--v-zyr0v"></a>`` { ``&emsp;*[StatementList](#StatementList)*<sub>[?Yield, ?Return]</sub><sub>opt</sub>&emsp;`` } ``  
+&emsp;&emsp;&emsp;<a name="Block-qjdhom3d"></a>`` { ``&emsp;*[StatementList](#StatementList)*<sub>[?Yield, ?Return]</sub><sub>opt</sub>&emsp;`` } ``  
   
 &emsp;&emsp;<a name="StatementList"></a>*StatementList*<sub>[Yield, Return]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="StatementList-15hryu6r"></a>*[StatementListItem](#StatementListItem)*<sub>[?Yield, ?Return]</sub>  
-&emsp;&emsp;&emsp;<a name="StatementList-dbrzeh7l"></a>*[StatementList](#StatementList)*<sub>[?Yield, ?Return]</sub>&emsp;*[StatementListItem](#StatementListItem)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="StatementList-ymyx82ot"></a>*[StatementListItem](#StatementListItem)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="StatementList-ms-ivc9o"></a>*[StatementList](#StatementList)*<sub>[?Yield, ?Return]</sub>&emsp;*[StatementListItem](#StatementListItem)*<sub>[?Yield, ?Return]</sub>  
   
 &emsp;&emsp;<a name="StatementListItem"></a>*StatementListItem*<sub>[Yield, Return]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="StatementListItem-pyyivtxj"></a>*[Statement](#Statement)*<sub>[?Yield, ?Return]</sub>  
-&emsp;&emsp;&emsp;<a name="StatementListItem-1vn3ibwe"></a>*[Declaration](#Declaration)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="StatementListItem-ptkcjl9d"></a>*[Statement](#Statement)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="StatementListItem-qevjovuo"></a>*[Declaration](#Declaration)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="LexicalDeclaration"></a>*LexicalDeclaration*<sub>[In, Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="LexicalDeclaration-deqecbrp"></a>*[LetOrConst](#LetOrConst)*&emsp;*[BindingList](#BindingList)*<sub>[?In, ?Yield]</sub>&emsp;`` ; ``  
+&emsp;&emsp;&emsp;<a name="LexicalDeclaration-xv-4nne5"></a>*[LetOrConst](#LetOrConst)*&emsp;*[BindingList](#BindingList)*<sub>[?In, ?Yield]</sub>&emsp;`` ; ``  
   
 &emsp;&emsp;<a name="LetOrConst"></a>*LetOrConst* **:**  
 &emsp;&emsp;&emsp;<a name="LetOrConst-laxrvawy"></a>`` let ``  
 &emsp;&emsp;&emsp;<a name="LetOrConst-nim_d4hb"></a>`` const ``  
   
 &emsp;&emsp;<a name="BindingList"></a>*BindingList*<sub>[In, Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="BindingList-py_eo7ni"></a>*[LexicalBinding](#LexicalBinding)*<sub>[?In, ?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="BindingList-dt40zeyt"></a>*[BindingList](#BindingList)*<sub>[?In, ?Yield]</sub>&emsp;`` , ``&emsp;*[LexicalBinding](#LexicalBinding)*<sub>[?In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="BindingList-e305y2km"></a>*[LexicalBinding](#LexicalBinding)*<sub>[?In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="BindingList-marh1ajq"></a>*[BindingList](#BindingList)*<sub>[?In, ?Yield]</sub>&emsp;`` , ``&emsp;*[LexicalBinding](#LexicalBinding)*<sub>[?In, ?Yield]</sub>  
   
 &emsp;&emsp;<a name="LexicalBinding"></a>*LexicalBinding*<sub>[In, Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="LexicalBinding-c5neqctp"></a>*[BindingIdentifier](#BindingIdentifier)*<sub>[?Yield]</sub>&emsp;*[Initializer](#Initializer)*<sub>[?In, ?Yield]</sub><sub>opt</sub>  
-&emsp;&emsp;&emsp;<a name="LexicalBinding-dd1t5ekf"></a>*[BindingPattern](#BindingPattern)*<sub>[?Yield]</sub>&emsp;*[Initializer](#Initializer)*<sub>[?In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="LexicalBinding-b9gombuc"></a>*[BindingIdentifier](#BindingIdentifier)*<sub>[?Yield]</sub>&emsp;*[Initializer](#Initializer)*<sub>[?In, ?Yield]</sub><sub>opt</sub>  
+&emsp;&emsp;&emsp;<a name="LexicalBinding-0geigjbr"></a>*[BindingPattern](#BindingPattern)*<sub>[?Yield]</sub>&emsp;*[Initializer](#Initializer)*<sub>[?In, ?Yield]</sub>  
   
 &emsp;&emsp;<a name="VariableStatement"></a>*VariableStatement*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="VariableStatement-m0ehvb8m"></a>`` var ``&emsp;*[VariableDeclarationList](#VariableDeclarationList)*<sub>[+In, ?Yield]</sub>&emsp;`` ; ``  
+&emsp;&emsp;&emsp;<a name="VariableStatement-cub1cdoa"></a>`` var ``&emsp;*[VariableDeclarationList](#VariableDeclarationList)*<sub>[+In, ?Yield]</sub>&emsp;`` ; ``  
   
 &emsp;&emsp;<a name="VariableDeclarationList"></a>*VariableDeclarationList*<sub>[In, Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="VariableDeclarationList-n3piepmh"></a>*[VariableDeclaration](#VariableDeclaration)*<sub>[?In, ?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="VariableDeclarationList-oavweevb"></a>*[VariableDeclarationList](#VariableDeclarationList)*<sub>[?In, ?Yield]</sub>&emsp;`` , ``&emsp;*[VariableDeclaration](#VariableDeclaration)*<sub>[?In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="VariableDeclarationList-d0zwwjcb"></a>*[VariableDeclaration](#VariableDeclaration)*<sub>[?In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="VariableDeclarationList-ldogde1t"></a>*[VariableDeclarationList](#VariableDeclarationList)*<sub>[?In, ?Yield]</sub>&emsp;`` , ``&emsp;*[VariableDeclaration](#VariableDeclaration)*<sub>[?In, ?Yield]</sub>  
   
 &emsp;&emsp;<a name="VariableDeclaration"></a>*VariableDeclaration*<sub>[In, Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="VariableDeclaration-c5neqctp"></a>*[BindingIdentifier](#BindingIdentifier)*<sub>[?Yield]</sub>&emsp;*[Initializer](#Initializer)*<sub>[?In, ?Yield]</sub><sub>opt</sub>  
-&emsp;&emsp;&emsp;<a name="VariableDeclaration-dd1t5ekf"></a>*[BindingPattern](#BindingPattern)*<sub>[?Yield]</sub>&emsp;*[Initializer](#Initializer)*<sub>[?In, ?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="VariableDeclaration-b9gombuc"></a>*[BindingIdentifier](#BindingIdentifier)*<sub>[?Yield]</sub>&emsp;*[Initializer](#Initializer)*<sub>[?In, ?Yield]</sub><sub>opt</sub>  
+&emsp;&emsp;&emsp;<a name="VariableDeclaration-0geigjbr"></a>*[BindingPattern](#BindingPattern)*<sub>[?Yield]</sub>&emsp;*[Initializer](#Initializer)*<sub>[?In, ?Yield]</sub>  
   
 &emsp;&emsp;<a name="BindingPattern"></a>*BindingPattern*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="BindingPattern-mh3oqyo8"></a>*[ObjectBindingPattern](#ObjectBindingPattern)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="BindingPattern-xjjvo5sr"></a>*[ArrayBindingPattern](#ArrayBindingPattern)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="BindingPattern-iqszj2gq"></a>*[ObjectBindingPattern](#ObjectBindingPattern)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="BindingPattern-typmndoq"></a>*[ArrayBindingPattern](#ArrayBindingPattern)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="ObjectBindingPattern"></a>*ObjectBindingPattern*<sub>[Yield]</sub> **:**  
 &emsp;&emsp;&emsp;<a name="ObjectBindingPattern-gbpaspne"></a>`` { ``&emsp;`` } ``  
-&emsp;&emsp;&emsp;<a name="ObjectBindingPattern-gk43jrsm"></a>`` { ``&emsp;*[BindingPropertyList](#BindingPropertyList)*<sub>[?Yield]</sub>&emsp;`` } ``  
-&emsp;&emsp;&emsp;<a name="ObjectBindingPattern-d1upprvx"></a>`` { ``&emsp;*[BindingPropertyList](#BindingPropertyList)*<sub>[?Yield]</sub>&emsp;`` , ``&emsp;`` } ``  
+&emsp;&emsp;&emsp;<a name="ObjectBindingPattern-kqyq-nnj"></a>`` { ``&emsp;*[BindingPropertyList](#BindingPropertyList)*<sub>[?Yield]</sub>&emsp;`` } ``  
+&emsp;&emsp;&emsp;<a name="ObjectBindingPattern-6ttfelu0"></a>`` { ``&emsp;*[BindingPropertyList](#BindingPropertyList)*<sub>[?Yield]</sub>&emsp;`` , ``&emsp;`` } ``  
   
 &emsp;&emsp;<a name="ArrayBindingPattern"></a>*ArrayBindingPattern*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="ArrayBindingPattern-njmfo-uj"></a>`` [ ``&emsp;*[Elision](#Elision)*<sub>opt</sub>&emsp;*[BindingRestElement](#BindingRestElement)*<sub>[?Yield]</sub><sub>opt</sub>&emsp;`` ] ``  
-&emsp;&emsp;&emsp;<a name="ArrayBindingPattern-hqlkkwfb"></a>`` [ ``&emsp;*[BindingElementList](#BindingElementList)*<sub>[?Yield]</sub>&emsp;`` ] ``  
-&emsp;&emsp;&emsp;<a name="ArrayBindingPattern-12yahkzg"></a>`` [ ``&emsp;*[BindingElementList](#BindingElementList)*<sub>[?Yield]</sub>&emsp;`` , ``&emsp;*[Elision](#Elision)*<sub>opt</sub>&emsp;*[BindingRestElement](#BindingRestElement)*<sub>[?Yield]</sub><sub>opt</sub>&emsp;`` ] ``  
+&emsp;&emsp;&emsp;<a name="ArrayBindingPattern--z1zoth_"></a>`` [ ``&emsp;*[Elision](#Elision)*<sub>opt</sub>&emsp;*[BindingRestElement](#BindingRestElement)*<sub>[?Yield]</sub><sub>opt</sub>&emsp;`` ] ``  
+&emsp;&emsp;&emsp;<a name="ArrayBindingPattern-t7meydfw"></a>`` [ ``&emsp;*[BindingElementList](#BindingElementList)*<sub>[?Yield]</sub>&emsp;`` ] ``  
+&emsp;&emsp;&emsp;<a name="ArrayBindingPattern-h8rdfajp"></a>`` [ ``&emsp;*[BindingElementList](#BindingElementList)*<sub>[?Yield]</sub>&emsp;`` , ``&emsp;*[Elision](#Elision)*<sub>opt</sub>&emsp;*[BindingRestElement](#BindingRestElement)*<sub>[?Yield]</sub><sub>opt</sub>&emsp;`` ] ``  
   
 &emsp;&emsp;<a name="BindingPropertyList"></a>*BindingPropertyList*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="BindingPropertyList-y9z6szrc"></a>*[BindingProperty](#BindingProperty)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="BindingPropertyList-bzdeo9zt"></a>*[BindingPropertyList](#BindingPropertyList)*<sub>[?Yield]</sub>&emsp;`` , ``&emsp;*[BindingProperty](#BindingProperty)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="BindingPropertyList-m-yms5jc"></a>*[BindingProperty](#BindingProperty)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="BindingPropertyList-f6kmnsn8"></a>*[BindingPropertyList](#BindingPropertyList)*<sub>[?Yield]</sub>&emsp;`` , ``&emsp;*[BindingProperty](#BindingProperty)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="BindingElementList"></a>*BindingElementList*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="BindingElementList-arhlr9hd"></a>*[BindingElisionElement](#BindingElisionElement)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="BindingElementList-hiwampap"></a>*[BindingElementList](#BindingElementList)*<sub>[?Yield]</sub>&emsp;`` , ``&emsp;*[BindingElisionElement](#BindingElisionElement)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="BindingElementList-ltendml1"></a>*[BindingElisionElement](#BindingElisionElement)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="BindingElementList-xsom9rdn"></a>*[BindingElementList](#BindingElementList)*<sub>[?Yield]</sub>&emsp;`` , ``&emsp;*[BindingElisionElement](#BindingElisionElement)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="BindingElisionElement"></a>*BindingElisionElement*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="BindingElisionElement-wo9nasvo"></a>*[Elision](#Elision)*<sub>opt</sub>&emsp;*[BindingElement](#BindingElement)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="BindingElisionElement-bp5nx5rt"></a>*[Elision](#Elision)*<sub>opt</sub>&emsp;*[BindingElement](#BindingElement)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="BindingProperty"></a>*BindingProperty*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="BindingProperty-lof8ala-"></a>*[SingleNameBinding](#SingleNameBinding)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="BindingProperty-mhvrwluk"></a>*[PropertyName](#PropertyName)*<sub>[?Yield]</sub>&emsp;`` : ``&emsp;*[BindingElement](#BindingElement)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="BindingProperty-im8h6m3h"></a>*[SingleNameBinding](#SingleNameBinding)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="BindingProperty-sbs7j34x"></a>*[PropertyName](#PropertyName)*<sub>[?Yield]</sub>&emsp;`` : ``&emsp;*[BindingElement](#BindingElement)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="BindingElement"></a>*BindingElement*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="BindingElement-lof8ala-"></a>*[SingleNameBinding](#SingleNameBinding)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="BindingElement-ahx6lm0w"></a>*[BindingPattern](#BindingPattern)*<sub>[?Yield]</sub>&emsp;*[Initializer](#Initializer)*<sub>[+In, ?Yield]</sub><sub>opt</sub>  
+&emsp;&emsp;&emsp;<a name="BindingElement-im8h6m3h"></a>*[SingleNameBinding](#SingleNameBinding)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="BindingElement-wb8k13pn"></a>*[BindingPattern](#BindingPattern)*<sub>[?Yield]</sub>&emsp;*[Initializer](#Initializer)*<sub>[+In, ?Yield]</sub><sub>opt</sub>  
   
 &emsp;&emsp;<a name="SingleNameBinding"></a>*SingleNameBinding*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="SingleNameBinding-c5neqctp"></a>*[BindingIdentifier](#BindingIdentifier)*<sub>[?Yield]</sub>&emsp;*[Initializer](#Initializer)*<sub>[+In, ?Yield]</sub><sub>opt</sub>  
+&emsp;&emsp;&emsp;<a name="SingleNameBinding-8o-_9yka"></a>*[BindingIdentifier](#BindingIdentifier)*<sub>[?Yield]</sub>&emsp;*[Initializer](#Initializer)*<sub>[+In, ?Yield]</sub><sub>opt</sub>  
   
 &emsp;&emsp;<a name="BindingRestElement"></a>*BindingRestElement*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="BindingRestElement-ffhe3nqa"></a>`` ... ``&emsp;*[BindingIdentifier](#BindingIdentifier)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="BindingRestElement-2jvxbeeq"></a>`` ... ``&emsp;*[BindingIdentifier](#BindingIdentifier)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="EmptyStatement"></a>*EmptyStatement* **:**  
 &emsp;&emsp;&emsp;<a name="EmptyStatement-sg2sawim"></a>`` ; ``  
   
 &emsp;&emsp;<a name="ExpressionStatement"></a>*ExpressionStatement*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="ExpressionStatement-4ttdnuln"></a>[lookahead ∉ { `` { ``, `` function ``, `` class ``, `` let ``&emsp;`` [ `` }]&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` ; ``  
+&emsp;&emsp;&emsp;<a name="ExpressionStatement--brtynph"></a>[lookahead ∉ { `` { ``, `` function ``, `` class ``, `` let ``&emsp;`` [ `` }]&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` ; ``  
   
 &emsp;&emsp;<a name="IfStatement"></a>*IfStatement*<sub>[Yield, Return]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="IfStatement-fuhqe2xq"></a>`` if ``&emsp;`` ( ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` ) ``&emsp;*[Statement](#Statement)*<sub>[?Yield, ?Return]</sub>&emsp;`` else ``&emsp;*[Statement](#Statement)*<sub>[?Yield, ?Return]</sub>  
-&emsp;&emsp;&emsp;<a name="IfStatement-9ogvciaf"></a>`` if ``&emsp;`` ( ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` ) ``&emsp;*[Statement](#Statement)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="IfStatement-imryxjcs"></a>`` if ``&emsp;`` ( ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` ) ``&emsp;*[Statement](#Statement)*<sub>[?Yield, ?Return]</sub>&emsp;`` else ``&emsp;*[Statement](#Statement)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="IfStatement-mczhzbq6"></a>`` if ``&emsp;`` ( ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` ) ``&emsp;*[Statement](#Statement)*<sub>[?Yield, ?Return]</sub>  
   
 &emsp;&emsp;<a name="IterationStatement"></a>*IterationStatement*<sub>[Yield, Return]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="IterationStatement-jocmqoht"></a>`` do ``&emsp;*[Statement](#Statement)*<sub>[?Yield, ?Return]</sub>&emsp;`` while ``&emsp;`` ( ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` ) ``&emsp;`` ; ``  
-&emsp;&emsp;&emsp;<a name="IterationStatement-92j78-b5"></a>`` while ``&emsp;`` ( ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` ) ``&emsp;*[Statement](#Statement)*<sub>[?Yield, ?Return]</sub>  
-&emsp;&emsp;&emsp;<a name="IterationStatement-_do88got"></a>`` for ``&emsp;`` ( ``&emsp;[lookahead ∉ { `` let ``&emsp;`` [ `` }]&emsp;*[Expression](#Expression)*<sub>[?Yield]</sub><sub>opt</sub>&emsp;`` ; ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub><sub>opt</sub>&emsp;`` ; ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub><sub>opt</sub>&emsp;`` ) ``&emsp;*[Statement](#Statement)*<sub>[?Yield, ?Return]</sub>  
-&emsp;&emsp;&emsp;<a name="IterationStatement-sodmtko8"></a>`` for ``&emsp;`` ( ``&emsp;`` var ``&emsp;*[VariableDeclarationList](#VariableDeclarationList)*<sub>[?Yield]</sub>&emsp;`` ; ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub><sub>opt</sub>&emsp;`` ; ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub><sub>opt</sub>&emsp;`` ) ``&emsp;*[Statement](#Statement)*<sub>[?Yield, ?Return]</sub>  
-&emsp;&emsp;&emsp;<a name="IterationStatement-k8b-ryxj"></a>`` for ``&emsp;`` ( ``&emsp;*[LexicalDeclaration](#LexicalDeclaration)*<sub>[?Yield]</sub>&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub><sub>opt</sub>&emsp;`` ; ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub><sub>opt</sub>&emsp;`` ) ``&emsp;*[Statement](#Statement)*<sub>[?Yield, ?Return]</sub>  
-&emsp;&emsp;&emsp;<a name="IterationStatement-v1ibcd1w"></a>`` for ``&emsp;`` ( ``&emsp;[lookahead ∉ { `` let ``&emsp;`` [ `` }]&emsp;*[LeftHandSideExpression](#LeftHandSideExpression)*<sub>[?Yield]</sub>&emsp;`` in ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` ) ``&emsp;*[Statement](#Statement)*<sub>[?Yield, ?Return]</sub>  
-&emsp;&emsp;&emsp;<a name="IterationStatement-7pgjrcn-"></a>`` for ``&emsp;`` ( ``&emsp;`` var ``&emsp;*[ForBinding](#ForBinding)*<sub>[?Yield]</sub>&emsp;`` in ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` ) ``&emsp;*[Statement](#Statement)*<sub>[?Yield, ?Return]</sub>  
-&emsp;&emsp;&emsp;<a name="IterationStatement-jzctgxkp"></a>`` for ``&emsp;`` ( ``&emsp;*[ForDeclaration](#ForDeclaration)*<sub>[?Yield]</sub>&emsp;`` in ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` ) ``&emsp;*[Statement](#Statement)*<sub>[?Yield, ?Return]</sub>  
-&emsp;&emsp;&emsp;<a name="IterationStatement-jqzgi_en"></a>`` for ``&emsp;`` ( ``&emsp;[lookahead ≠ `` let ``]&emsp;*[LeftHandSideExpression](#LeftHandSideExpression)*<sub>[?Yield]</sub>&emsp;`` of ``&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[+In, ?Yield]</sub>&emsp;`` ) ``&emsp;*[Statement](#Statement)*<sub>[?Yield, ?Return]</sub>  
-&emsp;&emsp;&emsp;<a name="IterationStatement-7m-adytu"></a>`` for ``&emsp;`` ( ``&emsp;`` var ``&emsp;*[ForBinding](#ForBinding)*<sub>[?Yield]</sub>&emsp;`` of ``&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[+In, ?Yield]</sub>&emsp;`` ) ``&emsp;*[Statement](#Statement)*<sub>[?Yield, ?Return]</sub>  
-&emsp;&emsp;&emsp;<a name="IterationStatement-b3wzboyu"></a>`` for ``&emsp;`` ( ``&emsp;*[ForDeclaration](#ForDeclaration)*<sub>[?Yield]</sub>&emsp;`` of ``&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[+In, ?Yield]</sub>&emsp;`` ) ``&emsp;*[Statement](#Statement)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="IterationStatement-sifjfdel"></a>`` do ``&emsp;*[Statement](#Statement)*<sub>[?Yield, ?Return]</sub>&emsp;`` while ``&emsp;`` ( ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` ) ``&emsp;`` ; ``  
+&emsp;&emsp;&emsp;<a name="IterationStatement-qdpin5hm"></a>`` while ``&emsp;`` ( ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` ) ``&emsp;*[Statement](#Statement)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="IterationStatement-gzw2_20j"></a>`` for ``&emsp;`` ( ``&emsp;[lookahead ∉ { `` let ``&emsp;`` [ `` }]&emsp;*[Expression](#Expression)*<sub>[?Yield]</sub><sub>opt</sub>&emsp;`` ; ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub><sub>opt</sub>&emsp;`` ; ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub><sub>opt</sub>&emsp;`` ) ``&emsp;*[Statement](#Statement)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="IterationStatement-gqaeeji7"></a>`` for ``&emsp;`` ( ``&emsp;`` var ``&emsp;*[VariableDeclarationList](#VariableDeclarationList)*<sub>[?Yield]</sub>&emsp;`` ; ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub><sub>opt</sub>&emsp;`` ; ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub><sub>opt</sub>&emsp;`` ) ``&emsp;*[Statement](#Statement)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="IterationStatement-bw4crxby"></a>`` for ``&emsp;`` ( ``&emsp;*[LexicalDeclaration](#LexicalDeclaration)*<sub>[?Yield]</sub>&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub><sub>opt</sub>&emsp;`` ; ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub><sub>opt</sub>&emsp;`` ) ``&emsp;*[Statement](#Statement)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="IterationStatement-yxq3bd9m"></a>`` for ``&emsp;`` ( ``&emsp;[lookahead ∉ { `` let ``&emsp;`` [ `` }]&emsp;*[LeftHandSideExpression](#LeftHandSideExpression)*<sub>[?Yield]</sub>&emsp;`` in ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` ) ``&emsp;*[Statement](#Statement)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="IterationStatement-59coorvw"></a>`` for ``&emsp;`` ( ``&emsp;`` var ``&emsp;*[ForBinding](#ForBinding)*<sub>[?Yield]</sub>&emsp;`` in ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` ) ``&emsp;*[Statement](#Statement)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="IterationStatement-r8tfvhv0"></a>`` for ``&emsp;`` ( ``&emsp;*[ForDeclaration](#ForDeclaration)*<sub>[?Yield]</sub>&emsp;`` in ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` ) ``&emsp;*[Statement](#Statement)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="IterationStatement-b_8a6kcr"></a>`` for ``&emsp;`` ( ``&emsp;[lookahead ≠ `` let ``]&emsp;*[LeftHandSideExpression](#LeftHandSideExpression)*<sub>[?Yield]</sub>&emsp;`` of ``&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[+In, ?Yield]</sub>&emsp;`` ) ``&emsp;*[Statement](#Statement)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="IterationStatement-kpibgwjg"></a>`` for ``&emsp;`` ( ``&emsp;`` var ``&emsp;*[ForBinding](#ForBinding)*<sub>[?Yield]</sub>&emsp;`` of ``&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[+In, ?Yield]</sub>&emsp;`` ) ``&emsp;*[Statement](#Statement)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="IterationStatement-j4ba6rar"></a>`` for ``&emsp;`` ( ``&emsp;*[ForDeclaration](#ForDeclaration)*<sub>[?Yield]</sub>&emsp;`` of ``&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[+In, ?Yield]</sub>&emsp;`` ) ``&emsp;*[Statement](#Statement)*<sub>[?Yield, ?Return]</sub>  
   
 &emsp;&emsp;<a name="ForDeclaration"></a>*ForDeclaration*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="ForDeclaration-0y1vvm1x"></a>*[LetOrConst](#LetOrConst)*&emsp;*[ForBinding](#ForBinding)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="ForDeclaration-clvmoxjr"></a>*[LetOrConst](#LetOrConst)*&emsp;*[ForBinding](#ForBinding)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="ForBinding"></a>*ForBinding*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="ForBinding-uolyom43"></a>*[BindingIdentifier](#BindingIdentifier)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="ForBinding-mdrfyhm6"></a>*[BindingPattern](#BindingPattern)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="ForBinding-rs2pjv2j"></a>*[BindingIdentifier](#BindingIdentifier)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="ForBinding-elzactuk"></a>*[BindingPattern](#BindingPattern)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="ContinueStatement"></a>*ContinueStatement*<sub>[Yield]</sub> **:**  
 &emsp;&emsp;&emsp;<a name="ContinueStatement-6qppgxyk"></a>`` continue ``&emsp;`` ; ``  
-&emsp;&emsp;&emsp;<a name="ContinueStatement-wh7qddgu"></a>`` continue ``&emsp;[no *[LineTerminator](#LineTerminator)* here]&emsp;*[LabelIdentifier](#LabelIdentifier)*<sub>[?Yield]</sub>&emsp;`` ; ``  
+&emsp;&emsp;&emsp;<a name="ContinueStatement-qgoytnrd"></a>`` continue ``&emsp;[no *[LineTerminator](#LineTerminator)* here]&emsp;*[LabelIdentifier](#LabelIdentifier)*<sub>[?Yield]</sub>&emsp;`` ; ``  
   
 &emsp;&emsp;<a name="BreakStatement"></a>*BreakStatement*<sub>[Yield]</sub> **:**  
 &emsp;&emsp;&emsp;<a name="BreakStatement-tlip5zkt"></a>`` break ``&emsp;`` ; ``  
-&emsp;&emsp;&emsp;<a name="BreakStatement-kcg-yy3r"></a>`` break ``&emsp;[no *[LineTerminator](#LineTerminator)* here]&emsp;*[LabelIdentifier](#LabelIdentifier)*<sub>[?Yield]</sub>&emsp;`` ; ``  
+&emsp;&emsp;&emsp;<a name="BreakStatement-g5pxtecu"></a>`` break ``&emsp;[no *[LineTerminator](#LineTerminator)* here]&emsp;*[LabelIdentifier](#LabelIdentifier)*<sub>[?Yield]</sub>&emsp;`` ; ``  
   
 &emsp;&emsp;<a name="ReturnStatement"></a>*ReturnStatement*<sub>[Yield]</sub> **:**  
 &emsp;&emsp;&emsp;<a name="ReturnStatement-cykzgrgr"></a>`` return ``&emsp;`` ; ``  
-&emsp;&emsp;&emsp;<a name="ReturnStatement-tpdzx2lh"></a>`` return ``&emsp;[no *[LineTerminator](#LineTerminator)* here]&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` ; ``  
+&emsp;&emsp;&emsp;<a name="ReturnStatement-vbjrngb2"></a>`` return ``&emsp;[no *[LineTerminator](#LineTerminator)* here]&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` ; ``  
   
 &emsp;&emsp;<a name="WithStatement"></a>*WithStatement*<sub>[Yield, Return]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="WithStatement-i70kview"></a>`` with ``&emsp;`` ( ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` ) ``&emsp;*[Statement](#Statement)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="WithStatement-qmr5sthz"></a>`` with ``&emsp;`` ( ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` ) ``&emsp;*[Statement](#Statement)*<sub>[?Yield, ?Return]</sub>  
   
 &emsp;&emsp;<a name="SwitchStatement"></a>*SwitchStatement*<sub>[Yield, Return]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="SwitchStatement-uvrp_hkw"></a>`` switch ``&emsp;`` ( ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` ) ``&emsp;*[CaseBlock](#CaseBlock)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="SwitchStatement-mnyghifw"></a>`` switch ``&emsp;`` ( ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` ) ``&emsp;*[CaseBlock](#CaseBlock)*<sub>[?Yield, ?Return]</sub>  
   
 &emsp;&emsp;<a name="CaseBlock"></a>*CaseBlock*<sub>[Yield, Return]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="CaseBlock-wfjxvoh5"></a>`` { ``&emsp;*[CaseClauses](#CaseClauses)*<sub>[?Yield, ?Return]</sub><sub>opt</sub>&emsp;`` } ``  
-&emsp;&emsp;&emsp;<a name="CaseBlock-ududlhou"></a>`` { ``&emsp;*[CaseClauses](#CaseClauses)*<sub>[?Yield, ?Return]</sub><sub>opt</sub>&emsp;*[DefaultClause](#DefaultClause)*<sub>[?Yield, ?Return]</sub>&emsp;*[CaseClauses](#CaseClauses)*<sub>[?Yield, ?Return]</sub><sub>opt</sub>&emsp;`` } ``  
+&emsp;&emsp;&emsp;<a name="CaseBlock-bbg_v7jl"></a>`` { ``&emsp;*[CaseClauses](#CaseClauses)*<sub>[?Yield, ?Return]</sub><sub>opt</sub>&emsp;`` } ``  
+&emsp;&emsp;&emsp;<a name="CaseBlock-9khpgx5s"></a>`` { ``&emsp;*[CaseClauses](#CaseClauses)*<sub>[?Yield, ?Return]</sub><sub>opt</sub>&emsp;*[DefaultClause](#DefaultClause)*<sub>[?Yield, ?Return]</sub>&emsp;*[CaseClauses](#CaseClauses)*<sub>[?Yield, ?Return]</sub><sub>opt</sub>&emsp;`` } ``  
   
 &emsp;&emsp;<a name="CaseClauses"></a>*CaseClauses*<sub>[Yield, Return]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="CaseClauses-wfpqsvlo"></a>*[CaseClause](#CaseClause)*<sub>[?Yield, ?Return]</sub>  
-&emsp;&emsp;&emsp;<a name="CaseClauses-addji9rs"></a>*[CaseClauses](#CaseClauses)*<sub>[?Yield, ?Return]</sub>&emsp;*[CaseClause](#CaseClause)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="CaseClauses-majq1mhi"></a>*[CaseClause](#CaseClause)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="CaseClauses-p1kc6z_y"></a>*[CaseClauses](#CaseClauses)*<sub>[?Yield, ?Return]</sub>&emsp;*[CaseClause](#CaseClause)*<sub>[?Yield, ?Return]</sub>  
   
 &emsp;&emsp;<a name="CaseClause"></a>*CaseClause*<sub>[Yield, Return]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="CaseClause-x20nmjyd"></a>`` case ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` : ``&emsp;*[StatementList](#StatementList)*<sub>[?Yield, ?Return]</sub><sub>opt</sub>  
+&emsp;&emsp;&emsp;<a name="CaseClause-05t2j3mn"></a>`` case ``&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` : ``&emsp;*[StatementList](#StatementList)*<sub>[?Yield, ?Return]</sub><sub>opt</sub>  
   
 &emsp;&emsp;<a name="DefaultClause"></a>*DefaultClause*<sub>[Yield, Return]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="DefaultClause-z4ihpgum"></a>`` default ``&emsp;`` : ``&emsp;*[StatementList](#StatementList)*<sub>[?Yield, ?Return]</sub><sub>opt</sub>  
+&emsp;&emsp;&emsp;<a name="DefaultClause-wqn0qele"></a>`` default ``&emsp;`` : ``&emsp;*[StatementList](#StatementList)*<sub>[?Yield, ?Return]</sub><sub>opt</sub>  
   
 &emsp;&emsp;<a name="LabelledStatement"></a>*LabelledStatement*<sub>[Yield, Return]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="LabelledStatement-ubbvtbun"></a>*[LabelIdentifier](#LabelIdentifier)*<sub>[?Yield]</sub>&emsp;`` : ``&emsp;*[LabelledItem](#LabelledItem)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="LabelledStatement-mbamm2vf"></a>*[LabelIdentifier](#LabelIdentifier)*<sub>[?Yield]</sub>&emsp;`` : ``&emsp;*[LabelledItem](#LabelledItem)*<sub>[?Yield, ?Return]</sub>  
   
 &emsp;&emsp;<a name="LabelledItem"></a>*LabelledItem*<sub>[Yield, Return]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="LabelledItem-pyyivtxj"></a>*[Statement](#Statement)*<sub>[?Yield, ?Return]</sub>  
-&emsp;&emsp;&emsp;<a name="LabelledItem--nqupnlb"></a>*[FunctionDeclaration](#FunctionDeclaration)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="LabelledItem-ptkcjl9d"></a>*[Statement](#Statement)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="LabelledItem-qyw5qpme"></a>*[FunctionDeclaration](#FunctionDeclaration)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="ThrowStatement"></a>*ThrowStatement*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="ThrowStatement-lauy4mhi"></a>`` throw ``&emsp;[no *[LineTerminator](#LineTerminator)* here]&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` ; ``  
+&emsp;&emsp;&emsp;<a name="ThrowStatement-jv0ei3gl"></a>`` throw ``&emsp;[no *[LineTerminator](#LineTerminator)* here]&emsp;*[Expression](#Expression)*<sub>[+In, ?Yield]</sub>&emsp;`` ; ``  
   
 &emsp;&emsp;<a name="TryStatement"></a>*TryStatement*<sub>[Yield, Return]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="TryStatement-qhfov2lc"></a>`` try ``&emsp;*[Block](#Block)*<sub>[?Yield, ?Return]</sub>&emsp;*[Catch](#Catch)*<sub>[?Yield, ?Return]</sub>  
-&emsp;&emsp;&emsp;<a name="TryStatement-xsakufa6"></a>`` try ``&emsp;*[Block](#Block)*<sub>[?Yield, ?Return]</sub>&emsp;*[Finally](#Finally)*<sub>[?Yield, ?Return]</sub>  
-&emsp;&emsp;&emsp;<a name="TryStatement-gxlzfd5s"></a>`` try ``&emsp;*[Block](#Block)*<sub>[?Yield, ?Return]</sub>&emsp;*[Catch](#Catch)*<sub>[?Yield, ?Return]</sub>&emsp;*[Finally](#Finally)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="TryStatement-ykktxtb3"></a>`` try ``&emsp;*[Block](#Block)*<sub>[?Yield, ?Return]</sub>&emsp;*[Catch](#Catch)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="TryStatement-trkjbzap"></a>`` try ``&emsp;*[Block](#Block)*<sub>[?Yield, ?Return]</sub>&emsp;*[Finally](#Finally)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="TryStatement-dkzo1pz0"></a>`` try ``&emsp;*[Block](#Block)*<sub>[?Yield, ?Return]</sub>&emsp;*[Catch](#Catch)*<sub>[?Yield, ?Return]</sub>&emsp;*[Finally](#Finally)*<sub>[?Yield, ?Return]</sub>  
   
 &emsp;&emsp;<a name="Catch"></a>*Catch*<sub>[Yield, Return]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="Catch-3ce8nhiw"></a>`` catch ``&emsp;`` ( ``&emsp;*[CatchParameter](#CatchParameter)*<sub>[?Yield]</sub>&emsp;`` ) ``&emsp;*[Block](#Block)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="Catch-ym43ncju"></a>`` catch ``&emsp;`` ( ``&emsp;*[CatchParameter](#CatchParameter)*<sub>[?Yield]</sub>&emsp;`` ) ``&emsp;*[Block](#Block)*<sub>[?Yield, ?Return]</sub>  
   
 &emsp;&emsp;<a name="Finally"></a>*Finally*<sub>[Yield, Return]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="Finally-6r-6rvtx"></a>`` finally ``&emsp;*[Block](#Block)*<sub>[?Yield, ?Return]</sub>  
+&emsp;&emsp;&emsp;<a name="Finally-qnpsqz2d"></a>`` finally ``&emsp;*[Block](#Block)*<sub>[?Yield, ?Return]</sub>  
   
 &emsp;&emsp;<a name="CatchParameter"></a>*CatchParameter*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="CatchParameter-uolyom43"></a>*[BindingIdentifier](#BindingIdentifier)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="CatchParameter-mdrfyhm6"></a>*[BindingPattern](#BindingPattern)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="CatchParameter-rs2pjv2j"></a>*[BindingIdentifier](#BindingIdentifier)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="CatchParameter-elzactuk"></a>*[BindingPattern](#BindingPattern)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="DebuggerStatement"></a>*DebuggerStatement* **:**  
 &emsp;&emsp;&emsp;<a name="DebuggerStatement-ns5hclvt"></a>`` debugger ``&emsp;`` ; ``  
   
 &emsp;&emsp;<a name="FunctionDeclaration"></a>*FunctionDeclaration*<sub>[Yield, Default]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="FunctionDeclaration-gxoavzvy"></a>`` function ``&emsp;*[BindingIdentifier](#BindingIdentifier)*<sub>[?Yield]</sub>&emsp;`` ( ``&emsp;*[FormalParameters](#FormalParameters)*&emsp;`` ) ``&emsp;`` { ``&emsp;*[FunctionBody](#FunctionBody)*&emsp;`` } ``  
-&emsp;&emsp;&emsp;<a name="FunctionDeclaration-smus6qca"></a>[+Default]&emsp;`` function ``&emsp;`` ( ``&emsp;*[FormalParameters](#FormalParameters)*&emsp;`` ) ``&emsp;`` { ``&emsp;*[FunctionBody](#FunctionBody)*&emsp;`` } ``  
+&emsp;&emsp;&emsp;<a name="FunctionDeclaration-l4xmvyip"></a>`` function ``&emsp;*[BindingIdentifier](#BindingIdentifier)*<sub>[?Yield]</sub>&emsp;`` ( ``&emsp;*[FormalParameters](#FormalParameters)*&emsp;`` ) ``&emsp;`` { ``&emsp;*[FunctionBody](#FunctionBody)*&emsp;`` } ``  
+&emsp;&emsp;&emsp;<a name="FunctionDeclaration-p92kzmbz"></a>[+Default]&emsp;`` function ``&emsp;`` ( ``&emsp;*[FormalParameters](#FormalParameters)*&emsp;`` ) ``&emsp;`` { ``&emsp;*[FunctionBody](#FunctionBody)*&emsp;`` } ``  
   
 &emsp;&emsp;<a name="FunctionExpression"></a>*FunctionExpression* **:**  
 &emsp;&emsp;&emsp;<a name="FunctionExpression-g3mtfiqq"></a>`` function ``&emsp;*[BindingIdentifier](#BindingIdentifier)*<sub>opt</sub>&emsp;`` ( ``&emsp;*[FormalParameters](#FormalParameters)*&emsp;`` ) ``&emsp;`` { ``&emsp;*[FunctionBody](#FunctionBody)*&emsp;`` } ``  
   
 &emsp;&emsp;<a name="StrictFormalParameters"></a>*StrictFormalParameters*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="StrictFormalParameters-ahjg9bb6"></a>*[FormalParameters](#FormalParameters)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="StrictFormalParameters-8re69xew"></a>*[FormalParameters](#FormalParameters)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="FormalParameters"></a>*FormalParameters*<sub>[Yield]</sub> **:**  
 &emsp;&emsp;&emsp;<a name="FormalParameters-n7nathbb"></a>[empty]  
-&emsp;&emsp;&emsp;<a name="FormalParameters-mupdqnts"></a>*[FormalParameterList](#FormalParameterList)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="FormalParameters-0qognfoy"></a>*[FormalParameterList](#FormalParameterList)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="FormalParameterList"></a>*FormalParameterList*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="FormalParameterList-dnjnbote"></a>*[FunctionRestParameter](#FunctionRestParameter)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="FormalParameterList-cqzrhujt"></a>*[FormalsList](#FormalsList)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="FormalParameterList-_topmjn8"></a>*[FormalsList](#FormalsList)*<sub>[?Yield]</sub>&emsp;`` , ``&emsp;*[FunctionRestParameter](#FunctionRestParameter)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="FormalParameterList-5opfwohw"></a>*[FunctionRestParameter](#FunctionRestParameter)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="FormalParameterList-umwpplkk"></a>*[FormalsList](#FormalsList)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="FormalParameterList-trrnfiz4"></a>*[FormalsList](#FormalsList)*<sub>[?Yield]</sub>&emsp;`` , ``&emsp;*[FunctionRestParameter](#FunctionRestParameter)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="FormalsList"></a>*FormalsList*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="FormalsList-sxlu9ab0"></a>*[FormalParameter](#FormalParameter)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="FormalsList-kd8qayl8"></a>*[FormalsList](#FormalsList)*<sub>[?Yield]</sub>&emsp;`` , ``&emsp;*[FormalParameter](#FormalParameter)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="FormalsList-cxrsnhz8"></a>*[FormalParameter](#FormalParameter)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="FormalsList-bmbpyjgu"></a>*[FormalsList](#FormalsList)*<sub>[?Yield]</sub>&emsp;`` , ``&emsp;*[FormalParameter](#FormalParameter)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="FunctionRestParameter"></a>*FunctionRestParameter*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="FunctionRestParameter-xw3lyuix"></a>*[BindingRestElement](#BindingRestElement)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="FunctionRestParameter-mslzlh4z"></a>*[BindingRestElement](#BindingRestElement)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="FormalParameter"></a>*FormalParameter*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="FormalParameter-azzrmst0"></a>*[BindingElement](#BindingElement)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="FormalParameter-ms4trapw"></a>*[BindingElement](#BindingElement)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="FunctionBody"></a>*FunctionBody*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="FunctionBody-xn8an8nx"></a>*[FunctionStatementList](#FunctionStatementList)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="FunctionBody-q6hlxew9"></a>*[FunctionStatementList](#FunctionStatementList)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="FunctionStatementList"></a>*FunctionStatementList*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="FunctionStatementList-qwwklbsn"></a>*[StatementList](#StatementList)*<sub>[?Yield, +Return]</sub><sub>opt</sub>  
+&emsp;&emsp;&emsp;<a name="FunctionStatementList-b9pkutc1"></a>*[StatementList](#StatementList)*<sub>[?Yield, +Return]</sub><sub>opt</sub>  
   
 &emsp;&emsp;<a name="ArrowFunction"></a>*ArrowFunction*<sub>[In, Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="ArrowFunction-ieeod2mi"></a>*[ArrowParameters](#ArrowParameters)*<sub>[?Yield]</sub>&emsp;[no *[LineTerminator](#LineTerminator)* here]&emsp;`` => ``&emsp;*[ConciseBody](#ConciseBody)*<sub>[?In]</sub>  
+&emsp;&emsp;&emsp;<a name="ArrowFunction-woi5wttw"></a>*[ArrowParameters](#ArrowParameters)*<sub>[?Yield]</sub>&emsp;[no *[LineTerminator](#LineTerminator)* here]&emsp;`` => ``&emsp;*[ConciseBody](#ConciseBody)*<sub>[?In]</sub>  
   
 &emsp;&emsp;<a name="ArrowParameters"></a>*ArrowParameters*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="ArrowParameters-uolyom43"></a>*[BindingIdentifier](#BindingIdentifier)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="ArrowParameters-yrb110hm"></a>*[CoverParenthesizedExpressionAndArrowParameterList](#CoverParenthesizedExpressionAndArrowParameterList)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="ArrowParameters-rs2pjv2j"></a>*[BindingIdentifier](#BindingIdentifier)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="ArrowParameters-s_2ppiz3"></a>*[CoverParenthesizedExpressionAndArrowParameterList](#CoverParenthesizedExpressionAndArrowParameterList)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="ConciseBody"></a>*ConciseBody*<sub>[In]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="ConciseBody-1px9pijq"></a>[lookahead ≠ `` { ``]&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[?In]</sub>  
+&emsp;&emsp;&emsp;<a name="ConciseBody-pzineorz"></a>[lookahead ≠ `` { ``]&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[?In]</sub>  
 &emsp;&emsp;&emsp;<a name="ConciseBody-aerabkqd"></a>`` { ``&emsp;*[FunctionBody](#FunctionBody)*&emsp;`` } ``  
   
 &emsp;&emsp;<a name="MethodDefinition"></a>*MethodDefinition*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="MethodDefinition-en8ekdz2"></a>*[PropertyName](#PropertyName)*<sub>[?Yield]</sub>&emsp;`` ( ``&emsp;*[StrictFormalParameters](#StrictFormalParameters)*&emsp;`` ) ``&emsp;`` { ``&emsp;*[FunctionBody](#FunctionBody)*&emsp;`` } ``  
-&emsp;&emsp;&emsp;<a name="MethodDefinition-uv5zsffy"></a>*[GeneratorMethod](#GeneratorMethod)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="MethodDefinition-8uh5vkw0"></a>`` get ``&emsp;*[PropertyName](#PropertyName)*<sub>[?Yield]</sub>&emsp;`` ( ``&emsp;`` ) ``&emsp;`` { ``&emsp;*[FunctionBody](#FunctionBody)*&emsp;`` } ``  
-&emsp;&emsp;&emsp;<a name="MethodDefinition-rai1tkqc"></a>`` set ``&emsp;*[PropertyName](#PropertyName)*<sub>[?Yield]</sub>&emsp;`` ( ``&emsp;*[PropertySetParameterList](#PropertySetParameterList)*&emsp;`` ) ``&emsp;`` { ``&emsp;*[FunctionBody](#FunctionBody)*&emsp;`` } ``  
+&emsp;&emsp;&emsp;<a name="MethodDefinition-xcjjb2mf"></a>*[PropertyName](#PropertyName)*<sub>[?Yield]</sub>&emsp;`` ( ``&emsp;*[StrictFormalParameters](#StrictFormalParameters)*&emsp;`` ) ``&emsp;`` { ``&emsp;*[FunctionBody](#FunctionBody)*&emsp;`` } ``  
+&emsp;&emsp;&emsp;<a name="MethodDefinition-fa--wmb3"></a>*[GeneratorMethod](#GeneratorMethod)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="MethodDefinition-okeodbhd"></a>`` get ``&emsp;*[PropertyName](#PropertyName)*<sub>[?Yield]</sub>&emsp;`` ( ``&emsp;`` ) ``&emsp;`` { ``&emsp;*[FunctionBody](#FunctionBody)*&emsp;`` } ``  
+&emsp;&emsp;&emsp;<a name="MethodDefinition-hzp9es5w"></a>`` set ``&emsp;*[PropertyName](#PropertyName)*<sub>[?Yield]</sub>&emsp;`` ( ``&emsp;*[PropertySetParameterList](#PropertySetParameterList)*&emsp;`` ) ``&emsp;`` { ``&emsp;*[FunctionBody](#FunctionBody)*&emsp;`` } ``  
   
 &emsp;&emsp;<a name="PropertySetParameterList"></a>*PropertySetParameterList* **:**  
 &emsp;&emsp;&emsp;<a name="PropertySetParameterList-sxlu9ab0"></a>*[FormalParameter](#FormalParameter)*  
   
 &emsp;&emsp;<a name="GeneratorMethod"></a>*GeneratorMethod*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="GeneratorMethod-oxchly8_"></a>`` * ``&emsp;*[PropertyName](#PropertyName)*<sub>[?Yield]</sub>&emsp;`` ( ``&emsp;*[StrictFormalParameters](#StrictFormalParameters)*<sub>[+Yield]</sub>&emsp;`` ) ``&emsp;`` { ``&emsp;*[GeneratorBody](#GeneratorBody)*&emsp;`` } ``  
+&emsp;&emsp;&emsp;<a name="GeneratorMethod-ojl_y6ud"></a>`` * ``&emsp;*[PropertyName](#PropertyName)*<sub>[?Yield]</sub>&emsp;`` ( ``&emsp;*[StrictFormalParameters](#StrictFormalParameters)*<sub>[+Yield]</sub>&emsp;`` ) ``&emsp;`` { ``&emsp;*[GeneratorBody](#GeneratorBody)*&emsp;`` } ``  
   
 &emsp;&emsp;<a name="GeneratorDeclaration"></a>*GeneratorDeclaration*<sub>[Yield, Default]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="GeneratorDeclaration-fbyztjbh"></a>`` function ``&emsp;`` * ``&emsp;*[BindingIdentifier](#BindingIdentifier)*<sub>[?Yield]</sub>&emsp;`` ( ``&emsp;*[FormalParameters](#FormalParameters)*<sub>[+Yield]</sub>&emsp;`` ) ``&emsp;`` { ``&emsp;*[GeneratorBody](#GeneratorBody)*&emsp;`` } ``  
-&emsp;&emsp;&emsp;<a name="GeneratorDeclaration-dsczygsq"></a>[+Default]&emsp;`` function ``&emsp;`` * ``&emsp;`` ( ``&emsp;*[FormalParameters](#FormalParameters)*<sub>[+Yield]</sub>&emsp;`` ) ``&emsp;`` { ``&emsp;*[GeneratorBody](#GeneratorBody)*&emsp;`` } ``  
+&emsp;&emsp;&emsp;<a name="GeneratorDeclaration-xk_f8dpa"></a>`` function ``&emsp;`` * ``&emsp;*[BindingIdentifier](#BindingIdentifier)*<sub>[?Yield]</sub>&emsp;`` ( ``&emsp;*[FormalParameters](#FormalParameters)*<sub>[+Yield]</sub>&emsp;`` ) ``&emsp;`` { ``&emsp;*[GeneratorBody](#GeneratorBody)*&emsp;`` } ``  
+&emsp;&emsp;&emsp;<a name="GeneratorDeclaration-y57kmra6"></a>[+Default]&emsp;`` function ``&emsp;`` * ``&emsp;`` ( ``&emsp;*[FormalParameters](#FormalParameters)*<sub>[+Yield]</sub>&emsp;`` ) ``&emsp;`` { ``&emsp;*[GeneratorBody](#GeneratorBody)*&emsp;`` } ``  
   
 &emsp;&emsp;<a name="GeneratorExpression"></a>*GeneratorExpression* **:**  
-&emsp;&emsp;&emsp;<a name="GeneratorExpression-32ghovyc"></a>`` function ``&emsp;`` * ``&emsp;*[BindingIdentifier](#BindingIdentifier)*<sub>[+Yield]</sub><sub>opt</sub>&emsp;`` ( ``&emsp;*[FormalParameters](#FormalParameters)*<sub>[+Yield]</sub>&emsp;`` ) ``&emsp;`` { ``&emsp;*[GeneratorBody](#GeneratorBody)*&emsp;`` } ``  
+&emsp;&emsp;&emsp;<a name="GeneratorExpression-eibpvvhe"></a>`` function ``&emsp;`` * ``&emsp;*[BindingIdentifier](#BindingIdentifier)*<sub>[+Yield]</sub><sub>opt</sub>&emsp;`` ( ``&emsp;*[FormalParameters](#FormalParameters)*<sub>[+Yield]</sub>&emsp;`` ) ``&emsp;`` { ``&emsp;*[GeneratorBody](#GeneratorBody)*&emsp;`` } ``  
   
 &emsp;&emsp;<a name="GeneratorBody"></a>*GeneratorBody* **:**  
-&emsp;&emsp;&emsp;<a name="GeneratorBody-iqzbkm-h"></a>*[FunctionBody](#FunctionBody)*<sub>[+Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="GeneratorBody-dradns5q"></a>*[FunctionBody](#FunctionBody)*<sub>[+Yield]</sub>  
   
 &emsp;&emsp;<a name="YieldExpression"></a>*YieldExpression*<sub>[In]</sub> **:**  
 &emsp;&emsp;&emsp;<a name="YieldExpression-0d8zyjn8"></a>`` yield ``  
-&emsp;&emsp;&emsp;<a name="YieldExpression-50ht6hl2"></a>`` yield ``&emsp;[no *[LineTerminator](#LineTerminator)* here]&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[?In, +Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="YieldExpression-r6m4ewun"></a>`` yield ``&emsp;[no *[LineTerminator](#LineTerminator)* here]&emsp;`` * ``&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[?In, +Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="YieldExpression-yiyp7eqh"></a>`` yield ``&emsp;[no *[LineTerminator](#LineTerminator)* here]&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[?In, +Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="YieldExpression-ehs262xy"></a>`` yield ``&emsp;[no *[LineTerminator](#LineTerminator)* here]&emsp;`` * ``&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[?In, +Yield]</sub>  
   
 &emsp;&emsp;<a name="ClassDeclaration"></a>*ClassDeclaration*<sub>[Yield, Default]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="ClassDeclaration-tusuwhcv"></a>`` class ``&emsp;*[BindingIdentifier](#BindingIdentifier)*<sub>[?Yield]</sub>&emsp;*[ClassTail](#ClassTail)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="ClassDeclaration-1ghyizwr"></a>[+Default]&emsp;`` class ``&emsp;*[ClassTail](#ClassTail)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="ClassDeclaration-okf1c7aw"></a>`` class ``&emsp;*[BindingIdentifier](#BindingIdentifier)*<sub>[?Yield]</sub>&emsp;*[ClassTail](#ClassTail)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="ClassDeclaration-20agchcb"></a>[+Default]&emsp;`` class ``&emsp;*[ClassTail](#ClassTail)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="ClassExpression"></a>*ClassExpression*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="ClassExpression-0cliiy0w"></a>`` class ``&emsp;*[BindingIdentifier](#BindingIdentifier)*<sub>[?Yield]</sub><sub>opt</sub>&emsp;*[ClassTail](#ClassTail)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="ClassExpression-iafp1orl"></a>`` class ``&emsp;*[BindingIdentifier](#BindingIdentifier)*<sub>[?Yield]</sub><sub>opt</sub>&emsp;*[ClassTail](#ClassTail)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="ClassTail"></a>*ClassTail*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="ClassTail-uopqpdqx"></a>*[ClassHeritage](#ClassHeritage)*<sub>[?Yield]</sub><sub>opt</sub>&emsp;`` { ``&emsp;*[ClassBody](#ClassBody)*<sub>[?Yield]</sub><sub>opt</sub>&emsp;`` } ``  
+&emsp;&emsp;&emsp;<a name="ClassTail-w6fgdyin"></a>*[ClassHeritage](#ClassHeritage)*<sub>[?Yield]</sub><sub>opt</sub>&emsp;`` { ``&emsp;*[ClassBody](#ClassBody)*<sub>[?Yield]</sub><sub>opt</sub>&emsp;`` } ``  
   
 &emsp;&emsp;<a name="ClassHeritage"></a>*ClassHeritage*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="ClassHeritage-5ovudy-k"></a>`` extends ``&emsp;*[LeftHandSideExpression](#LeftHandSideExpression)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="ClassHeritage-zm6tu7to"></a>`` extends ``&emsp;*[LeftHandSideExpression](#LeftHandSideExpression)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="ClassBody"></a>*ClassBody*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="ClassBody-1y1dunax"></a>*[ClassElementList](#ClassElementList)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="ClassBody-6zpdatwz"></a>*[ClassElementList](#ClassElementList)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="ClassElementList"></a>*ClassElementList*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="ClassElementList-crvluhmw"></a>*[ClassElement](#ClassElement)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="ClassElementList-msulavvt"></a>*[ClassElementList](#ClassElementList)*<sub>[?Yield]</sub>&emsp;*[ClassElement](#ClassElement)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="ClassElementList-vb2jlbx0"></a>*[ClassElement](#ClassElement)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="ClassElementList-jwu3i3wr"></a>*[ClassElementList](#ClassElementList)*<sub>[?Yield]</sub>&emsp;*[ClassElement](#ClassElement)*<sub>[?Yield]</sub>  
   
 &emsp;&emsp;<a name="ClassElement"></a>*ClassElement*<sub>[Yield]</sub> **:**  
-&emsp;&emsp;&emsp;<a name="ClassElement-s8ilfl9g"></a>*[MethodDefinition](#MethodDefinition)*<sub>[?Yield]</sub>  
-&emsp;&emsp;&emsp;<a name="ClassElement--ljgtrpo"></a>`` static ``&emsp;*[MethodDefinition](#MethodDefinition)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="ClassElement-2mvdtmtw"></a>*[MethodDefinition](#MethodDefinition)*<sub>[?Yield]</sub>  
+&emsp;&emsp;&emsp;<a name="ClassElement-geatoc0n"></a>`` static ``&emsp;*[MethodDefinition](#MethodDefinition)*<sub>[?Yield]</sub>  
 &emsp;&emsp;&emsp;<a name="ClassElement-sg2sawim"></a>`` ; ``  
   
 &emsp;&emsp;<a name="Script"></a>*Script* **:**  
@@ -955,9 +955,9 @@
 &emsp;&emsp;&emsp;<a name="ExportDeclaration-toel4xq5"></a>`` export ``&emsp;*[ExportClause](#ExportClause)*&emsp;`` ; ``  
 &emsp;&emsp;&emsp;<a name="ExportDeclaration-bg3oaw2m"></a>`` export ``&emsp;*[VariableStatement](#VariableStatement)*  
 &emsp;&emsp;&emsp;<a name="ExportDeclaration-go9a4xdq"></a>`` export ``&emsp;*[Declaration](#Declaration)*  
-&emsp;&emsp;&emsp;<a name="ExportDeclaration-cdfbfvfu"></a>`` export ``&emsp;`` default ``&emsp;*[HoistableDeclaration](#HoistableDeclaration)*<sub>[+Default]</sub>  
-&emsp;&emsp;&emsp;<a name="ExportDeclaration-w8pljwgc"></a>`` export ``&emsp;`` default ``&emsp;*[ClassDeclaration](#ClassDeclaration)*<sub>[+Default]</sub>  
-&emsp;&emsp;&emsp;<a name="ExportDeclaration-4f6ct71n"></a>`` export ``&emsp;`` default ``&emsp;[lookahead ∉ { `` function ``, `` class `` }]&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[+In]</sub>&emsp;`` ; ``  
+&emsp;&emsp;&emsp;<a name="ExportDeclaration-pxw_j_o5"></a>`` export ``&emsp;`` default ``&emsp;*[HoistableDeclaration](#HoistableDeclaration)*<sub>[+Default]</sub>  
+&emsp;&emsp;&emsp;<a name="ExportDeclaration-lpf8uqxf"></a>`` export ``&emsp;`` default ``&emsp;*[ClassDeclaration](#ClassDeclaration)*<sub>[+Default]</sub>  
+&emsp;&emsp;&emsp;<a name="ExportDeclaration-dlhogi_1"></a>`` export ``&emsp;`` default ``&emsp;[lookahead ∉ { `` function ``, `` class `` }]&emsp;*[AssignmentExpression](#AssignmentExpression)*<sub>[+In]</sub>&emsp;`` ; ``  
   
 &emsp;&emsp;<a name="ExportClause"></a>*ExportClause* **:**  
 &emsp;&emsp;&emsp;<a name="ExportClause-gbpaspne"></a>`` { ``&emsp;`` } ``  

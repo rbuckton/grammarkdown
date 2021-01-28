@@ -50,7 +50,7 @@
 </emu-production>
 <emu-production name="LineTerminatorSequence" type="lexical">
     <emu-rhs a="eznvjwhz"><emu-gprose>&lt;LF&gt;</emu-gprose></emu-rhs>
-    <emu-rhs a="q1yr1eki">
+    <emu-rhs a="hiltsszk">
         <emu-gprose>&lt;CR&gt;</emu-gprose>
         <emu-gann>lookahead ≠ <emu-gprose>&lt;LF&gt;</emu-gprose></emu-gann>
     </emu-rhs>
@@ -160,7 +160,7 @@
     <emu-rhs a="5laghqp7"><emu-nt>OtherPunctuator</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="OptionalChainingPunctuator" type="lexical">
-    <emu-rhs a="xk8vdcun">
+    <emu-rhs a="zch-0yai">
         <emu-t>?.</emu-t>
         <emu-gann>lookahead ∉ <emu-nt>DecimalDigit</emu-nt></emu-gann>
     </emu-rhs>
@@ -379,7 +379,7 @@
 </emu-production>
 <emu-production name="EscapeSequence" type="lexical">
     <emu-rhs a="6ehvb3kw"><emu-nt>CharacterEscapeSequence</emu-nt></emu-rhs>
-    <emu-rhs a="ulmkmvlx">
+    <emu-rhs a="awshns7m">
         <emu-t>0</emu-t>
         <emu-gann>lookahead ∉ <emu-nt>DecimalDigit</emu-nt></emu-gann>
     </emu-rhs>
@@ -536,7 +536,7 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="TemplateCharacter" type="lexical">
-    <emu-rhs a="emlmkqfm">
+    <emu-rhs a="a8o1qsam">
         <emu-t>$</emu-t>
         <emu-gann>lookahead ≠ <emu-t>{</emu-t></emu-gann>
     </emu-rhs>
@@ -558,50 +558,50 @@
         <emu-nt>DecimalDigit</emu-nt>
     </emu-rhs>
     <emu-rhs a="ny9edrjl"><emu-nt>DecimalDigit</emu-nt> <emu-gmod>but not <emu-t>0</emu-t></emu-gmod></emu-rhs>
-    <emu-rhs a="fqodqad9">
+    <emu-rhs a="5st27lvv">
         <emu-t>x</emu-t>
         <emu-gann>lookahead ∉ <emu-nt>HexDigit</emu-nt></emu-gann>
     </emu-rhs>
-    <emu-rhs a="3aosmqut">
+    <emu-rhs a="ks3yatdf">
         <emu-t>x</emu-t>
         <emu-nt>HexDigit</emu-nt>
         <emu-gann>lookahead ∉ <emu-nt>HexDigit</emu-nt></emu-gann>
     </emu-rhs>
-    <emu-rhs a="jc5mvt_f">
+    <emu-rhs a="owabsz3q">
         <emu-t>u</emu-t>
         <emu-gann>lookahead ∉ <emu-nt>HexDigit</emu-nt></emu-gann>
         <emu-gann>lookahead ≠ <emu-t>{</emu-t></emu-gann>
     </emu-rhs>
-    <emu-rhs a="4twxr3qc">
+    <emu-rhs a="99po1k9e">
         <emu-t>u</emu-t>
         <emu-nt>HexDigit</emu-nt>
         <emu-gann>lookahead ∉ <emu-nt>HexDigit</emu-nt></emu-gann>
     </emu-rhs>
-    <emu-rhs a="otrzaerz">
+    <emu-rhs a="tqr9pcty">
         <emu-t>u</emu-t>
         <emu-nt>HexDigit</emu-nt>
         <emu-nt>HexDigit</emu-nt>
         <emu-gann>lookahead ∉ <emu-nt>HexDigit</emu-nt></emu-gann>
     </emu-rhs>
-    <emu-rhs a="uyjlmqx_">
+    <emu-rhs a="rrcmjx_i">
         <emu-t>u</emu-t>
         <emu-nt>HexDigit</emu-nt>
         <emu-nt>HexDigit</emu-nt>
         <emu-nt>HexDigit</emu-nt>
         <emu-gann>lookahead ∉ <emu-nt>HexDigit</emu-nt></emu-gann>
     </emu-rhs>
-    <emu-rhs a="ryyky_z8">
+    <emu-rhs a="vcfiahaj">
         <emu-t>u</emu-t>
         <emu-t>{</emu-t>
         <emu-gann>lookahead ∉ <emu-nt>HexDigit</emu-nt></emu-gann>
     </emu-rhs>
-    <emu-rhs a="ssycfbqs">
+    <emu-rhs a="djv_qdqy">
         <emu-t>u</emu-t>
         <emu-t>{</emu-t>
         <emu-nt>NotCodePoint</emu-nt>
         <emu-gann>lookahead ∉ <emu-nt>HexDigit</emu-nt></emu-gann>
     </emu-rhs>
-    <emu-rhs a="ar6r_lfc">
+    <emu-rhs a="q1p5jpcl">
         <emu-t>u</emu-t>
         <emu-t>{</emu-t>
         <emu-nt>CodePoint</emu-nt>
@@ -623,8 +623,8 @@
 </emu-production>
 <emu-production name="IdentifierReference" params="Yield, Await">
     <emu-rhs a="bras6mo_"><emu-nt>Identifier</emu-nt></emu-rhs>
-    <emu-rhs a="0d8zyjn8" constraints="~Yield"><emu-t>yield</emu-t></emu-rhs>
-    <emu-rhs a="hx1dvlrw" constraints="~Await"><emu-t>await</emu-t></emu-rhs>
+    <emu-rhs a="zobe2rzz" constraints="~Yield"><emu-t>yield</emu-t></emu-rhs>
+    <emu-rhs a="dypijsdc" constraints="~Await"><emu-t>await</emu-t></emu-rhs>
 </emu-production>
 <emu-production name="BindingIdentifier" params="Yield, Await">
     <emu-rhs a="bras6mo_"><emu-nt>Identifier</emu-nt></emu-rhs>
@@ -633,34 +633,34 @@
 </emu-production>
 <emu-production name="LabelIdentifier" params="Yield, Await">
     <emu-rhs a="bras6mo_"><emu-nt>Identifier</emu-nt></emu-rhs>
-    <emu-rhs a="0d8zyjn8" constraints="~Yield"><emu-t>yield</emu-t></emu-rhs>
-    <emu-rhs a="hx1dvlrw" constraints="~Await"><emu-t>await</emu-t></emu-rhs>
+    <emu-rhs a="zobe2rzz" constraints="~Yield"><emu-t>yield</emu-t></emu-rhs>
+    <emu-rhs a="dypijsdc" constraints="~Await"><emu-t>await</emu-t></emu-rhs>
 </emu-production>
 <emu-production name="Identifier">
     <emu-rhs a="v6xddc2h"><emu-nt>IdentifierName</emu-nt> <emu-gmod>but not <emu-nt>ReservedWord</emu-nt></emu-gmod></emu-rhs>
 </emu-production>
 <emu-production name="PrimaryExpression" params="Yield, Await">
     <emu-rhs a="jo4mwtvh"><emu-t>this</emu-t></emu-rhs>
-    <emu-rhs a="i2hxnrih"><emu-nt params="?Yield, ?Await">IdentifierReference</emu-nt></emu-rhs>
+    <emu-rhs a="dlsgch-w"><emu-nt params="?Yield, ?Await">IdentifierReference</emu-nt></emu-rhs>
     <emu-rhs a="kul-a19e"><emu-nt>Literal</emu-nt></emu-rhs>
-    <emu-rhs a="g_mjk5cm"><emu-nt params="?Yield, ?Await">ArrayLiteral</emu-nt></emu-rhs>
-    <emu-rhs a="zreje_zz"><emu-nt params="?Yield, ?Await">ObjectLiteral</emu-nt></emu-rhs>
+    <emu-rhs a="l8_i0ob3"><emu-nt params="?Yield, ?Await">ArrayLiteral</emu-nt></emu-rhs>
+    <emu-rhs a="7pishiof"><emu-nt params="?Yield, ?Await">ObjectLiteral</emu-nt></emu-rhs>
     <emu-rhs a="jc7szv1s"><emu-nt>FunctionExpression</emu-nt></emu-rhs>
-    <emu-rhs a="2m5tsvzv"><emu-nt params="?Yield, ?Await">ClassExpression</emu-nt></emu-rhs>
+    <emu-rhs a="jqir3v1i"><emu-nt params="?Yield, ?Await">ClassExpression</emu-nt></emu-rhs>
     <emu-rhs a="q7f39ayg"><emu-nt>GeneratorExpression</emu-nt></emu-rhs>
     <emu-rhs a="rvibtigb"><emu-nt>AsyncFunctionExpression</emu-nt></emu-rhs>
     <emu-rhs a="naptrn97"><emu-nt>AsyncGeneratorExpression</emu-nt></emu-rhs>
     <emu-rhs a="mbzy6lvr"><emu-nt>RegularExpressionLiteral</emu-nt></emu-rhs>
-    <emu-rhs a="2zis6bbu"><emu-nt params="?Yield, ?Await, ~Tagged">TemplateLiteral</emu-nt></emu-rhs>
+    <emu-rhs a="stpbjyob"><emu-nt params="?Yield, ?Await, ~Tagged">TemplateLiteral</emu-nt></emu-rhs>
     <emu-rhs a="parencover"><emu-nt params="?Yield, ?Await">CoverParenthesizedExpressionAndArrowParameterList</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="CoverParenthesizedExpressionAndArrowParameterList" params="Yield, Await">
-    <emu-rhs a="s6bvnd5v">
+    <emu-rhs a="ed6ncho6">
         <emu-t>(</emu-t>
         <emu-nt params="+In, ?Yield, ?Await">Expression</emu-nt>
         <emu-t>)</emu-t>
     </emu-rhs>
-    <emu-rhs a="dirvbiod">
+    <emu-rhs a="lyzvfyfb">
         <emu-t>(</emu-t>
         <emu-nt params="+In, ?Yield, ?Await">Expression</emu-nt>
         <emu-t>,</emu-t>
@@ -670,19 +670,19 @@
         <emu-t>(</emu-t>
         <emu-t>)</emu-t>
     </emu-rhs>
-    <emu-rhs a="lr2tpcvq">
+    <emu-rhs a="pirlsxzm">
         <emu-t>(</emu-t>
         <emu-t>...</emu-t>
         <emu-nt params="?Yield, ?Await">BindingIdentifier</emu-nt>
         <emu-t>)</emu-t>
     </emu-rhs>
-    <emu-rhs a="woqz3d0g">
+    <emu-rhs a="swpbyn40">
         <emu-t>(</emu-t>
         <emu-t>...</emu-t>
         <emu-nt params="?Yield, ?Await">BindingPattern</emu-nt>
         <emu-t>)</emu-t>
     </emu-rhs>
-    <emu-rhs a="8guaj-ks">
+    <emu-rhs a="21pbm2tg">
         <emu-t>(</emu-t>
         <emu-nt params="+In, ?Yield, ?Await">Expression</emu-nt>
         <emu-t>,</emu-t>
@@ -690,7 +690,7 @@
         <emu-nt params="?Yield, ?Await">BindingIdentifier</emu-nt>
         <emu-t>)</emu-t>
     </emu-rhs>
-    <emu-rhs a="tll8gtub">
+    <emu-rhs a="qoyfpol8">
         <emu-t>(</emu-t>
         <emu-nt params="+In, ?Yield, ?Await">Expression</emu-nt>
         <emu-t>,</emu-t>
@@ -700,7 +700,7 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="ParenthesizedExpression" params="Yield, Await">
-    <emu-rhs a="s6bvnd5v">
+    <emu-rhs a="ed6ncho6">
         <emu-t>(</emu-t>
         <emu-nt params="+In, ?Yield, ?Await">Expression</emu-nt>
         <emu-t>)</emu-t>
@@ -718,12 +718,12 @@
         <emu-nt optional>Elision</emu-nt>
         <emu-t>]</emu-t>
     </emu-rhs>
-    <emu-rhs a="cqjjuksr">
+    <emu-rhs a="xwviorlp">
         <emu-t>[</emu-t>
         <emu-nt params="?Yield, ?Await">ElementList</emu-nt>
         <emu-t>]</emu-t>
     </emu-rhs>
-    <emu-rhs a="yjc94a7j">
+    <emu-rhs a="flt40tbt">
         <emu-t>[</emu-t>
         <emu-nt params="?Yield, ?Await">ElementList</emu-nt>
         <emu-t>,</emu-t>
@@ -732,21 +732,21 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="ElementList" params="Yield, Await">
-    <emu-rhs a="2aa1epou">
+    <emu-rhs a="mg86fhyo">
         <emu-nt optional>Elision</emu-nt>
         <emu-nt params="+In, ?Yield, ?Await">AssignmentExpression</emu-nt>
     </emu-rhs>
-    <emu-rhs a="fbpz0ate">
+    <emu-rhs a="bzoasbwv">
         <emu-nt optional>Elision</emu-nt>
         <emu-nt params="?Yield, ?Await">SpreadElement</emu-nt>
     </emu-rhs>
-    <emu-rhs a="_sr5sq6t">
+    <emu-rhs a="6ukoiilh">
         <emu-nt params="?Yield, ?Await">ElementList</emu-nt>
         <emu-t>,</emu-t>
         <emu-nt optional>Elision</emu-nt>
         <emu-nt params="+In, ?Yield, ?Await">AssignmentExpression</emu-nt>
     </emu-rhs>
-    <emu-rhs a="aleaauxs">
+    <emu-rhs a="nnao2vfk">
         <emu-nt params="?Yield, ?Await">ElementList</emu-nt>
         <emu-t>,</emu-t>
         <emu-nt optional>Elision</emu-nt>
@@ -761,7 +761,7 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="SpreadElement" params="Yield, Await">
-    <emu-rhs a="w7ifpmpd">
+    <emu-rhs a="tio0yijn">
         <emu-t>...</emu-t>
         <emu-nt params="+In, ?Yield, ?Await">AssignmentExpression</emu-nt>
     </emu-rhs>
@@ -771,12 +771,12 @@
         <emu-t>{</emu-t>
         <emu-t>}</emu-t>
     </emu-rhs>
-    <emu-rhs a="g--o073w">
+    <emu-rhs a="qgbbf6iu">
         <emu-t>{</emu-t>
         <emu-nt params="?Yield, ?Await">PropertyDefinitionList</emu-nt>
         <emu-t>}</emu-t>
     </emu-rhs>
-    <emu-rhs a="hwnsf_iz">
+    <emu-rhs a="bzhfnkx-">
         <emu-t>{</emu-t>
         <emu-nt params="?Yield, ?Await">PropertyDefinitionList</emu-nt>
         <emu-t>,</emu-t>
@@ -784,30 +784,30 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="PropertyDefinitionList" params="Yield, Await">
-    <emu-rhs a="zxofg8tg"><emu-nt params="?Yield, ?Await">PropertyDefinition</emu-nt></emu-rhs>
-    <emu-rhs a="mvlwazei">
+    <emu-rhs a="m0tgtrnc"><emu-nt params="?Yield, ?Await">PropertyDefinition</emu-nt></emu-rhs>
+    <emu-rhs a="r9tpew-z">
         <emu-nt params="?Yield, ?Await">PropertyDefinitionList</emu-nt>
         <emu-t>,</emu-t>
         <emu-nt params="?Yield, ?Await">PropertyDefinition</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="PropertyDefinition" params="Yield, Await">
-    <emu-rhs a="i2hxnrih"><emu-nt params="?Yield, ?Await">IdentifierReference</emu-nt></emu-rhs>
-    <emu-rhs a="3wg6qczf"><emu-nt params="?Yield, ?Await">CoverInitializedName</emu-nt></emu-rhs>
-    <emu-rhs a="8tkldtak">
+    <emu-rhs a="dlsgch-w"><emu-nt params="?Yield, ?Await">IdentifierReference</emu-nt></emu-rhs>
+    <emu-rhs a="apwscjmv"><emu-nt params="?Yield, ?Await">CoverInitializedName</emu-nt></emu-rhs>
+    <emu-rhs a="5zrjcx_s">
         <emu-nt params="?Yield, ?Await">PropertyName</emu-nt>
         <emu-t>:</emu-t>
         <emu-nt params="+In, ?Yield, ?Await">AssignmentExpression</emu-nt>
     </emu-rhs>
-    <emu-rhs a="s8ilfl9g"><emu-nt params="?Yield, ?Await">MethodDefinition</emu-nt></emu-rhs>
-    <emu-rhs a="w7ifpmpd">
+    <emu-rhs a="ke2_9p84"><emu-nt params="?Yield, ?Await">MethodDefinition</emu-nt></emu-rhs>
+    <emu-rhs a="tio0yijn">
         <emu-t>...</emu-t>
         <emu-nt params="+In, ?Yield, ?Await">AssignmentExpression</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="PropertyName" params="Yield, Await">
     <emu-rhs a="5x4jbee2"><emu-nt>LiteralPropertyName</emu-nt></emu-rhs>
-    <emu-rhs a="nimmmso5"><emu-nt params="?Yield, ?Await">ComputedPropertyName</emu-nt></emu-rhs>
+    <emu-rhs a="x0s2x3xm"><emu-nt params="?Yield, ?Await">ComputedPropertyName</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="LiteralPropertyName">
     <emu-rhs a="drsx4tka"><emu-nt>IdentifierName</emu-nt></emu-rhs>
@@ -815,30 +815,30 @@
     <emu-rhs a="pui0b1rt"><emu-nt>NumericLiteral</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="ComputedPropertyName" params="Yield, Await">
-    <emu-rhs a="ltvvc-5a">
+    <emu-rhs a="48_35zgr">
         <emu-t>[</emu-t>
         <emu-nt params="+In, ?Yield, ?Await">AssignmentExpression</emu-nt>
         <emu-t>]</emu-t>
     </emu-rhs>
 </emu-production>
 <emu-production name="CoverInitializedName" params="Yield, Await">
-    <emu-rhs a="wtjotzwk">
+    <emu-rhs a="hcdz_xlp">
         <emu-nt params="?Yield, ?Await">IdentifierReference</emu-nt>
         <emu-nt params="+In, ?Yield, ?Await">Initializer</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="Initializer" params="In, Yield, Await">
-    <emu-rhs a="_d0ijvnh">
+    <emu-rhs a="3gfs5awf">
         <emu-t>=</emu-t>
         <emu-nt params="?In, ?Yield, ?Await">AssignmentExpression</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="TemplateLiteral" params="Yield, Await, Tagged">
     <emu-rhs a="e_otk8es"><emu-nt>NoSubstitutionTemplate</emu-nt></emu-rhs>
-    <emu-rhs a="haut9ebi"><emu-nt params="?Yield, ?Await, ?Tagged">SubstitutionTemplate</emu-nt></emu-rhs>
+    <emu-rhs a="8adkeoem"><emu-nt params="?Yield, ?Await, ?Tagged">SubstitutionTemplate</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="SubstitutionTemplate" params="Yield, Await, Tagged">
-    <emu-rhs a="vpxmqc6d">
+    <emu-rhs a="bpr_k7qa">
         <emu-nt>TemplateHead</emu-nt>
         <emu-nt params="+In, ?Yield, ?Await">Expression</emu-nt>
         <emu-nt params="?Yield, ?Await, ?Tagged">TemplateSpans</emu-nt>
@@ -846,49 +846,49 @@
 </emu-production>
 <emu-production name="TemplateSpans" params="Yield, Await, Tagged">
     <emu-rhs a="v_5hijma"><emu-nt>TemplateTail</emu-nt></emu-rhs>
-    <emu-rhs a="slt0jvdm">
+    <emu-rhs a="3pqtoeeo">
         <emu-nt params="?Yield, ?Await, ?Tagged">TemplateMiddleList</emu-nt>
         <emu-nt>TemplateTail</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="TemplateMiddleList" params="Yield, Await, Tagged">
-    <emu-rhs a="3h7jyz9j">
+    <emu-rhs a="23_bspds">
         <emu-nt>TemplateMiddle</emu-nt>
         <emu-nt params="+In, ?Yield, ?Await">Expression</emu-nt>
     </emu-rhs>
-    <emu-rhs a="r6zwqruv">
+    <emu-rhs a="bdrr0gig">
         <emu-nt params="?Yield, ?Await, ?Tagged">TemplateMiddleList</emu-nt>
         <emu-nt>TemplateMiddle</emu-nt>
         <emu-nt params="+In, ?Yield, ?Await">Expression</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="MemberExpression" params="Yield, Await">
-    <emu-rhs a="jvcvemtw"><emu-nt params="?Yield, ?Await">PrimaryExpression</emu-nt></emu-rhs>
-    <emu-rhs a="a74xd7de">
+    <emu-rhs a="zp2ej-dr"><emu-nt params="?Yield, ?Await">PrimaryExpression</emu-nt></emu-rhs>
+    <emu-rhs a="rnalvwun">
         <emu-nt params="?Yield, ?Await">MemberExpression</emu-nt>
         <emu-t>[</emu-t>
         <emu-nt params="+In, ?Yield, ?Await">Expression</emu-nt>
         <emu-t>]</emu-t>
     </emu-rhs>
-    <emu-rhs a="frbj984t">
+    <emu-rhs a="_qdjqibg">
         <emu-nt params="?Yield, ?Await">MemberExpression</emu-nt>
         <emu-t>.</emu-t>
         <emu-nt>IdentifierName</emu-nt>
     </emu-rhs>
-    <emu-rhs a="fj52gjle">
+    <emu-rhs a="46cuzeza">
         <emu-nt params="?Yield, ?Await">MemberExpression</emu-nt>
         <emu-nt params="?Yield, ?Await, +Tagged">TemplateLiteral</emu-nt>
     </emu-rhs>
-    <emu-rhs a="x4tzletw"><emu-nt params="?Yield, ?Await">SuperProperty</emu-nt></emu-rhs>
+    <emu-rhs a="g9rhupwf"><emu-nt params="?Yield, ?Await">SuperProperty</emu-nt></emu-rhs>
     <emu-rhs a="yb7id2be"><emu-nt>MetaProperty</emu-nt></emu-rhs>
-    <emu-rhs a="cfq-hbbx">
+    <emu-rhs a="ufvcifdc">
         <emu-t>new</emu-t>
         <emu-nt params="?Yield, ?Await">MemberExpression</emu-nt>
         <emu-nt params="?Yield, ?Await">Arguments</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="SuperProperty" params="Yield, Await">
-    <emu-rhs a="tpjzdyqv">
+    <emu-rhs a="f2abn9oi">
         <emu-t>super</emu-t>
         <emu-t>[</emu-t>
         <emu-nt params="+In, ?Yield, ?Await">Expression</emu-nt>
@@ -919,44 +919,44 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="NewExpression" params="Yield, Await">
-    <emu-rhs a="cnogaraa"><emu-nt params="?Yield, ?Await">MemberExpression</emu-nt></emu-rhs>
-    <emu-rhs a="51p618ta">
+    <emu-rhs a="vbcu9jjv"><emu-nt params="?Yield, ?Await">MemberExpression</emu-nt></emu-rhs>
+    <emu-rhs a="iyf_se48">
         <emu-t>new</emu-t>
         <emu-nt params="?Yield, ?Await">NewExpression</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="CallExpression" params="Yield, Await">
     <emu-rhs a="callcover"><emu-nt params="?Yield, ?Await">CoverCallExpressionAndAsyncArrowHead</emu-nt></emu-rhs>
-    <emu-rhs a="ljkqw-iw"><emu-nt params="?Yield, ?Await">SuperCall</emu-nt></emu-rhs>
-    <emu-rhs a="kyx2iyhy"><emu-nt params="?Yield, ?Await">ImportCall</emu-nt></emu-rhs>
-    <emu-rhs a="qugahahu">
+    <emu-rhs a="5cynbd7h"><emu-nt params="?Yield, ?Await">SuperCall</emu-nt></emu-rhs>
+    <emu-rhs a="12avhmhv"><emu-nt params="?Yield, ?Await">ImportCall</emu-nt></emu-rhs>
+    <emu-rhs a="zq2ahe82">
         <emu-nt params="?Yield, ?Await">CallExpression</emu-nt>
         <emu-nt params="?Yield, ?Await">Arguments</emu-nt>
     </emu-rhs>
-    <emu-rhs a="2u2urbmg">
+    <emu-rhs a="jan4qzpu">
         <emu-nt params="?Yield, ?Await">CallExpression</emu-nt>
         <emu-t>[</emu-t>
         <emu-nt params="+In, ?Yield, ?Await">Expression</emu-nt>
         <emu-t>]</emu-t>
     </emu-rhs>
-    <emu-rhs a="u6lsbvgu">
+    <emu-rhs a="8fzekpe0">
         <emu-nt params="?Yield, ?Await">CallExpression</emu-nt>
         <emu-t>.</emu-t>
         <emu-nt>IdentifierName</emu-nt>
     </emu-rhs>
-    <emu-rhs a="rc744wey">
+    <emu-rhs a="xe3ycfgs">
         <emu-nt params="?Yield, ?Await">CallExpression</emu-nt>
         <emu-nt params="?Yield, ?Await, +Tagged">TemplateLiteral</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="SuperCall" params="Yield, Await">
-    <emu-rhs a="qdmdlzzo">
+    <emu-rhs a="a1uz3ssm">
         <emu-t>super</emu-t>
         <emu-nt params="?Yield, ?Await">Arguments</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="ImportCall" params="Yield, Await">
-    <emu-rhs a="jskt5mpw">
+    <emu-rhs a="s_udh2yu">
         <emu-t>import</emu-t>
         <emu-t>(</emu-t>
         <emu-nt params="+In, ?Yield, ?Await">AssignmentExpression</emu-nt>
@@ -968,12 +968,12 @@
         <emu-t>(</emu-t>
         <emu-t>)</emu-t>
     </emu-rhs>
-    <emu-rhs a="i0-5a5el">
+    <emu-rhs a="zoyucce7">
         <emu-t>(</emu-t>
         <emu-nt params="?Yield, ?Await">ArgumentList</emu-nt>
         <emu-t>)</emu-t>
     </emu-rhs>
-    <emu-rhs a="nopa90f4">
+    <emu-rhs a="xsawavht">
         <emu-t>(</emu-t>
         <emu-nt params="?Yield, ?Await">ArgumentList</emu-nt>
         <emu-t>,</emu-t>
@@ -981,17 +981,17 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="ArgumentList" params="Yield, Await">
-    <emu-rhs a="1px9pijq"><emu-nt params="+In, ?Yield, ?Await">AssignmentExpression</emu-nt></emu-rhs>
-    <emu-rhs a="w7ifpmpd">
+    <emu-rhs a="j1moyzsj"><emu-nt params="+In, ?Yield, ?Await">AssignmentExpression</emu-nt></emu-rhs>
+    <emu-rhs a="tio0yijn">
         <emu-t>...</emu-t>
         <emu-nt params="+In, ?Yield, ?Await">AssignmentExpression</emu-nt>
     </emu-rhs>
-    <emu-rhs a="f_i_7oqe">
+    <emu-rhs a="krcqss7_">
         <emu-nt params="?Yield, ?Await">ArgumentList</emu-nt>
         <emu-t>,</emu-t>
         <emu-nt params="+In, ?Yield, ?Await">AssignmentExpression</emu-nt>
     </emu-rhs>
-    <emu-rhs a="z4rq-va3">
+    <emu-rhs a="1ve8zfk_">
         <emu-nt params="?Yield, ?Await">ArgumentList</emu-nt>
         <emu-t>,</emu-t>
         <emu-t>...</emu-t>
@@ -999,25 +999,25 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="OptionalExpression" params="Yield, Await">
-    <emu-rhs a="tne-ixmh">
+    <emu-rhs a="ecu35e6c">
         <emu-nt params="?Yield, ?Await">MemberExpression</emu-nt>
         <emu-nt params="?Yield, ?Await">OptionalChain</emu-nt>
     </emu-rhs>
-    <emu-rhs a="vah6zjkb">
+    <emu-rhs a="zdg__vw8">
         <emu-nt params="?Yield, ?Await">CallExpression</emu-nt>
         <emu-nt params="?Yield, ?Await">OptionalChain</emu-nt>
     </emu-rhs>
-    <emu-rhs a="m-2pf2bd">
+    <emu-rhs a="w8fdvlpp">
         <emu-nt params="?Yield, ?Await">OptionalExpression</emu-nt>
         <emu-nt params="?Yield, ?Await">OptionalChain</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="OptionalChain" params="Yield, Await">
-    <emu-rhs a="ynxeowdb">
+    <emu-rhs a="8htvkqhl">
         <emu-t>?.</emu-t>
         <emu-nt params="?Yield, ?Await">Arguments</emu-nt>
     </emu-rhs>
-    <emu-rhs a="kktyttw7">
+    <emu-rhs a="dfjbcotw">
         <emu-t>?.</emu-t>
         <emu-t>[</emu-t>
         <emu-nt params="+In, ?Yield, ?Await">Expression</emu-nt>
@@ -1027,105 +1027,105 @@
         <emu-t>?.</emu-t>
         <emu-nt>IdentifierName</emu-nt>
     </emu-rhs>
-    <emu-rhs a="tfcmykyj">
+    <emu-rhs a="gddsvrzp">
         <emu-t>?.</emu-t>
         <emu-nt params="?Yield, ?Await, +Tagged">TemplateLiteral</emu-nt>
     </emu-rhs>
-    <emu-rhs a="eogoekck">
+    <emu-rhs a="mf2i0e3e">
         <emu-nt params="?Yield, ?Await">OptionalChain</emu-nt>
         <emu-nt params="?Yield, ?Await">Arguments</emu-nt>
     </emu-rhs>
-    <emu-rhs a="jgl-kve-">
+    <emu-rhs a="tyrnajyn">
         <emu-nt params="?Yield, ?Await">OptionalChain</emu-nt>
         <emu-t>[</emu-t>
         <emu-nt params="+In, ?Yield, ?Await">Expression</emu-nt>
         <emu-t>]</emu-t>
     </emu-rhs>
-    <emu-rhs a="lf2imwfr">
+    <emu-rhs a="nm82pnnk">
         <emu-nt params="?Yield, ?Await">OptionalChain</emu-nt>
         <emu-t>.</emu-t>
         <emu-nt>IdentifierName</emu-nt>
     </emu-rhs>
-    <emu-rhs a="ocv4xe0-">
+    <emu-rhs a="i6asyits">
         <emu-nt params="?Yield, ?Await">OptionalChain</emu-nt>
         <emu-nt params="?Yield, ?Await, +Tagged">TemplateLiteral</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="LeftHandSideExpression" params="Yield, Await">
-    <emu-rhs a="rq6tm1h6"><emu-nt params="?Yield, ?Await">NewExpression</emu-nt></emu-rhs>
-    <emu-rhs a="i8det4ck"><emu-nt params="?Yield, ?Await">CallExpression</emu-nt></emu-rhs>
-    <emu-rhs a="jbet6xpw"><emu-nt params="?Yield, ?Await">OptionalExpression</emu-nt></emu-rhs>
+    <emu-rhs a="qjnhzlak"><emu-nt params="?Yield, ?Await">NewExpression</emu-nt></emu-rhs>
+    <emu-rhs a="hpn2js4d"><emu-nt params="?Yield, ?Await">CallExpression</emu-nt></emu-rhs>
+    <emu-rhs a="hwcrnmoq"><emu-nt params="?Yield, ?Await">OptionalExpression</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="CallMemberExpression" params="Yield, Await">
-    <emu-rhs a="vks-z6n3">
+    <emu-rhs a="90e-xzcw">
         <emu-nt params="?Yield, ?Await">MemberExpression</emu-nt>
         <emu-nt params="?Yield, ?Await">Arguments</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="UpdateExpression" params="Yield, Await">
-    <emu-rhs a="glqbepvz"><emu-nt params="?Yield, ?Await">LeftHandSideExpression</emu-nt></emu-rhs>
-    <emu-rhs a="i_jjg0ex">
+    <emu-rhs a="t7cmhicy"><emu-nt params="?Yield, ?Await">LeftHandSideExpression</emu-nt></emu-rhs>
+    <emu-rhs a="egpm8pw8">
         <emu-nt params="?Yield, ?Await">LeftHandSideExpression</emu-nt>
         <emu-gann>no <emu-nt>LineTerminator</emu-nt> here</emu-gann>
         <emu-t>++</emu-t>
     </emu-rhs>
-    <emu-rhs a="jr0tcoqg">
+    <emu-rhs a="xaomniuu">
         <emu-nt params="?Yield, ?Await">LeftHandSideExpression</emu-nt>
         <emu-gann>no <emu-nt>LineTerminator</emu-nt> here</emu-gann>
         <emu-t>--</emu-t>
     </emu-rhs>
-    <emu-rhs a="vwgxygda">
+    <emu-rhs a="4u-mahoy">
         <emu-t>++</emu-t>
         <emu-nt params="?Yield, ?Await">UnaryExpression</emu-nt>
     </emu-rhs>
-    <emu-rhs a="onrvwudi">
+    <emu-rhs a="mutg-4fe">
         <emu-t>--</emu-t>
         <emu-nt params="?Yield, ?Await">UnaryExpression</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="UnaryExpression" params="Yield, Await">
-    <emu-rhs a="l7unmw8v"><emu-nt params="?Yield, ?Await">UpdateExpression</emu-nt></emu-rhs>
-    <emu-rhs a="v9wiw5nl">
+    <emu-rhs a="lrh_izya"><emu-nt params="?Yield, ?Await">UpdateExpression</emu-nt></emu-rhs>
+    <emu-rhs a="qh6tas2i">
         <emu-t>delete</emu-t>
         <emu-nt params="?Yield, ?Await">UnaryExpression</emu-nt>
     </emu-rhs>
-    <emu-rhs a="5dgdjy7z">
+    <emu-rhs a="d3t3dyzd">
         <emu-t>void</emu-t>
         <emu-nt params="?Yield, ?Await">UnaryExpression</emu-nt>
     </emu-rhs>
-    <emu-rhs a="qxosuesc">
+    <emu-rhs a="atfv1ezt">
         <emu-t>typeof</emu-t>
         <emu-nt params="?Yield, ?Await">UnaryExpression</emu-nt>
     </emu-rhs>
-    <emu-rhs a="o0kdmush">
+    <emu-rhs a="1zx-fkm3">
         <emu-t>+</emu-t>
         <emu-nt params="?Yield, ?Await">UnaryExpression</emu-nt>
     </emu-rhs>
-    <emu-rhs a="odzkxnu5">
+    <emu-rhs a="lehvx30i">
         <emu-t>-</emu-t>
         <emu-nt params="?Yield, ?Await">UnaryExpression</emu-nt>
     </emu-rhs>
-    <emu-rhs a="b9nqec7b">
+    <emu-rhs a="mvwftuyy">
         <emu-t>~</emu-t>
         <emu-nt params="?Yield, ?Await">UnaryExpression</emu-nt>
     </emu-rhs>
-    <emu-rhs a="ulcvcjyx">
+    <emu-rhs a="cm7fnuig">
         <emu-t>!</emu-t>
         <emu-nt params="?Yield, ?Await">UnaryExpression</emu-nt>
     </emu-rhs>
-    <emu-rhs a="shlomml6" constraints="+Await"><emu-nt params="?Yield">AwaitExpression</emu-nt></emu-rhs>
+    <emu-rhs a="dfqdbsrx" constraints="+Await"><emu-nt params="?Yield">AwaitExpression</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="ExponentiationExpression" params="Yield, Await">
-    <emu-rhs a="1lzwwxvc"><emu-nt params="?Yield, ?Await">UnaryExpression</emu-nt></emu-rhs>
-    <emu-rhs a="0zbfzgb0">
+    <emu-rhs a="8ws4fpw1"><emu-nt params="?Yield, ?Await">UnaryExpression</emu-nt></emu-rhs>
+    <emu-rhs a="sofstrau">
         <emu-nt params="?Yield, ?Await">UpdateExpression</emu-nt>
         <emu-t>**</emu-t>
         <emu-nt params="?Yield, ?Await">ExponentiationExpression</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="MultiplicativeExpression" params="Yield, Await">
-    <emu-rhs a="mascvj6k"><emu-nt params="?Yield, ?Await">ExponentiationExpression</emu-nt></emu-rhs>
-    <emu-rhs a="-5_iophl">
+    <emu-rhs a="z3kjsjvx"><emu-nt params="?Yield, ?Await">ExponentiationExpression</emu-nt></emu-rhs>
+    <emu-rhs a="wkojp9vf">
         <emu-nt params="?Yield, ?Await">MultiplicativeExpression</emu-nt>
         <emu-nt>MultiplicativeOperator</emu-nt>
         <emu-nt params="?Yield, ?Await">ExponentiationExpression</emu-nt>
@@ -1135,150 +1135,150 @@
     <emu-rhs>* / %</emu-rhs>
 </emu-production>
 <emu-production name="AdditiveExpression" params="Yield, Await">
-    <emu-rhs a="zj3_9bui"><emu-nt params="?Yield, ?Await">MultiplicativeExpression</emu-nt></emu-rhs>
-    <emu-rhs a="dkl7f70y">
+    <emu-rhs a="9q89e3qa"><emu-nt params="?Yield, ?Await">MultiplicativeExpression</emu-nt></emu-rhs>
+    <emu-rhs a="efn1nbbh">
         <emu-nt params="?Yield, ?Await">AdditiveExpression</emu-nt>
         <emu-t>+</emu-t>
         <emu-nt params="?Yield, ?Await">MultiplicativeExpression</emu-nt>
     </emu-rhs>
-    <emu-rhs a="7gvefllu">
+    <emu-rhs a="4wmnuxdc">
         <emu-nt params="?Yield, ?Await">AdditiveExpression</emu-nt>
         <emu-t>-</emu-t>
         <emu-nt params="?Yield, ?Await">MultiplicativeExpression</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="ShiftExpression" params="Yield, Await">
-    <emu-rhs a="gcpjaxbx"><emu-nt params="?Yield, ?Await">AdditiveExpression</emu-nt></emu-rhs>
-    <emu-rhs a="8lniv7bw">
+    <emu-rhs a="5myeagmz"><emu-nt params="?Yield, ?Await">AdditiveExpression</emu-nt></emu-rhs>
+    <emu-rhs a="fhlfkj-w">
         <emu-nt params="?Yield, ?Await">ShiftExpression</emu-nt>
         <emu-t>&lt;</emu-t>
         <emu-nt params="?Yield, ?Await">AdditiveExpression</emu-nt>
     </emu-rhs>
-    <emu-rhs a="dyd4k6f-">
+    <emu-rhs a="dykn_m0q">
         <emu-nt params="?Yield, ?Await">ShiftExpression</emu-nt>
         <emu-t>&gt;</emu-t>
         <emu-nt params="?Yield, ?Await">AdditiveExpression</emu-nt>
     </emu-rhs>
-    <emu-rhs a="dyd4k6f-">
+    <emu-rhs a="dykn_m0q">
         <emu-nt params="?Yield, ?Await">ShiftExpression</emu-nt>
         <emu-t>&gt;</emu-t>
         <emu-nt params="?Yield, ?Await">AdditiveExpression</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="RelationalExpression" params="In, Yield, Await">
-    <emu-rhs a="5o0jutoh"><emu-nt params="?Yield, ?Await">ShiftExpression</emu-nt></emu-rhs>
-    <emu-rhs a="-hocaojj">
+    <emu-rhs a="evzvmihy"><emu-nt params="?Yield, ?Await">ShiftExpression</emu-nt></emu-rhs>
+    <emu-rhs a="ktelqp0q">
         <emu-nt params="?In, ?Yield, ?Await">RelationalExpression</emu-nt>
         <emu-t>&lt;</emu-t>
         <emu-nt params="?Yield, ?Await">ShiftExpression</emu-nt>
     </emu-rhs>
-    <emu-rhs a="owny7otd">
+    <emu-rhs a="atemj8cq">
         <emu-nt params="?In, ?Yield, ?Await">RelationalExpression</emu-nt>
         <emu-t>&gt;</emu-t>
         <emu-nt params="?Yield, ?Await">ShiftExpression</emu-nt>
     </emu-rhs>
-    <emu-rhs a="_ymfijdt">
+    <emu-rhs a="zlnqkydo">
         <emu-nt params="?In, ?Yield, ?Await">RelationalExpression</emu-nt>
         <emu-t>&lt;=</emu-t>
         <emu-nt params="?Yield, ?Await">ShiftExpression</emu-nt>
     </emu-rhs>
-    <emu-rhs a="sy_fnjl1">
+    <emu-rhs a="l9ip4l8z">
         <emu-nt params="?In, ?Yield, ?Await">RelationalExpression</emu-nt>
         <emu-t>&gt;=</emu-t>
         <emu-nt params="?Yield, ?Await">ShiftExpression</emu-nt>
     </emu-rhs>
-    <emu-rhs a="1ec9rmdp">
+    <emu-rhs a="imdygppt">
         <emu-nt params="?In, ?Yield, ?Await">RelationalExpression</emu-nt>
         <emu-t>instanceof</emu-t>
         <emu-nt params="?Yield, ?Await">ShiftExpression</emu-nt>
     </emu-rhs>
-    <emu-rhs a="9mtjpkmx" constraints="+In">
+    <emu-rhs a="tinqflo_" constraints="+In">
         <emu-nt params="+In, ?Yield, ?Await">RelationalExpression</emu-nt>
         <emu-t>in</emu-t>
         <emu-nt params="?Yield, ?Await">ShiftExpression</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="EqualityExpression" params="In, Yield, Await">
-    <emu-rhs a="hwqbsk2b"><emu-nt params="?In, ?Yield, ?Await">RelationalExpression</emu-nt></emu-rhs>
-    <emu-rhs a="dxo0lfgu">
+    <emu-rhs a="kobejffm"><emu-nt params="?In, ?Yield, ?Await">RelationalExpression</emu-nt></emu-rhs>
+    <emu-rhs a="jxpsr3d-">
         <emu-nt params="?In, ?Yield, ?Await">EqualityExpression</emu-nt>
         <emu-t>==</emu-t>
         <emu-nt params="?In, ?Yield, ?Await">RelationalExpression</emu-nt>
     </emu-rhs>
-    <emu-rhs a="cn2twrby">
+    <emu-rhs a="ipid5oaz">
         <emu-nt params="?In, ?Yield, ?Await">EqualityExpression</emu-nt>
         <emu-t>!=</emu-t>
         <emu-nt params="?In, ?Yield, ?Await">RelationalExpression</emu-nt>
     </emu-rhs>
-    <emu-rhs a="4hu79ipe">
+    <emu-rhs a="f7clru0r">
         <emu-nt params="?In, ?Yield, ?Await">EqualityExpression</emu-nt>
         <emu-t>===</emu-t>
         <emu-nt params="?In, ?Yield, ?Await">RelationalExpression</emu-nt>
     </emu-rhs>
-    <emu-rhs a="irptryux">
+    <emu-rhs a="n5bw_4at">
         <emu-nt params="?In, ?Yield, ?Await">EqualityExpression</emu-nt>
         <emu-t>!==</emu-t>
         <emu-nt params="?In, ?Yield, ?Await">RelationalExpression</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="BitwiseANDExpression" params="In, Yield, Await">
-    <emu-rhs a="lun9ukxu"><emu-nt params="?In, ?Yield, ?Await">EqualityExpression</emu-nt></emu-rhs>
-    <emu-rhs a="5qnlcti0">
+    <emu-rhs a="xfq7h3dt"><emu-nt params="?In, ?Yield, ?Await">EqualityExpression</emu-nt></emu-rhs>
+    <emu-rhs a="ji0qefks">
         <emu-nt params="?In, ?Yield, ?Await">BitwiseANDExpression</emu-nt>
         <emu-t>&amp;</emu-t>
         <emu-nt params="?In, ?Yield, ?Await">EqualityExpression</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="BitwiseXORExpression" params="In, Yield, Await">
-    <emu-rhs a="xpbduqqp"><emu-nt params="?In, ?Yield, ?Await">BitwiseANDExpression</emu-nt></emu-rhs>
-    <emu-rhs a="tgmxlg5x">
+    <emu-rhs a="qmrxjqqk"><emu-nt params="?In, ?Yield, ?Await">BitwiseANDExpression</emu-nt></emu-rhs>
+    <emu-rhs a="1xjkk1wc">
         <emu-nt params="?In, ?Yield, ?Await">BitwiseXORExpression</emu-nt>
         <emu-t>^</emu-t>
         <emu-nt params="?In, ?Yield, ?Await">BitwiseANDExpression</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="BitwiseORExpression" params="In, Yield, Await">
-    <emu-rhs a="cey9dti3"><emu-nt params="?In, ?Yield, ?Await">BitwiseXORExpression</emu-nt></emu-rhs>
-    <emu-rhs a="aw36khwc">
+    <emu-rhs a="joxsfj33"><emu-nt params="?In, ?Yield, ?Await">BitwiseXORExpression</emu-nt></emu-rhs>
+    <emu-rhs a="rqrhqzr9">
         <emu-nt params="?In, ?Yield, ?Await">BitwiseORExpression</emu-nt>
         <emu-t>|</emu-t>
         <emu-nt params="?In, ?Yield, ?Await">BitwiseXORExpression</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="LogicalANDExpression" params="In, Yield, Await">
-    <emu-rhs a="w3t6vbyj"><emu-nt params="?In, ?Yield, ?Await">BitwiseORExpression</emu-nt></emu-rhs>
-    <emu-rhs a="rxq6tj3y">
+    <emu-rhs a="c_3moriv"><emu-nt params="?In, ?Yield, ?Await">BitwiseORExpression</emu-nt></emu-rhs>
+    <emu-rhs a="ffnqhvqe">
         <emu-nt params="?In, ?Yield, ?Await">LogicalANDExpression</emu-nt>
         <emu-t>&amp;</emu-t>
         <emu-nt params="?In, ?Yield, ?Await">BitwiseORExpression</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="LogicalORExpression" params="In, Yield, Await">
-    <emu-rhs a="3tsdtkb_"><emu-nt params="?In, ?Yield, ?Await">LogicalANDExpression</emu-nt></emu-rhs>
-    <emu-rhs a="tku92t5q">
+    <emu-rhs a="uibyaiez"><emu-nt params="?In, ?Yield, ?Await">LogicalANDExpression</emu-nt></emu-rhs>
+    <emu-rhs a="j2ugmrmi">
         <emu-nt params="?In, ?Yield, ?Await">LogicalORExpression</emu-nt>
         <emu-t>||</emu-t>
         <emu-nt params="?In, ?Yield, ?Await">LogicalANDExpression</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="CoalesceExpression" params="In, Yield, Await">
-    <emu-rhs a="3eoigfmu">
+    <emu-rhs a="0m-knz7v">
         <emu-nt params="?In, ?Yield, ?Await">CoalesceExpressionHead</emu-nt>
         <emu-t>??</emu-t>
         <emu-nt params="?In, ?Yield, ?Await">BitwiseORExpression</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="CoalesceExpressionHead" params="In, Yield, Await">
-    <emu-rhs a="hl_w3hyg"><emu-nt params="?In, ?Yield, ?Await">CoalesceExpression</emu-nt></emu-rhs>
-    <emu-rhs a="w3t6vbyj"><emu-nt params="?In, ?Yield, ?Await">BitwiseORExpression</emu-nt></emu-rhs>
+    <emu-rhs a="yrl3tdye"><emu-nt params="?In, ?Yield, ?Await">CoalesceExpression</emu-nt></emu-rhs>
+    <emu-rhs a="c_3moriv"><emu-nt params="?In, ?Yield, ?Await">BitwiseORExpression</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="ShortCircuitExpression" params="In, Yield, Await">
-    <emu-rhs a="c0t3dfmv"><emu-nt params="?In, ?Yield, ?Await">LogicalORExpression</emu-nt></emu-rhs>
-    <emu-rhs a="hl_w3hyg"><emu-nt params="?In, ?Yield, ?Await">CoalesceExpression</emu-nt></emu-rhs>
+    <emu-rhs a="cubbqwpr"><emu-nt params="?In, ?Yield, ?Await">LogicalORExpression</emu-nt></emu-rhs>
+    <emu-rhs a="yrl3tdye"><emu-nt params="?In, ?Yield, ?Await">CoalesceExpression</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="ConditionalExpression" params="In, Yield, Await">
-    <emu-rhs a="q-hcuvss"><emu-nt params="?In, ?Yield, ?Await">ShortCircuitExpression</emu-nt></emu-rhs>
-    <emu-rhs a="d4vlxget">
+    <emu-rhs a="hb3dzpk6"><emu-nt params="?In, ?Yield, ?Await">ShortCircuitExpression</emu-nt></emu-rhs>
+    <emu-rhs a="hgxirk7b">
         <emu-nt params="?In, ?Yield, ?Await">ShortCircuitExpression</emu-nt>
         <emu-t>?</emu-t>
         <emu-nt params="+In, ?Yield, ?Await">AssignmentExpression</emu-nt>
@@ -1287,16 +1287,16 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="AssignmentExpression" params="In, Yield, Await">
-    <emu-rhs a="p6xtyrzd"><emu-nt params="?In, ?Yield, ?Await">ConditionalExpression</emu-nt></emu-rhs>
-    <emu-rhs a="uglis9ea" constraints="+Yield"><emu-nt params="?In, ?Await">YieldExpression</emu-nt></emu-rhs>
-    <emu-rhs a="k987eemp"><emu-nt params="?In, ?Yield, ?Await">ArrowFunction</emu-nt></emu-rhs>
-    <emu-rhs a="a3kew9kn"><emu-nt params="?In, ?Yield, ?Await">AsyncArrowFunction</emu-nt></emu-rhs>
+    <emu-rhs a="gqos3l-s"><emu-nt params="?In, ?Yield, ?Await">ConditionalExpression</emu-nt></emu-rhs>
+    <emu-rhs a="xu2tbseh" constraints="+Yield"><emu-nt params="?In, ?Await">YieldExpression</emu-nt></emu-rhs>
+    <emu-rhs a="m23qgn_1"><emu-nt params="?In, ?Yield, ?Await">ArrowFunction</emu-nt></emu-rhs>
+    <emu-rhs a="3h9r6dls"><emu-nt params="?In, ?Yield, ?Await">AsyncArrowFunction</emu-nt></emu-rhs>
     <emu-rhs a="assignment">
         <emu-nt params="?Yield, ?Await">LeftHandSideExpression</emu-nt>
         <emu-t>=</emu-t>
         <emu-nt params="?In, ?Yield, ?Await">AssignmentExpression</emu-nt>
     </emu-rhs>
-    <emu-rhs a="xzqhr---">
+    <emu-rhs a="3cvjfmjy">
         <emu-nt params="?Yield, ?Await">LeftHandSideExpression</emu-nt>
         <emu-nt>AssignmentOperator</emu-nt>
         <emu-nt params="?In, ?Yield, ?Await">AssignmentExpression</emu-nt>
@@ -1306,25 +1306,25 @@
     <emu-rhs>*= /= %= += -= &lt;&lt;= &gt;&gt;= &gt;&gt;&gt;= &amp;= ^= |= **=</emu-rhs>
 </emu-production>
 <emu-production name="AssignmentPattern" params="Yield, Await">
-    <emu-rhs a="lva8vqha"><emu-nt params="?Yield, ?Await">ObjectAssignmentPattern</emu-nt></emu-rhs>
-    <emu-rhs a="w7ujt2sg"><emu-nt params="?Yield, ?Await">ArrayAssignmentPattern</emu-nt></emu-rhs>
+    <emu-rhs a="7w04vwf-"><emu-nt params="?Yield, ?Await">ObjectAssignmentPattern</emu-nt></emu-rhs>
+    <emu-rhs a="s2vx3ypi"><emu-nt params="?Yield, ?Await">ArrayAssignmentPattern</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="ObjectAssignmentPattern" params="Yield, Await">
     <emu-rhs a="gbpaspne">
         <emu-t>{</emu-t>
         <emu-t>}</emu-t>
     </emu-rhs>
-    <emu-rhs a="0_acgxxx">
+    <emu-rhs a="bn_ddxqp">
         <emu-t>{</emu-t>
         <emu-nt params="?Yield, ?Await">AssignmentRestProperty</emu-nt>
         <emu-t>}</emu-t>
     </emu-rhs>
-    <emu-rhs a="atdycebx">
+    <emu-rhs a="ofajfz5a">
         <emu-t>{</emu-t>
         <emu-nt params="?Yield, ?Await">AssignmentPropertyList</emu-nt>
         <emu-t>}</emu-t>
     </emu-rhs>
-    <emu-rhs a="f0z3mqcb">
+    <emu-rhs a="da4bl21i">
         <emu-t>{</emu-t>
         <emu-nt params="?Yield, ?Await">AssignmentPropertyList</emu-nt>
         <emu-t>,</emu-t>
@@ -1333,18 +1333,18 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="ArrayAssignmentPattern" params="Yield, Await">
-    <emu-rhs a="rrb8k1ee">
+    <emu-rhs a="s4zfck54">
         <emu-t>[</emu-t>
         <emu-nt optional>Elision</emu-nt>
         <emu-nt params="?Yield, ?Await" optional>AssignmentRestElement</emu-nt>
         <emu-t>]</emu-t>
     </emu-rhs>
-    <emu-rhs a="gv7ks9wy">
+    <emu-rhs a="mfk9jesb">
         <emu-t>[</emu-t>
         <emu-nt params="?Yield, ?Await">AssignmentElementList</emu-nt>
         <emu-t>]</emu-t>
     </emu-rhs>
-    <emu-rhs a="ztneawav">
+    <emu-rhs a="aerg5q0_">
         <emu-t>[</emu-t>
         <emu-nt params="?Yield, ?Await">AssignmentElementList</emu-nt>
         <emu-t>,</emu-t>
@@ -1354,121 +1354,121 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="AssignmentRestProperty" params="Yield, Await">
-    <emu-rhs a="z0cmdp2o">
+    <emu-rhs a="nliyfd0x">
         <emu-t>...</emu-t>
         <emu-nt params="?Yield, ?Await">DestructuringAssignmentTarget</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="AssignmentPropertyList" params="Yield, Await">
-    <emu-rhs a="waau5bfz"><emu-nt params="?Yield, ?Await">AssignmentProperty</emu-nt></emu-rhs>
-    <emu-rhs a="w2gewbq6">
+    <emu-rhs a="d7bxrpgd"><emu-nt params="?Yield, ?Await">AssignmentProperty</emu-nt></emu-rhs>
+    <emu-rhs a="nzqocjsg">
         <emu-nt params="?Yield, ?Await">AssignmentPropertyList</emu-nt>
         <emu-t>,</emu-t>
         <emu-nt params="?Yield, ?Await">AssignmentProperty</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="AssignmentElementList" params="Yield, Await">
-    <emu-rhs a="4rvubdlp"><emu-nt params="?Yield, ?Await">AssignmentElisionElement</emu-nt></emu-rhs>
-    <emu-rhs a="vcxcd5k-">
+    <emu-rhs a="516o8fhi"><emu-nt params="?Yield, ?Await">AssignmentElisionElement</emu-nt></emu-rhs>
+    <emu-rhs a="bvlhnxkw">
         <emu-nt params="?Yield, ?Await">AssignmentElementList</emu-nt>
         <emu-t>,</emu-t>
         <emu-nt params="?Yield, ?Await">AssignmentElisionElement</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="AssignmentElisionElement" params="Yield, Await">
-    <emu-rhs a="nfnfa-up">
+    <emu-rhs a="cv0avln-">
         <emu-nt optional>Elision</emu-nt>
         <emu-nt params="?Yield, ?Await">AssignmentElement</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="AssignmentProperty" params="Yield, Await">
-    <emu-rhs a="xv93cfyb">
+    <emu-rhs a="wctqknbn">
         <emu-nt params="?Yield, ?Await">IdentifierReference</emu-nt>
         <emu-nt params="+In, ?Yield, ?Await" optional>Initializer</emu-nt>
     </emu-rhs>
-    <emu-rhs a="yayigkhd">
+    <emu-rhs a="n656b85q">
         <emu-nt params="?Yield, ?Await">PropertyName</emu-nt>
         <emu-t>:</emu-t>
         <emu-nt params="?Yield, ?Await">AssignmentElement</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="AssignmentElement" params="Yield, Await">
-    <emu-rhs a="pzzkz5gu">
+    <emu-rhs a="jfyxygbf">
         <emu-nt params="?Yield, ?Await">DestructuringAssignmentTarget</emu-nt>
         <emu-nt params="+In, ?Yield, ?Await" optional>Initializer</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="AssignmentRestElement" params="Yield, Await">
-    <emu-rhs a="z0cmdp2o">
+    <emu-rhs a="nliyfd0x">
         <emu-t>...</emu-t>
         <emu-nt params="?Yield, ?Await">DestructuringAssignmentTarget</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="DestructuringAssignmentTarget" params="Yield, Await">
-    <emu-rhs a="glqbepvz"><emu-nt params="?Yield, ?Await">LeftHandSideExpression</emu-nt></emu-rhs>
+    <emu-rhs a="t7cmhicy"><emu-nt params="?Yield, ?Await">LeftHandSideExpression</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="Expression" params="In, Yield, Await">
-    <emu-rhs a="1px9pijq"><emu-nt params="?In, ?Yield, ?Await">AssignmentExpression</emu-nt></emu-rhs>
-    <emu-rhs a="cwoazx1t">
+    <emu-rhs a="dtjihnfx"><emu-nt params="?In, ?Yield, ?Await">AssignmentExpression</emu-nt></emu-rhs>
+    <emu-rhs a="ookiljzl">
         <emu-nt params="?In, ?Yield, ?Await">Expression</emu-nt>
         <emu-t>,</emu-t>
         <emu-nt params="?In, ?Yield, ?Await">AssignmentExpression</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="Statement" params="Yield, Await, Return">
-    <emu-rhs a="gre9qn6e"><emu-nt params="?Yield, ?Await, ?Return">BlockStatement</emu-nt></emu-rhs>
-    <emu-rhs a="iwwn8atx"><emu-nt params="?Yield, ?Await">VariableStatement</emu-nt></emu-rhs>
+    <emu-rhs a="ktzsppzs"><emu-nt params="?Yield, ?Await, ?Return">BlockStatement</emu-nt></emu-rhs>
+    <emu-rhs a="xumq1cs6"><emu-nt params="?Yield, ?Await">VariableStatement</emu-nt></emu-rhs>
     <emu-rhs a="cziqu-45"><emu-nt>EmptyStatement</emu-nt></emu-rhs>
-    <emu-rhs a="gsqkt2bv"><emu-nt params="?Yield, ?Await">ExpressionStatement</emu-nt></emu-rhs>
-    <emu-rhs a="skawbrez"><emu-nt params="?Yield, ?Await, ?Return">IfStatement</emu-nt></emu-rhs>
-    <emu-rhs a="cdyywqxx"><emu-nt params="?Yield, ?Await, ?Return">BreakableStatement</emu-nt></emu-rhs>
-    <emu-rhs a="hx0ynljx"><emu-nt params="?Yield, ?Await">ContinueStatement</emu-nt></emu-rhs>
-    <emu-rhs a="q4uv-sm3"><emu-nt params="?Yield, ?Await">BreakStatement</emu-nt></emu-rhs>
-    <emu-rhs a="qm95e4wi" constraints="+Return"><emu-nt params="?Yield, ?Await">ReturnStatement</emu-nt></emu-rhs>
-    <emu-rhs a="ye6wwgts"><emu-nt params="?Yield, ?Await, ?Return">WithStatement</emu-nt></emu-rhs>
-    <emu-rhs a="cij_anje"><emu-nt params="?Yield, ?Await, ?Return">LabelledStatement</emu-nt></emu-rhs>
-    <emu-rhs a="hntake-o"><emu-nt params="?Yield, ?Await">ThrowStatement</emu-nt></emu-rhs>
-    <emu-rhs a="ex_crokj"><emu-nt params="?Yield, ?Await, ?Return">TryStatement</emu-nt></emu-rhs>
+    <emu-rhs a="vt4s4xgg"><emu-nt params="?Yield, ?Await">ExpressionStatement</emu-nt></emu-rhs>
+    <emu-rhs a="vpvr9yr3"><emu-nt params="?Yield, ?Await, ?Return">IfStatement</emu-nt></emu-rhs>
+    <emu-rhs a="3kwmhgcn"><emu-nt params="?Yield, ?Await, ?Return">BreakableStatement</emu-nt></emu-rhs>
+    <emu-rhs a="klxmhdlm"><emu-nt params="?Yield, ?Await">ContinueStatement</emu-nt></emu-rhs>
+    <emu-rhs a="vtt-myod"><emu-nt params="?Yield, ?Await">BreakStatement</emu-nt></emu-rhs>
+    <emu-rhs a="1sriw0nt" constraints="+Return"><emu-nt params="?Yield, ?Await">ReturnStatement</emu-nt></emu-rhs>
+    <emu-rhs a="_gejjak9"><emu-nt params="?Yield, ?Await, ?Return">WithStatement</emu-nt></emu-rhs>
+    <emu-rhs a="90_gq6ig"><emu-nt params="?Yield, ?Await, ?Return">LabelledStatement</emu-nt></emu-rhs>
+    <emu-rhs a="ukgcnqlt"><emu-nt params="?Yield, ?Await">ThrowStatement</emu-nt></emu-rhs>
+    <emu-rhs a="z7s8kfe1"><emu-nt params="?Yield, ?Await, ?Return">TryStatement</emu-nt></emu-rhs>
     <emu-rhs a="iseu28qi"><emu-nt>DebuggerStatement</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="Declaration" params="Yield, Await">
-    <emu-rhs a="ykusttdk"><emu-nt params="?Yield, ?Await, ~Default">HoistableDeclaration</emu-nt></emu-rhs>
-    <emu-rhs a="bwk3zfoi"><emu-nt params="?Yield, ?Await, ~Default">ClassDeclaration</emu-nt></emu-rhs>
-    <emu-rhs a="jxaobega"><emu-nt params="+In, ?Yield, ?Await">LexicalDeclaration</emu-nt></emu-rhs>
+    <emu-rhs a="i6hr6ytb"><emu-nt params="?Yield, ?Await, ~Default">HoistableDeclaration</emu-nt></emu-rhs>
+    <emu-rhs a="jfshu5d-"><emu-nt params="?Yield, ?Await, ~Default">ClassDeclaration</emu-nt></emu-rhs>
+    <emu-rhs a="dl5lsw3w"><emu-nt params="+In, ?Yield, ?Await">LexicalDeclaration</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="HoistableDeclaration" params="Yield, Await, Default">
-    <emu-rhs a="-nqupnlb"><emu-nt params="?Yield, ?Await, ?Default">FunctionDeclaration</emu-nt></emu-rhs>
-    <emu-rhs a="r3zmbc2x"><emu-nt params="?Yield, ?Await, ?Default">GeneratorDeclaration</emu-nt></emu-rhs>
-    <emu-rhs a="xi-jap6o"><emu-nt params="?Yield, ?Await, ?Default">AsyncFunctionDeclaration</emu-nt></emu-rhs>
-    <emu-rhs a="n353p_mm"><emu-nt params="?Yield, ?Await, ?Default">AsyncGeneratorDeclaration</emu-nt></emu-rhs>
+    <emu-rhs a="pm1iqgpt"><emu-nt params="?Yield, ?Await, ?Default">FunctionDeclaration</emu-nt></emu-rhs>
+    <emu-rhs a="rhqaxmir"><emu-nt params="?Yield, ?Await, ?Default">GeneratorDeclaration</emu-nt></emu-rhs>
+    <emu-rhs a="3nfjki-g"><emu-nt params="?Yield, ?Await, ?Default">AsyncFunctionDeclaration</emu-nt></emu-rhs>
+    <emu-rhs a="e-_qp6dd"><emu-nt params="?Yield, ?Await, ?Default">AsyncGeneratorDeclaration</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="BreakableStatement" params="Yield, Await, Return">
-    <emu-rhs a="kmxl4yum"><emu-nt params="?Yield, ?Await, ?Return">IterationStatement</emu-nt></emu-rhs>
-    <emu-rhs a="nuio-xfp"><emu-nt params="?Yield, ?Await, ?Return">SwitchStatement</emu-nt></emu-rhs>
+    <emu-rhs a="olmcy7ih"><emu-nt params="?Yield, ?Await, ?Return">IterationStatement</emu-nt></emu-rhs>
+    <emu-rhs a="uzjzv-di"><emu-nt params="?Yield, ?Await, ?Return">SwitchStatement</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="BlockStatement" params="Yield, Await, Return">
-    <emu-rhs a="gt0s3zb5"><emu-nt params="?Yield, ?Await, ?Return">Block</emu-nt></emu-rhs>
+    <emu-rhs a="zwpfwt4j"><emu-nt params="?Yield, ?Await, ?Return">Block</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="Block" params="Yield, Await, Return">
-    <emu-rhs a="-v-zyr0v">
+    <emu-rhs a="uij9rcu7">
         <emu-t>{</emu-t>
         <emu-nt params="?Yield, ?Await, ?Return" optional>StatementList</emu-nt>
         <emu-t>}</emu-t>
     </emu-rhs>
 </emu-production>
 <emu-production name="StatementList" params="Yield, Await, Return">
-    <emu-rhs a="15hryu6r"><emu-nt params="?Yield, ?Await, ?Return">StatementListItem</emu-nt></emu-rhs>
-    <emu-rhs a="dbrzeh7l">
+    <emu-rhs a="owubwn_s"><emu-nt params="?Yield, ?Await, ?Return">StatementListItem</emu-nt></emu-rhs>
+    <emu-rhs a="21clqs0p">
         <emu-nt params="?Yield, ?Await, ?Return">StatementList</emu-nt>
         <emu-nt params="?Yield, ?Await, ?Return">StatementListItem</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="StatementListItem" params="Yield, Await, Return">
-    <emu-rhs a="pyyivtxj"><emu-nt params="?Yield, ?Await, ?Return">Statement</emu-nt></emu-rhs>
-    <emu-rhs a="1vn3ibwe"><emu-nt params="?Yield, ?Await">Declaration</emu-nt></emu-rhs>
+    <emu-rhs a="septp5sa"><emu-nt params="?Yield, ?Await, ?Return">Statement</emu-nt></emu-rhs>
+    <emu-rhs a="mtktetk8"><emu-nt params="?Yield, ?Await">Declaration</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="LexicalDeclaration" params="In, Yield, Await">
-    <emu-rhs a="deqecbrp">
+    <emu-rhs a="jsmbgalx">
         <emu-nt>LetOrConst</emu-nt>
         <emu-nt params="?In, ?Yield, ?Await">BindingList</emu-nt>
         <emu-t>;</emu-t>
@@ -1479,68 +1479,68 @@
     <emu-rhs a="nim_d4hb"><emu-t>const</emu-t></emu-rhs>
 </emu-production>
 <emu-production name="BindingList" params="In, Yield, Await">
-    <emu-rhs a="py_eo7ni"><emu-nt params="?In, ?Yield, ?Await">LexicalBinding</emu-nt></emu-rhs>
-    <emu-rhs a="dt40zeyt">
+    <emu-rhs a="ned6hkwu"><emu-nt params="?In, ?Yield, ?Await">LexicalBinding</emu-nt></emu-rhs>
+    <emu-rhs a="fdx7nvya">
         <emu-nt params="?In, ?Yield, ?Await">BindingList</emu-nt>
         <emu-t>,</emu-t>
         <emu-nt params="?In, ?Yield, ?Await">LexicalBinding</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="LexicalBinding" params="In, Yield, Await">
-    <emu-rhs a="c5neqctp">
+    <emu-rhs a="jut8etgz">
         <emu-nt params="?Yield, ?Await">BindingIdentifier</emu-nt>
         <emu-nt params="?In, ?Yield, ?Await" optional>Initializer</emu-nt>
     </emu-rhs>
-    <emu-rhs a="dd1t5ekf">
+    <emu-rhs a="sdckvxer">
         <emu-nt params="?Yield, ?Await">BindingPattern</emu-nt>
         <emu-nt params="?In, ?Yield, ?Await">Initializer</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="VariableStatement" params="Yield, Await">
-    <emu-rhs a="m0ehvb8m">
+    <emu-rhs a="tbwjaldb">
         <emu-t>var</emu-t>
         <emu-nt params="+In, ?Yield, ?Await">VariableDeclarationList</emu-nt>
         <emu-t>;</emu-t>
     </emu-rhs>
 </emu-production>
 <emu-production name="VariableDeclarationList" params="In, Yield, Await">
-    <emu-rhs a="n3piepmh"><emu-nt params="?In, ?Yield, ?Await">VariableDeclaration</emu-nt></emu-rhs>
-    <emu-rhs a="oavweevb">
+    <emu-rhs a="ps4sw3ys"><emu-nt params="?In, ?Yield, ?Await">VariableDeclaration</emu-nt></emu-rhs>
+    <emu-rhs a="xsh3skws">
         <emu-nt params="?In, ?Yield, ?Await">VariableDeclarationList</emu-nt>
         <emu-t>,</emu-t>
         <emu-nt params="?In, ?Yield, ?Await">VariableDeclaration</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="VariableDeclaration" params="In, Yield, Await">
-    <emu-rhs a="c5neqctp">
+    <emu-rhs a="jut8etgz">
         <emu-nt params="?Yield, ?Await">BindingIdentifier</emu-nt>
         <emu-nt params="?In, ?Yield, ?Await" optional>Initializer</emu-nt>
     </emu-rhs>
-    <emu-rhs a="dd1t5ekf">
+    <emu-rhs a="sdckvxer">
         <emu-nt params="?Yield, ?Await">BindingPattern</emu-nt>
         <emu-nt params="?In, ?Yield, ?Await">Initializer</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="BindingPattern" params="Yield, Await">
-    <emu-rhs a="mh3oqyo8"><emu-nt params="?Yield, ?Await">ObjectBindingPattern</emu-nt></emu-rhs>
-    <emu-rhs a="xjjvo5sr"><emu-nt params="?Yield, ?Await">ArrayBindingPattern</emu-nt></emu-rhs>
+    <emu-rhs a="fwd2jmee"><emu-nt params="?Yield, ?Await">ObjectBindingPattern</emu-nt></emu-rhs>
+    <emu-rhs a="hpyn1kot"><emu-nt params="?Yield, ?Await">ArrayBindingPattern</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="ObjectBindingPattern" params="Yield, Await">
     <emu-rhs a="gbpaspne">
         <emu-t>{</emu-t>
         <emu-t>}</emu-t>
     </emu-rhs>
-    <emu-rhs a="etffxusy">
+    <emu-rhs a="u51ece_j">
         <emu-t>{</emu-t>
         <emu-nt params="?Yield, ?Await">BindingRestProperty</emu-nt>
         <emu-t>}</emu-t>
     </emu-rhs>
-    <emu-rhs a="gk43jrsm">
+    <emu-rhs a="sd_sxlxl">
         <emu-t>{</emu-t>
         <emu-nt params="?Yield, ?Await">BindingPropertyList</emu-nt>
         <emu-t>}</emu-t>
     </emu-rhs>
-    <emu-rhs a="qquqmawt">
+    <emu-rhs a="98sthfnw">
         <emu-t>{</emu-t>
         <emu-nt params="?Yield, ?Await">BindingPropertyList</emu-nt>
         <emu-t>,</emu-t>
@@ -1549,18 +1549,18 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="ArrayBindingPattern" params="Yield, Await">
-    <emu-rhs a="njmfo-uj">
+    <emu-rhs a="82yazf9m">
         <emu-t>[</emu-t>
         <emu-nt optional>Elision</emu-nt>
         <emu-nt params="?Yield, ?Await" optional>BindingRestElement</emu-nt>
         <emu-t>]</emu-t>
     </emu-rhs>
-    <emu-rhs a="hqlkkwfb">
+    <emu-rhs a="tz2jlcig">
         <emu-t>[</emu-t>
         <emu-nt params="?Yield, ?Await">BindingElementList</emu-nt>
         <emu-t>]</emu-t>
     </emu-rhs>
-    <emu-rhs a="12yahkzg">
+    <emu-rhs a="ezfh7oge">
         <emu-t>[</emu-t>
         <emu-nt params="?Yield, ?Await">BindingElementList</emu-nt>
         <emu-t>,</emu-t>
@@ -1570,60 +1570,60 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="BindingRestProperty" params="Yield, Await">
-    <emu-rhs a="ffhe3nqa">
+    <emu-rhs a="nldxez3v">
         <emu-t>...</emu-t>
         <emu-nt params="?Yield, ?Await">BindingIdentifier</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="BindingPropertyList" params="Yield, Await">
-    <emu-rhs a="y9z6szrc"><emu-nt params="?Yield, ?Await">BindingProperty</emu-nt></emu-rhs>
-    <emu-rhs a="bzdeo9zt">
+    <emu-rhs a="8baidhkc"><emu-nt params="?Yield, ?Await">BindingProperty</emu-nt></emu-rhs>
+    <emu-rhs a="ewlfehxq">
         <emu-nt params="?Yield, ?Await">BindingPropertyList</emu-nt>
         <emu-t>,</emu-t>
         <emu-nt params="?Yield, ?Await">BindingProperty</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="BindingElementList" params="Yield, Await">
-    <emu-rhs a="arhlr9hd"><emu-nt params="?Yield, ?Await">BindingElisionElement</emu-nt></emu-rhs>
-    <emu-rhs a="hiwampap">
+    <emu-rhs a="lpaw4nny"><emu-nt params="?Yield, ?Await">BindingElisionElement</emu-nt></emu-rhs>
+    <emu-rhs a="5z8zw101">
         <emu-nt params="?Yield, ?Await">BindingElementList</emu-nt>
         <emu-t>,</emu-t>
         <emu-nt params="?Yield, ?Await">BindingElisionElement</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="BindingElisionElement" params="Yield, Await">
-    <emu-rhs a="wo9nasvo">
+    <emu-rhs a="5jbcqvdg">
         <emu-nt optional>Elision</emu-nt>
         <emu-nt params="?Yield, ?Await">BindingElement</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="BindingProperty" params="Yield, Await">
-    <emu-rhs a="lof8ala-"><emu-nt params="?Yield, ?Await">SingleNameBinding</emu-nt></emu-rhs>
-    <emu-rhs a="mhvrwluk">
+    <emu-rhs a="01jnavb_"><emu-nt params="?Yield, ?Await">SingleNameBinding</emu-nt></emu-rhs>
+    <emu-rhs a="xcksc8qh">
         <emu-nt params="?Yield, ?Await">PropertyName</emu-nt>
         <emu-t>:</emu-t>
         <emu-nt params="?Yield, ?Await">BindingElement</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="BindingElement" params="Yield, Await">
-    <emu-rhs a="lof8ala-"><emu-nt params="?Yield, ?Await">SingleNameBinding</emu-nt></emu-rhs>
-    <emu-rhs a="ahx6lm0w">
+    <emu-rhs a="01jnavb_"><emu-nt params="?Yield, ?Await">SingleNameBinding</emu-nt></emu-rhs>
+    <emu-rhs a="eyv5t9mz">
         <emu-nt params="?Yield, ?Await">BindingPattern</emu-nt>
         <emu-nt params="+In, ?Yield, ?Await" optional>Initializer</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="SingleNameBinding" params="Yield, Await">
-    <emu-rhs a="c5neqctp">
+    <emu-rhs a="mg7mmvow">
         <emu-nt params="?Yield, ?Await">BindingIdentifier</emu-nt>
         <emu-nt params="+In, ?Yield, ?Await" optional>Initializer</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="BindingRestElement" params="Yield, Await">
-    <emu-rhs a="ffhe3nqa">
+    <emu-rhs a="nldxez3v">
         <emu-t>...</emu-t>
         <emu-nt params="?Yield, ?Await">BindingIdentifier</emu-nt>
     </emu-rhs>
-    <emu-rhs a="hmjzlo6g">
+    <emu-rhs a="lb7grnzq">
         <emu-t>...</emu-t>
         <emu-nt params="?Yield, ?Await">BindingPattern</emu-nt>
     </emu-rhs>
@@ -1632,7 +1632,7 @@
     <emu-rhs a="sg2sawim"><emu-t>;</emu-t></emu-rhs>
 </emu-production>
 <emu-production name="ExpressionStatement" params="Yield, Await">
-    <emu-rhs a="4ttdnuln">
+    <emu-rhs a="w4jv_4at">
         <emu-gann>lookahead ∉ { <emu-t>{</emu-t>, <emu-t>function</emu-t>, <emu-t>async</emu-t>
         <emu-gann>no <emu-nt>LineTerminator</emu-nt> here</emu-gann>
         <emu-t>function</emu-t>, <emu-t>class</emu-t>, <emu-t>let</emu-t>
@@ -1642,7 +1642,7 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="IfStatement" params="Yield, Await, Return">
-    <emu-rhs a="fuhqe2xq">
+    <emu-rhs a="gvkksvw-">
         <emu-t>if</emu-t>
         <emu-t>(</emu-t>
         <emu-nt params="+In, ?Yield, ?Await">Expression</emu-nt>
@@ -1651,7 +1651,7 @@
         <emu-t>else</emu-t>
         <emu-nt params="?Yield, ?Await, ?Return">Statement</emu-nt>
     </emu-rhs>
-    <emu-rhs a="9ogvciaf">
+    <emu-rhs a="ggd0bisk">
         <emu-t>if</emu-t>
         <emu-t>(</emu-t>
         <emu-nt params="+In, ?Yield, ?Await">Expression</emu-nt>
@@ -1660,7 +1660,7 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="IterationStatement" params="Yield, Await, Return">
-    <emu-rhs a="jocmqoht">
+    <emu-rhs a="eiknjnpu">
         <emu-t>do</emu-t>
         <emu-nt params="?Yield, ?Await, ?Return">Statement</emu-nt>
         <emu-t>while</emu-t>
@@ -1669,14 +1669,14 @@
         <emu-t>)</emu-t>
         <emu-t>;</emu-t>
     </emu-rhs>
-    <emu-rhs a="92j78-b5">
+    <emu-rhs a="awcw0xuh">
         <emu-t>while</emu-t>
         <emu-t>(</emu-t>
         <emu-nt params="+In, ?Yield, ?Await">Expression</emu-nt>
         <emu-t>)</emu-t>
         <emu-nt params="?Yield, ?Await, ?Return">Statement</emu-nt>
     </emu-rhs>
-    <emu-rhs a="_do88got">
+    <emu-rhs a="honbm3zg">
         <emu-t>for</emu-t>
         <emu-t>(</emu-t>
         <emu-gann>lookahead ≠ <emu-t>let</emu-t>
@@ -1689,7 +1689,7 @@
         <emu-t>)</emu-t>
         <emu-nt params="?Yield, ?Await, ?Return">Statement</emu-nt>
     </emu-rhs>
-    <emu-rhs a="sodmtko8">
+    <emu-rhs a="frhzdc45">
         <emu-t>for</emu-t>
         <emu-t>(</emu-t>
         <emu-t>var</emu-t>
@@ -1701,7 +1701,7 @@
         <emu-t>)</emu-t>
         <emu-nt params="?Yield, ?Await, ?Return">Statement</emu-nt>
     </emu-rhs>
-    <emu-rhs a="k8b-ryxj">
+    <emu-rhs a="ibe-o3pw">
         <emu-t>for</emu-t>
         <emu-t>(</emu-t>
         <emu-nt params="~In, ?Yield, ?Await">LexicalDeclaration</emu-nt>
@@ -1711,7 +1711,7 @@
         <emu-t>)</emu-t>
         <emu-nt params="?Yield, ?Await, ?Return">Statement</emu-nt>
     </emu-rhs>
-    <emu-rhs a="v1ibcd1w">
+    <emu-rhs a="w0xbna_a">
         <emu-t>for</emu-t>
         <emu-t>(</emu-t>
         <emu-gann>lookahead ≠ <emu-t>let</emu-t>
@@ -1722,7 +1722,7 @@
         <emu-t>)</emu-t>
         <emu-nt params="?Yield, ?Await, ?Return">Statement</emu-nt>
     </emu-rhs>
-    <emu-rhs a="7pgjrcn-">
+    <emu-rhs a="7ml0tbdi">
         <emu-t>for</emu-t>
         <emu-t>(</emu-t>
         <emu-t>var</emu-t>
@@ -1732,7 +1732,7 @@
         <emu-t>)</emu-t>
         <emu-nt params="?Yield, ?Await, ?Return">Statement</emu-nt>
     </emu-rhs>
-    <emu-rhs a="jzctgxkp">
+    <emu-rhs a="zchtsyje">
         <emu-t>for</emu-t>
         <emu-t>(</emu-t>
         <emu-nt params="?Yield, ?Await">ForDeclaration</emu-nt>
@@ -1741,7 +1741,7 @@
         <emu-t>)</emu-t>
         <emu-nt params="?Yield, ?Await, ?Return">Statement</emu-nt>
     </emu-rhs>
-    <emu-rhs a="jqzgi_en">
+    <emu-rhs a="unjmpjqp">
         <emu-t>for</emu-t>
         <emu-t>(</emu-t>
         <emu-gann>lookahead ≠ <emu-t>let</emu-t></emu-gann>
@@ -1751,7 +1751,7 @@
         <emu-t>)</emu-t>
         <emu-nt params="?Yield, ?Await, ?Return">Statement</emu-nt>
     </emu-rhs>
-    <emu-rhs a="7m-adytu">
+    <emu-rhs a="58n_2ihn">
         <emu-t>for</emu-t>
         <emu-t>(</emu-t>
         <emu-t>var</emu-t>
@@ -1761,7 +1761,7 @@
         <emu-t>)</emu-t>
         <emu-nt params="?Yield, ?Await, ?Return">Statement</emu-nt>
     </emu-rhs>
-    <emu-rhs a="b3wzboyu">
+    <emu-rhs a="pfvjbka1">
         <emu-t>for</emu-t>
         <emu-t>(</emu-t>
         <emu-nt params="?Yield, ?Await">ForDeclaration</emu-nt>
@@ -1770,7 +1770,7 @@
         <emu-t>)</emu-t>
         <emu-nt params="?Yield, ?Await, ?Return">Statement</emu-nt>
     </emu-rhs>
-    <emu-rhs a="mhrux1r7" constraints="+Await">
+    <emu-rhs a="oprokwwm" constraints="+Await">
         <emu-t>for</emu-t>
         <emu-t>await</emu-t>
         <emu-t>(</emu-t>
@@ -1781,7 +1781,7 @@
         <emu-t>)</emu-t>
         <emu-nt params="?Yield, ?Await, ?Return">Statement</emu-nt>
     </emu-rhs>
-    <emu-rhs a="cyt_lv_1" constraints="+Await">
+    <emu-rhs a="9bsmrb_a" constraints="+Await">
         <emu-t>for</emu-t>
         <emu-t>await</emu-t>
         <emu-t>(</emu-t>
@@ -1792,7 +1792,7 @@
         <emu-t>)</emu-t>
         <emu-nt params="?Yield, ?Await, ?Return">Statement</emu-nt>
     </emu-rhs>
-    <emu-rhs a="uatmda3j" constraints="+Await">
+    <emu-rhs a="fxca1-1x" constraints="+Await">
         <emu-t>for</emu-t>
         <emu-t>await</emu-t>
         <emu-t>(</emu-t>
@@ -1804,21 +1804,21 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="ForDeclaration" params="Yield, Await">
-    <emu-rhs a="0y1vvm1x">
+    <emu-rhs a="k6i8qvu4">
         <emu-nt>LetOrConst</emu-nt>
         <emu-nt params="?Yield, ?Await">ForBinding</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="ForBinding" params="Yield, Await">
-    <emu-rhs a="uolyom43"><emu-nt params="?Yield, ?Await">BindingIdentifier</emu-nt></emu-rhs>
-    <emu-rhs a="mdrfyhm6"><emu-nt params="?Yield, ?Await">BindingPattern</emu-nt></emu-rhs>
+    <emu-rhs a="ir-rfjfi"><emu-nt params="?Yield, ?Await">BindingIdentifier</emu-nt></emu-rhs>
+    <emu-rhs a="nridwfya"><emu-nt params="?Yield, ?Await">BindingPattern</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="ContinueStatement" params="Yield, Await">
     <emu-rhs a="6qppgxyk">
         <emu-t>continue</emu-t>
         <emu-t>;</emu-t>
     </emu-rhs>
-    <emu-rhs a="wh7qddgu">
+    <emu-rhs a="fiwlh1nt">
         <emu-t>continue</emu-t>
         <emu-gann>no <emu-nt>LineTerminator</emu-nt> here</emu-gann>
         <emu-nt params="?Yield, ?Await">LabelIdentifier</emu-nt>
@@ -1830,7 +1830,7 @@
         <emu-t>break</emu-t>
         <emu-t>;</emu-t>
     </emu-rhs>
-    <emu-rhs a="kcg-yy3r">
+    <emu-rhs a="nio0l2c9">
         <emu-t>break</emu-t>
         <emu-gann>no <emu-nt>LineTerminator</emu-nt> here</emu-gann>
         <emu-nt params="?Yield, ?Await">LabelIdentifier</emu-nt>
@@ -1842,7 +1842,7 @@
         <emu-t>return</emu-t>
         <emu-t>;</emu-t>
     </emu-rhs>
-    <emu-rhs a="tpdzx2lh">
+    <emu-rhs a="tybfdyhl">
         <emu-t>return</emu-t>
         <emu-gann>no <emu-nt>LineTerminator</emu-nt> here</emu-gann>
         <emu-nt params="+In, ?Yield, ?Await">Expression</emu-nt>
@@ -1850,7 +1850,7 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="WithStatement" params="Yield, Await, Return">
-    <emu-rhs a="i70kview">
+    <emu-rhs a="lo7bccts">
         <emu-t>with</emu-t>
         <emu-t>(</emu-t>
         <emu-nt params="+In, ?Yield, ?Await">Expression</emu-nt>
@@ -1859,7 +1859,7 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="SwitchStatement" params="Yield, Await, Return">
-    <emu-rhs a="uvrp_hkw">
+    <emu-rhs a="drlywp4w">
         <emu-t>switch</emu-t>
         <emu-t>(</emu-t>
         <emu-nt params="+In, ?Yield, ?Await">Expression</emu-nt>
@@ -1868,12 +1868,12 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="CaseBlock" params="Yield, Await, Return">
-    <emu-rhs a="wfjxvoh5">
+    <emu-rhs a="v-h2atfk">
         <emu-t>{</emu-t>
         <emu-nt params="?Yield, ?Await, ?Return" optional>CaseClauses</emu-nt>
         <emu-t>}</emu-t>
     </emu-rhs>
-    <emu-rhs a="ududlhou">
+    <emu-rhs a="00sitdqr">
         <emu-t>{</emu-t>
         <emu-nt params="?Yield, ?Await, ?Return" optional>CaseClauses</emu-nt>
         <emu-nt params="?Yield, ?Await, ?Return">DefaultClause</emu-nt>
@@ -1882,14 +1882,14 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="CaseClauses" params="Yield, Await, Return">
-    <emu-rhs a="wfpqsvlo"><emu-nt params="?Yield, ?Await, ?Return">CaseClause</emu-nt></emu-rhs>
-    <emu-rhs a="addji9rs">
+    <emu-rhs a="xpjvtgza"><emu-nt params="?Yield, ?Await, ?Return">CaseClause</emu-nt></emu-rhs>
+    <emu-rhs a="8r6dchoz">
         <emu-nt params="?Yield, ?Await, ?Return">CaseClauses</emu-nt>
         <emu-nt params="?Yield, ?Await, ?Return">CaseClause</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="CaseClause" params="Yield, Await, Return">
-    <emu-rhs a="x20nmjyd">
+    <emu-rhs a="zpq23qtn">
         <emu-t>case</emu-t>
         <emu-nt params="+In, ?Yield, ?Await">Expression</emu-nt>
         <emu-t>:</emu-t>
@@ -1897,25 +1897,25 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="DefaultClause" params="Yield, Await, Return">
-    <emu-rhs a="z4ihpgum">
+    <emu-rhs a="djnlaxcj">
         <emu-t>default</emu-t>
         <emu-t>:</emu-t>
         <emu-nt params="?Yield, ?Await, ?Return" optional>StatementList</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="LabelledStatement" params="Yield, Await, Return">
-    <emu-rhs a="ubbvtbun">
+    <emu-rhs a="vhxkapdt">
         <emu-nt params="?Yield, ?Await">LabelIdentifier</emu-nt>
         <emu-t>:</emu-t>
         <emu-nt params="?Yield, ?Await, ?Return">LabelledItem</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="LabelledItem" params="Yield, Await, Return">
-    <emu-rhs a="pyyivtxj"><emu-nt params="?Yield, ?Await, ?Return">Statement</emu-nt></emu-rhs>
-    <emu-rhs a="-nqupnlb"><emu-nt params="?Yield, ?Await, ~Default">FunctionDeclaration</emu-nt></emu-rhs>
+    <emu-rhs a="septp5sa"><emu-nt params="?Yield, ?Await, ?Return">Statement</emu-nt></emu-rhs>
+    <emu-rhs a="d0nwjyav"><emu-nt params="?Yield, ?Await, ~Default">FunctionDeclaration</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="ThrowStatement" params="Yield, Await">
-    <emu-rhs a="lauy4mhi">
+    <emu-rhs a="q_cybpdb">
         <emu-t>throw</emu-t>
         <emu-gann>no <emu-nt>LineTerminator</emu-nt> here</emu-gann>
         <emu-nt params="+In, ?Yield, ?Await">Expression</emu-nt>
@@ -1923,17 +1923,17 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="TryStatement" params="Yield, Await, Return">
-    <emu-rhs a="qhfov2lc">
+    <emu-rhs a="eqx7gx8m">
         <emu-t>try</emu-t>
         <emu-nt params="?Yield, ?Await, ?Return">Block</emu-nt>
         <emu-nt params="?Yield, ?Await, ?Return">Catch</emu-nt>
     </emu-rhs>
-    <emu-rhs a="xsakufa6">
+    <emu-rhs a="ayio9dod">
         <emu-t>try</emu-t>
         <emu-nt params="?Yield, ?Await, ?Return">Block</emu-nt>
         <emu-nt params="?Yield, ?Await, ?Return">Finally</emu-nt>
     </emu-rhs>
-    <emu-rhs a="gxlzfd5s">
+    <emu-rhs a="yfzmez3t">
         <emu-t>try</emu-t>
         <emu-nt params="?Yield, ?Await, ?Return">Block</emu-nt>
         <emu-nt params="?Yield, ?Await, ?Return">Catch</emu-nt>
@@ -1941,27 +1941,27 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="Catch" params="Yield, Await, Return">
-    <emu-rhs a="3ce8nhiw">
+    <emu-rhs a="gk6mks18">
         <emu-t>catch</emu-t>
         <emu-t>(</emu-t>
         <emu-nt params="?Yield, ?Await">CatchParameter</emu-nt>
         <emu-t>)</emu-t>
         <emu-nt params="?Yield, ?Await, ?Return">Block</emu-nt>
     </emu-rhs>
-    <emu-rhs a="oyp2rsut">
+    <emu-rhs a="vi_srlx8">
         <emu-t>catch</emu-t>
         <emu-nt params="?Yield, ?Await, ?Return">Block</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="Finally" params="Yield, Await, Return">
-    <emu-rhs a="6r-6rvtx">
+    <emu-rhs a="e9akqlxo">
         <emu-t>finally</emu-t>
         <emu-nt params="?Yield, ?Await, ?Return">Block</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="CatchParameter" params="Yield, Await">
-    <emu-rhs a="uolyom43"><emu-nt params="?Yield, ?Await">BindingIdentifier</emu-nt></emu-rhs>
-    <emu-rhs a="mdrfyhm6"><emu-nt params="?Yield, ?Await">BindingPattern</emu-nt></emu-rhs>
+    <emu-rhs a="ir-rfjfi"><emu-nt params="?Yield, ?Await">BindingIdentifier</emu-nt></emu-rhs>
+    <emu-rhs a="nridwfya"><emu-nt params="?Yield, ?Await">BindingPattern</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="DebuggerStatement">
     <emu-rhs a="ns5hclvt">
@@ -1970,7 +1970,7 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="FunctionDeclaration" params="Yield, Await, Default">
-    <emu-rhs a="gxoavzvy">
+    <emu-rhs a="fal2s0ab">
         <emu-t>function</emu-t>
         <emu-nt params="?Yield, ?Await">BindingIdentifier</emu-nt>
         <emu-t>(</emu-t>
@@ -1980,7 +1980,7 @@
         <emu-nt params="~Yield, ~Await">FunctionBody</emu-nt>
         <emu-t>}</emu-t>
     </emu-rhs>
-    <emu-rhs a="smus6qca" constraints="+Default">
+    <emu-rhs a="_ww4ynxp" constraints="+Default">
         <emu-t>function</emu-t>
         <emu-t>(</emu-t>
         <emu-nt params="~Yield, ~Await">FormalParameters</emu-nt>
@@ -1991,7 +1991,7 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="FunctionExpression">
-    <emu-rhs a="g3mtfiqq">
+    <emu-rhs a="h6r9zk3c">
         <emu-t>function</emu-t>
         <emu-nt params="~Yield, ~Await" optional>BindingIdentifier</emu-nt>
         <emu-t>(</emu-t>
@@ -2003,44 +2003,44 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="UniqueFormalParameters" params="Yield, Await">
-    <emu-rhs a="ahjg9bb6"><emu-nt params="?Yield, ?Await">FormalParameters</emu-nt></emu-rhs>
+    <emu-rhs a="kat5sugn"><emu-nt params="?Yield, ?Await">FormalParameters</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="FormalParameters" params="Yield, Await">
     <emu-rhs a="n7nathbb"><emu-gann>empty</emu-gann></emu-rhs>
-    <emu-rhs a="dnjnbote"><emu-nt params="?Yield, ?Await">FunctionRestParameter</emu-nt></emu-rhs>
-    <emu-rhs a="mupdqnts"><emu-nt params="?Yield, ?Await">FormalParameterList</emu-nt></emu-rhs>
-    <emu-rhs a="hqy9m74f">
+    <emu-rhs a="xs94btl2"><emu-nt params="?Yield, ?Await">FunctionRestParameter</emu-nt></emu-rhs>
+    <emu-rhs a="5f3rxyqw"><emu-nt params="?Yield, ?Await">FormalParameterList</emu-nt></emu-rhs>
+    <emu-rhs a="wdsulm_w">
         <emu-nt params="?Yield, ?Await">FormalParameterList</emu-nt>
         <emu-t>,</emu-t>
     </emu-rhs>
-    <emu-rhs a="uqeba6gz">
+    <emu-rhs a="yh9ahvuw">
         <emu-nt params="?Yield, ?Await">FormalParameterList</emu-nt>
         <emu-t>,</emu-t>
         <emu-nt params="?Yield, ?Await">FunctionRestParameter</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="FormalParameterList" params="Yield, Await">
-    <emu-rhs a="sxlu9ab0"><emu-nt params="?Yield, ?Await">FormalParameter</emu-nt></emu-rhs>
-    <emu-rhs a="ijrjejbs">
+    <emu-rhs a="3qhu-4tu"><emu-nt params="?Yield, ?Await">FormalParameter</emu-nt></emu-rhs>
+    <emu-rhs a="mlncfkxh">
         <emu-nt params="?Yield, ?Await">FormalParameterList</emu-nt>
         <emu-t>,</emu-t>
         <emu-nt params="?Yield, ?Await">FormalParameter</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="FunctionRestParameter" params="Yield, Await">
-    <emu-rhs a="xw3lyuix"><emu-nt params="?Yield, ?Await">BindingRestElement</emu-nt></emu-rhs>
+    <emu-rhs a="iw2hthb9"><emu-nt params="?Yield, ?Await">BindingRestElement</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="FormalParameter" params="Yield, Await">
-    <emu-rhs a="azzrmst0"><emu-nt params="?Yield, ?Await">BindingElement</emu-nt></emu-rhs>
+    <emu-rhs a="xpmoewcq"><emu-nt params="?Yield, ?Await">BindingElement</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="FunctionBody" params="Yield, Await">
-    <emu-rhs a="xn8an8nx"><emu-nt params="?Yield, ?Await">FunctionStatementList</emu-nt></emu-rhs>
+    <emu-rhs a="gljyayfs"><emu-nt params="?Yield, ?Await">FunctionStatementList</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="FunctionStatementList" params="Yield, Await">
-    <emu-rhs a="qwwklbsn"><emu-nt params="?Yield, ?Await, +Return" optional>StatementList</emu-nt></emu-rhs>
+    <emu-rhs a="ime6-pzo"><emu-nt params="?Yield, ?Await, +Return" optional>StatementList</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="ArrowFunction" params="In, Yield, Await">
-    <emu-rhs a="ieeod2mi">
+    <emu-rhs a="c-igjs-g">
         <emu-nt params="?Yield, ?Await">ArrowParameters</emu-nt>
         <emu-gann>no <emu-nt>LineTerminator</emu-nt> here</emu-gann>
         <emu-t>=&gt;</emu-t>
@@ -2048,32 +2048,32 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="ArrowParameters" params="Yield, Await">
-    <emu-rhs a="uolyom43"><emu-nt params="?Yield, ?Await">BindingIdentifier</emu-nt></emu-rhs>
+    <emu-rhs a="ir-rfjfi"><emu-nt params="?Yield, ?Await">BindingIdentifier</emu-nt></emu-rhs>
     <emu-rhs a="parencover"><emu-nt params="?Yield, ?Await">CoverParenthesizedExpressionAndArrowParameterList</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="ConciseBody" params="In">
-    <emu-rhs a="39f4t7jo">
+    <emu-rhs a="eofx7fcb">
         <emu-gann>lookahead ≠ <emu-t>{</emu-t></emu-gann>
         <emu-nt params="?In, ~Await">ExpressionBody</emu-nt>
     </emu-rhs>
-    <emu-rhs a="aerabkqd">
+    <emu-rhs a="b3uvs-pa">
         <emu-t>{</emu-t>
         <emu-nt params="~Yield, ~Await">FunctionBody</emu-nt>
         <emu-t>}</emu-t>
     </emu-rhs>
 </emu-production>
 <emu-production name="ExpressionBody" params="In, Await">
-    <emu-rhs a="1px9pijq"><emu-nt params="?In, ~Yield, ?Await">AssignmentExpression</emu-nt></emu-rhs>
+    <emu-rhs a="ickgdpbs"><emu-nt params="?In, ~Yield, ?Await">AssignmentExpression</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="ArrowFormalParameters" params="Yield, Await">
-    <emu-rhs a="bt7zhdaa">
+    <emu-rhs a="t1yas6ob">
         <emu-t>(</emu-t>
         <emu-nt params="?Yield, ?Await">UniqueFormalParameters</emu-nt>
         <emu-t>)</emu-t>
     </emu-rhs>
 </emu-production>
 <emu-production name="MethodDefinition" params="Yield, Await">
-    <emu-rhs a="y45t6zkk">
+    <emu-rhs a="gdsteu7r">
         <emu-nt params="?Yield, ?Await">PropertyName</emu-nt>
         <emu-t>(</emu-t>
         <emu-nt params="~Yield, ~Await">UniqueFormalParameters</emu-nt>
@@ -2082,10 +2082,10 @@
         <emu-nt params="~Yield, ~Await">FunctionBody</emu-nt>
         <emu-t>}</emu-t>
     </emu-rhs>
-    <emu-rhs a="uv5zsffy"><emu-nt params="?Yield, ?Await">GeneratorMethod</emu-nt></emu-rhs>
-    <emu-rhs a="pbphxm47"><emu-nt params="?Yield, ?Await">AsyncMethod</emu-nt></emu-rhs>
-    <emu-rhs a="gbmuvro8"><emu-nt params="?Yield, ?Await">AsyncGeneratorMethod</emu-nt></emu-rhs>
-    <emu-rhs a="8uh5vkw0">
+    <emu-rhs a="uivm4t30"><emu-nt params="?Yield, ?Await">GeneratorMethod</emu-nt></emu-rhs>
+    <emu-rhs a="l4rbqexd"><emu-nt params="?Yield, ?Await">AsyncMethod</emu-nt></emu-rhs>
+    <emu-rhs a="2nx0uygb"><emu-nt params="?Yield, ?Await">AsyncGeneratorMethod</emu-nt></emu-rhs>
+    <emu-rhs a="be7nc77i">
         <emu-t>get</emu-t>
         <emu-nt params="?Yield, ?Await">PropertyName</emu-nt>
         <emu-t>(</emu-t>
@@ -2094,7 +2094,7 @@
         <emu-nt params="~Yield, ~Await">FunctionBody</emu-nt>
         <emu-t>}</emu-t>
     </emu-rhs>
-    <emu-rhs a="rai1tkqc">
+    <emu-rhs a="vxdiumvp">
         <emu-t>set</emu-t>
         <emu-nt params="?Yield, ?Await">PropertyName</emu-nt>
         <emu-t>(</emu-t>
@@ -2106,10 +2106,10 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="PropertySetParameterList">
-    <emu-rhs a="sxlu9ab0"><emu-nt params="~Yield, ~Await">FormalParameter</emu-nt></emu-rhs>
+    <emu-rhs a="p0ls10ix"><emu-nt params="~Yield, ~Await">FormalParameter</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="GeneratorMethod" params="Yield, Await">
-    <emu-rhs a="xcdxrozr">
+    <emu-rhs a="vfbrugb2">
         <emu-t>*</emu-t>
         <emu-nt params="?Yield, ?Await">PropertyName</emu-nt>
         <emu-t>(</emu-t>
@@ -2121,7 +2121,7 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="GeneratorDeclaration" params="Yield, Await, Default">
-    <emu-rhs a="fbyztjbh">
+    <emu-rhs a="56abocni">
         <emu-t>function</emu-t>
         <emu-t>*</emu-t>
         <emu-nt params="?Yield, ?Await">BindingIdentifier</emu-nt>
@@ -2132,7 +2132,7 @@
         <emu-nt>GeneratorBody</emu-nt>
         <emu-t>}</emu-t>
     </emu-rhs>
-    <emu-rhs a="dsczygsq" constraints="+Default">
+    <emu-rhs a="gcxlonl8" constraints="+Default">
         <emu-t>function</emu-t>
         <emu-t>*</emu-t>
         <emu-t>(</emu-t>
@@ -2144,7 +2144,7 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="GeneratorExpression">
-    <emu-rhs a="32ghovyc">
+    <emu-rhs a="zsu4etlj">
         <emu-t>function</emu-t>
         <emu-t>*</emu-t>
         <emu-nt params="+Yield, ~Await" optional>BindingIdentifier</emu-nt>
@@ -2157,16 +2157,16 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="GeneratorBody">
-    <emu-rhs a="iqzbkm-h"><emu-nt params="+Yield, ~Await">FunctionBody</emu-nt></emu-rhs>
+    <emu-rhs a="quvqn30c"><emu-nt params="+Yield, ~Await">FunctionBody</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="YieldExpression" params="In, Await">
     <emu-rhs a="0d8zyjn8"><emu-t>yield</emu-t></emu-rhs>
-    <emu-rhs a="50ht6hl2">
+    <emu-rhs a="alznzlpx">
         <emu-t>yield</emu-t>
         <emu-gann>no <emu-nt>LineTerminator</emu-nt> here</emu-gann>
         <emu-nt params="?In, +Yield, ?Await">AssignmentExpression</emu-nt>
     </emu-rhs>
-    <emu-rhs a="r6m4ewun">
+    <emu-rhs a="mrbi6v84">
         <emu-t>yield</emu-t>
         <emu-gann>no <emu-nt>LineTerminator</emu-nt> here</emu-gann>
         <emu-t>*</emu-t>
@@ -2174,7 +2174,7 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="AsyncGeneratorMethod" params="Yield, Await">
-    <emu-rhs a="vjheaeci">
+    <emu-rhs a="pxo8t_pi">
         <emu-t>async</emu-t>
         <emu-gann>no <emu-nt>LineTerminator</emu-nt> here</emu-gann>
         <emu-t>*</emu-t>
@@ -2188,7 +2188,7 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="AsyncGeneratorDeclaration" params="Yield, Await, Default">
-    <emu-rhs a="e9lmm5cj">
+    <emu-rhs a="vxevrvwx">
         <emu-t>async</emu-t>
         <emu-gann>no <emu-nt>LineTerminator</emu-nt> here</emu-gann>
         <emu-t>function</emu-t>
@@ -2201,7 +2201,7 @@
         <emu-nt>AsyncGeneratorBody</emu-nt>
         <emu-t>}</emu-t>
     </emu-rhs>
-    <emu-rhs a="xruu4gg0" constraints="+Default">
+    <emu-rhs a="zdnckwse" constraints="+Default">
         <emu-t>async</emu-t>
         <emu-gann>no <emu-nt>LineTerminator</emu-nt> here</emu-gann>
         <emu-t>function</emu-t>
@@ -2215,7 +2215,7 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="AsyncGeneratorExpression">
-    <emu-rhs a="nplor0n0">
+    <emu-rhs a="yh0wbqjf">
         <emu-t>async</emu-t>
         <emu-gann>no <emu-nt>LineTerminator</emu-nt> here</emu-gann>
         <emu-t>function</emu-t>
@@ -2230,28 +2230,28 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="AsyncGeneratorBody">
-    <emu-rhs a="iqzbkm-h"><emu-nt params="+Yield, +Await">FunctionBody</emu-nt></emu-rhs>
+    <emu-rhs a="zqmkrekv"><emu-nt params="+Yield, +Await">FunctionBody</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="ClassDeclaration" params="Yield, Await, Default">
-    <emu-rhs a="tusuwhcv">
+    <emu-rhs a="r-8ix7mw">
         <emu-t>class</emu-t>
         <emu-nt params="?Yield, ?Await">BindingIdentifier</emu-nt>
         <emu-nt params="?Yield, ?Await">ClassTail</emu-nt>
     </emu-rhs>
-    <emu-rhs a="1ghyizwr" constraints="+Default">
+    <emu-rhs a="eish3c1z" constraints="+Default">
         <emu-t>class</emu-t>
         <emu-nt params="?Yield, ?Await">ClassTail</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="ClassExpression" params="Yield, Await">
-    <emu-rhs a="0cliiy0w">
+    <emu-rhs a="3vemrlhb">
         <emu-t>class</emu-t>
         <emu-nt params="?Yield, ?Await" optional>BindingIdentifier</emu-nt>
         <emu-nt params="?Yield, ?Await">ClassTail</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="ClassTail" params="Yield, Await">
-    <emu-rhs a="uopqpdqx">
+    <emu-rhs a="0tcpjpju">
         <emu-nt params="?Yield, ?Await" optional>ClassHeritage</emu-nt>
         <emu-t>{</emu-t>
         <emu-nt params="?Yield, ?Await" optional>ClassBody</emu-nt>
@@ -2259,31 +2259,31 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="ClassHeritage" params="Yield, Await">
-    <emu-rhs a="5ovudy-k">
+    <emu-rhs a="eyngn05c">
         <emu-t>extends</emu-t>
         <emu-nt params="?Yield, ?Await">LeftHandSideExpression</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="ClassBody" params="Yield, Await">
-    <emu-rhs a="1y1dunax"><emu-nt params="?Yield, ?Await">ClassElementList</emu-nt></emu-rhs>
+    <emu-rhs a="hi6rf-a8"><emu-nt params="?Yield, ?Await">ClassElementList</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="ClassElementList" params="Yield, Await">
-    <emu-rhs a="crvluhmw"><emu-nt params="?Yield, ?Await">ClassElement</emu-nt></emu-rhs>
-    <emu-rhs a="msulavvt">
+    <emu-rhs a="l7zmtagw"><emu-nt params="?Yield, ?Await">ClassElement</emu-nt></emu-rhs>
+    <emu-rhs a="ga1dtfdq">
         <emu-nt params="?Yield, ?Await">ClassElementList</emu-nt>
         <emu-nt params="?Yield, ?Await">ClassElement</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="ClassElement" params="Yield, Await">
-    <emu-rhs a="s8ilfl9g"><emu-nt params="?Yield, ?Await">MethodDefinition</emu-nt></emu-rhs>
-    <emu-rhs a="-ljgtrpo">
+    <emu-rhs a="ke2_9p84"><emu-nt params="?Yield, ?Await">MethodDefinition</emu-nt></emu-rhs>
+    <emu-rhs a="a0i06csv">
         <emu-t>static</emu-t>
         <emu-nt params="?Yield, ?Await">MethodDefinition</emu-nt>
     </emu-rhs>
     <emu-rhs a="sg2sawim"><emu-t>;</emu-t></emu-rhs>
 </emu-production>
 <emu-production name="AsyncFunctionDeclaration" params="Yield, Await, Default">
-    <emu-rhs a="4mmt35rm">
+    <emu-rhs a="9rildsyw">
         <emu-t>async</emu-t>
         <emu-gann>no <emu-nt>LineTerminator</emu-nt> here</emu-gann>
         <emu-t>function</emu-t>
@@ -2295,7 +2295,7 @@
         <emu-nt>AsyncFunctionBody</emu-nt>
         <emu-t>}</emu-t>
     </emu-rhs>
-    <emu-rhs a="agdmcdye" constraints="+Default">
+    <emu-rhs a="_vbcugdo" constraints="+Default">
         <emu-t>async</emu-t>
         <emu-gann>no <emu-nt>LineTerminator</emu-nt> here</emu-gann>
         <emu-t>function</emu-t>
@@ -2308,7 +2308,7 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="AsyncFunctionExpression">
-    <emu-rhs a="agdmcdye">
+    <emu-rhs a="wlsdgywp">
         <emu-t>async</emu-t>
         <emu-gann>no <emu-nt>LineTerminator</emu-nt> here</emu-gann>
         <emu-t>function</emu-t>
@@ -2319,7 +2319,7 @@
         <emu-nt>AsyncFunctionBody</emu-nt>
         <emu-t>}</emu-t>
     </emu-rhs>
-    <emu-rhs a="4mmt35rm">
+    <emu-rhs a="vmrx4oy5">
         <emu-t>async</emu-t>
         <emu-gann>no <emu-nt>LineTerminator</emu-nt> here</emu-gann>
         <emu-t>function</emu-t>
@@ -2333,7 +2333,7 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="AsyncMethod" params="Yield, Await">
-    <emu-rhs a="dz5wgjes">
+    <emu-rhs a="qsjphk7l">
         <emu-t>async</emu-t>
         <emu-gann>no <emu-nt>LineTerminator</emu-nt> here</emu-gann>
         <emu-nt params="?Yield, ?Await">PropertyName</emu-nt>
@@ -2346,16 +2346,16 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="AsyncFunctionBody">
-    <emu-rhs a="iqzbkm-h"><emu-nt params="~Yield, +Await">FunctionBody</emu-nt></emu-rhs>
+    <emu-rhs a="j_tcfidx"><emu-nt params="~Yield, +Await">FunctionBody</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="AwaitExpression" params="Yield">
-    <emu-rhs a="7ylag141">
+    <emu-rhs a="wzxw5xwu">
         <emu-t>await</emu-t>
         <emu-nt params="?Yield, +Await">UnaryExpression</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="AsyncArrowFunction" params="In, Yield, Await">
-    <emu-rhs a="dqxgopsb">
+    <emu-rhs a="u1dc5ef3">
         <emu-t>async</emu-t>
         <emu-gann>no <emu-nt>LineTerminator</emu-nt> here</emu-gann>
         <emu-nt params="?Yield">AsyncArrowBindingIdentifier</emu-nt>
@@ -2371,7 +2371,7 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="AsyncConciseBody" params="In">
-    <emu-rhs a="39f4t7jo">
+    <emu-rhs a="bpu3_ipt">
         <emu-gann>lookahead ≠ <emu-t>{</emu-t></emu-gann>
         <emu-nt params="?In, +Await">ExpressionBody</emu-nt>
     </emu-rhs>
@@ -2382,16 +2382,16 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="AsyncArrowBindingIdentifier" params="Yield">
-    <emu-rhs a="uolyom43"><emu-nt params="?Yield, +Await">BindingIdentifier</emu-nt></emu-rhs>
+    <emu-rhs a="yuozsg2r"><emu-nt params="?Yield, +Await">BindingIdentifier</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="CoverCallExpressionAndAsyncArrowHead" params="Yield, Await">
-    <emu-rhs a="vks-z6n3">
+    <emu-rhs a="90e-xzcw">
         <emu-nt params="?Yield, ?Await">MemberExpression</emu-nt>
         <emu-nt params="?Yield, ?Await">Arguments</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="AsyncArrowHead">
-    <emu-rhs a="z2twccrt">
+    <emu-rhs a="ydfl_ghb">
         <emu-t>async</emu-t>
         <emu-gann>no <emu-nt>LineTerminator</emu-nt> here</emu-gann>
         <emu-nt params="~Yield, +Await">ArrowFormalParameters</emu-nt>
@@ -2401,7 +2401,7 @@
     <emu-rhs a="cmjfjhkc"><emu-nt optional>ScriptBody</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="ScriptBody">
-    <emu-rhs a="z0a6dhkf"><emu-nt params="~Yield, ~Await, ~Return">StatementList</emu-nt></emu-rhs>
+    <emu-rhs a="mn4pemzx"><emu-nt params="~Yield, ~Await, ~Return">StatementList</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="Module">
     <emu-rhs a="uvsblmsd"><emu-nt optional>ModuleBody</emu-nt></emu-rhs>
@@ -2419,7 +2419,7 @@
 <emu-production name="ModuleItem">
     <emu-rhs a="4fwtd8-6"><emu-nt>ImportDeclaration</emu-nt></emu-rhs>
     <emu-rhs a="ky6bsn7x"><emu-nt>ExportDeclaration</emu-nt></emu-rhs>
-    <emu-rhs a="15hryu6r"><emu-nt params="~Yield, ~Await, ~Return">StatementListItem</emu-nt></emu-rhs>
+    <emu-rhs a="unijm5xs"><emu-nt params="~Yield, ~Await, ~Return">StatementListItem</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="ImportDeclaration">
     <emu-rhs a="glhuxxec">
@@ -2502,7 +2502,7 @@
     <emu-rhs a="xhtltz00"><emu-nt>StringLiteral</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="ImportedBinding">
-    <emu-rhs a="uolyom43"><emu-nt params="~Yield, ~Await">BindingIdentifier</emu-nt></emu-rhs>
+    <emu-rhs a="bsylxsqy"><emu-nt params="~Yield, ~Await">BindingIdentifier</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="ExportDeclaration">
     <emu-rhs a="4kqfdugp">
@@ -2516,25 +2516,25 @@
         <emu-nt>NamedExports</emu-nt>
         <emu-t>;</emu-t>
     </emu-rhs>
-    <emu-rhs a="bg3oaw2m">
+    <emu-rhs a="awunbvdu">
         <emu-t>export</emu-t>
         <emu-nt params="~Yield, ~Await">VariableStatement</emu-nt>
     </emu-rhs>
-    <emu-rhs a="go9a4xdq">
+    <emu-rhs a="a8mbl6ic">
         <emu-t>export</emu-t>
         <emu-nt params="~Yield, ~Await">Declaration</emu-nt>
     </emu-rhs>
-    <emu-rhs a="cdfbfvfu">
+    <emu-rhs a="0pjhun9m">
         <emu-t>export</emu-t>
         <emu-t>default</emu-t>
         <emu-nt params="~Yield, ~Await, +Default">HoistableDeclaration</emu-nt>
     </emu-rhs>
-    <emu-rhs a="w8pljwgc">
+    <emu-rhs a="ridmvkht">
         <emu-t>export</emu-t>
         <emu-t>default</emu-t>
         <emu-nt params="~Yield, ~Await, +Default">ClassDeclaration</emu-nt>
     </emu-rhs>
-    <emu-rhs a="4f6ct71n">
+    <emu-rhs a="4qwftn93">
         <emu-t>export</emu-t>
         <emu-t>default</emu-t>
         <emu-gann>lookahead ∉ { <emu-t>function</emu-t>, <emu-t>async</emu-t>
@@ -2622,7 +2622,7 @@
     <emu-rhs>- _ . ! ~ * &apos; ( )</emu-rhs>
 </emu-production>
 <emu-production name="NativeFunction">
-    <emu-rhs a="8y4r6g7s">
+    <emu-rhs a="h8vj5gk2">
         <emu-t>function</emu-t>
         <emu-nt params="~Yield, ~Await" optional>PropertyName</emu-nt>
         <emu-t>(</emu-t>
@@ -2637,11 +2637,11 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="Pattern" params="U, N" type="lexical">
-    <emu-rhs a="eaw70mcy"><emu-nt params="?U, ?N">Disjunction</emu-nt></emu-rhs>
+    <emu-rhs a="6i6fsmbh"><emu-nt params="?U, ?N">Disjunction</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="Disjunction" params="U, N" type="lexical">
-    <emu-rhs a="o3tpbkic"><emu-nt params="?U, ?N">Alternative</emu-nt></emu-rhs>
-    <emu-rhs a="jt2lba_1">
+    <emu-rhs a="vk4xa2ze"><emu-nt params="?U, ?N">Alternative</emu-nt></emu-rhs>
+    <emu-rhs a="qdscvpdh">
         <emu-nt params="?U, ?N">Alternative</emu-nt>
         <emu-t>|</emu-t>
         <emu-nt params="?U, ?N">Disjunction</emu-nt>
@@ -2649,15 +2649,15 @@
 </emu-production>
 <emu-production name="Alternative" params="U, N" type="lexical">
     <emu-rhs a="n7nathbb"><emu-gann>empty</emu-gann></emu-rhs>
-    <emu-rhs a="vctbprkq">
+    <emu-rhs a="jofjxczp">
         <emu-nt params="?U, ?N">Alternative</emu-nt>
         <emu-nt params="?U, ?N">Term</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="Term" params="U, N" type="lexical">
-    <emu-rhs a="4d3cub6p"><emu-nt params="?U, ?N">Assertion</emu-nt></emu-rhs>
-    <emu-rhs a="qd3tqxbs"><emu-nt params="?U, ?N">Atom</emu-nt></emu-rhs>
-    <emu-rhs a="rk7qpcwj">
+    <emu-rhs a="6n7swttv"><emu-nt params="?U, ?N">Assertion</emu-nt></emu-rhs>
+    <emu-rhs a="lrehaqdd"><emu-nt params="?U, ?N">Atom</emu-nt></emu-rhs>
+    <emu-rhs a="chdfdt2i">
         <emu-nt params="?U, ?N">Atom</emu-nt>
         <emu-nt>Quantifier</emu-nt>
     </emu-rhs>
@@ -2673,28 +2673,28 @@
         <emu-t>\</emu-t>
         <emu-t>B</emu-t>
     </emu-rhs>
-    <emu-rhs a="z7lplbsq">
+    <emu-rhs a="xuydzlm8">
         <emu-t>(</emu-t>
         <emu-t>?</emu-t>
         <emu-t>=</emu-t>
         <emu-nt params="?U, ?N">Disjunction</emu-nt>
         <emu-t>)</emu-t>
     </emu-rhs>
-    <emu-rhs a="upj24t7r">
+    <emu-rhs a="hotr5ssi">
         <emu-t>(</emu-t>
         <emu-t>?</emu-t>
         <emu-t>!</emu-t>
         <emu-nt params="?U, ?N">Disjunction</emu-nt>
         <emu-t>)</emu-t>
     </emu-rhs>
-    <emu-rhs a="tksqbm4g">
+    <emu-rhs a="dowtarf1">
         <emu-t>(</emu-t>
         <emu-t>?</emu-t>
         <emu-t>&lt;=</emu-t>
         <emu-nt params="?U, ?N">Disjunction</emu-nt>
         <emu-t>)</emu-t>
     </emu-rhs>
-    <emu-rhs a="doduhcmc">
+    <emu-rhs a="81afcjkx">
         <emu-t>(</emu-t>
         <emu-t>?</emu-t>
         <emu-t>&lt;!</emu-t>
@@ -2735,18 +2735,18 @@
 <emu-production name="Atom" params="U, N" type="lexical">
     <emu-rhs a="vv9sxhyc"><emu-nt>PatternCharacter</emu-nt></emu-rhs>
     <emu-rhs a="lljkc4zd"><emu-t>.</emu-t></emu-rhs>
-    <emu-rhs a="noz-pdyz">
+    <emu-rhs a="yp1zhllc">
         <emu-t>\</emu-t>
         <emu-nt params="?U, ?N">AtomEscape</emu-nt>
     </emu-rhs>
-    <emu-rhs a="zqqoud41"><emu-nt params="?U">CharacterClass</emu-nt></emu-rhs>
-    <emu-rhs a="waoim9ah">
+    <emu-rhs a="cqxcbbmo"><emu-nt params="?U">CharacterClass</emu-nt></emu-rhs>
+    <emu-rhs a="mgffue5n">
         <emu-t>(</emu-t>
         <emu-nt params="?U">GroupSpecifier</emu-nt>
         <emu-nt params="?U, ?N">Disjunction</emu-nt>
         <emu-t>)</emu-t>
     </emu-rhs>
-    <emu-rhs a="1223xxig">
+    <emu-rhs a="nqd192ik">
         <emu-t>(</emu-t>
         <emu-t>?</emu-t>
         <emu-t>:</emu-t>
@@ -2762,9 +2762,9 @@
 </emu-production>
 <emu-production name="AtomEscape" params="U, N" type="lexical">
     <emu-rhs a="fr_5bnut"><emu-nt>DecimalEscape</emu-nt></emu-rhs>
-    <emu-rhs a="bww-5j2p"><emu-nt params="?U">CharacterClassEscape</emu-nt></emu-rhs>
-    <emu-rhs a="fjarvpc8"><emu-nt params="?U">CharacterEscape</emu-nt></emu-rhs>
-    <emu-rhs a="dd_xjonr" constraints="+N">
+    <emu-rhs a="2j1xngqc"><emu-nt params="?U">CharacterClassEscape</emu-nt></emu-rhs>
+    <emu-rhs a="s4cbatz5"><emu-nt params="?U">CharacterEscape</emu-nt></emu-rhs>
+    <emu-rhs a="8-aca3ze" constraints="+N">
         <emu-t>k</emu-t>
         <emu-nt params="?U">GroupName</emu-nt>
     </emu-rhs>
@@ -2775,13 +2775,13 @@
         <emu-t>c</emu-t>
         <emu-nt>ControlLetter</emu-nt>
     </emu-rhs>
-    <emu-rhs a="ulmkmvlx">
+    <emu-rhs a="awshns7m">
         <emu-t>0</emu-t>
         <emu-gann>lookahead ∉ <emu-nt>DecimalDigit</emu-nt></emu-gann>
     </emu-rhs>
     <emu-rhs a="qacbhaps"><emu-nt>HexEscapeSequence</emu-nt></emu-rhs>
-    <emu-rhs a="ptjivzp-"><emu-nt params="?U">RegExpUnicodeEscapeSequence</emu-nt></emu-rhs>
-    <emu-rhs a="ge9cjxqz"><emu-nt params="?U">IdentityEscape</emu-nt></emu-rhs>
+    <emu-rhs a="jkmnpxf-"><emu-nt params="?U">RegExpUnicodeEscapeSequence</emu-nt></emu-rhs>
+    <emu-rhs a="idfov-13"><emu-nt params="?U">IdentityEscape</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="ControlEscape" type="lexical" oneof>
     <emu-rhs>f n r t v</emu-rhs>
@@ -2791,21 +2791,21 @@
 </emu-production>
 <emu-production name="GroupSpecifier" params="U" type="lexical">
     <emu-rhs a="n7nathbb"><emu-gann>empty</emu-gann></emu-rhs>
-    <emu-rhs a="dsj-aofw">
+    <emu-rhs a="cmwvqmph">
         <emu-t>?</emu-t>
         <emu-nt params="?U">GroupName</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="GroupName" params="U" type="lexical">
-    <emu-rhs a="tmavrjv7">
+    <emu-rhs a="lelxmhlc">
         <emu-t>&lt;</emu-t>
         <emu-nt params="?U">RegExpIdentifierName</emu-nt>
         <emu-t>&gt;</emu-t>
     </emu-rhs>
 </emu-production>
 <emu-production name="RegExpIdentifierName" params="U" type="lexical">
-    <emu-rhs a="0tblzef_"><emu-nt params="?U">RegExpIdentifierStart</emu-nt></emu-rhs>
-    <emu-rhs a="tpc7qkeo">
+    <emu-rhs a="sur63atw"><emu-nt params="?U">RegExpIdentifierStart</emu-nt></emu-rhs>
+    <emu-rhs a="2grmgbj7">
         <emu-nt params="?U">RegExpIdentifierName</emu-nt>
         <emu-nt params="?U">RegExpIdentifierPart</emu-nt>
     </emu-rhs>
@@ -2814,11 +2814,11 @@
     <emu-rhs a="cgljdgmz"><emu-nt>UnicodeIDStart</emu-nt></emu-rhs>
     <emu-rhs a="emlmkqfm"><emu-t>$</emu-t></emu-rhs>
     <emu-rhs a="b1zllonv"><emu-t>_</emu-t></emu-rhs>
-    <emu-rhs a="vkfrbm2v">
+    <emu-rhs a="6mvdfena">
         <emu-t>\</emu-t>
         <emu-nt params="+U">RegExpUnicodeEscapeSequence</emu-nt>
     </emu-rhs>
-    <emu-rhs a="-hbnr2gv" constraints="~U">
+    <emu-rhs a="yryelutx" constraints="~U">
         <emu-nt>UnicodeLeadSurrogate</emu-nt>
         <emu-nt>UnicodeTrailSurrogate</emu-nt>
     </emu-rhs>
@@ -2826,11 +2826,11 @@
 <emu-production name="RegExpIdentifierPart" params="U" type="lexical">
     <emu-rhs a="nkrgdqi0"><emu-nt>UnicodeIDContinue</emu-nt></emu-rhs>
     <emu-rhs a="emlmkqfm"><emu-t>$</emu-t></emu-rhs>
-    <emu-rhs a="vkfrbm2v">
+    <emu-rhs a="6mvdfena">
         <emu-t>\</emu-t>
         <emu-nt params="+U">RegExpUnicodeEscapeSequence</emu-nt>
     </emu-rhs>
-    <emu-rhs a="-hbnr2gv" constraints="~U">
+    <emu-rhs a="yryelutx" constraints="~U">
         <emu-nt>UnicodeLeadSurrogate</emu-nt>
         <emu-nt>UnicodeTrailSurrogate</emu-nt>
     </emu-rhs>
@@ -2838,29 +2838,29 @@
     <emu-rhs a="zfgp9vws"><emu-gprose>&lt;ZWJ&gt;</emu-gprose></emu-rhs>
 </emu-production>
 <emu-production name="RegExpUnicodeEscapeSequence" params="U" type="lexical">
-    <emu-rhs a="ihvcihjg" constraints="+U">
+    <emu-rhs a="r4a494h8" constraints="+U">
         <emu-t>u</emu-t>
         <emu-nt>LeadSurrogate</emu-nt>
         <emu-t>\u</emu-t>
         <emu-nt>TrailSurrogate</emu-nt>
     </emu-rhs>
-    <emu-rhs a="nrijpjly" constraints="+U">
+    <emu-rhs a="z-2gfyq8" constraints="+U">
         <emu-t>u</emu-t>
         <emu-nt>LeadSurrogate</emu-nt>
     </emu-rhs>
-    <emu-rhs a="0tvu9135" constraints="+U">
+    <emu-rhs a="dfejzojf" constraints="+U">
         <emu-t>u</emu-t>
         <emu-nt>TrailSurrogate</emu-nt>
     </emu-rhs>
-    <emu-rhs a="ydyetk0m" constraints="+U">
+    <emu-rhs a="zqfah8ku" constraints="+U">
         <emu-t>u</emu-t>
         <emu-nt>NonSurrogate</emu-nt>
     </emu-rhs>
-    <emu-rhs a="ghktjvoi" constraints="~U">
+    <emu-rhs a="je5qyw-v" constraints="~U">
         <emu-t>u</emu-t>
         <emu-nt>Hex4Digits</emu-nt>
     </emu-rhs>
-    <emu-rhs a="uybj7_dt" constraints="+U">
+    <emu-rhs a="d2pvqvgk" constraints="+U">
         <emu-t>u{</emu-t>
         <emu-nt>CodePoint</emu-nt>
         <emu-t>}</emu-t>
@@ -2891,12 +2891,12 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="IdentityEscape" params="U" type="lexical">
-    <emu-rhs a="55aruywm" constraints="+U"><emu-nt>SyntaxCharacter</emu-nt></emu-rhs>
-    <emu-rhs a="0_1fu2p8" constraints="+U"><emu-t>/</emu-t></emu-rhs>
-    <emu-rhs a="k9yr-blx" constraints="~U"><emu-nt>SourceCharacter</emu-nt> <emu-gmod>but not <emu-nt>UnicodeIDContinue</emu-nt></emu-gmod></emu-rhs>
+    <emu-rhs a="wehxmvcb" constraints="+U"><emu-nt>SyntaxCharacter</emu-nt></emu-rhs>
+    <emu-rhs a="hbsj3c4v" constraints="+U"><emu-t>/</emu-t></emu-rhs>
+    <emu-rhs a="-80ucxha" constraints="~U"><emu-nt>SourceCharacter</emu-nt> <emu-gmod>but not <emu-nt>UnicodeIDContinue</emu-nt></emu-gmod></emu-rhs>
 </emu-production>
 <emu-production name="DecimalEscape" type="lexical">
-    <emu-rhs a="i1pwo3hj">
+    <emu-rhs a="ynlr3vo2">
         <emu-nt>NonZeroDigit</emu-nt>
         <emu-nt optional>DecimalDigits</emu-nt>
         <emu-gann>lookahead ∉ <emu-nt>DecimalDigit</emu-nt></emu-gann>
@@ -2909,12 +2909,12 @@
     <emu-rhs a="avlpsekd"><emu-t>S</emu-t></emu-rhs>
     <emu-rhs a="lytism1a"><emu-t>w</emu-t></emu-rhs>
     <emu-rhs a="rhxouzu-"><emu-t>W</emu-t></emu-rhs>
-    <emu-rhs a="w6blst1q" constraints="+U">
+    <emu-rhs a="bwnhavmx" constraints="+U">
         <emu-t>p{</emu-t>
         <emu-nt>UnicodePropertyValueExpression</emu-nt>
         <emu-t>}</emu-t>
     </emu-rhs>
-    <emu-rhs a="4og7ke5v" constraints="+U">
+    <emu-rhs a="my-w_lkq" constraints="+U">
         <emu-t>P{</emu-t>
         <emu-nt>UnicodePropertyValueExpression</emu-nt>
         <emu-t>}</emu-t>
@@ -2958,13 +2958,13 @@
     <emu-rhs a="b1zllonv"><emu-t>_</emu-t></emu-rhs>
 </emu-production>
 <emu-production name="CharacterClass" params="U" type="lexical">
-    <emu-rhs a="db7gpgun">
+    <emu-rhs a="bbjzqocf">
         <emu-t>[</emu-t>
         <emu-gann>lookahead ≠ <emu-t>^</emu-t></emu-gann>
         <emu-nt params="?U">ClassRanges</emu-nt>
         <emu-t>]</emu-t>
     </emu-rhs>
-    <emu-rhs a="cby2um22">
+    <emu-rhs a="k9nuweol">
         <emu-t>[</emu-t>
         <emu-t>^</emu-t>
         <emu-nt params="?U">ClassRanges</emu-nt>
@@ -2973,15 +2973,15 @@
 </emu-production>
 <emu-production name="ClassRanges" params="U" type="lexical">
     <emu-rhs a="n7nathbb"><emu-gann>empty</emu-gann></emu-rhs>
-    <emu-rhs a="t0au2wo3"><emu-nt params="?U">NonemptyClassRanges</emu-nt></emu-rhs>
+    <emu-rhs a="q8jxmhhn"><emu-nt params="?U">NonemptyClassRanges</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="NonemptyClassRanges" params="U" type="lexical">
-    <emu-rhs a="nitc0vwv"><emu-nt params="?U">ClassAtom</emu-nt></emu-rhs>
-    <emu-rhs a="9bczlwfd">
+    <emu-rhs a="zfia898e"><emu-nt params="?U">ClassAtom</emu-nt></emu-rhs>
+    <emu-rhs a="snby7olr">
         <emu-nt params="?U">ClassAtom</emu-nt>
         <emu-nt params="?U">NonemptyClassRangesNoDash</emu-nt>
     </emu-rhs>
-    <emu-rhs a="pblfo8mk">
+    <emu-rhs a="y_0ua_vi">
         <emu-nt params="?U">ClassAtom</emu-nt>
         <emu-t>-</emu-t>
         <emu-nt params="?U">ClassAtom</emu-nt>
@@ -2989,12 +2989,12 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="NonemptyClassRangesNoDash" params="U" type="lexical">
-    <emu-rhs a="nitc0vwv"><emu-nt params="?U">ClassAtom</emu-nt></emu-rhs>
-    <emu-rhs a="z2ljibgz">
+    <emu-rhs a="zfia898e"><emu-nt params="?U">ClassAtom</emu-nt></emu-rhs>
+    <emu-rhs a="lrqgcxsg">
         <emu-nt params="?U">ClassAtomNoDash</emu-nt>
         <emu-nt params="?U">NonemptyClassRangesNoDash</emu-nt>
     </emu-rhs>
-    <emu-rhs a="6yvgquyp">
+    <emu-rhs a="thka1nzi">
         <emu-nt params="?U">ClassAtomNoDash</emu-nt>
         <emu-t>-</emu-t>
         <emu-nt params="?U">ClassAtom</emu-nt>
@@ -3003,18 +3003,18 @@
 </emu-production>
 <emu-production name="ClassAtom" params="U" type="lexical">
     <emu-rhs a="byslh4l8"><emu-t>-</emu-t></emu-rhs>
-    <emu-rhs a="qryaeccy"><emu-nt params="?U">ClassAtomNoDash</emu-nt></emu-rhs>
+    <emu-rhs a="cufarl9a"><emu-nt params="?U">ClassAtomNoDash</emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="ClassAtomNoDash" params="U" type="lexical">
     <emu-rhs a="7n5ukjeb"><emu-nt>SourceCharacter</emu-nt> <emu-gmod>but not one of <emu-t>\</emu-t> or <emu-t>]</emu-t> or <emu-t>-</emu-t></emu-gmod></emu-rhs>
-    <emu-rhs a="7tqi5t03">
+    <emu-rhs a="n54kg7az">
         <emu-t>\</emu-t>
         <emu-nt params="?U">ClassEscape</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="ClassEscape" params="U" type="lexical">
     <emu-rhs a="ayxoiyyq"><emu-t>b</emu-t></emu-rhs>
-    <emu-rhs a="byslh4l8" constraints="+U"><emu-t>-</emu-t></emu-rhs>
-    <emu-rhs a="bww-5j2p"><emu-nt params="?U">CharacterClassEscape</emu-nt></emu-rhs>
-    <emu-rhs a="fjarvpc8"><emu-nt params="?U">CharacterEscape</emu-nt></emu-rhs>
+    <emu-rhs a="rmd9604g" constraints="+U"><emu-t>-</emu-t></emu-rhs>
+    <emu-rhs a="2j1xngqc"><emu-nt params="?U">CharacterClassEscape</emu-nt></emu-rhs>
+    <emu-rhs a="s4cbatz5"><emu-nt params="?U">CharacterEscape</emu-nt></emu-rhs>
 </emu-production>

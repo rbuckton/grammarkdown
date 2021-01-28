@@ -50,7 +50,7 @@
 &emsp;&emsp;&emsp;<a name="PredefinedType-llgnlz3m"></a>`` void ``  
   
 &emsp;&emsp;<a name="TypeReference"></a>*TypeReference* **:**  
-&emsp;&emsp;&emsp;<a name="TypeReference-cyfpnhy_"></a>*[TypeName](#TypeName)*&emsp;[no *[LineTerminator](#LineTerminator)* here]&emsp;*[TypeArguments](#TypeArguments)*<sub>opt</sub>  
+&emsp;&emsp;&emsp;<a name="TypeReference-gdwbnckg"></a>*[TypeName](#TypeName)*&emsp;[no *[LineTerminator](#LineTerminator)* here]&emsp;*[TypeArguments](#TypeArguments)*<sub>opt</sub>  
   
 &emsp;&emsp;<a name="TypeName"></a>*TypeName* **:**  
 &emsp;&emsp;&emsp;<a name="TypeName-bras6mo_"></a>*[Identifier](#Identifier)*  
@@ -78,7 +78,7 @@
 &emsp;&emsp;&emsp;<a name="TypeMember-us181up8"></a>*[MethodSignature](#MethodSignature)*  
   
 &emsp;&emsp;<a name="ArrayType"></a>*ArrayType* **:**  
-&emsp;&emsp;&emsp;<a name="ArrayType-pyhjnjsh"></a>*[PrimaryType](#PrimaryType)*&emsp;[no *[LineTerminator](#LineTerminator)* here]&emsp;`` [ ``&emsp;`` ] ``  
+&emsp;&emsp;&emsp;<a name="ArrayType-poxxbrgz"></a>*[PrimaryType](#PrimaryType)*&emsp;[no *[LineTerminator](#LineTerminator)* here]&emsp;`` [ ``&emsp;`` ] ``  
   
 &emsp;&emsp;<a name="TupleType"></a>*TupleType* **:**  
 &emsp;&emsp;&emsp;<a name="TupleType-uxpx15sl"></a>`` [ ``&emsp;*[TupleElementTypes](#TupleElementTypes)*&emsp;`` ] ``  

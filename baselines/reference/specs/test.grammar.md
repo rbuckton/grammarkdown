@@ -14,12 +14,12 @@
   
 &emsp;&emsp;<a name="F"></a>*F*<sub>[A]</sub> **:**  
 &emsp;&emsp;&emsp;<a name="F-4bhk3t-r"></a>*[E](#E)*  
-&emsp;&emsp;&emsp;<a name="F-4bhk3t-r"></a>*[E](#E)*<sub>[A]</sub>  
-&emsp;&emsp;&emsp;<a name="F-4bhk3t-r"></a>*[E](#E)*<sub>[A, B]</sub>  
-&emsp;&emsp;&emsp;<a name="F-4bhk3t-r"></a>*[E](#E)*<sub>[?B]</sub>  
-&emsp;&emsp;&emsp;<a name="F-4bhk3t-r"></a>*[E](#E)*<sub>[+A]</sub>  
-&emsp;&emsp;&emsp;<a name="F-4bhk3t-r"></a>*[E](#E)*<sub>[~A]</sub>  
-&emsp;&emsp;&emsp;<a name="F-4bhk3t-r"></a>*[E](#E)*<sub>[?A]</sub>  
+&emsp;&emsp;&emsp;<a name="F-u4qey64p"></a>*[E](#E)*<sub>[A]</sub>  
+&emsp;&emsp;&emsp;<a name="F-0xdcmuxp"></a>*[E](#E)*<sub>[A, B]</sub>  
+&emsp;&emsp;&emsp;<a name="F-gojyqmcs"></a>*[E](#E)*<sub>[?B]</sub>  
+&emsp;&emsp;&emsp;<a name="F-oxftk2ph"></a>*[E](#E)*<sub>[+A]</sub>  
+&emsp;&emsp;&emsp;<a name="F-0ca7njfp"></a>*[E](#E)*<sub>[~A]</sub>  
+&emsp;&emsp;&emsp;<a name="F-nuhwr28z"></a>*[E](#E)*<sub>[?A]</sub>  
   
 &emsp;&emsp;<a name="G"></a>*G* **:**  
 &emsp;&emsp;&emsp;<a name="G-3xikxner"></a>&lt;LF&gt;  
@@ -30,5 +30,5 @@
 &emsp;&emsp;&emsp;<ins><a name="Z-rk8ohfwl"></a>*[B](#B)*</ins>  
   
 &emsp;&emsp;<a name="LookaheadRestriction"></a>*LookaheadRestriction* **:**  
-&emsp;&emsp;&emsp;<a name="LookaheadRestriction-2jmj7l5r"></a>[lookahead ∉ *[A](#A)*]  
+&emsp;&emsp;&emsp;<a name="LookaheadRestriction-xbai9nz7"></a>[lookahead ∉ *[A](#A)*]  
   
