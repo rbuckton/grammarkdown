@@ -1,0 +1,32 @@
+name: Generate Documentation
+
+on:
+  workflow_dispatch:
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use NodeJS 14.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: '14.x'
+
+    - run: npm ci
+
+    - name: Prepare documentation
+      run: npm run prepare-docs
+
+    - name: Generate documentation
+      uses: nikeee/docfx-action@v1.0.0
+      with:
+        args: docfx.json
+
+    - name: Update branch
+      run: |
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        git add docs
+        git commit -m "Updated /docs"
+        git push
