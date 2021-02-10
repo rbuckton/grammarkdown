@@ -16,7 +16,7 @@ jobs:
     - run: npm ci
 
     - name: Prepare documentation
-      run: npm prepare-docs
+      run: npm run prepare-docs
 
     - name: Generate documentation
       uses: nikeee/docfx-action@v1.0.0
