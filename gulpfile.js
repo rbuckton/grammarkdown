@@ -116,8 +116,8 @@ const api_documenter = () => exec(process.execPath, [require.resolve("@microsoft
 const api_documenter_fixup = () => gulp.src("obj/yaml/**/*.yml")
     .pipe(transform(content => content.replace(/(?<=\]\(xref:[^#)]*)#(?=[^#)]*\))/g, "%23")))
     .pipe(gulp.dest("obj/yaml"));
-const docfx = () => exec("docfx", argv.serve ? ["--serve"] : []);
-gulp.task("docs", gulp.series(
+
+const prepareDocs = gulp.series(
     generateDiagnostics,
     build,
     emu,
@@ -125,6 +125,13 @@ gulp.task("docs", gulp.series(
     api_extractor_fixup,
     api_documenter,
     api_documenter_fixup,
+);
+prepareDocs.displayName = "prepare-docs";
+gulp.task("prepare-docs", prepareDocs);
+
+const docfx = () => exec("docfx", argv.serve ? ["--serve"] : []);
+gulp.task("docs", gulp.series(
+    prepareDocs,
     docfx
 ));
 
