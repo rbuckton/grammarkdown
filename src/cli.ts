@@ -87,6 +87,7 @@ async function performCompilation(options: ParsedCommandLine): Promise<void> {
     if (options.emitLinks) compilerOptions.emitLinks = true;
     if (options.diagnostics) compilerOptions.diagnostics = true;
     compilerOptions.format = options.format || EmitFormat.markdown;
+    compilerOptions.newLine = options.newLine;
 
     performance.mark("beforeCompile");
 
