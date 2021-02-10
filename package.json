@@ -33,7 +33,7 @@
   "scripts": {
     "test": "gulp test",
     "build": "gulp build",
-    "prepare": "gulp --series build test",
+    "prepublishOnly": "gulp --series build test",
     "prepare-docs": "gulp prepare-docs"
   },
   "devDependencies": {
