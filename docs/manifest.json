@@ -1,6 +1,6 @@
 {
   "homepages": [],
-  "source_base_path": "C:/dev/grammarkdown",
+  "source_base_path": "/github/workspace",
   "xrefmap": "xrefmap.yml",
   "files": [
     {
@@ -73,7 +73,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown.html",
-          "hash": "S9C20loP3Exr/7uE0VSgmg=="
+          "hash": "6vQkb6DvR7017XdU1ZNzUQ=="
         }
       },
       "is_incremental": false,
@@ -85,7 +85,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/argument.html",
-          "hash": "ZarJ175+z71t8fnOVXA31w=="
+          "hash": "4AFFEee2WQvsTUqABjZlrA=="
         }
       },
       "is_incremental": false,
@@ -97,7 +97,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/argumentlist.html",
-          "hash": "bFkmSoWaGQKg1vejPxl5Lw=="
+          "hash": "kuGutRZT7G5J97vsU5TDSw=="
         }
       },
       "is_incremental": false,
@@ -109,7 +109,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/assertionbase.html",
-          "hash": "7Lv+050KhNUWBmvd3ryZ6A=="
+          "hash": "FFW/t52Y3utYAs6eLD4nCw=="
         }
       },
       "is_incremental": false,
@@ -121,7 +121,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/binder.html",
-          "hash": "pcbfURlw92mnAymkFFTr0w=="
+          "hash": "AHtgQzubjujQvqtSRDoTCw=="
         }
       },
       "is_incremental": false,
@@ -133,7 +133,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/bindingtable.html",
-          "hash": "Sn51EmDi046Bt8rsSpmzuQ=="
+          "hash": "7hPKAal7irfHkiC5qMV3vw=="
         }
       },
       "is_incremental": false,
@@ -145,7 +145,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/butnotsymbol.html",
-          "hash": "ySRZb16S5zR7eLOVNqDC/w=="
+          "hash": "iyoRJAWQeplCUdBJmWdwFw=="
         }
       },
       "is_incremental": false,
@@ -157,7 +157,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/charactercodes.html",
-          "hash": "kYrsrTGzlOhVhxEjJSuINQ=="
+          "hash": "BAWAyLE4Z1n3cAnZ4/4RdA=="
         }
       },
       "is_incremental": false,
@@ -169,7 +169,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/checker.html",
-          "hash": "klwacQZJJzcAR7bJ32e67w=="
+          "hash": "x6+MLyJMWxFwi5j3UWwhBA=="
         }
       },
       "is_incremental": false,
@@ -181,7 +181,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/commenttriviabase.html",
-          "hash": "Z5qIo7JPDFzEWPD8ciayCw=="
+          "hash": "pBnkSUvKSYCQuWad4f5aog=="
         }
       },
       "is_incremental": false,
@@ -193,7 +193,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/compileroptions.html",
-          "hash": "smhTMT7XoKVwdUepLK75yQ=="
+          "hash": "3BDrVcZMFsQ5rqXKaB90yA=="
         }
       },
       "is_incremental": false,
@@ -205,7 +205,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/constraints.html",
-          "hash": "NNRQZu0ekXLaTIngTH7Jkg=="
+          "hash": "+AhVFSAXY65zgRf5WX2KoA=="
         }
       },
       "is_incremental": false,
@@ -217,7 +217,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/coreasynchost.html",
-          "hash": "RZkPmed+2Uu5r2pTVnMCUQ=="
+          "hash": "z7sl635L8Ez5lmgd2SEEzQ=="
         }
       },
       "is_incremental": false,
@@ -229,7 +229,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/coreasynchostoptions.html",
-          "hash": "N1+uNEE3J7zYpJoNUb+Oxw=="
+          "hash": "znamd9cbfo8PkvSdYUZY5Q=="
         }
       },
       "is_incremental": false,
@@ -241,7 +241,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/define.html",
-          "hash": "/s1W9NiV+my67bC5skFJ2w=="
+          "hash": "EVi2O0lD9xqq8c5vdJJiSA=="
         }
       },
       "is_incremental": false,
@@ -253,7 +253,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/diagnostic.html",
-          "hash": "IYljW75vODKk88lVTCqU3g=="
+          "hash": "LVfZbJYOQnkd6J+O6Jg/yA=="
         }
       },
       "is_incremental": false,
@@ -265,7 +265,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/diagnosticinfo.html",
-          "hash": "f/5nh87V5UwYyQk5W6IjYg=="
+          "hash": "sGCTMQ8CxHZPko54OZimoA=="
         }
       },
       "is_incremental": false,
@@ -277,7 +277,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/diagnosticmessages.html",
-          "hash": "TAX/YpF5NDoDLOidtrLF6g=="
+          "hash": "za21ELV2WwJyXfmNd4WLYw=="
         }
       },
       "is_incremental": false,
@@ -289,7 +289,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/ecmarkupemitter.html",
-          "hash": "97wbgefrivgrq3F83oqpbQ=="
+          "hash": "u0C3XHux022sP5daKPKgww=="
         }
       },
       "is_incremental": false,
@@ -301,7 +301,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/emitformat.html",
-          "hash": "9GlqtSHwENHT1nM7tPgApg=="
+          "hash": "4N8VmYSRV+6vtEyhLAxRTw=="
         }
       },
       "is_incremental": false,
@@ -313,7 +313,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/emitter.html",
-          "hash": "kOSC0HM3eL3kh8FW+qxf4w=="
+          "hash": "V1PupyZiTm8QStGI4VwG+w=="
         }
       },
       "is_incremental": false,
@@ -325,7 +325,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/emptyassertion.html",
-          "hash": "WDWggkyKjshcpnMb6qYFZQ=="
+          "hash": "cntLUcW6wuCQWsGvUMggjQ=="
         }
       },
       "is_incremental": false,
@@ -337,7 +337,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/grammar.html",
-          "hash": "QlxdOGjcdRoE3zAHlwihWQ=="
+          "hash": "BJanKRAX/IK42vQjw9Iw0g=="
         }
       },
       "is_incremental": false,
@@ -349,7 +349,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/grammarkdownemitter.html",
-          "hash": "n5SLtNEcWfAku5RYUJE8gA=="
+          "hash": "L8FwWx9mM27ORfSUalcB6A=="
         }
       },
       "is_incremental": false,
@@ -361,7 +361,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/htmlclosetagtrivia.html",
-          "hash": "MMnBNNvwL2ws+oca+vjetg=="
+          "hash": "zeqPfD1+zrh+b2MXsWEtfQ=="
         }
       },
       "is_incremental": false,
@@ -373,7 +373,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/htmlemitter.html",
-          "hash": "UiOlSlgtqcAfeeiSRFyJgw=="
+          "hash": "qfuQ4nQ6eYYg5Y2+J9pBeg=="
         }
       },
       "is_incremental": false,
@@ -385,7 +385,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/htmlopentagtrivia.html",
-          "hash": "02Cpo5qAxICSW85fQBrdWw=="
+          "hash": "p5dTN6ERpaMCPJ7VElFxrw=="
         }
       },
       "is_incremental": false,
@@ -397,7 +397,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/htmltriviabase.html",
-          "hash": "2RJSC8wnqzSgpGexHyjykg=="
+          "hash": "0SMkpQXuy9mW0MN9YG/uWQ=="
         }
       },
       "is_incremental": false,
@@ -409,7 +409,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/identifier.html",
-          "hash": "Gzvp0DexJdxDcX+4t0lJPA=="
+          "hash": "ZI8pcsrhdA1MGGwrDkVtFQ=="
         }
       },
       "is_incremental": false,
@@ -421,7 +421,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/import.html",
-          "hash": "9I9yDxNQUYIh1lXZ+G4dxg=="
+          "hash": "TgaXLRtFRxqaFGXLivDzCA=="
         }
       },
       "is_incremental": false,
@@ -433,7 +433,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/invalidassertion.html",
-          "hash": "FAvySNU8gGuK2d3PAx8YoQ=="
+          "hash": "++zjnBwrAikJGcdl0qElyw=="
         }
       },
       "is_incremental": false,
@@ -445,7 +445,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/invalidsymbol.html",
-          "hash": "PSFtFQFfI+ZEgAf+YJ4qIw=="
+          "hash": "3jpHnQAhOPPToKPMu1Jo3Q=="
         }
       },
       "is_incremental": false,
@@ -457,7 +457,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/lexicalgoalassertion.html",
-          "hash": "F8fhUMU0tg2H3yPREuAJMw=="
+          "hash": "IKUG0uEJ2/0DHkTJMS2yNQ=="
         }
       },
       "is_incremental": false,
@@ -469,7 +469,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/lexicalsymbolbase.html",
-          "hash": "UGWKCes8+x7qQS3JcOELpA=="
+          "hash": "sfdEORTyG4DcaS4v+BHHRA=="
         }
       },
       "is_incremental": false,
@@ -481,7 +481,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/line.html",
-          "hash": "DQaxCoqguxka3ouOBcz4lw=="
+          "hash": "ooukoDEZlFOvSBWC0aCYKw=="
         }
       },
       "is_incremental": false,
@@ -493,7 +493,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/linemap.html",
-          "hash": "uRxEnCviMFP3l+3hpGESJQ=="
+          "hash": "fbNmUUV1YC9eutGiYOLlDw=="
         }
       },
       "is_incremental": false,
@@ -505,7 +505,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/lineoffsetmap.html",
-          "hash": "U8zCpF91Skl9Kc884sDN5A=="
+          "hash": "ODWh5Ybm7FLySbEP5cc2uA=="
         }
       },
       "is_incremental": false,
@@ -517,7 +517,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/linkreference.html",
-          "hash": "m36hgZNzWBo0pFShHBO/Og=="
+          "hash": "1ocinam3eJgfvAQl0/GfKA=="
         }
       },
       "is_incremental": false,
@@ -529,7 +529,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/lookaheadassertion.html",
-          "hash": "/GrC4s6/0VrAmsON1G0ukw=="
+          "hash": "CXzDDWYbWvPL2t1rx/6UPQ=="
         }
       },
       "is_incremental": false,
@@ -541,7 +541,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/markdownemitter.html",
-          "hash": "IbWyQqPDAlZsQE0+oHZ/7A=="
+          "hash": "YswLALT+dOo1zX2zuniQrw=="
         }
       },
       "is_incremental": false,
@@ -553,7 +553,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/metaelementbase.html",
-          "hash": "Y/eYM5lzL/MevUZeKAkaug=="
+          "hash": "Rv8TaUKfID/qIX7ZneBeHA=="
         }
       },
       "is_incremental": false,
@@ -565,7 +565,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/multilinecommenttrivia.html",
-          "hash": "Dx/UhTmaCu3kk5NqRGjIXQ=="
+          "hash": "F4jQrOWVaA9i4yy+rQBJKw=="
         }
       },
       "is_incremental": false,
@@ -577,7 +577,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/newlinekind.html",
-          "hash": "jiPHo4kHxrnLH7GbvONcsQ=="
+          "hash": "hzfMlqPmtPyvv3BvhE/yiQ=="
         }
       },
       "is_incremental": false,
@@ -589,7 +589,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/node.html",
-          "hash": "CGPEkQjOr76ppyCM9MAU0Q=="
+          "hash": "CSHEMzLvZXjzG+9qKmcI4g=="
         }
       },
       "is_incremental": false,
@@ -601,7 +601,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/nodeasynchost.html",
-          "hash": "EFUiXvs7+KKmNUCbXmRgCA=="
+          "hash": "p/mGKG42lCKvpMDno2/isw=="
         }
       },
       "is_incremental": false,
@@ -613,7 +613,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/nodeasynchostoptions.html",
-          "hash": "SKL0GSAa7qkK9lFDehO7sQ=="
+          "hash": "AIHlsz8tMgstAYKFpolyLw=="
         }
       },
       "is_incremental": false,
@@ -625,7 +625,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/nodenavigator.html",
-          "hash": "fjIwoPhghyplASatJauoPw=="
+          "hash": "zH2n5ItV3N9BzLwuEetm6A=="
         }
       },
       "is_incremental": false,
@@ -637,7 +637,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/nodevisitor.html",
-          "hash": "HWx2LobwiRUEJ2B8DH2pHQ=="
+          "hash": "K7zy5/SMCUiLgAjda8EGlA=="
         }
       },
       "is_incremental": false,
@@ -649,7 +649,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/nonterminal.html",
-          "hash": "LJDEdKf/0D1MWPx7FXZloQ=="
+          "hash": "PR+M9dY9bARo68fTo7iG6Q=="
         }
       },
       "is_incremental": false,
@@ -661,7 +661,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/nosymbolhereassertion.html",
-          "hash": "7mDLc/GeR7JnKqOxo+o9Fw=="
+          "hash": "3SGhSv9febrev8PMWIt9Dw=="
         }
       },
       "is_incremental": false,
@@ -673,7 +673,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/nulldiagnosticmessages.html",
-          "hash": "hqQnULpojFMg5Aom461s5w=="
+          "hash": "baXRwfwBq1S2bvAMi9yFXQ=="
         }
       },
       "is_incremental": false,
@@ -685,7 +685,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/numberliteral.html",
-          "hash": "lhEwhbg9ZpqpDBG03Gq9/g=="
+          "hash": "mBgBFneX6wbdgAvtKS4+gA=="
         }
       },
       "is_incremental": false,
@@ -697,7 +697,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/oneoflist.html",
-          "hash": "urwEuTP0HzjRQewNGlyAWg=="
+          "hash": "w5EVqQGVolNbkqYPKYtHHQ=="
         }
       },
       "is_incremental": false,
@@ -709,7 +709,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/oneofsymbol.html",
-          "hash": "PIb0HR9L35U5eTy4ShJULQ=="
+          "hash": "jF2inS++BN/0v++z1Jik+w=="
         }
       },
       "is_incremental": false,
@@ -721,7 +721,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/optionalsymbolbase.html",
-          "hash": "Kp8NV0s4Pb8x2tVAHWmLAQ=="
+          "hash": "lyu5zr2UApxGL5qFO86TkA=="
         }
       },
       "is_incremental": false,
@@ -733,7 +733,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/parameter.html",
-          "hash": "cZG5vXHXSce4INu+9f71mw=="
+          "hash": "KMCJtdSPFO5crHrjTY3s1A=="
         }
       },
       "is_incremental": false,
@@ -745,7 +745,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/parameterlist.html",
-          "hash": "3Hxx+CmCc9/ewDlyNcbSyw=="
+          "hash": "8q+aZJYou+mdEL2j5mA78g=="
         }
       },
       "is_incremental": false,
@@ -757,7 +757,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/parser.html",
-          "hash": "mnwtInk+AuuSFFRgnyPgeg=="
+          "hash": "lu3EB+8TbdgLQwSU0lcncA=="
         }
       },
       "is_incremental": false,
@@ -769,7 +769,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/placeholdersymbol.html",
-          "hash": "C7MnEn5eys+bUepbJvm6Dg=="
+          "hash": "4YKWcBRDWxWjqEJZ/vA7XA=="
         }
       },
       "is_incremental": false,
@@ -781,7 +781,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/position-interface.html",
-          "hash": "kAVh3SGlWTPP7keMjYt7bQ=="
+          "hash": "waNT6M6jCZVSUwoXjGaESw=="
         }
       },
       "is_incremental": false,
@@ -793,7 +793,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/position-namespace.html",
-          "hash": "MhyYnmnuCsEUHqLR4MwWbw=="
+          "hash": "tufL37DUMbFnEXoZzY/YcQ=="
         }
       },
       "is_incremental": false,
@@ -805,7 +805,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/primarysymbolbase.html",
-          "hash": "xf60pK50nKjMHbru0zU61w=="
+          "hash": "7dXOvzvEYqjAIqfAtqbQUw=="
         }
       },
       "is_incremental": false,
@@ -817,7 +817,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/production.html",
-          "hash": "JtFCAYj519I+97LnR/oibA=="
+          "hash": "ib2Rbc9OVVXE+aggEudRFg=="
         }
       },
       "is_incremental": false,
@@ -829,7 +829,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/productionbodybase.html",
-          "hash": "ye/F5A5s6r3RcQfVtx117g=="
+          "hash": "+oWEeP2AuKPXuqHTBBuhDw=="
         }
       },
       "is_incremental": false,
@@ -841,7 +841,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/prose.html",
-          "hash": "lXzY5ccZmfUXQB+/NKA9+Q=="
+          "hash": "fpj6rJh7W5ajvJTbjoLgMg=="
         }
       },
       "is_incremental": false,
@@ -853,7 +853,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/proseassertion.html",
-          "hash": "qvwuWgxDOi322N3OvPS+0g=="
+          "hash": "0iGl1FdIDbhMPrnWcoiL5Q=="
         }
       },
       "is_incremental": false,
@@ -865,7 +865,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/prosefragmentliteral.html",
-          "hash": "nhegPd5hZ5YkM7RLkZUbmA=="
+          "hash": "yd7oOmBgv1yZJqhRP0z6wA=="
         }
       },
       "is_incremental": false,
@@ -877,7 +877,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/range-interface.html",
-          "hash": "Y7PutSGTsY7aQQsibkAnxg=="
+          "hash": "NpzPl0+f1D/9vlV2vzTrwQ=="
         }
       },
       "is_incremental": false,
@@ -889,7 +889,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/range-namespace.html",
-          "hash": "6kJXe1CTfENEoB8qTxoAxQ=="
+          "hash": "zUzRRtBz479LHGJXZS3YGw=="
         }
       },
       "is_incremental": false,
@@ -901,7 +901,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/resolver.html",
-          "hash": "6Lxjapwo/LAL+Ln4EkfFiA=="
+          "hash": "uV6CWdYCt0fK+wyHb1ih4A=="
         }
       },
       "is_incremental": false,
@@ -913,7 +913,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/righthandside.html",
-          "hash": "/xd3NbXKwMZdHyvFvk9HgA=="
+          "hash": "zbcc9KB0lVVSticqs6tv/A=="
         }
       },
       "is_incremental": false,
@@ -925,7 +925,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/righthandsidelist.html",
-          "hash": "n+6hE4vtbE8U6w00xDu1vQ=="
+          "hash": "YvEJqxknnvC2OX2MgDOTGw=="
         }
       },
       "is_incremental": false,
@@ -937,7 +937,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/scanner.html",
-          "hash": "2usv7HYJAygL/e/tyVx9lQ=="
+          "hash": "zItqTTAd3x9BKhh/NPkyPA=="
         }
       },
       "is_incremental": false,
@@ -949,7 +949,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/singlelinecommenttrivia.html",
-          "hash": "psOM+g1r/Ks1QSeJLtQItg=="
+          "hash": "GfB/jGst7+ed5p3x3HkUFA=="
         }
       },
       "is_incremental": false,
@@ -961,7 +961,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/sourceelementbase.html",
-          "hash": "Frt4ZACtTNvxJ6H2oPtxfg=="
+          "hash": "L1bLF5uWA/35gtAKyuUnNw=="
         }
       },
       "is_incremental": false,
@@ -973,7 +973,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/sourcefile.html",
-          "hash": "rfaGY8rXynCpVwWW2/snWg=="
+          "hash": "2Fhj7ECZtMXgA6lL3CKm0g=="
         }
       },
       "is_incremental": false,
@@ -985,7 +985,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/stringasynchost.html",
-          "hash": "hvLv/fKpmKtNsIS80jE0qQ=="
+          "hash": "0KSPQzrVvoYJqTuV/5PP+g=="
         }
       },
       "is_incremental": false,
@@ -997,7 +997,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/stringliteral.html",
-          "hash": "c7ietenyao3IFcNdBlQ1Zw=="
+          "hash": "ykCsydN+wfNV6ofsnsHTqg=="
         }
       },
       "is_incremental": false,
@@ -1009,7 +1009,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/stringwriter.html",
-          "hash": "xlQEMpYOAvlK5SPUr5RFLA=="
+          "hash": "D84tBvql7shw0KAcEf014A=="
         }
       },
       "is_incremental": false,
@@ -1021,7 +1021,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/symbol.html",
-          "hash": "KnNZa91bERqveBB4P0hvFg=="
+          "hash": "680zLkX3p0ER9/D/nStHWg=="
         }
       },
       "is_incremental": false,
@@ -1033,7 +1033,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/symbolkind.html",
-          "hash": "hvQjVPIgIjFi10soAd8SQg=="
+          "hash": "RpDlu9nxf6nXyzpMh/bzcQ=="
         }
       },
       "is_incremental": false,
@@ -1045,7 +1045,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/symbolset.html",
-          "hash": "NK5IeIfG1buD34op7kMhAQ=="
+          "hash": "xWSPwzE4thBmqouQUAYVtg=="
         }
       },
       "is_incremental": false,
@@ -1057,7 +1057,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/symbolspan.html",
-          "hash": "7t4wNwd1KUrqZ3LLAXzxqA=="
+          "hash": "SmvvxnIziSa0JQeXNFhWCA=="
         }
       },
       "is_incremental": false,
@@ -1069,7 +1069,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/symboltable.html",
-          "hash": "g8gkOWqNpbT8Ax4trOAE4Q=="
+          "hash": "G2Eehz4bHMAROdzQl/TOfQ=="
         }
       },
       "is_incremental": false,
@@ -1081,7 +1081,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/syntaxkind.html",
-          "hash": "jxQbivkT1SsJ4uunDtsf2w=="
+          "hash": "Q+uTQl9X75fO5Fu/VQ7T3g=="
         }
       },
       "is_incremental": false,
@@ -1093,7 +1093,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/terminal.html",
-          "hash": "/wf4X5kfNogWpNtEUN3olg=="
+          "hash": "i91YX7aFNYViDWsipT4Qhw=="
         }
       },
       "is_incremental": false,
@@ -1105,7 +1105,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/terminalliteral.html",
-          "hash": "INEn2dMytvXDIj7RIocVxQ=="
+          "hash": "pb0Nhz/x+xTBnsKcfa14hQ=="
         }
       },
       "is_incremental": false,
@@ -1117,7 +1117,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/textchange-interface.html",
-          "hash": "Qlgoot1Z0a5iy+AdLm+xTw=="
+          "hash": "Fw6P7TqQwQ0wZQvwHBNldw=="
         }
       },
       "is_incremental": false,
@@ -1129,7 +1129,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/textchange-namespace.html",
-          "hash": "5lH8lunoTe+Sbvmm81e2sg=="
+          "hash": "B+HsJNDmzOSa5rrXL/E1HQ=="
         }
       },
       "is_incremental": false,
@@ -1141,7 +1141,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/textcontent.html",
-          "hash": "RBpf2beX5LHIN9jjNdMeOQ=="
+          "hash": "3EngcuSAoDBmno3KnXbiOw=="
         }
       },
       "is_incremental": false,
@@ -1153,7 +1153,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/textrange.html",
-          "hash": "nIy3eCo/9P1lFaCFFMpBdw=="
+          "hash": "nPga3lU0CgfZBKhZ0qX/zA=="
         }
       },
       "is_incremental": false,
@@ -1165,7 +1165,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/token.html",
-          "hash": "WyMzF0w5A+HX+1AP5tQryA=="
+          "hash": "YuvGuFF2nKfPyWztSew3Kw=="
         }
       },
       "is_incremental": false,
@@ -1177,7 +1177,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/triviabase.html",
-          "hash": "wqt/NE99/X14wFNFZu1KUQ=="
+          "hash": "fyOTFvTwXFoMiMH8GUmCGg=="
         }
       },
       "is_incremental": false,
@@ -1189,7 +1189,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/unicodecharacterliteral.html",
-          "hash": "A2FzmFEeeFWTjAwbtDdHQg=="
+          "hash": "apdBN5cY5S+VJKFLRQs5HA=="
         }
       },
       "is_incremental": false,
@@ -1201,7 +1201,7 @@
       "output": {
         ".html": {
           "relative_path": "api/grammarkdown/unicodecharacterrange.html",
-          "hash": "lC9US9oiUWvvYOjpfVaj0A=="
+          "hash": "z+1It6QuSFsOJ/YpsCAV2Q=="
         }
       },
       "is_incremental": false,
@@ -1213,7 +1213,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "1st4LEf8HpOp2rM27heSuw=="
+          "hash": "QbJW0qFvfrdA2UDaCoy19A=="
         }
       },
       "is_incremental": false,
@@ -1225,7 +1225,7 @@
       "output": {
         ".html": {
           "relative_path": "api/bind.html",
-          "hash": "61i1bGKH0VYhr8+MW6mwbQ=="
+          "hash": "ocNjPL4TQ7CoDces6A+ZAQ=="
         }
       },
       "is_incremental": false,
@@ -1237,7 +1237,7 @@
       "output": {
         ".html": {
           "relative_path": "api/check.html",
-          "hash": "XtIxQ8V49YbGC/R7Kh1hqQ=="
+          "hash": "07EiU0ibODf/wtptN8/qZg=="
         }
       },
       "is_incremental": false,
@@ -1249,7 +1249,7 @@
       "output": {
         ".html": {
           "relative_path": "api/compiler.html",
-          "hash": "xHJ2iL1glbNT87Y0oy+fcA=="
+          "hash": "XIuiUAzdEyVpJd7uTHcF+g=="
         }
       },
       "is_incremental": false,
@@ -1261,7 +1261,7 @@
       "output": {
         ".html": {
           "relative_path": "api/emit.html",
-          "hash": "3DMhHLCLonORsvJP7sPIZA=="
+          "hash": "Eal075tr6Piog1QkF4g8jg=="
         }
       },
       "is_incremental": false,
@@ -1273,7 +1273,7 @@
       "output": {
         ".html": {
           "relative_path": "api/hosts.html",
-          "hash": "t+XcFC6NWjxcWcQXr3UfKQ=="
+          "hash": "I7rwIrHHqIVByh1olz3scQ=="
         }
       },
       "is_incremental": false,
@@ -1285,7 +1285,7 @@
       "output": {
         ".html": {
           "relative_path": "api/nodes.html",
-          "hash": "O/ZV/Vnz4zwErIFYs0j1Tg=="
+          "hash": "c7885j7T9rriP4yihKnObA=="
         }
       },
       "is_incremental": false,
@@ -1297,7 +1297,7 @@
       "output": {
         ".html": {
           "relative_path": "api/parse.html",
-          "hash": "7X2xyEtd47qFV6e2G1B2zQ=="
+          "hash": "nV1Xrqm4PxJjNrHsMtVmLA=="
         }
       },
       "is_incremental": false,
@@ -1309,7 +1309,7 @@
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "MekCfXbp1uNL81UKw5b5CQ=="
+          "hash": "Kstp4v1byHtgTVx5hDy1fg=="
         }
       },
       "is_incremental": false,
@@ -1321,7 +1321,7 @@
       "output": {
         ".html": {
           "relative_path": "toc.html",
-          "hash": "tsjzJ4gRbDoD9ApDyMUKjQ=="
+          "hash": "PHjBv6kAITuG5en24tSCxg=="
         }
       },
       "is_incremental": false,
@@ -1333,7 +1333,7 @@
       "output": {
         ".html": {
           "relative_path": "usage/cli.html",
-          "hash": "nchOzkN7z0JAfXSy2V4IIw=="
+          "hash": "0q9HWOLiPTzpHWIPaBVXbA=="
         }
       },
       "is_incremental": false,
@@ -1345,7 +1345,7 @@
       "output": {
         ".html": {
           "relative_path": "usage/syntax.html",
-          "hash": "HtOmb3Fh0YXve67AluRyIw=="
+          "hash": "WdeJknElkItE21mL/jL/Tw=="
         }
       },
       "is_incremental": false,
@@ -1357,7 +1357,7 @@
       "output": {
         ".html": {
           "relative_path": "usage/toc.html",
-          "hash": "iqdJY3thFHNiTD7QPhCQ+w=="
+          "hash": "xXz9cI9DR9wYOnRFdTPU7g=="
         }
       },
       "is_incremental": false,
@@ -1367,17 +1367,19 @@
   "incremental_info": [
     {
       "status": {
-        "can_incremental": true,
+        "can_incremental": false,
+        "details": "Cannot build incrementally because last build info is missing.",
         "incrementalPhase": "build",
         "total_file_count": 0,
-        "skipped_file_count": 0
+        "skipped_file_count": 0,
+        "full_build_reason_code": "NoAvailableBuildCache"
       },
       "processors": {
         "ConceptualDocumentProcessor": {
-          "can_incremental": true,
+          "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 10,
-          "skipped_file_count": 10
+          "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
