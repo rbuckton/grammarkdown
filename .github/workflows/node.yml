@@ -28,9 +28,5 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - run: npm ci
-
-    - name: Register Problem Matcher for TSC
-      run: echo "##[add-matcher].github/tsc.json"
-
     - run: npm run build
     - run: npm test
