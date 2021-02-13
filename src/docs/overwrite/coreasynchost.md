@@ -14,7 +14,7 @@ const files = new Map([
 ]);
 const host = new CoreAsyncHost({
   ignoreCase: false,
-  useBuiltinGrammers: false,
+  useBuiltinGrammars: false,
   resolveFile: file => file,
   readFile: file => files.get(file)
 });

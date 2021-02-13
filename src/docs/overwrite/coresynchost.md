@@ -13,7 +13,7 @@ const files = new Map([
 ]);
 const host = new CoreSyncHost({
   ignoreCase: false,
-  useBuiltinGrammers: false,
+  useBuiltinGrammars: false,
   resolveFile: file => file,
   readFileSync: file => files.get(file)
 });
