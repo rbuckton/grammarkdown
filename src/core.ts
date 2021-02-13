@@ -8,7 +8,7 @@
 import * as url from "url";
 import { Cancelable, CancelSubscription } from "@esfx/cancelable";
 import { CancelToken } from "@esfx/async-canceltoken";
-import { Disposable } from '@esfx/disposable';
+import { Disposable } from "@esfx/disposable";
 
 
 // NOTE: grammarkdown requires a minimum of ES5.
