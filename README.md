@@ -70,7 +70,7 @@ A *Production* may also specify a limited set of terminals, by using the `one of
 ```
 Keyword :: one of
 	`break`		`do`		`in`			`typeof`
-	`case`		`else`		`instanceof`	`var`
+	`case`		`else`		`instanceof`	        `var`
 	`catch`		`export`	`new`			`void`
 	`class`		`extends`	`return`		`while`
 	`const`		`finally`	`super`			`with`
