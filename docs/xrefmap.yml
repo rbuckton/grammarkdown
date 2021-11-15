@@ -890,9 +890,9 @@ references:
   href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_registerKnownGrammarCore_member_1_
   fullName: registerKnownGrammarCore(name, file)
 - uid: grammarkdown!CoreAsyncHost#resolveFile:member(1)
-  name: resolveFile(file, referer)
+  name: resolveFile(file, referrer)
   href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_resolveFile_member_1_
-  fullName: resolveFile(file, referer)
+  fullName: resolveFile(file, referrer)
 - uid: grammarkdown!CoreAsyncHost#resolveFileCore:member(1)
   name: resolveFileCore(file, referrer)
   href: api/grammarkdown/coreasynchost.html#grammarkdown_CoreAsyncHost_resolveFileCore_member_1_
