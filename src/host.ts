@@ -59,7 +59,7 @@ export interface CoreAsyncHostOptions {
     /**
      * A callback used to control file resolution.
      */
-    resolveFile?: (this: void, file: string, referer: string | undefined, fallback: (file: string, referer?: string) => string) => string;
+    resolveFile?: (this: void, file: string, referrer: string | undefined, fallback: (file: string, referrer?: string) => string) => string;
     /**
      * A callback used to control known grammar resolution.
      */
@@ -94,7 +94,7 @@ export class CoreAsyncHost {
     private _hostFallback?: CoreAsyncHost;
 
     private _normalizeFileCallback?: (file: string) => string;
-    private _resolveFileCallback?: (file: string, referer?: string) => string;
+    private _resolveFileCallback?: (file: string, referrer?: string) => string;
     private _resolveKnownGrammarCallback?: (name: string) => string | undefined;
     private _readFileCallback?: (file: string, cancelToken?: CancelToken) => Promise<string | undefined>;
     private _writeFileCallback?: (file: string, content: string, cancelToken?: CancelToken) => Promise<void>;
@@ -190,13 +190,13 @@ export class CoreAsyncHost {
     }
 
     /**
-     * Resolve the full path of a file relative to the provided referer.
+     * Resolve the full path of a file relative to the provided referrer.
      * @param file The path to the requested file.
-     * @param referer An optional path indicating the file from which the path should be resolved.
+     * @param referrer An optional path indicating the file from which the path should be resolved.
      */
-    public resolveFile(file: string, referer?: string): string {
+    public resolveFile(file: string, referrer?: string): string {
         file = this.resolveKnownGrammar(file) || file;
-        let result = this.resolveFileCore(file, referer);
+        let result = this.resolveFileCore(file, referrer);
         result = result.replace(/\\/g, "/");
         return result;
     }
@@ -291,7 +291,7 @@ export class CoreAsyncHost {
     }
 
     /**
-     * When overridden in a derived class, resolves the full path of a file relative to the provided referer.
+     * When overridden in a derived class, resolves the full path of a file relative to the provided referrer.
      * @param file The path to the requested file.
      * @param referrer An optional path indicating the file from which the path should be resolved.
      * @virtual
@@ -304,8 +304,8 @@ export class CoreAsyncHost {
         return this._resolveFileFallback(file, referrer);
     }
 
-    private _resolveFileFallback(file: string, referer?: string) {
-        if (this._hostFallback) return this._hostFallback.resolveFile(file, referer);
+    private _resolveFileFallback(file: string, referrer?: string) {
+        if (this._hostFallback) return this._hostFallback.resolveFile(file, referrer);
         throw new Error("Cannot resolve a file without a fallback host.");
     }
 
@@ -407,7 +407,7 @@ export class StringAsyncHost extends CoreAsyncHost {
     constructor(file: string, content: PromiseLike<string> | string, hostFallback?: CoreAsyncHost) {
         super({
             normalizeFile: (file, fallback) => file === this.file ? file : fallback(file),
-            resolveFile: (file, referer, fallback) => file === this.file ? file : fallback(file, referer),
+            resolveFile: (file, referrer, fallback) => file === this.file ? file : fallback(file, referrer),
             readFile: (file, cancelToken, fallback) => file === this.file ? this.content : fallback(file, cancelToken)
         }, hostFallback);
         this.file = file;
