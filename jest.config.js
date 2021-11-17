@@ -17,7 +17,7 @@ module.exports = {
     testRegex: "/__tests__/.*(\\.test\\.ts|\\.grammar)$",
     globals: {
         'ts-jest': {
-            tsConfig: 'tsconfig.json',
+            tsconfig: 'tsconfig.json',
             compiler: require.resolve('typescript')
         },
     }

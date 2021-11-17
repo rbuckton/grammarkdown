@@ -22,6 +22,8 @@ const yargs = require("yargs")
     .option("docPackagePattern", { type: "string" })
     .option("force", { type: "boolean", default: false })
     .option("verbose", { type: "boolean", default: false })
+    .option("clearCache", { type: "boolean", default: false })
+    .option("cache", { type: "boolean", default: true })
     ;
 const { argv } = yargs;
 
@@ -63,6 +65,8 @@ const watchDiagnostics = () => gulp.watch(["./src/diagnostics.json"], { persiste
  * @param {boolean} [argv.watch]
  * @param {boolean} [argv.watchAll]
  * @param {boolean} [argv.notify]
+ * @param {boolean} [argv.clearCache]
+ * @param {boolean} [argv.cache]
  */
 const runTestsWithOptions = (argv) => {
     const args = new ArgsBuilder();
@@ -76,6 +80,8 @@ const runTestsWithOptions = (argv) => {
     args.addSwitch("--watch", argv.watch, false);
     args.addSwitch("--watchAll", argv.watchAll, false);
     args.addSwitch("--notify", argv.notify, false);
+    args.addSwitch("--clearCache", argv.clearCache, false);
+    args.addSwitch("--cache", argv.cache, true);
     return exec(process.execPath, [require.resolve("jest/bin/jest"), ...args], { verbose: true });
 };
 

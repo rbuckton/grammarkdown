@@ -12,7 +12,8 @@
         "declaration": true,
         "strict": true,
         "stripInternal": true,
-        "noUnusedLocals": true
+        "noUnusedLocals": true,
+        "inlineSources": false,
     },
     "include": [
         "src/**/*.ts"

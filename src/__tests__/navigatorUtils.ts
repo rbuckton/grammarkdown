@@ -10,7 +10,7 @@ export function makeExpectToken(navigator: NodeNavigator) {
             expect(navigator.moveToFirstToken()).toBe(true);
             expectTokenRest(kind, text);
         }
-        catch (e) {
+        catch (e: any) {
             Error.captureStackTrace(e, firstToken);
             throw e;
         }
@@ -21,7 +21,7 @@ export function makeExpectToken(navigator: NodeNavigator) {
             expect(navigator.moveToLastToken()).toBe(true);
             expectTokenRest(kind, text);
         }
-        catch (e) {
+        catch (e: any) {
             Error.captureStackTrace(e, lastToken);
             throw e;
         }
@@ -32,7 +32,7 @@ export function makeExpectToken(navigator: NodeNavigator) {
             expect(navigator.moveToNextToken()).toBe(true);
             expectTokenRest(kind, text);
         }
-        catch (e) {
+        catch (e: any) {
             Error.captureStackTrace(e, nextToken);
             throw e;
         }
@@ -43,7 +43,7 @@ export function makeExpectToken(navigator: NodeNavigator) {
             expect(navigator.moveToPreviousToken()).toBe(true);
             expectTokenRest(kind, text);
         }
-        catch (e) {
+        catch (e: any) {
             Error.captureStackTrace(e, prevToken);
             throw e;
         }
@@ -53,7 +53,7 @@ export function makeExpectToken(navigator: NodeNavigator) {
         try {
             expect(navigator.moveToPreviousToken()).toBe(false);
         }
-        catch (e) {
+        catch (e: any) {
             Error.captureStackTrace(e, bof);
             throw e;
         }
@@ -63,7 +63,7 @@ export function makeExpectToken(navigator: NodeNavigator) {
         try {
             expect(navigator.moveToNextToken()).toBe(false);
         }
-        catch (e) {
+        catch (e: any) {
             Error.captureStackTrace(e, eof);
             throw e;
         }

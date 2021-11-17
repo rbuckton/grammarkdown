@@ -8,29 +8,35 @@ const isWindows = /^win/.test(process.platform);
  * @param {string[]} args
  * @param {object} options
  * @param {boolean} [options.ignoreExitCode]
+ * @param {boolean} [options.waitForExit]
  * @param {boolean} [options.verbose]
  * @param {string} [options.cwd]
  * @returns {Promise<{exitCode: number}>}
  */
-function exec(cmd, args = [], { ignoreExitCode, verbose, cwd } = {}) {
+function exec(cmd, args = [], { ignoreExitCode, verbose, cwd, waitForExit = true } = {}) {
     return new Promise((resolve, reject) => {
         const shell = isWindows ? "cmd" : "/bin/sh";
         const shellArgs = isWindows ? ["/c", cmd.includes(" ") >= 0 ? `"${cmd}"` : cmd, ...args] : ["-c", `${cmd} ${args.join(" ")}`];
         if (verbose) log(`> ${chalk.green(cmd)} ${args.join(" ")}`);
-        const child = spawn(shell, shellArgs, { stdio: "inherit", cwd, windowsVerbatimArguments: true });
-        child.on("exit", (exitCode) => {
+        const child = spawn(shell, shellArgs, { stdio: waitForExit ? "inherit" : "ignore", cwd, windowsVerbatimArguments: true });
+        const done = (exitCode) => {
             child.removeAllListeners();
-            if (exitCode === 0 || ignoreExitCode) {
+            if (exitCode === 0 || ignoreExitCode || exitCode === undefined && !waitForExit) {
                 resolve({ exitCode });
             }
             else {
                 reject(new Error(`Process exited with code: ${exitCode}`));
             }
-        });
+        };
+        child.on("exit", done);
         child.on("error", error => {
             child.removeAllListeners();
             reject(error);
         });
+        if (!waitForExit) {
+            child.unref();
+            setTimeout(() => done(undefined), 100);
+        }
     });
 }
 exports.exec = exec;
