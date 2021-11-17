@@ -6,57 +6,45 @@
  */
 
 import { Emitter } from "./emitter";
-import { isMetaElementKind, isTokenKind, SyntaxKind } from "../tokens";
+import { isMetaElementKind, SyntaxKind } from "../tokens";
 import {
-    UnicodeCharacterLiteral,
-    UnicodeCharacterRange,
-    Prose,
-    Parameter,
-    ParameterList,
-    OneOfList,
-    Terminal,
-    SymbolSet,
-    EmptyAssertion,
-    LookaheadAssertion,
-    NoSymbolHereAssertion,
-    LexicalGoalAssertion,
-    Constraints,
-    ProseAssertion,
     Argument,
     ArgumentList,
-    Nonterminal,
-    OneOfSymbol,
-    LexicalSymbol,
     ButNotSymbol,
-    SymbolSpan,
+    Constraints,
+    Define,
+    EmptyAssertion,
+    Import,
+    LexicalGoalAssertion,
+    LexicalSymbol,
+    Line,
+    LookaheadAssertion,
+    Nonterminal,
+    NoSymbolHereAssertion,
+    NumberLiteral,
+    OneOfList,
+    OneOfSymbol,
+    Parameter,
+    ParameterList,
+    Production,
+    Prose,
+    ProseAssertion,
     RightHandSide,
     RightHandSideList,
-    Production,
-    TextContent,
-    Define,
-    Line,
-    Import,
     SourceFile,
-    Node,
     StringLiteral,
-    NumberLiteral,
-    TerminalLiteral
+    SymbolSet,
+    SymbolSpan,
+    Terminal,
+    TerminalLiteral,
+    TextContent,
+    UnicodeCharacterLiteral,
+    UnicodeCharacterRange,
 } from "../nodes";
 
 /** {@docCategory Emit} */
 export class GrammarkdownEmitter extends Emitter {
     protected extension = ".grammar";
-
-    protected emitNode(node: Node | undefined) {
-        if (node && isTokenKind(node.kind)) {
-            return this.emitToken(node);
-        }
-        switch (node?.kind) {
-            case SyntaxKind.StringLiteral: return this.emitStringLiteral(node as StringLiteral);
-            case SyntaxKind.NumberLiteral: return this.emitNumberLiteral(node as NumberLiteral);
-        }
-        return super.emitNode(node);
-    }
 
     protected emitSourceFile(node: SourceFile) {
         let lastElementWasMeta = false;
@@ -80,11 +68,11 @@ export class GrammarkdownEmitter extends Emitter {
         this.writer.writeln();
     }
 
-    private emitStringLiteral(node: StringLiteral) {
+    protected emitStringLiteral(node: StringLiteral) {
         this.writer.write(JSON.stringify(node.text ?? ""));
     }
 
-    private emitNumberLiteral(node: NumberLiteral) {
+    protected emitNumberLiteral(node: NumberLiteral) {
         this.emitTextContent(node);
     }
 

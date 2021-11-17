@@ -8,31 +8,32 @@
 import { Emitter } from "./emitter";
 import { SyntaxKind } from "../tokens";
 import {
-    Node,
-    UnicodeCharacterLiteral,
-    UnicodeCharacterRange,
-    Parameter,
-    ParameterList,
-    OneOfList,
-    Terminal,
-    SymbolSet,
-    EmptyAssertion,
-    LookaheadAssertion,
-    NoSymbolHereAssertion,
-    LexicalGoalAssertion,
-    Constraints,
-    ProseAssertion,
     Argument,
     ArgumentList,
-    Nonterminal,
-    OneOfSymbol,
     ButNotSymbol,
-    SymbolSpan,
+    Constraints,
+    EmptyAssertion,
+    LexicalGoalAssertion,
+    LookaheadAssertion,
+    Node,
+    Nonterminal,
+    NoSymbolHereAssertion,
+    OneOfList,
+    OneOfSymbol,
+    Parameter,
+    ParameterList,
+    Production,
+    Prose,
+    ProseAssertion,
     RightHandSide,
     RightHandSideList,
-    Production,
+    SymbolSet,
+    SymbolSpan,
+    Terminal,
+    TerminalLiteral,
     TextContent,
-    TerminalLiteral
+    UnicodeCharacterLiteral,
+    UnicodeCharacterRange,
 } from "../nodes";
 
 /** {@docCategory Emit} */
@@ -44,6 +45,12 @@ export class MarkdownEmitter extends Emitter {
             this.writer.write(`**`);
             super.emitKeyword(node);
             this.writer.write(`**`);
+        }
+    }
+
+    protected emitProse(node: Prose) {
+        if (node.fragments) {
+            this.emitNodes(node.fragments);
         }
     }
 

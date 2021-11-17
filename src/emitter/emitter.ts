@@ -13,43 +13,48 @@ import { DiagnosticMessages } from "../diagnostics";
 import { CompilerOptions, NewLineKind } from "../options";
 import { Resolver } from "../checker";
 import { StringWriter } from "../stringwriter";
-import { SyntaxKind, tokenToString } from "../tokens";
+import { SyntaxKind, tokenToString, isTokenKind } from "../tokens";
 import { toCancelToken } from "../core";
 import { TextRange } from "../types";
 import {
-    Node,
-    SourceFile,
-    UnicodeCharacterLiteral,
-    UnicodeCharacterRange,
-    Prose,
-    Identifier,
-    Parameter,
-    ParameterList,
-    OneOfList,
-    Terminal,
-    SymbolSet,
-    EmptyAssertion,
-    LookaheadAssertion,
-    NoSymbolHereAssertion,
-    LexicalGoalAssertion,
-    Constraints,
-    ProseAssertion,
-    ProseFragmentLiteral,
     Argument,
     ArgumentList,
-    Nonterminal,
-    OneOfSymbol,
     ButNotSymbol,
-    SymbolSpan,
+    Constraints,
+    Define,
+    EmptyAssertion,
+    Identifier,
+    Import,
+    LexicalGoalAssertion,
+    Line,
+    LinkReference,
+    LookaheadAssertion,
+    MultiLineCommentTrivia,
+    Node,
+    Nonterminal,
+    NoSymbolHereAssertion,
+    NumberLiteral,
+    OneOfList,
+    OneOfSymbol,
+    Parameter,
+    ParameterList,
+    PlaceholderSymbol,
+    Production,
+    Prose,
+    ProseAssertion,
+    ProseFragmentLiteral,
     RightHandSide,
     RightHandSideList,
-    Production,
-    Import,
+    SingleLineCommentTrivia,
+    SourceFile,
+    StringLiteral,
+    SymbolSet,
+    SymbolSpan,
+    Terminal,
+    TerminalLiteral,
     TextContent,
-    PlaceholderSymbol,
-    Define,
-    Line,
-    TerminalLiteral
+    UnicodeCharacterLiteral,
+    UnicodeCharacterRange,
 } from "../nodes";
 
 /** {@docCategory Emit} */
@@ -59,13 +64,17 @@ export class Emitter {
     protected writer!: StringWriter;
     protected extension!: string;
 
-    private diagnostics!: DiagnosticMessages;
-    private sourceFile!: SourceFile;
-    private triviaPos!: number;
-    private cancelToken?: CancelToken;
+    private _diagnostics!: DiagnosticMessages;
+    private _sourceFile!: SourceFile;
+    private _triviaPos!: number;
+    private _cancelToken?: CancelToken;
 
     constructor(options: CompilerOptions) {
         this.options = options;
+    }
+
+    protected get sourceFile(): SourceFile | undefined {
+        return this._sourceFile;
     }
 
     public emit(node: SourceFile, resolver: Resolver, diagnostics: DiagnosticMessages, writeFile: (file: string, text: string, cancelToken?: CancelToken) => void | PromiseLike<void>, cancelable?: Cancelable): Promise<void> {
@@ -83,30 +92,30 @@ export class Emitter {
 
         const saveWriter = this.writer;
         const saveResolver = this.resolver;
-        const saveDiagnostics = this.diagnostics;
-        const saveSourceFile = this.sourceFile;
-        const saveTriviaPos = this.triviaPos;
-        const saveCancellationToken = this.cancelToken;
+        const saveDiagnostics = this._diagnostics;
+        const saveSourceFile = this._sourceFile;
+        const saveTriviaPos = this._triviaPos;
+        const saveCancellationToken = this._cancelToken;
 
         let text: string;
         try {
-            this.cancelToken = cancelToken;
+            this._cancelToken = cancelToken;
             this.resolver = resolver;
-            this.diagnostics = new DiagnosticMessages();
+            this._diagnostics = new DiagnosticMessages();
             this.writer = this.createWriter(this.options);
-            this.sourceFile = sourceFile;
-            this.triviaPos = 0;
+            this._sourceFile = sourceFile;
+            this._triviaPos = 0;
             this.emitNode(node);
             text = this.writer.toString();
-            diagnostics.copyFrom(this.diagnostics);
+            diagnostics.copyFrom(this._diagnostics);
         }
         finally {
             this.writer = saveWriter;
             this.resolver = saveResolver;
-            this.diagnostics = saveDiagnostics;
-            this.sourceFile = saveSourceFile;
-            this.triviaPos = saveTriviaPos;
-            this.cancelToken = saveCancellationToken;
+            this._diagnostics = saveDiagnostics;
+            this._sourceFile = saveSourceFile;
+            this._triviaPos = saveTriviaPos;
+            this._cancelToken = saveCancellationToken;
         }
 
         performance.mark("afterEmit");
@@ -148,10 +157,16 @@ export class Emitter {
         }
 
         this.beforeEmitNode(node);
+        this.emitNodeCore(node);
+        this.afterEmitNode(node);
+    }
 
+    protected emitNodeCore(node: Node): void {
         switch (node.kind) {
             case SyntaxKind.SourceFile: this.emitSourceFile(<SourceFile>node); break;
             case SyntaxKind.TerminalLiteral: this.emitTerminalLiteral(<TerminalLiteral>node); break;
+            case SyntaxKind.StringLiteral: this.emitStringLiteral(<StringLiteral>node); break;
+            case SyntaxKind.NumberLiteral: this.emitNumberLiteral(<NumberLiteral>node); break;
             case SyntaxKind.UnicodeCharacterLiteral: this.emitUnicodeCharacterLiteral(<UnicodeCharacterLiteral>node); break;
             case SyntaxKind.UnicodeCharacterRange: this.emitUnicodeCharacterRange(<UnicodeCharacterRange>node); break;
             case SyntaxKind.Prose: this.emitProse(<Prose>node); break;
@@ -167,6 +182,7 @@ export class Emitter {
             case SyntaxKind.OneOfList: this.emitOneOfList(<OneOfList>node); break;
             case SyntaxKind.RightHandSideList: this.emitRightHandSideList(<RightHandSideList>node); break;
             case SyntaxKind.RightHandSide: this.emitRightHandSide(<RightHandSide>node); break;
+            case SyntaxKind.LinkReference: this.emitLinkReference(<LinkReference>node); break;
             case SyntaxKind.Constraints: this.emitConstraints(<Constraints>node); break;
             case SyntaxKind.SymbolSpan: this.emitSymbolSpan(<SymbolSpan>node); break;
             case SyntaxKind.ThroughKeyword: this.emitKeyword(node); break;
@@ -185,9 +201,16 @@ export class Emitter {
             case SyntaxKind.ProseHead: this.emitProseFragmentLiteral(<ProseFragmentLiteral>node); break;
             case SyntaxKind.ProseMiddle: this.emitProseFragmentLiteral(<ProseFragmentLiteral>node); break;
             case SyntaxKind.ProseTail: this.emitProseFragmentLiteral(<ProseFragmentLiteral>node); break;
+            case SyntaxKind.HtmlOpenTagTrivia: this.emitHtmlTrivia(node); break;
+            case SyntaxKind.HtmlCloseTagTrivia: this.emitHtmlTrivia(node); break;
+            case SyntaxKind.SingleLineCommentTrivia: this.emitSingleLineCommentTrivia(<SingleLineCommentTrivia>node); break;
+            case SyntaxKind.MultiLineCommentTrivia: this.emitMultiLineCommentTrivia(<MultiLineCommentTrivia>node); break;
+            default:
+                if (isTokenKind(node.kind)) {
+                    this.emitToken(node);
+                }
+                break;
         }
-
-        this.afterEmitNode(node);
     }
 
     protected emitChildren(node: Node) {
@@ -216,6 +239,12 @@ export class Emitter {
 
     protected emitTokenKind(kind: SyntaxKind) {
         this.writer.write(tokenToString(kind));
+    }
+
+    protected emitStringLiteral(node: StringLiteral) {
+    }
+
+    protected emitNumberLiteral(node: NumberLiteral) {
     }
 
     protected emitPlaceholder(node: PlaceholderSymbol) {
@@ -281,6 +310,9 @@ export class Emitter {
 
     protected emitRightHandSide(node: RightHandSide): void {
         this.emitChildren(node);
+    }
+
+    protected emitLinkReference(node: LinkReference): void {
     }
 
     protected emitSymbolSpan(node: SymbolSpan): void {
@@ -355,57 +387,28 @@ export class Emitter {
     protected emitLeadingHtmlTriviaOfNode(node: Node) {
         const leadingHtmlTrivia = node.leadingHtmlTrivia;
         if (leadingHtmlTrivia) {
-            for (const range of leadingHtmlTrivia) {
-                this.emitHtmlTrivia(range);
+            for (const trivia of leadingHtmlTrivia) {
+                this.emitHtmlTrivia(trivia);
             }
         }
-        // const parent = this.resolver.getParent(node);
-        // if (parent && parent.pos === node.pos) {
-        //     return;
-        // }
-
-        // if (this.triviaPos >= node.pos) {
-        //     return;
-        // }
-
-        // const leadingHtmlTrivia = scanHtmlTrivia(this.sourceFile.text, this.triviaPos, node.pos);
-        // if (leadingHtmlTrivia) {
-        //     for (const range of leadingHtmlTrivia) {
-        //         this.emitHtmlTrivia(range);
-        //     }
-        // }
-
-        // this.triviaPos = node.pos;
     }
 
     protected emitTrailingHtmlTriviaOfNode(node: Node) {
         const trailingHtmlTrivia = node.trailingHtmlTrivia;
         if (trailingHtmlTrivia) {
-            for (const range of trailingHtmlTrivia) {
-                this.emitHtmlTrivia(range);
+            for (const trivia of trailingHtmlTrivia) {
+                this.emitHtmlTrivia(trivia);
             }
         }
-        // const parent = this.resolver.getParent(node);
-        // if (parent && parent.end === node.end) {
-        //     return;
-        // }
-
-        // if (this.triviaPos >= node.end) {
-        //     return;
-        // }
-
-        // const trailingHtmlTrivia = scanHtmlTrivia(this.sourceFile.text, node.end, this.sourceFile.text.length);
-
-        // this.triviaPos = node.end;
-        // if (trailingHtmlTrivia) {
-        //     for (const range of trailingHtmlTrivia) {
-        //         this.emitHtmlTrivia(range);
-        //         this.triviaPos = range.end;
-        //     }
-        // }
     }
 
     protected emitHtmlTrivia(range: TextRange) {
-        this.writer.write(this.sourceFile.text.substring(range.pos, range.end));
+        this.writer.write(this._sourceFile.text.substring(range.pos, range.end));
+    }
+
+    protected emitSingleLineCommentTrivia(node: SingleLineCommentTrivia) {
+    }
+
+    protected emitMultiLineCommentTrivia(node: MultiLineCommentTrivia) {
     }
 }
