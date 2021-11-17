@@ -1,15 +1,21 @@
 <emu-production name="AtomEscape" params="U, N" type="lexical">
-    <emu-rhs a="xyfekz-i" constraints="+U"><emu-nt>DecimalEscape</emu-nt></emu-rhs>
-    <emu-rhs a="9z5_swsj" constraints="~U">
+    <emu-rhs a="xyfekz-i" constraints="+U">
         <emu-nt>DecimalEscape</emu-nt>
-        <emu-gmod>but only if the CapturingGroupNumber of <emu-nt>DecimalEscape</emu-nt> is &lt;= _NcapturingParens_</emu-gmod>
     </emu-rhs>
     <emu-rhs a="9z5_swsj" constraints="~U">
         <emu-nt>DecimalEscape</emu-nt>
         <emu-gmod>but only if the CapturingGroupNumber of <emu-nt>DecimalEscape</emu-nt> is &lt;= _NcapturingParens_</emu-gmod>
     </emu-rhs>
-    <emu-rhs a="2j1xngqc"><emu-nt params="?U">CharacterClassEscape</emu-nt></emu-rhs>
-    <emu-rhs a="ext6rhlm"><emu-nt params="~U, ?N">CharacterEscape</emu-nt></emu-rhs>
+    <emu-rhs a="9z5_swsj" constraints="~U">
+        <emu-nt>DecimalEscape</emu-nt>
+        <emu-gmod>but only if the CapturingGroupNumber of <emu-nt>DecimalEscape</emu-nt> is &lt;= _NcapturingParens_</emu-gmod>
+    </emu-rhs>
+    <emu-rhs a="2j1xngqc">
+        <emu-nt params="?U">CharacterClassEscape</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="ext6rhlm">
+        <emu-nt params="~U, ?N">CharacterEscape</emu-nt>
+    </emu-rhs>
     <emu-rhs a="8-aca3ze" constraints="+N">
         <emu-t>k</emu-t>
         <emu-nt params="?U">GroupName</emu-nt>

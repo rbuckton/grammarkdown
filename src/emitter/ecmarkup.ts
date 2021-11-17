@@ -118,12 +118,18 @@ export class EcmarkupEmitter extends Emitter {
     protected emitRightHandSideList(node: RightHandSideList) {
         if (node.elements) {
             for (const rhs of node.elements) {
-                this.emitNode(rhs);
+                this.beforeEmitNode(rhs);
+                this.emitRightHandSideWorker(rhs, /*inList*/ true);
+                this.afterEmitNode(rhs);
             }
         }
     }
 
     protected emitRightHandSide(node: RightHandSide) {
+        this.emitRightHandSideWorker(node, /*inList*/ false);
+    }
+
+    private emitRightHandSideWorker(node: RightHandSide, inList: boolean) {
         const linkId = this.resolver.getRightHandSideLinkId(node, /*includePrefix*/ false);
         this.emitLinkAnchor(linkId);
 
@@ -140,7 +146,7 @@ export class EcmarkupEmitter extends Emitter {
         }
 
         this.writer.write(`>`);
-        if (node.head && node.head.next) {
+        if (inList || node.head && node.head.next) {
             this.writer.indent();
             this.writer.writeln();
             this.emitNode(node.head);
