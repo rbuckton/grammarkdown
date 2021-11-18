@@ -1287,7 +1287,7 @@ function attachHtmlTrivia(node: Node, leadingTags: HtmlTrivia[] | undefined, tra
 }
 
 function promoteHtmlTrivia(parent: Node, firstChild: Node | undefined, lastChild: Node | undefined) {
-    if (firstChild && firstChild === lastChild) {
+    if (firstChild && firstChild === lastChild && !(parent instanceof RightHandSideList)) {
         promoteAllHtmlTrivia(parent, firstChild);
     }
     else {

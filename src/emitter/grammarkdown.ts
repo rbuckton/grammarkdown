@@ -21,6 +21,7 @@ import {
     LinkReference,
     LookaheadAssertion,
     MultiLineCommentTrivia,
+    Node,
     Nonterminal,
     NoSymbolHereAssertion,
     NumberLiteral,
@@ -34,6 +35,7 @@ import {
     RightHandSide,
     RightHandSideList,
     SingleLineCommentTrivia,
+    SourceElement,
     SourceFile,
     StringLiteral,
     SymbolSet,
@@ -50,23 +52,19 @@ export class GrammarkdownEmitter extends Emitter {
     protected override extension = ".grammar";
 
     protected override emitSourceFile(node: SourceFile) {
-        let lastElementWasMeta = false;
-        let lastCollapsedProduction: Production | undefined;
-        let hasWrittenElement = false;
+        let lastElement: SourceElement | undefined;
         for (const element of node.elements) {
-            const thisElementIsMeta = isMetaElementKind(element.kind);
-            const thisCollapsedProduction = element.kind === SyntaxKind.Production && element.body?.kind === SyntaxKind.RightHandSide ? element : undefined;
-            if (hasWrittenElement) {
-                if (!(thisElementIsMeta && lastElementWasMeta) &&
-                    !(thisCollapsedProduction && lastCollapsedProduction && thisCollapsedProduction.name.text === lastCollapsedProduction.name.text)) {
+            if (lastElement) {
+                if (!(isMetaElementKind(lastElement.kind) && isMetaElementKind(element.kind)) &&
+                    !areContiguousCollapsedProductions(lastElement, element)) {
                     this.writer.commitLine();
                     this.writer.writeln();
                 }
             }
+
             this.emitNode(element);
-            lastElementWasMeta = thisElementIsMeta;
-            lastCollapsedProduction = thisCollapsedProduction;
-            hasWrittenElement = true;
+            this.writer.writeln();
+            lastElement = element;
         }
         this.writer.writeln();
     }
@@ -86,7 +84,6 @@ export class GrammarkdownEmitter extends Emitter {
         this.emitNode(node.key);
         this.writer.write(" ");
         this.emitNode(node.valueToken);
-        this.writer.writeln();
     }
 
     protected override emitLine(node: Line) {
@@ -98,7 +95,6 @@ export class GrammarkdownEmitter extends Emitter {
             this.writer.write(" ");
             this.emitNode(node.path);
         }
-        this.writer.writeln();
     }
 
     protected override emitImport(node: Import) {
@@ -106,7 +102,6 @@ export class GrammarkdownEmitter extends Emitter {
         this.emitNode(node.importKeyword);
         this.writer.write(" ");
         this.emitNode(node.path);
-        this.writer.writeln();
     }
 
     protected override emitProduction(node: Production) {
@@ -121,7 +116,6 @@ export class GrammarkdownEmitter extends Emitter {
                 break;
         }
         this.emitNode(node.body);
-        this.writer.writeln();
     }
 
     protected override emitParameterList(node: ParameterList) {
@@ -373,4 +367,12 @@ export class GrammarkdownEmitter extends Emitter {
     protected override emitMultiLineCommentTrivia(node: MultiLineCommentTrivia): void {
     }
 
+}
+
+function isCollapsedProduction(node: Node): node is Production & { readonly body: RightHandSide } {
+    return node instanceof Production && node.body instanceof RightHandSide;
+}
+
+function areContiguousCollapsedProductions(left: Node, right: Node) {
+    return isCollapsedProduction(left) && isCollapsedProduction(right) && left.name.text === right.name.text;
 }

@@ -1,0 +1,13 @@
+// @issue: https://github.com/rbuckton/grammarkdown/issues/80
+// @emit: grammarkdown
+// @diagnostics: false
+X ::
+  Y
+
+<ins>
+X ::
+  Y
+</ins>
+
+X ::
+  Y
