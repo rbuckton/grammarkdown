@@ -1,0 +1,16 @@
+@define noStrictParametricProductions true
+
+Keyword :: one of
+    `break`    `do`       `in`         `typeof`
+    `case`     `else`     `instanceof` `var`
+    `catch`    `export`   `new`        `void`
+    `class`    `extends`  `return`     `while`
+    `const`    `finally`  `super`      `with`
+    `continue` `for`      `switch`     `yield`
+    `debugger` `function` `this`       `default`
+    `if`       `throw`    `delete`     `import`
+    `try`
+
+FutureReservedWord :: one of
+    `enum`      `await`     `implements` `package`
+    `protected` `interface` `private`    `public`
