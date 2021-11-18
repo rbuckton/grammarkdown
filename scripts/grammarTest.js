@@ -78,7 +78,7 @@ function parseTestFile(content) {
     /** @type {Record<string, string>} */
     const options = {};
     for (let match = optionLineRegExp.exec(optionContent); match; match = optionLineRegExp.exec(optionContent)) {
-        options[match[1]] = match[2];
+        options[match[1].trim()] = match[2].trim();
     }
     const nonOptionContent = content.slice(offset);
     return { options, content: nonOptionContent };

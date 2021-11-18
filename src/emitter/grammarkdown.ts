@@ -18,7 +18,10 @@ import {
     LexicalGoalAssertion,
     LexicalSymbol,
     Line,
+    LinkReference,
     LookaheadAssertion,
+    MultiLineCommentTrivia,
+    Node,
     Nonterminal,
     NoSymbolHereAssertion,
     NumberLiteral,
@@ -31,6 +34,8 @@ import {
     ProseAssertion,
     RightHandSide,
     RightHandSideList,
+    SingleLineCommentTrivia,
+    SourceElement,
     SourceFile,
     StringLiteral,
     SymbolSet,
@@ -44,39 +49,62 @@ import {
 
 /** {@docCategory Emit} */
 export class GrammarkdownEmitter extends Emitter {
-    protected extension = ".grammar";
+    protected override extension = ".grammar";
 
-    protected emitSourceFile(node: SourceFile) {
-        let lastElementWasMeta = false;
-        let lastCollapsedProduction: Production | undefined;
-        let hasWrittenElement = false;
+    protected override emitSourceFile(node: SourceFile) {
+        let lastElement: SourceElement | undefined;
         for (const element of node.elements) {
-            const thisElementIsMeta = isMetaElementKind(element.kind);
-            const thisCollapsedProduction = element.kind === SyntaxKind.Production && element.body?.kind === SyntaxKind.RightHandSide ? element : undefined;
-            if (hasWrittenElement) {
-                if (!(thisElementIsMeta && lastElementWasMeta) &&
-                    !(thisCollapsedProduction && lastCollapsedProduction && thisCollapsedProduction.name.text === lastCollapsedProduction.name.text)) {
+            if (lastElement) {
+                if (!(isMetaElementKind(lastElement.kind) && isMetaElementKind(element.kind)) &&
+                    !areContiguousCollapsedProductions(lastElement, element)) {
                     this.writer.commitLine();
                     this.writer.writeln();
                 }
             }
+
             this.emitNode(element);
-            lastElementWasMeta = thisElementIsMeta;
-            lastCollapsedProduction = thisCollapsedProduction;
-            hasWrittenElement = true;
+            this.writer.writeln();
+            lastElement = element;
         }
         this.writer.writeln();
     }
 
-    protected emitStringLiteral(node: StringLiteral) {
+    protected override emitStringLiteral(node: StringLiteral) {
         this.writer.write(JSON.stringify(node.text ?? ""));
     }
 
-    protected emitNumberLiteral(node: NumberLiteral) {
+    protected override emitNumberLiteral(node: NumberLiteral) {
         this.emitTextContent(node);
     }
 
-    protected emitProduction(node: Production) {
+    protected override emitDefine(node: Define) {
+        this.emitNode(node.atToken);
+        this.emitNode(node.defineKeyword);
+        this.writer.write(" ");
+        this.emitNode(node.key);
+        this.writer.write(" ");
+        this.emitNode(node.valueToken);
+    }
+
+    protected override emitLine(node: Line) {
+        this.emitNode(node.atToken);
+        this.emitNode(node.lineKeyword);
+        this.writer.write(" ");
+        this.emitNode(node.number);
+        if (node.path) {
+            this.writer.write(" ");
+            this.emitNode(node.path);
+        }
+    }
+
+    protected override emitImport(node: Import) {
+        this.emitNode(node.atToken);
+        this.emitNode(node.importKeyword);
+        this.writer.write(" ");
+        this.emitNode(node.path);
+    }
+
+    protected override emitProduction(node: Production) {
         this.emitIdentifier(node.name);
         this.emitNode(node.parameterList);
         this.writer.write(" ");
@@ -88,10 +116,9 @@ export class GrammarkdownEmitter extends Emitter {
                 break;
         }
         this.emitNode(node.body);
-        this.writer.writeln();
     }
 
-    protected emitParameterList(node: ParameterList) {
+    protected override emitParameterList(node: ParameterList) {
         this.writer.write("[");
         if (node.elements) {
             for (let i = 0; i < node.elements.length; ++i) {
@@ -104,11 +131,11 @@ export class GrammarkdownEmitter extends Emitter {
         this.writer.write(`]`);
     }
 
-    protected emitParameter(node: Parameter) {
+    protected override emitParameter(node: Parameter) {
         this.emitIdentifier(node.name);
     }
 
-    protected emitOneOfList(node: OneOfList) {
+    protected override emitOneOfList(node: OneOfList) {
         this.emitTokenKind(SyntaxKind.OneKeyword);
         this.writer.write(" ");
         this.emitTokenKind(SyntaxKind.OfKeyword);
@@ -142,7 +169,7 @@ export class GrammarkdownEmitter extends Emitter {
         }
     }
 
-    protected emitRightHandSideList(node: RightHandSideList) {
+    protected override emitRightHandSideList(node: RightHandSideList) {
         this.writer.indent();
         if (node.elements) {
             for (const rhs of node.elements) {
@@ -153,11 +180,16 @@ export class GrammarkdownEmitter extends Emitter {
         this.writer.dedent();
     }
 
-    protected emitRightHandSide(node: RightHandSide) {
+    protected override emitRightHandSide(node: RightHandSide) {
         this.emitChildren(node);
     }
 
-    protected emitSymbolSpan(node: SymbolSpan) {
+    protected override emitLinkReference(node: LinkReference): void {
+        this.writer.write(` #`);
+        this.writer.write(node.text);
+    }
+
+    protected override emitSymbolSpan(node: SymbolSpan) {
         this.emitNode(node.symbol);
         if (node.next) {
             this.writer.write(" ");
@@ -165,20 +197,20 @@ export class GrammarkdownEmitter extends Emitter {
         }
     }
 
-    protected emitPlaceholder(node: LexicalSymbol) {
+    protected override emitPlaceholder(node: LexicalSymbol) {
         this.emitTokenKind(SyntaxKind.AtToken);
     }
 
-    protected emitTerminal(node: Terminal) {
+    protected override emitTerminal(node: Terminal) {
         this.emitNode(node.literal);
         this.emitNode(node.questionToken);
     }
 
-    protected emitNonterminal(node: Nonterminal) {
+    protected override emitNonterminal(node: Nonterminal) {
         this.emitChildren(node);
     }
 
-    protected emitArgumentList(node: ArgumentList) {
+    protected override emitArgumentList(node: ArgumentList) {
         this.writer.write("[");
         if (node.elements) {
             for (let i = 0; i < node.elements.length; ++i) {
@@ -191,22 +223,22 @@ export class GrammarkdownEmitter extends Emitter {
         this.writer.write(`]`);
     }
 
-    protected emitArgument(node: Argument) {
+    protected override emitArgument(node: Argument) {
         this.emitToken(node.operatorToken);
         this.emitNode(node.name);
     }
 
-    protected emitUnicodeCharacterRange(node: UnicodeCharacterRange) {
+    protected override emitUnicodeCharacterRange(node: UnicodeCharacterRange) {
         this.emitTextContent(node.left);
         this.writer.write(` through `);
         this.emitTextContent(node.right);
     }
 
-    protected emitUnicodeCharacterLiteral(node: UnicodeCharacterLiteral) {
+    protected override emitUnicodeCharacterLiteral(node: UnicodeCharacterLiteral) {
         this.emitTextContent(node);
     }
 
-    protected emitTerminalLiteral(node: TerminalLiteral) {
+    protected override emitTerminalLiteral(node: TerminalLiteral) {
         if (node.text === "`") {
             this.writer.write("```");
         }
@@ -217,16 +249,16 @@ export class GrammarkdownEmitter extends Emitter {
         }
     }
 
-    protected emitProse(node: Prose) {
+    protected override emitProse(node: Prose) {
         this.writer.write("> ");
         node.fragments && this.emitNodes(node.fragments);
     }
 
-    protected emitEmptyAssertion(node: EmptyAssertion) {
+    protected override emitEmptyAssertion(node: EmptyAssertion) {
         this.writer.write("[empty]");
     }
 
-    protected emitSymbolSet(node: SymbolSet) {
+    protected override emitSymbolSet(node: SymbolSet) {
         this.writer.write(`{`);
         if (node.elements) {
             for (let i = 0; i < node.elements.length; ++i) {
@@ -241,7 +273,7 @@ export class GrammarkdownEmitter extends Emitter {
         this.writer.write(` }`);
     }
 
-    protected emitLookaheadAssertion(node: LookaheadAssertion) {
+    protected override emitLookaheadAssertion(node: LookaheadAssertion) {
         this.writer.write(`[`);
         this.emitToken(node.lookaheadKeyword);
         this.writer.write(" ");
@@ -251,13 +283,13 @@ export class GrammarkdownEmitter extends Emitter {
         this.writer.write(`]`);
     }
 
-    protected emitLexicalGoalAssertion(node: LexicalGoalAssertion): void {
+    protected override emitLexicalGoalAssertion(node: LexicalGoalAssertion): void {
         this.writer.write(`[lexical goal `);
         this.emitNode(node.symbol);
         this.writer.write(`]`);
     }
 
-    protected emitNoSymbolHereAssertion(node: NoSymbolHereAssertion): void {
+    protected override emitNoSymbolHereAssertion(node: NoSymbolHereAssertion): void {
         this.writer.write(`[no `);
         if (node.symbols) {
             for (let i = 0; i < node.symbols.length; ++i) {
@@ -272,7 +304,7 @@ export class GrammarkdownEmitter extends Emitter {
         this.writer.write(` here]`);
     }
 
-    protected emitConstraints(node: Constraints): void {
+    protected override emitConstraints(node: Constraints): void {
         this.writer.write("[");
         if (node.elements) {
             for (let i = 0; i < node.elements.length; ++i) {
@@ -286,24 +318,31 @@ export class GrammarkdownEmitter extends Emitter {
         this.writer.write("] ");
     }
 
-    protected emitProseAssertion(node: ProseAssertion): void {
-        this.writer.write(`[>`);
+    protected override emitProseAssertion(node: ProseAssertion): void {
+        this.writer.write(`[> `);
         if (node.fragments) {
             for (const fragment of node.fragments) {
-                this.emitNode(fragment);
+                if (fragment.kind === SyntaxKind.Nonterminal) {
+                    this.writer.write(`|`);
+                    this.emitNode(fragment);
+                    this.writer.write(`|`);
+                }
+                else {
+                    this.emitNode(fragment);
+                }
             }
         }
 
         this.writer.write(`]`);
     }
 
-    protected emitButNotSymbol(node: ButNotSymbol) {
+    protected override emitButNotSymbol(node: ButNotSymbol) {
         this.emitNode(node.left);
         this.writer.write(` but not `);
         this.emitNode(node.right);
     }
 
-    protected emitOneOfSymbol(node: OneOfSymbol) {
+    protected override emitOneOfSymbol(node: OneOfSymbol) {
         this.writer.write(`one of `);
         if (node.symbols) {
             for (let i = 0; i < node.symbols.length; ++i) {
@@ -316,39 +355,24 @@ export class GrammarkdownEmitter extends Emitter {
         }
     }
 
-    protected emitTextContent(node: TextContent) {
+    protected override emitTextContent(node: TextContent) {
         if (node?.text) {
             this.writer.write(node.text);
         }
     }
 
-    protected emitDefine(node: Define) {
-        this.emitNode(node.atToken);
-        this.emitNode(node.defineKeyword);
-        this.writer.write(" ");
-        this.emitNode(node.key);
-        this.writer.write(" ");
-        this.emitNode(node.valueToken);
-        this.writer.writeln();
+    protected override emitSingleLineCommentTrivia(node: SingleLineCommentTrivia): void {
     }
 
-    protected emitLine(node: Line) {
-        this.emitNode(node.atToken);
-        this.emitNode(node.lineKeyword);
-        this.writer.write(" ");
-        this.emitNode(node.number);
-        if (node.path) {
-            this.writer.write(" ");
-            this.emitNode(node.path);
-        }
-        this.writer.writeln();
+    protected override emitMultiLineCommentTrivia(node: MultiLineCommentTrivia): void {
     }
 
-    protected emitImport(node: Import) {
-        this.emitNode(node.atToken);
-        this.emitNode(node.importKeyword);
-        this.writer.write(" ");
-        this.emitNode(node.path);
-        this.writer.writeln();
-    }
+}
+
+function isCollapsedProduction(node: Node): node is Production & { readonly body: RightHandSide } {
+    return node instanceof Production && node.body instanceof RightHandSide;
+}
+
+function areContiguousCollapsedProductions(left: Node, right: Node) {
+    return isCollapsedProduction(left) && isCollapsedProduction(right) && left.name.text === right.name.text;
 }
