@@ -1,8 +1,10 @@
 X ::
     Y
 
-<ins>X ::
-    Y</ins>
+<ins>
+X ::
+    Y
+</ins>
 
 X ::
     Y

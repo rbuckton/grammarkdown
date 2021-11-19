@@ -1423,7 +1423,7 @@ export class Checker {
             : this.reportGrammarError(context, pos, diagnosticMessage, arg0, arg1, arg2);
     }
 
-    private reportInvalidHtmlTrivia(nodes: HtmlTrivia[] | undefined) {
+    private reportInvalidHtmlTrivia(nodes: readonly HtmlTrivia[] | undefined) {
         if (nodes?.length) {
             return this.reportGrammarErrorForNode(nodes[0], Diagnostics.HTML_trivia_not_allowed_here);
         }

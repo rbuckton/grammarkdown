@@ -53,10 +53,10 @@ import {
     MetaElement,
     SourceElement,
     PrimarySymbol,
-    HtmlTrivia,
+    Trivia,
     Line,
     NumberLiteral,
-    TerminalLiteral
+    TerminalLiteral,
 } from "./nodes";
 
 enum ParsingContext {
@@ -124,7 +124,7 @@ export class Parser {
     private diagnostics!: DiagnosticMessages;
     private parsingContext!: ParsingContext;
     private cancelToken?: CancelToken;
-    private tags: Map<number, HtmlTrivia[]> | undefined;
+    private trivia: Map<number, Trivia[]> | undefined;
 
     // TODO(rbuckton): Incremental parser
     // public updateSourceFile(sourceFile: SourceFile, change: TextChange) {
@@ -162,7 +162,7 @@ export class Parser {
         const savedCancellationToken = this.cancelToken;
         const savedScanner = this.scanner;
         const savedParsingContext = this.parsingContext;
-        const savedTags = this.tags;
+        const savedTrivia = this.trivia;
         try {
             return this.parse(filename, text, /*previousSourceFile*/ undefined, /*changeRange*/ undefined, cancelToken);
         }
@@ -172,7 +172,7 @@ export class Parser {
             this.cancelToken = savedCancellationToken;
             this.scanner = savedScanner;
             this.parsingContext = savedParsingContext;
-            this.tags = savedTags;
+            this.trivia = savedTrivia;
         }
     }
 
@@ -184,10 +184,12 @@ export class Parser {
         this.diagnostics.setSourceFile(sourceFile);
         this.cancelToken = cancelToken;
         this.parsingContext = ParsingContext.SourceElements;
+        this.trivia = undefined;
         this.scanner = new Scanner(filename, text, this.diagnostics, this.cancelToken);
 
         this.nextToken();
         this.parseSourceElementList(elements);
+
         sourceFile.imports = this.imports;
         sourceFile.parseDiagnostics = this.diagnostics;
         return sourceFile;
@@ -195,10 +197,10 @@ export class Parser {
 
     private nextToken(): SyntaxKind {
         this.token = this.scanner.scan();
-        const htmlTrivia = trimTrivia(this.scanner.getHtmlTrivia());
-        if (htmlTrivia) {
-            if (!this.tags) this.tags = new Map<number, HtmlTrivia[]>();
-            this.tags.set(this.scanner.getStartPos(), htmlTrivia);
+        const trivia = trimTrivia(this.scanner.getTrivia());
+        if (trivia) {
+            this.trivia ||= new Map<number, Trivia[]>();
+            this.trivia.set(this.scanner.getStartPos(), trivia);
         }
         return this.token;
     }
@@ -212,20 +214,24 @@ export class Parser {
     // }
 
     private speculate<T>(callback: () => T, isLookahead: boolean): T {
-        const saveToken = this.token;
-        const saveParsingContext = this.parsingContext;
-        const saveDiagnostics = this.diagnostics;
-
+        const savedToken = this.token;
+        const savedParsingContext = this.parsingContext;
+        const savedDiagnostics = this.diagnostics;
+        const savedTrivia = this.trivia;
+        if (this.trivia) this.trivia = new Map(this.trivia);
         this.diagnostics = NullDiagnosticMessages.instance;
-        const result = this.scanner.speculate(callback, isLookahead);
-
-        this.diagnostics = saveDiagnostics;
-        if (!result || isLookahead) {
-            this.token = saveToken;
-            this.parsingContext = saveParsingContext;
+        try {
+            const result = this.scanner.speculate(callback, isLookahead);
+            if (!result || isLookahead) {
+                this.token = savedToken;
+                this.parsingContext = savedParsingContext;
+                this.trivia = savedTrivia;
+            }
+            return result;
         }
-
-        return result;
+        finally {
+            this.diagnostics = savedDiagnostics;
+        }
     }
 
     private isEOF(): boolean {
@@ -262,10 +268,10 @@ export class Parser {
         if (node) {
             node.pos = fullStart;
             node.end = this.scanner.getStartPos();
-            if (this.tags) {
-                attachHtmlTrivia(node, this.tags.get(node.pos), this.tags.get(node.end));
+            if (this.trivia) {
+                attachTrivia(node, this.trivia.get(node.pos), this.trivia.get(node.end), this.scanner.hasPrecedingLineTerminator());
             }
-            promoteHtmlTrivia(node, node.firstChild, node.lastChild);
+            promoteTrivia(node, node.firstChild, node.lastChild);
         }
         return node;
     }
@@ -1246,102 +1252,254 @@ function isLookaheadOperatorToken(token: SyntaxKind): token is LookaheadOperator
         || token === SyntaxKind.NotAnElementOfToken;
 }
 
-function matched(possibleOpenTag: HtmlTrivia, possibleCloseTag: HtmlTrivia) {
+function matched(possibleOpenTag: Trivia, possibleCloseTag: Trivia) {
     return possibleOpenTag.kind === SyntaxKind.HtmlOpenTagTrivia
         && possibleCloseTag.kind === SyntaxKind.HtmlCloseTagTrivia
         && possibleOpenTag.tagName === possibleCloseTag.tagName;
 }
 
-function trimTrivia(trivia: HtmlTrivia[] | undefined) {
-    let result: HtmlTrivia[] | undefined;
+// remove empty html trivia
+function trimTrivia(trivia: Trivia[] | undefined) {
+    let result: Trivia[] | undefined;
     if (trivia) {
+        let right: Trivia | undefined;
         for (let i = 0; i < trivia.length - 1; i++) {
-            if (matched(trivia[i], trivia[i + 1])) {
-                if (!result) result = trivia.slice(0, i);
+            const left = trivia[i];
+            right = trivia[i + 1];
+            if (matched(left, right)) {
+                result ||= trivia.slice(0, i);
+                right = undefined;
             }
-            else if (result) {
-                result.push(trivia[i]);
+            else {
+                result?.push(left);
             }
         }
+        if (right) result?.push(right);
     }
     return result || trivia;
 }
 
-function attachHtmlTrivia(node: Node, leadingTags: HtmlTrivia[] | undefined, trailingTags: HtmlTrivia[] | undefined) {
-    if (leadingTags) {
-        let leadingTag = leadingTags.pop();
-        while (leadingTag && leadingTag.kind === SyntaxKind.HtmlOpenTagTrivia) {
-            (node.leadingHtmlTrivia || (node.leadingHtmlTrivia = [])).unshift(leadingTag);
-            leadingTag = leadingTags.pop();
+function splitTrivia(triviaArray: readonly Trivia[], hasFollowingLineTerminator: boolean): { trailingEnd: number, leadingStart: number } {
+    // Leading trivia is trivia that belongs to the beginning of the node:
+    //
+    // - An HTML close tag trivia, or any trivia preceding an HTML close tag trivia, is not leading trivia of the node.
+    // - An HTML open tag trivia, and any trivia following an HTML open tag trivia, is leading trivia of the node.
+    // - If the node has a preceding line break, then
+    //   - Any other non-HTML tag trivia on the same line as the node that precedes the node is leading trivia of the node.
+    //   - Any other non-HTML tag trivia on a line that precedes the node, but not preceding a blank line, is leading trivia of the node.
+    // - Otherwise,
+    //   - Any other non-HTML tag trivia on the same line as the node that precedes the node is leading trivia, if there is no whitespace between
+    //     that trivia and the node.
+
+    // Trailing trivia is trivia that belongs to the end of the node:
+    //
+    // - An HTML open tag trivia, or any trivia following an HTML open tag trivia, is not trailing trivia of the node.
+    // - An HTML close tag trivia, and any trivia preceding an HTML close tag trivia, is trailing trivia of the node.
+    // - If the node has a trailing line break, then
+    //   - Any other non-HTML tag trivia on the same line as the node that follows the node is trailing trivia of the node.
+    //   - Any other non-HTML tag trivia on a line that follows the node, but not following a blank line, is trailing trivia of the node.
+    // - Otherwise,
+    //   - Any other non-HTML tag trivia on the same line as the node that follows the node is trailing trivia, if there is no whitespace between
+    //     that trivia and the node.
+
+    // Detached trivia is any trivia that occurs prior to the node that is not the leading or trailing trivia of this
+    // or any other node.
+
+    if (!triviaArray.length) return { trailingEnd: 0, leadingStart: 0 };
+
+    let hasLineTerminator = hasFollowingLineTerminator; // Used by all trivia to determine whether to break on blank lines or whitespace.
+
+    let lastHtmlCloseTagIndex = -1; // Used by leading/detached trivia to exclude trivia at or before this index.
+                                    // Used by trailing trivia to include trivia at or before this index.
+    let lastFollowingBlankLineIndex = -1; // Used by leading/detached trivia to exclude trivia at or before this index.
+    let lastFollowingWhiteSpaceIndex = -1; // Used by leading/detached trivia to exclude trivia at or before this index.
+    let firstHtmlOpenTagIndex = -1; // Used by trailing trivia to exclude trivia at or after this index.
+                                    // Used by leading/detached trivia to include trivia at or after this index.
+    let firstPrecedingBlankLineIndex = -1; // Used by trailing trivia to exclude trivia at or after this index.
+    let firstPrecedingWhiteSpaceIndex = -1; // Used by trailing trivia to exclude trivia at or after this index.
+
+    for (let i = 0; i < triviaArray.length; i++) {
+        const trivia = triviaArray[i];
+        if (trivia.hasPrecedingLineTerminator || trivia.hasFollowingLineTerminator) {
+            hasLineTerminator = true;
         }
-        if (leadingTag) leadingTags.push(leadingTag);
+
+        if (trivia.hasPrecedingBlankLine) {
+            // trailing trivia will stop before this trivia, unless
+            // it is followed by an HTML close tag trivia.
+            if (firstPrecedingBlankLineIndex === -1) firstPrecedingBlankLineIndex = i;
+        }
+        else if (trivia.hasPrecedingWhiteSpace) {
+            // trailing trivia will stop before this trivia, unless
+            // it is followed by an HTML close tag trivia.
+            if (firstPrecedingWhiteSpaceIndex === -1) firstPrecedingWhiteSpaceIndex = i;
+        }
+
+        if (trivia.kind === SyntaxKind.HtmlCloseTagTrivia) {
+            // leading/detached trivia will start after this trivia
+            lastHtmlCloseTagIndex = i;
+
+            // trailing trivia will include this trivia and all trivia that
+            // precedes it
+            firstPrecedingBlankLineIndex = -1;
+            firstPrecedingWhiteSpaceIndex = -1;
+        }
+        else if (trivia.kind === SyntaxKind.HtmlOpenTagTrivia) {
+            // trailing trivia will stop before this trivia
+            if (firstHtmlOpenTagIndex === -1) firstHtmlOpenTagIndex = i;
+        }
+
+        if (trivia.hasFollowingBlankLine) {
+            // leading trivia will start after this trivia, unless
+            // it is preceded by an HTML open tag trivia
+            if (firstHtmlOpenTagIndex === -1) {
+                lastFollowingBlankLineIndex = i;
+            }
+        }
+        else if (trivia.hasFollowingWhiteSpace) {
+            // leading trivia will start after this trivia, unless
+            // it is preceded by an HTML open tag trivia
+            if (firstHtmlOpenTagIndex === -1) {
+                lastFollowingWhiteSpaceIndex = i;
+            }
+        }
     }
-    if (trailingTags) {
-        let trailingTag = trailingTags.shift();
-        while (trailingTag && trailingTag.kind === SyntaxKind.HtmlCloseTagTrivia) {
-            (node.trailingHtmlTrivia || (node.trailingHtmlTrivia = [])).push(trailingTag);
-            trailingTag = trailingTags.shift();
+
+    // Used by leading/detached trivia to exclude trivia at or before this index.
+    const lastFollowingBreakIndex = hasLineTerminator ? lastFollowingBlankLineIndex : lastFollowingWhiteSpaceIndex;
+
+    // Used by trailing trivia to exclude trivia at or after this index.
+    const firstPrecedingBreakIndex = hasLineTerminator ? firstPrecedingBlankLineIndex : firstPrecedingWhiteSpaceIndex;
+
+    let trailingEnd = 0; // exclusive
+    if (lastHtmlCloseTagIndex !== -1) trailingEnd = lastHtmlCloseTagIndex + 1;
+    if (firstPrecedingBreakIndex !== -1) trailingEnd = firstPrecedingBreakIndex;
+
+    let leadingStart = triviaArray.length; // inclusive
+    if (firstHtmlOpenTagIndex !== -1) leadingStart = firstHtmlOpenTagIndex;
+    if (lastFollowingBreakIndex !== -1) leadingStart = lastFollowingBreakIndex - 1;
+
+    return { trailingEnd, leadingStart };
+}
+
+function attachTrivia(node: Node, leadingTrivia: Trivia[] | undefined, trailingTrivia: Trivia[] | undefined, hasFollowingLineTerminator: boolean) {
+    if (leadingTrivia?.length) {
+        const { trailingEnd, leadingStart } = splitTrivia(leadingTrivia, /*hasFollowingLineTerminator*/ false);
+
+        let nodeLeadingTrivia: Trivia[] | undefined;
+        let nodeDetachedTrivia: Trivia[] | undefined;
+        for (let i = leadingTrivia.length - 1; i >= trailingEnd; i--) {
+            const trivia = leadingTrivia.pop();
+            if (!trivia) break;
+
+            if (i >= leadingStart) {
+                (nodeLeadingTrivia ||= []).unshift(trivia);
+            }
+            else if (i >= trailingEnd) {
+                (nodeDetachedTrivia ||= []).unshift(trivia);
+            }
         }
-        if (trailingTag) trailingTags.unshift(trailingTag);
+
+        if (nodeLeadingTrivia) node.leadingTrivia = nodeLeadingTrivia;
+        if (nodeDetachedTrivia) node.detachedTrivia = nodeDetachedTrivia;
+    }
+
+    if (trailingTrivia?.length) {
+        const { trailingEnd } = splitTrivia(trailingTrivia, hasFollowingLineTerminator);
+
+        let nodeTrailingTrivia: Trivia[] | undefined;
+        for (let i = 0; i < trailingEnd; i++) {
+            const trivia = trailingTrivia.shift();
+            if (!trivia) break;
+
+            (nodeTrailingTrivia ||= node.trailingTrivia?.slice() || []).push(trivia);
+        }
+
+        if (nodeTrailingTrivia) node.trailingTrivia = nodeTrailingTrivia;
     }
 }
 
-function promoteHtmlTrivia(parent: Node, firstChild: Node | undefined, lastChild: Node | undefined) {
-    if (firstChild && firstChild === lastChild && !(parent instanceof RightHandSideList)) {
-        promoteAllHtmlTrivia(parent, firstChild);
+function promoteTrivia(parent: Node, firstChild: Node | undefined, lastChild: Node | undefined) {
+    if (firstChild && firstChild === lastChild && parent.pos === firstChild.pos && parent.end === firstChild.end && parent.kind !== SyntaxKind.RightHandSideList) {
+        promoteAllTrivia(parent, firstChild);
     }
     else {
-        if (firstChild) promoteLeadingHtmlTrivia(parent, firstChild);
-        if (lastChild) promoteTrailingHtmlTrivia(parent, lastChild);
+        if (firstChild && parent.pos === firstChild.pos) promoteLeadingTrivia(parent, firstChild);
+        if (lastChild && parent.end === lastChild.end) promoteTrailingTrivia(parent, lastChild);
     }
 }
 
-function promoteLeadingHtmlTrivia(parent: Node, firstChild: Node) {
-    if (firstChild.leadingHtmlTrivia) {
-        if (firstChild.trailingHtmlTrivia) {
-            let leadingTag = firstChild.leadingHtmlTrivia.shift();
-            let trailingTag = firstChild.trailingHtmlTrivia.pop();
+function promoteLeadingTrivia(parent: Node, firstChild: Node) {
+    if (firstChild.detachedTrivia) {
+        parent.detachedTrivia = concat(parent.detachedTrivia?.slice(), firstChild.detachedTrivia.slice());
+        firstChild.detachedTrivia = undefined;
+    }
+
+    let firstChildLeadingTrivia = firstChild.leadingTrivia?.slice();
+    let firstChildTrailingTrivia = firstChild.trailingTrivia?.slice();
+    let parentLeadingTrivia: Trivia[] | undefined;
+    if (firstChildLeadingTrivia) {
+        if (firstChildTrailingTrivia) {
+            let leadingTag = firstChildLeadingTrivia.shift();
+            let trailingTag = firstChildTrailingTrivia.pop();
             while (leadingTag && (!trailingTag || !matched(leadingTag, trailingTag))) {
-                (parent.leadingHtmlTrivia || (parent.leadingHtmlTrivia = [])).push(leadingTag);
-                leadingTag = firstChild.leadingHtmlTrivia.shift();
+                (parentLeadingTrivia ||= parent.leadingTrivia?.slice() || []).push(leadingTag);
+                leadingTag = firstChildLeadingTrivia.shift();
             }
-            if (leadingTag) firstChild.leadingHtmlTrivia.unshift(leadingTag);
-            if (trailingTag) firstChild.trailingHtmlTrivia.unshift(trailingTag);
+            if (leadingTag) firstChildLeadingTrivia.unshift(leadingTag);
+            if (trailingTag) firstChildTrailingTrivia.unshift(trailingTag);
         }
         else {
-            parent.leadingHtmlTrivia = concat(parent.leadingHtmlTrivia, firstChild.leadingHtmlTrivia);
-            firstChild.leadingHtmlTrivia = undefined;
+            parentLeadingTrivia = concat(parent.leadingTrivia?.slice(), firstChildLeadingTrivia);
+            firstChildLeadingTrivia = undefined;
         }
     }
+
+    firstChild.leadingTrivia = firstChildLeadingTrivia;
+    firstChild.trailingTrivia = firstChildTrailingTrivia;
+    if (parentLeadingTrivia) parent.leadingTrivia = parentLeadingTrivia;
 }
 
-function promoteTrailingHtmlTrivia(parent: Node, lastChild: Node) {
-    if (lastChild.trailingHtmlTrivia) {
-        if (lastChild.leadingHtmlTrivia) {
-            let leadingTag = lastChild.leadingHtmlTrivia.shift();
-            let trailingTag = lastChild.trailingHtmlTrivia.pop();
+function promoteTrailingTrivia(parent: Node, lastChild: Node) {
+    let lastChildTrailingTrivia = lastChild.trailingTrivia?.slice();
+    let lastChildLeadingTrivia = lastChild.leadingTrivia?.slice();
+    let parentTrailingTrivia: Trivia[] | undefined;
+    if (lastChildTrailingTrivia) {
+        if (lastChildLeadingTrivia) {
+            let leadingTag = lastChildLeadingTrivia.shift();
+            let trailingTag = lastChildTrailingTrivia.pop();
             while (trailingTag && (!leadingTag || !matched(leadingTag, trailingTag))) {
-                (parent.trailingHtmlTrivia || (parent.trailingHtmlTrivia = [])).unshift(trailingTag);
-                trailingTag = lastChild.trailingHtmlTrivia.pop();
+                (parentTrailingTrivia ||= parent.trailingTrivia?.slice() || []).unshift(trailingTag);
+                trailingTag = lastChildTrailingTrivia.pop();
             }
-            if (leadingTag) lastChild.leadingHtmlTrivia.unshift(leadingTag);
-            if (trailingTag) lastChild.trailingHtmlTrivia.unshift(trailingTag);
+            if (leadingTag) lastChildLeadingTrivia.unshift(leadingTag);
+            if (trailingTag) lastChildTrailingTrivia.unshift(trailingTag);
         }
         else {
-            parent.trailingHtmlTrivia = concat(lastChild.trailingHtmlTrivia, parent.trailingHtmlTrivia);
-            lastChild.trailingHtmlTrivia = undefined;
+            parentTrailingTrivia = concat(lastChildTrailingTrivia, parent.trailingTrivia?.slice());
+            lastChildTrailingTrivia = undefined;
         }
     }
+
+    lastChild.trailingTrivia = lastChildTrailingTrivia;
+    lastChild.leadingTrivia = lastChildLeadingTrivia;
+    if (parentTrailingTrivia) parent.trailingTrivia = parentTrailingTrivia;
 }
 
-function promoteAllHtmlTrivia(parent: Node, onlyChild: Node) {
-    if (onlyChild.leadingHtmlTrivia) {
-        parent.leadingHtmlTrivia = concat(parent.leadingHtmlTrivia, onlyChild.leadingHtmlTrivia);
-        onlyChild.leadingHtmlTrivia = undefined;
+function promoteAllTrivia(parent: Node, onlyChild: Node) {
+    if (onlyChild.detachedTrivia) {
+        parent.detachedTrivia = concat(parent.detachedTrivia?.slice(), onlyChild.detachedTrivia.slice());
+        onlyChild.detachedTrivia = undefined;
     }
-    if (onlyChild.trailingHtmlTrivia) {
-        parent.trailingHtmlTrivia = concat(onlyChild.trailingHtmlTrivia, parent.trailingHtmlTrivia);
-        onlyChild.trailingHtmlTrivia = undefined;
+
+    if (onlyChild.leadingTrivia) {
+        parent.leadingTrivia = concat(parent.leadingTrivia?.slice(), onlyChild.leadingTrivia.slice());
+        onlyChild.leadingTrivia = undefined;
+    }
+
+    if (onlyChild.trailingTrivia) {
+        parent.trailingTrivia = concat(onlyChild.trailingTrivia.slice(), parent.trailingTrivia?.slice());
+        onlyChild.trailingTrivia = undefined;
     }
 }
 

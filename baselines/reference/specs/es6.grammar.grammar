@@ -1,5 +1,6 @@
 @define noStrictParametricProductions true
 
+// A.1 - Lexical Grammar
 SourceCharacter ::
     > any Unicode code point
 
@@ -136,8 +137,12 @@ Keyword :: one of
     `try`
 
 FutureReservedWord :: one of
-    `enum`      `await`     `implements` `package`
-    `protected` `interface` `private`    `public`
+    `enum`
+    // `await` is only treated as a /FutureReservedWord/ when /Module/ is the goal symbol of the syntactic grammar.
+    `await`
+    // The following tokens are also considered to be /FutureReservedWord/s when parsing strict mode code (see 10.2.1).
+    `implements` `package` `protected` `interface`
+    `private`    `public`
 
 Punctuator :: one of
     `{`  `}`  `(`  `)`  `[`   `]`   `.`    `;`   `,`
@@ -356,6 +361,7 @@ TemplateCharacter ::
     LineTerminatorSequence
     SourceCharacter but not one of ``` or `\` or `$` or LineTerminator
 
+// A.2 - Expressions
 IdentifierReference[Yield] :
     Identifier
     [~Yield] `yield`
@@ -597,6 +603,7 @@ Expression[In, Yield] :
     AssignmentExpression[?In, ?Yield]
     Expression[?In, ?Yield] `,` AssignmentExpression[?In, ?Yield]
 
+// A.3 - Statements
 Statement[Yield, Return] :
     BlockStatement[?Yield, ?Return]
     VariableStatement[?Yield]
@@ -795,6 +802,7 @@ CatchParameter[Yield] :
 DebuggerStatement :
     `debugger` `;`
 
+// A.4 - Functions and Classes
 FunctionDeclaration[Yield, Default] :
     `function` BindingIdentifier[?Yield] `(` FormalParameters `)` `{` FunctionBody `}`
     [+Default] `function` `(` FormalParameters `)` `{` FunctionBody `}`
@@ -893,6 +901,7 @@ ClassElement[Yield] :
     `static` MethodDefinition[?Yield]
     `;`
 
+// A.5 - Scripts and Modules
 Script :
     ScriptBody?
 

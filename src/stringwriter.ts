@@ -8,13 +8,20 @@
 import { EOL } from 'os';
 import { CharacterCodes } from './tokens';
 
+const enum StringWriterFlags {
+    NewLineRequested = 1 << 0,
+    BlankLineRequested = 1 << 1,
+    AnyLineRequested = NewLineRequested | BlankLineRequested,
+
+    IndentRequested = 1 << 2,
+}
+
 /** {@docCategory Emit} */
 export class StringWriter {
     private _text = "";
     private _depth = 0;
     private _indents = ["", "    "];
-    private _newLineRequested = false;
-    private _indentRequested = false;
+    private _flags: StringWriterFlags = 0;
     private _character = 0;
     private _line = 0;
     private _eol: string;
@@ -24,17 +31,32 @@ export class StringWriter {
     }
 
     public get size(): number {
-        return this._text.length + (this._newLineRequested ? this._eol.length : 0);
+        let size = this._text.length;
+        if (this._flags & StringWriterFlags.AnyLineRequested) {
+            const len = this._eol.length;
+            size += len;
+            if (this._flags & StringWriterFlags.BlankLineRequested) {
+                size += len;
+            }
+        }
+        return size;
     }
 
     public get line() {
-        return this._newLineRequested ? this._line + 1 : this._line;
+        let line = this._line;
+        if (this._flags & StringWriterFlags.AnyLineRequested) {
+            line++;
+            if (this._flags & StringWriterFlags.BlankLineRequested) {
+                line++;
+            }
+        }
+        return line;
     }
 
     public get character() {
         let character = this._character;
-        if (this._newLineRequested) character = 0;
-        if (this._indentRequested) character += this._depth * this._indents[1].length;
+        if (this._flags & StringWriterFlags.AnyLineRequested) character = 0;
+        if (this._flags & StringWriterFlags.IndentRequested) character += this._depth * this._indents[1].length;
         return character;
     }
 
@@ -80,11 +102,23 @@ export class StringWriter {
 
     public writeln(text?: string) {
         this.write(text);
-        this._newLineRequested = true;
+        this._flags |= StringWriterFlags.NewLineRequested;
+    }
+
+    /* @internal */
+    public writeBlank() {
+        this._flags |= StringWriterFlags.BlankLineRequested;
     }
 
     public toString(): string {
-        return this._text + (this._newLineRequested ? this._eol : "");
+        let text = this._text;
+        if (this._flags & StringWriterFlags.AnyLineRequested) {
+            text += this._eol;
+            if (this._flags & StringWriterFlags.BlankLineRequested) {
+                text += this._eol;
+            }
+        }
+        return text;
     }
 
     public clone() {
@@ -92,25 +126,28 @@ export class StringWriter {
         writer._text = this._text;
         writer._depth = this._depth;
         writer._indents = this._indents.slice();
-        writer._newLineRequested = this._newLineRequested;
-        writer._indentRequested = this._indentRequested;
+        writer._flags = this._flags;
         writer._character = this._character;
         writer._line = this._line;
         return writer;
     }
 
     private flushNewLine(): void {
-        if (this._newLineRequested) {
+        if (this._flags & StringWriterFlags.AnyLineRequested) {
             this._text += this._eol;
             this._line++;
+            if (this._flags & StringWriterFlags.BlankLineRequested) {
+                this._text += this._eol;
+                this._line++;
+            }
             this._character = 0;
-            this._newLineRequested = false;
-            this._indentRequested = true;
+            this._flags &= ~(StringWriterFlags.AnyLineRequested);
+            this._flags |= StringWriterFlags.IndentRequested;
         }
     }
 
     private flushIndent(): void {
-        if (this._indentRequested) {
+        if (this._flags & StringWriterFlags.IndentRequested) {
             let indent = this._indents[this._depth];
             if (!indent && this._depth > 0) {
                 indent = this._indents[this._depth] = this._indents[this._depth - 1] + this._indents[1];
@@ -118,7 +155,7 @@ export class StringWriter {
 
             this._text += indent;
             this._character += indent.length;
-            this._indentRequested = false;
+            this._flags &= ~StringWriterFlags.IndentRequested;
         }
     }
 }

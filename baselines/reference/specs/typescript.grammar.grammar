@@ -1,6 +1,7 @@
 @define noStrictParametricProductions true
 @import "es2015"
 
+// A.1 Types
 TypeParameters :
     `<` TypeParameterList `>`
 
@@ -167,7 +168,8 @@ MethodSignature :
 TypeAliasDeclaration :
     `type` Identifier `=` Type `;`
 
-PropertyAssignment :
+// A.2 Expressions
+PropertyAssignment : // (Modified)
     PropertyName `:` AssignmentExpression
     PropertyName CallSignature `{` FunctionBody `}`
     GetAccessor
@@ -179,7 +181,7 @@ GetAccessor :
 SetAccessor :
     `set` PropertyName `(` Identifier TypeAnnotation? `)` `{` FunctionBody `}`
 
-ElementList :
+ElementList : // (Modified)
     Elision? AssignmentExpression
     Elision? SpreadElement
     ElementList `,` Elision? AssignmentExpression
@@ -188,14 +190,14 @@ ElementList :
 SpreadElement :
     `...` AssignmentExpression
 
-CallExpression :
+CallExpression : // (Modified)
     `super` `(` ArgumentList? `)`
     `super` `.` IdentifierName
 
-FunctionExpression :
+FunctionExpression : // (Modified)
     `function` Identifier? CallSignature `{` FunctionBody `}`
 
-AssignmentExpression :
+AssignmentExpression : // (Modified)
     ArrowFunctionExpression
 
 ArrowFunctionExpression :
@@ -206,13 +208,14 @@ ArrowFormalParameters :
     CallSignature
     Identifier
 
-Arguments :
+Arguments : // (Modified)
     TypeArguments? `(` ArgumentList? `)`
 
-UnaryExpression :
+UnaryExpression : // (Modified)
     `<` Type `>` UnaryExpression
 
-VariableDeclaration :
+// A.3 Statements
+VariableDeclaration : // (Modified)
     SimpleVariableDeclaration
     DestructuringVariableDeclaration
 
@@ -258,7 +261,8 @@ BindingElement :
 BindingRestElement :
     `...` Identifier
 
-FunctionDeclaration :
+// A.4 Functions
+FunctionDeclaration : // (Modified)
     FunctionOverloads? FunctionImplementation
 
 FunctionOverloads :
@@ -271,6 +275,7 @@ FunctionOverload :
 FunctionImplementation :
     `function` Identifier CallSignature `{` FunctionBody `}`
 
+// A.5 Interfaces
 InterfaceDeclaration :
     `interface` Identifier TypeParameters? InterfaceExtendsClause? ObjectType
 
@@ -284,6 +289,7 @@ ClassOrInterfaceTypeList :
 ClassOrInterfaceType :
     TypeReference
 
+// A.6 - Classes
 ClassDeclaration :
     `class` Identifier TypeParameters? ClassHeritage `{` ClassBody `}`
 
@@ -352,6 +358,7 @@ MemberAccessorDeclaration :
 IndexMemberDeclaration :
     IndexSignature `;`
 
+// A.7 Enums
 EnumDeclaration :
     `const`? `enum` Identifier `{` EnumBody? `}`
 
@@ -369,6 +376,7 @@ EnumMember :
 EnumValue :
     AssignmentExpression
 
+// A.8 Internal Modules
 ModuleDeclaration :
     `module` IdentifierPath `{` ModuleBody `}`
 
@@ -402,6 +410,7 @@ EntityName :
     ModuleName
     ModuleName `.` Identifier
 
+// A.9 Source Files and External Modules
 SourceFile :
     ImplementationSourceFile
     DeclarationSourceFile
@@ -444,6 +453,7 @@ ExternalModuleReference :
 ExportAssignment :
     `export` `=` Identifier `;`
 
+// A.10 - Ambients
 AmbientDeclaration :
     `declare` AmbientVariableDeclaration
     `declare` AmbientFunctionDeclaration

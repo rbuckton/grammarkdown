@@ -26,6 +26,7 @@ import {
     PrimarySymbolKind,
     MetaElementKind,
     SourceElementKind,
+    isHtmlTriviaKind,
 } from "./tokens";
 import { NodeVisitor } from "./visitor";
 import { skipTrivia } from "./scanner";
@@ -38,17 +39,64 @@ export interface TextContent {
 /** {@docCategory Nodes} */
 export abstract class Node<TKind extends SyntaxKind = SyntaxKind> implements TextRange {
     public readonly kind: TKind;
-    public leadingHtmlTrivia: HtmlTrivia[] | undefined;
-    public trailingHtmlTrivia: HtmlTrivia[] | undefined;
     public pos: number = 0;
     public end: number = 0;
+
+    /**
+     * Leading trivia is trivia that belongs to the beginning of the node:
+     * - An HTML close tag trivia, or any trivia preceding an HTML close tag trivia, is not leading trivia of the node.
+     * - An HTML open tag trivia, and any trivia following an HTML open tag trivia, is leading trivia of the node.
+     * - If the node has a preceding line break, then
+     *   - Any other non-HTML tag trivia on the same line as the node that precedes the node is leading trivia of the node.
+     *   - Any other non-HTML tag trivia on a line that precedes the node, but not preceding a blank line, is leading trivia of the node.
+     * - Otherwise,
+     *   - Any other non-HTML tag trivia on the same line as the node that precedes the node is leading trivia, if there is no whitespace between
+     *     that trivia and the node.
+     */
+    public leadingTrivia: readonly Trivia[] | undefined;
+
+    /**
+     * Trailing trivia is trivia that belongs to the end of the node:
+     * - An HTML open tag trivia, or any trivia following an HTML open tag trivia, is not trailing trivia of the node.
+     * - An HTML close tag trivia, and any trivia preceding an HTML close tag trivia, is trailing trivia of the node.
+     * - If the node has a trailing line break, then
+     *   - Any other non-HTML tag trivia on the same line as the node that follows the node is trailing trivia of the node.
+     *   - Any other non-HTML tag trivia on a line that follows the node, but not following a blank line, is trailing trivia of the node.
+     * - Otherwise,
+     *   - Any other non-HTML tag trivia on the same line as the node that follows the node is trailing trivia, if there is no whitespace between
+     *     that trivia and the node.
+     */
+    public trailingTrivia: readonly Trivia[] | undefined;
+
+    /**
+     * Detached trivia is any trivia that occurs prior to the node that is not the leading or trailing trivia of this
+     * or any other node.
+     */
+    public detachedTrivia: readonly Trivia[] | undefined;
+
+    private _leadingHtmlTrivia: readonly HtmlTrivia[] | undefined;
+    private _trailingHtmlTrivia: readonly HtmlTrivia[] | undefined;
 
     constructor(kind: TKind) {
         this.kind = kind;
     }
 
-    get firstChild(): Node | undefined { return undefined; }
-    get lastChild(): Node | undefined { return undefined; }
+    public get firstChild(): Node | undefined { return undefined; }
+    public get lastChild(): Node | undefined { return undefined; }
+
+    public get leadingHtmlTrivia(): readonly HtmlTrivia[] | undefined {
+        if (!this._leadingHtmlTrivia && this.leadingTrivia) {
+            this._leadingHtmlTrivia = this.leadingTrivia.filter((trivia): trivia is HtmlTrivia => isHtmlTriviaKind(trivia.kind))
+        }
+        return this._leadingHtmlTrivia;
+    }
+
+    public get trailingHtmlTrivia(): readonly HtmlTrivia[] | undefined {
+        if (!this._trailingHtmlTrivia && this.trailingTrivia) {
+            this._trailingHtmlTrivia = this.trailingTrivia.filter((trivia): trivia is HtmlTrivia => isHtmlTriviaKind(trivia.kind))
+        }
+        return this._trailingHtmlTrivia;
+    }
 
     public getStart(sourceFile?: SourceFile) { return sourceFile ? skipTrivia(sourceFile.text, this.pos, this.end) : this.pos; }
     public getEnd() { return this.end; }
@@ -69,6 +117,12 @@ export abstract class Node<TKind extends SyntaxKind = SyntaxKind> implements Tex
 
 /** {@docCategory Nodes} */
 export abstract class TriviaBase<TKind extends TriviaKind> extends Node<TKind> {
+    public hasPrecedingLineTerminator = false;
+    public hasPrecedingBlankLine = false;
+    public hasPrecedingWhiteSpace = false;
+    public hasFollowingLineTerminator = false;
+    public hasFollowingBlankLine = false;
+    public hasFollowingWhiteSpace = false;
 }
 
 /** {@docCategory Nodes} */

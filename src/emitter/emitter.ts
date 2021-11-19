@@ -1,9 +1,9 @@
 /*!
- * Copyright (c) 2020 Ron Buckton (rbuckton@chronicles.org)
- *
- * This file is licensed to you under the terms of the MIT License, found in the LICENSE file
- * in the root of this repository or package.
- */
+* Copyright (c) 2020 Ron Buckton (rbuckton@chronicles.org)
+*
+* This file is licensed to you under the terms of the MIT License, found in the LICENSE file
+* in the root of this repository or package.
+*/
 
 import * as path from "path";
 import * as performance from "../performance";
@@ -23,6 +23,8 @@ import {
     Constraints,
     Define,
     EmptyAssertion,
+    HtmlCloseTagTrivia,
+    HtmlOpenTagTrivia,
     Identifier,
     Import,
     LexicalGoalAssertion,
@@ -53,6 +55,7 @@ import {
     Terminal,
     TerminalLiteral,
     TextContent,
+    Trivia,
     UnicodeCharacterLiteral,
     UnicodeCharacterRange,
 } from "../nodes";
@@ -144,11 +147,12 @@ export class Emitter {
     }
 
     protected beforeEmitNode(node: Node): void {
-        this.emitLeadingHtmlTriviaOfNode(node);
+        this.emitDetachedTriviaOfNode(node);
+        this.emitLeadingTriviaOfNode(node);
     }
 
     protected afterEmitNode(node: Node): void {
-        this.emitTrailingHtmlTriviaOfNode(node);
+        this.emitTrailingTriviaOfNode(node);
     }
 
     protected emitNode(node: Node | undefined): void {
@@ -201,10 +205,11 @@ export class Emitter {
             case SyntaxKind.ProseHead: this.emitProseFragmentLiteral(<ProseFragmentLiteral>node); break;
             case SyntaxKind.ProseMiddle: this.emitProseFragmentLiteral(<ProseFragmentLiteral>node); break;
             case SyntaxKind.ProseTail: this.emitProseFragmentLiteral(<ProseFragmentLiteral>node); break;
-            case SyntaxKind.HtmlOpenTagTrivia: this.emitHtmlTrivia(node); break;
-            case SyntaxKind.HtmlCloseTagTrivia: this.emitHtmlTrivia(node); break;
-            case SyntaxKind.SingleLineCommentTrivia: this.emitSingleLineCommentTrivia(<SingleLineCommentTrivia>node); break;
-            case SyntaxKind.MultiLineCommentTrivia: this.emitMultiLineCommentTrivia(<MultiLineCommentTrivia>node); break;
+            case SyntaxKind.HtmlOpenTagTrivia:
+            case SyntaxKind.HtmlCloseTagTrivia:
+            case SyntaxKind.SingleLineCommentTrivia:
+            case SyntaxKind.MultiLineCommentTrivia:
+                return this.emitTrivia(<Trivia>node);
             default:
                 if (isTokenKind(node.kind)) {
                     this.emitToken(node);
@@ -384,31 +389,60 @@ export class Emitter {
         });
     }
 
-    protected emitLeadingHtmlTriviaOfNode(node: Node) {
-        const leadingHtmlTrivia = node.leadingHtmlTrivia;
-        if (leadingHtmlTrivia) {
-            for (const trivia of leadingHtmlTrivia) {
-                this.emitHtmlTrivia(trivia);
+    protected emitDetachedTriviaOfNode(node: Node) {
+        this.emitTriviaNodes(node.detachedTrivia);
+    }
+
+    protected emitLeadingTriviaOfNode(node: Node) {
+        this.emitTriviaNodes(node.leadingTrivia);
+    }
+
+    protected emitTrailingTriviaOfNode(node: Node) {
+        this.emitTriviaNodes(node.trailingTrivia);
+    }
+
+    protected emitTriviaNodes(nodes: readonly Trivia[] | undefined) {
+        if (nodes) {
+            for (const node of nodes) {
+                this.emitTrivia(node);
             }
         }
     }
 
-    protected emitTrailingHtmlTriviaOfNode(node: Node) {
-        const trailingHtmlTrivia = node.trailingHtmlTrivia;
-        if (trailingHtmlTrivia) {
-            for (const trivia of trailingHtmlTrivia) {
-                this.emitHtmlTrivia(trivia);
-            }
+    protected emitTrivia(node: Trivia) {
+        this.beforeEmitTrivia(node);
+        this.emitTriviaCore(node);
+        this.afterEmitTrivia(node);
+    }
+
+    protected beforeEmitTrivia(node: Trivia) { }
+
+    protected afterEmitTrivia(node: Trivia) { }
+
+    protected emitTriviaCore(node: Trivia) {
+        switch (node.kind) {
+            case SyntaxKind.HtmlOpenTagTrivia: this.emitHtmlOpenTagTrivia(<HtmlOpenTagTrivia>node); break;
+            case SyntaxKind.HtmlCloseTagTrivia: this.emitHtmlCloseTagTrivia(<HtmlCloseTagTrivia>node); break;
+            case SyntaxKind.SingleLineCommentTrivia: this.emitSingleLineCommentTrivia(<SingleLineCommentTrivia>node); break;
+            case SyntaxKind.MultiLineCommentTrivia: this.emitMultiLineCommentTrivia(<MultiLineCommentTrivia>node); break;
         }
     }
 
-    protected emitHtmlTrivia(range: TextRange) {
-        this.writer.write(this._sourceFile.text.substring(range.pos, range.end));
+    protected emitHtmlOpenTagTrivia(node: HtmlOpenTagTrivia) {
+        this.emitTextRange(node);
+    }
+
+    protected emitHtmlCloseTagTrivia(node: HtmlCloseTagTrivia) {
+        this.emitTextRange(node);
     }
 
     protected emitSingleLineCommentTrivia(node: SingleLineCommentTrivia) {
     }
 
     protected emitMultiLineCommentTrivia(node: MultiLineCommentTrivia) {
+    }
+
+    protected emitTextRange(range: TextRange) {
+        this.writer.write(this._sourceFile.text.substring(range.pos, range.end));
     }
 }

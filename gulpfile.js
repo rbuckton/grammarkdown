@@ -144,5 +144,5 @@ gulp.task("docs", gulp.series(
 function diff(remote, local) {
     var cmd = process.env.DIFF;
     if (!cmd) throw new Error("Please set the 'DIFF' environment variable.");
-    return exec(cmd, [remote, local]);
+    return exec(cmd, [remote, local], { waitForExit: false });
 }

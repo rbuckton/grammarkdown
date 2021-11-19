@@ -12,5 +12,9 @@ Keyword :: one of
     `try`
 
 FutureReservedWord :: one of
-    `enum`      `await`     `implements` `package`
-    `protected` `interface` `private`    `public`
+    `enum`
+    // `await` is only treated as a |FutureReservedWord| when |Module| is the goal symbol of the syntactic grammar.
+    `await`
+    // The following tokens are also considered to be |FutureReservedWord|s when parsing strict mode code (see 10.2.1).
+    `implements` `package` `protected` `interface`
+    `private`    `public`

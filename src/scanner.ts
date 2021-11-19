@@ -5,12 +5,12 @@
  * in the root of this repository or package.
  */
 
-import { CharacterCodes, SyntaxKind, stringToToken, isProseFragmentLiteralKind } from "./tokens";
-import { Diagnostics, DiagnosticMessages, NullDiagnosticMessages } from "./diagnostics";
-import { HtmlTrivia, HtmlCloseTagTrivia, HtmlOpenTagTrivia, SingleLineCommentTrivia, MultiLineCommentTrivia, CommentTrivia } from './nodes';
 import { CancelToken } from '@esfx/async-canceltoken';
 import { Cancelable } from '@esfx/cancelable';
 import { toCancelToken } from './core';
+import { DiagnosticMessages, Diagnostics, NullDiagnosticMessages } from "./diagnostics";
+import { CommentTrivia, HtmlCloseTagTrivia, HtmlOpenTagTrivia, HtmlTrivia, MultiLineCommentTrivia, SingleLineCommentTrivia, Trivia } from './nodes';
+import { CharacterCodes, isProseFragmentLiteralKind, stringToToken, SyntaxKind, isHtmlTriviaKind } from "./tokens";
 
 const enum TokenFlags {
     None = 0,
@@ -20,8 +20,13 @@ const enum TokenFlags {
     PrecedingBlankLine = 1 << 3,
     PrecedingIndent = 1 << 4,
     PrecedingDedent = 1 << 5,
-    PrecedingNonWhitespaceTrivia = 1 << 6,
     AnyPrecedingIndent = PrecedingIndent | PrecedingDedent,
+    PrecedingNonWhiteSpaceTrivia = 1 << 6,
+
+    TriviaPrecedingLineTerminator = 1 << 7,
+    TriviaPrecedingBlankLine = 1 << 8,
+    TriviaPrecedingWhiteSpaceTrivia = 1 << 9,
+    TriviaFlags = TriviaPrecedingLineTerminator | TriviaPrecedingBlankLine | TriviaPrecedingWhiteSpaceTrivia,
 }
 
 /** {@docCategory Parse} */
@@ -36,7 +41,8 @@ export class Scanner {
     private token: SyntaxKind = SyntaxKind.Unknown;
     private tokenValue: string = "";
     private tokenFlags: TokenFlags = TokenFlags.None;
-    private htmlTrivia: HtmlTrivia[] | undefined;
+    private trivia: Trivia[] | undefined;
+    private lastTrivia: Trivia | undefined;
     private diagnostics: DiagnosticMessages;
     private insignificantIndentLength: number = 0;
     private significantIndentLength: number = 0;
@@ -87,8 +93,13 @@ export class Scanner {
         return this.diagnostics;
     }
 
+    public getTrivia() {
+        return this.trivia;
+    }
+
+    /** @deprecated */
     public getHtmlTrivia() {
-        return this.htmlTrivia;
+        return this.trivia?.filter(trivia => isHtmlTriviaKind(trivia.kind));
     }
 
     public isIndented() {
@@ -119,8 +130,20 @@ export class Scanner {
         return (this.tokenFlags & TokenFlags.PrecedingBlankLine) === TokenFlags.PrecedingBlankLine;
     }
 
-    private hasPrecedingNonWhitspaceTrivia() {
-        return (this.tokenFlags & TokenFlags.PrecedingNonWhitespaceTrivia) === TokenFlags.PrecedingNonWhitespaceTrivia;
+    private hasPrecedingNonWhiteSpaceTrivia() {
+        return (this.tokenFlags & TokenFlags.PrecedingNonWhiteSpaceTrivia) === TokenFlags.PrecedingNonWhiteSpaceTrivia;
+    }
+
+    private triviaHasPrecedingLineTerminator() {
+        return (this.tokenFlags & TokenFlags.TriviaPrecedingLineTerminator) === TokenFlags.TriviaPrecedingLineTerminator;
+    }
+
+    private triviaHasPrecedingBlankLine() {
+        return (this.tokenFlags & TokenFlags.TriviaPrecedingBlankLine) === TokenFlags.TriviaPrecedingBlankLine;
+    }
+
+    private triviaHasPrecedingWhiteSpaceTrivia() {
+        return (this.tokenFlags & TokenFlags.TriviaPrecedingWhiteSpaceTrivia) === TokenFlags.TriviaPrecedingWhiteSpaceTrivia;
     }
 
     private isStartOfFile() {
@@ -132,12 +155,12 @@ export class Scanner {
     }
 
     private setHasPrecedingLineTerminator() {
-        this.tokenFlags |= TokenFlags.PrecedingLineTerminator;
+        this.tokenFlags |= TokenFlags.PrecedingLineTerminator | TokenFlags.TriviaPrecedingLineTerminator;
         this.currentIndentLength = 0;
     }
 
     private setHasPrecedingBlankLine() {
-        this.tokenFlags |= TokenFlags.PrecedingBlankLine;
+        this.tokenFlags |= TokenFlags.PrecedingBlankLine | TokenFlags.TriviaPrecedingBlankLine;
         if (this.significantIndentLength > 0) {
             this.setHasPrecedingDedent();
         }
@@ -158,12 +181,24 @@ export class Scanner {
         this.tokenFlags |= TokenFlags.LineContinuation;
     }
 
-    private setHasPrecedingNonWhitspaceTrivia() {
-        this.tokenFlags |= TokenFlags.PrecedingNonWhitespaceTrivia;
+    private setHasPrecedingNonWhiteSpaceTrivia() {
+        this.tokenFlags |= TokenFlags.PrecedingNonWhiteSpaceTrivia;
     }
 
-    private resetHasPrecedingNonWhitspaceTrivia() {
-        this.tokenFlags &= ~TokenFlags.PrecedingNonWhitespaceTrivia;
+    private resetHasPrecedingNonWhiteSpaceTrivia() {
+        this.tokenFlags &= ~TokenFlags.PrecedingNonWhiteSpaceTrivia;
+    }
+
+    private setTriviaHasPrecedingWhiteSpaceTrivia() {
+        this.tokenFlags |= TokenFlags.TriviaPrecedingWhiteSpaceTrivia;
+    }
+
+    private resetTriviaHasPrecedingWhiteSpaceTrivia() {
+        this.tokenFlags &= ~TokenFlags.TriviaPrecedingWhiteSpaceTrivia;
+    }
+
+    private resetTriviaFlags() {
+        this.tokenFlags &= ~TokenFlags.TriviaFlags;
     }
 
     public resetIndent() {
@@ -173,32 +208,34 @@ export class Scanner {
     }
 
     public speculate<T>(callback: () => T, isLookahead: boolean): T {
-        const savePos = this.pos;
-        const saveStartPos = this.startPos;
-        const saveTokenPos = this.tokenPos;
-        const saveToken = this.token;
-        const saveTokenValue = this.tokenValue;
-        const saveTokenFlags = this.tokenFlags;
-        const saveHtmlTrivia = this.htmlTrivia;
-        const saveDiagnostics = this.diagnostics;
-        const saveInitialIndentLength = this.insignificantIndentLength;
-        const saveSignificantIndentLength = this.significantIndentLength;
-        const saveCurrentIndentLength = this.currentIndentLength;
+        const savedPos = this.pos;
+        const savedStartPos = this.startPos;
+        const savedTokenPos = this.tokenPos;
+        const savedToken = this.token;
+        const savedTokenValue = this.tokenValue;
+        const savedTokenFlags = this.tokenFlags;
+        const savedTrivia = this.trivia;
+        const savedLastTrivia = this.lastTrivia;
+        const savedDiagnostics = this.diagnostics;
+        const savedInitialIndentLength = this.insignificantIndentLength;
+        const savedSignificantIndentLength = this.significantIndentLength;
+        const savedCurrentIndentLength = this.currentIndentLength;
 
         this.diagnostics = NullDiagnosticMessages.instance;
         const result = callback();
-        this.diagnostics = saveDiagnostics;
+        this.diagnostics = savedDiagnostics;
         if (!result || isLookahead) {
-            this.pos = savePos;
-            this.startPos = saveStartPos;
-            this.tokenPos = saveTokenPos;
-            this.token = saveToken;
-            this.tokenValue = saveTokenValue;
-            this.tokenFlags = saveTokenFlags;
-            this.htmlTrivia = saveHtmlTrivia;
-            this.insignificantIndentLength = saveInitialIndentLength;
-            this.significantIndentLength = saveSignificantIndentLength;
-            this.currentIndentLength = saveCurrentIndentLength;
+            this.pos = savedPos;
+            this.startPos = savedStartPos;
+            this.tokenPos = savedTokenPos;
+            this.token = savedToken;
+            this.tokenValue = savedTokenValue;
+            this.tokenFlags = savedTokenFlags;
+            this.trivia = savedTrivia;
+            this.lastTrivia = savedLastTrivia;
+            this.insignificantIndentLength = savedInitialIndentLength;
+            this.significantIndentLength = savedSignificantIndentLength;
+            this.currentIndentLength = savedCurrentIndentLength;
         }
         return result;
     }
@@ -208,7 +245,7 @@ export class Scanner {
         this.startPos = this.pos;
         this.tokenValue = "";
         this.tokenFlags = 0;
-        this.htmlTrivia = undefined;
+        this.trivia = undefined;
         while (true) {
             this.tokenPos = this.pos;
             if (this.pos >= this.len) {
@@ -230,18 +267,20 @@ export class Scanner {
 
             // scan trivia
             switch (ch) {
-                case CharacterCodes.LineFeed:
+                // newline trivia
                 case CharacterCodes.CarriageReturn:
-                    // newline trivia
-                    if (ch === CharacterCodes.CarriageReturn && this.text.charCodeAt(this.pos) === CharacterCodes.LineFeed) {
+                    if (this.pos < this.len && this.text.charCodeAt(this.pos) === CharacterCodes.LineFeed) {
                         this.pos++;
                     }
+                    // falls through
 
-                    if (this.hasPrecedingLineTerminator() && !this.hasPrecedingNonWhitspaceTrivia() && !this.hasPrecedingBlankLine()) {
+                case CharacterCodes.LineFeed:
+                    if (this.hasPrecedingLineTerminator() && !this.hasPrecedingNonWhiteSpaceTrivia() && !this.hasPrecedingBlankLine()) {
                         this.setHasPrecedingBlankLine();
                     }
 
-                    this.resetHasPrecedingNonWhitspaceTrivia();
+                    this.resetHasPrecedingNonWhiteSpaceTrivia();
+                    this.resetTriviaHasPrecedingWhiteSpaceTrivia();
                     this.setHasPrecedingLineTerminator();
                     continue;
 
@@ -249,57 +288,43 @@ export class Scanner {
                 case CharacterCodes.Tab:
                     // significant whitespace trivia
                     if (this.hasPrecedingLineTerminator()) this.currentIndentLength++;
-                    continue;
+                    // falls through
 
                 case CharacterCodes.VerticalTab:
                 case CharacterCodes.FormFeed:
-                    // whitspace trivia
+                    // whitespace trivia
+                    this.setTriviaHasPrecedingWhiteSpaceTrivia();
                     continue;
 
                 case CharacterCodes.LessThan: {
                     // html trivia
-                    const ch = this.text.charCodeAt(this.pos);
-                    if (isHtmlTagNameStart(ch) || ch === CharacterCodes.Slash || ch === CharacterCodes.GreaterThan) {
-                        this.setHasPrecedingNonWhitspaceTrivia();
-                        this.scanHtmlTrivia();
-                        continue;
+                    if (this.pos < this.len) {
+                        const ch = this.text.charCodeAt(this.pos);
+                        if (isHtmlTagNameStart(ch) || ch === CharacterCodes.Slash || ch === CharacterCodes.GreaterThan) {
+                            this.scanHtmlTrivia();
+                            this.setHasPrecedingNonWhiteSpaceTrivia();
+                            continue;
+                        }
                     }
                     break;
                 }
 
                 case CharacterCodes.Slash:
                     // comment trivia
-                    switch (this.text.charCodeAt(this.pos)) {
-                        case CharacterCodes.Slash:
-                            // single-line comment
-                            this.pos++;
-                            while (this.pos < this.len) {
-                                if (isLineTerminator(this.text.charCodeAt(this.pos))) {
-                                    break;
-                                }
-                                this.pos++;
-                            }
-                            this.setHasPrecedingNonWhitspaceTrivia();
-                            continue;
+                    if (this.pos < this.len) {
+                        switch (this.text.charCodeAt(this.pos)) {
+                            case CharacterCodes.Slash:
+                                // single-line comment
+                                this.scanSingleLineCommentTrivia();
+                                this.setHasPrecedingNonWhiteSpaceTrivia();
+                                continue;
 
-                        case CharacterCodes.Asterisk:
-                            // multi-line comment
-                            this.pos++;
-                            let commentClosed = false;
-                            while (this.pos < this.len) {
-                                if (this.text.charCodeAt(this.pos) === CharacterCodes.Asterisk &&
-                                    this.text.charCodeAt(this.pos + 1) === CharacterCodes.Slash) {
-                                    this.pos += 2;
-                                    commentClosed = true;
-                                    break;
-                                }
-                                this.pos++;
-                            }
-                            if (!commentClosed) {
-                                this.getDiagnostics().report(this.pos, Diagnostics._0_expected, "*/");
-                            }
-                            this.setHasPrecedingNonWhitspaceTrivia();
-                            continue;
+                            case CharacterCodes.Asterisk:
+                                // multi-line comment
+                                this.scanMultiLineCommentTrivia();
+                                this.setHasPrecedingNonWhiteSpaceTrivia();
+                                continue;
+                        }
                     }
                     break;
             }
@@ -307,23 +332,39 @@ export class Scanner {
             // check for changes in indentation
             if (this.isStartOfFile() || this.hasPrecedingLineTerminator()) {
                 if (this.isStartOfFile() || this.hasPrecedingBlankLine()) {
+                    // Reset indentation at the start of a file or following a blank line.
+                    // Any whitespace here will be considered insignificant and won't count
+                    // towards indentation.
                     this.insignificantIndentLength = this.currentIndentLength;
                     this.significantIndentLength = 0;
                 }
                 else if (this.currentIndentLength <= this.insignificantIndentLength) {
+                    // The current indentation is equal to or less than the insignificant indentation.
                     if (this.significantIndentLength > 0) {
+                        // If we have a significant indent, reset the significant indentation and mark this
+                        // as a dedent.
                         this.significantIndentLength = 0;
                         this.setHasPrecedingDedent();
                     }
                 }
-                else if (this.significantIndentLength === 0) {
-                    this.significantIndentLength = this.currentIndentLength;
-                    this.setHasPrecedingIndent();
-                }
-                else if (this.currentIndentLength > this.significantIndentLength) {
-                    this.setIsLineContinuation();
+                else {
+                    // The current indentation is greater than the insignificant indentation length we
+                    // recorded at the start of the file or since the last blank line.
+                    if (this.significantIndentLength === 0) {
+                        // If we have no significant indentation, record this as the new significant
+                        // indentation length and mark that we saw an indent.
+                        this.significantIndentLength = this.currentIndentLength;
+                        this.setHasPrecedingIndent();
+                    }
+                    else if (this.currentIndentLength > this.significantIndentLength) {
+                        // If the new indentation is greater than the significant indentation length,
+                        // then this is a line continuation.
+                        this.setIsLineContinuation();
+                    }
                 }
             }
+
+            this.finishLastTrivia();
 
             if (ch === CharacterCodes.Ampersand) {
                 ch = this.scanCharacterEntity();
@@ -497,7 +538,7 @@ export class Scanner {
             this.tokenPos = pos;
             this.tokenValue = "";
             this.tokenFlags = 0;
-            this.htmlTrivia = undefined;
+            this.trivia = undefined;
             this.insignificantIndentLength = 0;
             this.significantIndentLength = 0;
             this.currentIndentLength = 0;
@@ -633,20 +674,67 @@ export class Scanner {
         }, /*isLookahead*/ false);
     }
 
-    private scanHtmlTrivia() {
-        const closingTag = this.text.charCodeAt(this.pos) === CharacterCodes.Slash;
-        const triviaEnd = findHtmlTriviaEnd(this.text, this.pos, this.text.length);
-        const tagNamePos = closingTag ? this.pos + 1 : this.pos;
-        const tagNameEnd = findHtmlTriviaEnd(this.text, tagNamePos, triviaEnd);
-        if (tagNameEnd !== -1) {
-            const tagName = this.text.slice(tagNamePos, tagNameEnd);
-            const tag = closingTag ? new HtmlCloseTagTrivia(tagName) : new HtmlOpenTagTrivia(tagName);
-            tag.pos = this.tokenPos;
-            tag.end = triviaEnd;
-            if (!this.htmlTrivia) this.htmlTrivia = [];
-            this.htmlTrivia.push(tag);
+    private finishLastTrivia() {
+        if (this.lastTrivia) {
+            this.lastTrivia.hasFollowingLineTerminator = this.triviaHasPrecedingLineTerminator();
+            this.lastTrivia.hasFollowingBlankLine = this.triviaHasPrecedingBlankLine();
+            this.lastTrivia.hasFollowingWhiteSpace = this.triviaHasPrecedingWhiteSpaceTrivia();
+            this.lastTrivia = undefined;
         }
-        this.pos = triviaEnd;
+    }
+
+    private recordTrivia(trivia: Trivia) {
+        this.finishLastTrivia();
+        trivia.hasPrecedingLineTerminator = this.triviaHasPrecedingLineTerminator();
+        trivia.hasPrecedingBlankLine = this.triviaHasPrecedingBlankLine();
+        trivia.hasPrecedingWhiteSpace = this.triviaHasPrecedingWhiteSpaceTrivia();
+        trivia.pos = this.tokenPos;
+        trivia.end = this.pos;
+        this.trivia ||= [];
+        this.trivia.push(trivia);
+        this.lastTrivia = trivia;
+        this.resetTriviaFlags();
+    }
+
+    private scanSingleLineCommentTrivia() {
+        // //comment
+        //  ^
+        //  current pos
+
+        const end = findSingleLineCommentTriviaEnd(this.text, this.pos + 1, this.len);
+        this.pos = end;
+
+        this.recordTrivia(new SingleLineCommentTrivia());
+    }
+
+    private scanMultiLineCommentTrivia() {
+        // /*comment*/
+        //  ^
+        //  current pos
+
+        const { closed, end } = findMultiLineCommentTriviaEnd(this.text, this.pos + 1, this.len);
+        this.pos = end;
+
+        if (!closed) {
+            this.getDiagnostics().report(this.pos, Diagnostics._0_expected, "*/");
+        }
+
+        this.recordTrivia(new MultiLineCommentTrivia());
+    }
+
+    private scanHtmlTrivia() {
+        // <tag>
+        //  ^
+        //  current pos
+
+        const isClosingTag = this.text.charCodeAt(this.pos) === CharacterCodes.Slash;
+        const end = findHtmlTriviaEnd(this.text, this.pos, this.len);
+        const tagNamePos = isClosingTag ? this.pos + 1 : this.pos;
+        const tagNameEnd = findHtmlTriviaEnd(this.text, tagNamePos, end);
+        this.pos = end;
+
+        const tagName = this.text.slice(tagNamePos, tagNameEnd === -1 ? end : tagNameEnd);
+        this.recordTrivia(isClosingTag ? new HtmlCloseTagTrivia(tagName) : new HtmlOpenTagTrivia(tagName));
     }
 
     private scanCharacter(decodeEntity: boolean) {
@@ -912,15 +1000,26 @@ function isLineTerminator(ch: number): boolean {
     return ch === CharacterCodes.CarriageReturn || ch === CharacterCodes.LineFeed;
 }
 
-function isWhiteSpace(ch: number) {
+function isSignificantWhiteSpace(ch: number) {
     switch (ch) {
         case CharacterCodes.Space:
         case CharacterCodes.Tab:
+            return true;
+    }
+    return false;
+}
+
+function isInsignificantWhiteSpace(ch: number) {
+    switch (ch) {
         case CharacterCodes.VerticalTab:
         case CharacterCodes.FormFeed:
             return true;
     }
     return false;
+}
+
+function isWhiteSpace(ch: number) {
+    return isSignificantWhiteSpace(ch) || isInsignificantWhiteSpace(ch);
 }
 
 function isUpperAlpha(ch: number): boolean {
@@ -1016,7 +1115,7 @@ export function skipTrivia(text: string, pos: number, end: number, htmlTrivia?: 
                             continue;
                         }
                         case CharacterCodes.Asterisk: {
-                            const commentEnd = findMultiLineCommentTriviaEnd(text, pos + 2, end);
+                            const { end: commentEnd } = findMultiLineCommentTriviaEnd(text, pos + 2, end);
                             if (commentTrivia) {
                                 const comment = new MultiLineCommentTrivia();
                                 comment.pos = pos;
@@ -1067,11 +1166,11 @@ function findMultiLineCommentTriviaEnd(text: string, pos: number, end: number) {
     while (pos < end) {
         const ch = text.charCodeAt(pos);
         if (ch === CharacterCodes.Asterisk && pos + 1 < end && text.charCodeAt(pos + 1) === CharacterCodes.Slash) {
-            return pos + 2;
+            return { closed: true, end: pos + 2 };
         }
         pos++;
     }
-    return end;
+    return { closed: false, end };
 }
 
 function findSingleLineCommentTriviaEnd(text: string, pos: number, end: number) {

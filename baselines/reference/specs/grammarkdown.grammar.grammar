@@ -1,3 +1,6 @@
+//
+// Lexical grammar
+//
 SourceCharacter ::
     > any Unicode code point
 
@@ -90,6 +93,9 @@ ProseChars ::
 ProseChar ::
     SourceCharacter but not LineTerminator
 
+//
+// Syntactic grammar
+//
 Identifier :
     IdentifierName but not ReservedWord
 

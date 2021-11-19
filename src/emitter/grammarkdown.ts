@@ -43,6 +43,7 @@ import {
     Terminal,
     TerminalLiteral,
     TextContent,
+    Trivia,
     UnicodeCharacterLiteral,
     UnicodeCharacterRange,
 } from "../nodes";
@@ -57,8 +58,7 @@ export class GrammarkdownEmitter extends Emitter {
             if (lastElement) {
                 if (!(isMetaElementKind(lastElement.kind) && isMetaElementKind(element.kind)) &&
                     !areContiguousCollapsedProductions(lastElement, element)) {
-                    this.writer.commitLine();
-                    this.writer.writeln();
+                    this.writer.writeBlank();
                 }
             }
 
@@ -140,31 +140,79 @@ export class GrammarkdownEmitter extends Emitter {
         this.writer.write(" ");
         this.emitTokenKind(SyntaxKind.OfKeyword);
         if (node.terminals?.length) {
+            this.writer.writeln();
+            this.writer.indent();
+
             let maxLength = 1;
             for (const child of node.terminals) {
                 const len = child.text?.length ?? 0;
                 if (len > maxLength) maxLength = len;
             }
+
             const columnCount = Math.max(1, Math.floor(56 / (maxLength + 2)));
-            this.writer.writeln();
-            this.writer.indent();
             const columnSizes = Array<number>(columnCount).fill(0);
-            for (let i = 0; i < node.terminals.length; i++) {
-                columnSizes[i % columnCount] = Math.max(columnSizes[i % columnCount], node.terminals[i].text?.length ?? 0);
-            }
-            for (let i = 0; i < node.terminals.length; i++) {
-                if (i > 0) {
-                    if ((i % columnCount) === 0) {
-                        this.writer.writeln();
-                    }
-                    else {
-                        const lastColumnSize = columnSizes[(i % columnCount) - 1];
-                        const lastLen = node.terminals[i - 1].text?.length ?? 1;
-                        this.writer.write(" ".repeat(lastColumnSize - lastLen + 1));
-                    }
+
+            // compute line breaks and column widths by prospectively writing out the
+            // terminals
+            const savedWriter = this.writer;
+            this.writer = savedWriter.clone();
+
+            let columnOffset = 0;
+            for (const terminal of node.terminals) {
+                let startLine = this.writer.line;
+                this.beforeEmitNode(terminal);
+
+                if (this.writer.line !== startLine) {
+                    startLine = this.writer.line;
+                    columnOffset = 0;
                 }
-                this.emitNode(node.terminals[i]);
+
+                const len = terminal.text?.length ?? 0;
+                columnSizes[columnOffset] = Math.max(columnSizes[columnOffset], len + 2);
+                this.emitNodeCore(terminal);
+                this.afterEmitNode(terminal);
+
+                if (this.writer.line > startLine || columnOffset + 1 === columnCount) {
+                    this.writer.writeln();
+                    columnOffset = 0;
+                }
+                else {
+                    columnOffset++;
+                }
             }
+
+            this.writer = savedWriter;
+            columnOffset = 0;
+
+            let padding = "";
+            for (const terminal of node.terminals) {
+                let startLine = this.writer.line;
+                this.beforeEmitNode(terminal);
+
+                if (this.writer.line !== startLine) {
+                    startLine = this.writer.line;
+                    columnOffset = 0;
+                }
+                else {
+                    this.writer.write(padding);
+                }
+
+                this.emitNodeCore(terminal);
+                this.afterEmitNode(terminal);
+
+                if (this.writer.line > startLine || columnOffset + 1 === columnCount) {
+                    this.writer.writeln();
+                    padding = "";
+                    columnOffset = 0;
+                }
+                else {
+                    const columnSize = columnSizes[columnOffset];
+                    const len = (terminal.text?.length ?? 0) + 2;
+                    padding = " ".repeat((columnSize - len) + 1);
+                    columnOffset++;
+                }
+            }
+
             this.writer.dedent();
         }
     }
@@ -361,12 +409,38 @@ export class GrammarkdownEmitter extends Emitter {
         }
     }
 
+    protected override beforeEmitTrivia(node: Trivia): void {
+        if (node.hasPrecedingBlankLine) {
+            this.writer.writeBlank();
+        }
+        else if (node.hasPrecedingLineTerminator) {
+            this.writer.writeln();
+        }
+        else if (node.hasPrecedingWhiteSpace) {
+            this.writer.write(" ");
+        }
+    }
+
+    protected override afterEmitTrivia(node: Trivia): void {
+        if (node.hasFollowingBlankLine) {
+            this.writer.writeBlank();
+        }
+        else if (node.hasFollowingLineTerminator) {
+            this.writer.writeln();
+        }
+        else if (node.hasFollowingWhiteSpace) {
+            this.writer.write(" ");
+        }
+    }
+
     protected override emitSingleLineCommentTrivia(node: SingleLineCommentTrivia): void {
+        this.emitTextRange(node);
+        this.writer.writeln();
     }
 
     protected override emitMultiLineCommentTrivia(node: MultiLineCommentTrivia): void {
+        this.emitTextRange(node);
     }
-
 }
 
 function isCollapsedProduction(node: Node): node is Production & { readonly body: RightHandSide } {

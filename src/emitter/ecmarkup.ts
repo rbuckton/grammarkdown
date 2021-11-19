@@ -101,14 +101,17 @@ export class EcmarkupEmitter extends Emitter {
         this.writer.write(`<emu-rhs>`);
         if (node.terminals) {
             for (let i = 0; i < node.terminals.length; ++i) {
+                const terminal = node.terminals[i];
+
+                this.emitDetachedTriviaOfNode(terminal);
+
                 if (i > 0) {
                     this.writer.write(` `);
                 }
 
-                const terminal = node.terminals[i];
-                this.emitLeadingHtmlTriviaOfNode(terminal);
+                this.emitLeadingTriviaOfNode(terminal);
                 this.emitTextContent(terminal);
-                this.emitTrailingHtmlTriviaOfNode(terminal);
+                this.emitTrailingTriviaOfNode(terminal);
             }
         }
 
