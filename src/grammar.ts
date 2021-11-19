@@ -19,6 +19,7 @@ import { SourceFile } from "./nodes";
 import { toCancelToken, SharedOperation } from "./core";
 import { Emitter, EcmarkupEmitter, MarkdownEmitter, HtmlEmitter } from "./emitter";
 import { NodeAsyncHost } from "./hosts/node";
+import { getSourceFileAccessor } from "./nodeInternal";
 
 /**
  * The primary service used to interact with one or more Grammarkdown {@link SourceFile|SourceFiles}.
@@ -365,8 +366,9 @@ export class Grammar {
         state.sourceFiles.push(sourceFile);
         this._setSourceFileNoResolve(state, file, sourceFile);
 
-        if (sourceFile.parseDiagnostics) {
-            this.diagnostics.copyFrom(sourceFile.parseDiagnostics);
+        const parseDiagnostics = getSourceFileAccessor().getParseDiagnostics(sourceFile);
+        if (parseDiagnostics) {
+            this.diagnostics.copyFrom(parseDiagnostics);
         }
 
         await this._processImports(state, sourceFile, file, cancelToken);

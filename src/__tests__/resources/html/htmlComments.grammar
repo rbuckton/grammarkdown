@@ -1,0 +1,21 @@
+// @issue: https://github.com/rbuckton/grammarkdown/issues/80
+// @emit: grammarkdown,ecmarkup,html
+// @diagnostics: false
+
+X : Y
+<!--trailing-->
+
+<!--detached-->
+
+<!--leading-->
+X : Y
+
+<ins>
+
+<!--leading2-->
+
+X : Y
+
+<!--trailing2-->
+
+</ins>

@@ -1,0 +1,17 @@
+X : Y
+<!--trailing-->
+
+<!--detached-->
+
+<!--leading-->
+X : Y
+
+<ins>
+
+<!--leading2-->
+
+X : Y
+
+<!--trailing2-->
+
+</ins>

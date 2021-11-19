@@ -7,14 +7,14 @@
 
 /** {@docCategory Other} */
 export interface TextRange {
-    pos: number;
-    end: number;
+    readonly pos: number;
+    readonly end: number;
 }
 
 /** {@docCategory Other} */
 export interface Position {
-    line: number;
-    character: number;
+    readonly line: number;
+    readonly character: number;
 }
 
 /** {@docCategory Other} */
@@ -43,8 +43,8 @@ export namespace Position {
 
 /** {@docCategory Other} */
 export interface Range {
-    start: Position;
-    end: Position;
+    readonly start: Position;
+    readonly end: Position;
 }
 
 /** {@docCategory Other} */

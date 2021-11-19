@@ -1,6 +1,7 @@
 @define noStrictParametricProductions true
 
 // A.1 - Lexical Grammar
+
 SourceCharacter ::
     > any Unicode code point
 
@@ -604,6 +605,7 @@ Expression[In, Yield] :
     Expression[?In, ?Yield] `,` AssignmentExpression[?In, ?Yield]
 
 // A.3 - Statements
+
 Statement[Yield, Return] :
     BlockStatement[?Yield, ?Return]
     VariableStatement[?Yield]
@@ -803,6 +805,7 @@ DebuggerStatement :
     `debugger` `;`
 
 // A.4 - Functions and Classes
+
 FunctionDeclaration[Yield, Default] :
     `function` BindingIdentifier[?Yield] `(` FormalParameters `)` `{` FunctionBody `}`
     [+Default] `function` `(` FormalParameters `)` `{` FunctionBody `}`

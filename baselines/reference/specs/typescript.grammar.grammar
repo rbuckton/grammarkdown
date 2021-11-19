@@ -169,6 +169,7 @@ TypeAliasDeclaration :
     `type` Identifier `=` Type `;`
 
 // A.2 Expressions
+
 PropertyAssignment : // (Modified)
     PropertyName `:` AssignmentExpression
     PropertyName CallSignature `{` FunctionBody `}`
@@ -215,6 +216,7 @@ UnaryExpression : // (Modified)
     `<` Type `>` UnaryExpression
 
 // A.3 Statements
+
 VariableDeclaration : // (Modified)
     SimpleVariableDeclaration
     DestructuringVariableDeclaration

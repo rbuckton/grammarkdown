@@ -9,7 +9,8 @@ import { CancelToken } from '@esfx/async-canceltoken';
 import { Cancelable } from '@esfx/cancelable';
 import { toCancelToken } from './core';
 import { DiagnosticMessages, Diagnostics, NullDiagnosticMessages } from "./diagnostics";
-import { CommentTrivia, HtmlCloseTagTrivia, HtmlOpenTagTrivia, HtmlTrivia, MultiLineCommentTrivia, SingleLineCommentTrivia, Trivia } from './nodes';
+import { getNodeAccessor, getTriviaAccessor } from './nodeInternal';
+import { CommentTrivia, HtmlCloseTagTrivia, HtmlOpenTagTrivia, HtmlCommentTrivia, HtmlTrivia, MultiLineCommentTrivia, SingleLineCommentTrivia, Trivia } from './nodes';
 import { CharacterCodes, isProseFragmentLiteralKind, stringToToken, SyntaxKind, isHtmlTriviaKind } from "./tokens";
 
 const enum TokenFlags {
@@ -189,6 +190,10 @@ export class Scanner {
         this.tokenFlags &= ~TokenFlags.PrecedingNonWhiteSpaceTrivia;
     }
 
+    private setTriviaHasPrecedingBlankLine() {
+        this.tokenFlags |= TokenFlags.TriviaPrecedingBlankLine;
+    }
+
     private setTriviaHasPrecedingWhiteSpaceTrivia() {
         this.tokenFlags |= TokenFlags.TriviaPrecedingWhiteSpaceTrivia;
     }
@@ -279,6 +284,10 @@ export class Scanner {
                         this.setHasPrecedingBlankLine();
                     }
 
+                    if (this.triviaHasPrecedingLineTerminator() && !this.triviaHasPrecedingBlankLine()) {
+                        this.setTriviaHasPrecedingBlankLine();
+                    }
+
                     this.resetHasPrecedingNonWhiteSpaceTrivia();
                     this.resetTriviaHasPrecedingWhiteSpaceTrivia();
                     this.setHasPrecedingLineTerminator();
@@ -298,13 +307,20 @@ export class Scanner {
 
                 case CharacterCodes.LessThan: {
                     // html trivia
-                    if (this.pos < this.len) {
-                        const ch = this.text.charCodeAt(this.pos);
-                        if (isHtmlTagNameStart(ch) || ch === CharacterCodes.Slash || ch === CharacterCodes.GreaterThan) {
-                            this.scanHtmlTrivia();
-                            this.setHasPrecedingNonWhiteSpaceTrivia();
-                            continue;
-                        }
+                    const ch = this.peekChar(0);
+                    if (isHtmlTagNameStart(ch) || ch === CharacterCodes.Slash || ch === CharacterCodes.GreaterThan) {
+                        this.scanHtmlTrivia();
+                        this.setHasPrecedingNonWhiteSpaceTrivia();
+                        continue;
+                    }
+
+                    // `<!--`
+                    if (ch === CharacterCodes.Exclamation &&
+                        this.peekChar(1) === CharacterCodes.Minus &&
+                        this.peekChar(2) === CharacterCodes.Minus) {
+                        this.scanHtmlComment();
+                        this.setHasPrecedingNonWhiteSpaceTrivia();
+                        continue;
                     }
                     break;
                 }
@@ -546,6 +562,12 @@ export class Scanner {
         }, /*isLookahead*/ true);
     }
 
+    private peekChar(offset: number) {
+        return this.pos + offset < this.text.length ?
+            this.text.charCodeAt(this.pos + offset) :
+            -1;
+    }
+
     private scanLine(): string {
         const start = this.pos;
         while (this.pos < this.len) {
@@ -676,20 +698,23 @@ export class Scanner {
 
     private finishLastTrivia() {
         if (this.lastTrivia) {
-            this.lastTrivia.hasFollowingLineTerminator = this.triviaHasPrecedingLineTerminator();
-            this.lastTrivia.hasFollowingBlankLine = this.triviaHasPrecedingBlankLine();
-            this.lastTrivia.hasFollowingWhiteSpace = this.triviaHasPrecedingWhiteSpaceTrivia();
+            getTriviaAccessor().setFollowingFields(
+                this.lastTrivia,
+                this.triviaHasPrecedingLineTerminator(),
+                this.triviaHasPrecedingBlankLine(),
+                this.triviaHasPrecedingWhiteSpaceTrivia());
             this.lastTrivia = undefined;
         }
     }
 
     private recordTrivia(trivia: Trivia) {
         this.finishLastTrivia();
-        trivia.hasPrecedingLineTerminator = this.triviaHasPrecedingLineTerminator();
-        trivia.hasPrecedingBlankLine = this.triviaHasPrecedingBlankLine();
-        trivia.hasPrecedingWhiteSpace = this.triviaHasPrecedingWhiteSpaceTrivia();
-        trivia.pos = this.tokenPos;
-        trivia.end = this.pos;
+        getTriviaAccessor().setPrecedingFields(
+            trivia,
+            this.triviaHasPrecedingLineTerminator(),
+            this.triviaHasPrecedingBlankLine(),
+            this.triviaHasPrecedingWhiteSpaceTrivia());
+        getNodeAccessor().setTextRange(trivia, this.tokenPos, this.pos);
         this.trivia ||= [];
         this.trivia.push(trivia);
         this.lastTrivia = trivia;
@@ -735,6 +760,17 @@ export class Scanner {
 
         const tagName = this.text.slice(tagNamePos, tagNameEnd === -1 ? end : tagNameEnd);
         this.recordTrivia(isClosingTag ? new HtmlCloseTagTrivia(tagName) : new HtmlOpenTagTrivia(tagName));
+    }
+
+    private scanHtmlComment() {
+        // <!--
+        //  ^
+        //  current pos
+
+        const end = findHtmlCommentEnd(this.text, this.pos + 3, this.len);
+        this.pos = end;
+
+        this.recordTrivia(new HtmlCommentTrivia());
     }
 
     private scanCharacter(decodeEntity: boolean) {
@@ -1067,6 +1103,18 @@ function isHtmlTagNamePart(ch: number): boolean {
         || ch === CharacterCodes.Minus;
 }
 
+function findHtmlCommentEnd(text: string, pos: number, end: number) {
+    while (pos + 2 < end) {
+        if (text.charCodeAt(pos) === CharacterCodes.Minus &&
+            text.charCodeAt(pos + 1) === CharacterCodes.Minus &&
+            text.charCodeAt(pos + 2) === CharacterCodes.GreaterThan) {
+            return pos + 3;
+        }
+        pos++;
+    }
+    return end;
+}
+
 function findHtmlTriviaEnd(text: string, pos: number, end: number) {
     while (pos < end) {
         const ch = text.charCodeAt(pos++);
@@ -1107,8 +1155,7 @@ export function skipTrivia(text: string, pos: number, end: number, htmlTrivia?: 
                             const commentEnd = findSingleLineCommentTriviaEnd(text, pos + 2, end);
                             if (commentTrivia) {
                                 const comment = new SingleLineCommentTrivia();
-                                comment.pos = pos;
-                                comment.end = commentEnd;
+                                getNodeAccessor().setTextRange(comment, pos, commentEnd);
                                 commentTrivia.push(comment);
                             }
                             pos = commentEnd;
@@ -1118,8 +1165,7 @@ export function skipTrivia(text: string, pos: number, end: number, htmlTrivia?: 
                             const { end: commentEnd } = findMultiLineCommentTriviaEnd(text, pos + 2, end);
                             if (commentTrivia) {
                                 const comment = new MultiLineCommentTrivia();
-                                comment.pos = pos;
-                                comment.end = commentEnd;
+                                getNodeAccessor().setTextRange(comment, pos, commentEnd);
                                 commentTrivia.push(comment);
                             }
                             pos = commentEnd;
@@ -1139,10 +1185,22 @@ export function skipTrivia(text: string, pos: number, end: number, htmlTrivia?: 
                             if (tagNameEnd !== -1) {
                                 const tagName = text.slice(tagNamePos, tagNameEnd);
                                 const tag = ch === CharacterCodes.Slash ? new HtmlCloseTagTrivia(tagName) : new HtmlOpenTagTrivia(tagName);
-                                tag.pos = pos;
-                                tag.end = triviaEnd;
+                                getNodeAccessor().setTextRange(tag, pos, triviaEnd);
                                 htmlTrivia.push(tag);
                             }
+                        }
+                        pos = triviaEnd;
+                        continue;
+                    }
+                    if (pos + 3 < end &&
+                        ch === CharacterCodes.Exclamation &&
+                        text.charCodeAt(pos + 2) === CharacterCodes.Minus &&
+                        text.charCodeAt(pos + 3) === CharacterCodes.Minus) {
+                        const triviaEnd = findHtmlCommentEnd(text, pos + 3, end);
+                        if (htmlTrivia) {
+                            const trivia = new HtmlCommentTrivia();
+                            getNodeAccessor().setTextRange(trivia, pos, triviaEnd);
+                            htmlTrivia.push(trivia);
                         }
                         pos = triviaEnd;
                         continue;

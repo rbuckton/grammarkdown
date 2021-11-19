@@ -22,6 +22,7 @@ import {
 } from "./tokens";
 import { Scanner } from "./scanner";
 import { NullDiagnosticMessages } from "./diagnostics";
+import { getNodeAccessor } from "./nodeInternal";
 
 const perFileLeadingTokensMap = new WeakMap<SourceFile, Map<Node, readonly Token[] | null>>();
 const perFileTrailingTokensMap = new WeakMap<SourceFile, Map<Node, readonly Token[] | null>>();
@@ -150,7 +151,7 @@ export class NodeNavigator {
     public getName() {
         return this._leadingTokens ? "(leadingTokens)" :
             this._trailingTokens ? "(trailingTokens)" :
-            this._parentNode?.edgeName(this._currentEdge);
+            this._parentNode && getNodeAccessor().edgeName(this._parentNode, this._currentEdge);
     }
 
     /**
@@ -306,14 +307,14 @@ export class NodeNavigator {
      */
     public hasChildren(kind: SyntaxKind): boolean;
     public hasChildren(predicateOrKind?: SyntaxKind | ((child: Node) => boolean)): boolean {
-        if (this._hasAnyChildren === false || this._currentNode.edgeCount === 0) {
+        if (this._hasAnyChildren === false || getNodeAccessor().edgeCount(this._currentNode) === 0) {
             return false;
         }
         if (predicateOrKind === undefined && this._hasAnyChildren !== undefined) {
             return this._hasAnyChildren;
         }
-        for (let nextEdge = 0; nextEdge < this._currentNode.edgeCount; nextEdge++) {
-            const next = this._currentNode.edgeValue(nextEdge);
+        for (let nextEdge = 0; nextEdge < getNodeAccessor().edgeCount(this._currentNode); nextEdge++) {
+            const next = getNodeAccessor().edgeValue(this._currentNode, nextEdge);
             if (isNodeArray(next)) {
                 for (let nextOffset = 0; nextOffset < next.length; nextOffset++) {
                     const nextNode = next[nextOffset];
@@ -1350,10 +1351,10 @@ export class NodeNavigator {
         const name = typeof predicateOrNameOrKind === "string" ? predicateOrNameOrKind : undefined;
         const predicateOrKind = typeof predicateOrNameOrKind !== "string" ? predicateOrNameOrKind : undefined;
         const offset = this._currentEdge;
-        const length = this._currentNode.edgeCount;
+        const length = getNodeAccessor().edgeCount(this._currentNode);
         for (let nextEdge = initializer(offset, length); bounded(nextEdge, length); nextEdge = seekDirection(nextEdge, length)) {
-            if (!name || this._currentNode.edgeName(nextEdge) === name) {
-                const next = this._currentNode.edgeValue(nextEdge);
+            if (!name || getNodeAccessor().edgeName(this._currentNode, nextEdge) === name) {
+                const next = getNodeAccessor().edgeValue(this._currentNode, nextEdge);
                 if (isNodeArray(next)) {
                     const length = next.length;
                     for (let nextOffset = initializer(0, length); bounded(nextOffset, length); nextOffset = seekDirection(nextOffset, length)) {
@@ -1418,10 +1419,10 @@ export class NodeNavigator {
         }
 
         const offset = this._currentEdge;
-        const length = parentNode.edgeCount;
+        const length = getNodeAccessor().edgeCount(parentNode);
         for (let nextEdge = currentEdgeInitializer(offset, length); bounded(nextEdge, length); nextEdge = seekDirection(nextEdge, length)) {
-            if (!name || parentNode.edgeName(nextEdge) === name) {
-                const next = parentNode.edgeValue(nextEdge);
+            if (!name || getNodeAccessor().edgeName(parentNode, nextEdge) === name) {
+                const next = getNodeAccessor().edgeValue(parentNode, nextEdge);
                 if (isNodeArray(next)) {
                     if (this._moveToElement(nextArrayInitializer, seekDirection, nextEdge, next, 0, predicateOrKind, speculative)) {
                         return true;
@@ -1550,15 +1551,14 @@ function scanInterveningTokens(parent: Node, sourceFile: SourceFile) {
                 if (token === SyntaxKind.EndOfFileToken) break;
                 if (!isTokenKind(token)) throw new Error("Unexpected non-token in trivia");
                 const node = new Token(token);
-                node.pos = pos;
-                node.end = pos = scanner.getPos();
+                getNodeAccessor().setTextRange(node, pos, pos = scanner.getPos());
                 (tokens ??= []).push(node);
             }
         });
         return tokens;
     };
-    for (let i = 0; i < parent.edgeCount; i++) {
-        const edge = parent.edgeValue(i);
+    for (let i = 0; i < getNodeAccessor().edgeCount(parent); i++) {
+        const edge = getNodeAccessor().edgeValue(parent, i);
         if ((Array.isArray as (array: any) => array is readonly any[])(edge)) {
             processNodes(edge);
         }

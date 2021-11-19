@@ -58,6 +58,7 @@ import {
     NumberLiteral,
     TerminalLiteral,
 } from "./nodes";
+import { getNodeAccessor, getSourceFileAccessor } from "./nodeInternal";
 
 enum ParsingContext {
     SourceElements,
@@ -190,8 +191,9 @@ export class Parser {
         this.nextToken();
         this.parseSourceElementList(elements);
 
-        sourceFile.imports = this.imports;
-        sourceFile.parseDiagnostics = this.diagnostics;
+        getSourceFileAccessor().setImports(sourceFile, this.imports);
+        getSourceFileAccessor().setParseDiagnostics(sourceFile, this.diagnostics);
+
         return sourceFile;
     }
 
@@ -266,8 +268,7 @@ export class Parser {
 
     private finishNode<TNode extends Node>(node: TNode, fullStart: number): TNode {
         if (node) {
-            node.pos = fullStart;
-            node.end = this.scanner.getStartPos();
+            getNodeAccessor().setTextRange(node, fullStart, this.scanner.getStartPos());
             if (this.trivia) {
                 attachTrivia(node, this.trivia.get(node.pos), this.trivia.get(node.end), this.scanner.hasPrecedingLineTerminator());
             }
@@ -1377,7 +1378,7 @@ function splitTrivia(triviaArray: readonly Trivia[], hasFollowingLineTerminator:
 
     let leadingStart = triviaArray.length; // inclusive
     if (firstHtmlOpenTagIndex !== -1) leadingStart = firstHtmlOpenTagIndex;
-    if (lastFollowingBreakIndex !== -1) leadingStart = lastFollowingBreakIndex - 1;
+    if (lastFollowingBreakIndex > 1) leadingStart = lastFollowingBreakIndex - 1;
 
     return { trailingEnd, leadingStart };
 }
@@ -1400,8 +1401,8 @@ function attachTrivia(node: Node, leadingTrivia: Trivia[] | undefined, trailingT
             }
         }
 
-        if (nodeLeadingTrivia) node.leadingTrivia = nodeLeadingTrivia;
-        if (nodeDetachedTrivia) node.detachedTrivia = nodeDetachedTrivia;
+        if (nodeDetachedTrivia) getNodeAccessor().setDetachedTrivia(node, nodeDetachedTrivia);
+        if (nodeLeadingTrivia) getNodeAccessor().setLeadingTrivia(node, nodeLeadingTrivia);
     }
 
     if (trailingTrivia?.length) {
@@ -1415,7 +1416,7 @@ function attachTrivia(node: Node, leadingTrivia: Trivia[] | undefined, trailingT
             (nodeTrailingTrivia ||= node.trailingTrivia?.slice() || []).push(trivia);
         }
 
-        if (nodeTrailingTrivia) node.trailingTrivia = nodeTrailingTrivia;
+        if (nodeTrailingTrivia) getNodeAccessor().setTrailingTrivia(node, nodeTrailingTrivia);
     }
 }
 
@@ -1431,8 +1432,8 @@ function promoteTrivia(parent: Node, firstChild: Node | undefined, lastChild: No
 
 function promoteLeadingTrivia(parent: Node, firstChild: Node) {
     if (firstChild.detachedTrivia) {
-        parent.detachedTrivia = concat(parent.detachedTrivia?.slice(), firstChild.detachedTrivia.slice());
-        firstChild.detachedTrivia = undefined;
+        getNodeAccessor().setDetachedTrivia(parent, concat(parent.detachedTrivia?.slice(), firstChild.detachedTrivia.slice()));
+        getNodeAccessor().setDetachedTrivia(firstChild, undefined);
     }
 
     let firstChildLeadingTrivia = firstChild.leadingTrivia?.slice();
@@ -1455,9 +1456,9 @@ function promoteLeadingTrivia(parent: Node, firstChild: Node) {
         }
     }
 
-    firstChild.leadingTrivia = firstChildLeadingTrivia;
-    firstChild.trailingTrivia = firstChildTrailingTrivia;
-    if (parentLeadingTrivia) parent.leadingTrivia = parentLeadingTrivia;
+    getNodeAccessor().setLeadingTrivia(firstChild, firstChildLeadingTrivia);
+    getNodeAccessor().setTrailingTrivia(firstChild, firstChildTrailingTrivia);
+    if (parentLeadingTrivia) getNodeAccessor().setLeadingTrivia(parent, parentLeadingTrivia);
 }
 
 function promoteTrailingTrivia(parent: Node, lastChild: Node) {
@@ -1481,25 +1482,25 @@ function promoteTrailingTrivia(parent: Node, lastChild: Node) {
         }
     }
 
-    lastChild.trailingTrivia = lastChildTrailingTrivia;
-    lastChild.leadingTrivia = lastChildLeadingTrivia;
-    if (parentTrailingTrivia) parent.trailingTrivia = parentTrailingTrivia;
+    getNodeAccessor().setTrailingTrivia(lastChild, lastChildTrailingTrivia);
+    getNodeAccessor().setLeadingTrivia(lastChild, lastChildLeadingTrivia);
+    if (parentTrailingTrivia) getNodeAccessor().setTrailingTrivia(parent, parentTrailingTrivia);
 }
 
 function promoteAllTrivia(parent: Node, onlyChild: Node) {
     if (onlyChild.detachedTrivia) {
-        parent.detachedTrivia = concat(parent.detachedTrivia?.slice(), onlyChild.detachedTrivia.slice());
-        onlyChild.detachedTrivia = undefined;
+        getNodeAccessor().setDetachedTrivia(parent, concat(parent.detachedTrivia?.slice(), onlyChild.detachedTrivia.slice()));
+        getNodeAccessor().setDetachedTrivia(onlyChild, undefined);
     }
 
     if (onlyChild.leadingTrivia) {
-        parent.leadingTrivia = concat(parent.leadingTrivia?.slice(), onlyChild.leadingTrivia.slice());
-        onlyChild.leadingTrivia = undefined;
+        getNodeAccessor().setLeadingTrivia(parent, concat(parent.leadingTrivia?.slice(), onlyChild.leadingTrivia.slice()));
+        getNodeAccessor().setLeadingTrivia(onlyChild, undefined);
     }
 
     if (onlyChild.trailingTrivia) {
-        parent.trailingTrivia = concat(onlyChild.trailingTrivia.slice(), parent.trailingTrivia?.slice());
-        onlyChild.trailingTrivia = undefined;
+        getNodeAccessor().setTrailingTrivia(parent, concat(onlyChild.trailingTrivia.slice(), parent.trailingTrivia?.slice()));
+        getNodeAccessor().setTrailingTrivia(onlyChild, undefined);
     }
 }
 

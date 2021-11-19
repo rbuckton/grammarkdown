@@ -46,13 +46,14 @@ import {
     Line,
     TerminalLiteral,
 } from "./nodes";
+import { getNodeAccessor } from "./nodeInternal";
 
 /** {@docCategory Other} */
 export abstract class NodeVisitor {
     public visit<T extends Node>(node: T): T;
     public visit<T extends Node>(node: T | undefined): T | undefined;
     public visit<T extends Node>(node: T | undefined): T | undefined {
-        return node && node.accept(this) as T | undefined;
+        return node && getNodeAccessor().accept(node, this) as T | undefined;
     }
 
     public visitEach<T extends Node>(nodes: ReadonlyArray<T>): ReadonlyArray<T>;

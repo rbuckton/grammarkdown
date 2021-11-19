@@ -5,42 +5,82 @@
  * in the root of this repository or package.
  */
 
-import { emptyIterable, forEach, first, last } from "./core";
-import { TextRange } from "./types";
-import { LineMap, DiagnosticMessages } from "./diagnostics";
+import { emptyIterable, first, forEach, last } from "./core";
+import { DiagnosticMessages, LineMap } from "./diagnostics";
+import { getNodeAccessor, setNodeAccessor, setSourceFileAccessor, setTriviaAccessor } from "./nodeInternal";
+import { skipTrivia } from "./scanner";
 import {
-    SyntaxKind,
-    ProseFragmentLiteralKind,
-    LookaheadOperatorKind,
     ArgumentOperatorKind,
-    BooleanKind,
-    ProductionSeperatorKind,
-    TokenKind,
-    CommentTriviaKind,
-    HtmlTriviaKind,
-    TriviaKind,
-    LexicalSymbolKind,
     AssertionKind,
-    ProductionBodyKind,
+    BooleanKind,
+    CommentTriviaKind,
+    HtmlTagTriviaKind,
+    HtmlTriviaKind,
+    isHtmlTriviaKind,
+    LexicalSymbolKind,
+    LookaheadOperatorKind,
+    MetaElementKind,
     OptionalSymbolKind,
     PrimarySymbolKind,
-    MetaElementKind,
+    ProductionBodyKind,
+    ProductionSeperatorKind,
+    ProseFragmentLiteralKind,
     SourceElementKind,
-    isHtmlTriviaKind,
+    SyntaxKind,
+    TokenKind,
+    TriviaKind
 } from "./tokens";
+import { TextRange } from "./types";
 import { NodeVisitor } from "./visitor";
-import { skipTrivia } from "./scanner";
 
 /** {@docCategory Nodes} */
 export interface TextContent {
-    text: string | undefined;
+    readonly text: string | undefined;
 }
 
 /** {@docCategory Nodes} */
 export abstract class Node<TKind extends SyntaxKind = SyntaxKind> implements TextRange {
+    static {
+        setNodeAccessor({
+            setTextRange(node, pos, end) {
+                node._pos = pos;
+                node._end = end;
+                return node;
+            },
+            setDetachedTrivia(node, trivia) {
+                node._detachedTrivia = trivia;
+            },
+            setLeadingTrivia(node, trivia) {
+                node._leadingTrivia = trivia;
+                node._leadingHtmlTrivia = undefined;
+            },
+            setTrailingTrivia(node, trivia) {
+                node._trailingTrivia = trivia;
+                node._trailingHtmlTrivia = undefined
+            },
+            edgeCount(node) { return node.edgeCount; },
+            edgeName(node, offset) { return node.edgeName(offset); },
+            edgeValue(node, offset) { return node.edgeValue(offset); },
+            accept(node, visitor) { return node.accept(visitor); },
+        });
+    }
+
     public readonly kind: TKind;
-    public pos: number = 0;
-    public end: number = 0;
+
+    private _pos = 0;
+    private _end = 0;
+    private _leadingTrivia: readonly Trivia[] | undefined;
+    private _trailingTrivia: readonly Trivia[] | undefined;
+    private _detachedTrivia: readonly Trivia[] | undefined;
+    private _leadingHtmlTrivia: readonly HtmlTrivia[] | undefined;
+    private _trailingHtmlTrivia: readonly HtmlTrivia[] | undefined;
+
+    public constructor(kind: TKind) {
+        this.kind = kind;
+    }
+
+    public get pos() { return this._pos; };
+    public get end() { return this._end; };
 
     /**
      * Leading trivia is trivia that belongs to the beginning of the node:
@@ -53,8 +93,7 @@ export abstract class Node<TKind extends SyntaxKind = SyntaxKind> implements Tex
      *   - Any other non-HTML tag trivia on the same line as the node that precedes the node is leading trivia, if there is no whitespace between
      *     that trivia and the node.
      */
-    public leadingTrivia: readonly Trivia[] | undefined;
-
+    public get leadingTrivia() { return this._leadingTrivia; }
     /**
      * Trailing trivia is trivia that belongs to the end of the node:
      * - An HTML open tag trivia, or any trivia following an HTML open tag trivia, is not trailing trivia of the node.
@@ -66,37 +105,16 @@ export abstract class Node<TKind extends SyntaxKind = SyntaxKind> implements Tex
      *   - Any other non-HTML tag trivia on the same line as the node that follows the node is trailing trivia, if there is no whitespace between
      *     that trivia and the node.
      */
-    public trailingTrivia: readonly Trivia[] | undefined;
-
+    public get trailingTrivia() { return this._trailingTrivia; }
     /**
      * Detached trivia is any trivia that occurs prior to the node that is not the leading or trailing trivia of this
      * or any other node.
      */
-    public detachedTrivia: readonly Trivia[] | undefined;
-
-    private _leadingHtmlTrivia: readonly HtmlTrivia[] | undefined;
-    private _trailingHtmlTrivia: readonly HtmlTrivia[] | undefined;
-
-    constructor(kind: TKind) {
-        this.kind = kind;
-    }
-
-    public get firstChild(): Node | undefined { return undefined; }
-    public get lastChild(): Node | undefined { return undefined; }
-
-    public get leadingHtmlTrivia(): readonly HtmlTrivia[] | undefined {
-        if (!this._leadingHtmlTrivia && this.leadingTrivia) {
-            this._leadingHtmlTrivia = this.leadingTrivia.filter((trivia): trivia is HtmlTrivia => isHtmlTriviaKind(trivia.kind))
-        }
-        return this._leadingHtmlTrivia;
-    }
-
-    public get trailingHtmlTrivia(): readonly HtmlTrivia[] | undefined {
-        if (!this._trailingHtmlTrivia && this.trailingTrivia) {
-            this._trailingHtmlTrivia = this.trailingTrivia.filter((trivia): trivia is HtmlTrivia => isHtmlTriviaKind(trivia.kind))
-        }
-        return this._trailingHtmlTrivia;
-    }
+    public get detachedTrivia() { return this._detachedTrivia; }
+    /** @deprecated Use {@link leadingTrivia} or {@link detachedTrivia} instead. */
+    public get leadingHtmlTrivia(): readonly HtmlTrivia[] | undefined { return this._leadingHtmlTrivia ||= this._leadingTrivia?.filter((trivia): trivia is HtmlTrivia => isHtmlTriviaKind(trivia.kind)); }
+    /** @deprecated Use {@link trailingTrivia} instead. */
+    public get trailingHtmlTrivia(): readonly HtmlTrivia[] | undefined { return this._trailingHtmlTrivia ||= this._trailingTrivia?.filter((trivia): trivia is HtmlTrivia => isHtmlTriviaKind(trivia.kind)); }
 
     public getStart(sourceFile?: SourceFile) { return sourceFile ? skipTrivia(sourceFile.text, this.pos, this.end) : this.pos; }
     public getEnd() { return this.end; }
@@ -106,23 +124,51 @@ export abstract class Node<TKind extends SyntaxKind = SyntaxKind> implements Tex
     public getText(sourceFile: SourceFile) { return sourceFile.text.slice(this.getStart(sourceFile), this.getEnd()); }
     public getFullText(sourceFile: SourceFile) { return sourceFile.text.slice(this.getFullStart(), this.getEnd()); }
 
+    public get firstChild(): Node | undefined { return undefined; }
+    public get lastChild(): Node | undefined { return undefined; }
+    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined;
     public forEachChild<T>(_cbNode: (node: Node) => T | undefined): T | undefined { return undefined; }
     public children(): IterableIterator<Node> { return emptyIterable; }
 
-    /*@internal*/ get edgeCount(): number { return 0; }
-    /*@internal*/ edgeName(_offset: number): string | undefined { return undefined; }
-    /*@internal*/ edgeValue(_offset: number): Node | ReadonlyArray<Node> | undefined { return undefined; }
-    /*@internal*/ accept(visitor: NodeVisitor): Node { return visitor.visitExtension(this); }
+    protected get edgeCount(): number { return 0; }
+    protected edgeName(offset: number): string | undefined;
+    protected edgeName(_offset: number): string | undefined { return undefined; }
+    protected edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined;
+    protected edgeValue(_offset: number): Node | ReadonlyArray<Node> | undefined { return undefined; }
+
+    protected accept(visitor: NodeVisitor): Node { return visitor.visitExtension(this); }
 }
 
 /** {@docCategory Nodes} */
 export abstract class TriviaBase<TKind extends TriviaKind> extends Node<TKind> {
-    public hasPrecedingLineTerminator = false;
-    public hasPrecedingBlankLine = false;
-    public hasPrecedingWhiteSpace = false;
-    public hasFollowingLineTerminator = false;
-    public hasFollowingBlankLine = false;
-    public hasFollowingWhiteSpace = false;
+    static {
+        setTriviaAccessor({
+            setPrecedingFields(node, hasPrecedingLineTerminator, hasPrecedingBlankLine, hasPrecedingWhiteSpace) {
+                node._hasPrecedingLineTerminator = hasPrecedingLineTerminator;
+                node._hasPrecedingBlankLine = hasPrecedingBlankLine;
+                node._hasPrecedingWhiteSpace = hasPrecedingWhiteSpace;
+            },
+            setFollowingFields(node, hasFollowingLineTerminator, hasFollowingBlankLine, hasFollowingWhiteSpace) {
+                node._hasFollowingLineTerminator = hasFollowingLineTerminator;
+                node._hasFollowingBlankLine = hasFollowingBlankLine;
+                node._hasFollowingWhiteSpace = hasFollowingWhiteSpace;
+            }
+        });
+    }
+
+    private _hasPrecedingLineTerminator = false;
+    private _hasPrecedingBlankLine = false;
+    private _hasPrecedingWhiteSpace = false;
+    private _hasFollowingLineTerminator = false;
+    private _hasFollowingBlankLine = false;
+    private _hasFollowingWhiteSpace = false;
+
+    public get hasPrecedingLineTerminator() { return this._hasPrecedingLineTerminator; }
+    public get hasPrecedingBlankLine() { return this._hasPrecedingBlankLine; }
+    public get hasPrecedingWhiteSpace() { return this._hasPrecedingWhiteSpace; }
+    public get hasFollowingLineTerminator() { return this._hasFollowingLineTerminator; }
+    public get hasFollowingBlankLine() { return this._hasFollowingBlankLine; }
+    public get hasFollowingWhiteSpace() { return this._hasFollowingWhiteSpace; }
 }
 
 /** {@docCategory Nodes} */
@@ -149,7 +195,7 @@ export type CommentTrivia =
  * {@docCategory Nodes}
  */
 export class SingleLineCommentTrivia extends CommentTriviaBase<SyntaxKind.SingleLineCommentTrivia> {
-    constructor() {
+    public constructor() {
         super(SyntaxKind.SingleLineCommentTrivia);
     }
 }
@@ -159,25 +205,45 @@ export class SingleLineCommentTrivia extends CommentTriviaBase<SyntaxKind.Single
  * {@docCategory Nodes}
  */
 export class MultiLineCommentTrivia extends CommentTriviaBase<SyntaxKind.MultiLineCommentTrivia> {
-    constructor() {
+    public constructor() {
         super(SyntaxKind.MultiLineCommentTrivia);
     }
 }
 
 /** {@docCategory Nodes} */
 export abstract class HtmlTriviaBase<TKind extends HtmlTriviaKind> extends TriviaBase<TKind> {
-    public readonly tagName: string;
-    constructor(kind: TKind, tagName: string) {
-        super(kind);
-        this.tagName = tagName;
-    }
 }
 
 /** {@docCategory Nodes} */
 export type HtmlTrivia =
+    | HtmlCommentTrivia
     | HtmlOpenTagTrivia
     | HtmlCloseTagTrivia
     ;
+
+/**
+ * Represents an HTML comment trivia token:
+ * ```grammarkdown
+ * Production ::
+ *   <!--before-->Nonterminal
+ * ```
+ * {@docCategory Nodes}
+ */
+export class HtmlCommentTrivia extends HtmlTriviaBase<SyntaxKind.HtmlCommentTrivia> {
+    public constructor() {
+        super(SyntaxKind.HtmlCommentTrivia);
+    }
+}
+
+/** {@docCategory Nodes} */
+export abstract class HtmlTagTriviaBase<TKind extends HtmlTagTriviaKind> extends HtmlTriviaBase<TKind> {
+    public readonly tagName: string;
+
+    public constructor(kind: TKind, tagName: string) {
+        super(kind);
+        this.tagName = tagName;
+    }
+}
 
 /**
  * Represents an HTML open-tag trivia token:
@@ -188,8 +254,8 @@ export type HtmlTrivia =
  * ```
  * {@docCategory Nodes}
  */
-export class HtmlOpenTagTrivia extends HtmlTriviaBase<SyntaxKind.HtmlOpenTagTrivia> {
-    constructor(tagName: string) {
+export class HtmlOpenTagTrivia extends HtmlTagTriviaBase<SyntaxKind.HtmlOpenTagTrivia> {
+    public constructor(tagName: string) {
         super(SyntaxKind.HtmlOpenTagTrivia, tagName);
     }
 }
@@ -203,8 +269,8 @@ export class HtmlOpenTagTrivia extends HtmlTriviaBase<SyntaxKind.HtmlOpenTagTriv
  * ```
  * {@docCategory Nodes}
  */
-export class HtmlCloseTagTrivia extends HtmlTriviaBase<SyntaxKind.HtmlCloseTagTrivia> {
-    constructor(tagName: string) {
+export class HtmlCloseTagTrivia extends HtmlTagTriviaBase<SyntaxKind.HtmlCloseTagTrivia> {
+    public constructor(tagName: string) {
         super(SyntaxKind.HtmlCloseTagTrivia, tagName);
     }
 }
@@ -214,7 +280,7 @@ export class HtmlCloseTagTrivia extends HtmlTriviaBase<SyntaxKind.HtmlCloseTagTr
  * {@docCategory Nodes}
  */
 export class Token<TKind extends TokenKind = TokenKind> extends Node<TKind> {
-    /*@internal*/ accept(visitor: NodeVisitor): Token<TKind> { return visitor.visitToken(this); }
+    protected override accept(visitor: NodeVisitor): Token<TKind> { return visitor.visitToken(this); }
 }
 
 /**
@@ -227,12 +293,12 @@ export class Token<TKind extends TokenKind = TokenKind> extends Node<TKind> {
 export class StringLiteral extends Node<SyntaxKind.StringLiteral> implements TextContent {
     public readonly text: string | undefined;
 
-    constructor(text: string | undefined) {
+    public constructor(text: string | undefined) {
         super(SyntaxKind.StringLiteral);
         this.text = text;
     }
 
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitStringLiteral(this); }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitStringLiteral(this); }
 }
 
 /**
@@ -246,12 +312,12 @@ export class StringLiteral extends Node<SyntaxKind.StringLiteral> implements Tex
 export class NumberLiteral extends Node<SyntaxKind.NumberLiteral> implements TextContent {
     public readonly text: string | undefined;
 
-    constructor(text: string | undefined) {
+    public constructor(text: string | undefined) {
         super(SyntaxKind.NumberLiteral);
         this.text = text;
     }
 
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitNumberLiteral(this); }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitNumberLiteral(this); }
 }
 
 /**
@@ -265,12 +331,12 @@ export class NumberLiteral extends Node<SyntaxKind.NumberLiteral> implements Tex
 export class UnicodeCharacterLiteral extends Node<SyntaxKind.UnicodeCharacterLiteral> implements TextContent {
     public readonly text: string | undefined;
 
-    constructor(text: string | undefined) {
+    public constructor(text: string | undefined) {
         super(SyntaxKind.UnicodeCharacterLiteral);
         this.text = text;
     }
 
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitUnicodeCharacterLiteral(this); }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitUnicodeCharacterLiteral(this); }
 }
 
 /**
@@ -283,12 +349,12 @@ export class UnicodeCharacterLiteral extends Node<SyntaxKind.UnicodeCharacterLit
 export class TerminalLiteral extends Node<SyntaxKind.TerminalLiteral> implements TextContent {
     public readonly text: string | undefined;
 
-    constructor(text: string | undefined) {
+    public constructor(text: string | undefined) {
         super(SyntaxKind.TerminalLiteral);
         this.text = text;
     }
 
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitTerminalLiteral(this); }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitTerminalLiteral(this); }
 }
 
 /**
@@ -298,12 +364,12 @@ export class TerminalLiteral extends Node<SyntaxKind.TerminalLiteral> implements
 export class Identifier extends Node<SyntaxKind.Identifier> implements TextContent {
     public readonly text: string | undefined;
 
-    constructor(text: string | undefined) {
+    public constructor(text: string | undefined) {
         super(SyntaxKind.Identifier);
         this.text = text;
     }
 
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitIdentifier(this); }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitIdentifier(this); }
 }
 
 /** {@docCategory Nodes} */
@@ -327,23 +393,23 @@ export class SymbolSet extends Node<SyntaxKind.SymbolSet> {
     public readonly elements: ReadonlyArray<SymbolSpan> | undefined;
     public readonly closeBraceToken: Token<SyntaxKind.CloseBraceToken> | undefined;
 
-    constructor(openBraceToken: Token<SyntaxKind.OpenBraceToken>, elements: ReadonlyArray<SymbolSpan> | undefined, closeBraceToken: Token<SyntaxKind.CloseBraceToken> | undefined) {
+    public constructor(openBraceToken: Token<SyntaxKind.OpenBraceToken>, elements: ReadonlyArray<SymbolSpan> | undefined, closeBraceToken: Token<SyntaxKind.CloseBraceToken> | undefined) {
         super(SyntaxKind.SymbolSet);
         this.openBraceToken = openBraceToken;
         this.elements = elements;
         this.closeBraceToken = closeBraceToken;
     }
 
-    get firstChild(): Node | undefined { return this.openBraceToken; }
-    get lastChild(): Node | undefined { return this.closeBraceToken || last(this.elements) || this.openBraceToken; }
+    public override get firstChild(): Node | undefined { return this.openBraceToken; }
+    public override get lastChild(): Node | undefined { return this.closeBraceToken || last(this.elements) || this.openBraceToken; }
 
-    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
+    public override forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
         return cbNode(this.openBraceToken)
             || (this.elements && forEach(this.elements, cbNode))
             || (this.closeBraceToken && cbNode(this.closeBraceToken));
     }
 
-    public * children(): IterableIterator<Node> {
+    public override * children(): IterableIterator<Node> {
         yield this.openBraceToken;
         if (this.elements) yield* this.elements;
         if (this.closeBraceToken) yield this.closeBraceToken;
@@ -355,9 +421,9 @@ export class SymbolSet extends Node<SyntaxKind.SymbolSet> {
             : this;
     }
 
-    /*@internal*/ get edgeCount() { return 3; }
-    /*@internal*/ edgeIsArray(offset: number) { return offset === 2; }
-    /*@internal*/ edgeName(offset: number): string | undefined {
+    protected override get edgeCount() { return 3; }
+
+    protected override edgeName(offset: number): string | undefined {
         switch (offset) {
             case 0: return "openBraceToken";
             case 1: return "elements";
@@ -366,7 +432,7 @@ export class SymbolSet extends Node<SyntaxKind.SymbolSet> {
         return undefined;
     }
 
-    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
+    protected override edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
         switch (offset) {
             case 0: return this.openBraceToken;
             case 1: return this.elements;
@@ -375,7 +441,7 @@ export class SymbolSet extends Node<SyntaxKind.SymbolSet> {
         return undefined;
     }
 
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitSymbolSet(this); }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitSymbolSet(this); }
 }
 
 /**
@@ -392,23 +458,23 @@ export class Constraints extends Node<SyntaxKind.Constraints> {
     public readonly elements: ReadonlyArray<Argument> | undefined;
     public readonly closeBracketToken: Token<SyntaxKind.CloseBracketToken> | undefined;
 
-    constructor(openBracketToken: Token<SyntaxKind.OpenBracketToken>, elements: ReadonlyArray<Argument> | undefined, closeBracketToken: Token<SyntaxKind.CloseBracketToken> | undefined) {
+    public constructor(openBracketToken: Token<SyntaxKind.OpenBracketToken>, elements: ReadonlyArray<Argument> | undefined, closeBracketToken: Token<SyntaxKind.CloseBracketToken> | undefined) {
         super(SyntaxKind.Constraints);
         this.openBracketToken = openBracketToken;
         this.elements = elements;
         this.closeBracketToken = closeBracketToken;
     }
 
-    get firstChild(): Node | undefined { return this.openBracketToken; }
-    get lastChild(): Node | undefined { return this.closeBracketToken || last(this.elements); }
+    public override get firstChild(): Node | undefined { return this.openBracketToken; }
+    public override get lastChild(): Node | undefined { return this.closeBracketToken || last(this.elements); }
 
-    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
+    public override forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
         return cbNode(this.openBracketToken)
             || (this.elements && forEach(this.elements, cbNode))
             || (this.closeBracketToken && cbNode(this.closeBracketToken));
     }
 
-    public * children(): IterableIterator<Node> {
+    public override * children(): IterableIterator<Node> {
         yield this.openBracketToken;
         if (this.elements) yield* this.elements;
         if (this.closeBracketToken) yield this.closeBracketToken;
@@ -420,9 +486,9 @@ export class Constraints extends Node<SyntaxKind.Constraints> {
             : this;
     }
 
-    /*@internal*/ get edgeCount() { return 3; }
-    /*@internal*/ edgeIsArray(offset: number) { return offset === 1; }
-    /*@internal*/ edgeName(offset: number): string | undefined {
+    protected override get edgeCount() { return 3; }
+
+    protected override edgeName(offset: number): string | undefined {
         switch (offset) {
             case 0: return "openBracketToken";
             case 1: return "elements";
@@ -431,7 +497,7 @@ export class Constraints extends Node<SyntaxKind.Constraints> {
         return undefined;
     }
 
-    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
+    protected override edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
         switch (offset) {
             case 0: return this.openBracketToken;
             case 1: return this.elements;
@@ -440,7 +506,7 @@ export class Constraints extends Node<SyntaxKind.Constraints> {
         return undefined;
     }
 
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitConstraints(this); }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitConstraints(this); }
 }
 
 //
@@ -463,22 +529,21 @@ export class PlaceholderSymbol extends LexicalSymbolBase<SyntaxKind.PlaceholderS
         this.placeholderToken = placeholderToken;
     }
 
-    get firstChild(): Node | undefined { return this.placeholderToken; }
-    get lastChild(): Node | undefined { return this.placeholderToken; }
+    public override get firstChild(): Node | undefined { return this.placeholderToken; }
+    public override get lastChild(): Node | undefined { return this.placeholderToken; }
 
-    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
+    public override forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
         return cbNode(this.placeholderToken);
     }
 
-    public * children(): IterableIterator<Node> {
+    public override * children(): IterableIterator<Node> {
         yield this.placeholderToken;
     }
 
-    /*@internal*/ get edgeCount() { return 1; }
-    /*@internal*/ edgeIsArray(_offset: number): boolean { return false; }
-    /*@internal*/ edgeName(offset: number): string | undefined { return offset === 0 ? "placeholderToken" : undefined; }
-    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined { return offset === 0 ? this.placeholderToken : undefined; }
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitPlaceholderSymbol(this); }
+    protected override get edgeCount() { return 1; }
+    protected override edgeName(offset: number): string | undefined { return offset === 0 ? "placeholderToken" : undefined; }
+    protected override edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined { return offset === 0 ? this.placeholderToken : undefined; }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitPlaceholderSymbol(this); }
 }
 
 /**
@@ -493,23 +558,23 @@ export class UnicodeCharacterRange extends LexicalSymbolBase<SyntaxKind.UnicodeC
     public readonly throughKeyword: Token<SyntaxKind.ThroughKeyword>;
     public readonly right: UnicodeCharacterLiteral;
 
-    constructor(left: UnicodeCharacterLiteral, throughKeyword: Token<SyntaxKind.ThroughKeyword>, right: UnicodeCharacterLiteral) {
+    public constructor(left: UnicodeCharacterLiteral, throughKeyword: Token<SyntaxKind.ThroughKeyword>, right: UnicodeCharacterLiteral) {
         super(SyntaxKind.UnicodeCharacterRange);
         this.left = left;
         this.throughKeyword = throughKeyword;
         this.right = right;
     }
 
-    get firstChild(): Node | undefined { return this.left; }
-    get lastChild(): Node | undefined { return this.right; }
+    public override get firstChild(): Node | undefined { return this.left; }
+    public override get lastChild(): Node | undefined { return this.right; }
 
-    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
+    public override forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
         return cbNode(this.left)
             || cbNode(this.throughKeyword)
             || cbNode(this.right);
     }
 
-    public * children(): IterableIterator<Node> {
+    public override * children(): IterableIterator<Node> {
         yield this.left;
         yield this.throughKeyword;
         yield this.right;
@@ -521,9 +586,9 @@ export class UnicodeCharacterRange extends LexicalSymbolBase<SyntaxKind.UnicodeC
             : this;
     }
 
-    /*@internal*/ get edgeCount() { return 3; }
-    /*@internal*/ edgeIsArray(offset: number) { return false; }
-    /*@internal*/ edgeName(offset: number): string | undefined {
+    protected override get edgeCount() { return 3; }
+
+    protected override edgeName(offset: number): string | undefined {
         switch (offset) {
             case 0: return "left";
             case 1: return "throughKeyword";
@@ -531,7 +596,7 @@ export class UnicodeCharacterRange extends LexicalSymbolBase<SyntaxKind.UnicodeC
         }
     }
 
-    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
+    protected override edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
         switch (offset) {
             case 0: return this.left;
             case 1: return this.throughKeyword;
@@ -540,7 +605,7 @@ export class UnicodeCharacterRange extends LexicalSymbolBase<SyntaxKind.UnicodeC
         return undefined;
     }
 
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitUnicodeCharacterRange(this); }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitUnicodeCharacterRange(this); }
 }
 
 /**
@@ -556,7 +621,7 @@ export class ButNotSymbol extends LexicalSymbolBase<SyntaxKind.ButNotSymbol> {
     public readonly notKeyword: Token<SyntaxKind.NotKeyword> | undefined;
     public readonly right: LexicalSymbol | undefined;
 
-    constructor(left: LexicalSymbol, butKeyword: Token<SyntaxKind.ButKeyword> | undefined, notKeyword: Token<SyntaxKind.NotKeyword> | undefined, right: LexicalSymbol | undefined) {
+    public constructor(left: LexicalSymbol, butKeyword: Token<SyntaxKind.ButKeyword> | undefined, notKeyword: Token<SyntaxKind.NotKeyword> | undefined, right: LexicalSymbol | undefined) {
         super(SyntaxKind.ButNotSymbol);
         this.left = left;
         this.butKeyword = butKeyword;
@@ -564,17 +629,17 @@ export class ButNotSymbol extends LexicalSymbolBase<SyntaxKind.ButNotSymbol> {
         this.right = right;
     }
 
-    get firstChild(): Node | undefined { return this.left; }
-    get lastChild(): Node | undefined { return this.right || this.notKeyword || this.butKeyword || this.left; }
+    public override get firstChild(): Node | undefined { return this.left; }
+    public override get lastChild(): Node | undefined { return this.right || this.notKeyword || this.butKeyword || this.left; }
 
-    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
+    public override forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
         return cbNode(this.left)
             || (this.butKeyword && cbNode(this.butKeyword))
             || (this.notKeyword && cbNode(this.notKeyword))
             || (this.right && cbNode(this.right));
     }
 
-    public * children(): IterableIterator<Node> {
+    public override * children(): IterableIterator<Node> {
         yield this.left;
         if (this.butKeyword) yield this.butKeyword;
         if (this.notKeyword) yield this.notKeyword;
@@ -587,9 +652,9 @@ export class ButNotSymbol extends LexicalSymbolBase<SyntaxKind.ButNotSymbol> {
             : this;
     }
 
-    /*@internal*/ get edgeCount() { return 4; }
-    /*@internal*/ edgeIsArray(offset: number) { return false; }
-    /*@internal*/ edgeName(offset: number): string | undefined {
+    protected override get edgeCount() { return 4; }
+
+    protected override edgeName(offset: number): string | undefined {
         switch (offset) {
             case 0: return "left";
             case 1: return "butKeyword";
@@ -598,7 +663,7 @@ export class ButNotSymbol extends LexicalSymbolBase<SyntaxKind.ButNotSymbol> {
         }
     }
 
-    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
+    protected override edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
         switch (offset) {
             case 0: return this.left;
             case 1: return this.butKeyword;
@@ -608,7 +673,7 @@ export class ButNotSymbol extends LexicalSymbolBase<SyntaxKind.ButNotSymbol> {
         return undefined;
     }
 
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitButNotSymbol(this); }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitButNotSymbol(this); }
 }
 
 /**
@@ -622,21 +687,21 @@ export class Prose extends LexicalSymbolBase<SyntaxKind.Prose> {
     public readonly greaterThanToken: Token<SyntaxKind.GreaterThanToken>;
     public readonly fragments: ReadonlyArray<ProseFragment> | undefined;
 
-    constructor(greaterThanToken: Token<SyntaxKind.GreaterThanToken>, fragments: ReadonlyArray<ProseFragment> | undefined) {
+    public constructor(greaterThanToken: Token<SyntaxKind.GreaterThanToken>, fragments: ReadonlyArray<ProseFragment> | undefined) {
         super(SyntaxKind.Prose);
         this.greaterThanToken = greaterThanToken;
         this.fragments = fragments;
     }
 
-    get firstChild(): Node | undefined { return this.greaterThanToken; }
-    get lastChild(): Node | undefined { return last(this.fragments) || this.greaterThanToken; }
+    public override get firstChild(): Node | undefined { return this.greaterThanToken; }
+    public override get lastChild(): Node | undefined { return last(this.fragments) || this.greaterThanToken; }
 
-    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
+    public override forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
         return cbNode(this.greaterThanToken)
             || (this.fragments && forEach(this.fragments, cbNode));
     }
 
-    public * children(): IterableIterator<Node> {
+    public override * children(): IterableIterator<Node> {
         yield this.greaterThanToken;
         if (this.fragments) yield* this.fragments;
     }
@@ -647,9 +712,9 @@ export class Prose extends LexicalSymbolBase<SyntaxKind.Prose> {
             : this;
     }
 
-    /*@internal*/ get edgeCount() { return 2; }
-    /*@internal*/ edgeIsArray(offset: number) { return offset === 1; }
-    /*@internal*/ edgeName(offset: number): string | undefined {
+    protected override get edgeCount() { return 2; }
+
+    protected override edgeName(offset: number): string | undefined {
         switch (offset) {
             case 0: return "greaterThanToken";
             case 1: return "fragments";
@@ -657,7 +722,7 @@ export class Prose extends LexicalSymbolBase<SyntaxKind.Prose> {
         return undefined;
     }
 
-    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
+    protected override edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
         switch (offset) {
             case 0: return this.greaterThanToken;
             case 1: return this.fragments;
@@ -665,7 +730,7 @@ export class Prose extends LexicalSymbolBase<SyntaxKind.Prose> {
         return undefined;
     }
 
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitProse(this); }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitProse(this); }
 }
 
 /**
@@ -680,23 +745,23 @@ export class OneOfSymbol extends LexicalSymbolBase<SyntaxKind.OneOfSymbol> {
     public readonly ofKeyword: Token<SyntaxKind.OfKeyword> | undefined;
     public readonly symbols: ReadonlyArray<LexicalSymbol> | undefined;
 
-    constructor(oneKeyword: Token<SyntaxKind.OneKeyword>, ofKeyword: Token<SyntaxKind.OfKeyword> | undefined, symbols: ReadonlyArray<LexicalSymbol> | undefined) {
+    public constructor(oneKeyword: Token<SyntaxKind.OneKeyword>, ofKeyword: Token<SyntaxKind.OfKeyword> | undefined, symbols: ReadonlyArray<LexicalSymbol> | undefined) {
         super(SyntaxKind.OneOfSymbol);
         this.oneKeyword = oneKeyword;
         this.ofKeyword = ofKeyword;
         this.symbols = symbols;
     }
 
-    get firstChild(): Node | undefined { return this.oneKeyword; }
-    get lastChild(): Node | undefined { return last(this.symbols) || this.ofKeyword || this.oneKeyword; }
+    public override get firstChild(): Node | undefined { return this.oneKeyword; }
+    public override get lastChild(): Node | undefined { return last(this.symbols) || this.ofKeyword || this.oneKeyword; }
 
-    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
+    public override forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
         return cbNode(this.oneKeyword)
             || (this.ofKeyword && cbNode(this.ofKeyword))
             || (this.symbols && forEach(this.symbols, cbNode));
     }
 
-    public * children(): IterableIterator<Node> {
+    public override * children(): IterableIterator<Node> {
         yield this.oneKeyword;
         if (this.ofKeyword) yield this.ofKeyword;
         if (this.symbols) yield* this.symbols;
@@ -708,9 +773,9 @@ export class OneOfSymbol extends LexicalSymbolBase<SyntaxKind.OneOfSymbol> {
             : this;
     }
 
-    /*@internal*/ get edgeCount() { return 3; }
-    /*@internal*/ edgeIsArray(offset: number) { return offset === 2; }
-    /*@internal*/ edgeName(offset: number): string | undefined {
+    protected override get edgeCount() { return 3; }
+
+    protected override edgeName(offset: number): string | undefined {
         switch (offset) {
             case 0: return "oneKeyword";
             case 1: return "ofKeyword";
@@ -719,7 +784,7 @@ export class OneOfSymbol extends LexicalSymbolBase<SyntaxKind.OneOfSymbol> {
         return undefined;
     }
 
-    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
+    protected override edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
         switch (offset) {
             case 0: return this.oneKeyword;
             case 1: return this.ofKeyword;
@@ -728,16 +793,16 @@ export class OneOfSymbol extends LexicalSymbolBase<SyntaxKind.OneOfSymbol> {
         return undefined;
     }
 
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitOneOfSymbol(this); }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitOneOfSymbol(this); }
 }
 
 /** {@docCategory Nodes} */
 export class InvalidSymbol extends LexicalSymbolBase<SyntaxKind.InvalidSymbol> {
-    constructor() {
+    public constructor() {
         super(SyntaxKind.InvalidSymbol);
     }
 
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitInvalidSymbol(this); }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitInvalidSymbol(this); }
 }
 
 /** {@docCategory Nodes} */
@@ -768,7 +833,7 @@ export abstract class PrimarySymbolBase<TKind extends PrimarySymbolKind> extends
 export abstract class OptionalSymbolBase<TKind extends OptionalSymbolKind> extends PrimarySymbolBase<TKind> {
     public readonly questionToken: Token<SyntaxKind.QuestionToken> | undefined;
 
-    constructor(kind: TKind, questionToken: Token<SyntaxKind.QuestionToken> | undefined) {
+    public constructor(kind: TKind, questionToken: Token<SyntaxKind.QuestionToken> | undefined) {
         super(kind);
         this.questionToken = questionToken;
     }
@@ -784,20 +849,20 @@ export abstract class OptionalSymbolBase<TKind extends OptionalSymbolKind> exten
 export class Terminal extends OptionalSymbolBase<SyntaxKind.Terminal> {
     public readonly literal: UnicodeCharacterLiteral | TerminalLiteral;
 
-    constructor(literal: UnicodeCharacterLiteral | TerminalLiteral, questionToken: Token<SyntaxKind.QuestionToken> | undefined) {
+    public constructor(literal: UnicodeCharacterLiteral | TerminalLiteral, questionToken: Token<SyntaxKind.QuestionToken> | undefined) {
         super(SyntaxKind.Terminal, questionToken);
         this.literal = literal;
     }
 
-    get firstChild(): Node | undefined { return this.literal; }
-    get lastChild(): Node | undefined { return this.questionToken ?? this.literal; }
+    public override get firstChild(): Node | undefined { return this.literal; }
+    public override get lastChild(): Node | undefined { return this.questionToken ?? this.literal; }
 
-    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
+    public override forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
         return cbNode(this.literal)
             || (this.questionToken && cbNode(this.questionToken));
     }
 
-    public * children(): IterableIterator<Node> {
+    public override * children(): IterableIterator<Node> {
         yield this.literal;
         if (this.questionToken) yield this.questionToken;
     }
@@ -808,23 +873,23 @@ export class Terminal extends OptionalSymbolBase<SyntaxKind.Terminal> {
             : this;
     }
 
-    /*@internal*/ get edgeCount() { return 2; }
-    /*@internal*/ edgeIsArray(_offset: number): boolean { return false; }
-    /*@internal*/ edgeName(offset: number): string | undefined {
+    protected override get edgeCount() { return 2; }
+
+    protected override edgeName(offset: number): string | undefined {
         switch (offset) {
             case 0: return "literal";
             case 1: return "questionToken";
         }
     }
 
-    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
+    protected override edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
         switch (offset) {
             case 0: return this.literal;
             case 1: return this.questionToken;
         }
     }
 
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitTerminal(this); }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitTerminal(this); }
 }
 
 /**
@@ -838,22 +903,22 @@ export class Nonterminal extends OptionalSymbolBase<SyntaxKind.Nonterminal> {
     public readonly name: Identifier;
     public readonly argumentList: ArgumentList | undefined;
 
-    constructor(name: Identifier, argumentList: ArgumentList | undefined, questionToken: Token<SyntaxKind.QuestionToken> | undefined) {
+    public constructor(name: Identifier, argumentList: ArgumentList | undefined, questionToken: Token<SyntaxKind.QuestionToken> | undefined) {
         super(SyntaxKind.Nonterminal, questionToken);
         this.name = name;
         this.argumentList = argumentList;
     }
 
-    get firstChild(): Node | undefined { return this.name; }
-    get lastChild(): Node | undefined { return this.questionToken || this.argumentList || this.name; }
+    public override get firstChild(): Node | undefined { return this.name; }
+    public override get lastChild(): Node | undefined { return this.questionToken || this.argumentList || this.name; }
 
-    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
+    public override forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
         return cbNode(this.name)
             || (this.argumentList && cbNode(this.argumentList))
             || (this.questionToken && cbNode(this.questionToken));
     }
 
-    public * children(): IterableIterator<Node> {
+    public override * children(): IterableIterator<Node> {
         yield this.name;
         if (this.argumentList) yield this.argumentList;
         if (this.questionToken) yield this.questionToken;
@@ -865,9 +930,9 @@ export class Nonterminal extends OptionalSymbolBase<SyntaxKind.Nonterminal> {
             : this;
     }
 
-    /*@internal*/ get edgeCount() { return 3; }
-    /*@internal*/ edgeIsArray(_offset: number): boolean { return false; }
-    /*@internal*/ edgeName(offset: number): string | undefined {
+    protected override get edgeCount() { return 3; }
+
+    protected override edgeName(offset: number): string | undefined {
         switch (offset) {
             case 0: return "name";
             case 1: return "argumentList";
@@ -876,7 +941,7 @@ export class Nonterminal extends OptionalSymbolBase<SyntaxKind.Nonterminal> {
         return undefined;
     }
 
-    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
+    protected override edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
         switch (offset) {
             case 0: return this.name;
             case 1: return this.argumentList;
@@ -885,7 +950,7 @@ export class Nonterminal extends OptionalSymbolBase<SyntaxKind.Nonterminal> {
         return undefined;
     }
 
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitNonterminal(this); }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitNonterminal(this); }
 }
 
 /** {@docCategory Nodes} */
@@ -907,14 +972,14 @@ export abstract class AssertionBase<TKind extends AssertionKind, TBracket extend
     public readonly openBracketToken: Token<TBracket>;
     public readonly closeBracketToken: Token<SyntaxKind.CloseBracketToken> | undefined;
 
-    constructor(kind: TKind, openBracketToken: Token<TBracket>, closeBracketToken: Token<SyntaxKind.CloseBracketToken> | undefined) {
+    public constructor(kind: TKind, openBracketToken: Token<TBracket>, closeBracketToken: Token<SyntaxKind.CloseBracketToken> | undefined) {
         super(kind);
         this.openBracketToken = openBracketToken;
         this.closeBracketToken = closeBracketToken;
     }
 
-    get firstChild(): Node | undefined { return this.openBracketToken; }
-    abstract get lastChild(): Node | undefined;
+    public override get firstChild(): Node | undefined { return this.openBracketToken; }
+    public abstract override get lastChild(): Node | undefined;
 }
 
 /**
@@ -927,28 +992,28 @@ export abstract class AssertionBase<TKind extends AssertionKind, TBracket extend
 export class EmptyAssertion extends AssertionBase<SyntaxKind.EmptyAssertion, SyntaxKind.OpenBracketToken> {
     public readonly emptyKeyword: Token<SyntaxKind.EmptyKeyword>;
 
-    constructor(openBracketToken: Token<SyntaxKind.OpenBracketToken>, emptyKeyword: Token<SyntaxKind.EmptyKeyword>, closeBracketToken: Token<SyntaxKind.CloseBracketToken> | undefined) {
+    public constructor(openBracketToken: Token<SyntaxKind.OpenBracketToken>, emptyKeyword: Token<SyntaxKind.EmptyKeyword>, closeBracketToken: Token<SyntaxKind.CloseBracketToken> | undefined) {
         super(SyntaxKind.EmptyAssertion, openBracketToken, closeBracketToken);
         this.emptyKeyword = emptyKeyword;
     }
 
-    get lastChild(): Node | undefined { return this.closeBracketToken || this.emptyKeyword; }
+    public override get lastChild(): Node | undefined { return this.closeBracketToken || this.emptyKeyword; }
 
-    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
+    public override forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
         return cbNode(this.openBracketToken)
             || cbNode(this.emptyKeyword)
             || (this.closeBracketToken && cbNode(this.closeBracketToken));
     }
 
-    public * children(): IterableIterator<Node> {
+    public override * children(): IterableIterator<Node> {
         yield this.openBracketToken;
         yield this.emptyKeyword;
         if (this.closeBracketToken) yield this.closeBracketToken;
     }
 
-    /*@internal*/ get edgeCount() { return 3; }
-    /*@internal*/ edgeIsArray(offset: number) { return false; }
-    /*@internal*/ edgeName(offset: number): string | undefined {
+    protected override get edgeCount() { return 3; }
+
+    protected override edgeName(offset: number): string | undefined {
         switch (offset) {
             case 0: return "openBracketToken";
             case 1: return "emptyKeyword";
@@ -957,7 +1022,7 @@ export class EmptyAssertion extends AssertionBase<SyntaxKind.EmptyAssertion, Syn
         return undefined;
     }
 
-    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
+    protected override edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
         switch (offset) {
             case 0: return this.openBracketToken;
             case 1: return this.emptyKeyword;
@@ -966,7 +1031,7 @@ export class EmptyAssertion extends AssertionBase<SyntaxKind.EmptyAssertion, Syn
         return undefined;
     }
 
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitEmptyAssertion(this); }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitEmptyAssertion(this); }
 }
 
 /**
@@ -981,16 +1046,16 @@ export class LookaheadAssertion extends AssertionBase<SyntaxKind.LookaheadAssert
     public readonly operatorToken: Token<LookaheadOperatorKind> | undefined;
     public readonly lookahead: SymbolSpan | SymbolSet | undefined;
 
-    constructor(openBracketToken: Token<SyntaxKind.OpenBracketToken>, lookaheadKeyword: Token<SyntaxKind.LookaheadKeyword>, operatorToken: Token<LookaheadOperatorKind> | undefined, lookahead: SymbolSpan | SymbolSet | undefined, closeBracketToken: Token<SyntaxKind.CloseBracketToken> | undefined) {
+    public constructor(openBracketToken: Token<SyntaxKind.OpenBracketToken>, lookaheadKeyword: Token<SyntaxKind.LookaheadKeyword>, operatorToken: Token<LookaheadOperatorKind> | undefined, lookahead: SymbolSpan | SymbolSet | undefined, closeBracketToken: Token<SyntaxKind.CloseBracketToken> | undefined) {
         super(SyntaxKind.LookaheadAssertion, openBracketToken, closeBracketToken);
         this.lookaheadKeyword = lookaheadKeyword;
         this.operatorToken = operatorToken;
         this.lookahead = lookahead;
     }
 
-    get lastChild(): Node | undefined { return this.closeBracketToken || this.lookahead || this.operatorToken || this.lookaheadKeyword; }
+    public override get lastChild(): Node | undefined { return this.closeBracketToken || this.lookahead || this.operatorToken || this.lookaheadKeyword; }
 
-    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
+    public override forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
         return cbNode(this.openBracketToken)
             || cbNode(this.lookaheadKeyword)
             || (this.operatorToken && cbNode(this.operatorToken))
@@ -998,7 +1063,7 @@ export class LookaheadAssertion extends AssertionBase<SyntaxKind.LookaheadAssert
             || (this.closeBracketToken && cbNode(this.closeBracketToken));
     }
 
-    public * children(): IterableIterator<Node> {
+    public override * children(): IterableIterator<Node> {
         yield this.openBracketToken;
         yield this.lookaheadKeyword;
         if (this.operatorToken) yield this.operatorToken;
@@ -1012,9 +1077,9 @@ export class LookaheadAssertion extends AssertionBase<SyntaxKind.LookaheadAssert
             : this;
     }
 
-    /*@internal*/ get edgeCount() { return 5; }
-    /*@internal*/ edgeIsArray(offset: number) { return false; }
-    /*@internal*/ edgeName(offset: number): string | undefined {
+    protected override get edgeCount() { return 5; }
+
+    protected override edgeName(offset: number): string | undefined {
         switch (offset) {
             case 0: return "openBracketToken";
             case 1: return "lookaheadKeyword";
@@ -1025,7 +1090,7 @@ export class LookaheadAssertion extends AssertionBase<SyntaxKind.LookaheadAssert
         return undefined;
     }
 
-    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
+    protected override edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
         switch (offset) {
             case 0: return this.openBracketToken;
             case 1: return this.lookaheadKeyword;
@@ -1036,7 +1101,7 @@ export class LookaheadAssertion extends AssertionBase<SyntaxKind.LookaheadAssert
         return undefined;
     }
 
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitLookaheadAssertion(this); }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitLookaheadAssertion(this); }
 }
 
 /**
@@ -1051,16 +1116,16 @@ export class LexicalGoalAssertion extends AssertionBase<SyntaxKind.LexicalGoalAs
     public readonly goalKeyword: Token<SyntaxKind.GoalKeyword> | undefined;
     public readonly symbol: Identifier | undefined;
 
-    constructor(openBracketToken: Token<SyntaxKind.OpenBracketToken>, lexicalKeyword: Token<SyntaxKind.LexicalKeyword>, goalKeyword: Token<SyntaxKind.GoalKeyword> | undefined, symbol: Identifier | undefined, closeBracketToken: Token<SyntaxKind.CloseBracketToken> | undefined) {
+    public constructor(openBracketToken: Token<SyntaxKind.OpenBracketToken>, lexicalKeyword: Token<SyntaxKind.LexicalKeyword>, goalKeyword: Token<SyntaxKind.GoalKeyword> | undefined, symbol: Identifier | undefined, closeBracketToken: Token<SyntaxKind.CloseBracketToken> | undefined) {
         super(SyntaxKind.LexicalGoalAssertion, openBracketToken, closeBracketToken);
         this.lexicalKeyword = lexicalKeyword;
         this.goalKeyword = goalKeyword;
         this.symbol = symbol;
     }
 
-    get lastChild(): Node | undefined { return this.closeBracketToken || this.symbol || this.goalKeyword || this.lexicalKeyword; }
+    public override get lastChild(): Node | undefined { return this.closeBracketToken || this.symbol || this.goalKeyword || this.lexicalKeyword; }
 
-    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
+    public override forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
         return cbNode(this.openBracketToken)
             || cbNode(this.lexicalKeyword)
             || (this.goalKeyword && cbNode(this.goalKeyword))
@@ -1068,7 +1133,7 @@ export class LexicalGoalAssertion extends AssertionBase<SyntaxKind.LexicalGoalAs
             || (this.closeBracketToken && cbNode(this.closeBracketToken));
     }
 
-    public * children(): IterableIterator<Node> {
+    public override * children(): IterableIterator<Node> {
         yield this.openBracketToken;
         yield this.lexicalKeyword;
         if (this.goalKeyword) yield this.goalKeyword;
@@ -1082,9 +1147,9 @@ export class LexicalGoalAssertion extends AssertionBase<SyntaxKind.LexicalGoalAs
             : this;
     }
 
-    /*@internal*/ get edgeCount() { return 5; }
-    /*@internal*/ edgeIsArray(offset: number) { return false; }
-    /*@internal*/ edgeName(offset: number): string | undefined {
+    protected override get edgeCount() { return 5; }
+
+    protected override edgeName(offset: number): string | undefined {
         switch (offset) {
             case 0: return "openBracketToken";
             case 1: return "lexicalKeyword";
@@ -1095,7 +1160,7 @@ export class LexicalGoalAssertion extends AssertionBase<SyntaxKind.LexicalGoalAs
         return undefined;
     }
 
-    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
+    protected override edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
         switch (offset) {
             case 0: return this.openBracketToken;
             case 1: return this.lexicalKeyword;
@@ -1106,7 +1171,7 @@ export class LexicalGoalAssertion extends AssertionBase<SyntaxKind.LexicalGoalAs
         return undefined;
     }
 
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitLexicalGoalAssertion(this); }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitLexicalGoalAssertion(this); }
 }
 
 /**
@@ -1121,16 +1186,16 @@ export class NoSymbolHereAssertion extends AssertionBase<SyntaxKind.NoSymbolHere
     public readonly symbols: ReadonlyArray<PrimarySymbol> | undefined;
     public readonly hereKeyword: Token<SyntaxKind.HereKeyword> | undefined;
 
-    constructor(openBracketToken: Token<SyntaxKind.OpenBracketToken>, noKeyword: Token<SyntaxKind.NoKeyword>, symbols: ReadonlyArray<PrimarySymbol> | undefined, hereKeyword: Token<SyntaxKind.HereKeyword> | undefined, closeBracketToken: Token<SyntaxKind.CloseBracketToken> | undefined) {
+    public constructor(openBracketToken: Token<SyntaxKind.OpenBracketToken>, noKeyword: Token<SyntaxKind.NoKeyword>, symbols: ReadonlyArray<PrimarySymbol> | undefined, hereKeyword: Token<SyntaxKind.HereKeyword> | undefined, closeBracketToken: Token<SyntaxKind.CloseBracketToken> | undefined) {
         super(SyntaxKind.NoSymbolHereAssertion, openBracketToken, closeBracketToken);
         this.noKeyword = noKeyword;
         this.symbols = symbols;
         this.hereKeyword = hereKeyword;
     }
 
-    get lastChild(): Node | undefined { return this.closeBracketToken || this.hereKeyword || last(this.symbols) || this.noKeyword; }
+    public override get lastChild(): Node | undefined { return this.closeBracketToken || this.hereKeyword || last(this.symbols) || this.noKeyword; }
 
-    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
+    public override forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
         return cbNode(this.openBracketToken)
             || cbNode(this.noKeyword)
             || (this.symbols && forEach(this.symbols, cbNode))
@@ -1138,7 +1203,7 @@ export class NoSymbolHereAssertion extends AssertionBase<SyntaxKind.NoSymbolHere
             || (this.closeBracketToken && cbNode(this.closeBracketToken));
     }
 
-    public * children(): IterableIterator<Node> {
+    public override * children(): IterableIterator<Node> {
         yield this.openBracketToken;
         yield this.noKeyword;
         if (this.symbols) yield* this.symbols;
@@ -1152,9 +1217,9 @@ export class NoSymbolHereAssertion extends AssertionBase<SyntaxKind.NoSymbolHere
             : this;
     }
 
-    /*@internal*/ get edgeCount() { return 5; }
-    /*@internal*/ edgeIsArray(offset: number) { return offset === 2; }
-    /*@internal*/ edgeName(offset: number): string | undefined {
+    protected override get edgeCount() { return 5; }
+
+    protected override edgeName(offset: number): string | undefined {
         switch (offset) {
             case 0: return "openBracketToken";
             case 1: return "noKeyword";
@@ -1165,7 +1230,7 @@ export class NoSymbolHereAssertion extends AssertionBase<SyntaxKind.NoSymbolHere
         return undefined;
     }
 
-    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
+    protected override edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
         switch (offset) {
             case 0: return this.openBracketToken;
             case 1: return this.noKeyword;
@@ -1176,7 +1241,7 @@ export class NoSymbolHereAssertion extends AssertionBase<SyntaxKind.NoSymbolHere
         return undefined;
     }
 
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitNoSymbolHereAssertion(this); }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitNoSymbolHereAssertion(this); }
 }
 
 /**
@@ -1189,20 +1254,20 @@ export class NoSymbolHereAssertion extends AssertionBase<SyntaxKind.NoSymbolHere
 export class ProseAssertion extends AssertionBase<SyntaxKind.ProseAssertion, SyntaxKind.OpenBracketGreaterThanToken> {
     public readonly fragments: ReadonlyArray<ProseFragment> | undefined;
 
-    constructor(openBracketToken: Token<SyntaxKind.OpenBracketGreaterThanToken>, fragments: ReadonlyArray<ProseFragment> | undefined, closeBracketToken: Token<SyntaxKind.CloseBracketToken> | undefined) {
+    public constructor(openBracketToken: Token<SyntaxKind.OpenBracketGreaterThanToken>, fragments: ReadonlyArray<ProseFragment> | undefined, closeBracketToken: Token<SyntaxKind.CloseBracketToken> | undefined) {
         super(SyntaxKind.ProseAssertion, openBracketToken, closeBracketToken);
         this.fragments = fragments;
     }
 
-    get lastChild(): Node | undefined { return this.closeBracketToken || last(this.fragments) || this.openBracketToken; }
+    public override get lastChild(): Node | undefined { return this.closeBracketToken || last(this.fragments) || this.openBracketToken; }
 
-    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
+    public override forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
         return cbNode(this.openBracketToken)
             || (this.fragments && forEach(this.fragments, cbNode))
             || (this.closeBracketToken && cbNode(this.closeBracketToken));
     }
 
-    public * children(): IterableIterator<Node> {
+    public override * children(): IterableIterator<Node> {
         yield this.openBracketToken;
         if (this.fragments) yield* this.fragments;
         if (this.closeBracketToken) yield this.closeBracketToken;
@@ -1214,9 +1279,9 @@ export class ProseAssertion extends AssertionBase<SyntaxKind.ProseAssertion, Syn
             : this;
     }
 
-    /*@internal*/ get edgeCount() { return 3; }
-    /*@internal*/ edgeIsArray(offset: number) { return offset === 1; }
-    /*@internal*/ edgeName(offset: number): string | undefined {
+    protected override get edgeCount() { return 3; }
+
+    protected override edgeName(offset: number): string | undefined {
         switch (offset) {
             case 0: return "openBracketToken";
             case 1: return "fragments";
@@ -1225,7 +1290,7 @@ export class ProseAssertion extends AssertionBase<SyntaxKind.ProseAssertion, Syn
         return undefined;
     }
 
-    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
+    protected override edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
         switch (offset) {
             case 0: return this.openBracketToken;
             case 1: return this.fragments;
@@ -1234,30 +1299,30 @@ export class ProseAssertion extends AssertionBase<SyntaxKind.ProseAssertion, Syn
         return undefined;
     }
 
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitProseAssertion(this); }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitProseAssertion(this); }
 }
 
 /** {@docCategory Nodes} */
 export class InvalidAssertion extends AssertionBase<SyntaxKind.InvalidAssertion, SyntaxKind.OpenBracketToken> {
-    constructor(openBracketToken: Token<SyntaxKind.OpenBracketToken>, closeBracketToken: Token<SyntaxKind.CloseBracketToken> | undefined) {
+    public constructor(openBracketToken: Token<SyntaxKind.OpenBracketToken>, closeBracketToken: Token<SyntaxKind.CloseBracketToken> | undefined) {
         super(SyntaxKind.InvalidAssertion, openBracketToken, closeBracketToken);
     }
 
-    get lastChild(): Node | undefined { return this.closeBracketToken || this.openBracketToken; }
+    public override get lastChild(): Node | undefined { return this.closeBracketToken || this.openBracketToken; }
 
-    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
+    public override forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
         return cbNode(this.openBracketToken)
             || (this.closeBracketToken && cbNode(this.closeBracketToken));
     }
 
-    public * children(): IterableIterator<Node> {
+    public override * children(): IterableIterator<Node> {
         yield this.openBracketToken;
         if (this.closeBracketToken) yield this.closeBracketToken;
     }
 
-    /*@internal*/ get edgeCount() { return 2; }
-    /*@internal*/ edgeIsArray(_offset: number) { return false; }
-    /*@internal*/ edgeName(offset: number): string | undefined {
+    protected override get edgeCount() { return 2; }
+
+    protected override edgeName(offset: number): string | undefined {
         switch (offset) {
             case 0: return "openBracketToken";
             case 1: return "closeBracketToken";
@@ -1265,7 +1330,7 @@ export class InvalidAssertion extends AssertionBase<SyntaxKind.InvalidAssertion,
         return undefined;
     }
 
-    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
+    protected override edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
         switch (offset) {
             case 0: return this.openBracketToken;
             case 1: return this.closeBracketToken;
@@ -1273,7 +1338,7 @@ export class InvalidAssertion extends AssertionBase<SyntaxKind.InvalidAssertion,
         return undefined;
     }
 
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitInvalidAssertion(this); }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitInvalidAssertion(this); }
 }
 
 /** {@docCategory Nodes} */
@@ -1290,16 +1355,15 @@ export type Assertion =
 export class ProseFragmentLiteral<TKind extends ProseFragmentLiteralKind = ProseFragmentLiteralKind> extends Node<SyntaxKind> implements TextContent {
     public readonly text: string | undefined;
 
-    constructor(kind: SyntaxKind, text: string | undefined) {
+    public constructor(kind: SyntaxKind, text: string | undefined) {
         super(kind);
         this.text = text;
     }
 
-    /*@internal*/ get edgeCount() { return 0; }
-    /*@internal*/ edgeIsArray(_offset: number): boolean { return false; }
-    /*@internal*/ edgeName(_offset: number): string | undefined { return undefined; }
-    /*@internal*/ edgeValue(_offset: number): Node | ReadonlyArray<Node> | undefined { return undefined; }
-    /*@internal*/ accept(visitor: NodeVisitor): ProseFragmentLiteral<TKind> { return visitor.visitProseFragmentLiteral(this); }
+    protected override get edgeCount() { return 0; }
+    protected override edgeName(_offset: number): string | undefined { return undefined; }
+    protected override edgeValue(_offset: number): Node | ReadonlyArray<Node> | undefined { return undefined; }
+    protected override accept(visitor: NodeVisitor): ProseFragmentLiteral<TKind> { return visitor.visitProseFragmentLiteral(this); }
 }
 
 /** {@docCategory Nodes} */
@@ -1313,21 +1377,21 @@ export class Argument extends Node<SyntaxKind.Argument> {
     public readonly operatorToken: Token<ArgumentOperatorKind> | undefined;
     public readonly name: Identifier | undefined;
 
-    constructor(operatorToken: Token<ArgumentOperatorKind> | undefined, name: Identifier | undefined) {
+    public constructor(operatorToken: Token<ArgumentOperatorKind> | undefined, name: Identifier | undefined) {
         super(SyntaxKind.Argument);
         this.operatorToken = operatorToken;
         this.name = name;
     }
 
-    get firstChild(): Node | undefined { return this.operatorToken || this.name; }
-    get lastChild(): Node | undefined { return this.name || this.operatorToken; }
+    public override get firstChild(): Node | undefined { return this.operatorToken || this.name; }
+    public override get lastChild(): Node | undefined { return this.name || this.operatorToken; }
 
-    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
+    public override forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
         return (this.operatorToken && cbNode(this.operatorToken))
             || (this.name && cbNode(this.name));
     }
 
-    public * children(): IterableIterator<Node> {
+    public override * children(): IterableIterator<Node> {
         if (this.operatorToken) yield this.operatorToken;
         if (this.name) yield this.name;
     }
@@ -1338,9 +1402,8 @@ export class Argument extends Node<SyntaxKind.Argument> {
             : this;
     }
 
-    /*@internal*/ get edgeCount() { return 2; }
-    /*@internal*/ edgeIsArray(offset: number) { return false; }
-    /*@internal*/ edgeName(offset: number): string | undefined {
+    protected override get edgeCount() { return 2; }
+    protected override edgeName(offset: number): string | undefined {
         switch (offset) {
             case 0: return "operatorToken";
             case 1: return "name";
@@ -1348,7 +1411,7 @@ export class Argument extends Node<SyntaxKind.Argument> {
         return undefined;
     }
 
-    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
+    protected override edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
         switch (offset) {
             case 0: return this.operatorToken;
             case 1: return this.name;
@@ -1356,7 +1419,7 @@ export class Argument extends Node<SyntaxKind.Argument> {
         return undefined;
     }
 
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitArgument(this); }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitArgument(this); }
 }
 
 /** {@docCategory Nodes} */
@@ -1365,23 +1428,23 @@ export class ArgumentList extends Node<SyntaxKind.ArgumentList> {
     public readonly elements: ReadonlyArray<Argument> | undefined;
     public readonly closeBracketToken: Token<SyntaxKind.CloseBracketToken> | undefined;
 
-    constructor(openParenToken: Token<SyntaxKind.OpenBracketToken>, elements: ReadonlyArray<Argument> | undefined, closeParenToken: Token<SyntaxKind.CloseBracketToken> | undefined) {
+    public constructor(openParenToken: Token<SyntaxKind.OpenBracketToken>, elements: ReadonlyArray<Argument> | undefined, closeParenToken: Token<SyntaxKind.CloseBracketToken> | undefined) {
         super(SyntaxKind.ArgumentList);
         this.openBracketToken = openParenToken;
         this.elements = elements;
         this.closeBracketToken = closeParenToken;
     }
 
-    get firstChild(): Node | undefined { return this.openBracketToken; }
-    get lastChild(): Node | undefined { return this.closeBracketToken || last(this.elements) || this.openBracketToken; }
+    public override get firstChild(): Node | undefined { return this.openBracketToken; }
+    public override get lastChild(): Node | undefined { return this.closeBracketToken || last(this.elements) || this.openBracketToken; }
 
-    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
+    public override forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
         return cbNode(this.openBracketToken)
             || (this.elements && forEach(this.elements, cbNode))
             || (this.closeBracketToken && cbNode(this.closeBracketToken));
     }
 
-    public * children(): IterableIterator<Node> {
+    public override * children(): IterableIterator<Node> {
         yield this.openBracketToken;
         if (this.elements) yield* this.elements;
         if (this.closeBracketToken) yield this.closeBracketToken;
@@ -1393,9 +1456,9 @@ export class ArgumentList extends Node<SyntaxKind.ArgumentList> {
             : this;
     }
 
-    /*@internal*/ get edgeCount() { return 3; }
-    /*@internal*/ edgeIsArray(offset: number) { return offset === 2; }
-    /*@internal*/ edgeName(offset: number): string | undefined {
+    protected override get edgeCount() { return 3; }
+
+    protected override edgeName(offset: number): string | undefined {
         switch (offset) {
             case 0: return "openParenToken";
             case 1: return "elements";
@@ -1404,7 +1467,7 @@ export class ArgumentList extends Node<SyntaxKind.ArgumentList> {
         return undefined;
     }
 
-    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
+    protected override edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
         switch (offset) {
             case 0: return this.openBracketToken;
             case 1: return this.elements;
@@ -1413,7 +1476,7 @@ export class ArgumentList extends Node<SyntaxKind.ArgumentList> {
         return undefined;
     }
 
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitArgumentList(this); }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitArgumentList(this); }
 }
 
 /** {@docCategory Nodes} */
@@ -1421,21 +1484,21 @@ export class SymbolSpan extends Node<SyntaxKind.SymbolSpan> {
     public readonly symbol: LexicalSymbol;
     public readonly next: SymbolSpan | undefined;
 
-    constructor(symbol: LexicalSymbol, next: SymbolSpan | undefined) {
+    public constructor(symbol: LexicalSymbol, next: SymbolSpan | undefined) {
         super(SyntaxKind.SymbolSpan);
         this.symbol = symbol;
         this.next = next;
     }
 
-    get firstChild(): Node | undefined { return this.symbol; }
-    get lastChild(): Node | undefined { return this.next || this.symbol; }
+    public override get firstChild(): Node | undefined { return this.symbol; }
+    public override get lastChild(): Node | undefined { return this.next || this.symbol; }
 
-    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
+    public override forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
         return cbNode(this.symbol)
             || (this.next && cbNode(this.next));
     }
 
-    public * children(): IterableIterator<Node> {
+    public override * children(): IterableIterator<Node> {
         yield this.symbol;
         if (this.next) yield this.next;
     }
@@ -1446,9 +1509,9 @@ export class SymbolSpan extends Node<SyntaxKind.SymbolSpan> {
             : this;
     }
 
-    /*@internal*/ get edgeCount() { return 2; }
-    /*@internal*/ edgeIsArray(offset: number) { return false; }
-    /*@internal*/ edgeName(offset: number): string | undefined {
+    protected override get edgeCount() { return 2; }
+
+    protected override edgeName(offset: number): string | undefined {
         switch (offset) {
             case 0: return "symbol";
             case 1: return "next";
@@ -1456,7 +1519,7 @@ export class SymbolSpan extends Node<SyntaxKind.SymbolSpan> {
         return undefined;
     }
 
-    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
+    protected override edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
         switch (offset) {
             case 0: return this.symbol;
             case 1: return this.next;
@@ -1464,26 +1527,25 @@ export class SymbolSpan extends Node<SyntaxKind.SymbolSpan> {
         return undefined;
     }
 
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitSymbolSpan(this); }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitSymbolSpan(this); }
 }
 
 /** {@docCategory Nodes} */
 export class LinkReference extends Node<SyntaxKind.LinkReference> {
     public readonly text: string | undefined;
 
-    constructor(text: string | undefined) {
+    public constructor(text: string | undefined) {
         super(SyntaxKind.LinkReference);
         this.text = text;
     }
 
-    public forEachChild<T>(_cbNode: (node: Node) => T | undefined): T | undefined { return undefined; }
-    public children(): IterableIterator<Node> { return emptyIterable; }
+    public override forEachChild<T>(_cbNode: (node: Node) => T | undefined): T | undefined { return undefined; }
+    public override children(): IterableIterator<Node> { return emptyIterable; }
 
-    /*@internal*/ get edgeCount() { return 3; }
-    /*@internal*/ edgeIsArray(_offset: number) { return false; }
-    /*@internal*/ edgeName(_offset: number) { return undefined; }
-    /*@internal*/ edgeValue(_offset: number) { return undefined; }
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitLinkReference(this); }
+    protected override get edgeCount() { return 3; }
+    protected override edgeName(_offset: number) { return undefined; }
+    protected override edgeValue(_offset: number) { return undefined; }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitLinkReference(this); }
 }
 
 /** {@docCategory Nodes} */
@@ -1496,23 +1558,23 @@ export class RightHandSide extends ProductionBodyBase<SyntaxKind.RightHandSide> 
     public readonly head: SymbolSpan | undefined;
     public readonly reference: LinkReference | undefined;
 
-    constructor(constraints: Constraints | undefined, head: SymbolSpan | undefined, reference: LinkReference | undefined) {
+    public constructor(constraints: Constraints | undefined, head: SymbolSpan | undefined, reference: LinkReference | undefined) {
         super(SyntaxKind.RightHandSide);
         this.constraints = constraints;
         this.head = head;
         this.reference = reference;
     }
 
-    get firstChild(): Node | undefined { return this.constraints || this.head; }
-    get lastChild(): Node | undefined { return this.reference || this.head; }
+    public override get firstChild(): Node | undefined { return this.constraints || this.head; }
+    public override get lastChild(): Node | undefined { return this.reference || this.head; }
 
-    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
+    public override forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
         return (this.constraints && cbNode(this.constraints))
             || (this.head && cbNode(this.head))
             || (this.reference && cbNode(this.reference));
     }
 
-    public * children(): IterableIterator<Node> {
+    public override * children(): IterableIterator<Node> {
         if (this.constraints) yield this.constraints;
         if (this.head) yield this.head;
         if (this.reference) yield this.reference;
@@ -1524,9 +1586,9 @@ export class RightHandSide extends ProductionBodyBase<SyntaxKind.RightHandSide> 
             : this;
     }
 
-    /*@internal*/ get edgeCount() { return 3; }
-    /*@internal*/ edgeIsArray(offset: number) { return false; }
-    /*@internal*/ edgeName(offset: number): string | undefined {
+    protected override get edgeCount() { return 3; }
+
+    protected override edgeName(offset: number): string | undefined {
         switch (offset) {
             case 0: return "constraints";
             case 1: return "head";
@@ -1535,7 +1597,7 @@ export class RightHandSide extends ProductionBodyBase<SyntaxKind.RightHandSide> 
         return undefined;
     }
 
-    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
+    protected override edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
         switch (offset) {
             case 0: return this.constraints;
             case 1: return this.head;
@@ -1544,26 +1606,26 @@ export class RightHandSide extends ProductionBodyBase<SyntaxKind.RightHandSide> 
         return undefined;
     }
 
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitRightHandSide(this); }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitRightHandSide(this); }
 }
 
 /** {@docCategory Nodes} */
 export class RightHandSideList extends ProductionBodyBase<SyntaxKind.RightHandSideList> {
     public readonly elements: ReadonlyArray<RightHandSide> | undefined;
 
-    constructor(elements: ReadonlyArray<RightHandSide> | undefined) {
+    public constructor(elements: ReadonlyArray<RightHandSide> | undefined) {
         super(SyntaxKind.RightHandSideList);
         this.elements = elements;
     }
 
-    get firstChild(): Node | undefined { return first(this.elements); }
-    get lastChild(): Node | undefined { return last(this.elements); }
+    public override get firstChild(): Node | undefined { return first(this.elements); }
+    public override get lastChild(): Node | undefined { return last(this.elements); }
 
-    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
+    public override forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
         return forEach(this.elements, cbNode);
     }
 
-    public * children(): IterableIterator<Node> {
+    public override * children(): IterableIterator<Node> {
         if (this.elements) yield* this.elements;
     }
 
@@ -1573,23 +1635,23 @@ export class RightHandSideList extends ProductionBodyBase<SyntaxKind.RightHandSi
             : this;
     }
 
-    /*@internal*/ get edgeCount() { return 1; }
-    /*@internal*/ edgeIsArray(offset: number) { return offset === 0; }
-    /*@internal*/ edgeName(offset: number): string | undefined {
+    protected override get edgeCount() { return 1; }
+
+    protected override edgeName(offset: number): string | undefined {
         switch (offset) {
             case 0: return "elements";
         }
         return undefined;
     }
 
-    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
+    protected override edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
         switch (offset) {
             case 0: return this.elements;
         }
         return undefined;
     }
 
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitRightHandSideList(this); }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitRightHandSideList(this); }
 }
 
 /** {@docCategory Nodes} */
@@ -1599,7 +1661,7 @@ export class OneOfList extends ProductionBodyBase<SyntaxKind.OneOfList> {
     public readonly indented: boolean;
     public readonly terminals: ReadonlyArray<TerminalLiteral> | undefined;
 
-    constructor(oneKeyword: Token<SyntaxKind.OneKeyword>, ofKeyword: Token<SyntaxKind.OfKeyword> | undefined, indented: boolean, terminals: ReadonlyArray<TerminalLiteral> | undefined) {
+    public constructor(oneKeyword: Token<SyntaxKind.OneKeyword>, ofKeyword: Token<SyntaxKind.OfKeyword> | undefined, indented: boolean, terminals: ReadonlyArray<TerminalLiteral> | undefined) {
         super(SyntaxKind.OneOfList);
         this.oneKeyword = oneKeyword;
         this.ofKeyword = ofKeyword;
@@ -1607,16 +1669,16 @@ export class OneOfList extends ProductionBodyBase<SyntaxKind.OneOfList> {
         this.terminals = terminals;
     }
 
-    get firstChild(): Node | undefined { return this.oneKeyword; }
-    get lastChild(): Node | undefined { return last(this.terminals) || this.ofKeyword || this.oneKeyword; }
+    public override get firstChild(): Node | undefined { return this.oneKeyword; }
+    public override get lastChild(): Node | undefined { return last(this.terminals) || this.ofKeyword || this.oneKeyword; }
 
-    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
+    public override forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
         return cbNode(this.oneKeyword)
             || (this.ofKeyword && cbNode(this.ofKeyword))
             || (this.terminals && forEach(this.terminals, cbNode));
     }
 
-    public * children(): IterableIterator<Node> {
+    public override * children(): IterableIterator<Node> {
         yield this.oneKeyword;
         if (this.ofKeyword) yield this.ofKeyword;
         if (this.terminals) yield* this.terminals;
@@ -1628,9 +1690,9 @@ export class OneOfList extends ProductionBodyBase<SyntaxKind.OneOfList> {
             : this;
     }
 
-    /*@internal*/ get edgeCount() { return 3; }
-    /*@internal*/ edgeIsArray(offset: number) { return offset === 3; }
-    /*@internal*/ edgeName(offset: number): string | undefined {
+    protected override get edgeCount() { return 3; }
+
+    protected override edgeName(offset: number): string | undefined {
         switch (offset) {
             case 0: return "oneKeyword";
             case 1: return "ofKeyword";
@@ -1639,7 +1701,7 @@ export class OneOfList extends ProductionBodyBase<SyntaxKind.OneOfList> {
         return undefined;
     }
 
-    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
+    protected override edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
         switch (offset) {
             case 0: return this.oneKeyword;
             case 1: return this.ofKeyword;
@@ -1648,7 +1710,7 @@ export class OneOfList extends ProductionBodyBase<SyntaxKind.OneOfList> {
         return undefined;
     }
 
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitOneOfList(this); }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitOneOfList(this); }
 }
 
 /** {@docCategory Nodes} */
@@ -1662,19 +1724,19 @@ export type ProductionBody =
 export class Parameter extends Node<SyntaxKind.Parameter> {
     public readonly name: Identifier;
 
-    constructor(name: Identifier) {
+    public constructor(name: Identifier) {
         super(SyntaxKind.Parameter);
         this.name = name;
     }
 
-    get firstChild(): Node | undefined { return this.name; }
-    get lastChild(): Node | undefined { return this.name; }
+    public override get firstChild(): Node | undefined { return this.name; }
+    public override get lastChild(): Node | undefined { return this.name; }
 
-    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
+    public override forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
         return (this.name && cbNode(this.name));
     }
 
-    public * children(): IterableIterator<Node> {
+    public override * children(): IterableIterator<Node> {
         if (this.name) yield this.name;
     }
 
@@ -1684,11 +1746,10 @@ export class Parameter extends Node<SyntaxKind.Parameter> {
             : this;
     }
 
-    /*@internal*/ get edgeCount() { return 1; }
-    /*@internal*/ edgeIsArray(offset: number) { return false; }
-    /*@internal*/ edgeName(offset: number): string | undefined { return offset === 0 ? "name" : undefined; }
-    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined { return offset === 0 ? this.name : undefined; }
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitParameter(this); }
+    protected override get edgeCount() { return 1; }
+    protected override edgeName(offset: number): string | undefined { return offset === 0 ? "name" : undefined; }
+    protected override edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined { return offset === 0 ? this.name : undefined; }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitParameter(this); }
 }
 
 /** {@docCategory Nodes} */
@@ -1697,23 +1758,23 @@ export class ParameterList extends Node<SyntaxKind.ParameterList> {
     public readonly elements: ReadonlyArray<Parameter> | undefined;
     public readonly closeBracketToken: Token<SyntaxKind.CloseBracketToken> | undefined;
 
-    constructor(openParenToken: Token<SyntaxKind.OpenBracketToken>, elements: ReadonlyArray<Parameter> | undefined, closeParenToken: Token<SyntaxKind.CloseBracketToken> | undefined) {
+    public constructor(openParenToken: Token<SyntaxKind.OpenBracketToken>, elements: ReadonlyArray<Parameter> | undefined, closeParenToken: Token<SyntaxKind.CloseBracketToken> | undefined) {
         super(SyntaxKind.ParameterList);
         this.openBracketToken = openParenToken;
         this.elements = elements;
         this.closeBracketToken = closeParenToken;
     }
 
-    get firstChild(): Node | undefined { return this.openBracketToken; }
-    get lastChild(): Node | undefined { return this.closeBracketToken || last(this.elements) || this.openBracketToken; }
+    public override get firstChild(): Node | undefined { return this.openBracketToken; }
+    public override get lastChild(): Node | undefined { return this.closeBracketToken || last(this.elements) || this.openBracketToken; }
 
-    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
+    public override forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
         return cbNode(this.openBracketToken)
             || (this.elements && forEach(this.elements, cbNode))
             || (this.closeBracketToken && cbNode(this.closeBracketToken));
     }
 
-    public * children(): IterableIterator<Node> {
+    public override * children(): IterableIterator<Node> {
         yield this.openBracketToken;
         if (this.elements) yield* this.elements;
         if (this.closeBracketToken) yield this.closeBracketToken;
@@ -1725,9 +1786,9 @@ export class ParameterList extends Node<SyntaxKind.ParameterList> {
             : this;
     }
 
-    /*@internal*/ get edgeCount() { return 3; }
-    /*@internal*/ edgeIsArray(offset: number) { return offset === 1; }
-    /*@internal*/ edgeName(offset: number): string | undefined {
+    protected override get edgeCount() { return 3; }
+
+    protected override edgeName(offset: number): string | undefined {
         switch (offset) {
             case 0: return "openParenToken";
             case 1: return "elements";
@@ -1736,7 +1797,7 @@ export class ParameterList extends Node<SyntaxKind.ParameterList> {
         return undefined;
     }
 
-    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
+    protected override edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
         switch (offset) {
             case 0: return this.openBracketToken;
             case 1: return this.elements;
@@ -1745,7 +1806,7 @@ export class ParameterList extends Node<SyntaxKind.ParameterList> {
         return undefined;
     }
 
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitParameterList(this); }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitParameterList(this); }
 }
 
 /** {@docCategory Nodes} */
@@ -1759,7 +1820,7 @@ export class Production extends SourceElementBase<SyntaxKind.Production> {
     public readonly colonToken: Token<ProductionSeperatorKind> | undefined;
     public readonly body: ProductionBody | undefined;
 
-    constructor(name: Identifier, parameterList: ParameterList | undefined, colonToken: Token<ProductionSeperatorKind> | undefined, body: ProductionBody | undefined) {
+    public constructor(name: Identifier, parameterList: ParameterList | undefined, colonToken: Token<ProductionSeperatorKind> | undefined, body: ProductionBody | undefined) {
         super(SyntaxKind.Production);
         this.name = name;
         this.parameterList = parameterList;
@@ -1767,17 +1828,17 @@ export class Production extends SourceElementBase<SyntaxKind.Production> {
         this.body = body;
     }
 
-    get firstChild(): Node | undefined { return this.name; }
-    get lastChild(): Node | undefined { return this.body || this.colonToken || this.parameterList || this.name; }
+    public override get firstChild(): Node | undefined { return this.name; }
+    public override get lastChild(): Node | undefined { return this.body || this.colonToken || this.parameterList || this.name; }
 
-    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
+    public override forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
         return cbNode(this.name)
             || (this.parameterList && cbNode(this.parameterList))
             || (this.colonToken && cbNode(this.colonToken))
             || (this.body && cbNode(this.body));
     }
 
-    public * children(): IterableIterator<Node> {
+    public override * children(): IterableIterator<Node> {
         yield this.name;
         if (this.colonToken) yield this.colonToken;
         if (this.parameterList) yield this.parameterList;
@@ -1790,9 +1851,9 @@ export class Production extends SourceElementBase<SyntaxKind.Production> {
             : this;
     }
 
-    /*@internal*/ get edgeCount() { return 4; }
-    /*@internal*/ edgeIsArray(offset: number) { return false; }
-    /*@internal*/ edgeName(offset: number): string | undefined {
+    protected override get edgeCount() { return 4; }
+
+    protected override edgeName(offset: number): string | undefined {
         switch (offset) {
             case 0: return "name";
             case 1: return "parameterList";
@@ -1802,7 +1863,7 @@ export class Production extends SourceElementBase<SyntaxKind.Production> {
         return undefined;
     }
 
-    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
+    protected override edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
         switch (offset) {
             case 0: return this.name;
             case 1: return this.parameterList;
@@ -1812,19 +1873,19 @@ export class Production extends SourceElementBase<SyntaxKind.Production> {
         return undefined;
     }
 
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitProduction(this); }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitProduction(this); }
 }
 
 /** {@docCategory Nodes} */
 export abstract class MetaElementBase<TKind extends MetaElementKind> extends SourceElementBase<TKind> {
     public readonly atToken: Token<SyntaxKind.AtToken>;
 
-    constructor(kind: TKind, atToken: Token<SyntaxKind.AtToken>) {
+    public constructor(kind: TKind, atToken: Token<SyntaxKind.AtToken>) {
         super(kind);
         this.atToken = atToken;
     }
 
-    get firstChild(): Node | undefined { return this.atToken; }
+    public override get firstChild(): Node | undefined { return this.atToken; }
 }
 
 /** {@docCategory Nodes} */
@@ -1832,29 +1893,29 @@ export class Import extends MetaElementBase<SyntaxKind.Import> {
     public readonly importKeyword: Token<SyntaxKind.ImportKeyword>;
     public readonly path: StringLiteral | undefined;
 
-    constructor(atToken: Token<SyntaxKind.AtToken>, importKeyword: Token<SyntaxKind.ImportKeyword>, path: StringLiteral | undefined) {
+    public constructor(atToken: Token<SyntaxKind.AtToken>, importKeyword: Token<SyntaxKind.ImportKeyword>, path: StringLiteral | undefined) {
         super(SyntaxKind.Import, atToken);
         this.importKeyword = importKeyword;
         this.path = path;
     }
 
-    get lastChild(): Node | undefined { return this.path || this.importKeyword; }
+    public override get lastChild(): Node | undefined { return this.path || this.importKeyword; }
 
-    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
+    public override forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
         return cbNode(this.atToken)
             || cbNode(this.importKeyword)
             || (this.path && cbNode(this.path));
     }
 
-    public * children(): IterableIterator<Node> {
+    public override * children(): IterableIterator<Node> {
         yield this.atToken;
         yield this.importKeyword;
         if (this.path) yield this.path;
     }
 
-    /*@internal*/ get edgeCount() { return 3; }
-    /*@internal*/ edgeIsArray(offset: number) { return false; }
-    /*@internal*/ edgeName(offset: number): string | undefined {
+    protected override get edgeCount() { return 3; }
+
+    protected override edgeName(offset: number): string | undefined {
         switch (offset) {
             case 0: return "atToken";
             case 1: return "importKeyword";
@@ -1863,7 +1924,7 @@ export class Import extends MetaElementBase<SyntaxKind.Import> {
         return undefined;
     }
 
-    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
+    protected override edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
         switch (offset) {
             case 0: return this.atToken;
             case 1: return this.importKeyword;
@@ -1872,7 +1933,7 @@ export class Import extends MetaElementBase<SyntaxKind.Import> {
         return undefined;
     }
 
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitImport(this); }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitImport(this); }
 }
 
 /** {@docCategory Nodes} */
@@ -1881,32 +1942,32 @@ export class Define extends MetaElementBase<SyntaxKind.Define> {
     public readonly key: Identifier;
     public readonly valueToken: Token<BooleanKind> | Token<SyntaxKind.DefaultKeyword> | undefined;
 
-    constructor(atToken: Token<SyntaxKind.AtToken>, defineKeyword: Token<SyntaxKind.DefineKeyword>, key: Identifier, valueToken: Token<BooleanKind> | Token<SyntaxKind.DefaultKeyword> | undefined) {
+    public constructor(atToken: Token<SyntaxKind.AtToken>, defineKeyword: Token<SyntaxKind.DefineKeyword>, key: Identifier, valueToken: Token<BooleanKind> | Token<SyntaxKind.DefaultKeyword> | undefined) {
         super(SyntaxKind.Define, atToken);
         this.defineKeyword = defineKeyword;
         this.key = key;
         this.valueToken = valueToken;
     }
 
-    get lastChild(): Node | undefined { return this.valueToken || this.key || this.defineKeyword; }
+    public override get lastChild(): Node | undefined { return this.valueToken || this.key || this.defineKeyword; }
 
-    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
+    public override forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
         return cbNode(this.atToken)
             || cbNode(this.defineKeyword)
             || (this.key && cbNode(this.key))
             || (this.valueToken && cbNode(this.valueToken));
     }
 
-    public * children(): IterableIterator<Node> {
+    public override * children(): IterableIterator<Node> {
         yield this.atToken;
         yield this.defineKeyword;
         if (this.key) yield this.key;
         if (this.valueToken) yield this.valueToken;
     }
 
-    /*@internal*/ get edgeCount() { return 4; }
-    /*@internal*/ edgeIsArray(offset: number) { return false; }
-    /*@internal*/ edgeName(offset: number): string | undefined {
+    protected override get edgeCount() { return 4; }
+
+    protected override edgeName(offset: number): string | undefined {
         switch (offset) {
             case 0: return "atToken";
             case 1: return "defineKeyword";
@@ -1916,7 +1977,7 @@ export class Define extends MetaElementBase<SyntaxKind.Define> {
         return undefined;
     }
 
-    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
+    protected override edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
         switch (offset) {
             case 0: return this.atToken;
             case 1: return this.defineKeyword;
@@ -1926,7 +1987,7 @@ export class Define extends MetaElementBase<SyntaxKind.Define> {
         return undefined;
     }
 
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitDefine(this); }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitDefine(this); }
 }
 
 /** {@docCategory Nodes} */
@@ -1935,32 +1996,32 @@ export class Line extends MetaElementBase<SyntaxKind.Line> {
     public readonly number: NumberLiteral | Token<SyntaxKind.DefaultKeyword> | undefined;
     public readonly path: StringLiteral | undefined;
 
-    constructor(atToken: Token<SyntaxKind.AtToken>, lineKeyword: Token<SyntaxKind.LineKeyword>, number: NumberLiteral | Token<SyntaxKind.DefaultKeyword> | undefined, path: StringLiteral | undefined) {
+    public constructor(atToken: Token<SyntaxKind.AtToken>, lineKeyword: Token<SyntaxKind.LineKeyword>, number: NumberLiteral | Token<SyntaxKind.DefaultKeyword> | undefined, path: StringLiteral | undefined) {
         super(SyntaxKind.Line, atToken);
         this.lineKeyword = lineKeyword;
         this.number = number;
         this.path = path;
     }
 
-    get lastChild(): Node | undefined { return this.path || this.number || this.lineKeyword; }
+    public override get lastChild(): Node | undefined { return this.path || this.number || this.lineKeyword; }
 
-    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
+    public override forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
         return cbNode(this.atToken)
             || cbNode(this.lineKeyword)
             || (this.number && cbNode(this.number))
             || (this.path && cbNode(this.path));
     }
 
-    public * children(): IterableIterator<Node> {
+    public override * children(): IterableIterator<Node> {
         yield this.atToken;
         yield this.lineKeyword;
         if (this.number) yield this.number;
         if (this.path) yield this.path;
     }
 
-    /*@internal*/ get edgeCount() { return 4; }
-    /*@internal*/ edgeIsArray(offset: number) { return false; }
-    /*@internal*/ edgeName(offset: number): string | undefined {
+    protected override get edgeCount() { return 4; }
+
+    protected override edgeName(offset: number): string | undefined {
         switch (offset) {
             case 0: return "atToken";
             case 1: return "lineKeyword";
@@ -1970,7 +2031,7 @@ export class Line extends MetaElementBase<SyntaxKind.Line> {
         return undefined;
     }
 
-    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
+    protected override edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined {
         switch (offset) {
             case 0: return this.atToken;
             case 1: return this.lineKeyword;
@@ -1980,7 +2041,7 @@ export class Line extends MetaElementBase<SyntaxKind.Line> {
         return undefined;
     }
 
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitLine(this); }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitLine(this); }
 }
 
 /** {@docCategory Nodes} */
@@ -1998,32 +2059,40 @@ export type SourceElement =
 
 /** {@docCategory Nodes} */
 export class SourceFile extends Node<SyntaxKind.SourceFile> {
+    static {
+        setSourceFileAccessor({
+            setImports(node, imports) { node._imports = imports; },
+            setParseDiagnostics(node, parseDiagnostics) { node._parseDiagnostics = parseDiagnostics; },
+            getParseDiagnostics(node) { return node._parseDiagnostics; },
+        });
+    }
+
     public readonly elements: ReadonlyArray<SourceElement>;
     public readonly filename: string;
     public readonly text: string;
     public readonly lineMap: LineMap;
-    public imports: ReadonlyArray<string> | undefined;
-    /*@internal*/
-    public parseDiagnostics: DiagnosticMessages | undefined;
 
-    constructor(filename: string, text: string, elements: ReadonlyArray<SourceElement>) {
+    private _imports: ReadonlyArray<string> | undefined;
+    private _parseDiagnostics: DiagnosticMessages | undefined;
+
+    public constructor(filename: string, text: string, elements: ReadonlyArray<SourceElement>) {
         super(SyntaxKind.SourceFile);
         this.elements = elements;
         this.filename = filename;
         this.text = text;
         this.lineMap = new LineMap(text);
-        this.pos = 0;
-        this.end = this.text.length;
+        setTextRange(this, 0, this.text.length);
     }
 
-    get firstChild(): Node | undefined { return first(this.elements); }
-    get lastChild(): Node | undefined { return last(this.elements); }
+    public override get firstChild(): Node | undefined { return first(this.elements); }
+    public override get lastChild(): Node | undefined { return last(this.elements); }
+    public get imports() { return this._imports; }
 
-    public forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
+    public override forEachChild<T>(cbNode: (node: Node) => T | undefined): T | undefined {
         return (this.elements && forEach(this.elements, cbNode));
     }
 
-    public * children(): IterableIterator<Node> {
+    public override * children(): IterableIterator<Node> {
         if (this.elements) yield* this.elements;
     }
 
@@ -2033,11 +2102,10 @@ export class SourceFile extends Node<SyntaxKind.SourceFile> {
             : this;
     }
 
-    /*@internal*/ get edgeCount() { return 1; }
-    /*@internal*/ edgeIsArray(offset: number) { return offset === 0; }
-    /*@internal*/ edgeName(offset: number): string | undefined { return offset === 0 ? "elements" : undefined; }
-    /*@internal*/ edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined { return offset === 0 ? this.elements : undefined; }
-    /*@internal*/ accept(visitor: NodeVisitor) { return visitor.visitSourceFile(this); }
+    protected override get edgeCount() { return 1; }
+    protected override edgeName(offset: number): string | undefined { return offset === 0 ? "elements" : undefined; }
+    protected override edgeValue(offset: number): Node | ReadonlyArray<Node> | undefined { return offset === 0 ? this.elements : undefined; }
+    protected override accept(visitor: NodeVisitor) { return visitor.visitSourceFile(this); }
 }
 
 /** {@docCategory Nodes} */
@@ -2047,12 +2115,11 @@ export type Declaration =
     | Parameter
     ;
 
-function setTextRange<T extends Node>(node: T, pos: number, end: number) {
-    node.pos = pos;
-    node.end = end;
-    return node;
-}
-
 export function forEachChild<T>(node: Node | undefined, cbNode: (node: Node) => T | undefined): T | undefined {
     return node && node.forEachChild(cbNode);
+}
+
+function setTextRange<T extends Node>(node: T, pos: number, end: number) {
+    getNodeAccessor().setTextRange(node, pos, end);
+    return node;
 }

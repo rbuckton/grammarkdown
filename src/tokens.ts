@@ -154,7 +154,8 @@ export enum SyntaxKind {
     MultiLineCommentTrivia, // LastCommentTrivia
 
     // Trivia, Html
-    HtmlOpenTagTrivia, // FirstHtmlTrivia
+    HtmlCommentTrivia, // FirstHtmlTrivia
+    HtmlOpenTagTrivia,
     HtmlCloseTagTrivia, // LastHtmlTrivia, LastTrivia
 
     // Tokens, Other
@@ -282,8 +283,10 @@ export enum SyntaxKind {
     LastTrivia = HtmlCloseTagTrivia,
     FirstCommentTrivia = SingleLineCommentTrivia,
     LastCommentTrivia = MultiLineCommentTrivia,
-    FirstHtmlTrivia = HtmlOpenTagTrivia,
+    FirstHtmlTrivia = HtmlCommentTrivia,
     LastHtmlTrivia = HtmlCloseTagTrivia,
+    FirstHtmlTagTrivia = HtmlOpenTagTrivia,
+    LastHtmlTagTrivia = HtmlCloseTagTrivia,
 }
 
 export type CommentTriviaKind =
@@ -296,12 +299,22 @@ export function isCommentTriviaKind(kind: SyntaxKind): kind is CommentTriviaKind
 }
 
 export type HtmlTriviaKind =
+    | SyntaxKind.HtmlCommentTrivia
     | SyntaxKind.HtmlOpenTagTrivia
     | SyntaxKind.HtmlCloseTagTrivia;
 
 export function isHtmlTriviaKind(kind: SyntaxKind): kind is HtmlTriviaKind {
     return kind >= SyntaxKind.FirstHtmlTrivia
         && kind <= SyntaxKind.LastHtmlTrivia;
+}
+
+export type HtmlTagTriviaKind =
+    | SyntaxKind.HtmlOpenTagTrivia
+    | SyntaxKind.HtmlCloseTagTrivia;
+
+export function isHtmlTagTriviaKind(kind: SyntaxKind): kind is HtmlTagTriviaKind {
+    return kind >= SyntaxKind.FirstHtmlTagTrivia
+        && kind <= SyntaxKind.LastHtmlTagTrivia;
 }
 
 export type TriviaKind =

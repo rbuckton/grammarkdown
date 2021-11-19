@@ -25,6 +25,7 @@ import {
     EmptyAssertion,
     HtmlCloseTagTrivia,
     HtmlOpenTagTrivia,
+    HtmlCommentTrivia,
     Identifier,
     Import,
     LexicalGoalAssertion,
@@ -207,6 +208,7 @@ export class Emitter {
             case SyntaxKind.ProseTail: this.emitProseFragmentLiteral(<ProseFragmentLiteral>node); break;
             case SyntaxKind.HtmlOpenTagTrivia:
             case SyntaxKind.HtmlCloseTagTrivia:
+            case SyntaxKind.HtmlCommentTrivia:
             case SyntaxKind.SingleLineCommentTrivia:
             case SyntaxKind.MultiLineCommentTrivia:
                 return this.emitTrivia(<Trivia>node);
@@ -423,6 +425,7 @@ export class Emitter {
         switch (node.kind) {
             case SyntaxKind.HtmlOpenTagTrivia: this.emitHtmlOpenTagTrivia(<HtmlOpenTagTrivia>node); break;
             case SyntaxKind.HtmlCloseTagTrivia: this.emitHtmlCloseTagTrivia(<HtmlCloseTagTrivia>node); break;
+            case SyntaxKind.HtmlCommentTrivia: this.emitHtmlCommentTrivia(<HtmlCommentTrivia>node); break;
             case SyntaxKind.SingleLineCommentTrivia: this.emitSingleLineCommentTrivia(<SingleLineCommentTrivia>node); break;
             case SyntaxKind.MultiLineCommentTrivia: this.emitMultiLineCommentTrivia(<MultiLineCommentTrivia>node); break;
         }
@@ -433,6 +436,10 @@ export class Emitter {
     }
 
     protected emitHtmlCloseTagTrivia(node: HtmlCloseTagTrivia) {
+        this.emitTextRange(node);
+    }
+
+    protected emitHtmlCommentTrivia(node: HtmlCommentTrivia) {
         this.emitTextRange(node);
     }
 
