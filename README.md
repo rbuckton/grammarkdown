@@ -48,7 +48,7 @@ NamedImports : `{` ImportList `}`
 NamedImports : `{` ImportList `,` `}`
 ```
 
-You may also specify multiple left-hand-side sentences for a single production by indenting them:
+You may also specify multiple right-hand-side sentences for a single production by indenting them:
 
 ```
 NamedImports :
