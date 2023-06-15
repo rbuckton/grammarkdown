@@ -45,19 +45,70 @@
 &emsp;&emsp;<a name="DecimalDigit"></a>*DecimalDigit* **::** **one of**  
 <pre>&emsp;&emsp;&emsp;<code>0</code>     <code>1</code>     <code>2</code>     <code>3</code>     <code>4</code>     <code>5</code>     <code>6</code>     <code>7</code>     <code>8</code>     <code>9</code></pre>
   
+&emsp;&emsp;<a name="HexDigits"></a>*HexDigits* **::**  
+&emsp;&emsp;&emsp;<a name="HexDigits-omskcs0d"></a>*[HexDigit](#HexDigit)*  
+&emsp;&emsp;&emsp;<a name="HexDigits-yciymy2l"></a>*[HexDigits](#HexDigits)*&emsp;*[HexDigit](#HexDigit)*  
+  
 &emsp;&emsp;<a name="HexDigit"></a>*HexDigit* **::** **one of**  
 <pre>&emsp;&emsp;&emsp;<code>0</code>     <code>1</code>     <code>2</code>     <code>3</code>     <code>4</code>     <code>5</code>     <code>6</code>     <code>7</code>     <code>8</code>     <code>9</code>  
 &emsp;&emsp;&emsp;<code>a</code>     <code>b</code>     <code>c</code>     <code>d</code>     <code>e</code>     <code>f</code>     <code>A</code>     <code>B</code>     <code>C</code>     <code>D</code>  
 &emsp;&emsp;&emsp;<code>E</code>     <code>F</code></pre>
   
+&emsp;&emsp;<a name="NonZeroHexDigit"></a>*NonZeroHexDigit* **::**  
+&emsp;&emsp;&emsp;<a name="NonZeroHexDigit-vkht0l2b"></a>*[HexDigit](#HexDigit)* **but not** `` 0 ``  
+  
 &emsp;&emsp;<a name="UnicodeCharacterLiteral"></a>*UnicodeCharacterLiteral* **::**  
 &emsp;&emsp;&emsp;<a name="UnicodeCharacterLiteral-60pqswpp"></a>`` < ``&emsp;*[UnicodeCharacterLiteralChars](#UnicodeCharacterLiteralChars)*&emsp;`` > ``  
+&emsp;&emsp;&emsp;<a name="UnicodeCharacterLiteral-qndmauba"></a>`` U+ ``&emsp;*[UnicodeCharacterLiteralHexDigits](#UnicodeCharacterLiteralHexDigits)*  
+&emsp;&emsp;&emsp;<a name="UnicodeCharacterLiteral-jyzae20u"></a>`` u+ ``&emsp;*[UnicodeCharacterLiteralHexDigits](#UnicodeCharacterLiteralHexDigits)*  
+  
+&emsp;&emsp;<a name="UnicodeCharacterLiteralHexDigits"></a>*UnicodeCharacterLiteralHexDigits* **::**  
+&emsp;&emsp;&emsp;<a name="UnicodeCharacterLiteralHexDigits-pptelolr"></a>*[Hex4Digits](#Hex4Digits)*  
+&emsp;&emsp;&emsp;<a name="UnicodeCharacterLiteralHexDigits-7snh6qvu"></a>*[NonZeroHexDigit](#NonZeroHexDigit)*&emsp;*[Hex4Digits](#Hex4Digits)*  
+&emsp;&emsp;&emsp;<a name="UnicodeCharacterLiteralHexDigits-7cudep2z"></a>`` 10 ``&emsp;*[Hex4Digits](#Hex4Digits)*  
   
 &emsp;&emsp;<a name="UnicodeCharacterLiteralChars"></a>*UnicodeCharacterLiteralChars* **::**  
 &emsp;&emsp;&emsp;<a name="UnicodeCharacterLiteralChars-oo12fh_i"></a>*[UnicodeCharacterLiteralChar](#UnicodeCharacterLiteralChar)*&emsp;*[UnicodeCharacterLiteralChars](#UnicodeCharacterLiteralChars)*<sub>opt</sub>  
   
 &emsp;&emsp;<a name="UnicodeCharacterLiteralChar"></a>*UnicodeCharacterLiteralChar* **::**  
-&emsp;&emsp;&emsp;<a name="UnicodeCharacterLiteralChar-ipspljs-"></a>*[SourceCharacter](#SourceCharacter)* **but not** **one of** `` < `` **or** `` > `` **or** *[LineTerminator](#LineTerminator)*  
+&emsp;&emsp;&emsp;<a name="UnicodeCharacterLiteralChar-8ognh64m"></a>*[SourceCharacter](#SourceCharacter)* **but not** **one of** `` < `` **or** `` > `` **or** `` \ `` **or** *[LineTerminator](#LineTerminator)*  
+&emsp;&emsp;&emsp;<a name="UnicodeCharacterLiteralChar-6n2njt_x"></a>`` \ ``&emsp;*[EscapeSequence](#EscapeSequence)*  
+&emsp;&emsp;&emsp;<a name="UnicodeCharacterLiteralChar-ajkpm2ja"></a>*[LineContinuation](#LineContinuation)*  
+  
+&emsp;&emsp;<a name="LineContinuation"></a>*LineContinuation* **::**  
+&emsp;&emsp;&emsp;<a name="LineContinuation-xik9y9lz"></a>`` \ ``&emsp;*[LineTerminatorSequence](#LineTerminatorSequence)*  
+  
+&emsp;&emsp;<a name="EscapeSequence"></a>*EscapeSequence* **::**  
+&emsp;&emsp;&emsp;<a name="EscapeSequence-6ehvb3kw"></a>*[CharacterEscapeSequence](#CharacterEscapeSequence)*  
+&emsp;&emsp;&emsp;<a name="EscapeSequence-awshns7m"></a>`` 0 ``&emsp;[lookahead ∉ *[DecimalDigit](#DecimalDigit)*]  
+&emsp;&emsp;&emsp;<a name="EscapeSequence-qacbhaps"></a>*[HexEscapeSequence](#HexEscapeSequence)*  
+&emsp;&emsp;&emsp;<a name="EscapeSequence-rl1vvdtr"></a>*[UnicodeEscapeSequence](#UnicodeEscapeSequence)*  
+  
+&emsp;&emsp;<a name="CharacterEscapeSequence"></a>*CharacterEscapeSequence* **::**  
+&emsp;&emsp;&emsp;<a name="CharacterEscapeSequence-desdj6ig"></a>*[SingleEscapeCharacter](#SingleEscapeCharacter)*  
+&emsp;&emsp;&emsp;<a name="CharacterEscapeSequence-t5gkmnte"></a>*[NonEscapeCharacter](#NonEscapeCharacter)*  
+  
+&emsp;&emsp;<a name="SingleEscapeCharacter"></a>*SingleEscapeCharacter* **::** **one of**  
+<pre>&emsp;&emsp;&emsp;<code>&apos;</code>     <code>&quot;</code>     <code>\</code>     <code>b</code>     <code>f</code>     <code>n</code>     <code>r</code>     <code>t</code>     <code>v</code></pre>
+  
+&emsp;&emsp;<a name="NonEscapeCharacter"></a>*NonEscapeCharacter* **::**  
+&emsp;&emsp;&emsp;<a name="NonEscapeCharacter-g6xhj53i"></a>*[SourceCharacter](#SourceCharacter)* **but not** **one of** *[EscapeCharacter](#EscapeCharacter)* **or** *[LineTerminator](#LineTerminator)*  
+  
+&emsp;&emsp;<a name="EscapeCharacter"></a>*EscapeCharacter* **::**  
+&emsp;&emsp;&emsp;<a name="EscapeCharacter-desdj6ig"></a>*[SingleEscapeCharacter](#SingleEscapeCharacter)*  
+&emsp;&emsp;&emsp;<a name="EscapeCharacter-s4me4hlz"></a>*[DecimalDigit](#DecimalDigit)*  
+&emsp;&emsp;&emsp;<a name="EscapeCharacter-fqodqad9"></a>`` x ``  
+&emsp;&emsp;&emsp;<a name="EscapeCharacter-jc5mvt_f"></a>`` u ``  
+  
+&emsp;&emsp;<a name="HexEscapeSequence"></a>*HexEscapeSequence* **::**  
+&emsp;&emsp;&emsp;<a name="HexEscapeSequence-2o-xpa4a"></a>`` x ``&emsp;*[HexDigit](#HexDigit)*&emsp;*[HexDigit](#HexDigit)*  
+  
+&emsp;&emsp;<a name="UnicodeEscapeSequence"></a>*UnicodeEscapeSequence* **::**  
+&emsp;&emsp;&emsp;<a name="UnicodeEscapeSequence-ghktjvoi"></a>`` u ``&emsp;*[Hex4Digits](#Hex4Digits)*  
+&emsp;&emsp;&emsp;<a name="UnicodeEscapeSequence-va21h0xq"></a>`` u{ ``&emsp;*[HexDigits](#HexDigits)*&emsp;`` } ``  
+  
+&emsp;&emsp;<a name="Hex4Digits"></a>*Hex4Digits* **::**  
+&emsp;&emsp;&emsp;<a name="Hex4Digits-c6jeysfq"></a>*[HexDigit](#HexDigit)*&emsp;*[HexDigit](#HexDigit)*&emsp;*[HexDigit](#HexDigit)*&emsp;*[HexDigit](#HexDigit)*  
   
 &emsp;&emsp;<a name="Indent"></a>*Indent* **::**  
 &emsp;&emsp;&emsp;<a name="Indent-4e0izqku"></a>An increase in the indentation depth from the previous line.  
@@ -80,7 +131,7 @@
   
 &emsp;&emsp;<a name="ProseLines"></a>*ProseLines* **::**  
 &emsp;&emsp;&emsp;<a name="ProseLines-woqw5wcn"></a>*[ProseLine](#ProseLine)*  
-&emsp;&emsp;&emsp;<a name="ProseLines-c4hj6oeb"></a>*[ProseLine](#ProseLine)*&emsp;*[LineTerminatorSequence](#LineTerminatorSequence)*&emsp;*[ProseLines](#ProseLines)*  
+&emsp;&emsp;&emsp;<a name="ProseLines-f4rjmond"></a>*[ProseLine](#ProseLine)*&emsp;*[LineTerminator](#LineTerminator)*&emsp;*[ProseLines](#ProseLines)*  
   
 &emsp;&emsp;<a name="ProseLine"></a>*ProseLine* **::**  
 &emsp;&emsp;&emsp;<a name="ProseLine-ows5lsia"></a>`` > ``&emsp;*[ProseChars](#ProseChars)*<sub>opt</sub>  
@@ -184,7 +235,7 @@
   
 &emsp;&emsp;<a name="ProseSpan"></a>*ProseSpan* **:**  
 &emsp;&emsp;&emsp;<a name="ProseSpan-cx0hfwg8"></a>*[Prose](#Prose)*  
-&emsp;&emsp;&emsp;<a name="ProseSpan-f34a7ami"></a>*[ProseSpan](#ProseSpan)*&emsp;*[LineTerminatorSequence](#LineTerminatorSequence)*&emsp;*[Prose](#Prose)*  
+&emsp;&emsp;&emsp;<a name="ProseSpan-ro0tsqu_"></a>*[ProseSpan](#ProseSpan)*&emsp;*[LineTerminator](#LineTerminator)*&emsp;*[Prose](#Prose)*  
   
 &emsp;&emsp;<a name="Symbol"></a>*Symbol* **:**  
 &emsp;&emsp;&emsp;<a name="Symbol-4d3cub6p"></a>*[Assertion](#Assertion)*  
@@ -201,18 +252,18 @@
 &emsp;&emsp;&emsp;<a name="RightHandSideList-nolbdbjn"></a>*[RightHandSide](#RightHandSide)*&emsp;*[RightHandSideList](#RightHandSideList)*<sub>opt</sub>  
   
 &emsp;&emsp;<a name="RightHandSide"></a>*RightHandSide* **:**  
-&emsp;&emsp;&emsp;<a name="RightHandSide-u3kifmog"></a>*[SymbolSpan](#SymbolSpan)*&emsp;*[LineTerminatorSequence](#LineTerminatorSequence)*  
+&emsp;&emsp;&emsp;<a name="RightHandSide-ixmdjeqh"></a>*[SymbolSpan](#SymbolSpan)*&emsp;*[LineTerminator](#LineTerminator)*  
   
 &emsp;&emsp;<a name="Terminals"></a>*Terminals* **:**  
 &emsp;&emsp;&emsp;<a name="Terminals-gk1eqqdx"></a>*[Terminal](#Terminal)*&emsp;*[Terminals](#Terminals)*<sub>opt</sub>  
   
 &emsp;&emsp;<a name="TerminalList"></a>*TerminalList* **:**  
 &emsp;&emsp;&emsp;<a name="TerminalList-gusliiae"></a>*[Terminals](#Terminals)*  
-&emsp;&emsp;&emsp;<a name="TerminalList-getaau-m"></a>*[TerminalList](#TerminalList)*&emsp;*[LineTerminatorSequence](#LineTerminatorSequence)*&emsp;*[Terminals](#Terminals)*  
+&emsp;&emsp;&emsp;<a name="TerminalList-qf65uuyc"></a>*[TerminalList](#TerminalList)*&emsp;*[LineTerminator](#LineTerminator)*&emsp;*[Terminals](#Terminals)*  
   
 &emsp;&emsp;<a name="OneOfList"></a>*OneOfList* **:**  
 &emsp;&emsp;&emsp;<a name="OneOfList--ih0ncgp"></a>`` one ``&emsp;`` of ``&emsp;*[Terminals](#Terminals)*  
-&emsp;&emsp;&emsp;<a name="OneOfList-mtpe_4wt"></a>`` one ``&emsp;`` of ``&emsp;*[LineTerminatorSequence](#LineTerminatorSequence)*&emsp;*[Indent](#Indent)*&emsp;*[TerminalList](#TerminalList)*&emsp;*[Dedent](#Dedent)*  
+&emsp;&emsp;&emsp;<a name="OneOfList-pgmvglzt"></a>`` one ``&emsp;`` of ``&emsp;*[LineTerminator](#LineTerminator)*&emsp;*[Indent](#Indent)*&emsp;*[TerminalList](#TerminalList)*&emsp;*[Dedent](#Dedent)*  
   
 &emsp;&emsp;<a name="Parameter"></a>*Parameter* **:**  
 &emsp;&emsp;&emsp;<a name="Parameter-bras6mo_"></a>*[Identifier](#Identifier)*  
@@ -227,7 +278,7 @@
 &emsp;&emsp;<a name="Production"></a>*Production* **:**  
 &emsp;&emsp;&emsp;<a name="Production-0gqocmed"></a>*[Identifier](#Identifier)*&emsp;*[Parameters](#Parameters)*<sub>opt</sub>&emsp;`` : ``&emsp;*[OneOfList](#OneOfList)*  
 &emsp;&emsp;&emsp;<a name="Production-vhjnckof"></a>*[Identifier](#Identifier)*&emsp;*[Parameters](#Parameters)*<sub>opt</sub>&emsp;`` : ``&emsp;*[RightHandSide](#RightHandSide)*  
-&emsp;&emsp;&emsp;<a name="Production-uqqn197z"></a>*[Identifier](#Identifier)*&emsp;*[Parameters](#Parameters)*<sub>opt</sub>&emsp;`` : ``&emsp;*[LineTerminatorSequence](#LineTerminatorSequence)*&emsp;*[Indent](#Indent)*&emsp;*[RightHandSideList](#RightHandSideList)*&emsp;*[Dedent](#Dedent)*  
+&emsp;&emsp;&emsp;<a name="Production-e-zpzl_w"></a>*[Identifier](#Identifier)*&emsp;*[Parameters](#Parameters)*<sub>opt</sub>&emsp;`` : ``&emsp;*[LineTerminator](#LineTerminator)*&emsp;*[Indent](#Indent)*&emsp;*[RightHandSideList](#RightHandSideList)*&emsp;*[Dedent](#Dedent)*  
   
 &emsp;&emsp;<a name="SourceElement"></a>*SourceElement* **:**  
 &emsp;&emsp;&emsp;<a name="SourceElement-n7nathbb"></a>[empty]  

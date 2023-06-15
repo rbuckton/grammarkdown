@@ -43,3 +43,15 @@
           (10,12)SyntaxKind[SymbolSpan]
             (10,12)SyntaxKind[Terminal]
               (10,12)SyntaxKind[UnicodeCharacterLiteral](text = &lt;bar&gt;)
+      (11,5)SyntaxKind[RightHandSide]
+        (11,5)SyntaxKind[SymbolSpan]
+          (11,5)SyntaxKind[Terminal]
+            (11,5)SyntaxKind[UnicodeCharacterLiteral](text = &lt;foo\&lt;bar&gt;)
+      (12,5)SyntaxKind[RightHandSide]
+        (12,5)SyntaxKind[SymbolSpan]
+          (12,5)SyntaxKind[Terminal]
+            (12,5)SyntaxKind[UnicodeCharacterLiteral](text = <NBSP>)
+      (13,5)SyntaxKind[RightHandSide]
+        (13,5)SyntaxKind[SymbolSpan]
+          (13,5)SyntaxKind[Terminal]
+            (13,5)SyntaxKind[UnicodeCharacterLiteral](text = <U+2212 MINUS SIGN>)

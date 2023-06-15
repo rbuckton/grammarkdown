@@ -8,4 +8,7 @@
 &emsp;&emsp;&emsp;<a name="A-it_rat9h"></a>U+100000  
 &emsp;&emsp;&emsp;<a name="A-iuzpz3yb"></a>U+10ffff  
 &emsp;&emsp;&emsp;<a name="A-xqketvee"></a>&lt;foo&emsp;&lt;bar&gt;  
+&emsp;&emsp;&emsp;<a name="A-u6_ydtiy"></a>&lt;foo\&lt;bar&gt;  
+&emsp;&emsp;&emsp;<a name="A-qe6qukax"></a>&lt;NBSP&gt;  
+&emsp;&emsp;&emsp;<a name="A-eolopvl2"></a>&lt;U+2212 MINUS SIGN&gt;  
   

@@ -48,18 +48,69 @@ Keyword :: one of
 DecimalDigit :: one of
     `0` `1` `2` `3` `4` `5` `6` `7` `8` `9`
 
+HexDigits ::
+    HexDigit
+    HexDigits HexDigit
+
 HexDigit :: one of
     `0` `1` `2` `3` `4` `5` `6` `7` `8` `9` `a` `b` `c` `d` `e` `f` `A` `B`
     `C` `D` `E` `F`
 
+NonZeroHexDigit ::
+    HexDigit but not `0`
+
 UnicodeCharacterLiteral ::
     `<` UnicodeCharacterLiteralChars `>`
+    `U+` UnicodeCharacterLiteralHexDigits
+    `u+` UnicodeCharacterLiteralHexDigits
+
+UnicodeCharacterLiteralHexDigits ::
+    Hex4Digits
+    NonZeroHexDigit Hex4Digits
+    `10` Hex4Digits
 
 UnicodeCharacterLiteralChars ::
     UnicodeCharacterLiteralChar UnicodeCharacterLiteralChars?
 
 UnicodeCharacterLiteralChar ::
-    SourceCharacter but not one of `<` or `>` or LineTerminator
+    SourceCharacter but not one of `<` or `>` or `\` or LineTerminator
+    `\` EscapeSequence
+    LineContinuation
+
+LineContinuation ::
+    `\` LineTerminatorSequence
+
+EscapeSequence ::
+    CharacterEscapeSequence
+    `0` [lookahead <! DecimalDigit]
+    HexEscapeSequence
+    UnicodeEscapeSequence
+
+CharacterEscapeSequence ::
+    SingleEscapeCharacter
+    NonEscapeCharacter
+
+SingleEscapeCharacter :: one of
+    `'` `"` `\` `b` `f` `n` `r` `t` `v`
+
+NonEscapeCharacter ::
+    SourceCharacter but not one of EscapeCharacter or LineTerminator
+
+EscapeCharacter ::
+    SingleEscapeCharacter
+    DecimalDigit
+    `x`
+    `u`
+
+HexEscapeSequence ::
+    `x` HexDigit HexDigit
+
+UnicodeEscapeSequence ::
+    `u` Hex4Digits
+    `u{` HexDigits `}`
+
+Hex4Digits ::
+    HexDigit HexDigit HexDigit HexDigit
 
 Indent ::
     > An increase in the indentation depth from the previous line.
@@ -82,7 +133,7 @@ Prose ::
 
 ProseLines ::
     ProseLine
-    ProseLine LineTerminatorSequence ProseLines
+    ProseLine LineTerminator ProseLines
 
 ProseLine ::
     `>` ProseChars?
@@ -189,7 +240,7 @@ Assertion :
 
 ProseSpan :
     Prose
-    ProseSpan LineTerminatorSequence Prose
+    ProseSpan LineTerminator Prose
 
 Symbol :
     Assertion
@@ -206,18 +257,18 @@ RightHandSideList :
     RightHandSide RightHandSideList?
 
 RightHandSide :
-    SymbolSpan LineTerminatorSequence
+    SymbolSpan LineTerminator
 
 Terminals :
     Terminal Terminals?
 
 TerminalList :
     Terminals
-    TerminalList LineTerminatorSequence Terminals
+    TerminalList LineTerminator Terminals
 
 OneOfList :
     `one` `of` Terminals
-    `one` `of` LineTerminatorSequence Indent TerminalList Dedent
+    `one` `of` LineTerminator Indent TerminalList Dedent
 
 Parameter :
     Identifier
@@ -232,7 +283,7 @@ Parameters :
 Production :
     Identifier Parameters? `:` OneOfList
     Identifier Parameters? `:` RightHandSide
-    Identifier Parameters? `:` LineTerminatorSequence Indent RightHandSideList Dedent
+    Identifier Parameters? `:` LineTerminator Indent RightHandSideList Dedent
 
 SourceElement :
     [empty]

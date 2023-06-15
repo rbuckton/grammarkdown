@@ -117,16 +117,55 @@
         <span class="keyword">one</span> <span class="keyword">of</span>
         <div class="one-of-list"><span class="terminal">0</span> <span class="terminal">1</span> <span class="terminal">2</span> <span class="terminal">3</span> <span class="terminal">4</span> <span class="terminal">5</span> <span class="terminal">6</span> <span class="terminal">7</span> <span class="terminal">8</span> <span class="terminal">9</span></div>
     </div>
+    <a name="HexDigits"></a><div class="production">
+        <span class="nonterminal">HexDigits</span><span class="punctuation"> ::</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="omskcs0d"></a><span class="rhs"><span class="nonterminal"><a href="#HexDigit">HexDigit</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="yciymy2l"></a><span class="rhs"><span class="nonterminal"><a href="#HexDigits">HexDigits</a></span> <span class="nonterminal"><a href="#HexDigit">HexDigit</a></span></span>
+            </div>
+        </div>
+    </div>
     <a name="HexDigit"></a><div class="production">
         <span class="nonterminal">HexDigit</span><span class="punctuation"> ::</span>
         <span class="keyword">one</span> <span class="keyword">of</span>
         <div class="one-of-list"><span class="terminal">0</span> <span class="terminal">1</span> <span class="terminal">2</span> <span class="terminal">3</span> <span class="terminal">4</span> <span class="terminal">5</span> <span class="terminal">6</span> <span class="terminal">7</span> <span class="terminal">8</span> <span class="terminal">9</span> <span class="terminal">a</span> <span class="terminal">b</span> <span class="terminal">c</span> <span class="terminal">d</span> <span class="terminal">e</span> <span class="terminal">f</span> <span class="terminal">A</span> <span class="terminal">B</span> <span class="terminal">C</span> <span class="terminal">D</span> <span class="terminal">E</span> <span class="terminal">F</span></div>
+    </div>
+    <a name="NonZeroHexDigit"></a><div class="production">
+        <span class="nonterminal">NonZeroHexDigit</span><span class="punctuation"> ::</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="vkht0l2b"></a><span class="rhs"><span class="nonterminal"><a href="#HexDigit">HexDigit</a></span> <span class="keyword">but</span> <span class="keyword">not</span> <span class="terminal">0</span></span>
+            </div>
+        </div>
     </div>
     <a name="UnicodeCharacterLiteral"></a><div class="production">
         <span class="nonterminal">UnicodeCharacterLiteral</span><span class="punctuation"> ::</span>
         <div class="rhs-list">
             <div class="rhs-list-item">
                 <a name="60pqswpp"></a><span class="rhs"><span class="terminal">&lt;</span> <span class="nonterminal"><a href="#UnicodeCharacterLiteralChars">UnicodeCharacterLiteralChars</a></span> <span class="terminal">&gt;</span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="qndmauba"></a><span class="rhs"><span class="terminal">U+</span> <span class="nonterminal"><a href="#UnicodeCharacterLiteralHexDigits">UnicodeCharacterLiteralHexDigits</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="jyzae20u"></a><span class="rhs"><span class="terminal">u+</span> <span class="nonterminal"><a href="#UnicodeCharacterLiteralHexDigits">UnicodeCharacterLiteralHexDigits</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="UnicodeCharacterLiteralHexDigits"></a><div class="production">
+        <span class="nonterminal">UnicodeCharacterLiteralHexDigits</span><span class="punctuation"> ::</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="pptelolr"></a><span class="rhs"><span class="nonterminal"><a href="#Hex4Digits">Hex4Digits</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="7snh6qvu"></a><span class="rhs"><span class="nonterminal"><a href="#NonZeroHexDigit">NonZeroHexDigit</a></span> <span class="nonterminal"><a href="#Hex4Digits">Hex4Digits</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="7cudep2z"></a><span class="rhs"><span class="terminal">10</span> <span class="nonterminal"><a href="#Hex4Digits">Hex4Digits</a></span></span>
             </div>
         </div>
     </div>
@@ -142,7 +181,106 @@
         <span class="nonterminal">UnicodeCharacterLiteralChar</span><span class="punctuation"> ::</span>
         <div class="rhs-list">
             <div class="rhs-list-item">
-                <a name="ipspljs-"></a><span class="rhs"><span class="nonterminal"><a href="#SourceCharacter">SourceCharacter</a></span> <span class="keyword">but</span> <span class="keyword">not</span> <span class="keyword">one</span> <span class="keyword">of</span> <span class="terminal">&lt;</span> <span class="keyword">or</span> <span class="terminal">&gt;</span> <span class="keyword">or</span> <span class="nonterminal"><a href="#LineTerminator">LineTerminator</a></span></span>
+                <a name="8ognh64m"></a><span class="rhs"><span class="nonterminal"><a href="#SourceCharacter">SourceCharacter</a></span> <span class="keyword">but</span> <span class="keyword">not</span> <span class="keyword">one</span> <span class="keyword">of</span> <span class="terminal">&lt;</span> <span class="keyword">or</span> <span class="terminal">&gt;</span> <span class="keyword">or</span> <span class="terminal">\</span> <span class="keyword">or</span> <span class="nonterminal"><a href="#LineTerminator">LineTerminator</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="6n2njt_x"></a><span class="rhs"><span class="terminal">\</span> <span class="nonterminal"><a href="#EscapeSequence">EscapeSequence</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="ajkpm2ja"></a><span class="rhs"><span class="nonterminal"><a href="#LineContinuation">LineContinuation</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="LineContinuation"></a><div class="production">
+        <span class="nonterminal">LineContinuation</span><span class="punctuation"> ::</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="xik9y9lz"></a><span class="rhs"><span class="terminal">\</span> <span class="nonterminal"><a href="#LineTerminatorSequence">LineTerminatorSequence</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="EscapeSequence"></a><div class="production">
+        <span class="nonterminal">EscapeSequence</span><span class="punctuation"> ::</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="6ehvb3kw"></a><span class="rhs"><span class="nonterminal"><a href="#CharacterEscapeSequence">CharacterEscapeSequence</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="awshns7m"></a><span class="rhs"><span class="terminal">0</span> <span class="assertion">[<span class="keyword">lookahead</span> ∉ <span class="nonterminal"><a href="#DecimalDigit">DecimalDigit</a></span>]</span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="qacbhaps"></a><span class="rhs"><span class="nonterminal"><a href="#HexEscapeSequence">HexEscapeSequence</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="rl1vvdtr"></a><span class="rhs"><span class="nonterminal"><a href="#UnicodeEscapeSequence">UnicodeEscapeSequence</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="CharacterEscapeSequence"></a><div class="production">
+        <span class="nonterminal">CharacterEscapeSequence</span><span class="punctuation"> ::</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="desdj6ig"></a><span class="rhs"><span class="nonterminal"><a href="#SingleEscapeCharacter">SingleEscapeCharacter</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="t5gkmnte"></a><span class="rhs"><span class="nonterminal"><a href="#NonEscapeCharacter">NonEscapeCharacter</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="SingleEscapeCharacter"></a><div class="production">
+        <span class="nonterminal">SingleEscapeCharacter</span><span class="punctuation"> ::</span>
+        <span class="keyword">one</span> <span class="keyword">of</span>
+        <div class="one-of-list"><span class="terminal">&apos;</span> <span class="terminal">&quot;</span> <span class="terminal">\</span> <span class="terminal">b</span> <span class="terminal">f</span> <span class="terminal">n</span> <span class="terminal">r</span> <span class="terminal">t</span> <span class="terminal">v</span></div>
+    </div>
+    <a name="NonEscapeCharacter"></a><div class="production">
+        <span class="nonterminal">NonEscapeCharacter</span><span class="punctuation"> ::</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="g6xhj53i"></a><span class="rhs"><span class="nonterminal"><a href="#SourceCharacter">SourceCharacter</a></span> <span class="keyword">but</span> <span class="keyword">not</span> <span class="keyword">one</span> <span class="keyword">of</span> <span class="nonterminal"><a href="#EscapeCharacter">EscapeCharacter</a></span> <span class="keyword">or</span> <span class="nonterminal"><a href="#LineTerminator">LineTerminator</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="EscapeCharacter"></a><div class="production">
+        <span class="nonterminal">EscapeCharacter</span><span class="punctuation"> ::</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="desdj6ig"></a><span class="rhs"><span class="nonterminal"><a href="#SingleEscapeCharacter">SingleEscapeCharacter</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="s4me4hlz"></a><span class="rhs"><span class="nonterminal"><a href="#DecimalDigit">DecimalDigit</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="fqodqad9"></a><span class="rhs"><span class="terminal">x</span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="jc5mvt_f"></a><span class="rhs"><span class="terminal">u</span></span>
+            </div>
+        </div>
+    </div>
+    <a name="HexEscapeSequence"></a><div class="production">
+        <span class="nonterminal">HexEscapeSequence</span><span class="punctuation"> ::</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="2o-xpa4a"></a><span class="rhs"><span class="terminal">x</span> <span class="nonterminal"><a href="#HexDigit">HexDigit</a></span> <span class="nonterminal"><a href="#HexDigit">HexDigit</a></span></span>
+            </div>
+        </div>
+    </div>
+    <a name="UnicodeEscapeSequence"></a><div class="production">
+        <span class="nonterminal">UnicodeEscapeSequence</span><span class="punctuation"> ::</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="ghktjvoi"></a><span class="rhs"><span class="terminal">u</span> <span class="nonterminal"><a href="#Hex4Digits">Hex4Digits</a></span></span>
+            </div>
+            <div class="rhs-list-item">
+                <a name="va21h0xq"></a><span class="rhs"><span class="terminal">u{</span> <span class="nonterminal"><a href="#HexDigits">HexDigits</a></span> <span class="terminal">}</span></span>
+            </div>
+        </div>
+    </div>
+    <a name="Hex4Digits"></a><div class="production">
+        <span class="nonterminal">Hex4Digits</span><span class="punctuation"> ::</span>
+        <div class="rhs-list">
+            <div class="rhs-list-item">
+                <a name="c6jeysfq"></a><span class="rhs"><span class="nonterminal"><a href="#HexDigit">HexDigit</a></span> <span class="nonterminal"><a href="#HexDigit">HexDigit</a></span> <span class="nonterminal"><a href="#HexDigit">HexDigit</a></span> <span class="nonterminal"><a href="#HexDigit">HexDigit</a></span></span>
             </div>
         </div>
     </div>
@@ -204,7 +342,7 @@
                 <a name="woqw5wcn"></a><span class="rhs"><span class="nonterminal"><a href="#ProseLine">ProseLine</a></span></span>
             </div>
             <div class="rhs-list-item">
-                <a name="c4hj6oeb"></a><span class="rhs"><span class="nonterminal"><a href="#ProseLine">ProseLine</a></span> <span class="nonterminal"><a href="#LineTerminatorSequence">LineTerminatorSequence</a></span> <span class="nonterminal"><a href="#ProseLines">ProseLines</a></span></span>
+                <a name="f4rjmond"></a><span class="rhs"><span class="nonterminal"><a href="#ProseLine">ProseLine</a></span> <span class="nonterminal"><a href="#LineTerminator">LineTerminator</a></span> <span class="nonterminal"><a href="#ProseLines">ProseLines</a></span></span>
             </div>
         </div>
     </div>
@@ -487,7 +625,7 @@
                 <a name="cx0hfwg8"></a><span class="rhs"><span class="nonterminal"><a href="#Prose">Prose</a></span></span>
             </div>
             <div class="rhs-list-item">
-                <a name="f34a7ami"></a><span class="rhs"><span class="nonterminal"><a href="#ProseSpan">ProseSpan</a></span> <span class="nonterminal"><a href="#LineTerminatorSequence">LineTerminatorSequence</a></span> <span class="nonterminal"><a href="#Prose">Prose</a></span></span>
+                <a name="ro0tsqu_"></a><span class="rhs"><span class="nonterminal"><a href="#ProseSpan">ProseSpan</a></span> <span class="nonterminal"><a href="#LineTerminator">LineTerminator</a></span> <span class="nonterminal"><a href="#Prose">Prose</a></span></span>
             </div>
         </div>
     </div>
@@ -533,7 +671,7 @@
         <span class="nonterminal">RightHandSide</span><span class="punctuation"> :</span>
         <div class="rhs-list">
             <div class="rhs-list-item">
-                <a name="u3kifmog"></a><span class="rhs"><span class="nonterminal"><a href="#SymbolSpan">SymbolSpan</a></span> <span class="nonterminal"><a href="#LineTerminatorSequence">LineTerminatorSequence</a></span></span>
+                <a name="ixmdjeqh"></a><span class="rhs"><span class="nonterminal"><a href="#SymbolSpan">SymbolSpan</a></span> <span class="nonterminal"><a href="#LineTerminator">LineTerminator</a></span></span>
             </div>
         </div>
     </div>
@@ -552,7 +690,7 @@
                 <a name="gusliiae"></a><span class="rhs"><span class="nonterminal"><a href="#Terminals">Terminals</a></span></span>
             </div>
             <div class="rhs-list-item">
-                <a name="getaau-m"></a><span class="rhs"><span class="nonterminal"><a href="#TerminalList">TerminalList</a></span> <span class="nonterminal"><a href="#LineTerminatorSequence">LineTerminatorSequence</a></span> <span class="nonterminal"><a href="#Terminals">Terminals</a></span></span>
+                <a name="qf65uuyc"></a><span class="rhs"><span class="nonterminal"><a href="#TerminalList">TerminalList</a></span> <span class="nonterminal"><a href="#LineTerminator">LineTerminator</a></span> <span class="nonterminal"><a href="#Terminals">Terminals</a></span></span>
             </div>
         </div>
     </div>
@@ -563,7 +701,7 @@
                 <a name="-ih0ncgp"></a><span class="rhs"><span class="terminal">one</span> <span class="terminal">of</span> <span class="nonterminal"><a href="#Terminals">Terminals</a></span></span>
             </div>
             <div class="rhs-list-item">
-                <a name="mtpe_4wt"></a><span class="rhs"><span class="terminal">one</span> <span class="terminal">of</span> <span class="nonterminal"><a href="#LineTerminatorSequence">LineTerminatorSequence</a></span> <span class="nonterminal"><a href="#Indent">Indent</a></span> <span class="nonterminal"><a href="#TerminalList">TerminalList</a></span> <span class="nonterminal"><a href="#Dedent">Dedent</a></span></span>
+                <a name="pgmvglzt"></a><span class="rhs"><span class="terminal">one</span> <span class="terminal">of</span> <span class="nonterminal"><a href="#LineTerminator">LineTerminator</a></span> <span class="nonterminal"><a href="#Indent">Indent</a></span> <span class="nonterminal"><a href="#TerminalList">TerminalList</a></span> <span class="nonterminal"><a href="#Dedent">Dedent</a></span></span>
             </div>
         </div>
     </div>
@@ -604,7 +742,7 @@
                 <a name="vhjnckof"></a><span class="rhs"><span class="nonterminal"><a href="#Identifier">Identifier</a></span> <span class="nonterminal"><a href="#Parameters">Parameters</a></span><span class="opt">opt</span> <span class="terminal">:</span> <span class="nonterminal"><a href="#RightHandSide">RightHandSide</a></span></span>
             </div>
             <div class="rhs-list-item">
-                <a name="uqqn197z"></a><span class="rhs"><span class="nonterminal"><a href="#Identifier">Identifier</a></span> <span class="nonterminal"><a href="#Parameters">Parameters</a></span><span class="opt">opt</span> <span class="terminal">:</span> <span class="nonterminal"><a href="#LineTerminatorSequence">LineTerminatorSequence</a></span> <span class="nonterminal"><a href="#Indent">Indent</a></span> <span class="nonterminal"><a href="#RightHandSideList">RightHandSideList</a></span> <span class="nonterminal"><a href="#Dedent">Dedent</a></span></span>
+                <a name="e-zpzl_w"></a><span class="rhs"><span class="nonterminal"><a href="#Identifier">Identifier</a></span> <span class="nonterminal"><a href="#Parameters">Parameters</a></span><span class="opt">opt</span> <span class="terminal">:</span> <span class="nonterminal"><a href="#LineTerminator">LineTerminator</a></span> <span class="nonterminal"><a href="#Indent">Indent</a></span> <span class="nonterminal"><a href="#RightHandSideList">RightHandSideList</a></span> <span class="nonterminal"><a href="#Dedent">Dedent</a></span></span>
             </div>
         </div>
     </div>

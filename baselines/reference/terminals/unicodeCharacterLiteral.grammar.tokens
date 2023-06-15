@@ -11,4 +11,7 @@ SyntaxKind[UnicodeCharacterLiteral](8,5): U+100000
 SyntaxKind[UnicodeCharacterLiteral](9,5): U+10ffff
 SyntaxKind[UnicodeCharacterLiteral](10,5): &lt;foo
 SyntaxKind[UnicodeCharacterLiteral](10,12): &lt;bar&gt;
-SyntaxKind[EndOfFileToken](10,23): «EndOfFileToken»
+SyntaxKind[UnicodeCharacterLiteral](11,5): &lt;foo\&lt;bar&gt;
+SyntaxKind[UnicodeCharacterLiteral](12,5): <NBSP>
+SyntaxKind[UnicodeCharacterLiteral](13,5): <U+2212 MINUS SIGN>
+SyntaxKind[EndOfFileToken](13,24): «EndOfFileToken»
