@@ -1,0 +1,14 @@
+/// terminals/unicodeCharacterLiteral.grammar:
+SyntaxKind[Identifier](1,1): A
+SyntaxKind[ColonToken](1,2): :
+SyntaxKind[UnicodeCharacterLiteral](2,5): U+0000
+SyntaxKind[UnicodeCharacterLiteral](3,5): U+ffff
+SyntaxKind[UnicodeCharacterLiteral](4,5): U+10000
+SyntaxKind[UnicodeCharacterLiteral](5,5): U+1ffff
+SyntaxKind[UnicodeCharacterLiteral](6,5): U+f0000
+SyntaxKind[UnicodeCharacterLiteral](7,5): U+fffff
+SyntaxKind[UnicodeCharacterLiteral](8,5): U+100000
+SyntaxKind[UnicodeCharacterLiteral](9,5): U+10ffff
+SyntaxKind[UnicodeCharacterLiteral](10,5): &lt;foo
+SyntaxKind[UnicodeCharacterLiteral](10,12): &lt;bar&gt;
+SyntaxKind[EndOfFileToken](10,23): «EndOfFileToken»

@@ -1,0 +1,45 @@
+/// terminals/unicodeCharacterLiteral.grammar:
+(1,1)SyntaxKind[SourceFile](filename = "unicodeCharacterLiteral.grammar")
+  (1,1)SyntaxKind[Production]
+    (1,1)SyntaxKind[Identifier](text = "A")
+    (1,2)SyntaxKind[ColonToken]
+    (2,5)SyntaxKind[RightHandSideList]
+      (2,5)SyntaxKind[RightHandSide]
+        (2,5)SyntaxKind[SymbolSpan]
+          (2,5)SyntaxKind[Terminal]
+            (2,5)SyntaxKind[UnicodeCharacterLiteral](text = U+0000)
+      (3,5)SyntaxKind[RightHandSide]
+        (3,5)SyntaxKind[SymbolSpan]
+          (3,5)SyntaxKind[Terminal]
+            (3,5)SyntaxKind[UnicodeCharacterLiteral](text = U+ffff)
+      (4,5)SyntaxKind[RightHandSide]
+        (4,5)SyntaxKind[SymbolSpan]
+          (4,5)SyntaxKind[Terminal]
+            (4,5)SyntaxKind[UnicodeCharacterLiteral](text = U+10000)
+      (5,5)SyntaxKind[RightHandSide]
+        (5,5)SyntaxKind[SymbolSpan]
+          (5,5)SyntaxKind[Terminal]
+            (5,5)SyntaxKind[UnicodeCharacterLiteral](text = U+1ffff)
+      (6,5)SyntaxKind[RightHandSide]
+        (6,5)SyntaxKind[SymbolSpan]
+          (6,5)SyntaxKind[Terminal]
+            (6,5)SyntaxKind[UnicodeCharacterLiteral](text = U+f0000)
+      (7,5)SyntaxKind[RightHandSide]
+        (7,5)SyntaxKind[SymbolSpan]
+          (7,5)SyntaxKind[Terminal]
+            (7,5)SyntaxKind[UnicodeCharacterLiteral](text = U+fffff)
+      (8,5)SyntaxKind[RightHandSide]
+        (8,5)SyntaxKind[SymbolSpan]
+          (8,5)SyntaxKind[Terminal]
+            (8,5)SyntaxKind[UnicodeCharacterLiteral](text = U+100000)
+      (9,5)SyntaxKind[RightHandSide]
+        (9,5)SyntaxKind[SymbolSpan]
+          (9,5)SyntaxKind[Terminal]
+            (9,5)SyntaxKind[UnicodeCharacterLiteral](text = U+10ffff)
+      (10,5)SyntaxKind[RightHandSide]
+        (10,5)SyntaxKind[SymbolSpan]
+          (10,5)SyntaxKind[Terminal]
+            (10,5)SyntaxKind[UnicodeCharacterLiteral](text = &lt;foo)
+          (10,12)SyntaxKind[SymbolSpan]
+            (10,12)SyntaxKind[Terminal]
+              (10,12)SyntaxKind[UnicodeCharacterLiteral](text = &lt;bar&gt;)

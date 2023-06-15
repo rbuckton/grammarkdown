@@ -508,13 +508,34 @@ export class Scanner {
 
                 case CharacterCodes.UpperU:
                 case CharacterCodes.LowerU:
-                    if (this.pos + 4 < this.len
-                        && this.text.charCodeAt(this.pos) === CharacterCodes.Plus
-                        && isHexDigit(this.text.charCodeAt(this.pos + 1))
-                        && isHexDigit(this.text.charCodeAt(this.pos + 2))
-                        && isHexDigit(this.text.charCodeAt(this.pos + 3))
-                        && isHexDigit(this.text.charCodeAt(this.pos + 4))) {
-                        return this.tokenValue = this.text.substr(this.tokenPos, 6), this.pos += 5, this.token = SyntaxKind.UnicodeCharacterLiteral;
+                    if (this.pos < this.len && this.text.charCodeAt(this.pos) === CharacterCodes.Plus) {
+                        if (this.pos + 4 < this.len
+                            && isHexDigit(this.text.charCodeAt(this.pos + 1))
+                            && isHexDigit(this.text.charCodeAt(this.pos + 2))
+                            && isHexDigit(this.text.charCodeAt(this.pos + 3))
+                            && isHexDigit(this.text.charCodeAt(this.pos + 4))
+                            && (this.pos + 5 === this.len || !isHexDigit(this.text.charCodeAt(this.pos + 5)))) {
+                            return this.tokenValue = this.text.substr(this.tokenPos, 6), this.pos += 5, this.token = SyntaxKind.UnicodeCharacterLiteral;
+                        }
+                        if (this.pos + 5 < this.len
+                            && isNonZeroHexDigit(this.text.charCodeAt(this.pos + 1))
+                            && isHexDigit(this.text.charCodeAt(this.pos + 2))
+                            && isHexDigit(this.text.charCodeAt(this.pos + 3))
+                            && isHexDigit(this.text.charCodeAt(this.pos + 4))
+                            && isHexDigit(this.text.charCodeAt(this.pos + 5))
+                            && !(this.pos + 6 < this.len && isHexDigit(this.text.charCodeAt(this.pos + 6)))) {
+                            return this.tokenValue = this.text.substr(this.tokenPos, 7), this.pos += 6, this.token = SyntaxKind.UnicodeCharacterLiteral;
+                        }
+                        if (this.pos + 6 < this.len
+                            && this.text.charCodeAt(this.pos + 1) === CharacterCodes.Number1
+                            && this.text.charCodeAt(this.pos + 2) === CharacterCodes.Number0
+                            && isHexDigit(this.text.charCodeAt(this.pos + 3))
+                            && isHexDigit(this.text.charCodeAt(this.pos + 4))
+                            && isHexDigit(this.text.charCodeAt(this.pos + 5))
+                            && isHexDigit(this.text.charCodeAt(this.pos + 6))
+                            && !(this.pos + 7 < this.len && isHexDigit(this.text.charCodeAt(this.pos + 7)))) {
+                            return this.tokenValue = this.text.substr(this.tokenPos, 8), this.pos += 7, this.token = SyntaxKind.UnicodeCharacterLiteral;
+                        }
                     }
 
                 // fall-through
@@ -858,6 +879,13 @@ export class Scanner {
                 result += this.text.slice(start, this.pos - 1);
                 break;
             }
+            else if (quote === CharacterCodes.GreaterThan && ch === CharacterCodes.LessThan) {
+                this.pos = lastPos;
+                result += this.text.slice(start, lastPos);
+                this.setTokenAsUnterminated();
+                this.getDiagnostics().report(this.pos, diagnostic || Diagnostics.Unterminated_string_literal);
+                break;
+            }
             else if (decodeEscapeSequences && ch === CharacterCodes.Backslash) {
                 // terminals cannot have escape sequences
                 result += this.text.slice(start, this.pos - 1);
@@ -1082,6 +1110,12 @@ function isHexDigit(ch: number): boolean {
     return ch >= CharacterCodes.UpperA && ch <= CharacterCodes.UpperF
         || ch >= CharacterCodes.LowerA && ch <= CharacterCodes.LowerF
         || ch >= CharacterCodes.Number0 && ch <= CharacterCodes.Number9;
+}
+
+function isNonZeroHexDigit(ch: number): boolean {
+    return ch >= CharacterCodes.UpperA && ch <= CharacterCodes.UpperF
+        || ch >= CharacterCodes.LowerA && ch <= CharacterCodes.LowerF
+        || ch >= CharacterCodes.Number1 && ch <= CharacterCodes.Number9;
 }
 
 function isIdentifierStart(ch: number): boolean {

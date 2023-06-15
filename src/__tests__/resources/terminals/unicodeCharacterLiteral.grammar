@@ -1,0 +1,14 @@
+// @full: true
+A:
+    U+0000
+    U+ffff
+    U+10000
+    U+1ffff
+    U+f0000
+    U+fffff
+    U+100000
+    U+10ffff
+    &lt;foo&lt;bar&gt;
+    &lt;foo\&lt;bar&gt;
+    <NBSP>
+    <U+2212 MINUS SIGN>

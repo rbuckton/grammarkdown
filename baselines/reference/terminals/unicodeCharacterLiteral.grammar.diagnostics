@@ -1,0 +1,2 @@
+/// terminals/unicodeCharacterLiteral.grammar:
+terminals/unicodeCharacterLiteral.grammar(10,12): error GM1004: Unterminated string literal.
