@@ -1,3 +1,22 @@
 /// html/aroundProduction.grammar:
-html/aroundProduction.grammar(9,16): error GM1010: HTML trivia not allowed here.
-html/aroundProduction.grammar(12,16): error GM1010: HTML trivia not allowed here.
+html/aroundProduction.grammar(9,10): error GM1010: HTML trivia not allowed here
+html/aroundProduction.grammar(12,10): error GM1010: HTML trivia not allowed here
+
+/// [html/aroundProduction.grammar] 2 errors
+    <ins>A ::
+        `b`</ins>
+    
+    <ins>
+    A ::
+        `b`
+    </ins>
+    
+    <ins>A ::</ins>
+             ~~~~~~
+!!! error GM1010: HTML trivia not allowed here
+        <ins>`b`</ins>
+    
+    <ins>A ::</ins>
+             ~~~~~~
+!!! error GM1010: HTML trivia not allowed here
+        `b`

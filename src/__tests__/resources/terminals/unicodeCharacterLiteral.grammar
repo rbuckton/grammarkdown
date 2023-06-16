@@ -1,14 +1,47 @@
 // @full: true
-A:
+CodePoints:
     U+0000
-    U+ffff
+    U+FFFF
     U+10000
-    U+1ffff
-    U+f0000
-    U+fffff
+    U+1FFFF
+    U+F0000
+    U+FFFFF
     U+100000
-    U+10ffff
+    U+10FFFF
+    U&#x2b;0000
+
+ErrorCodePoints:
+    U+00000
+    U+000000
+    U+110000
+
+WarningCodePoints:
+    u+0000
+    U+ffff
+
+CharacterNames:
     &lt;foo&lt;bar&gt;
     &lt;foo\&lt;bar&gt;
     <NBSP>
     <U+2212 MINUS SIGN>
+    <U+0000 A>
+    <U+FFFF A>
+    <U+10000 A>
+    <U+1FFFF A>
+    <U+F0000 A>
+    <U+FFFFF A>
+    <U+100000 A>
+    <U+10FFFF A>
+    <U&#x2b;0000 A>
+
+ErrorCharacterNames:
+    <U+>
+    <U+A>
+    <U+0>
+    <U+0000>
+    <U+00000 A>
+    <U+000000 A>
+    <U+110000 A>
+
+WarningCharacterNames:
+    <U+ffff A>

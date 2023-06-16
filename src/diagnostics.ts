@@ -7,7 +7,7 @@
 
 import { binarySearch, compareStrings, compare } from "./core";
 import { Range, Position } from "./types";
-import { CharacterCodes, SyntaxKind, tokenToString } from "./tokens";
+import { CharacterCodes, SyntaxKind, isHtmlTriviaKind, isTriviaKind, tokenToString } from "./tokens";
 import { Node, SourceFile } from "./nodes";
 import { LineOffsetMap } from "./lineOffsetMap";
 
@@ -135,12 +135,16 @@ export class DiagnosticMessages {
         this.reportDiagnostic(message, args, pos);
     }
 
+    public reportRange(pos: number, end: number, message: Diagnostic, ...args: any[]): void {
+        this.reportDiagnostic(message, args, pos, Math.max(0, end - pos));
+    }
+
     public reportNode(sourceFile: SourceFile | undefined, node: Node, message: Diagnostic, ...args: any[]): void {
         let pos: number | undefined;
         let length: number | undefined;
         if (node) {
-            pos = node.getStart(sourceFile);
-            length = node.getWidth(sourceFile);
+            pos = isTriviaKind(node.kind) ? node.getFullStart() : node.getStart(sourceFile);
+            length = isTriviaKind(node.kind) ? node.getFullWidth() : node.getWidth(sourceFile);
         }
 
         this.reportDiagnostic(message, args, pos, length, node);
@@ -266,17 +270,19 @@ export class DiagnosticMessages {
 
     public getDiagnosticRange(diagnosticIndex: number, raw?: boolean) {
         const diagnostic = this.getDiagnostic(diagnosticIndex);
-        const sourceFile = this.getDiagnosticSourceFile(diagnosticIndex);
-        const node = this.getDiagnosticNode(diagnosticIndex);
-        const pos = this.getDiagnosticPos(diagnosticIndex);
-        if (diagnostic && node || pos > -1) {
-            const range = getDiagnosticRange(node, pos, sourceFile);
-            if (!raw && sourceFile && this.lineOffsetMap) {
-                return this.lineOffsetMap.getEffectiveRange(sourceFile, range);
+        if (diagnostic) {
+            const node = this.getDiagnosticNode(diagnosticIndex);
+            const pos = this.getDiagnosticPos(diagnosticIndex);
+            if (node || pos > -1) {
+                const length = this.getDiagnosticLength(diagnosticIndex);
+                const sourceFile = this.getDiagnosticSourceFile(diagnosticIndex);
+                const range = getDiagnosticRange(node, pos, length, sourceFile);
+                if (!raw && sourceFile && this.lineOffsetMap) {
+                    return this.lineOffsetMap.getEffectiveRange(sourceFile, range);
+                }
+                return range;
             }
-            return range;
         }
-
         return undefined;
     }
 
@@ -511,6 +517,45 @@ export class LineMap {
         return { line: lineNumber, character: offset - this.lineStarts[lineNumber] };
     }
 
+    public getLine(line: number): LineInfo {
+        this.computeLineStarts();
+        if (line < 0 || line >= this.lineStarts.length) {
+            throw new RangeError("Argument out of range: line");
+        }
+
+        const pos = this.lineStarts[line];
+        let end: number;
+        let lineTerminatorLength = 0;
+        if (line + 1 < this.lineStarts.length) {
+            end = this.lineStarts[line + 1];
+            if (end - 1 >= pos) {
+                let ch = this.text.charCodeAt(end - 1);
+                switch (ch) {
+                    case CharacterCodes.LineFeed:
+                        if (end - 2 >= pos && this.text.charCodeAt(end - 2) === CharacterCodes.CarriageReturn) {
+                            lineTerminatorLength = 2;
+                            break;
+                        }
+                        // fall through
+                    case CharacterCodes.CarriageReturn:
+                    case CharacterCodes.LineSeparator:
+                    case CharacterCodes.ParagraphSeparator:
+                    case CharacterCodes.NextLine:
+                        lineTerminatorLength = 1;
+                        break;
+                }
+            }
+        }
+        else {
+            end = this.text.length;
+        }
+
+        const text = this.text.slice(pos, end - lineTerminatorLength);
+        const range = Range.create(Position.create(line, 0), Position.create(line, end - pos - lineTerminatorLength));
+        const rangeIncludingLineTerminator = Range.create(Position.create(line, 0), Position.create(line, end - pos));
+        return { line, text, range, rangeIncludingLineTerminator };
+    }
+
     private computeLineStarts() {
         if (this.lineStarts) {
             return;
@@ -525,6 +570,7 @@ export class LineMap {
                     if (this.text.charCodeAt(pos) === CharacterCodes.LineFeed) {
                         pos++;
                     }
+                    // fall through
                 case CharacterCodes.LineFeed:
                 case CharacterCodes.LineSeparator:
                 case CharacterCodes.ParagraphSeparator:
@@ -540,19 +586,26 @@ export class LineMap {
     }
 }
 
-function getDiagnosticRange(diagnosticNode: Node | undefined, diagnosticPos: number, sourceFile: SourceFile | undefined): Range {
+export interface LineInfo {
+    readonly line: number;
+    readonly text: string;
+    readonly range: Range;
+    readonly rangeIncludingLineTerminator: Range;
+}
+
+function getDiagnosticRange(diagnosticNode: Node | undefined, diagnosticPos: number, diagnosticLength: number, sourceFile: SourceFile | undefined): Range {
     return {
         start: positionOfStart(diagnosticNode, diagnosticPos, sourceFile),
-        end: positionOfEnd(diagnosticNode, diagnosticPos, sourceFile)
-    }
+        end: positionOfEnd(diagnosticNode, diagnosticPos, diagnosticLength, sourceFile)
+    };
 }
 
 function positionOfStart(diagnosticNode: Node | undefined, diagnosticPos: number, sourceFile: SourceFile | undefined) {
-    return positionAt(diagnosticNode ? diagnosticNode.getStart(sourceFile) : diagnosticPos, sourceFile);
+    return positionAt(diagnosticNode ? isHtmlTriviaKind(diagnosticNode.kind) ? diagnosticNode.getFullStart() : diagnosticNode.getStart(sourceFile) : diagnosticPos, sourceFile);
 }
 
-function positionOfEnd(diagnosticNode: Node | undefined, diagnosticPos: number, sourceFile: SourceFile | undefined) {
-    return positionAt(diagnosticNode ? diagnosticNode.getEnd() : diagnosticPos, sourceFile);
+function positionOfEnd(diagnosticNode: Node | undefined, diagnosticPos: number, diagnosticLength: number, sourceFile: SourceFile | undefined) {
+    return positionAt(diagnosticNode ? diagnosticNode.getEnd() : diagnosticPos + diagnosticLength, sourceFile);
 }
 
 function positionAt(diagnosticPos: number, sourceFile: SourceFile | undefined) {

@@ -5,61 +5,62 @@
  * in the root of this repository or package.
  */
 
-import { createHash } from "crypto";
-import { Cancelable } from "@esfx/cancelable";
 import { CancelToken } from "@esfx/async-canceltoken";
-import { Diagnostics, DiagnosticMessages, Diagnostic, formatList, NullDiagnosticMessages } from "./diagnostics";
-import { LineOffsetMap } from "./lineOffsetMap";
-import { SyntaxKind, tokenToString } from "./tokens";
-import { Symbol, SymbolKind } from "./symbols";
+import { Cancelable } from "@esfx/cancelable";
+import { createHash } from "crypto";
 import { BindingTable } from "./binder";
-import { StringWriter } from "./stringwriter";
-import { CompilerOptions } from "./options";
+import { toCancelToken } from "./core";
+import { Diagnostic, DiagnosticMessages, Diagnostics, NullDiagnosticMessages, formatList } from "./diagnostics";
+import { LineOffsetMap } from "./lineOffsetMap";
+import { NodeNavigator } from "./navigator";
 import {
-    Node,
-    SourceFile,
-    UnicodeCharacterLiteral,
-    UnicodeCharacterRange,
-    Prose,
-    Identifier,
-    Parameter,
-    ParameterList,
-    OneOfList,
-    Terminal,
-    SymbolSet,
+    Argument,
+    ArgumentList,
     Assertion,
+    ButNotSymbol,
+    Constraints,
+    Declaration,
+    Define,
     EmptyAssertion,
+    HtmlTrivia,
+    Identifier,
+    LexicalGoalAssertion,
+    LexicalSymbol,
+    Line,
+    LinkReference,
     LookaheadAssertion,
     NoSymbolHereAssertion,
-    LexicalGoalAssertion,
-    Constraints,
+    Node,
+    Nonterminal,
+    OneOfList,
+    OneOfSymbol,
+    OptionalSymbol,
+    Parameter,
+    ParameterList,
+    PlaceholderSymbol,
+    Production,
+    Prose,
     ProseAssertion,
     ProseFragment,
     ProseFragmentLiteral,
-    Argument,
-    ArgumentList,
-    Nonterminal,
-    OneOfSymbol,
-    LexicalSymbol,
-    OptionalSymbol,
-    ButNotSymbol,
-    SymbolSpan,
-    LinkReference,
     RightHandSide,
     RightHandSideList,
-    Production,
     SourceElement,
-    Define,
-    PlaceholderSymbol,
-    HtmlTrivia,
-    Line,
-    Declaration,
+    SourceFile,
+    SymbolSet,
+    SymbolSpan,
+    Terminal,
     TerminalLiteral,
+    UnicodeCharacterLiteral,
+    UnicodeCharacterRange,
 } from "./nodes";
-import { NodeNavigator } from "./navigator";
-import { toCancelToken } from "./core";
-import { Position, Range } from "./types";
+import { CompilerOptions } from "./options";
 import { RegionMap } from "./regionMap";
+import { StringWriter } from "./stringwriter";
+import { Symbol, SymbolKind } from "./symbols";
+import { CharacterCodes, SyntaxKind, tokenToString } from "./tokens";
+import { Position, Range } from "./types";
+import { isHexDigit, isWhiteSpace } from "./scanner";
 
 class NodeLinks {
     hasResolvedSymbols?: boolean;
@@ -510,7 +511,7 @@ export class Checker {
             this.checkConstraints(node.constraints);
         }
         if (node.head) {
-            this.checkSymbolSpan(node.head);
+            this.checkSymbolSpan(node.head, !node.constraints);
         }
         if (node.reference) {
             this.checkLinkReference(node.reference);
@@ -557,9 +558,9 @@ export class Checker {
         return false;
     }
 
-    private checkSymbolSpan(node: SymbolSpan): void {
+    private checkSymbolSpan(node: SymbolSpan, suggestConstraints: boolean): void {
         this.checkGrammarSymbolSpan(node);
-        this.checkSymbolSpanOrHigher(node.symbol);
+        this.checkSymbolSpanOrHigher(node.symbol, suggestConstraints);
 
         if (node.next) {
             this.checkSymbolSpanRest(node.next);
@@ -584,13 +585,13 @@ export class Checker {
         return false;
     }
 
-    private checkSymbolSpanOrHigher(node: LexicalSymbol): void {
+    private checkSymbolSpanOrHigher(node: LexicalSymbol, suggestConstraints: boolean): void {
         if (node.kind === SyntaxKind.Prose) {
             this.checkProse(<Prose>node);
             return;
         }
 
-        this.checkSymbolOrHigher(node);
+        this.checkSymbolOrHigher(node, suggestConstraints);
     }
 
     private checkProse(node: Prose): void {
@@ -603,7 +604,7 @@ export class Checker {
 
     private checkSymbolSpanRest(node: SymbolSpan): void {
         this.checkGrammarSymbolSpanRest(node);
-        this.checkSymbolOrHigher(node.symbol);
+        this.checkSymbolOrHigher(node.symbol, /*suggestConstraints*/ false);
 
         if (node.next) {
             this.checkSymbolSpanRest(node.next);
@@ -632,16 +633,16 @@ export class Checker {
         return false;
     }
 
-    private checkSymbolOrHigher(node: LexicalSymbol): void {
+    private checkSymbolOrHigher(node: LexicalSymbol, suggestConstraints: boolean): void {
         if (isAssertion(node)) {
-            this.checkAssertion(<Assertion>node);
+            this.checkAssertion(<Assertion>node, suggestConstraints);
             return;
         }
 
         this.checkButNotSymbolOrHigher(node);
     }
 
-    private checkAssertion(node: Assertion): void {
+    private checkAssertion(node: Assertion, suggestConstraints: boolean): void {
         switch (node.kind) {
             case SyntaxKind.EmptyAssertion:
                 this.checkEmptyAssertion(<EmptyAssertion>node);
@@ -664,7 +665,7 @@ export class Checker {
                 break;
 
             case SyntaxKind.InvalidAssertion:
-                this.reportInvalidAssertion(<Assertion>node);
+                this.reportInvalidAssertion(<Assertion>node, suggestConstraints);
                 break;
         }
     }
@@ -937,18 +938,27 @@ export class Checker {
         }
     }
 
-    private reportInvalidAssertion(node: Assertion): void {
+    private reportInvalidAssertion(node: Assertion, suggestConstraints: boolean): void {
         if (this.checkGrammarAssertionHead(node)) {
             return;
         }
 
-        this.reportGrammarError(node, node.openBracketToken.end, Diagnostics._0_expected, formatList([
-            SyntaxKind.LookaheadKeyword,
-            SyntaxKind.LexicalKeyword,
-            SyntaxKind.NoKeyword,
-            SyntaxKind.TildeToken,
-            SyntaxKind.PlusToken
-        ]));
+        if (suggestConstraints) {
+            this.reportGrammarError(node, node.openBracketToken.end, Diagnostics._0_expected, formatList([
+                SyntaxKind.LookaheadKeyword,
+                SyntaxKind.LexicalKeyword,
+                SyntaxKind.NoKeyword,
+                SyntaxKind.TildeToken,
+                SyntaxKind.PlusToken
+            ]));
+        }
+        else {
+            this.reportGrammarError(node, node.openBracketToken.end, Diagnostics._0_expected, formatList([
+                SyntaxKind.LookaheadKeyword,
+                SyntaxKind.LexicalKeyword,
+                SyntaxKind.NoKeyword,
+            ]));
+        }
     }
 
     private checkButNotSymbolOrHigher(node: LexicalSymbol) {
@@ -1121,9 +1131,84 @@ export class Checker {
         this.checkGrammarUnicodeCharacterLiteral(node);
     }
 
+    private checkGrammarUnicodeCharacterLiteralCodePoint(node: UnicodeCharacterLiteral, text: string, start: number, end: number): boolean {
+        const len = end - start;
+        if (len >= 7) {
+            if (text.charCodeAt(start + 2) === CharacterCodes.Number0) {
+                return this.reportGrammarErrorForNode(node, Diagnostics.Unicode_code_points_with_more_than_four_digits_may_not_have_leading_zeros);
+            }
+
+            if (len >= 8) {
+                // expect: U+10HHHH
+                if (text.charCodeAt(start + 2) !== CharacterCodes.Number1 ||
+                    text.charCodeAt(start + 3) !== CharacterCodes.Number0) {
+                    return this.reportGrammarErrorForNode(node, Diagnostics.Unicode_code_point_is_outside_of_the_allowed_range);
+                }
+            }
+        }
+
+        // report warnings after errors
+
+        if (text.charCodeAt(start) === CharacterCodes.LowerU) {
+            return this.reportGrammarErrorForNode(node, Diagnostics.Unicode_code_points_should_use_an_uppercase_U_prefix);
+        }
+
+        for (let i = 2; i < len; i++) {
+            const ch = text.charCodeAt(start + i);
+            if (ch >= CharacterCodes.LowerA && ch <= CharacterCodes.LowerF) {
+                return this.reportGrammarErrorForNode(node, Diagnostics.Unicode_code_points_should_use_uppercase_hexadecimal_digits);
+            }
+        }
+
+        return false;
+    }
+
+    private checkGrammarUnicodeCharacterLiteralCharacterName(node: UnicodeCharacterLiteral, text: string): boolean {
+        if (text.length >= 3) { // <U+HHHH
+            let ch = text.charCodeAt(1);
+            if (ch === CharacterCodes.UpperU || ch === CharacterCodes.LowerU) {
+                if (text.charCodeAt(2) === CharacterCodes.Plus) {
+                    let end = 3;
+                    while (end < text.length) {
+                        ch = text.charCodeAt(end);
+                        if (isWhiteSpace(ch) || ch === CharacterCodes.GreaterThan) {
+                            break;
+                        }
+                        if (!isHexDigit(ch)) {
+                            return this.reportGrammarErrorForNode(node, Diagnostics.Unicode_character_name_may_not_start_with_U_unless_it_is_a_valid_code_point);
+                        }
+                        end++;
+                    }
+
+                    if (end < 7) {
+                        return this.reportGrammarErrorForNode(node, Diagnostics.Unicode_character_name_may_not_start_with_U_unless_it_is_a_valid_code_point);
+                    }
+
+                    if (this.checkGrammarUnicodeCharacterLiteralCodePoint(node, text, 1, end)) {
+                        return true;
+                    }
+
+                    if (!(end < text.length && isWhiteSpace(text.charCodeAt(end))) ||
+                        !(end + 1 < text.length && text.charCodeAt(end + 1) !== CharacterCodes.GreaterThan)) {
+                        return this.reportGrammarErrorForNode(node, Diagnostics.Unicode_character_name_that_includes_a_code_point_must_have_a_description);
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     private checkGrammarUnicodeCharacterLiteral(node: UnicodeCharacterLiteral): boolean {
         if (!node.text) {
             return this.reportGrammarErrorForNode(node, Diagnostics._0_expected, tokenToString(SyntaxKind.UnicodeCharacterLiteral));
+        }
+
+        const ch = node.text.charCodeAt(0);
+        if (ch === CharacterCodes.UpperU || ch === CharacterCodes.LowerU) {
+            return this.checkGrammarUnicodeCharacterLiteralCodePoint(node, node.text, 0, node.text.length);
+        }
+        if (ch === CharacterCodes.LessThan) {
+            return this.checkGrammarUnicodeCharacterLiteralCharacterName(node, node.text);
         }
 
         return false;

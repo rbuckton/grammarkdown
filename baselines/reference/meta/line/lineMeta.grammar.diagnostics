@@ -1,4 +1,20 @@
 /// meta/line/lineMeta.grammar:
-foo(5,5): error GM2000: Cannot find name: 'B'.
-meta/line/lineMeta.grammar(25,9): error GM2000: Cannot find name: 'D'.
-meta/line/lineMeta.grammar(8,5): error GM2000: Cannot find name: 'F'.
+foo(5,5): error GM2000: Cannot find name: 'B'
+meta/line/lineMeta.grammar(25,9): error GM2000: Cannot find name: 'D'
+meta/line/lineMeta.grammar(8,5): error GM2000: Cannot find name: 'F'
+
+/// [meta/line/lineMeta.grammar] 3 errors
+    @line 5 "foo"
+    A : B
+        ~
+!!! error GM2000: Cannot find name: 'B'
+    
+    @line 25
+        C : D
+            ~
+!!! error GM2000: Cannot find name: 'D'
+    
+    @line default
+    E : F
+        ~
+!!! error GM2000: Cannot find name: 'F'

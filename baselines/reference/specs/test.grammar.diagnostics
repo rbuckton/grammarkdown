@@ -1,11 +1,62 @@
 /// specs/test.grammar:
-specs/test.grammar(7,1): error GM2006: Production 'D' is missing parameter 'B'. All definitions of production 'D' must specify the same formal parameters.
-specs/test.grammar(8,1): error GM2006: Production 'D' is missing parameter 'A'. All definitions of production 'D' must specify the same formal parameters.
-specs/test.grammar(12,5): error GM2007: There is no argument given for parameter 'A'.
-specs/test.grammar(13,7): error GM1001: '?', '+', or '~' expected.
-specs/test.grammar(14,7): error GM1001: '?', '+', or '~' expected.
-specs/test.grammar(14,10): error GM1001: '?', '+', or '~' expected.
-specs/test.grammar(14,10): error GM2004: Production 'E' does not have a parameter named 'B'.
-specs/test.grammar(15,5): error GM2007: There is no argument given for parameter 'A'.
-specs/test.grammar(15,8): error GM2004: Production 'E' does not have a parameter named 'B'.
-specs/test.grammar(15,8): error GM2004: Production 'F' does not have a parameter named 'B'.
+specs/test.grammar(7,1): error GM2006: Production 'D' is missing parameter 'B'. All definitions of production 'D' must specify the same formal parameters
+specs/test.grammar(8,1): error GM2006: Production 'D' is missing parameter 'A'. All definitions of production 'D' must specify the same formal parameters
+specs/test.grammar(12,5): error GM2007: There is no argument given for parameter 'A'
+specs/test.grammar(13,7): error GM1001: '?', '+', or '~' expected
+specs/test.grammar(14,7): error GM1001: '?', '+', or '~' expected
+specs/test.grammar(14,10): error GM1001: '?', '+', or '~' expected
+specs/test.grammar(14,10): error GM2004: Production 'E' does not have a parameter named 'B'
+specs/test.grammar(15,5): error GM2007: There is no argument given for parameter 'A'
+specs/test.grammar(15,8): error GM2004: Production 'E' does not have a parameter named 'B'
+specs/test.grammar(15,8): error GM2004: Production 'F' does not have a parameter named 'B'
+
+/// [specs/test.grammar] 10 errors
+    A : A @ A
+    B : |A| but not one of `"` or `\` or U+0000 through U+001F
+    
+    C : A [>full prose span]
+    C : A [>head `terminal` middle |B| tail]
+    
+    D[A] : A
+    ~~~~~~~~
+!!! error GM2006: Production 'D' is missing parameter 'B'. All definitions of production 'D' must specify the same formal parameters
+    D[B] : A
+    ~
+!!! error GM2006: Production 'D' is missing parameter 'A'. All definitions of production 'D' must specify the same formal parameters
+    
+    E[A] : A
+    F[A] :
+        E
+        ~
+!!! error GM2007: There is no argument given for parameter 'A'
+        E[A]
+          ~
+!!! error GM1001: '?', '+', or '~' expected
+        E[A, B]
+          ~
+!!! error GM1001: '?', '+', or '~' expected
+             ~
+!!! error GM1001: '?', '+', or '~' expected
+             ~
+!!! error GM2004: Production 'E' does not have a parameter named 'B'
+        E[?B]
+        ~
+!!! error GM2007: There is no argument given for parameter 'A'
+           ~
+!!! error GM2004: Production 'E' does not have a parameter named 'B'
+           ~
+!!! error GM2004: Production 'F' does not have a parameter named 'B'
+        E[+A]
+        E[~A]
+        E[?A]
+    
+    G :
+        &lt;LF&gt;
+        &lt;CR&gt;
+    
+    Z :
+        <del>A</del>
+        <ins>B</ins>
+    
+    LookaheadRestriction:
+        [lookahead <! A]

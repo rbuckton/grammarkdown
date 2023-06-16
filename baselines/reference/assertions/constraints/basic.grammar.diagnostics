@@ -1,3 +1,14 @@
 /// assertions/constraints/basic.grammar:
-assertions/constraints/basic.grammar(4,4): error GM1001: 'lookahead', 'lexical', 'no', '~', or '+' expected.
-assertions/constraints/basic.grammar(5,12): error GM1001: 'lookahead', 'lexical', 'no', '~', or '+' expected.
+assertions/constraints/basic.grammar(4,4): error GM1001: 'lookahead', 'lexical', 'no', '~', or '+' expected
+assertions/constraints/basic.grammar(5,12): error GM1001: 'lookahead', 'lexical', or 'no' expected
+
+/// [assertions/constraints/basic.grammar] 2 errors
+    Prod[A] :
+      [~A] `ok`
+      [+A] `ok`
+      [?A] `error`
+       ~
+!!! error GM1001: 'lookahead', 'lexical', 'no', '~', or '+' expected
+      `error` [~A]
+               ~
+!!! error GM1001: 'lookahead', 'lexical', or 'no' expected

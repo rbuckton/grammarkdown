@@ -1,3 +1,29 @@
 /// parameters/noUnusedParameters.grammar:
-parameters/noUnusedParameters.grammar(4,5): error GM2008: Parameter 'A' is unused.
-parameters/noUnusedParameters.grammar(7,5): error GM2008: Parameter 'A' is unused.
+parameters/noUnusedParameters.grammar(4,5): error GM2008: Parameter 'A' is unused
+parameters/noUnusedParameters.grammar(7,5): error GM2008: Parameter 'A' is unused
+
+/// [parameters/noUnusedParameters.grammar] 2 errors
+    // https://github.com/rbuckton/grammarkdown/issues/46
+    @define noUnusedParameters true
+    
+    Foo[A] ::
+        ~
+!!! error GM2008: Parameter 'A' is unused
+      Bar[+A]
+    
+    Bar[A] ::
+        ~
+!!! error GM2008: Parameter 'A' is unused
+      `x`
+    
+    Baz[A] ::
+      `x`
+    
+    Baz[A] ::
+      [~A] `y`
+    
+    Quxx[A] ::
+      `x`
+    
+    Quxx[A] ::
+      Baz[?A]

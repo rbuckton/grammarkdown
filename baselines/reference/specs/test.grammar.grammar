@@ -20,8 +20,8 @@ F[A] :
     E[?A]
 
 G :
-    &lt;LF&gt;
-    &lt;CR&gt;
+    <LF>
+    <CR>
 
 Z :
     <del>A</del>

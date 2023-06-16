@@ -1,3 +1,23 @@
 /// meta/define/byRegion.grammar:
-meta/define/byRegion.grammar(5,3): error GM2008: Parameter 'A' is unused.
-meta/define/byRegion.grammar(11,3): error GM2008: Parameter 'A' is unused.
+meta/define/byRegion.grammar(5,3): error GM2008: Parameter 'A' is unused
+meta/define/byRegion.grammar(11,3): error GM2008: Parameter 'A' is unused
+
+/// [meta/define/byRegion.grammar] 2 errors
+    // default for 'noUnusedParameters' is 'false'
+    A[A] : `a` // ok
+    
+    @define noUnusedParameters true
+    B[A] :: `a` // error
+      ~
+!!! error GM2008: Parameter 'A' is unused
+    
+    @define noUnusedParameters false
+    C[A] :: `a` // ok
+    
+    @define noUnusedParameters true
+    D[A] :: `a` // error
+      ~
+!!! error GM2008: Parameter 'A' is unused
+    
+    @define noUnusedParameters default
+    E[A] :: `a` // ok
