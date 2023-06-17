@@ -53,6 +53,7 @@
     "gulp": "^4.0.2",
     "gulp-insert": "^0.5.0",
     "jest": "^26.4.2",
+    "jest-matcher-utils": "^26.4.2",
     "jsonc-parser": "^2.3.1",
     "source-map-support": "^0.5.16",
     "ts-jest": "^26.4.0",
@@ -61,6 +62,7 @@
   },
   "dependencies": {
     "@esfx/async-canceltoken": "^1.0.0-pre.13",
-    "@esfx/cancelable": "^1.0.0-pre.13"
+    "@esfx/cancelable": "^1.0.0-pre.13",
+    "@esfx/disposable": "^1.0.0-pre.13"
   }
 }
