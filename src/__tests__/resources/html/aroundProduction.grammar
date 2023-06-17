@@ -1,4 +1,5 @@
 // @emit: ecmarkup, grammarkdown
+// @nodes: true
 <ins>A ::
     `b`</ins>
 

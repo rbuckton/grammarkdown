@@ -771,7 +771,7 @@ export class Scanner {
         const isClosingTag = this.text.charCodeAt(this.pos) === CharacterCodes.Slash;
         const end = findHtmlTriviaEnd(this.text, this.pos, this.len);
         const tagNamePos = isClosingTag ? this.pos + 1 : this.pos;
-        const tagNameEnd = findHtmlTriviaEnd(this.text, tagNamePos, end);
+        const tagNameEnd = findHtmlTagNameEnd(this.text, tagNamePos, end);
         this.pos = end;
 
         const tagName = this.text.slice(tagNamePos, tagNameEnd === -1 ? end : tagNameEnd);

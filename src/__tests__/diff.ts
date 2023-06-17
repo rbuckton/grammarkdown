@@ -20,6 +20,9 @@ import {
     ProseFragmentLiteral,
     Terminal,
     TerminalLiteral,
+    HtmlOpenTagTrivia,
+    HtmlCloseTagTrivia,
+    HtmlTriviaBase,
 } from "../nodes";
 import { StringWriter } from "../stringwriter";
 import { Position, Range } from "../types";
@@ -161,9 +164,56 @@ export function writeNodes(test: string, sourceFile: SourceFile, baselines?: str
     function printNode(node: Node) {
         text += getIndent(indentDepth) + formatNode(node, sourceFile) + "\n";
         indentDepth++;
+
+        let hasHtmlTrivia = false;
+        if (node.detachedTrivia) {
+            for (const child of node.detachedTrivia) {
+                if (child instanceof HtmlTriviaBase) {
+                    if (!hasHtmlTrivia) {
+                        hasHtmlTrivia = true;
+                        text += getIndent(indentDepth) + "[detachedTrivia]\n";
+                    }
+                    indentDepth++;
+                    printNode(child);
+                    indentDepth--;
+                }
+            }
+            hasHtmlTrivia = false;
+        }
+
+        if (node.leadingTrivia) {
+            for (const child of node.leadingTrivia) {
+                if (child instanceof HtmlTriviaBase) {
+                    if (!hasHtmlTrivia) {
+                        hasHtmlTrivia = true;
+                        text += getIndent(indentDepth) + "[leadingTrivia]\n";
+                    }
+                    indentDepth++;
+                    printNode(child);
+                    indentDepth--;
+                }
+            }
+            hasHtmlTrivia = false;
+        }
+
         for (const child of node.children()) {
             printNode(child);
         }
+
+        if (node.trailingTrivia?.length) {
+            for (const child of node.trailingTrivia) {
+                if (child instanceof HtmlTriviaBase) {
+                    if (!hasHtmlTrivia) {
+                        hasHtmlTrivia = true;
+                        text += getIndent(indentDepth) + "[trailingTrivia]\n";
+                    }
+                    indentDepth++;
+                    printNode(child);
+                    indentDepth--;
+                }
+            }
+        }
+
         indentDepth--;
     }
 }
@@ -239,6 +289,10 @@ function formatNode(node: Node, sourceFile: SourceFile) {
             break;
         case SyntaxKind.SourceFile:
             text += `(filename = "${basename((<SourceFile>node).filename)}")`;
+            break;
+        case SyntaxKind.HtmlOpenTagTrivia:
+        case SyntaxKind.HtmlCloseTagTrivia:
+            text += `(tagName = "${(node as HtmlOpenTagTrivia | HtmlCloseTagTrivia).tagName}")`;
             break;
     }
     switch (node.kind) {

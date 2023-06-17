@@ -1,0 +1,54 @@
+/// html/aroundProduction.grammar:
+(1,6)SyntaxKind[SourceFile](filename = "aroundProduction.grammar")
+  (1,6)SyntaxKind[Production]
+    [leadingTrivia]
+      (1,6)SyntaxKind[HtmlOpenTagTrivia](tagName = "ins")
+    (1,6)SyntaxKind[Identifier](text = "A")
+    (1,8)SyntaxKind[ColonColonToken]
+    (2,5)SyntaxKind[RightHandSideList]
+      (2,5)SyntaxKind[RightHandSide]
+        (2,5)SyntaxKind[SymbolSpan]
+          (2,5)SyntaxKind[Terminal]
+            (2,5)SyntaxKind[TerminalLiteral](text = "b")
+    [trailingTrivia]
+      (2,14)SyntaxKind[HtmlCloseTagTrivia](tagName = "ins")
+  (5,1)SyntaxKind[Production]
+    [leadingTrivia]
+      (4,6)SyntaxKind[HtmlOpenTagTrivia](tagName = "ins")
+    (5,1)SyntaxKind[Identifier](text = "A")
+    (5,3)SyntaxKind[ColonColonToken]
+    (6,5)SyntaxKind[RightHandSideList]
+      (6,5)SyntaxKind[RightHandSide]
+        (6,5)SyntaxKind[SymbolSpan]
+          (6,5)SyntaxKind[Terminal]
+            (6,5)SyntaxKind[TerminalLiteral](text = "b")
+    [trailingTrivia]
+      (7,7)SyntaxKind[HtmlCloseTagTrivia](tagName = "ins")
+  (9,6)SyntaxKind[Production]
+    [leadingTrivia]
+      (9,6)SyntaxKind[HtmlOpenTagTrivia](tagName = "ins")
+    (9,6)SyntaxKind[Identifier](text = "A")
+    (9,8)SyntaxKind[ColonColonToken]
+      [trailingTrivia]
+        (9,16)SyntaxKind[HtmlCloseTagTrivia](tagName = "ins")
+    (10,10)SyntaxKind[RightHandSideList]
+      (10,10)SyntaxKind[RightHandSide]
+        [leadingTrivia]
+          (10,10)SyntaxKind[HtmlOpenTagTrivia](tagName = "ins")
+        (10,10)SyntaxKind[SymbolSpan]
+          (10,10)SyntaxKind[Terminal]
+            (10,10)SyntaxKind[TerminalLiteral](text = "b")
+        [trailingTrivia]
+          (10,19)SyntaxKind[HtmlCloseTagTrivia](tagName = "ins")
+  (12,6)SyntaxKind[Production]
+    [leadingTrivia]
+      (12,6)SyntaxKind[HtmlOpenTagTrivia](tagName = "ins")
+    (12,6)SyntaxKind[Identifier](text = "A")
+    (12,8)SyntaxKind[ColonColonToken]
+      [trailingTrivia]
+        (12,16)SyntaxKind[HtmlCloseTagTrivia](tagName = "ins")
+    (13,5)SyntaxKind[RightHandSideList]
+      (13,5)SyntaxKind[RightHandSide]
+        (13,5)SyntaxKind[SymbolSpan]
+          (13,5)SyntaxKind[Terminal]
+            (13,5)SyntaxKind[TerminalLiteral](text = "b")
