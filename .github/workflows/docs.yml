@@ -28,7 +28,13 @@ jobs:
       with:
         args: docfx.json
 
+    - name: Check for changes
+      id: check_changes
+      run: |
+        git diff --quiet . || echo "changed=true" >> $GITHUB_OUTPUT
+
     - name: Update branch
+      if: steps.check_changes.outputs.changed == 'true'
       run: |
         git config user.name github-actions
         git config user.email github-actions@github.com
