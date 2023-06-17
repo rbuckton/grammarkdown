@@ -112,9 +112,8 @@ The identifier may optionally be enclosed in `|` characters, if it happens to co
 Character literals may be specified using one of the following forms:
 
 * A Unicode code point, of the form `U+` followed by four to six non-lowercase hexadecimal digits with no leading zeros other than those necessary for padding to a minimum of four digits, in accordance with [The Unicode Standard, Version 15.0.0, Appendix A, Notational Conventions](https://www.unicode.org/versions/Unicode15.0.0/appA.pdf) (i.e., matching Unicode extended BNF pattern `"U+" ( [1-9 A-F] | "10" )? H H H H` or regular expression pattern `^U[+]([1-9A-F]|10)?[0-9A-F]{4}$` as in `U+00A0` or `U+1D306`).
-* An abbreviation for a Unicode Code point, of the form `<NBSP>`
 * The preceding representation followed by a space and a printable ASCII prose explanation (such as a character name) free of `<` and `>` and line terminators, all wrapped in `<` and `>` (i.e., matching Unicode extended BNF pattern `"<" "U+" ( [1-9 A-F] | "10" )? H H H H " " [\u0020-\u007E -- [<>]]+ ">"` or regular expression pattern `^<U[+]([1-9A-F]|10)?[0-9A-F]{4} [\x20-\x3b\x3d\x3f-\x7e]+>$` as in `<U+2212 MINUS SIGN>`)
-* An abbreviation defined somewhere outside the grammar as an ASCII identifier name (i.e., matching Unicode extended BNF pattern `[A-Z a-z _] [A-Z a-z _ 0-9]*` or regular expression pattern `^[A-Za-z_][A-Za-z_0-9]*$` as in `<NBSP>`).
+* An abbreviation defined somewhere outside the grammar as an ASCII identifier name, wrapped in `<` and `>` (i.e., matching Unicode extended BNF pattern `"<" [A-Z a-z _] [A-Z a-z _ 0-9]* ">"` or regular expression pattern `^<[A-Za-z_][A-Za-z_0-9]*$>` as in `<NBSP>`).
 
 Character ranges may be specified using the `through` keyword:
 
