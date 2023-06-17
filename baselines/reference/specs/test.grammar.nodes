@@ -190,13 +190,21 @@
     (24,3)SyntaxKind[ColonToken]
     (25,10)SyntaxKind[RightHandSideList]
       (25,10)SyntaxKind[RightHandSide]
+        [leadingTrivia]
+          (25,10)SyntaxKind[HtmlOpenTagTrivia](tagName = "del")
         (25,10)SyntaxKind[SymbolSpan]
           (25,10)SyntaxKind[Nonterminal]
             (25,10)SyntaxKind[Identifier](text = "A")
+        [trailingTrivia]
+          (25,17)SyntaxKind[HtmlCloseTagTrivia](tagName = "del")
       (26,10)SyntaxKind[RightHandSide]
+        [leadingTrivia]
+          (26,10)SyntaxKind[HtmlOpenTagTrivia](tagName = "ins")
         (26,10)SyntaxKind[SymbolSpan]
           (26,10)SyntaxKind[Nonterminal]
             (26,10)SyntaxKind[Identifier](text = "B")
+        [trailingTrivia]
+          (26,17)SyntaxKind[HtmlCloseTagTrivia](tagName = "ins")
   (28,1)SyntaxKind[Production]
     (28,1)SyntaxKind[Identifier](text = "LookaheadRestriction")
     (28,21)SyntaxKind[ColonToken]
