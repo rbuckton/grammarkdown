@@ -17,10 +17,26 @@ references:
   name: grammarkdown
   href: api/grammarkdown.html
   fullName: grammarkdown
+- uid: grammarkdown!Argument#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/argument.html#grammarkdown_Argument_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!Argument#children:member(1)
   name: children()
   href: api/grammarkdown/argument.html#grammarkdown_Argument_children_member_1_
   fullName: children()
+- uid: grammarkdown!Argument#edgeCount:member
+  name: edgeCount
+  href: api/grammarkdown/argument.html#grammarkdown_Argument_edgeCount_member
+  fullName: edgeCount
+- uid: grammarkdown!Argument#edgeName:member(1)
+  name: edgeName(offset)
+  href: api/grammarkdown/argument.html#grammarkdown_Argument_edgeName_member_1_
+  fullName: edgeName(offset)
+- uid: grammarkdown!Argument#edgeValue:member(1)
+  name: edgeValue(offset)
+  href: api/grammarkdown/argument.html#grammarkdown_Argument_edgeValue_member_1_
+  fullName: edgeValue(offset)
 - uid: grammarkdown!Argument#firstChild:member
   name: firstChild
   href: api/grammarkdown/argument.html#grammarkdown_Argument_firstChild_member
@@ -53,6 +69,10 @@ references:
   name: (constructor)(operatorToken, name)
   href: api/grammarkdown/argument.html#grammarkdown_Argument_constructor_1_
   fullName: (constructor)(operatorToken, name)
+- uid: grammarkdown!ArgumentList#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/argumentlist.html#grammarkdown_ArgumentList_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!ArgumentList#children:member(1)
   name: children()
   href: api/grammarkdown/argumentlist.html#grammarkdown_ArgumentList_children_member_1_
@@ -61,6 +81,18 @@ references:
   name: closeBracketToken
   href: api/grammarkdown/argumentlist.html#grammarkdown_ArgumentList_closeBracketToken_member
   fullName: closeBracketToken
+- uid: grammarkdown!ArgumentList#edgeCount:member
+  name: edgeCount
+  href: api/grammarkdown/argumentlist.html#grammarkdown_ArgumentList_edgeCount_member
+  fullName: edgeCount
+- uid: grammarkdown!ArgumentList#edgeName:member(1)
+  name: edgeName(offset)
+  href: api/grammarkdown/argumentlist.html#grammarkdown_ArgumentList_edgeName_member_1_
+  fullName: edgeName(offset)
+- uid: grammarkdown!ArgumentList#edgeValue:member(1)
+  name: edgeValue(offset)
+  href: api/grammarkdown/argumentlist.html#grammarkdown_ArgumentList_edgeValue_member_1_
+  fullName: edgeValue(offset)
 - uid: grammarkdown!ArgumentList#elements:member
   name: elements
   href: api/grammarkdown/argumentlist.html#grammarkdown_ArgumentList_elements_member
@@ -189,6 +221,10 @@ references:
   name: BooleanKind
   href: api/grammarkdown.html#grammarkdown_BooleanKind_type
   fullName: BooleanKind
+- uid: grammarkdown!ButNotSymbol#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/butnotsymbol.html#grammarkdown_ButNotSymbol_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!ButNotSymbol#butKeyword:member
   name: butKeyword
   href: api/grammarkdown/butnotsymbol.html#grammarkdown_ButNotSymbol_butKeyword_member
@@ -197,6 +233,18 @@ references:
   name: children()
   href: api/grammarkdown/butnotsymbol.html#grammarkdown_ButNotSymbol_children_member_1_
   fullName: children()
+- uid: grammarkdown!ButNotSymbol#edgeCount:member
+  name: edgeCount
+  href: api/grammarkdown/butnotsymbol.html#grammarkdown_ButNotSymbol_edgeCount_member
+  fullName: edgeCount
+- uid: grammarkdown!ButNotSymbol#edgeName:member(1)
+  name: edgeName(offset)
+  href: api/grammarkdown/butnotsymbol.html#grammarkdown_ButNotSymbol_edgeName_member_1_
+  fullName: edgeName(offset)
+- uid: grammarkdown!ButNotSymbol#edgeValue:member(1)
+  name: edgeValue(offset)
+  href: api/grammarkdown/butnotsymbol.html#grammarkdown_ButNotSymbol_edgeValue_member_1_
+  fullName: edgeValue(offset)
 - uid: grammarkdown!ButNotSymbol#firstChild:member
   name: firstChild
   href: api/grammarkdown/butnotsymbol.html#grammarkdown_ButNotSymbol_firstChild_member
@@ -805,6 +853,10 @@ references:
   name: CompilerOptions
   href: api/grammarkdown/compileroptions.html#grammarkdown_CompilerOptions_interface
   fullName: CompilerOptions
+- uid: grammarkdown!Constraints#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/constraints.html#grammarkdown_Constraints_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!Constraints#children:member(1)
   name: children()
   href: api/grammarkdown/constraints.html#grammarkdown_Constraints_children_member_1_
@@ -813,6 +865,18 @@ references:
   name: closeBracketToken
   href: api/grammarkdown/constraints.html#grammarkdown_Constraints_closeBracketToken_member
   fullName: closeBracketToken
+- uid: grammarkdown!Constraints#edgeCount:member
+  name: edgeCount
+  href: api/grammarkdown/constraints.html#grammarkdown_Constraints_edgeCount_member
+  fullName: edgeCount
+- uid: grammarkdown!Constraints#edgeName:member(1)
+  name: edgeName(offset)
+  href: api/grammarkdown/constraints.html#grammarkdown_Constraints_edgeName_member_1_
+  fullName: edgeName(offset)
+- uid: grammarkdown!Constraints#edgeValue:member(1)
+  name: edgeValue(offset)
+  href: api/grammarkdown/constraints.html#grammarkdown_Constraints_edgeValue_member_1_
+  fullName: edgeValue(offset)
 - uid: grammarkdown!Constraints#elements:member
   name: elements
   href: api/grammarkdown/constraints.html#grammarkdown_Constraints_elements_member
@@ -969,6 +1033,14 @@ references:
   name: Declaration
   href: api/grammarkdown.html#grammarkdown_Declaration_type
   fullName: Declaration
+- uid: grammarkdown!decodeHtmlEntities:function(1)
+  name: decodeHtmlEntities(text)
+  href: api/grammarkdown.html#grammarkdown_decodeHtmlEntities_function_1_
+  fullName: decodeHtmlEntities(text)
+- uid: grammarkdown!Define#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/define.html#grammarkdown_Define_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!Define#children:member(1)
   name: children()
   href: api/grammarkdown/define.html#grammarkdown_Define_children_member_1_
@@ -977,6 +1049,18 @@ references:
   name: defineKeyword
   href: api/grammarkdown/define.html#grammarkdown_Define_defineKeyword_member
   fullName: defineKeyword
+- uid: grammarkdown!Define#edgeCount:member
+  name: edgeCount
+  href: api/grammarkdown/define.html#grammarkdown_Define_edgeCount_member
+  fullName: edgeCount
+- uid: grammarkdown!Define#edgeName:member(1)
+  name: edgeName(offset)
+  href: api/grammarkdown/define.html#grammarkdown_Define_edgeName_member_1_
+  fullName: edgeName(offset)
+- uid: grammarkdown!Define#edgeValue:member(1)
+  name: edgeValue(offset)
+  href: api/grammarkdown/define.html#grammarkdown_Define_edgeValue_member_1_
+  fullName: edgeValue(offset)
 - uid: grammarkdown!Define#forEachChild:member(1)
   name: forEachChild(cbNode)
   href: api/grammarkdown/define.html#grammarkdown_Define_forEachChild_member_1_
@@ -1133,6 +1217,10 @@ references:
   name: reportNode(sourceFile, node, message, args)
   href: api/grammarkdown/diagnosticmessages.html#grammarkdown_DiagnosticMessages_reportNode_member_1_
   fullName: reportNode(sourceFile, node, message, args)
+- uid: grammarkdown!DiagnosticMessages#reportRange:member(1)
+  name: reportRange(pos, end, message, args)
+  href: api/grammarkdown/diagnosticmessages.html#grammarkdown_DiagnosticMessages_reportRange_member_1_
+  fullName: reportRange(pos, end, message, args)
 - uid: grammarkdown!DiagnosticMessages#setSourceFile:member(1)
   name: setSourceFile(sourceFile)
   href: api/grammarkdown/diagnosticmessages.html#grammarkdown_DiagnosticMessages_setSourceFile_member_1_
@@ -1293,10 +1381,18 @@ references:
   name: afterEmitNode(node)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_afterEmitNode_member_1_
   fullName: afterEmitNode(node)
+- uid: grammarkdown!Emitter#afterEmitTrivia:member(1)
+  name: afterEmitTrivia(node)
+  href: api/grammarkdown/emitter.html#grammarkdown_Emitter_afterEmitTrivia_member_1_
+  fullName: afterEmitTrivia(node)
 - uid: grammarkdown!Emitter#beforeEmitNode:member(1)
   name: beforeEmitNode(node)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_beforeEmitNode_member_1_
   fullName: beforeEmitNode(node)
+- uid: grammarkdown!Emitter#beforeEmitTrivia:member(1)
+  name: beforeEmitTrivia(node)
+  href: api/grammarkdown/emitter.html#grammarkdown_Emitter_beforeEmitTrivia_member_1_
+  fullName: beforeEmitTrivia(node)
 - uid: grammarkdown!Emitter#createWriter:member(1)
   name: createWriter(options)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_createWriter_member_1_
@@ -1329,14 +1425,26 @@ references:
   name: emitDefine(node)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitDefine_member_1_
   fullName: emitDefine(node)
+- uid: grammarkdown!Emitter#emitDetachedTriviaOfNode:member(1)
+  name: emitDetachedTriviaOfNode(node)
+  href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitDetachedTriviaOfNode_member_1_
+  fullName: emitDetachedTriviaOfNode(node)
 - uid: grammarkdown!Emitter#emitEmptyAssertion:member(1)
   name: emitEmptyAssertion(node)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitEmptyAssertion_member_1_
   fullName: emitEmptyAssertion(node)
-- uid: grammarkdown!Emitter#emitHtmlTrivia:member(1)
-  name: emitHtmlTrivia(range)
-  href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitHtmlTrivia_member_1_
-  fullName: emitHtmlTrivia(range)
+- uid: grammarkdown!Emitter#emitHtmlCloseTagTrivia:member(1)
+  name: emitHtmlCloseTagTrivia(node)
+  href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitHtmlCloseTagTrivia_member_1_
+  fullName: emitHtmlCloseTagTrivia(node)
+- uid: grammarkdown!Emitter#emitHtmlCommentTrivia:member(1)
+  name: emitHtmlCommentTrivia(node)
+  href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitHtmlCommentTrivia_member_1_
+  fullName: emitHtmlCommentTrivia(node)
+- uid: grammarkdown!Emitter#emitHtmlOpenTagTrivia:member(1)
+  name: emitHtmlOpenTagTrivia(node)
+  href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitHtmlOpenTagTrivia_member_1_
+  fullName: emitHtmlOpenTagTrivia(node)
 - uid: grammarkdown!Emitter#emitIdentifier:member(1)
   name: emitIdentifier(node)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitIdentifier_member_1_
@@ -1349,10 +1457,10 @@ references:
   name: emitKeyword(node)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitKeyword_member_1_
   fullName: emitKeyword(node)
-- uid: grammarkdown!Emitter#emitLeadingHtmlTriviaOfNode:member(1)
-  name: emitLeadingHtmlTriviaOfNode(node)
-  href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitLeadingHtmlTriviaOfNode_member_1_
-  fullName: emitLeadingHtmlTriviaOfNode(node)
+- uid: grammarkdown!Emitter#emitLeadingTriviaOfNode:member(1)
+  name: emitLeadingTriviaOfNode(node)
+  href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitLeadingTriviaOfNode_member_1_
+  fullName: emitLeadingTriviaOfNode(node)
 - uid: grammarkdown!Emitter#emitLexicalGoalAssertion:member(1)
   name: emitLexicalGoalAssertion(node)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitLexicalGoalAssertion_member_1_
@@ -1361,14 +1469,26 @@ references:
   name: emitLine(node)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitLine_member_1_
   fullName: emitLine(node)
+- uid: grammarkdown!Emitter#emitLinkReference:member(1)
+  name: emitLinkReference(node)
+  href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitLinkReference_member_1_
+  fullName: emitLinkReference(node)
 - uid: grammarkdown!Emitter#emitLookaheadAssertion:member(1)
   name: emitLookaheadAssertion(node)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitLookaheadAssertion_member_1_
   fullName: emitLookaheadAssertion(node)
+- uid: grammarkdown!Emitter#emitMultiLineCommentTrivia:member(1)
+  name: emitMultiLineCommentTrivia(node)
+  href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitMultiLineCommentTrivia_member_1_
+  fullName: emitMultiLineCommentTrivia(node)
 - uid: grammarkdown!Emitter#emitNode:member(1)
   name: emitNode(node)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitNode_member_1_
   fullName: emitNode(node)
+- uid: grammarkdown!Emitter#emitNodeCore:member(1)
+  name: emitNodeCore(node)
+  href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitNodeCore_member_1_
+  fullName: emitNodeCore(node)
 - uid: grammarkdown!Emitter#emitNodes:member(1)
   name: emitNodes(nodes)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitNodes_member_1_
@@ -1381,6 +1501,10 @@ references:
   name: emitNoSymbolHereAssertion(node)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitNoSymbolHereAssertion_member_1_
   fullName: emitNoSymbolHereAssertion(node)
+- uid: grammarkdown!Emitter#emitNumberLiteral:member(1)
+  name: emitNumberLiteral(node)
+  href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitNumberLiteral_member_1_
+  fullName: emitNumberLiteral(node)
 - uid: grammarkdown!Emitter#emitOneOfList:member(1)
   name: emitOneOfList(node)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitOneOfList_member_1_
@@ -1425,6 +1549,10 @@ references:
   name: emitRightHandSideList(node)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitRightHandSideList_member_1_
   fullName: emitRightHandSideList(node)
+- uid: grammarkdown!Emitter#emitSingleLineCommentTrivia:member(1)
+  name: emitSingleLineCommentTrivia(node)
+  href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitSingleLineCommentTrivia_member_1_
+  fullName: emitSingleLineCommentTrivia(node)
 - uid: grammarkdown!Emitter#emitSourceFile:member(1)
   name: emitSourceFile(node)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitSourceFile_member_1_
@@ -1433,6 +1561,10 @@ references:
   name: emitString(sourceFile, resolver, diagnostics, cancelable, node)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitString_member_1_
   fullName: emitString(sourceFile, resolver, diagnostics, cancelable, node)
+- uid: grammarkdown!Emitter#emitStringLiteral:member(1)
+  name: emitStringLiteral(node)
+  href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitStringLiteral_member_1_
+  fullName: emitStringLiteral(node)
 - uid: grammarkdown!Emitter#emitSymbolSet:member(1)
   name: emitSymbolSet(node)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitSymbolSet_member_1_
@@ -1453,6 +1585,10 @@ references:
   name: emitTextContent(node)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitTextContent_member_1_
   fullName: emitTextContent(node)
+- uid: grammarkdown!Emitter#emitTextRange:member(1)
+  name: emitTextRange(range)
+  href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitTextRange_member_1_
+  fullName: emitTextRange(range)
 - uid: grammarkdown!Emitter#emitToken:member(1)
   name: emitToken(node)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitToken_member_1_
@@ -1461,10 +1597,22 @@ references:
   name: emitTokenKind(kind)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitTokenKind_member_1_
   fullName: emitTokenKind(kind)
-- uid: grammarkdown!Emitter#emitTrailingHtmlTriviaOfNode:member(1)
-  name: emitTrailingHtmlTriviaOfNode(node)
-  href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitTrailingHtmlTriviaOfNode_member_1_
-  fullName: emitTrailingHtmlTriviaOfNode(node)
+- uid: grammarkdown!Emitter#emitTrailingTriviaOfNode:member(1)
+  name: emitTrailingTriviaOfNode(node)
+  href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitTrailingTriviaOfNode_member_1_
+  fullName: emitTrailingTriviaOfNode(node)
+- uid: grammarkdown!Emitter#emitTrivia:member(1)
+  name: emitTrivia(node)
+  href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitTrivia_member_1_
+  fullName: emitTrivia(node)
+- uid: grammarkdown!Emitter#emitTriviaCore:member(1)
+  name: emitTriviaCore(node)
+  href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitTriviaCore_member_1_
+  fullName: emitTriviaCore(node)
+- uid: grammarkdown!Emitter#emitTriviaNodes:member(1)
+  name: emitTriviaNodes(nodes)
+  href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitTriviaNodes_member_1_
+  fullName: emitTriviaNodes(nodes)
 - uid: grammarkdown!Emitter#emitUnicodeCharacterLiteral:member(1)
   name: emitUnicodeCharacterLiteral(node)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_emitUnicodeCharacterLiteral_member_1_
@@ -1493,6 +1641,10 @@ references:
   name: resolver
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_resolver_member
   fullName: resolver
+- uid: grammarkdown!Emitter#sourceFile:member
+  name: sourceFile
+  href: api/grammarkdown/emitter.html#grammarkdown_Emitter_sourceFile_member
+  fullName: sourceFile
 - uid: grammarkdown!Emitter#writer:member
   name: writer
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_writer_member
@@ -1505,10 +1657,26 @@ references:
   name: (constructor)(options)
   href: api/grammarkdown/emitter.html#grammarkdown_Emitter_constructor_1_
   fullName: (constructor)(options)
+- uid: grammarkdown!EmptyAssertion#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/emptyassertion.html#grammarkdown_EmptyAssertion_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!EmptyAssertion#children:member(1)
   name: children()
   href: api/grammarkdown/emptyassertion.html#grammarkdown_EmptyAssertion_children_member_1_
   fullName: children()
+- uid: grammarkdown!EmptyAssertion#edgeCount:member
+  name: edgeCount
+  href: api/grammarkdown/emptyassertion.html#grammarkdown_EmptyAssertion_edgeCount_member
+  fullName: edgeCount
+- uid: grammarkdown!EmptyAssertion#edgeName:member(1)
+  name: edgeName(offset)
+  href: api/grammarkdown/emptyassertion.html#grammarkdown_EmptyAssertion_edgeName_member_1_
+  fullName: edgeName(offset)
+- uid: grammarkdown!EmptyAssertion#edgeValue:member(1)
+  name: edgeValue(offset)
+  href: api/grammarkdown/emptyassertion.html#grammarkdown_EmptyAssertion_edgeValue_member_1_
+  fullName: edgeValue(offset)
 - uid: grammarkdown!EmptyAssertion#emptyKeyword:member
   name: emptyKeyword
   href: api/grammarkdown/emptyassertion.html#grammarkdown_EmptyAssertion_emptyKeyword_member
@@ -1653,6 +1821,14 @@ references:
   name: (constructor)(rootNames, options, host)
   href: api/grammarkdown/grammar.html#grammarkdown_Grammar_constructor_1_
   fullName: (constructor)(rootNames, options, host)
+- uid: grammarkdown!GrammarkdownEmitter#afterEmitTrivia:member(1)
+  name: afterEmitTrivia(node)
+  href: api/grammarkdown/grammarkdownemitter.html#grammarkdown_GrammarkdownEmitter_afterEmitTrivia_member_1_
+  fullName: afterEmitTrivia(node)
+- uid: grammarkdown!GrammarkdownEmitter#beforeEmitTrivia:member(1)
+  name: beforeEmitTrivia(node)
+  href: api/grammarkdown/grammarkdownemitter.html#grammarkdown_GrammarkdownEmitter_beforeEmitTrivia_member_1_
+  fullName: beforeEmitTrivia(node)
 - uid: grammarkdown!GrammarkdownEmitter#emitArgument:member(1)
   name: emitArgument(node)
   href: api/grammarkdown/grammarkdownemitter.html#grammarkdown_GrammarkdownEmitter_emitArgument_member_1_
@@ -1689,14 +1865,18 @@ references:
   name: emitLine(node)
   href: api/grammarkdown/grammarkdownemitter.html#grammarkdown_GrammarkdownEmitter_emitLine_member_1_
   fullName: emitLine(node)
+- uid: grammarkdown!GrammarkdownEmitter#emitLinkReference:member(1)
+  name: emitLinkReference(node)
+  href: api/grammarkdown/grammarkdownemitter.html#grammarkdown_GrammarkdownEmitter_emitLinkReference_member_1_
+  fullName: emitLinkReference(node)
 - uid: grammarkdown!GrammarkdownEmitter#emitLookaheadAssertion:member(1)
   name: emitLookaheadAssertion(node)
   href: api/grammarkdown/grammarkdownemitter.html#grammarkdown_GrammarkdownEmitter_emitLookaheadAssertion_member_1_
   fullName: emitLookaheadAssertion(node)
-- uid: grammarkdown!GrammarkdownEmitter#emitNode:member(1)
-  name: emitNode(node)
-  href: api/grammarkdown/grammarkdownemitter.html#grammarkdown_GrammarkdownEmitter_emitNode_member_1_
-  fullName: emitNode(node)
+- uid: grammarkdown!GrammarkdownEmitter#emitMultiLineCommentTrivia:member(1)
+  name: emitMultiLineCommentTrivia(node)
+  href: api/grammarkdown/grammarkdownemitter.html#grammarkdown_GrammarkdownEmitter_emitMultiLineCommentTrivia_member_1_
+  fullName: emitMultiLineCommentTrivia(node)
 - uid: grammarkdown!GrammarkdownEmitter#emitNonterminal:member(1)
   name: emitNonterminal(node)
   href: api/grammarkdown/grammarkdownemitter.html#grammarkdown_GrammarkdownEmitter_emitNonterminal_member_1_
@@ -1705,6 +1885,10 @@ references:
   name: emitNoSymbolHereAssertion(node)
   href: api/grammarkdown/grammarkdownemitter.html#grammarkdown_GrammarkdownEmitter_emitNoSymbolHereAssertion_member_1_
   fullName: emitNoSymbolHereAssertion(node)
+- uid: grammarkdown!GrammarkdownEmitter#emitNumberLiteral:member(1)
+  name: emitNumberLiteral(node)
+  href: api/grammarkdown/grammarkdownemitter.html#grammarkdown_GrammarkdownEmitter_emitNumberLiteral_member_1_
+  fullName: emitNumberLiteral(node)
 - uid: grammarkdown!GrammarkdownEmitter#emitOneOfList:member(1)
   name: emitOneOfList(node)
   href: api/grammarkdown/grammarkdownemitter.html#grammarkdown_GrammarkdownEmitter_emitOneOfList_member_1_
@@ -1745,10 +1929,18 @@ references:
   name: emitRightHandSideList(node)
   href: api/grammarkdown/grammarkdownemitter.html#grammarkdown_GrammarkdownEmitter_emitRightHandSideList_member_1_
   fullName: emitRightHandSideList(node)
+- uid: grammarkdown!GrammarkdownEmitter#emitSingleLineCommentTrivia:member(1)
+  name: emitSingleLineCommentTrivia(node)
+  href: api/grammarkdown/grammarkdownemitter.html#grammarkdown_GrammarkdownEmitter_emitSingleLineCommentTrivia_member_1_
+  fullName: emitSingleLineCommentTrivia(node)
 - uid: grammarkdown!GrammarkdownEmitter#emitSourceFile:member(1)
   name: emitSourceFile(node)
   href: api/grammarkdown/grammarkdownemitter.html#grammarkdown_GrammarkdownEmitter_emitSourceFile_member_1_
   fullName: emitSourceFile(node)
+- uid: grammarkdown!GrammarkdownEmitter#emitStringLiteral:member(1)
+  name: emitStringLiteral(node)
+  href: api/grammarkdown/grammarkdownemitter.html#grammarkdown_GrammarkdownEmitter_emitStringLiteral_member_1_
+  fullName: emitStringLiteral(node)
 - uid: grammarkdown!GrammarkdownEmitter#emitSymbolSet:member(1)
   name: emitSymbolSet(node)
   href: api/grammarkdown/grammarkdownemitter.html#grammarkdown_GrammarkdownEmitter_emitSymbolSet_member_1_
@@ -1793,6 +1985,14 @@ references:
   name: (constructor)(tagName)
   href: api/grammarkdown/htmlclosetagtrivia.html#grammarkdown_HtmlCloseTagTrivia_constructor_1_
   fullName: (constructor)(tagName)
+- uid: grammarkdown!HtmlCommentTrivia:class
+  name: HtmlCommentTrivia
+  href: api/grammarkdown/htmlcommenttrivia.html#grammarkdown_HtmlCommentTrivia_class
+  fullName: HtmlCommentTrivia
+- uid: grammarkdown!HtmlCommentTrivia:constructor(1)
+  name: (constructor)()
+  href: api/grammarkdown/htmlcommenttrivia.html#grammarkdown_HtmlCommentTrivia_constructor_1_
+  fullName: (constructor)()
 - uid: grammarkdown!HtmlEmitter#afterEmitNode:member(1)
   name: afterEmitNode(node)
   href: api/grammarkdown/htmlemitter.html#grammarkdown_HtmlEmitter_afterEmitNode_member_1_
@@ -1921,26 +2121,38 @@ references:
   name: (constructor)(tagName)
   href: api/grammarkdown/htmlopentagtrivia.html#grammarkdown_HtmlOpenTagTrivia_constructor_1_
   fullName: (constructor)(tagName)
+- uid: grammarkdown!HtmlTagTriviaBase#tagName:member
+  name: tagName
+  href: api/grammarkdown/htmltagtriviabase.html#grammarkdown_HtmlTagTriviaBase_tagName_member
+  fullName: tagName
+- uid: grammarkdown!HtmlTagTriviaBase:class
+  name: HtmlTagTriviaBase
+  href: api/grammarkdown/htmltagtriviabase.html#grammarkdown_HtmlTagTriviaBase_class
+  fullName: HtmlTagTriviaBase
+- uid: grammarkdown!HtmlTagTriviaBase:constructor(1)
+  name: (constructor)(kind, tagName)
+  href: api/grammarkdown/htmltagtriviabase.html#grammarkdown_HtmlTagTriviaBase_constructor_1_
+  fullName: (constructor)(kind, tagName)
+- uid: grammarkdown!HtmlTagTriviaKind:type
+  name: HtmlTagTriviaKind
+  href: api/grammarkdown.html#grammarkdown_HtmlTagTriviaKind_type
+  fullName: HtmlTagTriviaKind
 - uid: grammarkdown!HtmlTrivia:type
   name: HtmlTrivia
   href: api/grammarkdown.html#grammarkdown_HtmlTrivia_type
   fullName: HtmlTrivia
-- uid: grammarkdown!HtmlTriviaBase#tagName:member
-  name: tagName
-  href: api/grammarkdown/htmltriviabase.html#grammarkdown_HtmlTriviaBase_tagName_member
-  fullName: tagName
 - uid: grammarkdown!HtmlTriviaBase:class
   name: HtmlTriviaBase
   href: api/grammarkdown/htmltriviabase.html#grammarkdown_HtmlTriviaBase_class
   fullName: HtmlTriviaBase
-- uid: grammarkdown!HtmlTriviaBase:constructor(1)
-  name: (constructor)(kind, tagName)
-  href: api/grammarkdown/htmltriviabase.html#grammarkdown_HtmlTriviaBase_constructor_1_
-  fullName: (constructor)(kind, tagName)
 - uid: grammarkdown!HtmlTriviaKind:type
   name: HtmlTriviaKind
   href: api/grammarkdown.html#grammarkdown_HtmlTriviaKind_type
   fullName: HtmlTriviaKind
+- uid: grammarkdown!Identifier#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/identifier.html#grammarkdown_Identifier_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!Identifier#text:member
   name: text
   href: api/grammarkdown/identifier.html#grammarkdown_Identifier_text_member
@@ -1953,10 +2165,26 @@ references:
   name: (constructor)(text)
   href: api/grammarkdown/identifier.html#grammarkdown_Identifier_constructor_1_
   fullName: (constructor)(text)
+- uid: grammarkdown!Import#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/import.html#grammarkdown_Import_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!Import#children:member(1)
   name: children()
   href: api/grammarkdown/import.html#grammarkdown_Import_children_member_1_
   fullName: children()
+- uid: grammarkdown!Import#edgeCount:member
+  name: edgeCount
+  href: api/grammarkdown/import.html#grammarkdown_Import_edgeCount_member
+  fullName: edgeCount
+- uid: grammarkdown!Import#edgeName:member(1)
+  name: edgeName(offset)
+  href: api/grammarkdown/import.html#grammarkdown_Import_edgeName_member_1_
+  fullName: edgeName(offset)
+- uid: grammarkdown!Import#edgeValue:member(1)
+  name: edgeValue(offset)
+  href: api/grammarkdown/import.html#grammarkdown_Import_edgeValue_member_1_
+  fullName: edgeValue(offset)
 - uid: grammarkdown!Import#forEachChild:member(1)
   name: forEachChild(cbNode)
   href: api/grammarkdown/import.html#grammarkdown_Import_forEachChild_member_1_
@@ -1981,10 +2209,26 @@ references:
   name: (constructor)(atToken, importKeyword, path)
   href: api/grammarkdown/import.html#grammarkdown_Import_constructor_1_
   fullName: (constructor)(atToken, importKeyword, path)
+- uid: grammarkdown!InvalidAssertion#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/invalidassertion.html#grammarkdown_InvalidAssertion_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!InvalidAssertion#children:member(1)
   name: children()
   href: api/grammarkdown/invalidassertion.html#grammarkdown_InvalidAssertion_children_member_1_
   fullName: children()
+- uid: grammarkdown!InvalidAssertion#edgeCount:member
+  name: edgeCount
+  href: api/grammarkdown/invalidassertion.html#grammarkdown_InvalidAssertion_edgeCount_member
+  fullName: edgeCount
+- uid: grammarkdown!InvalidAssertion#edgeName:member(1)
+  name: edgeName(offset)
+  href: api/grammarkdown/invalidassertion.html#grammarkdown_InvalidAssertion_edgeName_member_1_
+  fullName: edgeName(offset)
+- uid: grammarkdown!InvalidAssertion#edgeValue:member(1)
+  name: edgeValue(offset)
+  href: api/grammarkdown/invalidassertion.html#grammarkdown_InvalidAssertion_edgeValue_member_1_
+  fullName: edgeValue(offset)
 - uid: grammarkdown!InvalidAssertion#forEachChild:member(1)
   name: forEachChild(cbNode)
   href: api/grammarkdown/invalidassertion.html#grammarkdown_InvalidAssertion_forEachChild_member_1_
@@ -2001,6 +2245,10 @@ references:
   name: (constructor)(openBracketToken, closeBracketToken)
   href: api/grammarkdown/invalidassertion.html#grammarkdown_InvalidAssertion_constructor_1_
   fullName: (constructor)(openBracketToken, closeBracketToken)
+- uid: grammarkdown!InvalidSymbol#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/invalidsymbol.html#grammarkdown_InvalidSymbol_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!InvalidSymbol:class
   name: InvalidSymbol
   href: api/grammarkdown/invalidsymbol.html#grammarkdown_InvalidSymbol_class
@@ -2017,6 +2265,10 @@ references:
   name: isCommentTriviaKind(kind)
   href: api/grammarkdown.html#grammarkdown_isCommentTriviaKind_function_1_
   fullName: isCommentTriviaKind(kind)
+- uid: grammarkdown!isHtmlTagTriviaKind:function(1)
+  name: isHtmlTagTriviaKind(kind)
+  href: api/grammarkdown.html#grammarkdown_isHtmlTagTriviaKind_function_1_
+  fullName: isHtmlTagTriviaKind(kind)
 - uid: grammarkdown!isHtmlTriviaKind:function(1)
   name: isHtmlTriviaKind(kind)
   href: api/grammarkdown.html#grammarkdown_isHtmlTriviaKind_function_1_
@@ -2077,10 +2329,26 @@ references:
   name: KeywordKind
   href: api/grammarkdown.html#grammarkdown_KeywordKind_type
   fullName: KeywordKind
+- uid: grammarkdown!LexicalGoalAssertion#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/lexicalgoalassertion.html#grammarkdown_LexicalGoalAssertion_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!LexicalGoalAssertion#children:member(1)
   name: children()
   href: api/grammarkdown/lexicalgoalassertion.html#grammarkdown_LexicalGoalAssertion_children_member_1_
   fullName: children()
+- uid: grammarkdown!LexicalGoalAssertion#edgeCount:member
+  name: edgeCount
+  href: api/grammarkdown/lexicalgoalassertion.html#grammarkdown_LexicalGoalAssertion_edgeCount_member
+  fullName: edgeCount
+- uid: grammarkdown!LexicalGoalAssertion#edgeName:member(1)
+  name: edgeName(offset)
+  href: api/grammarkdown/lexicalgoalassertion.html#grammarkdown_LexicalGoalAssertion_edgeName_member_1_
+  fullName: edgeName(offset)
+- uid: grammarkdown!LexicalGoalAssertion#edgeValue:member(1)
+  name: edgeValue(offset)
+  href: api/grammarkdown/lexicalgoalassertion.html#grammarkdown_LexicalGoalAssertion_edgeValue_member_1_
+  fullName: edgeValue(offset)
 - uid: grammarkdown!LexicalGoalAssertion#forEachChild:member(1)
   name: forEachChild(cbNode)
   href: api/grammarkdown/lexicalgoalassertion.html#grammarkdown_LexicalGoalAssertion_forEachChild_member_1_
@@ -2125,10 +2393,26 @@ references:
   name: LexicalSymbolKind
   href: api/grammarkdown.html#grammarkdown_LexicalSymbolKind_type
   fullName: LexicalSymbolKind
+- uid: grammarkdown!Line#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/line.html#grammarkdown_Line_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!Line#children:member(1)
   name: children()
   href: api/grammarkdown/line.html#grammarkdown_Line_children_member_1_
   fullName: children()
+- uid: grammarkdown!Line#edgeCount:member
+  name: edgeCount
+  href: api/grammarkdown/line.html#grammarkdown_Line_edgeCount_member
+  fullName: edgeCount
+- uid: grammarkdown!Line#edgeName:member(1)
+  name: edgeName(offset)
+  href: api/grammarkdown/line.html#grammarkdown_Line_edgeName_member_1_
+  fullName: edgeName(offset)
+- uid: grammarkdown!Line#edgeValue:member(1)
+  name: edgeValue(offset)
+  href: api/grammarkdown/line.html#grammarkdown_Line_edgeValue_member_1_
+  fullName: edgeValue(offset)
 - uid: grammarkdown!Line#forEachChild:member(1)
   name: forEachChild(cbNode)
   href: api/grammarkdown/line.html#grammarkdown_Line_forEachChild_member_1_
@@ -2157,10 +2441,34 @@ references:
   name: (constructor)(atToken, lineKeyword, number, path)
   href: api/grammarkdown/line.html#grammarkdown_Line_constructor_1_
   fullName: (constructor)(atToken, lineKeyword, number, path)
+- uid: grammarkdown!LineInfo#line:member
+  name: line
+  href: api/grammarkdown/lineinfo.html#grammarkdown_LineInfo_line_member
+  fullName: line
+- uid: grammarkdown!LineInfo#range:member
+  name: range
+  href: api/grammarkdown/lineinfo.html#grammarkdown_LineInfo_range_member
+  fullName: range
+- uid: grammarkdown!LineInfo#rangeIncludingLineTerminator:member
+  name: rangeIncludingLineTerminator
+  href: api/grammarkdown/lineinfo.html#grammarkdown_LineInfo_rangeIncludingLineTerminator_member
+  fullName: rangeIncludingLineTerminator
+- uid: grammarkdown!LineInfo#text:member
+  name: text
+  href: api/grammarkdown/lineinfo.html#grammarkdown_LineInfo_text_member
+  fullName: text
+- uid: grammarkdown!LineInfo:interface
+  name: LineInfo
+  href: api/grammarkdown/lineinfo.html#grammarkdown_LineInfo_interface
+  fullName: LineInfo
 - uid: grammarkdown!LineMap#formatOffset:member(1)
   name: formatOffset(pos)
   href: api/grammarkdown/linemap.html#grammarkdown_LineMap_formatOffset_member_1_
   fullName: formatOffset(pos)
+- uid: grammarkdown!LineMap#getLine:member(1)
+  name: getLine(line)
+  href: api/grammarkdown/linemap.html#grammarkdown_LineMap_getLine_member_1_
+  fullName: getLine(line)
 - uid: grammarkdown!LineMap#lineCount:member
   name: lineCount
   href: api/grammarkdown/linemap.html#grammarkdown_LineMap_lineCount_member
@@ -2209,10 +2517,26 @@ references:
   name: LineOffsetMap
   href: api/grammarkdown/lineoffsetmap.html#grammarkdown_LineOffsetMap_class
   fullName: LineOffsetMap
+- uid: grammarkdown!LinkReference#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/linkreference.html#grammarkdown_LinkReference_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!LinkReference#children:member(1)
   name: children()
   href: api/grammarkdown/linkreference.html#grammarkdown_LinkReference_children_member_1_
   fullName: children()
+- uid: grammarkdown!LinkReference#edgeCount:member
+  name: edgeCount
+  href: api/grammarkdown/linkreference.html#grammarkdown_LinkReference_edgeCount_member
+  fullName: edgeCount
+- uid: grammarkdown!LinkReference#edgeName:member(1)
+  name: edgeName(_offset)
+  href: api/grammarkdown/linkreference.html#grammarkdown_LinkReference_edgeName_member_1_
+  fullName: edgeName(_offset)
+- uid: grammarkdown!LinkReference#edgeValue:member(1)
+  name: edgeValue(_offset)
+  href: api/grammarkdown/linkreference.html#grammarkdown_LinkReference_edgeValue_member_1_
+  fullName: edgeValue(_offset)
 - uid: grammarkdown!LinkReference#forEachChild:member(1)
   name: forEachChild(_cbNode)
   href: api/grammarkdown/linkreference.html#grammarkdown_LinkReference_forEachChild_member_1_
@@ -2229,10 +2553,26 @@ references:
   name: (constructor)(text)
   href: api/grammarkdown/linkreference.html#grammarkdown_LinkReference_constructor_1_
   fullName: (constructor)(text)
+- uid: grammarkdown!LookaheadAssertion#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/lookaheadassertion.html#grammarkdown_LookaheadAssertion_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!LookaheadAssertion#children:member(1)
   name: children()
   href: api/grammarkdown/lookaheadassertion.html#grammarkdown_LookaheadAssertion_children_member_1_
   fullName: children()
+- uid: grammarkdown!LookaheadAssertion#edgeCount:member
+  name: edgeCount
+  href: api/grammarkdown/lookaheadassertion.html#grammarkdown_LookaheadAssertion_edgeCount_member
+  fullName: edgeCount
+- uid: grammarkdown!LookaheadAssertion#edgeName:member(1)
+  name: edgeName(offset)
+  href: api/grammarkdown/lookaheadassertion.html#grammarkdown_LookaheadAssertion_edgeName_member_1_
+  fullName: edgeName(offset)
+- uid: grammarkdown!LookaheadAssertion#edgeValue:member(1)
+  name: edgeValue(offset)
+  href: api/grammarkdown/lookaheadassertion.html#grammarkdown_LookaheadAssertion_edgeValue_member_1_
+  fullName: edgeValue(offset)
 - uid: grammarkdown!LookaheadAssertion#forEachChild:member(1)
   name: forEachChild(cbNode)
   href: api/grammarkdown/lookaheadassertion.html#grammarkdown_LookaheadAssertion_forEachChild_member_1_
@@ -2333,6 +2673,10 @@ references:
   name: emitProduction(node)
   href: api/grammarkdown/markdownemitter.html#grammarkdown_MarkdownEmitter_emitProduction_member_1_
   fullName: emitProduction(node)
+- uid: grammarkdown!MarkdownEmitter#emitProse:member(1)
+  name: emitProse(node)
+  href: api/grammarkdown/markdownemitter.html#grammarkdown_MarkdownEmitter_emitProse_member_1_
+  fullName: emitProse(node)
 - uid: grammarkdown!MarkdownEmitter#emitProseAssertion:member(1)
   name: emitProseAssertion(node)
   href: api/grammarkdown/markdownemitter.html#grammarkdown_MarkdownEmitter_emitProseAssertion_member_1_
@@ -2425,10 +2769,30 @@ references:
   name: NewLineKind
   href: api/grammarkdown/newlinekind.html#grammarkdown_NewLineKind_enum
   fullName: NewLineKind
+- uid: grammarkdown!Node#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/node.html#grammarkdown_Node_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!Node#children:member(1)
   name: children()
   href: api/grammarkdown/node.html#grammarkdown_Node_children_member_1_
   fullName: children()
+- uid: grammarkdown!Node#detachedTrivia:member
+  name: detachedTrivia
+  href: api/grammarkdown/node.html#grammarkdown_Node_detachedTrivia_member
+  fullName: detachedTrivia
+- uid: grammarkdown!Node#edgeCount:member
+  name: edgeCount
+  href: api/grammarkdown/node.html#grammarkdown_Node_edgeCount_member
+  fullName: edgeCount
+- uid: grammarkdown!Node#edgeName:member(1)
+  name: edgeName(offset)
+  href: api/grammarkdown/node.html#grammarkdown_Node_edgeName_member_1_
+  fullName: edgeName(offset)
+- uid: grammarkdown!Node#edgeValue:member(1)
+  name: edgeValue(offset)
+  href: api/grammarkdown/node.html#grammarkdown_Node_edgeValue_member_1_
+  fullName: edgeValue(offset)
 - uid: grammarkdown!Node#end:member
   name: end
   href: api/grammarkdown/node.html#grammarkdown_Node_end_member
@@ -2438,9 +2802,9 @@ references:
   href: api/grammarkdown/node.html#grammarkdown_Node_firstChild_member
   fullName: firstChild
 - uid: grammarkdown!Node#forEachChild:member(1)
-  name: forEachChild(_cbNode)
+  name: forEachChild(cbNode)
   href: api/grammarkdown/node.html#grammarkdown_Node_forEachChild_member_1_
-  fullName: forEachChild(_cbNode)
+  fullName: forEachChild(cbNode)
 - uid: grammarkdown!Node#getEnd:member(1)
   name: getEnd()
   href: api/grammarkdown/node.html#grammarkdown_Node_getEnd_member_1_
@@ -2481,6 +2845,10 @@ references:
   name: leadingHtmlTrivia
   href: api/grammarkdown/node.html#grammarkdown_Node_leadingHtmlTrivia_member
   fullName: leadingHtmlTrivia
+- uid: grammarkdown!Node#leadingTrivia:member
+  name: leadingTrivia
+  href: api/grammarkdown/node.html#grammarkdown_Node_leadingTrivia_member
+  fullName: leadingTrivia
 - uid: grammarkdown!Node#pos:member
   name: pos
   href: api/grammarkdown/node.html#grammarkdown_Node_pos_member
@@ -2489,6 +2857,10 @@ references:
   name: trailingHtmlTrivia
   href: api/grammarkdown/node.html#grammarkdown_Node_trailingHtmlTrivia_member
   fullName: trailingHtmlTrivia
+- uid: grammarkdown!Node#trailingTrivia:member
+  name: trailingTrivia
+  href: api/grammarkdown/node.html#grammarkdown_Node_trailingTrivia_member
+  fullName: trailingTrivia
 - uid: grammarkdown!Node:class
   name: Node
   href: api/grammarkdown/node.html#grammarkdown_Node_class
@@ -3093,6 +3465,10 @@ references:
   name: NodeVisitor
   href: api/grammarkdown/nodevisitor.html#grammarkdown_NodeVisitor_class
   fullName: NodeVisitor
+- uid: grammarkdown!Nonterminal#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/nonterminal.html#grammarkdown_Nonterminal_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!Nonterminal#argumentList:member
   name: argumentList
   href: api/grammarkdown/nonterminal.html#grammarkdown_Nonterminal_argumentList_member
@@ -3101,6 +3477,18 @@ references:
   name: children()
   href: api/grammarkdown/nonterminal.html#grammarkdown_Nonterminal_children_member_1_
   fullName: children()
+- uid: grammarkdown!Nonterminal#edgeCount:member
+  name: edgeCount
+  href: api/grammarkdown/nonterminal.html#grammarkdown_Nonterminal_edgeCount_member
+  fullName: edgeCount
+- uid: grammarkdown!Nonterminal#edgeName:member(1)
+  name: edgeName(offset)
+  href: api/grammarkdown/nonterminal.html#grammarkdown_Nonterminal_edgeName_member_1_
+  fullName: edgeName(offset)
+- uid: grammarkdown!Nonterminal#edgeValue:member(1)
+  name: edgeValue(offset)
+  href: api/grammarkdown/nonterminal.html#grammarkdown_Nonterminal_edgeValue_member_1_
+  fullName: edgeValue(offset)
 - uid: grammarkdown!Nonterminal#firstChild:member
   name: firstChild
   href: api/grammarkdown/nonterminal.html#grammarkdown_Nonterminal_firstChild_member
@@ -3129,10 +3517,26 @@ references:
   name: (constructor)(name, argumentList, questionToken)
   href: api/grammarkdown/nonterminal.html#grammarkdown_Nonterminal_constructor_1_
   fullName: (constructor)(name, argumentList, questionToken)
+- uid: grammarkdown!NoSymbolHereAssertion#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/nosymbolhereassertion.html#grammarkdown_NoSymbolHereAssertion_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!NoSymbolHereAssertion#children:member(1)
   name: children()
   href: api/grammarkdown/nosymbolhereassertion.html#grammarkdown_NoSymbolHereAssertion_children_member_1_
   fullName: children()
+- uid: grammarkdown!NoSymbolHereAssertion#edgeCount:member
+  name: edgeCount
+  href: api/grammarkdown/nosymbolhereassertion.html#grammarkdown_NoSymbolHereAssertion_edgeCount_member
+  fullName: edgeCount
+- uid: grammarkdown!NoSymbolHereAssertion#edgeName:member(1)
+  name: edgeName(offset)
+  href: api/grammarkdown/nosymbolhereassertion.html#grammarkdown_NoSymbolHereAssertion_edgeName_member_1_
+  fullName: edgeName(offset)
+- uid: grammarkdown!NoSymbolHereAssertion#edgeValue:member(1)
+  name: edgeValue(offset)
+  href: api/grammarkdown/nosymbolhereassertion.html#grammarkdown_NoSymbolHereAssertion_edgeValue_member_1_
+  fullName: edgeValue(offset)
 - uid: grammarkdown!NoSymbolHereAssertion#forEachChild:member(1)
   name: forEachChild(cbNode)
   href: api/grammarkdown/nosymbolhereassertion.html#grammarkdown_NoSymbolHereAssertion_forEachChild_member_1_
@@ -3193,6 +3597,10 @@ references:
   name: NullDiagnosticMessages
   href: api/grammarkdown/nulldiagnosticmessages.html#grammarkdown_NullDiagnosticMessages_class
   fullName: NullDiagnosticMessages
+- uid: grammarkdown!NumberLiteral#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/numberliteral.html#grammarkdown_NumberLiteral_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!NumberLiteral#text:member
   name: text
   href: api/grammarkdown/numberliteral.html#grammarkdown_NumberLiteral_text_member
@@ -3205,10 +3613,26 @@ references:
   name: (constructor)(text)
   href: api/grammarkdown/numberliteral.html#grammarkdown_NumberLiteral_constructor_1_
   fullName: (constructor)(text)
+- uid: grammarkdown!OneOfList#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/oneoflist.html#grammarkdown_OneOfList_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!OneOfList#children:member(1)
   name: children()
   href: api/grammarkdown/oneoflist.html#grammarkdown_OneOfList_children_member_1_
   fullName: children()
+- uid: grammarkdown!OneOfList#edgeCount:member
+  name: edgeCount
+  href: api/grammarkdown/oneoflist.html#grammarkdown_OneOfList_edgeCount_member
+  fullName: edgeCount
+- uid: grammarkdown!OneOfList#edgeName:member(1)
+  name: edgeName(offset)
+  href: api/grammarkdown/oneoflist.html#grammarkdown_OneOfList_edgeName_member_1_
+  fullName: edgeName(offset)
+- uid: grammarkdown!OneOfList#edgeValue:member(1)
+  name: edgeValue(offset)
+  href: api/grammarkdown/oneoflist.html#grammarkdown_OneOfList_edgeValue_member_1_
+  fullName: edgeValue(offset)
 - uid: grammarkdown!OneOfList#firstChild:member
   name: firstChild
   href: api/grammarkdown/oneoflist.html#grammarkdown_OneOfList_firstChild_member
@@ -3249,10 +3673,26 @@ references:
   name: (constructor)(oneKeyword, ofKeyword, indented, terminals)
   href: api/grammarkdown/oneoflist.html#grammarkdown_OneOfList_constructor_1_
   fullName: (constructor)(oneKeyword, ofKeyword, indented, terminals)
+- uid: grammarkdown!OneOfSymbol#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/oneofsymbol.html#grammarkdown_OneOfSymbol_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!OneOfSymbol#children:member(1)
   name: children()
   href: api/grammarkdown/oneofsymbol.html#grammarkdown_OneOfSymbol_children_member_1_
   fullName: children()
+- uid: grammarkdown!OneOfSymbol#edgeCount:member
+  name: edgeCount
+  href: api/grammarkdown/oneofsymbol.html#grammarkdown_OneOfSymbol_edgeCount_member
+  fullName: edgeCount
+- uid: grammarkdown!OneOfSymbol#edgeName:member(1)
+  name: edgeName(offset)
+  href: api/grammarkdown/oneofsymbol.html#grammarkdown_OneOfSymbol_edgeName_member_1_
+  fullName: edgeName(offset)
+- uid: grammarkdown!OneOfSymbol#edgeValue:member(1)
+  name: edgeValue(offset)
+  href: api/grammarkdown/oneofsymbol.html#grammarkdown_OneOfSymbol_edgeValue_member_1_
+  fullName: edgeValue(offset)
 - uid: grammarkdown!OneOfSymbol#firstChild:member
   name: firstChild
   href: api/grammarkdown/oneofsymbol.html#grammarkdown_OneOfSymbol_firstChild_member
@@ -3309,10 +3749,26 @@ references:
   name: OptionalSymbolKind
   href: api/grammarkdown.html#grammarkdown_OptionalSymbolKind_type
   fullName: OptionalSymbolKind
+- uid: grammarkdown!Parameter#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/parameter.html#grammarkdown_Parameter_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!Parameter#children:member(1)
   name: children()
   href: api/grammarkdown/parameter.html#grammarkdown_Parameter_children_member_1_
   fullName: children()
+- uid: grammarkdown!Parameter#edgeCount:member
+  name: edgeCount
+  href: api/grammarkdown/parameter.html#grammarkdown_Parameter_edgeCount_member
+  fullName: edgeCount
+- uid: grammarkdown!Parameter#edgeName:member(1)
+  name: edgeName(offset)
+  href: api/grammarkdown/parameter.html#grammarkdown_Parameter_edgeName_member_1_
+  fullName: edgeName(offset)
+- uid: grammarkdown!Parameter#edgeValue:member(1)
+  name: edgeValue(offset)
+  href: api/grammarkdown/parameter.html#grammarkdown_Parameter_edgeValue_member_1_
+  fullName: edgeValue(offset)
 - uid: grammarkdown!Parameter#firstChild:member
   name: firstChild
   href: api/grammarkdown/parameter.html#grammarkdown_Parameter_firstChild_member
@@ -3341,6 +3797,10 @@ references:
   name: (constructor)(name)
   href: api/grammarkdown/parameter.html#grammarkdown_Parameter_constructor_1_
   fullName: (constructor)(name)
+- uid: grammarkdown!ParameterList#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/parameterlist.html#grammarkdown_ParameterList_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!ParameterList#children:member(1)
   name: children()
   href: api/grammarkdown/parameterlist.html#grammarkdown_ParameterList_children_member_1_
@@ -3349,6 +3809,18 @@ references:
   name: closeBracketToken
   href: api/grammarkdown/parameterlist.html#grammarkdown_ParameterList_closeBracketToken_member
   fullName: closeBracketToken
+- uid: grammarkdown!ParameterList#edgeCount:member
+  name: edgeCount
+  href: api/grammarkdown/parameterlist.html#grammarkdown_ParameterList_edgeCount_member
+  fullName: edgeCount
+- uid: grammarkdown!ParameterList#edgeName:member(1)
+  name: edgeName(offset)
+  href: api/grammarkdown/parameterlist.html#grammarkdown_ParameterList_edgeName_member_1_
+  fullName: edgeName(offset)
+- uid: grammarkdown!ParameterList#edgeValue:member(1)
+  name: edgeValue(offset)
+  href: api/grammarkdown/parameterlist.html#grammarkdown_ParameterList_edgeValue_member_1_
+  fullName: edgeValue(offset)
 - uid: grammarkdown!ParameterList#elements:member
   name: elements
   href: api/grammarkdown/parameterlist.html#grammarkdown_ParameterList_elements_member
@@ -3393,10 +3865,26 @@ references:
   name: Parser
   href: api/grammarkdown/parser.html#grammarkdown_Parser_class
   fullName: Parser
+- uid: grammarkdown!PlaceholderSymbol#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/placeholdersymbol.html#grammarkdown_PlaceholderSymbol_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!PlaceholderSymbol#children:member(1)
   name: children()
   href: api/grammarkdown/placeholdersymbol.html#grammarkdown_PlaceholderSymbol_children_member_1_
   fullName: children()
+- uid: grammarkdown!PlaceholderSymbol#edgeCount:member
+  name: edgeCount
+  href: api/grammarkdown/placeholdersymbol.html#grammarkdown_PlaceholderSymbol_edgeCount_member
+  fullName: edgeCount
+- uid: grammarkdown!PlaceholderSymbol#edgeName:member(1)
+  name: edgeName(offset)
+  href: api/grammarkdown/placeholdersymbol.html#grammarkdown_PlaceholderSymbol_edgeName_member_1_
+  fullName: edgeName(offset)
+- uid: grammarkdown!PlaceholderSymbol#edgeValue:member(1)
+  name: edgeValue(offset)
+  href: api/grammarkdown/placeholdersymbol.html#grammarkdown_PlaceholderSymbol_edgeValue_member_1_
+  fullName: edgeValue(offset)
 - uid: grammarkdown!PlaceholderSymbol#firstChild:member
   name: firstChild
   href: api/grammarkdown/placeholdersymbol.html#grammarkdown_PlaceholderSymbol_firstChild_member
@@ -3465,6 +3953,10 @@ references:
   name: PrimarySymbolKind
   href: api/grammarkdown.html#grammarkdown_PrimarySymbolKind_type
   fullName: PrimarySymbolKind
+- uid: grammarkdown!Production#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/production.html#grammarkdown_Production_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!Production#body:member
   name: body
   href: api/grammarkdown/production.html#grammarkdown_Production_body_member
@@ -3477,6 +3969,18 @@ references:
   name: colonToken
   href: api/grammarkdown/production.html#grammarkdown_Production_colonToken_member
   fullName: colonToken
+- uid: grammarkdown!Production#edgeCount:member
+  name: edgeCount
+  href: api/grammarkdown/production.html#grammarkdown_Production_edgeCount_member
+  fullName: edgeCount
+- uid: grammarkdown!Production#edgeName:member(1)
+  name: edgeName(offset)
+  href: api/grammarkdown/production.html#grammarkdown_Production_edgeName_member_1_
+  fullName: edgeName(offset)
+- uid: grammarkdown!Production#edgeValue:member(1)
+  name: edgeValue(offset)
+  href: api/grammarkdown/production.html#grammarkdown_Production_edgeValue_member_1_
+  fullName: edgeValue(offset)
 - uid: grammarkdown!Production#firstChild:member
   name: firstChild
   href: api/grammarkdown/production.html#grammarkdown_Production_firstChild_member
@@ -3525,10 +4029,26 @@ references:
   name: ProductionSeperatorKind
   href: api/grammarkdown.html#grammarkdown_ProductionSeperatorKind_type
   fullName: ProductionSeperatorKind
+- uid: grammarkdown!Prose#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/prose.html#grammarkdown_Prose_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!Prose#children:member(1)
   name: children()
   href: api/grammarkdown/prose.html#grammarkdown_Prose_children_member_1_
   fullName: children()
+- uid: grammarkdown!Prose#edgeCount:member
+  name: edgeCount
+  href: api/grammarkdown/prose.html#grammarkdown_Prose_edgeCount_member
+  fullName: edgeCount
+- uid: grammarkdown!Prose#edgeName:member(1)
+  name: edgeName(offset)
+  href: api/grammarkdown/prose.html#grammarkdown_Prose_edgeName_member_1_
+  fullName: edgeName(offset)
+- uid: grammarkdown!Prose#edgeValue:member(1)
+  name: edgeValue(offset)
+  href: api/grammarkdown/prose.html#grammarkdown_Prose_edgeValue_member_1_
+  fullName: edgeValue(offset)
 - uid: grammarkdown!Prose#firstChild:member
   name: firstChild
   href: api/grammarkdown/prose.html#grammarkdown_Prose_firstChild_member
@@ -3561,10 +4081,26 @@ references:
   name: (constructor)(greaterThanToken, fragments)
   href: api/grammarkdown/prose.html#grammarkdown_Prose_constructor_1_
   fullName: (constructor)(greaterThanToken, fragments)
+- uid: grammarkdown!ProseAssertion#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/proseassertion.html#grammarkdown_ProseAssertion_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!ProseAssertion#children:member(1)
   name: children()
   href: api/grammarkdown/proseassertion.html#grammarkdown_ProseAssertion_children_member_1_
   fullName: children()
+- uid: grammarkdown!ProseAssertion#edgeCount:member
+  name: edgeCount
+  href: api/grammarkdown/proseassertion.html#grammarkdown_ProseAssertion_edgeCount_member
+  fullName: edgeCount
+- uid: grammarkdown!ProseAssertion#edgeName:member(1)
+  name: edgeName(offset)
+  href: api/grammarkdown/proseassertion.html#grammarkdown_ProseAssertion_edgeName_member_1_
+  fullName: edgeName(offset)
+- uid: grammarkdown!ProseAssertion#edgeValue:member(1)
+  name: edgeValue(offset)
+  href: api/grammarkdown/proseassertion.html#grammarkdown_ProseAssertion_edgeValue_member_1_
+  fullName: edgeValue(offset)
 - uid: grammarkdown!ProseAssertion#forEachChild:member(1)
   name: forEachChild(cbNode)
   href: api/grammarkdown/proseassertion.html#grammarkdown_ProseAssertion_forEachChild_member_1_
@@ -3597,6 +4133,22 @@ references:
   name: ProseFragmentKind
   href: api/grammarkdown.html#grammarkdown_ProseFragmentKind_type
   fullName: ProseFragmentKind
+- uid: grammarkdown!ProseFragmentLiteral#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/prosefragmentliteral.html#grammarkdown_ProseFragmentLiteral_accept_member_1_
+  fullName: accept(visitor)
+- uid: grammarkdown!ProseFragmentLiteral#edgeCount:member
+  name: edgeCount
+  href: api/grammarkdown/prosefragmentliteral.html#grammarkdown_ProseFragmentLiteral_edgeCount_member
+  fullName: edgeCount
+- uid: grammarkdown!ProseFragmentLiteral#edgeName:member(1)
+  name: edgeName(_offset)
+  href: api/grammarkdown/prosefragmentliteral.html#grammarkdown_ProseFragmentLiteral_edgeName_member_1_
+  fullName: edgeName(_offset)
+- uid: grammarkdown!ProseFragmentLiteral#edgeValue:member(1)
+  name: edgeValue(_offset)
+  href: api/grammarkdown/prosefragmentliteral.html#grammarkdown_ProseFragmentLiteral_edgeValue_member_1_
+  fullName: edgeValue(_offset)
 - uid: grammarkdown!ProseFragmentLiteral#text:member
   name: text
   href: api/grammarkdown/prosefragmentliteral.html#grammarkdown_ProseFragmentLiteral_text_member
@@ -3765,6 +4317,10 @@ references:
   name: (constructor)(bindings, lineOffsetMap)
   href: api/grammarkdown/resolver.html#grammarkdown_Resolver_constructor_1_
   fullName: (constructor)(bindings, lineOffsetMap)
+- uid: grammarkdown!RightHandSide#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/righthandside.html#grammarkdown_RightHandSide_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!RightHandSide#children:member(1)
   name: children()
   href: api/grammarkdown/righthandside.html#grammarkdown_RightHandSide_children_member_1_
@@ -3773,6 +4329,18 @@ references:
   name: constraints
   href: api/grammarkdown/righthandside.html#grammarkdown_RightHandSide_constraints_member
   fullName: constraints
+- uid: grammarkdown!RightHandSide#edgeCount:member
+  name: edgeCount
+  href: api/grammarkdown/righthandside.html#grammarkdown_RightHandSide_edgeCount_member
+  fullName: edgeCount
+- uid: grammarkdown!RightHandSide#edgeName:member(1)
+  name: edgeName(offset)
+  href: api/grammarkdown/righthandside.html#grammarkdown_RightHandSide_edgeName_member_1_
+  fullName: edgeName(offset)
+- uid: grammarkdown!RightHandSide#edgeValue:member(1)
+  name: edgeValue(offset)
+  href: api/grammarkdown/righthandside.html#grammarkdown_RightHandSide_edgeValue_member_1_
+  fullName: edgeValue(offset)
 - uid: grammarkdown!RightHandSide#firstChild:member
   name: firstChild
   href: api/grammarkdown/righthandside.html#grammarkdown_RightHandSide_firstChild_member
@@ -3805,10 +4373,26 @@ references:
   name: (constructor)(constraints, head, reference)
   href: api/grammarkdown/righthandside.html#grammarkdown_RightHandSide_constructor_1_
   fullName: (constructor)(constraints, head, reference)
+- uid: grammarkdown!RightHandSideList#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/righthandsidelist.html#grammarkdown_RightHandSideList_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!RightHandSideList#children:member(1)
   name: children()
   href: api/grammarkdown/righthandsidelist.html#grammarkdown_RightHandSideList_children_member_1_
   fullName: children()
+- uid: grammarkdown!RightHandSideList#edgeCount:member
+  name: edgeCount
+  href: api/grammarkdown/righthandsidelist.html#grammarkdown_RightHandSideList_edgeCount_member
+  fullName: edgeCount
+- uid: grammarkdown!RightHandSideList#edgeName:member(1)
+  name: edgeName(offset)
+  href: api/grammarkdown/righthandsidelist.html#grammarkdown_RightHandSideList_edgeName_member_1_
+  fullName: edgeName(offset)
+- uid: grammarkdown!RightHandSideList#edgeValue:member(1)
+  name: edgeValue(offset)
+  href: api/grammarkdown/righthandsidelist.html#grammarkdown_RightHandSideList_edgeValue_member_1_
+  fullName: edgeValue(offset)
 - uid: grammarkdown!RightHandSideList#elements:member
   name: elements
   href: api/grammarkdown/righthandsidelist.html#grammarkdown_RightHandSideList_elements_member
@@ -3885,6 +4469,10 @@ references:
   name: getTokenValue()
   href: api/grammarkdown/scanner.html#grammarkdown_Scanner_getTokenValue_member_1_
   fullName: getTokenValue()
+- uid: grammarkdown!Scanner#getTrivia:member(1)
+  name: getTrivia()
+  href: api/grammarkdown/scanner.html#grammarkdown_Scanner_getTrivia_member_1_
+  fullName: getTrivia()
 - uid: grammarkdown!Scanner#hasPrecedingBlankLine:member(1)
   name: hasPrecedingBlankLine()
   href: api/grammarkdown/scanner.html#grammarkdown_Scanner_hasPrecedingBlankLine_member_1_
@@ -3965,10 +4553,26 @@ references:
   name: SourceElementKind
   href: api/grammarkdown.html#grammarkdown_SourceElementKind_type
   fullName: SourceElementKind
+- uid: grammarkdown!SourceFile#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/sourcefile.html#grammarkdown_SourceFile_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!SourceFile#children:member(1)
   name: children()
   href: api/grammarkdown/sourcefile.html#grammarkdown_SourceFile_children_member_1_
   fullName: children()
+- uid: grammarkdown!SourceFile#edgeCount:member
+  name: edgeCount
+  href: api/grammarkdown/sourcefile.html#grammarkdown_SourceFile_edgeCount_member
+  fullName: edgeCount
+- uid: grammarkdown!SourceFile#edgeName:member(1)
+  name: edgeName(offset)
+  href: api/grammarkdown/sourcefile.html#grammarkdown_SourceFile_edgeName_member_1_
+  fullName: edgeName(offset)
+- uid: grammarkdown!SourceFile#edgeValue:member(1)
+  name: edgeValue(offset)
+  href: api/grammarkdown/sourcefile.html#grammarkdown_SourceFile_edgeValue_member_1_
+  fullName: edgeValue(offset)
 - uid: grammarkdown!SourceFile#elements:member
   name: elements
   href: api/grammarkdown/sourcefile.html#grammarkdown_SourceFile_elements_member
@@ -4029,6 +4633,10 @@ references:
   name: (constructor)(file, content, hostFallback)
   href: api/grammarkdown/stringasynchost.html#grammarkdown_StringAsyncHost_constructor_1_
   fullName: (constructor)(file, content, hostFallback)
+- uid: grammarkdown!StringLiteral#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/stringliteral.html#grammarkdown_StringLiteral_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!StringLiteral#text:member
   name: text
   href: api/grammarkdown/stringliteral.html#grammarkdown_StringLiteral_text_member
@@ -4045,6 +4653,14 @@ references:
   name: stringToToken(text)
   href: api/grammarkdown.html#grammarkdown_stringToToken_function_1_
   fullName: stringToToken(text)
+- uid: grammarkdown!StringWriter#character:member
+  name: character
+  href: api/grammarkdown/stringwriter.html#grammarkdown_StringWriter_character_member
+  fullName: character
+- uid: grammarkdown!StringWriter#clone:member(1)
+  name: clone()
+  href: api/grammarkdown/stringwriter.html#grammarkdown_StringWriter_clone_member_1_
+  fullName: clone()
 - uid: grammarkdown!StringWriter#commitLine:member(1)
   name: commitLine()
   href: api/grammarkdown/stringwriter.html#grammarkdown_StringWriter_commitLine_member_1_
@@ -4057,6 +4673,10 @@ references:
   name: indent()
   href: api/grammarkdown/stringwriter.html#grammarkdown_StringWriter_indent_member_1_
   fullName: indent()
+- uid: grammarkdown!StringWriter#line:member
+  name: line
+  href: api/grammarkdown/stringwriter.html#grammarkdown_StringWriter_line_member
+  fullName: line
 - uid: grammarkdown!StringWriter#size:member
   name: size
   href: api/grammarkdown/stringwriter.html#grammarkdown_StringWriter_size_member
@@ -4125,6 +4745,10 @@ references:
   name: SymbolKind
   href: api/grammarkdown/symbolkind.html#grammarkdown_SymbolKind_enum
   fullName: SymbolKind
+- uid: grammarkdown!SymbolSet#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/symbolset.html#grammarkdown_SymbolSet_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!SymbolSet#children:member(1)
   name: children()
   href: api/grammarkdown/symbolset.html#grammarkdown_SymbolSet_children_member_1_
@@ -4133,6 +4757,18 @@ references:
   name: closeBraceToken
   href: api/grammarkdown/symbolset.html#grammarkdown_SymbolSet_closeBraceToken_member
   fullName: closeBraceToken
+- uid: grammarkdown!SymbolSet#edgeCount:member
+  name: edgeCount
+  href: api/grammarkdown/symbolset.html#grammarkdown_SymbolSet_edgeCount_member
+  fullName: edgeCount
+- uid: grammarkdown!SymbolSet#edgeName:member(1)
+  name: edgeName(offset)
+  href: api/grammarkdown/symbolset.html#grammarkdown_SymbolSet_edgeName_member_1_
+  fullName: edgeName(offset)
+- uid: grammarkdown!SymbolSet#edgeValue:member(1)
+  name: edgeValue(offset)
+  href: api/grammarkdown/symbolset.html#grammarkdown_SymbolSet_edgeValue_member_1_
+  fullName: edgeValue(offset)
 - uid: grammarkdown!SymbolSet#elements:member
   name: elements
   href: api/grammarkdown/symbolset.html#grammarkdown_SymbolSet_elements_member
@@ -4165,10 +4801,26 @@ references:
   name: (constructor)(openBraceToken, elements, closeBraceToken)
   href: api/grammarkdown/symbolset.html#grammarkdown_SymbolSet_constructor_1_
   fullName: (constructor)(openBraceToken, elements, closeBraceToken)
+- uid: grammarkdown!SymbolSpan#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/symbolspan.html#grammarkdown_SymbolSpan_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!SymbolSpan#children:member(1)
   name: children()
   href: api/grammarkdown/symbolspan.html#grammarkdown_SymbolSpan_children_member_1_
   fullName: children()
+- uid: grammarkdown!SymbolSpan#edgeCount:member
+  name: edgeCount
+  href: api/grammarkdown/symbolspan.html#grammarkdown_SymbolSpan_edgeCount_member
+  fullName: edgeCount
+- uid: grammarkdown!SymbolSpan#edgeName:member(1)
+  name: edgeName(offset)
+  href: api/grammarkdown/symbolspan.html#grammarkdown_SymbolSpan_edgeName_member_1_
+  fullName: edgeName(offset)
+- uid: grammarkdown!SymbolSpan#edgeValue:member(1)
+  name: edgeValue(offset)
+  href: api/grammarkdown/symbolspan.html#grammarkdown_SymbolSpan_edgeValue_member_1_
+  fullName: edgeValue(offset)
 - uid: grammarkdown!SymbolSpan#firstChild:member
   name: firstChild
   href: api/grammarkdown/symbolspan.html#grammarkdown_SymbolSpan_firstChild_member
@@ -4321,6 +4973,10 @@ references:
   name: FirstErrorNode
   href: api/grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_FirstErrorNode_member
   fullName: FirstErrorNode
+- uid: grammarkdown!SyntaxKind.FirstHtmlTagTrivia:member
+  name: FirstHtmlTagTrivia
+  href: api/grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_FirstHtmlTagTrivia_member
+  fullName: FirstHtmlTagTrivia
 - uid: grammarkdown!SyntaxKind.FirstHtmlTrivia:member
   name: FirstHtmlTrivia
   href: api/grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_FirstHtmlTrivia_member
@@ -4369,6 +5025,10 @@ references:
   name: HtmlCloseTagTrivia
   href: api/grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_HtmlCloseTagTrivia_member
   fullName: HtmlCloseTagTrivia
+- uid: grammarkdown!SyntaxKind.HtmlCommentTrivia:member
+  name: HtmlCommentTrivia
+  href: api/grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_HtmlCommentTrivia_member
+  fullName: HtmlCommentTrivia
 - uid: grammarkdown!SyntaxKind.HtmlOpenTagTrivia:member
   name: HtmlOpenTagTrivia
   href: api/grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_HtmlOpenTagTrivia_member
@@ -4401,6 +5061,10 @@ references:
   name: LastErrorNode
   href: api/grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_LastErrorNode_member
   fullName: LastErrorNode
+- uid: grammarkdown!SyntaxKind.LastHtmlTagTrivia:member
+  name: LastHtmlTagTrivia
+  href: api/grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_LastHtmlTagTrivia_member
+  fullName: LastHtmlTagTrivia
 - uid: grammarkdown!SyntaxKind.LastHtmlTrivia:member
   name: LastHtmlTrivia
   href: api/grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_LastHtmlTrivia_member
@@ -4649,10 +5313,26 @@ references:
   name: SyntaxKind
   href: api/grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_enum
   fullName: SyntaxKind
+- uid: grammarkdown!Terminal#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/terminal.html#grammarkdown_Terminal_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!Terminal#children:member(1)
   name: children()
   href: api/grammarkdown/terminal.html#grammarkdown_Terminal_children_member_1_
   fullName: children()
+- uid: grammarkdown!Terminal#edgeCount:member
+  name: edgeCount
+  href: api/grammarkdown/terminal.html#grammarkdown_Terminal_edgeCount_member
+  fullName: edgeCount
+- uid: grammarkdown!Terminal#edgeName:member(1)
+  name: edgeName(offset)
+  href: api/grammarkdown/terminal.html#grammarkdown_Terminal_edgeName_member_1_
+  fullName: edgeName(offset)
+- uid: grammarkdown!Terminal#edgeValue:member(1)
+  name: edgeValue(offset)
+  href: api/grammarkdown/terminal.html#grammarkdown_Terminal_edgeValue_member_1_
+  fullName: edgeValue(offset)
 - uid: grammarkdown!Terminal#firstChild:member
   name: firstChild
   href: api/grammarkdown/terminal.html#grammarkdown_Terminal_firstChild_member
@@ -4681,6 +5361,10 @@ references:
   name: (constructor)(literal, questionToken)
   href: api/grammarkdown/terminal.html#grammarkdown_Terminal_constructor_1_
   fullName: (constructor)(literal, questionToken)
+- uid: grammarkdown!TerminalLiteral#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/terminalliteral.html#grammarkdown_TerminalLiteral_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!TerminalLiteral#text:member
   name: text
   href: api/grammarkdown/terminalliteral.html#grammarkdown_TerminalLiteral_text_member
@@ -4753,6 +5437,10 @@ references:
   name: TextRange
   href: api/grammarkdown/textrange.html#grammarkdown_TextRange_interface
   fullName: TextRange
+- uid: grammarkdown!Token#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/token.html#grammarkdown_Token_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!Token:class
   name: Token
   href: api/grammarkdown/token.html#grammarkdown_Token_class
@@ -4769,6 +5457,30 @@ references:
   name: Trivia
   href: api/grammarkdown.html#grammarkdown_Trivia_type
   fullName: Trivia
+- uid: grammarkdown!TriviaBase#hasFollowingBlankLine:member
+  name: hasFollowingBlankLine
+  href: api/grammarkdown/triviabase.html#grammarkdown_TriviaBase_hasFollowingBlankLine_member
+  fullName: hasFollowingBlankLine
+- uid: grammarkdown!TriviaBase#hasFollowingLineTerminator:member
+  name: hasFollowingLineTerminator
+  href: api/grammarkdown/triviabase.html#grammarkdown_TriviaBase_hasFollowingLineTerminator_member
+  fullName: hasFollowingLineTerminator
+- uid: grammarkdown!TriviaBase#hasFollowingWhiteSpace:member
+  name: hasFollowingWhiteSpace
+  href: api/grammarkdown/triviabase.html#grammarkdown_TriviaBase_hasFollowingWhiteSpace_member
+  fullName: hasFollowingWhiteSpace
+- uid: grammarkdown!TriviaBase#hasPrecedingBlankLine:member
+  name: hasPrecedingBlankLine
+  href: api/grammarkdown/triviabase.html#grammarkdown_TriviaBase_hasPrecedingBlankLine_member
+  fullName: hasPrecedingBlankLine
+- uid: grammarkdown!TriviaBase#hasPrecedingLineTerminator:member
+  name: hasPrecedingLineTerminator
+  href: api/grammarkdown/triviabase.html#grammarkdown_TriviaBase_hasPrecedingLineTerminator_member
+  fullName: hasPrecedingLineTerminator
+- uid: grammarkdown!TriviaBase#hasPrecedingWhiteSpace:member
+  name: hasPrecedingWhiteSpace
+  href: api/grammarkdown/triviabase.html#grammarkdown_TriviaBase_hasPrecedingWhiteSpace_member
+  fullName: hasPrecedingWhiteSpace
 - uid: grammarkdown!TriviaBase:class
   name: TriviaBase
   href: api/grammarkdown/triviabase.html#grammarkdown_TriviaBase_class
@@ -4777,6 +5489,10 @@ references:
   name: TriviaKind
   href: api/grammarkdown.html#grammarkdown_TriviaKind_type
   fullName: TriviaKind
+- uid: grammarkdown!UnicodeCharacterLiteral#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/unicodecharacterliteral.html#grammarkdown_UnicodeCharacterLiteral_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!UnicodeCharacterLiteral#text:member
   name: text
   href: api/grammarkdown/unicodecharacterliteral.html#grammarkdown_UnicodeCharacterLiteral_text_member
@@ -4789,10 +5505,26 @@ references:
   name: (constructor)(text)
   href: api/grammarkdown/unicodecharacterliteral.html#grammarkdown_UnicodeCharacterLiteral_constructor_1_
   fullName: (constructor)(text)
+- uid: grammarkdown!UnicodeCharacterRange#accept:member(1)
+  name: accept(visitor)
+  href: api/grammarkdown/unicodecharacterrange.html#grammarkdown_UnicodeCharacterRange_accept_member_1_
+  fullName: accept(visitor)
 - uid: grammarkdown!UnicodeCharacterRange#children:member(1)
   name: children()
   href: api/grammarkdown/unicodecharacterrange.html#grammarkdown_UnicodeCharacterRange_children_member_1_
   fullName: children()
+- uid: grammarkdown!UnicodeCharacterRange#edgeCount:member
+  name: edgeCount
+  href: api/grammarkdown/unicodecharacterrange.html#grammarkdown_UnicodeCharacterRange_edgeCount_member
+  fullName: edgeCount
+- uid: grammarkdown!UnicodeCharacterRange#edgeName:member(1)
+  name: edgeName(offset)
+  href: api/grammarkdown/unicodecharacterrange.html#grammarkdown_UnicodeCharacterRange_edgeName_member_1_
+  fullName: edgeName(offset)
+- uid: grammarkdown!UnicodeCharacterRange#edgeValue:member(1)
+  name: edgeValue(offset)
+  href: api/grammarkdown/unicodecharacterrange.html#grammarkdown_UnicodeCharacterRange_edgeValue_member_1_
+  fullName: edgeValue(offset)
 - uid: grammarkdown!UnicodeCharacterRange#firstChild:member
   name: firstChild
   href: api/grammarkdown/unicodecharacterrange.html#grammarkdown_UnicodeCharacterRange_firstChild_member

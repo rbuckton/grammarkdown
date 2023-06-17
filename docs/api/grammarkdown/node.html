@@ -125,13 +125,66 @@
   </h3>
   
   
+  <h4 id="grammarkdown_Node_detachedTrivia_member" data-uid="grammarkdown!Node#detachedTrivia:member">detachedTrivia</h4>
+  <div class="markdown level1 summary"><p>Detached trivia is any trivia that occurs prior to the node that is not the leading or trailing trivia of this or any other node.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">get detachedTrivia(): readonly Trivia[] | undefined;</code></pre>
+  </div>
+  
+  
+  
+  
+  
+  <h5 class="propertyValue">Property Value</h5>
+  <div>
+  <div class="property">
+    <div>readonly <a class="xref" href="../grammarkdown.html#grammarkdown_Trivia_type">Trivia</a>[] | undefined</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_Node_edgeCount_member" data-uid="grammarkdown!Node#edgeCount:member">edgeCount</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">protected get edgeCount(): number;</code></pre>
+  </div>
+  
+  
+  
+  
+  
+  <h5 class="propertyValue">Property Value</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">number</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   <h4 id="grammarkdown_Node_end_member" data-uid="grammarkdown!Node#end:member">end</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">end: number;</code></pre>
+    <pre><code class="lang-typeScript hljs">get end(): number;</code></pre>
   </div>
   
   
@@ -230,12 +283,17 @@
   
   
   <h4 id="grammarkdown_Node_leadingHtmlTrivia_member" data-uid="grammarkdown!Node#leadingHtmlTrivia:member">leadingHtmlTrivia</h4>
+  	<div class="alert is-warning">
+  		<h5>Warning</h5>
+  		<p>Deprecated</p>
+  			Use  or  instead.
+  	</div>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">leadingHtmlTrivia: HtmlTrivia[] | undefined;</code></pre>
+    <pre><code class="lang-typeScript hljs">get leadingHtmlTrivia(): readonly HtmlTrivia[] | undefined;</code></pre>
   </div>
   
   
@@ -245,7 +303,34 @@
   <h5 class="propertyValue">Property Value</h5>
   <div>
   <div class="property">
-    <div><a class="xref" href="../grammarkdown.html#grammarkdown_HtmlTrivia_type">HtmlTrivia</a>[] | undefined</div>
+    <div>readonly <a class="xref" href="../grammarkdown.html#grammarkdown_HtmlTrivia_type">HtmlTrivia</a>[] | undefined</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_Node_leadingTrivia_member" data-uid="grammarkdown!Node#leadingTrivia:member">leadingTrivia</h4>
+  <div class="markdown level1 summary"><p>Leading trivia is trivia that belongs to the beginning of the node: - An HTML close tag trivia, or any trivia preceding an HTML close tag trivia, is not leading trivia of the node. - An HTML open tag trivia, and any trivia following an HTML open tag trivia, is leading trivia of the node. - If the node has a preceding line break, then - Any other non-HTML tag trivia on the same line as the node that precedes the node is leading trivia of the node. - Any other non-HTML tag trivia on a line that precedes the node, but not preceding a blank line, is leading trivia of the node. - Otherwise, - Any other non-HTML tag trivia on the same line as the node that precedes the node is leading trivia, if there is no whitespace between that trivia and the node.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">get leadingTrivia(): readonly Trivia[] | undefined;</code></pre>
+  </div>
+  
+  
+  
+  
+  
+  <h5 class="propertyValue">Property Value</h5>
+  <div>
+  <div class="property">
+    <div>readonly <a class="xref" href="../grammarkdown.html#grammarkdown_Trivia_type">Trivia</a>[] | undefined</div>
     <p>
   </div>
   </div>
@@ -261,7 +346,7 @@
   <h5 class="decalaration">Declaration</h5>
   
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">pos: number;</code></pre>
+    <pre><code class="lang-typeScript hljs">get pos(): number;</code></pre>
   </div>
   
   
@@ -282,12 +367,17 @@
   
   
   <h4 id="grammarkdown_Node_trailingHtmlTrivia_member" data-uid="grammarkdown!Node#trailingHtmlTrivia:member">trailingHtmlTrivia</h4>
+  	<div class="alert is-warning">
+  		<h5>Warning</h5>
+  		<p>Deprecated</p>
+  			Use  instead.
+  	</div>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">trailingHtmlTrivia: HtmlTrivia[] | undefined;</code></pre>
+    <pre><code class="lang-typeScript hljs">get trailingHtmlTrivia(): readonly HtmlTrivia[] | undefined;</code></pre>
   </div>
   
   
@@ -297,7 +387,34 @@
   <h5 class="propertyValue">Property Value</h5>
   <div>
   <div class="property">
-    <div><a class="xref" href="../grammarkdown.html#grammarkdown_HtmlTrivia_type">HtmlTrivia</a>[] | undefined</div>
+    <div>readonly <a class="xref" href="../grammarkdown.html#grammarkdown_HtmlTrivia_type">HtmlTrivia</a>[] | undefined</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_Node_trailingTrivia_member" data-uid="grammarkdown!Node#trailingTrivia:member">trailingTrivia</h4>
+  <div class="markdown level1 summary"><p>Trailing trivia is trivia that belongs to the end of the node: - An HTML open tag trivia, or any trivia following an HTML open tag trivia, is not trailing trivia of the node. - An HTML close tag trivia, and any trivia preceding an HTML close tag trivia, is trailing trivia of the node. - If the node has a trailing line break, then - Any other non-HTML tag trivia on the same line as the node that follows the node is trailing trivia of the node. - Any other non-HTML tag trivia on a line that follows the node, but not following a blank line, is trailing trivia of the node. - Otherwise, - Any other non-HTML tag trivia on the same line as the node that follows the node is trailing trivia, if there is no whitespace between that trivia and the node.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">get trailingTrivia(): readonly Trivia[] | undefined;</code></pre>
+  </div>
+  
+  
+  
+  
+  
+  <h5 class="propertyValue">Property Value</h5>
+  <div>
+  <div class="property">
+    <div>readonly <a class="xref" href="../grammarkdown.html#grammarkdown_Trivia_type">Trivia</a>[] | undefined</div>
     <p>
   </div>
   </div>
@@ -307,6 +424,45 @@
   
   <h3 id="methods">Methods
   </h3>
+  
+  
+  <h4 id="grammarkdown_Node_accept_member_1_" data-uid="grammarkdown!Node#accept:member(1)">accept(visitor)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">protected accept(visitor: NodeVisitor): Node;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>visitor</dt>
+        <dd><a class="xref" href="nodevisitor.html#grammarkdown_NodeVisitor_class">NodeVisitor</a></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="node.html#grammarkdown_Node_class">Node</a></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
   
   
   <h4 id="grammarkdown_Node_children_member_1_" data-uid="grammarkdown!Node#children:member(1)">children()</h4>
@@ -335,13 +491,91 @@
   
   
   
-  <h4 id="grammarkdown_Node_forEachChild_member_1_" data-uid="grammarkdown!Node#forEachChild:member(1)">forEachChild(_cbNode)</h4>
+  <h4 id="grammarkdown_Node_edgeName_member_1_" data-uid="grammarkdown!Node#edgeName:member(1)">edgeName(offset)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">forEachChild&lt;T&gt;(_cbNode: (node: Node) =&gt; T | undefined): T | undefined;</code></pre>
+    <pre><code class="lang-typeScript hljs">protected edgeName(offset: number): string | undefined;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>offset</dt>
+        <dd><span class="xref">number</span></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">string | undefined</span></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_Node_edgeValue_member_1_" data-uid="grammarkdown!Node#edgeValue:member(1)">edgeValue(offset)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">protected edgeValue(offset: number): Node | ReadonlyArray&lt;Node&gt; | undefined;</code></pre>
+  </div>
+  
+  
+  <h5 class="parameters">Parameters</h5>
+  <div>
+    <div class="property">
+      <dl class="parameter">
+        <dt>offset</dt>
+        <dd><span class="xref">number</span></dd>
+      </dl>
+      <p>
+        
+        
+      </p>
+    </div>
+  </div>
+  
+  <h5 class="returns">Returns</h5>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="node.html#grammarkdown_Node_class">Node</a> | <span class="xref">ReadonlyArray</span>&lt;<a class="xref" href="node.html#grammarkdown_Node_class">Node</a>&gt; | undefined</div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_Node_forEachChild_member_1_" data-uid="grammarkdown!Node#forEachChild:member(1)">forEachChild(cbNode)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">forEachChild&lt;T&gt;(cbNode: (node: Node) =&gt; T | undefined): T | undefined;</code></pre>
   </div>
   
   <h5 class="typeParameters">Type Parameters</h5>
@@ -361,7 +595,7 @@
   <div>
     <div class="property">
       <dl class="parameter">
-        <dt>_cbNode</dt>
+        <dt>cbNode</dt>
         <dd>(node: <a class="xref" href="node.html#grammarkdown_Node_class">Node</a>) =&gt; T | undefined</dd>
       </dl>
       <p>

@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class InvalidSymbol
+    <title>Interface LineInfo
    | Grammarkdown API Reference </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class InvalidSymbol
+    <meta name="title" content="Interface LineInfo
    | Grammarkdown API Reference ">
     <meta name="generator" content="docfx 2.56.7.0">
     
@@ -78,78 +78,116 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="grammarkdown!InvalidSymbol:class">
+            <article class="content wrap" id="_content" data-uid="grammarkdown!LineInfo:interface">
   
   
-  <h1 id="grammarkdown_InvalidSymbol_class" data-uid="grammarkdown!InvalidSymbol:class">Class InvalidSymbol
+  <h1 id="grammarkdown_LineInfo_interface" data-uid="grammarkdown!LineInfo:interface">Interface LineInfo
   </h1>
   <h6><strong>Package</strong>: <a class="xref" href="../grammarkdown.html">grammarkdown</a></h6>
   <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
-  <div class="inheritance">
-    <h5>Inheritance</h5>
-      <div class="level0"><a class="xref" href="lexicalsymbolbase.html#grammarkdown_LexicalSymbolBase_class">LexicalSymbolBase</a>&lt;<a class="xref" href="syntaxkind.html#grammarkdown_SyntaxKind_InvalidSymbol_member">SyntaxKind.InvalidSymbol</a>&gt; </div>
-      <div class="level1"><span class="xref">InvalidSymbol</span></div>
-  </div>
-  <h3 id="constructors">Constructors
+  <h3 id="properties">Properties
   </h3>
   
   
-  <h4 id="grammarkdown_InvalidSymbol_constructor_1_" data-uid="grammarkdown!InvalidSymbol:constructor(1)">constructor()</h4>
-  <div class="markdown level1 summary"><p>Constructs a new instance of the <code>InvalidSymbol</code> class</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  
-  <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">constructor();</code></pre>
-  </div>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  <h3 id="methods">Methods
-  </h3>
-  
-  
-  <h4 id="grammarkdown_InvalidSymbol_accept_member_1_" data-uid="grammarkdown!InvalidSymbol#accept:member(1)">accept(visitor)</h4>
+  <h4 id="grammarkdown_LineInfo_line_member" data-uid="grammarkdown!LineInfo#line:member">line</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   
   <div class="codewrapper">
-    <pre><code class="lang-typeScript hljs">protected accept(visitor: NodeVisitor): InvalidSymbol;</code></pre>
+    <pre><code class="lang-typeScript hljs">readonly line: number;</code></pre>
   </div>
   
   
-  <h5 class="parameters">Parameters</h5>
-  <div>
-    <div class="property">
-      <dl class="parameter">
-        <dt>visitor</dt>
-        <dd><a class="xref" href="nodevisitor.html#grammarkdown_NodeVisitor_class">NodeVisitor</a></dd>
-      </dl>
-      <p>
-        
-        
-      </p>
-    </div>
-  </div>
   
-  <h5 class="returns">Returns</h5>
+  
+  
+  <h5 class="propertyValue">Property Value</h5>
   <div>
   <div class="property">
-    <div><a class="xref" href="invalidsymbol.html#grammarkdown_InvalidSymbol_class">InvalidSymbol</a></div>
+    <div><span class="xref">number</span></div>
     <p>
   </div>
   </div>
   
   
+  
+  
+  
+  
+  <h4 id="grammarkdown_LineInfo_range_member" data-uid="grammarkdown!LineInfo#range:member">range</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">readonly range: Range;</code></pre>
+  </div>
+  
+  
+  
+  
+  
+  <h5 class="propertyValue">Property Value</h5>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="range-interface.html#grammarkdown_Range_interface">Range</a></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_LineInfo_rangeIncludingLineTerminator_member" data-uid="grammarkdown!LineInfo#rangeIncludingLineTerminator:member">rangeIncludingLineTerminator</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">readonly rangeIncludingLineTerminator: Range;</code></pre>
+  </div>
+  
+  
+  
+  
+  
+  <h5 class="propertyValue">Property Value</h5>
+  <div>
+  <div class="property">
+    <div><a class="xref" href="range-interface.html#grammarkdown_Range_interface">Range</a></div>
+    <p>
+  </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  <h4 id="grammarkdown_LineInfo_text_member" data-uid="grammarkdown!LineInfo#text:member">text</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-typeScript hljs">readonly text: string;</code></pre>
+  </div>
+  
+  
+  
+  
+  
+  <h5 class="propertyValue">Property Value</h5>
+  <div>
+  <div class="property">
+    <div><span class="xref">string</span></div>
+    <p>
+  </div>
+  </div>
   
   
   

@@ -815,7 +815,7 @@ protected createResolver(bindings: BindingTable): Resolver;</code></pre>
     <div class="property">
       <dl class="parameter">
         <dt>writeFile</dt>
-        <dd>(file: string, output: string, cancelToken?: <a class="xref" href="https://esfx.js.org/esfx/api/async-canceltoken/canceltoken.html#_esfx_async_canceltoken_CancelToken_class">CancelToken</a>) =&gt; void | <span class="xref">PromiseLike</span>&lt;void&gt;</dd>
+        <dd>(file: string, output: string, cancelToken?: <span class="xref">CancelToken</span>) =&gt; void | <span class="xref">PromiseLike</span>&lt;void&gt;</dd>
       </dl>
       <p>
         <p>An optional callback used to write the output. If not provided, this method will emit output via this grammar&#39;s <a class="xref" href="grammar.html#grammarkdown_Grammar_host_member">host</a><!-- -->.</p>
@@ -1017,7 +1017,7 @@ protected readFile(file: string, cancelToken?: CancelToken): Promise&lt;string |
     <div class="property">
       <dl class="parameter">
         <dt>cancelToken</dt>
-        <dd><a class="xref" href="https://esfx.js.org/esfx/api/async-canceltoken/canceltoken.html#_esfx_async_canceltoken_CancelToken_class">CancelToken</a></dd>
+        <dd><span class="xref">CancelToken</span></dd>
       </dl>
       <p>
         <p>A cancellation token that can be used by the caller to abort the operation.</p>
@@ -1081,7 +1081,7 @@ protected writeFile(file: string, content: string, cancelToken?: CancelToken): P
     <div class="property">
       <dl class="parameter">
         <dt>cancelToken</dt>
-        <dd><a class="xref" href="https://esfx.js.org/esfx/api/async-canceltoken/canceltoken.html#_esfx_async_canceltoken_CancelToken_class">CancelToken</a></dd>
+        <dd><span class="xref">CancelToken</span></dd>
       </dl>
       <p>
         <p>A cancellation token that can be used by the caller to abort the operation.</p>

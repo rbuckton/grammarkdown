@@ -160,6 +160,11 @@ console.log(output);
   &lt;ins&gt;Inserted&lt;/ins&gt;
   &lt;del&gt;Deleted&lt;/del&gt;
 </code></pre></section>
+        <h4><a class="xref" href="grammarkdown/htmlcommenttrivia.html#grammarkdown_HtmlCommentTrivia_class">HtmlCommentTrivia</a></h4>
+        <section><p>Represents an HTML comment trivia token:</p>
+<pre><code class="lang-grammarkdown">Production ::
+  &lt;!--before--&gt;Nonterminal
+</code></pre></section>
         <h4><a class="xref" href="grammarkdown/htmlemitter.html#grammarkdown_HtmlEmitter_class">HtmlEmitter</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/htmlopentagtrivia.html#grammarkdown_HtmlOpenTagTrivia_class">HtmlOpenTagTrivia</a></h4>
@@ -168,6 +173,8 @@ console.log(output);
   &lt;ins&gt;Inserted&lt;/ins&gt;
   &lt;del&gt;Deleted&lt;/del&gt;
 </code></pre></section>
+        <h4><a class="xref" href="grammarkdown/htmltagtriviabase.html#grammarkdown_HtmlTagTriviaBase_class">HtmlTagTriviaBase</a></h4>
+        <section></section>
         <h4><a class="xref" href="grammarkdown/htmltriviabase.html#grammarkdown_HtmlTriviaBase_class">HtmlTriviaBase</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/identifier.html#grammarkdown_Identifier_class">Identifier</a></h4>
@@ -330,6 +337,8 @@ U+0000
         <section></section>
         <h4><a class="xref" href="grammarkdown/diagnosticinfo.html#grammarkdown_DiagnosticInfo_interface">DiagnosticInfo</a></h4>
         <section></section>
+        <h4><a class="xref" href="grammarkdown/lineinfo.html#grammarkdown_LineInfo_interface">LineInfo</a></h4>
+        <section></section>
         <h4><a class="xref" href="grammarkdown/nodeasynchostoptions.html#grammarkdown_NodeAsyncHostOptions_interface">NodeAsyncHostOptions</a></h4>
         <section></section>
         <h4><a class="xref" href="grammarkdown/position-interface.html#grammarkdown_Position_interface">Position</a></h4>
@@ -358,6 +367,37 @@ U+0000
         <section></section>
     <h3 id="functions">Functions
   </h3>
+  
+  
+        <h4 id="grammarkdown_decodeHtmlEntities_function_1_" data-uid="grammarkdown!decodeHtmlEntities:function(1)">decodeHtmlEntities(text)</h4>
+              <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare function decodeHtmlEntities(text: string): string;</code></pre>
+        </div>
+  
+  
+        <h5 class="parameters">Parameters</h5>
+          <div class="property">
+            <dl class="parameter">
+              <dt>text</dt>
+              <dd><span class="xref">string</span></dd>
+            </dl>
+            <p>
+              
+              
+            </p>
+          </div>
+  
+        <h5 class="returns">Returns</h5>
+        <div class="property">
+          <div><span class="xref">string</span></div>
+          <p>
+        </div>
+  
+  
+  
   
   
         <h4 id="grammarkdown_forEachChild_function_1_" data-uid="grammarkdown!forEachChild:function(1)">forEachChild(node, cbNode)</h4>
@@ -600,6 +640,37 @@ U+0000
         <h5 class="returns">Returns</h5>
         <div class="property">
           <div><span class="xref">kind</span> is <a class="xref" href="grammarkdown.html#grammarkdown_CommentTriviaKind_type">CommentTriviaKind</a></div>
+          <p>
+        </div>
+  
+  
+  
+  
+  
+        <h4 id="grammarkdown_isHtmlTagTriviaKind_function_1_" data-uid="grammarkdown!isHtmlTagTriviaKind:function(1)">isHtmlTagTriviaKind(kind)</h4>
+              <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare function isHtmlTagTriviaKind(kind: SyntaxKind): kind is HtmlTagTriviaKind;</code></pre>
+        </div>
+  
+  
+        <h5 class="parameters">Parameters</h5>
+          <div class="property">
+            <dl class="parameter">
+              <dt>kind</dt>
+              <dd><a class="xref" href="grammarkdown/syntaxkind.html#grammarkdown_SyntaxKind_enum">SyntaxKind</a></dd>
+            </dl>
+            <p>
+              
+              
+            </p>
+          </div>
+  
+        <h5 class="returns">Returns</h5>
+        <div class="property">
+          <div><span class="xref">kind</span> is <a class="xref" href="grammarkdown.html#grammarkdown_HtmlTagTriviaKind_type">HtmlTagTriviaKind</a></div>
           <p>
         </div>
   
@@ -1255,6 +1326,16 @@ U+0000
     Unterminated_identifier_literal: Diagnostic;
     Obsolete_0_: Diagnostic;
     HTML_trivia_not_allowed_here: Diagnostic;
+    Unicode_code_point_literals_must_have_at_least_four_hexadecimal_digits: Diagnostic;
+    Unicode_code_point_literals_with_more_than_four_digits_may_not_have_leading_zeros: Diagnostic;
+    Unicode_code_point_literals_should_use_uppercase_U_prefix: Diagnostic;
+    Unicode_code_point_literals_should_use_uppercase_hexadecimal_digits: Diagnostic;
+    Unicode_code_point_literal_value_is_outside_of_the_allowed_range: Diagnostic;
+    Unicode_character_name_literal_may_not_start_with_U_unless_it_is_a_valid_code_point: Diagnostic;
+    Unicode_character_name_literal_that_includes_a_code_point_must_have_a_description: Diagnostic;
+    Unicode_character_name_literal_code_point_and_description_must_be_separated_by_whitespace: Diagnostic;
+    Unicode_character_name_literal_code_point_description_may_only_contain_printable_ASCII_characters: Diagnostic;
+    Unicode_character_name_literal_must_be_an_ASCII_identifier: Diagnostic;
     Cannot_find_name_0_: Diagnostic;
     Duplicate_identifier_0_: Diagnostic;
     Duplicate_terminal_0_: Diagnostic;
@@ -1380,12 +1461,27 @@ U+0000
   
   
   
+        <h4 id="grammarkdown_HtmlTagTriviaKind_type" data-uid="grammarkdown!HtmlTagTriviaKind:type">HtmlTagTriviaKind</h4>
+              <div class="markdown level1 summary"></div>
+        <div class="markdown level1 conceptual"></div>
+        <h5 class="decalaration">Declaration</h5>
+        <div class="codewrapper">
+          <pre><code class="lang-typeScript hljs">export declare type HtmlTagTriviaKind = SyntaxKind.HtmlOpenTagTrivia | SyntaxKind.HtmlCloseTagTrivia;</code></pre>
+        </div>
+  
+  
+  
+  
+  
+  
+  
+  
         <h4 id="grammarkdown_HtmlTrivia_type" data-uid="grammarkdown!HtmlTrivia:type">HtmlTrivia</h4>
               <div class="markdown level1 summary"></div>
         <div class="markdown level1 conceptual"></div>
         <h5 class="decalaration">Declaration</h5>
         <div class="codewrapper">
-          <pre><code class="lang-typeScript hljs">export declare type HtmlTrivia = HtmlOpenTagTrivia | HtmlCloseTagTrivia;</code></pre>
+          <pre><code class="lang-typeScript hljs">export declare type HtmlTrivia = HtmlCommentTrivia | HtmlOpenTagTrivia | HtmlCloseTagTrivia;</code></pre>
         </div>
   
   
@@ -1400,7 +1496,7 @@ U+0000
         <div class="markdown level1 conceptual"></div>
         <h5 class="decalaration">Declaration</h5>
         <div class="codewrapper">
-          <pre><code class="lang-typeScript hljs">export declare type HtmlTriviaKind = SyntaxKind.HtmlOpenTagTrivia | SyntaxKind.HtmlCloseTagTrivia;</code></pre>
+          <pre><code class="lang-typeScript hljs">export declare type HtmlTriviaKind = SyntaxKind.HtmlCommentTrivia | SyntaxKind.HtmlOpenTagTrivia | SyntaxKind.HtmlCloseTagTrivia;</code></pre>
         </div>
   
   
