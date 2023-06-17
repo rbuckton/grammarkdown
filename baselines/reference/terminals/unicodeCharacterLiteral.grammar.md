@@ -10,6 +10,9 @@
 &emsp;&emsp;&emsp;<a name="CodePoints-bmlkvjfo"></a>U+0000  
   
 &emsp;&emsp;<a name="ErrorCodePoints"></a>*ErrorCodePoints* **:**  
+&emsp;&emsp;&emsp;<a name="ErrorCodePoints-t5ig9pv6"></a>U+0  
+&emsp;&emsp;&emsp;<a name="ErrorCodePoints-gwhygwwe"></a>U+00  
+&emsp;&emsp;&emsp;<a name="ErrorCodePoints-pxlkv2zn"></a>U+000  
 &emsp;&emsp;&emsp;<a name="ErrorCodePoints-j0wphbfg"></a>U+00000  
 &emsp;&emsp;&emsp;<a name="ErrorCodePoints-3cejcius"></a>U+000000  
 &emsp;&emsp;&emsp;<a name="ErrorCodePoints-q1hsxwyv"></a>U+110000  
@@ -43,5 +46,6 @@
 &emsp;&emsp;&emsp;<a name="ErrorCharacterNames-oxiqj8rw"></a>&lt;U+110000 A&gt;  
   
 &emsp;&emsp;<a name="WarningCharacterNames"></a>*WarningCharacterNames* **:**  
+&emsp;&emsp;&emsp;<a name="WarningCharacterNames-s4fc055d"></a>&lt;u+ffff A&gt;  
 &emsp;&emsp;&emsp;<a name="WarningCharacterNames-b8j74zjg"></a>&lt;U+ffff A&gt;  
   

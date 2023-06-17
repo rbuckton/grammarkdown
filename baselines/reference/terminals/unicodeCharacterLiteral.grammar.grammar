@@ -10,6 +10,9 @@ CodePoints :
     U+0000
 
 ErrorCodePoints :
+    U+0
+    U+00
+    U+000
     U+00000
     U+000000
     U+110000
@@ -43,4 +46,5 @@ ErrorCharacterNames :
     <U+110000 A>
 
 WarningCharacterNames :
+    <u+ffff A>
     <U+ffff A>

@@ -310,7 +310,9 @@ export class Scanner {
                 case CharacterCodes.LessThan: {
                     // html trivia
                     const ch = this.peekChar(0);
-                    if (isHtmlTagNameStart(ch) || ch === CharacterCodes.Slash || ch === CharacterCodes.GreaterThan) {
+                    if (ch === CharacterCodes.Slash ||
+                        ch === CharacterCodes.GreaterThan ||
+                        (ch === CharacterCodes.LowerU ? this.peekChar(1) !== CharacterCodes.Plus : isHtmlTagNameStart(ch))) {
                         this.scanHtmlTrivia();
                         this.setHasPrecedingNonWhiteSpaceTrivia();
                         continue;
@@ -505,7 +507,7 @@ export class Scanner {
                     const savedPos = this.pos;
                     const savedTokenFlags = this.tokenFlags;
                     if (this.pos < this.len && this.expectCharacter(/*decodeEntity*/ true, CharacterCodes.Plus)) {
-                        if (this.scanHexDigits(/*decodeEntities*/ true, 4, 6, /*forbidExcessDigits*/ true) !== -1) {
+                        if (this.scanHexDigits(/*decodeEntities*/ true, 1, 6, /*forbidExcessDigits*/ true) !== -1) {
                             // NOTE: code points are validated in checker
                             return this.token = SyntaxKind.UnicodeCharacterLiteral;
                         }
@@ -1313,7 +1315,9 @@ export function skipTrivia(text: string, pos: number, end: number, htmlTrivia?: 
             case CharacterCodes.LessThan:
                 if (pos + 1 < end) {
                     const ch = text.charCodeAt(pos + 1);
-                    if (ch === CharacterCodes.Slash || (ch >= CharacterCodes.LowerA && ch <= CharacterCodes.LowerZ)) {
+                    if (ch === CharacterCodes.Slash ||
+                        (ch === CharacterCodes.LowerU ? !(pos + 2 < end && text.charCodeAt(pos + 2) === CharacterCodes.Plus) :
+                            (ch >= CharacterCodes.LowerA && ch <= CharacterCodes.LowerZ))) {
                         const triviaEnd = findHtmlTriviaEnd(text, pos + 1, end);
                         if (htmlTrivia) {
                             const tagNamePos = ch === CharacterCodes.Slash ? pos + 2 : pos + 1;

@@ -12,39 +12,43 @@ SyntaxKind[UnicodeCharacterLiteral](9,5): U+10FFFF
 SyntaxKind[UnicodeCharacterLiteral](10,5): U&#x2b;0000
 SyntaxKind[Identifier](12,1): ErrorCodePoints
 SyntaxKind[ColonToken](12,16): :
-SyntaxKind[UnicodeCharacterLiteral](13,5): U+00000
-SyntaxKind[UnicodeCharacterLiteral](14,5): U+000000
-SyntaxKind[UnicodeCharacterLiteral](15,5): U+110000
-SyntaxKind[Identifier](17,1): WarningCodePoints
-SyntaxKind[ColonToken](17,18): :
-SyntaxKind[UnicodeCharacterLiteral](18,5): u+0000
-SyntaxKind[UnicodeCharacterLiteral](19,5): U+ffff
-SyntaxKind[Identifier](21,1): CharacterNames
-SyntaxKind[ColonToken](21,15): :
-SyntaxKind[UnicodeCharacterLiteral](22,5): &lt;foo
-SyntaxKind[UnicodeCharacterLiteral](22,12): &lt;bar&gt;
-SyntaxKind[UnicodeCharacterLiteral](23,5): &lt;foo\&lt;bar&gt;
-SyntaxKind[UnicodeCharacterLiteral](24,5): <NBSP>
-SyntaxKind[UnicodeCharacterLiteral](25,5): <U+2212 MINUS SIGN>
-SyntaxKind[UnicodeCharacterLiteral](26,5): <U+0000 A>
-SyntaxKind[UnicodeCharacterLiteral](27,5): <U+FFFF A>
-SyntaxKind[UnicodeCharacterLiteral](28,5): <U+10000 A>
-SyntaxKind[UnicodeCharacterLiteral](29,5): <U+1FFFF A>
-SyntaxKind[UnicodeCharacterLiteral](30,5): <U+F0000 A>
-SyntaxKind[UnicodeCharacterLiteral](31,5): <U+FFFFF A>
-SyntaxKind[UnicodeCharacterLiteral](32,5): <U+100000 A>
-SyntaxKind[UnicodeCharacterLiteral](33,5): <U+10FFFF A>
-SyntaxKind[UnicodeCharacterLiteral](34,5): <U&#x2b;0000 A>
-SyntaxKind[Identifier](36,1): ErrorCharacterNames
-SyntaxKind[ColonToken](36,20): :
-SyntaxKind[UnicodeCharacterLiteral](37,5): <U+>
-SyntaxKind[UnicodeCharacterLiteral](38,5): <U+A>
-SyntaxKind[UnicodeCharacterLiteral](39,5): <U+0>
-SyntaxKind[UnicodeCharacterLiteral](40,5): <U+0000>
-SyntaxKind[UnicodeCharacterLiteral](41,5): <U+00000 A>
-SyntaxKind[UnicodeCharacterLiteral](42,5): <U+000000 A>
-SyntaxKind[UnicodeCharacterLiteral](43,5): <U+110000 A>
-SyntaxKind[Identifier](45,1): WarningCharacterNames
-SyntaxKind[ColonToken](45,22): :
-SyntaxKind[UnicodeCharacterLiteral](46,5): <U+ffff A>
-SyntaxKind[EndOfFileToken](47,1): «EndOfFileToken»
+SyntaxKind[UnicodeCharacterLiteral](13,5): U+0
+SyntaxKind[UnicodeCharacterLiteral](14,5): U+00
+SyntaxKind[UnicodeCharacterLiteral](15,5): U+000
+SyntaxKind[UnicodeCharacterLiteral](16,5): U+00000
+SyntaxKind[UnicodeCharacterLiteral](17,5): U+000000
+SyntaxKind[UnicodeCharacterLiteral](18,5): U+110000
+SyntaxKind[Identifier](20,1): WarningCodePoints
+SyntaxKind[ColonToken](20,18): :
+SyntaxKind[UnicodeCharacterLiteral](21,5): u+0000
+SyntaxKind[UnicodeCharacterLiteral](22,5): U+ffff
+SyntaxKind[Identifier](24,1): CharacterNames
+SyntaxKind[ColonToken](24,15): :
+SyntaxKind[UnicodeCharacterLiteral](25,5): &lt;foo
+SyntaxKind[UnicodeCharacterLiteral](25,12): &lt;bar&gt;
+SyntaxKind[UnicodeCharacterLiteral](26,5): &lt;foo\&lt;bar&gt;
+SyntaxKind[UnicodeCharacterLiteral](27,5): <NBSP>
+SyntaxKind[UnicodeCharacterLiteral](28,5): <U+2212 MINUS SIGN>
+SyntaxKind[UnicodeCharacterLiteral](29,5): <U+0000 A>
+SyntaxKind[UnicodeCharacterLiteral](30,5): <U+FFFF A>
+SyntaxKind[UnicodeCharacterLiteral](31,5): <U+10000 A>
+SyntaxKind[UnicodeCharacterLiteral](32,5): <U+1FFFF A>
+SyntaxKind[UnicodeCharacterLiteral](33,5): <U+F0000 A>
+SyntaxKind[UnicodeCharacterLiteral](34,5): <U+FFFFF A>
+SyntaxKind[UnicodeCharacterLiteral](35,5): <U+100000 A>
+SyntaxKind[UnicodeCharacterLiteral](36,5): <U+10FFFF A>
+SyntaxKind[UnicodeCharacterLiteral](37,5): <U&#x2b;0000 A>
+SyntaxKind[Identifier](39,1): ErrorCharacterNames
+SyntaxKind[ColonToken](39,20): :
+SyntaxKind[UnicodeCharacterLiteral](40,5): <U+>
+SyntaxKind[UnicodeCharacterLiteral](41,5): <U+A>
+SyntaxKind[UnicodeCharacterLiteral](42,5): <U+0>
+SyntaxKind[UnicodeCharacterLiteral](43,5): <U+0000>
+SyntaxKind[UnicodeCharacterLiteral](44,5): <U+00000 A>
+SyntaxKind[UnicodeCharacterLiteral](45,5): <U+000000 A>
+SyntaxKind[UnicodeCharacterLiteral](46,5): <U+110000 A>
+SyntaxKind[Identifier](48,1): WarningCharacterNames
+SyntaxKind[ColonToken](48,22): :
+SyntaxKind[UnicodeCharacterLiteral](49,5): <u+ffff A>
+SyntaxKind[UnicodeCharacterLiteral](50,5): <U+ffff A>
+SyntaxKind[EndOfFileToken](51,1): «EndOfFileToken»

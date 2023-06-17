@@ -1,20 +1,24 @@
 /// terminals/unicodeCharacterLiteral.grammar:
-terminals/unicodeCharacterLiteral.grammar(13,5): error GM1011: Unicode code points with more than four digits may not have leading zeros
-terminals/unicodeCharacterLiteral.grammar(14,5): error GM1011: Unicode code points with more than four digits may not have leading zeros
-terminals/unicodeCharacterLiteral.grammar(15,5): error GM1012: Unicode code point is outside of the allowed range
-terminals/unicodeCharacterLiteral.grammar(18,5): warning GM1013: Unicode code points should use an uppercase 'U+' prefix
-terminals/unicodeCharacterLiteral.grammar(19,5): warning GM1014: Unicode code points should use uppercase hexadecimal digits
-terminals/unicodeCharacterLiteral.grammar(22,5): error GM1004: Unterminated string literal
-terminals/unicodeCharacterLiteral.grammar(37,5): error GM1016: Unicode character name may not start with 'U+' unless it is a valid code point
-terminals/unicodeCharacterLiteral.grammar(38,5): error GM1016: Unicode character name may not start with 'U+' unless it is a valid code point
-terminals/unicodeCharacterLiteral.grammar(39,5): error GM1016: Unicode character name may not start with 'U+' unless it is a valid code point
-terminals/unicodeCharacterLiteral.grammar(40,5): error GM1015: Unicode character name that includes a code point must have a description
-terminals/unicodeCharacterLiteral.grammar(41,5): error GM1011: Unicode code points with more than four digits may not have leading zeros
-terminals/unicodeCharacterLiteral.grammar(42,5): error GM1011: Unicode code points with more than four digits may not have leading zeros
-terminals/unicodeCharacterLiteral.grammar(43,5): error GM1012: Unicode code point is outside of the allowed range
-terminals/unicodeCharacterLiteral.grammar(46,5): warning GM1014: Unicode code points should use uppercase hexadecimal digits
+terminals/unicodeCharacterLiteral.grammar(13,5): error GM1011: Unicode code point literals must have at least four hexadecimal digits
+terminals/unicodeCharacterLiteral.grammar(14,5): error GM1011: Unicode code point literals must have at least four hexadecimal digits
+terminals/unicodeCharacterLiteral.grammar(15,5): error GM1011: Unicode code point literals must have at least four hexadecimal digits
+terminals/unicodeCharacterLiteral.grammar(16,5): error GM1012: Unicode code point literals with more than four digits may not have leading zeros
+terminals/unicodeCharacterLiteral.grammar(17,5): error GM1012: Unicode code point literals with more than four digits may not have leading zeros
+terminals/unicodeCharacterLiteral.grammar(18,5): error GM1015: Unicode code point literal value is outside of the allowed range
+terminals/unicodeCharacterLiteral.grammar(21,5): warning GM1013: Unicode code point literals should use uppercase 'U+' prefix
+terminals/unicodeCharacterLiteral.grammar(22,5): warning GM1014: Unicode code point literals should use uppercase hexadecimal digits
+terminals/unicodeCharacterLiteral.grammar(25,5): error GM1004: Unterminated string literal
+terminals/unicodeCharacterLiteral.grammar(40,5): error GM1018: Unicode character name literal may not start with 'U+' unless it is a valid code point
+terminals/unicodeCharacterLiteral.grammar(41,5): error GM1011: Unicode code point literals must have at least four hexadecimal digits
+terminals/unicodeCharacterLiteral.grammar(42,5): error GM1011: Unicode code point literals must have at least four hexadecimal digits
+terminals/unicodeCharacterLiteral.grammar(43,5): error GM1016: Unicode character name literal that includes a code point must have a description
+terminals/unicodeCharacterLiteral.grammar(44,5): error GM1012: Unicode code point literals with more than four digits may not have leading zeros
+terminals/unicodeCharacterLiteral.grammar(45,5): error GM1012: Unicode code point literals with more than four digits may not have leading zeros
+terminals/unicodeCharacterLiteral.grammar(46,5): error GM1015: Unicode code point literal value is outside of the allowed range
+terminals/unicodeCharacterLiteral.grammar(49,5): warning GM1013: Unicode code point literals should use uppercase 'U+' prefix
+terminals/unicodeCharacterLiteral.grammar(50,5): warning GM1014: Unicode code point literals should use uppercase hexadecimal digits
 
-/// [terminals/unicodeCharacterLiteral.grammar] 14 errors
+/// [terminals/unicodeCharacterLiteral.grammar] 18 errors
     CodePoints:
         U+0000
         U+FFFF
@@ -27,23 +31,32 @@ terminals/unicodeCharacterLiteral.grammar(46,5): warning GM1014: Unicode code po
         U&#x2b;0000
     
     ErrorCodePoints:
+        U+0
+        ~~~
+!!! error GM1011: Unicode code point literals must have at least four hexadecimal digits
+        U+00
+        ~~~~
+!!! error GM1011: Unicode code point literals must have at least four hexadecimal digits
+        U+000
+        ~~~~~
+!!! error GM1011: Unicode code point literals must have at least four hexadecimal digits
         U+00000
         ~~~~~~~
-!!! error GM1011: Unicode code points with more than four digits may not have leading zeros
+!!! error GM1012: Unicode code point literals with more than four digits may not have leading zeros
         U+000000
         ~~~~~~~~
-!!! error GM1011: Unicode code points with more than four digits may not have leading zeros
+!!! error GM1012: Unicode code point literals with more than four digits may not have leading zeros
         U+110000
         ~~~~~~~~
-!!! error GM1012: Unicode code point is outside of the allowed range
+!!! error GM1015: Unicode code point literal value is outside of the allowed range
     
     WarningCodePoints:
         u+0000
         ~~~~~~
-!!! warning GM1013: Unicode code points should use an uppercase 'U+' prefix
+!!! warning GM1013: Unicode code point literals should use uppercase 'U+' prefix
         U+ffff
         ~~~~~~
-!!! warning GM1014: Unicode code points should use uppercase hexadecimal digits
+!!! warning GM1014: Unicode code point literals should use uppercase hexadecimal digits
     
     CharacterNames:
         &lt;foo&lt;bar&gt;
@@ -65,27 +78,30 @@ terminals/unicodeCharacterLiteral.grammar(46,5): warning GM1014: Unicode code po
     ErrorCharacterNames:
         <U+>
         ~~~~
-!!! error GM1016: Unicode character name may not start with 'U+' unless it is a valid code point
+!!! error GM1018: Unicode character name literal may not start with 'U+' unless it is a valid code point
         <U+A>
         ~~~~~
-!!! error GM1016: Unicode character name may not start with 'U+' unless it is a valid code point
+!!! error GM1011: Unicode code point literals must have at least four hexadecimal digits
         <U+0>
         ~~~~~
-!!! error GM1016: Unicode character name may not start with 'U+' unless it is a valid code point
+!!! error GM1011: Unicode code point literals must have at least four hexadecimal digits
         <U+0000>
         ~~~~~~~~
-!!! error GM1015: Unicode character name that includes a code point must have a description
+!!! error GM1016: Unicode character name literal that includes a code point must have a description
         <U+00000 A>
         ~~~~~~~~~~~
-!!! error GM1011: Unicode code points with more than four digits may not have leading zeros
+!!! error GM1012: Unicode code point literals with more than four digits may not have leading zeros
         <U+000000 A>
         ~~~~~~~~~~~~
-!!! error GM1011: Unicode code points with more than four digits may not have leading zeros
+!!! error GM1012: Unicode code point literals with more than four digits may not have leading zeros
         <U+110000 A>
         ~~~~~~~~~~~~
-!!! error GM1012: Unicode code point is outside of the allowed range
+!!! error GM1015: Unicode code point literal value is outside of the allowed range
     
     WarningCharacterNames:
+        <u+ffff A>
+        ~~~~~~~~~~
+!!! warning GM1013: Unicode code point literals should use uppercase 'U+' prefix
         <U+ffff A>
         ~~~~~~~~~~
-!!! warning GM1014: Unicode code points should use uppercase hexadecimal digits
+!!! warning GM1014: Unicode code point literals should use uppercase hexadecimal digits
