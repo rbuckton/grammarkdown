@@ -1,0 +1,8 @@
+/// assertions/noSymbolHere.grammar:
+assertions/noSymbolHere.grammar(2,16): error GM1001: here expected
+
+/// [assertions/noSymbolHere.grammar] 1 error
+    ErrorNoSymbolHere:
+        `a` [no `b`] `c`
+                   ~
+!!! error GM1001: here expected
