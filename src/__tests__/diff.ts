@@ -9,7 +9,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync, unlinkSync } from "
 import { resolve, basename, dirname } from "path";
 import { Scanner } from "../scanner";
 import { SyntaxKind, tokenToString, formatKind } from "../tokens";
-import { DiagnosticMessages, LineMap } from "../diagnostics";
+import { DiagnosticInfo, DiagnosticMessages, LineMap, formatString } from "../diagnostics";
 import {
     SourceFile,
     Node,
@@ -21,6 +21,8 @@ import {
     Terminal,
     TerminalLiteral,
 } from "../nodes";
+import { StringWriter } from "../stringwriter";
+import { Position, Range } from "../types";
 
 export function writeTokens(test: string, scanner: Scanner, lineMap: LineMap, baselines?: string[]) {
     let text: string = `/// ${test}:\r\n`;
@@ -51,22 +53,94 @@ export function writeTokens(test: string, scanner: Scanner, lineMap: LineMap, ba
                 message += `${tokenToString(token)}`;
         }
 
-        text += message + "\r\n";
+        text += message + "\n";
     }
     while (token !== SyntaxKind.EndOfFileToken)
     return writeBaseline(test + ".tokens", text, baselines);
 }
 
 export function writeDiagnostics(test: string, diagnostics: DiagnosticMessages, baselines?: string[]) {
-    let text: string | undefined = undefined;
-    diagnostics.forEach(message => {
-        if (!text) {
-            text = `/// ${test}:\r\n`;
+    class DiagnosticWriter {
+        writer = new StringWriter("\n");
+        line = 0;
+        count = 0;
+
+        writeSource(sourceFile: SourceFile, endLine: number = sourceFile.lineMap.lineCount) {
+            while (this.line < endLine && this.line < sourceFile.lineMap.lineCount) {
+                const { text } = sourceFile.lineMap.getLine(this.line);
+                this.writer.writeln(`    ${text}`);
+                this.line++;
+            }
         }
-        text += message + "\r\n";
+
+        writeMarker(sourceFile: SourceFile, range: Range) {
+            const pos = range.start.character;
+            const end = range.end.line === range.start.line ? range.end.character :
+                sourceFile.lineMap.offsetAt(Position.create(range.start.line + 1, -1));
+
+            const blanks = " ".repeat(pos);
+            const markers = "~".repeat(Math.max(1, end - pos));
+            const continuation = range.end.line > range.start.line ? ">" : "";
+            this.writer.indent();
+            this.writer.writeln(blanks + markers + continuation);
+            this.writer.dedent();
+        }
+
+        writeDiagnostic(diagnostic: DiagnosticInfo) {
+            if (diagnostic.sourceFile && diagnostic.range) {
+                this.writeSource(diagnostic.sourceFile, diagnostic.range.start.line + 1);
+                this.writeMarker(diagnostic.sourceFile, diagnostic.range);
+            }
+
+
+            const category = diagnostic.warning ? "warning" : "error";
+            const code = `GM${diagnostic.code}`;
+            const message = diagnostic.messageArguments ? formatString(diagnostic.message, diagnostic.messageArguments) : diagnostic.message;
+            const text = `!!! ${category} ${code}: ${message}`;
+            this.writer.writeln(text);
+            this.count++;
+        }
+    }
+
+    const writer = new StringWriter("\n");
+    const fileDiagnostics = new Map<SourceFile, DiagnosticWriter>();
+    let globalDiagnostics: DiagnosticWriter | undefined;
+    diagnostics.forEach((message, diagnosticIndex) => {
+        if (!writer.size) {
+            writer.writeln(`/// ${test}:`);
+        }
+        writer.writeln(message);
+
+        const diagnostic = diagnostics.getDiagnosticInfo(diagnosticIndex, { raw: true });
+        if (!diagnostic) return;
+
+        let diagnosticWriter: DiagnosticWriter | undefined;
+        if (!diagnostic.sourceFile) {
+            globalDiagnostics ??= new DiagnosticWriter();
+            diagnosticWriter = globalDiagnostics;
+        }
+        else {
+            diagnosticWriter = fileDiagnostics.get(diagnostic.sourceFile);
+            if (!diagnosticWriter) fileDiagnostics.set(diagnostic.sourceFile, diagnosticWriter = new DiagnosticWriter());
+        }
+
+        diagnosticWriter.writeDiagnostic(diagnostic);
     });
 
-    return writeBaseline(test + ".diagnostics", text, baselines);
+    if (globalDiagnostics) {
+        writer.writeBlank();
+        writer.writeln(`/// [global] ${globalDiagnostics.count} ${globalDiagnostics.count === 1 ? "error" : "errors"}`);
+        writer.writeln(globalDiagnostics.writer.toString().trimEnd());
+    }
+
+    for (const [sourceFile, diagnosticWriter] of fileDiagnostics) {
+        diagnosticWriter.writeSource(sourceFile);
+        writer.writeBlank();
+        writer.writeln(`/// [${sourceFile.filename}] ${diagnosticWriter.count} ${diagnosticWriter.count === 1 ? "error" : "errors"}`);
+        writer.writeln(diagnosticWriter.writer.toString().trimEnd());
+    }
+
+    return writeBaseline(test + ".diagnostics", writer.size ? writer.toString() : undefined, baselines);
 }
 
 export function writeNodes(test: string, sourceFile: SourceFile, baselines?: string[]) {
@@ -85,7 +159,7 @@ export function writeNodes(test: string, sourceFile: SourceFile, baselines?: str
     }
 
     function printNode(node: Node) {
-        text += getIndent(indentDepth) + formatNode(node, sourceFile) + "\r\n";
+        text += getIndent(indentDepth) + formatNode(node, sourceFile) + "\n";
         indentDepth++;
         for (const child of node.children()) {
             printNode(child);

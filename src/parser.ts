@@ -11,7 +11,7 @@ import { concat, toCancelToken } from "./core";
 import { Range, TextRange } from "./types";
 import { Diagnostics, DiagnosticMessages, NullDiagnosticMessages, LineMap, formatList } from "./diagnostics";
 import { SyntaxKind, tokenToString, ProductionSeperatorKind, ArgumentOperatorKind, LookaheadOperatorKind, ParameterOperatorKind, TokenKind } from "./tokens";
-import { Scanner } from "./scanner";
+import { Scanner, decodeHtmlEntities } from "./scanner";
 import {
     Node,
     Token,
@@ -260,7 +260,7 @@ export class Parser {
         if (this.token === token) {
             const text = this.scanner.getTokenText();
             this.nextToken();
-            return text;
+            return decodeHtmlEntities(text);
         }
 
         return undefined;

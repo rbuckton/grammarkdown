@@ -10,6 +10,13 @@ LineTerminator ::
 	<LS>
 	<PS>
 
+LineTerminatorSequence ::
+	<LF>
+	<CR> [lookahead != <LF>]
+	<LS>
+	<PS>
+	<CR> <LF>
+
 IdentifierName ::
 	IdentifierStart
 	IdentifierName IdentifierPart
@@ -23,7 +30,7 @@ IdentifierPart ::
 	`_`
 	<ZWNJ>
 	<ZWJ>
-	
+
 UnicodeIDStart ::
 	> any Unicode code point with the Unicode property "ID_Start" or "Other_ID_Start"
 
@@ -32,7 +39,7 @@ UnicodeIDContinue ::
 
 ReservedWord ::
 	Keyword
-	
+
 Keyword :: one of
 	`empty`
 	`lookahead`
@@ -44,26 +51,77 @@ Keyword :: one of
 	`of`
 	`or`
 	`but`
-	`not`	
+	`not`
 
 DecimalDigit :: one of
 	`0` `1` `2` `3` `4` `5` `6` `7` `8` `9`
 
+HexDigits ::
+	HexDigit
+	HexDigits HexDigit
+
 HexDigit :: one of
 	`0` `1` `2` `3` `4` `5` `6` `7` `8` `9` `a` `b` `c` `d` `e` `f` `A` `B` `C` `D` `E` `F`
 
+NonZeroHexDigit ::
+	HexDigit but not `0`
+
 UnicodeCharacterLiteral ::
 	`<` UnicodeCharacterLiteralChars `>`
+	`U+` UnicodeCharacterLiteralHexDigits
+	`u+` UnicodeCharacterLiteralHexDigits
+
+UnicodeCharacterLiteralHexDigits ::
+	Hex4Digits
+	NonZeroHexDigit Hex4Digits
+	`10` Hex4Digits
 
 UnicodeCharacterLiteralChars ::
 	UnicodeCharacterLiteralChar UnicodeCharacterLiteralChars?
 
 UnicodeCharacterLiteralChar ::
-	SourceCharacter but not one of `<` or `>` or LineTerminator
-	
+	SourceCharacter but not one of `<` or `>` or `\` or LineTerminator
+	`\` EscapeSequence
+	LineContinuation
+
+LineContinuation ::
+	`\` LineTerminatorSequence
+
+EscapeSequence ::
+	CharacterEscapeSequence
+	`0` [lookahead <! DecimalDigit]
+	HexEscapeSequence
+	UnicodeEscapeSequence
+
+CharacterEscapeSequence ::
+	SingleEscapeCharacter
+	NonEscapeCharacter
+
+SingleEscapeCharacter :: one of
+	`'` `"` `\` `b` `f` `n` `r` `t` `v`
+
+NonEscapeCharacter ::
+	SourceCharacter but not one of EscapeCharacter or LineTerminator
+
+EscapeCharacter ::
+	SingleEscapeCharacter
+	DecimalDigit
+	`x`
+	`u`
+
+HexEscapeSequence ::
+	`x` HexDigit HexDigit
+
+UnicodeEscapeSequence ::
+	`u` Hex4Digits
+	`u{` HexDigits `}`
+
+Hex4Digits ::
+	HexDigit HexDigit HexDigit HexDigit
+
 Indent ::
 	> An increase in the indentation depth from the previous line.
-	
+
 Dedent ::
 	> A decrease in the indentation depth from the previous line.
 
@@ -83,7 +141,7 @@ Prose ::
 ProseLines ::
 	ProseLine
 	ProseLine LineTerminator ProseLines
-	
+
 ProseLine ::
 	`>` ProseChars?
 
@@ -114,7 +172,7 @@ PrimarySymbol :
 	Terminal
 	UnicodeCharacterLiteral
 	Nonterminal
-	
+
 Nonterminal :
 	Identifier Arguments?
 
@@ -186,7 +244,7 @@ AssertionClause :
 
 Assertion :
 	`[` AssertionClause `]`
-	
+
 ProseSpan :
 	Prose
 	ProseSpan LineTerminator Prose
@@ -239,7 +297,7 @@ SourceElement :
 	Production
 
 SourceElements :
-	SourceElement SourceElements?	
+	SourceElement SourceElements?
 
 SourceFile :
 	SourceElements

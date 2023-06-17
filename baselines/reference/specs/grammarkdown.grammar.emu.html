@@ -88,14 +88,49 @@
 <emu-production name="DecimalDigit" type="lexical" oneof>
     <emu-rhs>0 1 2 3 4 5 6 7 8 9</emu-rhs>
 </emu-production>
+<emu-production name="HexDigits" type="lexical">
+    <emu-rhs a="omskcs0d">
+        <emu-nt>HexDigit</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="yciymy2l">
+        <emu-nt>HexDigits</emu-nt>
+        <emu-nt>HexDigit</emu-nt>
+    </emu-rhs>
+</emu-production>
 <emu-production name="HexDigit" type="lexical" oneof>
     <emu-rhs>0 1 2 3 4 5 6 7 8 9 a b c d e f A B C D E F</emu-rhs>
+</emu-production>
+<emu-production name="NonZeroHexDigit" type="lexical">
+    <emu-rhs a="vkht0l2b">
+        <emu-nt>HexDigit</emu-nt> <emu-gmod>but not <emu-t>0</emu-t></emu-gmod>
+    </emu-rhs>
 </emu-production>
 <emu-production name="UnicodeCharacterLiteral" type="lexical">
     <emu-rhs a="60pqswpp">
         <emu-t>&lt;</emu-t>
         <emu-nt>UnicodeCharacterLiteralChars</emu-nt>
         <emu-t>&gt;</emu-t>
+    </emu-rhs>
+    <emu-rhs a="qndmauba">
+        <emu-t>U+</emu-t>
+        <emu-nt>UnicodeCharacterLiteralHexDigits</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="jyzae20u">
+        <emu-t>u+</emu-t>
+        <emu-nt>UnicodeCharacterLiteralHexDigits</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="UnicodeCharacterLiteralHexDigits" type="lexical">
+    <emu-rhs a="pptelolr">
+        <emu-nt>Hex4Digits</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="7snh6qvu">
+        <emu-nt>NonZeroHexDigit</emu-nt>
+        <emu-nt>Hex4Digits</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="7cudep2z">
+        <emu-t>10</emu-t>
+        <emu-nt>Hex4Digits</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="UnicodeCharacterLiteralChars" type="lexical">
@@ -105,8 +140,92 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="UnicodeCharacterLiteralChar" type="lexical">
-    <emu-rhs a="ipspljs-">
-        <emu-nt>SourceCharacter</emu-nt> <emu-gmod>but not one of <emu-t>&lt;</emu-t> or <emu-t>&gt;</emu-t> or <emu-nt>LineTerminator</emu-nt></emu-gmod>
+    <emu-rhs a="8ognh64m">
+        <emu-nt>SourceCharacter</emu-nt> <emu-gmod>but not one of <emu-t>&lt;</emu-t> or <emu-t>&gt;</emu-t> or <emu-t>\</emu-t> or <emu-nt>LineTerminator</emu-nt></emu-gmod>
+    </emu-rhs>
+    <emu-rhs a="6n2njt_x">
+        <emu-t>\</emu-t>
+        <emu-nt>EscapeSequence</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="ajkpm2ja">
+        <emu-nt>LineContinuation</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="LineContinuation" type="lexical">
+    <emu-rhs a="xik9y9lz">
+        <emu-t>\</emu-t>
+        <emu-nt>LineTerminatorSequence</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="EscapeSequence" type="lexical">
+    <emu-rhs a="6ehvb3kw">
+        <emu-nt>CharacterEscapeSequence</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="awshns7m">
+        <emu-t>0</emu-t>
+        <emu-gann>lookahead ∉ <emu-nt>DecimalDigit</emu-nt></emu-gann>
+    </emu-rhs>
+    <emu-rhs a="qacbhaps">
+        <emu-nt>HexEscapeSequence</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="rl1vvdtr">
+        <emu-nt>UnicodeEscapeSequence</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="CharacterEscapeSequence" type="lexical">
+    <emu-rhs a="desdj6ig">
+        <emu-nt>SingleEscapeCharacter</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="t5gkmnte">
+        <emu-nt>NonEscapeCharacter</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="SingleEscapeCharacter" type="lexical" oneof>
+    <emu-rhs>&apos; &quot; \ b f n r t v</emu-rhs>
+</emu-production>
+<emu-production name="NonEscapeCharacter" type="lexical">
+    <emu-rhs a="g6xhj53i">
+        <emu-nt>SourceCharacter</emu-nt> <emu-gmod>but not one of <emu-nt>EscapeCharacter</emu-nt> or <emu-nt>LineTerminator</emu-nt></emu-gmod>
+    </emu-rhs>
+</emu-production>
+<emu-production name="EscapeCharacter" type="lexical">
+    <emu-rhs a="desdj6ig">
+        <emu-nt>SingleEscapeCharacter</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="s4me4hlz">
+        <emu-nt>DecimalDigit</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="fqodqad9">
+        <emu-t>x</emu-t>
+    </emu-rhs>
+    <emu-rhs a="jc5mvt_f">
+        <emu-t>u</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="HexEscapeSequence" type="lexical">
+    <emu-rhs a="2o-xpa4a">
+        <emu-t>x</emu-t>
+        <emu-nt>HexDigit</emu-nt>
+        <emu-nt>HexDigit</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="UnicodeEscapeSequence" type="lexical">
+    <emu-rhs a="ghktjvoi">
+        <emu-t>u</emu-t>
+        <emu-nt>Hex4Digits</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="va21h0xq">
+        <emu-t>u{</emu-t>
+        <emu-nt>HexDigits</emu-nt>
+        <emu-t>}</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="Hex4Digits" type="lexical">
+    <emu-rhs a="c6jeysfq">
+        <emu-nt>HexDigit</emu-nt>
+        <emu-nt>HexDigit</emu-nt>
+        <emu-nt>HexDigit</emu-nt>
+        <emu-nt>HexDigit</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="Indent" type="lexical">
@@ -151,9 +270,9 @@
     <emu-rhs a="woqw5wcn">
         <emu-nt>ProseLine</emu-nt>
     </emu-rhs>
-    <emu-rhs a="c4hj6oeb">
+    <emu-rhs a="f4rjmond">
         <emu-nt>ProseLine</emu-nt>
-        <emu-nt>LineTerminatorSequence</emu-nt>
+        <emu-nt>LineTerminator</emu-nt>
         <emu-nt>ProseLines</emu-nt>
     </emu-rhs>
 </emu-production>
@@ -385,9 +504,9 @@
     <emu-rhs a="cx0hfwg8">
         <emu-nt>Prose</emu-nt>
     </emu-rhs>
-    <emu-rhs a="f34a7ami">
+    <emu-rhs a="ro0tsqu_">
         <emu-nt>ProseSpan</emu-nt>
-        <emu-nt>LineTerminatorSequence</emu-nt>
+        <emu-nt>LineTerminator</emu-nt>
         <emu-nt>Prose</emu-nt>
     </emu-rhs>
 </emu-production>
@@ -420,9 +539,9 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="RightHandSide">
-    <emu-rhs a="u3kifmog">
+    <emu-rhs a="ixmdjeqh">
         <emu-nt>SymbolSpan</emu-nt>
-        <emu-nt>LineTerminatorSequence</emu-nt>
+        <emu-nt>LineTerminator</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="Terminals">
@@ -435,9 +554,9 @@
     <emu-rhs a="gusliiae">
         <emu-nt>Terminals</emu-nt>
     </emu-rhs>
-    <emu-rhs a="getaau-m">
+    <emu-rhs a="qf65uuyc">
         <emu-nt>TerminalList</emu-nt>
-        <emu-nt>LineTerminatorSequence</emu-nt>
+        <emu-nt>LineTerminator</emu-nt>
         <emu-nt>Terminals</emu-nt>
     </emu-rhs>
 </emu-production>
@@ -447,10 +566,10 @@
         <emu-t>of</emu-t>
         <emu-nt>Terminals</emu-nt>
     </emu-rhs>
-    <emu-rhs a="mtpe_4wt">
+    <emu-rhs a="pgmvglzt">
         <emu-t>one</emu-t>
         <emu-t>of</emu-t>
-        <emu-nt>LineTerminatorSequence</emu-nt>
+        <emu-nt>LineTerminator</emu-nt>
         <emu-nt>Indent</emu-nt>
         <emu-nt>TerminalList</emu-nt>
         <emu-nt>Dedent</emu-nt>
@@ -491,11 +610,11 @@
         <emu-t>:</emu-t>
         <emu-nt>RightHandSide</emu-nt>
     </emu-rhs>
-    <emu-rhs a="uqqn197z">
+    <emu-rhs a="e-zpzl_w">
         <emu-nt>Identifier</emu-nt>
         <emu-nt optional>Parameters</emu-nt>
         <emu-t>:</emu-t>
-        <emu-nt>LineTerminatorSequence</emu-nt>
+        <emu-nt>LineTerminator</emu-nt>
         <emu-nt>Indent</emu-nt>
         <emu-nt>RightHandSideList</emu-nt>
         <emu-nt>Dedent</emu-nt>

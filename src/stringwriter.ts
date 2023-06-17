@@ -147,7 +147,7 @@ export class StringWriter {
     }
 
     private flushIndent(): void {
-        if (this._flags & StringWriterFlags.IndentRequested) {
+        if (this._flags & StringWriterFlags.IndentRequested || this._text.length === 0 && this._depth > 0) {
             let indent = this._indents[this._depth];
             if (!indent && this._depth > 0) {
                 indent = this._indents[this._depth] = this._indents[this._depth - 1] + this._indents[1];

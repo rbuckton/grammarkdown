@@ -1,0 +1,56 @@
+/// terminals/unicodeCharacterLiteral.grammar:
+SyntaxKind[Identifier](1,1): CodePoints
+SyntaxKind[ColonToken](1,11): :
+SyntaxKind[UnicodeCharacterLiteral](2,5): U+0000
+SyntaxKind[UnicodeCharacterLiteral](3,5): U+FFFF
+SyntaxKind[UnicodeCharacterLiteral](4,5): U+10000
+SyntaxKind[UnicodeCharacterLiteral](5,5): U+1FFFF
+SyntaxKind[UnicodeCharacterLiteral](6,5): U+F0000
+SyntaxKind[UnicodeCharacterLiteral](7,5): U+FFFFF
+SyntaxKind[UnicodeCharacterLiteral](8,5): U+100000
+SyntaxKind[UnicodeCharacterLiteral](9,5): U+10FFFF
+SyntaxKind[UnicodeCharacterLiteral](10,5): U&#x2b;0000
+SyntaxKind[Identifier](12,1): ErrorCodePoints
+SyntaxKind[ColonToken](12,16): :
+SyntaxKind[UnicodeCharacterLiteral](13,5): U+0
+SyntaxKind[UnicodeCharacterLiteral](14,5): U+00
+SyntaxKind[UnicodeCharacterLiteral](15,5): U+000
+SyntaxKind[UnicodeCharacterLiteral](16,5): U+00000
+SyntaxKind[UnicodeCharacterLiteral](17,5): U+000000
+SyntaxKind[UnicodeCharacterLiteral](18,5): U+110000
+SyntaxKind[Identifier](20,1): WarningCodePoints
+SyntaxKind[ColonToken](20,18): :
+SyntaxKind[UnicodeCharacterLiteral](21,5): u+0000
+SyntaxKind[UnicodeCharacterLiteral](22,5): U+ffff
+SyntaxKind[Identifier](24,1): CharacterNames
+SyntaxKind[ColonToken](24,15): :
+SyntaxKind[UnicodeCharacterLiteral](25,5): &lt;foo
+SyntaxKind[UnicodeCharacterLiteral](25,12): &lt;bar&gt;
+SyntaxKind[UnicodeCharacterLiteral](26,5): &lt;foo\&lt;bar&gt;
+SyntaxKind[UnicodeCharacterLiteral](27,5): <NBSP>
+SyntaxKind[UnicodeCharacterLiteral](28,5): <U+2212 MINUS SIGN>
+SyntaxKind[UnicodeCharacterLiteral](29,5): <U+0000 A>
+SyntaxKind[UnicodeCharacterLiteral](30,5): <U+FFFF A>
+SyntaxKind[UnicodeCharacterLiteral](31,5): <U+10000 A>
+SyntaxKind[UnicodeCharacterLiteral](32,5): <U+1FFFF A>
+SyntaxKind[UnicodeCharacterLiteral](33,5): <U+F0000 A>
+SyntaxKind[UnicodeCharacterLiteral](34,5): <U+FFFFF A>
+SyntaxKind[UnicodeCharacterLiteral](35,5): <U+100000 A>
+SyntaxKind[UnicodeCharacterLiteral](36,5): <U+10FFFF A>
+SyntaxKind[UnicodeCharacterLiteral](37,5): <U&#x2b;0000 A>
+SyntaxKind[Identifier](39,1): ErrorCharacterNames
+SyntaxKind[ColonToken](39,20): :
+SyntaxKind[UnicodeCharacterLiteral](40,5): <U+>
+SyntaxKind[UnicodeCharacterLiteral](41,5): <U+A>
+SyntaxKind[UnicodeCharacterLiteral](42,5): <U+0>
+SyntaxKind[UnicodeCharacterLiteral](43,5): <U+0000>
+SyntaxKind[UnicodeCharacterLiteral](44,5): <U+00000 A>
+SyntaxKind[UnicodeCharacterLiteral](45,5): <U+000000 A>
+SyntaxKind[UnicodeCharacterLiteral](46,5): <U+110000 A>
+SyntaxKind[UnicodeCharacterLiteral](47,5): <U+0000 &copy;>
+SyntaxKind[UnicodeCharacterLiteral](48,5): <A B>
+SyntaxKind[Identifier](50,1): WarningCharacterNames
+SyntaxKind[ColonToken](50,22): :
+SyntaxKind[UnicodeCharacterLiteral](51,5): <u+ffff A>
+SyntaxKind[UnicodeCharacterLiteral](52,5): <U+ffff A>
+SyntaxKind[EndOfFileToken](53,1): «EndOfFileToken»

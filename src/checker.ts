@@ -5,61 +5,62 @@
  * in the root of this repository or package.
  */
 
-import { createHash } from "crypto";
-import { Cancelable } from "@esfx/cancelable";
 import { CancelToken } from "@esfx/async-canceltoken";
-import { Diagnostics, DiagnosticMessages, Diagnostic, formatList, NullDiagnosticMessages } from "./diagnostics";
-import { LineOffsetMap } from "./lineOffsetMap";
-import { SyntaxKind, tokenToString } from "./tokens";
-import { Symbol, SymbolKind } from "./symbols";
+import { Cancelable } from "@esfx/cancelable";
+import { createHash } from "crypto";
 import { BindingTable } from "./binder";
-import { StringWriter } from "./stringwriter";
-import { CompilerOptions } from "./options";
+import { toCancelToken } from "./core";
+import { Diagnostic, DiagnosticMessages, Diagnostics, NullDiagnosticMessages, formatList } from "./diagnostics";
+import { LineOffsetMap } from "./lineOffsetMap";
+import { NodeNavigator } from "./navigator";
 import {
-    Node,
-    SourceFile,
-    UnicodeCharacterLiteral,
-    UnicodeCharacterRange,
-    Prose,
-    Identifier,
-    Parameter,
-    ParameterList,
-    OneOfList,
-    Terminal,
-    SymbolSet,
+    Argument,
+    ArgumentList,
     Assertion,
+    ButNotSymbol,
+    Constraints,
+    Declaration,
+    Define,
     EmptyAssertion,
+    HtmlTrivia,
+    Identifier,
+    LexicalGoalAssertion,
+    LexicalSymbol,
+    Line,
+    LinkReference,
     LookaheadAssertion,
     NoSymbolHereAssertion,
-    LexicalGoalAssertion,
-    Constraints,
+    Node,
+    Nonterminal,
+    OneOfList,
+    OneOfSymbol,
+    OptionalSymbol,
+    Parameter,
+    ParameterList,
+    PlaceholderSymbol,
+    Production,
+    Prose,
     ProseAssertion,
     ProseFragment,
     ProseFragmentLiteral,
-    Argument,
-    ArgumentList,
-    Nonterminal,
-    OneOfSymbol,
-    LexicalSymbol,
-    OptionalSymbol,
-    ButNotSymbol,
-    SymbolSpan,
-    LinkReference,
     RightHandSide,
     RightHandSideList,
-    Production,
     SourceElement,
-    Define,
-    PlaceholderSymbol,
-    HtmlTrivia,
-    Line,
-    Declaration,
+    SourceFile,
+    SymbolSet,
+    SymbolSpan,
+    Terminal,
     TerminalLiteral,
+    UnicodeCharacterLiteral,
+    UnicodeCharacterRange,
 } from "./nodes";
-import { NodeNavigator } from "./navigator";
-import { toCancelToken } from "./core";
-import { Position, Range } from "./types";
+import { CompilerOptions } from "./options";
 import { RegionMap } from "./regionMap";
+import { StringWriter } from "./stringwriter";
+import { Symbol, SymbolKind } from "./symbols";
+import { CharacterCodes, SyntaxKind, tokenToString } from "./tokens";
+import { Position, Range } from "./types";
+import { isHexDigit, isIdentifierPart, isIdentifierStart, isWhiteSpace } from "./scanner";
 
 class NodeLinks {
     hasResolvedSymbols?: boolean;
@@ -510,7 +511,7 @@ export class Checker {
             this.checkConstraints(node.constraints);
         }
         if (node.head) {
-            this.checkSymbolSpan(node.head);
+            this.checkSymbolSpan(node.head, !node.constraints);
         }
         if (node.reference) {
             this.checkLinkReference(node.reference);
@@ -557,9 +558,9 @@ export class Checker {
         return false;
     }
 
-    private checkSymbolSpan(node: SymbolSpan): void {
+    private checkSymbolSpan(node: SymbolSpan, suggestConstraints: boolean): void {
         this.checkGrammarSymbolSpan(node);
-        this.checkSymbolSpanOrHigher(node.symbol);
+        this.checkSymbolSpanOrHigher(node.symbol, suggestConstraints);
 
         if (node.next) {
             this.checkSymbolSpanRest(node.next);
@@ -584,13 +585,13 @@ export class Checker {
         return false;
     }
 
-    private checkSymbolSpanOrHigher(node: LexicalSymbol): void {
+    private checkSymbolSpanOrHigher(node: LexicalSymbol, suggestConstraints: boolean): void {
         if (node.kind === SyntaxKind.Prose) {
             this.checkProse(<Prose>node);
             return;
         }
 
-        this.checkSymbolOrHigher(node);
+        this.checkSymbolOrHigher(node, suggestConstraints);
     }
 
     private checkProse(node: Prose): void {
@@ -603,7 +604,7 @@ export class Checker {
 
     private checkSymbolSpanRest(node: SymbolSpan): void {
         this.checkGrammarSymbolSpanRest(node);
-        this.checkSymbolOrHigher(node.symbol);
+        this.checkSymbolOrHigher(node.symbol, /*suggestConstraints*/ false);
 
         if (node.next) {
             this.checkSymbolSpanRest(node.next);
@@ -632,16 +633,16 @@ export class Checker {
         return false;
     }
 
-    private checkSymbolOrHigher(node: LexicalSymbol): void {
+    private checkSymbolOrHigher(node: LexicalSymbol, suggestConstraints: boolean): void {
         if (isAssertion(node)) {
-            this.checkAssertion(<Assertion>node);
+            this.checkAssertion(<Assertion>node, suggestConstraints);
             return;
         }
 
         this.checkButNotSymbolOrHigher(node);
     }
 
-    private checkAssertion(node: Assertion): void {
+    private checkAssertion(node: Assertion, suggestConstraints: boolean): void {
         switch (node.kind) {
             case SyntaxKind.EmptyAssertion:
                 this.checkEmptyAssertion(<EmptyAssertion>node);
@@ -664,7 +665,7 @@ export class Checker {
                 break;
 
             case SyntaxKind.InvalidAssertion:
-                this.reportInvalidAssertion(<Assertion>node);
+                this.reportInvalidAssertion(<Assertion>node, suggestConstraints);
                 break;
         }
     }
@@ -937,18 +938,27 @@ export class Checker {
         }
     }
 
-    private reportInvalidAssertion(node: Assertion): void {
+    private reportInvalidAssertion(node: Assertion, suggestConstraints: boolean): void {
         if (this.checkGrammarAssertionHead(node)) {
             return;
         }
 
-        this.reportGrammarError(node, node.openBracketToken.end, Diagnostics._0_expected, formatList([
-            SyntaxKind.LookaheadKeyword,
-            SyntaxKind.LexicalKeyword,
-            SyntaxKind.NoKeyword,
-            SyntaxKind.TildeToken,
-            SyntaxKind.PlusToken
-        ]));
+        if (suggestConstraints) {
+            this.reportGrammarError(node, node.openBracketToken.end, Diagnostics._0_expected, formatList([
+                SyntaxKind.LookaheadKeyword,
+                SyntaxKind.LexicalKeyword,
+                SyntaxKind.NoKeyword,
+                SyntaxKind.TildeToken,
+                SyntaxKind.PlusToken
+            ]));
+        }
+        else {
+            this.reportGrammarError(node, node.openBracketToken.end, Diagnostics._0_expected, formatList([
+                SyntaxKind.LookaheadKeyword,
+                SyntaxKind.LexicalKeyword,
+                SyntaxKind.NoKeyword,
+            ]));
+        }
     }
 
     private checkButNotSymbolOrHigher(node: LexicalSymbol) {
@@ -1121,9 +1131,149 @@ export class Checker {
         this.checkGrammarUnicodeCharacterLiteral(node);
     }
 
+    private checkGrammarUnicodeCharacterLiteralCodePointErrors(node: UnicodeCharacterLiteral, text: string, start: number, end: number): boolean {
+        const len = end - start;
+        if (len < "U+0000".length) {
+            return this.reportGrammarErrorForNode(node, Diagnostics.Unicode_code_point_literals_must_have_at_least_four_hexadecimal_digits);
+        }
+
+        if (len >= "U+10000".length) {
+            if (text.charCodeAt(start + 2) === CharacterCodes.Number0) {
+                return this.reportGrammarErrorForNode(node, Diagnostics.Unicode_code_point_literals_with_more_than_four_digits_may_not_have_leading_zeros);
+            }
+
+            if (len > "U+100000".length) {
+                return this.reportGrammarErrorForNode(node, Diagnostics.Unicode_code_point_literal_value_is_outside_of_the_allowed_range);
+            }
+            else if (len === "U+100000".length) {
+                if (text.charCodeAt(start + 2) !== CharacterCodes.Number1 ||
+                    text.charCodeAt(start + 3) !== CharacterCodes.Number0) {
+                    return this.reportGrammarErrorForNode(node, Diagnostics.Unicode_code_point_literal_value_is_outside_of_the_allowed_range);
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private checkGrammarUnicodeCharacterLiteralCodePointWarnings(node: UnicodeCharacterLiteral, text: string, start: number, end: number): boolean {
+        const len = end - start;
+
+        if (text.charCodeAt(start) === CharacterCodes.LowerU) {
+            return this.reportGrammarErrorForNode(node, Diagnostics.Unicode_code_point_literals_should_use_uppercase_U_prefix);
+        }
+
+        for (let i = 2; i < len; i++) {
+            const ch = text.charCodeAt(start + i);
+            if (ch >= CharacterCodes.LowerA && ch <= CharacterCodes.LowerF) {
+                return this.reportGrammarErrorForNode(node, Diagnostics.Unicode_code_point_literals_should_use_uppercase_hexadecimal_digits);
+            }
+        }
+
+        return false;
+    }
+
+    private checkGrammarUnicodeCharacterLiteralCharacterNameCodePointDescription(node: UnicodeCharacterLiteral, text: string, pos: number): boolean {
+        let end = text.length;
+        if (end - 1 > pos && text.charCodeAt(end - 1) === CharacterCodes.GreaterThan) {
+            end--;
+        }
+
+        if (pos === end) {
+            return this.reportGrammarErrorForNode(node, Diagnostics.Unicode_character_name_literal_that_includes_a_code_point_must_have_a_description);
+        }
+
+        if (!isWhiteSpace(text.charCodeAt(pos))) {
+            return this.reportGrammarErrorForNode(node, Diagnostics.Unicode_character_name_literal_code_point_and_description_must_be_separated_by_whitespace);
+        }
+
+        pos++;
+        while (pos < end) {
+            const ch = text.charCodeAt(pos);
+            if (!(ch >= 0x20 && ch <= 0x7e)) {
+                return this.reportGrammarErrorForNode(node, Diagnostics.Unicode_character_name_literal_code_point_description_may_only_contain_printable_ASCII_characters);
+            }
+            pos++;
+        }
+
+        return false;
+    }
+
+    private checkGrammarUnicodeCharacterLiteralCharacterNameIdentifier(node: UnicodeCharacterLiteral, text: string): boolean {
+        let pos = 1;
+        let end = text.length;
+        if (end - 1 > pos && text.charCodeAt(end - 1) === CharacterCodes.GreaterThan) {
+            end--;
+        }
+
+        pos++;
+        if (pos < end) {
+            const ch = text.charCodeAt(pos);
+            if (!isIdentifierStart(ch)) {
+                return this.reportGrammarErrorForNode(node, Diagnostics.Unicode_character_name_literal_must_be_an_ASCII_identifier);
+            }
+            pos++;
+        }
+
+        while (pos < end) {
+            const ch = text.charCodeAt(pos);
+            if (!isIdentifierPart(ch)) {
+                return this.reportGrammarErrorForNode(node, Diagnostics.Unicode_character_name_literal_must_be_an_ASCII_identifier);
+            }
+            pos++;
+        }
+
+        return false;
+    }
+
+    private checkGrammarUnicodeCharacterLiteralCharacterName(node: UnicodeCharacterLiteral, text: string): boolean {
+        if (text.length >= "<U+".length) {
+            let ch = text.charCodeAt(1);
+            if ((ch === CharacterCodes.UpperU || ch === CharacterCodes.LowerU) && text.charCodeAt(2) === CharacterCodes.Plus) {
+                let end = "<U+".length;
+                while (end < text.length) {
+                    ch = text.charCodeAt(end);
+                    if (!isHexDigit(ch)) {
+                        break;
+                    }
+                    end++;
+                }
+
+                if (end === "<U+".length) {
+                    return this.reportGrammarErrorForNode(node, Diagnostics.Unicode_character_name_literal_may_not_start_with_U_unless_it_is_a_valid_code_point);
+                }
+
+                if (this.checkGrammarUnicodeCharacterLiteralCodePointErrors(node, text, 1, end)) {
+                    return true;
+                }
+
+                if (end === text.length || text.charCodeAt(end) === CharacterCodes.GreaterThan) {
+                    return this.reportGrammarErrorForNode(node, Diagnostics.Unicode_character_name_literal_that_includes_a_code_point_must_have_a_description);
+                }
+
+                if (end < text.length && !isWhiteSpace(text.charCodeAt(end))) {
+                    return this.reportGrammarErrorForNode(node, Diagnostics.Unicode_character_name_literal_code_point_and_description_must_be_separated_by_whitespace);
+                }
+
+                return this.checkGrammarUnicodeCharacterLiteralCharacterNameCodePointDescription(node, text, end) ||
+                    this.checkGrammarUnicodeCharacterLiteralCodePointWarnings(node, text, 1, end);
+            }
+        }
+        return this.checkGrammarUnicodeCharacterLiteralCharacterNameIdentifier(node, text);
+    }
+
     private checkGrammarUnicodeCharacterLiteral(node: UnicodeCharacterLiteral): boolean {
         if (!node.text) {
             return this.reportGrammarErrorForNode(node, Diagnostics._0_expected, tokenToString(SyntaxKind.UnicodeCharacterLiteral));
+        }
+
+        const ch = node.text.charCodeAt(0);
+        if (ch === CharacterCodes.UpperU || ch === CharacterCodes.LowerU) {
+            return this.checkGrammarUnicodeCharacterLiteralCodePointErrors(node, node.text, 0, node.text.length) ||
+                this.checkGrammarUnicodeCharacterLiteralCodePointWarnings(node, node.text, 0, node.text.length);
+        }
+        if (ch === CharacterCodes.LessThan) {
+            return this.checkGrammarUnicodeCharacterLiteralCharacterName(node, node.text);
         }
 
         return false;

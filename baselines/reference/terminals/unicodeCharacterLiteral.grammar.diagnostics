@@ -1,0 +1,118 @@
+/// terminals/unicodeCharacterLiteral.grammar:
+terminals/unicodeCharacterLiteral.grammar(13,5): error GM1011: Unicode code point literals must have at least four hexadecimal digits
+terminals/unicodeCharacterLiteral.grammar(14,5): error GM1011: Unicode code point literals must have at least four hexadecimal digits
+terminals/unicodeCharacterLiteral.grammar(15,5): error GM1011: Unicode code point literals must have at least four hexadecimal digits
+terminals/unicodeCharacterLiteral.grammar(16,5): error GM1012: Unicode code point literals with more than four digits may not have leading zeros
+terminals/unicodeCharacterLiteral.grammar(17,5): error GM1012: Unicode code point literals with more than four digits may not have leading zeros
+terminals/unicodeCharacterLiteral.grammar(18,5): error GM1015: Unicode code point literal value is outside of the allowed range
+terminals/unicodeCharacterLiteral.grammar(21,5): warning GM1013: Unicode code point literals should use uppercase 'U+' prefix
+terminals/unicodeCharacterLiteral.grammar(22,5): warning GM1014: Unicode code point literals should use uppercase hexadecimal digits
+terminals/unicodeCharacterLiteral.grammar(25,5): error GM1004: Unterminated string literal
+terminals/unicodeCharacterLiteral.grammar(26,5): error GM1020: Unicode character name literal must be an ASCII identifier
+terminals/unicodeCharacterLiteral.grammar(40,5): error GM1016: Unicode character name literal may not start with 'U+' unless it is a valid code point
+terminals/unicodeCharacterLiteral.grammar(41,5): error GM1011: Unicode code point literals must have at least four hexadecimal digits
+terminals/unicodeCharacterLiteral.grammar(42,5): error GM1011: Unicode code point literals must have at least four hexadecimal digits
+terminals/unicodeCharacterLiteral.grammar(43,5): error GM1017: Unicode character name literal that includes a code point must have a description
+terminals/unicodeCharacterLiteral.grammar(44,5): error GM1012: Unicode code point literals with more than four digits may not have leading zeros
+terminals/unicodeCharacterLiteral.grammar(45,5): error GM1012: Unicode code point literals with more than four digits may not have leading zeros
+terminals/unicodeCharacterLiteral.grammar(46,5): error GM1015: Unicode code point literal value is outside of the allowed range
+terminals/unicodeCharacterLiteral.grammar(47,5): error GM1019: Unicode character name literal code point description may only contain printable ASCII characters
+terminals/unicodeCharacterLiteral.grammar(48,5): error GM1020: Unicode character name literal must be an ASCII identifier
+terminals/unicodeCharacterLiteral.grammar(51,5): warning GM1013: Unicode code point literals should use uppercase 'U+' prefix
+terminals/unicodeCharacterLiteral.grammar(52,5): warning GM1014: Unicode code point literals should use uppercase hexadecimal digits
+
+/// [terminals/unicodeCharacterLiteral.grammar] 21 errors
+    CodePoints:
+        U+0000
+        U+FFFF
+        U+10000
+        U+1FFFF
+        U+F0000
+        U+FFFFF
+        U+100000
+        U+10FFFF
+        U&#x2b;0000
+    
+    ErrorCodePoints:
+        U+0
+        ~~~
+!!! error GM1011: Unicode code point literals must have at least four hexadecimal digits
+        U+00
+        ~~~~
+!!! error GM1011: Unicode code point literals must have at least four hexadecimal digits
+        U+000
+        ~~~~~
+!!! error GM1011: Unicode code point literals must have at least four hexadecimal digits
+        U+00000
+        ~~~~~~~
+!!! error GM1012: Unicode code point literals with more than four digits may not have leading zeros
+        U+000000
+        ~~~~~~~~
+!!! error GM1012: Unicode code point literals with more than four digits may not have leading zeros
+        U+110000
+        ~~~~~~~~
+!!! error GM1015: Unicode code point literal value is outside of the allowed range
+    
+    WarningCodePoints:
+        u+0000
+        ~~~~~~
+!!! warning GM1013: Unicode code point literals should use uppercase 'U+' prefix
+        U+ffff
+        ~~~~~~
+!!! warning GM1014: Unicode code point literals should use uppercase hexadecimal digits
+    
+    CharacterNames:
+        &lt;foo&lt;bar&gt;
+        ~~~~~~~
+!!! error GM1004: Unterminated string literal
+        &lt;foo\&lt;bar&gt;
+        ~~~~~~~~~~~~~~~~~~~
+!!! error GM1020: Unicode character name literal must be an ASCII identifier
+        <NBSP>
+        <U+2212 MINUS SIGN>
+        <U+0000 A>
+        <U+FFFF A>
+        <U+10000 A>
+        <U+1FFFF A>
+        <U+F0000 A>
+        <U+FFFFF A>
+        <U+100000 A>
+        <U+10FFFF A>
+        <U&#x2b;0000 A>
+    
+    ErrorCharacterNames:
+        <U+>
+        ~~~~
+!!! error GM1016: Unicode character name literal may not start with 'U+' unless it is a valid code point
+        <U+A>
+        ~~~~~
+!!! error GM1011: Unicode code point literals must have at least four hexadecimal digits
+        <U+0>
+        ~~~~~
+!!! error GM1011: Unicode code point literals must have at least four hexadecimal digits
+        <U+0000>
+        ~~~~~~~~
+!!! error GM1017: Unicode character name literal that includes a code point must have a description
+        <U+00000 A>
+        ~~~~~~~~~~~
+!!! error GM1012: Unicode code point literals with more than four digits may not have leading zeros
+        <U+000000 A>
+        ~~~~~~~~~~~~
+!!! error GM1012: Unicode code point literals with more than four digits may not have leading zeros
+        <U+110000 A>
+        ~~~~~~~~~~~~
+!!! error GM1015: Unicode code point literal value is outside of the allowed range
+        <U+0000 &copy;>
+        ~~~~~~~~~~~~~~~
+!!! error GM1019: Unicode character name literal code point description may only contain printable ASCII characters
+        <A B>
+        ~~~~~
+!!! error GM1020: Unicode character name literal must be an ASCII identifier
+    
+    WarningCharacterNames:
+        <u+ffff A>
+        ~~~~~~~~~~
+!!! warning GM1013: Unicode code point literals should use uppercase 'U+' prefix
+        <U+ffff A>
+        ~~~~~~~~~~
+!!! warning GM1014: Unicode code point literals should use uppercase hexadecimal digits

@@ -28,6 +28,8 @@ const enum TokenFlags {
     TriviaPrecedingBlankLine = 1 << 8,
     TriviaPrecedingWhiteSpaceTrivia = 1 << 9,
     TriviaFlags = TriviaPrecedingLineTerminator | TriviaPrecedingBlankLine | TriviaPrecedingWhiteSpaceTrivia,
+
+    DecodedEntity = 1 << 10, // Reset every time a character is scanned. Indicates whether the last scanned character was a decoded entity.
 }
 
 /** {@docCategory Parse} */
@@ -308,7 +310,9 @@ export class Scanner {
                 case CharacterCodes.LessThan: {
                     // html trivia
                     const ch = this.peekChar(0);
-                    if (isHtmlTagNameStart(ch) || ch === CharacterCodes.Slash || ch === CharacterCodes.GreaterThan) {
+                    if (ch === CharacterCodes.Slash ||
+                        ch === CharacterCodes.GreaterThan ||
+                        (ch === CharacterCodes.LowerU ? this.peekChar(1) !== CharacterCodes.Plus : isHtmlTagNameStart(ch))) {
                         this.scanHtmlTrivia();
                         this.setHasPrecedingNonWhiteSpaceTrivia();
                         continue;
@@ -404,18 +408,17 @@ export class Scanner {
                 case CharacterCodes.Bar:
                     return this.tokenValue = this.scanString(ch, this.token = SyntaxKind.Identifier), this.token;
 
-                case CharacterCodes.LessThan: {
-                    const ch = this.text.charCodeAt(this.pos);
-                    if (ch === CharacterCodes.Exclamation) {
-                        return this.pos++, this.token = SyntaxKind.LessThanExclamationToken;
+                case CharacterCodes.LessThan:
+                    if (this.expectCharacter(/*decodeEntity*/ true, CharacterCodes.Exclamation)) {
+                        return this.token = SyntaxKind.LessThanExclamationToken;
                     }
-                    else if (ch === CharacterCodes.Minus) {
-                        return this.pos++, this.token = SyntaxKind.LessThanMinusToken;
+                    else if (this.expectCharacter(/*decodeEntity*/ true, CharacterCodes.Minus)) {
+                        return this.token = SyntaxKind.LessThanMinusToken;
                     }
                     else {
                         return this.tokenValue = this.scanString(CharacterCodes.GreaterThan, this.token = SyntaxKind.UnicodeCharacterLiteral), this.token;
                     }
-                }
+
                 case CharacterCodes.NotEqualTo:
                     return this.token = SyntaxKind.NotEqualToToken;
 
@@ -435,16 +438,10 @@ export class Scanner {
                     return this.token = SyntaxKind.CloseParenToken;
 
                 case CharacterCodes.OpenBracket:
-                    if (this.text.charCodeAt(this.pos) === CharacterCodes.GreaterThan) {
-                        return this.pos++, this.skipWhiteSpace(), this.proseStartToken = this.token = SyntaxKind.OpenBracketGreaterThanToken;
+                    if (this.expectCharacter(/*decodeEntity*/ true, CharacterCodes.GreaterThan)) {
+                        return this.skipWhiteSpace(), this.proseStartToken = this.token = SyntaxKind.OpenBracketGreaterThanToken;
                     }
-                    else if (this.text.charCodeAt(this.pos) === CharacterCodes.Ampersand) {
-                        const pos = this.pos++;
-                        if (this.scanCharacterEntity() === CharacterCodes.GreaterThan) {
-                            return this.skipWhiteSpace(), this.proseStartToken = this.token = SyntaxKind.OpenBracketGreaterThanToken;
-                        }
-                        this.pos = pos;
-                    }
+
                     return this.token = SyntaxKind.OpenBracketToken;
 
                 case CharacterCodes.CloseBracket:
@@ -466,10 +463,9 @@ export class Scanner {
                     return this.token = SyntaxKind.CommaToken;
 
                 case CharacterCodes.Colon:
-                    if (this.text.charCodeAt(this.pos) === CharacterCodes.Colon) {
-                        this.pos++;
-                        if (this.text.charCodeAt(this.pos) === CharacterCodes.Colon) {
-                            return this.pos++, this.token = SyntaxKind.ColonColonColonToken;
+                    if (this.expectCharacter(/*decodeEntity*/ true, CharacterCodes.Colon)) {
+                        if (this.expectCharacter(/*decodeEntity*/ true, CharacterCodes.Colon)) {
+                            return this.token = SyntaxKind.ColonColonColonToken;
                         }
 
                         return this.token = SyntaxKind.ColonColonToken;
@@ -481,15 +477,15 @@ export class Scanner {
                     return this.token = SyntaxKind.QuestionToken;
 
                 case CharacterCodes.Equals:
-                    if (this.text.charCodeAt(this.pos) === CharacterCodes.Equals) {
-                        return this.pos++, this.token = SyntaxKind.EqualsEqualsToken;
+                    if (this.expectCharacter(/*decodeEntity*/ true, CharacterCodes.Equals)) {
+                        return this.token = SyntaxKind.EqualsEqualsToken;
                     }
 
                     return this.token = SyntaxKind.EqualsToken;
 
                 case CharacterCodes.Exclamation:
-                    if (this.text.charCodeAt(this.pos) === CharacterCodes.Equals) {
-                        return this.pos++, this.token = SyntaxKind.ExclamationEqualsToken;
+                    if (this.expectCharacter(/*decodeEntity*/ true, CharacterCodes.Equals)) {
+                        return this.token = SyntaxKind.ExclamationEqualsToken;
                     }
 
                     return this.token = SyntaxKind.Unknown;
@@ -504,28 +500,49 @@ export class Scanner {
                 case CharacterCodes.Number7:
                 case CharacterCodes.Number8:
                 case CharacterCodes.Number9:
-                    return this.tokenValue = this.scanNumber(), this.token = SyntaxKind.NumberLiteral;
+                    return this.tokenValue = this.scanNumber(ch, /*decodeEntities*/ true), this.token = SyntaxKind.NumberLiteral;
 
                 case CharacterCodes.UpperU:
-                case CharacterCodes.LowerU:
-                    if (this.pos + 4 < this.len
-                        && this.text.charCodeAt(this.pos) === CharacterCodes.Plus
-                        && isHexDigit(this.text.charCodeAt(this.pos + 1))
-                        && isHexDigit(this.text.charCodeAt(this.pos + 2))
-                        && isHexDigit(this.text.charCodeAt(this.pos + 3))
-                        && isHexDigit(this.text.charCodeAt(this.pos + 4))) {
-                        return this.tokenValue = this.text.substr(this.tokenPos, 6), this.pos += 5, this.token = SyntaxKind.UnicodeCharacterLiteral;
-                    }
+                case CharacterCodes.LowerU: {
+                    const savedPos = this.pos;
+                    const savedTokenFlags = this.tokenFlags;
+                    if (this.pos < this.len && this.expectCharacter(/*decodeEntity*/ true, CharacterCodes.Plus)) {
+                        if (this.scanHexDigits(/*decodeEntities*/ true, 1, 6, /*forbidExcessDigits*/ true) !== -1) {
+                            // NOTE: code points are validated in checker
+                            return this.token = SyntaxKind.UnicodeCharacterLiteral;
+                        }
 
+                        this.pos = savedPos;
+                        this.tokenFlags = savedTokenFlags;
+                    }
+                }
                 // fall-through
 
                 default:
                     if (isIdentifierStart(ch)) {
-                        while (isIdentifierPart(this.text.charCodeAt(this.pos))) {
-                            this.pos++;
+                        let startPos = this.tokenPos;
+                        if (this.tokenFlags & TokenFlags.DecodedEntity) {
+                            this.tokenValue = String.fromCharCode(ch);
+                            startPos = this.pos;
+                        }
+                        else {
+                            this.tokenValue = "";
                         }
 
-                        this.tokenValue = this.text.substring(this.tokenPos, this.pos);
+                        while (this.pos < this.len) {
+                            const lastPos = this.pos;
+                            const ch = this.scanCharacter(/*decodeEntity*/ true);
+                            if (!isIdentifierPart(ch)) {
+                                this.pos = lastPos;
+                                break;
+                            }
+                            if (this.tokenFlags & TokenFlags.DecodedEntity) {
+                                this.tokenValue += this.text.slice(startPos, lastPos);
+                                this.tokenValue += String.fromCharCode(ch);
+                                startPos = this.pos;
+                            }
+                        }
+                        this.tokenValue += this.text.slice(startPos, this.pos);
                         return this.token = this.getIdentifierToken();
                     }
 
@@ -686,8 +703,7 @@ export class Scanner {
             this.skipLineTerminator();
             this.skipWhiteSpace();
             if (this.pos < this.len) {
-                if (this.text.charCodeAt(this.pos) === CharacterCodes.GreaterThan) {
-                    this.pos++;
+                if (this.expectCharacter(/*decodeEntity*/ true, CharacterCodes.GreaterThan)) {
                     this.skipWhiteSpace();
                     return true;
                 }
@@ -773,12 +789,35 @@ export class Scanner {
         this.recordTrivia(new HtmlCommentTrivia());
     }
 
-    private scanCharacter(decodeEntity: boolean) {
-        let ch = this.text.charCodeAt(this.pos);
-        this.pos++;
-        if (decodeEntity && ch === CharacterCodes.Ampersand) {
-            ch = this.scanCharacterEntity();
+    private expectCharacter(decodeEntity: boolean, ch: number) {
+        const savedPos = this.pos;
+        const savedTokenFlags = this.tokenFlags;
+        if (this.scanCharacter(decodeEntity) !== ch) {
+            this.pos = savedPos;
+            this.tokenFlags = savedTokenFlags;
+            return false;
         }
+        return true;
+    }
+
+    private matchCharacter(decodeEntity: boolean, cb: (ch: number) => boolean) {
+        const savedPos = this.pos;
+        const savedTokenFlags = this.tokenFlags;
+        const ch = this.scanCharacter(decodeEntity);
+        if (!cb(ch)) {
+            this.pos = savedPos;
+            this.tokenFlags = savedTokenFlags;
+            return -1;
+        }
+        return ch;
+    }
+
+    private scanCharacter(decodeEntity: boolean) {
+        const ch = this.text.charCodeAt(this.pos++);
+        if (decodeEntity && ch === CharacterCodes.Ampersand) {
+            return this.scanCharacterEntity();
+        }
+        this.tokenFlags &= ~TokenFlags.DecodedEntity;
         return ch;
     }
 
@@ -787,12 +826,14 @@ export class Scanner {
         let start: number;
         let pos: number;
         if (this.text.charCodeAt(this.pos) === CharacterCodes.Hash) {
-            const hex = this.text.charCodeAt(this.pos + 1) === CharacterCodes.LowerX ||
+            const hex =
+                this.text.charCodeAt(this.pos + 1) === CharacterCodes.LowerX ||
                 this.text.charCodeAt(this.pos + 1) === CharacterCodes.UpperX;
             start = this.pos + (hex ? 2 : 1);
             pos = start;
             while (pos < this.len) {
-                const digit = hex ? this.hexDigitAt(pos) : this.decimalDigitAt(pos);
+                const ch = this.text.charCodeAt(pos);
+                const digit = hex ? charToHexDigit(ch) : charToDecimalDigit(ch);
                 if (digit === -1) break;
                 value = value * (hex ? 16 : 10) + digit;
                 pos++;
@@ -811,8 +852,10 @@ export class Scanner {
         }
         if (pos > start && this.text.charCodeAt(pos) === CharacterCodes.Semicolon) {
             this.pos = pos + 1;
+            this.tokenFlags |= TokenFlags.DecodedEntity;
             return value;
         }
+        this.tokenFlags &= ~TokenFlags.DecodedEntity;
         return CharacterCodes.Ampersand;
     }
 
@@ -826,13 +869,13 @@ export class Scanner {
             if (this.pos >= this.len) {
                 result += this.text.slice(start, this.pos);
                 this.setTokenAsUnterminated();
-                this.getDiagnostics().report(this.pos, diagnostic || Diagnostics.Unterminated_string_literal);
+                this.getDiagnostics().reportRange(this.tokenPos, this.pos, diagnostic || Diagnostics.Unterminated_string_literal);
                 break;
             }
 
             const lastPos = this.pos;
             let ch = this.scanCharacter(decodeEscapeSequences);
-            if (this.pos > lastPos + 1) {
+            if (this.tokenFlags & TokenFlags.DecodedEntity) {
                 // Reference-decoded characters span multiple indexes, breaking naive assumptions.
                 // Read in everything preceding the reference, and set the new position to the
                 // index following it.
@@ -858,10 +901,17 @@ export class Scanner {
                 result += this.text.slice(start, this.pos - 1);
                 break;
             }
+            else if (quote === CharacterCodes.GreaterThan && ch === CharacterCodes.LessThan) {
+                this.pos = lastPos;
+                result += this.text.slice(start, lastPos);
+                this.setTokenAsUnterminated();
+                this.getDiagnostics().reportRange(this.tokenPos, lastPos, diagnostic || Diagnostics.Unterminated_string_literal);
+                break;
+            }
             else if (decodeEscapeSequences && ch === CharacterCodes.Backslash) {
                 // terminals cannot have escape sequences
                 result += this.text.slice(start, this.pos - 1);
-                result += this.scanEscapeSequence();
+                result += this.scanEscapeSequence(lastPos);
                 start = this.pos;
                 continue;
             }
@@ -869,7 +919,7 @@ export class Scanner {
                 this.pos--;
                 result += this.text.slice(start, this.pos);
                 this.setTokenAsUnterminated();
-                this.getDiagnostics().report(this.pos, diagnostic || Diagnostics.Unterminated_string_literal);
+                this.getDiagnostics().reportRange(this.tokenPos, this.pos, diagnostic || Diagnostics.Unterminated_string_literal);
                 break;
             }
         }
@@ -877,10 +927,9 @@ export class Scanner {
         return result;
     }
 
-    private scanEscapeSequence(): string {
-        const start = this.pos;
+    private scanEscapeSequence(start: number): string {
         if (this.pos >= this.len) {
-            this.getDiagnostics().report(start, Diagnostics.Invalid_escape_sequence);
+            this.getDiagnostics().reportRange(start, this.pos, Diagnostics.Invalid_escape_sequence);
             return "";
         }
 
@@ -915,12 +964,12 @@ export class Scanner {
 
             case CharacterCodes.LowerX:
             case CharacterCodes.LowerU:
-                ch = this.scanHexDigits(ch === CharacterCodes.LowerX ? 2 : 4, /*mustMatchCount*/ true);
+                ch = this.scanHexDigits(/*decodeEntities*/ false, ch === CharacterCodes.LowerX ? 2 : 4);
                 if (ch >= 0) {
                     return String.fromCharCode(ch);
                 }
                 else {
-                    this.getDiagnostics().report(start, Diagnostics.Invalid_escape_sequence);
+                    this.getDiagnostics().reportRange(start, this.pos, Diagnostics.Invalid_escape_sequence);
                     return "";
                 }
 
@@ -943,77 +992,136 @@ export class Scanner {
         }
     }
 
-    private decimalDigitAt(pos: number) {
-        const ch = this.text.charCodeAt(pos);
-        if (ch >= CharacterCodes.Number0 && ch <= CharacterCodes.Number9) {
-            return ch - CharacterCodes.Number0;
-        }
-        return -1;
-    }
-
-    private hexDigitAt(pos: number) {
-        const ch = this.text.charCodeAt(pos);
-        if (ch >= CharacterCodes.Number0 && ch <= CharacterCodes.Number9) {
-            return ch - CharacterCodes.Number0;
-        }
-        else if (ch >= CharacterCodes.UpperA && ch <= CharacterCodes.UpperF) {
-            return ch - CharacterCodes.UpperA + 10;
-        }
-        else if (ch >= CharacterCodes.LowerA && ch <= CharacterCodes.LowerF) {
-            return ch - CharacterCodes.LowerA + 10;
-        }
-        return -1;
-    }
-
-    private scanHexDigits(count: number, mustMatchCount?: boolean): number {
-        let digits = 0;
-        let value = 0;
-        while (digits < count || !mustMatchCount) {
-            const digit = this.hexDigitAt(this.pos);
-            if (digit === -1) break;
-            value = value * 16 + digit;
-            this.pos++;
-            digits++;
-        }
-        if (digits < count) {
-            value = -1;
+    private scanHexDigit(decodeEntity: boolean) {
+        const initialPos = this.pos;
+        const ch = this.scanCharacter(decodeEntity);
+        const value = charToHexDigit(ch);
+        if (value === -1) {
+            this.pos = initialPos;
         }
         return value;
     }
 
-    private scanNumber(): string {
-        while (isDecimalDigit(this.text.charCodeAt(this.pos))) {
-            this.pos++;
+    private scanHexDigits(decodeEntities: boolean, minCount: number, maxCount = minCount, forbidExcessDigits?: boolean): number {
+        const start = this.pos;
+        let digits = 0;
+        let value = 0;
+        while (digits < maxCount) {
+            const digit = this.scanHexDigit(decodeEntities);
+            if (digit === -1) break;
+            value = value * 16 + digit;
+            digits++;
+        }
+        if (digits < minCount || digits === maxCount && forbidExcessDigits && this.scanHexDigit(/*decodeEntity*/ true) !== -1) {
+            this.pos = start;
+            return -1;
+        }
+        return value;
+    }
+
+    private scanNumber(ch: number, decodeEntities: boolean): string {
+        let text = "";
+        let startPos = this.tokenPos;
+        let lastPos = this.pos;
+
+        if (this.tokenFlags & TokenFlags.DecodedEntity) {
+            text += this.text.slice(startPos, lastPos);
+            text += String.fromCharCode(ch);
+            startPos = this.pos;
         }
 
-        if (this.text.charCodeAt(this.pos) === CharacterCodes.Dot) {
-            this.pos++;
-            while (isDecimalDigit(this.text.charCodeAt(this.pos))) {
-                this.pos++;
+        while (this.pos < this.len) {
+            ch = this.matchCharacter(decodeEntities, isDecimalDigit);
+            if (ch < 0) break;
+            if (this.tokenFlags & TokenFlags.DecodedEntity) {
+                text += this.text.slice(startPos, lastPos);
+                text += String.fromCharCode(ch);
+                startPos = this.pos;
             }
+
+            lastPos = this.pos;
         }
 
-        let end = this.pos;
-        if (this.text.charCodeAt(this.pos) === CharacterCodes.UpperE || this.text.charCodeAt(this.pos) === CharacterCodes.LowerE) {
-            this.pos++;
-            if (this.text.charCodeAt(this.pos) === CharacterCodes.Plus || this.text.charCodeAt(this.pos) === CharacterCodes.Minus) {
-                this.pos++;
+        if (this.pos < this.len && this.expectCharacter(decodeEntities, CharacterCodes.Dot)) {
+            if (this.tokenFlags & TokenFlags.DecodedEntity) {
+                text += this.text.slice(startPos, lastPos);
+                text += ".";
+                startPos = this.pos;
             }
 
-            if (isDecimalDigit(this.text.charCodeAt(this.pos))) {
-                this.pos++;
-                while (isDecimalDigit(this.text.charCodeAt(this.pos))) {
-                    this.pos++;
+            lastPos = this.pos;
+            while (this.pos < this.len) {
+                const ch = this.matchCharacter(decodeEntities, isDecimalDigit);
+                if (ch < 0) break;
+                if (this.tokenFlags & TokenFlags.DecodedEntity) {
+                    text += this.text.slice(startPos, lastPos);
+                    text += String.fromCharCode(ch);
+                    startPos = this.pos;
                 }
 
-                end = this.pos;
-            }
-            else {
-                this.getDiagnostics().report(this.pos, Diagnostics.Digit_expected);
+                lastPos = this.pos;
             }
         }
 
-        return +(this.text.substring(this.tokenPos, end)) + "";
+        if (this.pos < this.len) {
+            ch = this.matchCharacter(decodeEntities, isUpperOrLowerE);
+            if (ch >= 0) {
+                if (this.tokenFlags & TokenFlags.DecodedEntity) {
+                    text += this.text.slice(startPos, lastPos);
+                    text += String.fromCharCode(ch);
+                    startPos = this.pos;
+                }
+
+                lastPos = this.pos;
+
+                if (this.pos < this.len) {
+                    ch = this.matchCharacter(decodeEntities, isPlusOrMinus);
+                    if (ch >= 0) {
+                        if (this.tokenFlags & TokenFlags.DecodedEntity) {
+                            text += this.text.slice(startPos, lastPos);
+                            text += String.fromCharCode(ch);
+                            startPos = this.pos;
+                        }
+                    }
+
+                    lastPos = this.pos;
+                }
+
+                if (this.pos < this.len) {
+                    ch = this.matchCharacter(decodeEntities, isDecimalDigit);
+                    if (ch >= 0) {
+                        if (this.tokenFlags & TokenFlags.DecodedEntity) {
+                            text += this.text.slice(startPos, lastPos);
+                            text += String.fromCharCode(ch);
+                            startPos = this.pos;
+                        }
+
+                        lastPos = this.pos;
+
+                        while (this.pos < this.len) {
+                            ch = this.matchCharacter(decodeEntities, isDecimalDigit);
+                            if (ch < 0) break;
+                            if (this.tokenFlags & TokenFlags.DecodedEntity) {
+                                text += this.text.slice(startPos, lastPos);
+                                text += String.fromCharCode(ch);
+                                startPos = this.pos;
+                            }
+
+                            lastPos = this.pos;
+                        }
+                    }
+                    else {
+                        this.getDiagnostics().report(this.pos, Diagnostics.Digit_expected);
+                    }
+                }
+                else {
+                    this.getDiagnostics().report(this.pos, Diagnostics.Digit_expected);
+                }
+            }
+        }
+
+        text += this.text.slice(startPos, this.pos);
+        return +text + "";
     }
 
     private getIdentifierToken(): SyntaxKind {
@@ -1054,7 +1162,8 @@ function isInsignificantWhiteSpace(ch: number) {
     return false;
 }
 
-function isWhiteSpace(ch: number) {
+/** @internal */
+export function isWhiteSpace(ch: number) {
     return isSignificantWhiteSpace(ch) || isInsignificantWhiteSpace(ch);
 }
 
@@ -1078,18 +1187,49 @@ function isAlphaNum(ch: number): boolean {
     return isAlpha(ch) || isDecimalDigit(ch);
 }
 
-function isHexDigit(ch: number): boolean {
+function isUpperOrLowerE(ch: number) {
+    return ch === CharacterCodes.UpperE || ch === CharacterCodes.LowerE;
+}
+
+function isPlusOrMinus(ch: number) {
+    return ch === CharacterCodes.Plus || ch === CharacterCodes.Minus;
+}
+
+function charToHexDigit(ch: number) {
+    if (ch >= CharacterCodes.Number0 && ch <= CharacterCodes.Number9) {
+        return ch - CharacterCodes.Number0;
+    }
+    else if (ch >= CharacterCodes.UpperA && ch <= CharacterCodes.UpperF) {
+        return ch - CharacterCodes.UpperA + 10;
+    }
+    else if (ch >= CharacterCodes.LowerA && ch <= CharacterCodes.LowerF) {
+        return ch - CharacterCodes.LowerA + 10;
+    }
+    return -1;
+}
+
+function charToDecimalDigit(ch: number) {
+    if (ch >= CharacterCodes.Number0 && ch <= CharacterCodes.Number9) {
+        return ch - CharacterCodes.Number0;
+    }
+    return -1;
+}
+
+/** @internal */
+export function isHexDigit(ch: number): boolean {
     return ch >= CharacterCodes.UpperA && ch <= CharacterCodes.UpperF
         || ch >= CharacterCodes.LowerA && ch <= CharacterCodes.LowerF
         || ch >= CharacterCodes.Number0 && ch <= CharacterCodes.Number9;
 }
 
-function isIdentifierStart(ch: number): boolean {
+/** @internal */
+export function isIdentifierStart(ch: number): boolean {
     return isAlpha(ch)
         || ch === CharacterCodes.Underscore;
 }
 
-function isIdentifierPart(ch: number): boolean {
+/** @internal */
+export function isIdentifierPart(ch: number): boolean {
     return isAlphaNum(ch)
         || ch === CharacterCodes.Underscore;
 }
@@ -1177,7 +1317,9 @@ export function skipTrivia(text: string, pos: number, end: number, htmlTrivia?: 
             case CharacterCodes.LessThan:
                 if (pos + 1 < end) {
                     const ch = text.charCodeAt(pos + 1);
-                    if (ch === CharacterCodes.Slash || (ch >= CharacterCodes.LowerA && ch <= CharacterCodes.LowerZ)) {
+                    if (ch === CharacterCodes.Slash ||
+                        (ch === CharacterCodes.LowerU ? !(pos + 2 < end && text.charCodeAt(pos + 2) === CharacterCodes.Plus) :
+                            (ch >= CharacterCodes.LowerA && ch <= CharacterCodes.LowerZ))) {
                         const triviaEnd = findHtmlTriviaEnd(text, pos + 1, end);
                         if (htmlTrivia) {
                             const tagNamePos = ch === CharacterCodes.Slash ? pos + 2 : pos + 1;
@@ -1240,6 +1382,59 @@ function findSingleLineCommentTriviaEnd(text: string, pos: number, end: number) 
         pos++;
     }
     return end;
+}
+
+export function decodeHtmlEntities(text: string) {
+    let ch: number;
+    let pos = 0;
+    let startPos = pos;
+    let entityPos: number;
+    let entityStart: number;
+    let result: string | undefined;
+    while (pos < text.length) {
+        const lastPos = pos;
+        ch = text.charCodeAt(pos++);
+        if (ch === CharacterCodes.Ampersand) {
+            if (text.charCodeAt(pos) === CharacterCodes.Hash) {
+                const hex =
+                    text.charCodeAt(pos + 1) === CharacterCodes.LowerX ||
+                    text.charCodeAt(pos + 1) === CharacterCodes.UpperX;
+                entityStart = pos + (hex ? 2 : 1);
+                entityPos = entityStart;
+                ch = 0;
+                while (entityPos < text.length) {
+                    const digit = hex ?
+                        charToHexDigit(text.charCodeAt(entityPos)) :
+                        charToDecimalDigit(text.charCodeAt(entityPos));
+                    if (digit === -1) break;
+                    ch = ch * (hex ? 16 : 10) + digit;
+                    entityPos++;
+                }
+            }
+            else {
+                entityStart = entityPos = pos;
+                while (entityPos < text.length) {
+                    if (!isAlphaNum(text.charCodeAt(entityPos))) break;
+                    entityPos++;
+                }
+                const entity = text.slice(entityStart, entityPos);
+                if (htmlCharacterEntities.hasOwnProperty(entity)) {
+                    ch = htmlCharacterEntities[entity];
+                }
+            }
+            if (entityPos > entityStart && text.charCodeAt(entityPos) === CharacterCodes.Semicolon) {
+                result ??= "";
+                result += text.slice(startPos, lastPos);
+                result += String.fromCharCode(ch);
+                pos = entityPos + 1;
+                startPos = pos;
+            }
+        }
+    }
+    if (result !== undefined) {
+        return result + text.slice(startPos);
+    }
+    return text;
 }
 
 const htmlCharacterEntities: Record<string, number> = {
