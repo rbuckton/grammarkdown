@@ -474,7 +474,8 @@ export class Parser {
 
             case ParsingContext.NoSymbolHere:
                 // NoSymbolHere does not consume the closing token
-                return this.token === SyntaxKind.HereKeyword;
+                return this.token === SyntaxKind.HereKeyword
+                    || this.token === SyntaxKind.CloseBracketToken;
 
             default:
                 return failUnhandled(this.parsingContext);

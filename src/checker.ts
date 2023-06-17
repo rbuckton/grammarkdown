@@ -877,7 +877,7 @@ export class Checker {
 
     private checkGrammarNoSymbolHereAssertion(node: NoSymbolHereAssertion): boolean {
         if (!node.noKeyword) {
-            return this.reportGrammarError(node, node.getStart(this._sourceFile), Diagnostics._0_expected, tokenToString(SyntaxKind.NoKeyword));
+            return this.reportGrammarError(node, node.openBracketToken.end, Diagnostics._0_expected, tokenToString(SyntaxKind.NoKeyword));
         }
 
         if ((node.symbols?.length ?? 0) <= 0) {
@@ -889,7 +889,11 @@ export class Checker {
         }
 
         if (!node.hereKeyword) {
-            return this.reportGrammarError(node, node.end, Diagnostics._0_expected, tokenToString(SyntaxKind.HereKeyword));
+            const pos =
+                node.symbols?.length ? node.symbols[node.symbols.length - 1].end :
+                node.noKeyword ? node.noKeyword.end :
+                node.openBracketToken.end;
+            return this.reportGrammarError(node, pos, Diagnostics._0_expected, tokenToString(SyntaxKind.HereKeyword));
         }
 
         return false;
