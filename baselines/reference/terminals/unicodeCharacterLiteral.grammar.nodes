@@ -171,15 +171,23 @@
         (46,5)SyntaxKind[SymbolSpan]
           (46,5)SyntaxKind[Terminal]
             (46,5)SyntaxKind[UnicodeCharacterLiteral](text = <U+110000 A>)
-  (48,1)SyntaxKind[Production]
-    (48,1)SyntaxKind[Identifier](text = "WarningCharacterNames")
-    (48,22)SyntaxKind[ColonToken]
-    (49,5)SyntaxKind[RightHandSideList]
-      (49,5)SyntaxKind[RightHandSide]
-        (49,5)SyntaxKind[SymbolSpan]
-          (49,5)SyntaxKind[Terminal]
-            (49,5)SyntaxKind[UnicodeCharacterLiteral](text = <u+ffff A>)
-      (50,5)SyntaxKind[RightHandSide]
-        (50,5)SyntaxKind[SymbolSpan]
-          (50,5)SyntaxKind[Terminal]
-            (50,5)SyntaxKind[UnicodeCharacterLiteral](text = <U+ffff A>)
+      (47,5)SyntaxKind[RightHandSide]
+        (47,5)SyntaxKind[SymbolSpan]
+          (47,5)SyntaxKind[Terminal]
+            (47,5)SyntaxKind[UnicodeCharacterLiteral](text = <U+0000 &copy;>)
+      (48,5)SyntaxKind[RightHandSide]
+        (48,5)SyntaxKind[SymbolSpan]
+          (48,5)SyntaxKind[Terminal]
+            (48,5)SyntaxKind[UnicodeCharacterLiteral](text = <A B>)
+  (50,1)SyntaxKind[Production]
+    (50,1)SyntaxKind[Identifier](text = "WarningCharacterNames")
+    (50,22)SyntaxKind[ColonToken]
+    (51,5)SyntaxKind[RightHandSideList]
+      (51,5)SyntaxKind[RightHandSide]
+        (51,5)SyntaxKind[SymbolSpan]
+          (51,5)SyntaxKind[Terminal]
+            (51,5)SyntaxKind[UnicodeCharacterLiteral](text = <u+ffff A>)
+      (52,5)SyntaxKind[RightHandSide]
+        (52,5)SyntaxKind[SymbolSpan]
+          (52,5)SyntaxKind[Terminal]
+            (52,5)SyntaxKind[UnicodeCharacterLiteral](text = <U+ffff A>)

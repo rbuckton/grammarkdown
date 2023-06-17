@@ -44,6 +44,8 @@
 &emsp;&emsp;&emsp;<a name="ErrorCharacterNames-7rlbieqo"></a>&lt;U+00000 A&gt;  
 &emsp;&emsp;&emsp;<a name="ErrorCharacterNames-ldqb-gs9"></a>&lt;U+000000 A&gt;  
 &emsp;&emsp;&emsp;<a name="ErrorCharacterNames-oxiqj8rw"></a>&lt;U+110000 A&gt;  
+&emsp;&emsp;&emsp;<a name="ErrorCharacterNames-clynsh3b"></a>&lt;U+0000 ©&gt;  
+&emsp;&emsp;&emsp;<a name="ErrorCharacterNames-epdowogo"></a>&lt;A B&gt;  
   
 &emsp;&emsp;<a name="WarningCharacterNames"></a>*WarningCharacterNames* **:**  
 &emsp;&emsp;&emsp;<a name="WarningCharacterNames-s4fc055d"></a>&lt;u+ffff A&gt;  

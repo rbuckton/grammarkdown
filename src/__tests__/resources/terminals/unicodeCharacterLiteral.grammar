@@ -45,6 +45,8 @@ ErrorCharacterNames:
     <U+00000 A>
     <U+000000 A>
     <U+110000 A>
+    <U+0000 &copy;>
+    <A B>
 
 WarningCharacterNames:
     <u+ffff A>

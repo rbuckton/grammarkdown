@@ -1222,12 +1222,14 @@ export function isHexDigit(ch: number): boolean {
         || ch >= CharacterCodes.Number0 && ch <= CharacterCodes.Number9;
 }
 
-function isIdentifierStart(ch: number): boolean {
+/** @internal */
+export function isIdentifierStart(ch: number): boolean {
     return isAlpha(ch)
         || ch === CharacterCodes.Underscore;
 }
 
-function isIdentifierPart(ch: number): boolean {
+/** @internal */
+export function isIdentifierPart(ch: number): boolean {
     return isAlphaNum(ch)
         || ch === CharacterCodes.Underscore;
 }

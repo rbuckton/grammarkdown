@@ -47,8 +47,10 @@ SyntaxKind[UnicodeCharacterLiteral](43,5): <U+0000>
 SyntaxKind[UnicodeCharacterLiteral](44,5): <U+00000 A>
 SyntaxKind[UnicodeCharacterLiteral](45,5): <U+000000 A>
 SyntaxKind[UnicodeCharacterLiteral](46,5): <U+110000 A>
-SyntaxKind[Identifier](48,1): WarningCharacterNames
-SyntaxKind[ColonToken](48,22): :
-SyntaxKind[UnicodeCharacterLiteral](49,5): <u+ffff A>
-SyntaxKind[UnicodeCharacterLiteral](50,5): <U+ffff A>
-SyntaxKind[EndOfFileToken](51,1): «EndOfFileToken»
+SyntaxKind[UnicodeCharacterLiteral](47,5): <U+0000 &copy;>
+SyntaxKind[UnicodeCharacterLiteral](48,5): <A B>
+SyntaxKind[Identifier](50,1): WarningCharacterNames
+SyntaxKind[ColonToken](50,22): :
+SyntaxKind[UnicodeCharacterLiteral](51,5): <u+ffff A>
+SyntaxKind[UnicodeCharacterLiteral](52,5): <U+ffff A>
+SyntaxKind[EndOfFileToken](53,1): «EndOfFileToken»

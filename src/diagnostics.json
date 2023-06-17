@@ -22,9 +22,11 @@
         "Unicode code point literals should use uppercase 'U+' prefix": { "code": 1013, "kind": "warning" },
         "Unicode code point literals should use uppercase hexadecimal digits": { "code": 1014, "kind": "warning" },
         "Unicode code point literal value is outside of the allowed range": { "code": 1015, "kind": "error" },
-        "Unicode character name literal that includes a code point must have a description": { "code": 1016, "kind": "error" },
-        "Unicode character name literal code point and description must be separated by whitespace": { "code": 1017, "kind": "error" },
-        "Unicode character name literal may not start with 'U+' unless it is a valid code point": { "code": 1018, "kind": "error" },
+        "Unicode character name literal may not start with 'U+' unless it is a valid code point": { "code": 1016, "kind": "error" },
+        "Unicode character name literal that includes a code point must have a description": { "code": 1017, "kind": "error" },
+        "Unicode character name literal code point and description must be separated by whitespace": { "code": 1018, "kind": "error" },
+        "Unicode character name literal code point description may only contain printable ASCII characters": { "code": 1019, "kind": "error" },
+        "Unicode character name literal must be an ASCII identifier": { "code": 1020, "kind": "error" },
 
         // Error codes from 2000-2999 are reserved for checker diagnostics
         "Cannot find name: '{0}'": { "code": 2000, "kind": "error" },

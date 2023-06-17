@@ -60,7 +60,7 @@ import { StringWriter } from "./stringwriter";
 import { Symbol, SymbolKind } from "./symbols";
 import { CharacterCodes, SyntaxKind, tokenToString } from "./tokens";
 import { Position, Range } from "./types";
-import { isHexDigit, isWhiteSpace } from "./scanner";
+import { isHexDigit, isIdentifierPart, isIdentifierStart, isWhiteSpace } from "./scanner";
 
 class NodeLinks {
     hasResolvedSymbols?: boolean;
@@ -1173,6 +1173,59 @@ export class Checker {
         return false;
     }
 
+    private checkGrammarUnicodeCharacterLiteralCharacterNameCodePointDescription(node: UnicodeCharacterLiteral, text: string, pos: number): boolean {
+        let end = text.length;
+        if (end - 1 > pos && text.charCodeAt(end - 1) === CharacterCodes.GreaterThan) {
+            end--;
+        }
+
+        if (pos === end) {
+            return this.reportGrammarErrorForNode(node, Diagnostics.Unicode_character_name_literal_that_includes_a_code_point_must_have_a_description);
+        }
+
+        if (!isWhiteSpace(text.charCodeAt(pos))) {
+            return this.reportGrammarErrorForNode(node, Diagnostics.Unicode_character_name_literal_code_point_and_description_must_be_separated_by_whitespace);
+        }
+
+        pos++;
+        while (pos < end) {
+            const ch = text.charCodeAt(pos);
+            if (!(ch >= 0x20 && ch <= 0x7e)) {
+                return this.reportGrammarErrorForNode(node, Diagnostics.Unicode_character_name_literal_code_point_description_may_only_contain_printable_ASCII_characters);
+            }
+            pos++;
+        }
+
+        return false;
+    }
+
+    private checkGrammarUnicodeCharacterLiteralCharacterNameIdentifier(node: UnicodeCharacterLiteral, text: string): boolean {
+        let pos = 1;
+        let end = text.length;
+        if (end - 1 > pos && text.charCodeAt(end - 1) === CharacterCodes.GreaterThan) {
+            end--;
+        }
+
+        pos++;
+        if (pos < end) {
+            const ch = text.charCodeAt(pos);
+            if (!isIdentifierStart(ch)) {
+                return this.reportGrammarErrorForNode(node, Diagnostics.Unicode_character_name_literal_must_be_an_ASCII_identifier);
+            }
+            pos++;
+        }
+
+        while (pos < end) {
+            const ch = text.charCodeAt(pos);
+            if (!isIdentifierPart(ch)) {
+                return this.reportGrammarErrorForNode(node, Diagnostics.Unicode_character_name_literal_must_be_an_ASCII_identifier);
+            }
+            pos++;
+        }
+
+        return false;
+    }
+
     private checkGrammarUnicodeCharacterLiteralCharacterName(node: UnicodeCharacterLiteral, text: string): boolean {
         if (text.length >= "<U+".length) {
             let ch = text.charCodeAt(1);
@@ -1202,12 +1255,11 @@ export class Checker {
                     return this.reportGrammarErrorForNode(node, Diagnostics.Unicode_character_name_literal_code_point_and_description_must_be_separated_by_whitespace);
                 }
 
-                if (this.checkGrammarUnicodeCharacterLiteralCodePointWarnings(node, text, 1, end)) {
-                    return true;
-                }
+                return this.checkGrammarUnicodeCharacterLiteralCharacterNameCodePointDescription(node, text, end) ||
+                    this.checkGrammarUnicodeCharacterLiteralCodePointWarnings(node, text, 1, end);
             }
         }
-        return false;
+        return this.checkGrammarUnicodeCharacterLiteralCharacterNameIdentifier(node, text);
     }
 
     private checkGrammarUnicodeCharacterLiteral(node: UnicodeCharacterLiteral): boolean {
