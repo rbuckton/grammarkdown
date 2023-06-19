@@ -4,6 +4,17 @@
 SourceCharacter ::
     > any Unicode code point
 
+WhiteSpace ::
+    <TAB>
+    <VT>
+    <FF>
+    <SP>
+
+// TODO: Consider these as insignificant whitspace:
+// <NBSP>
+// <ZWNBSP>
+// <USP>
+
 LineTerminator ::
     <LF>
     <CR>
@@ -16,6 +27,364 @@ LineTerminatorSequence ::
     <LS>
     <PS>
     <CR> <LF>
+
+Comment ::
+    MultiLineComment
+    SingleLineComment
+
+MultiLineComment ::
+    `/*` MultiLineCommentChars? `*/`
+
+MultiLineCommentChars ::
+    MultiLineCommentNotAsteriskChar MultiLineCommentChars?
+    `*` MultiLineCommentPostAsteriskChars?
+
+MultiLineCommentPostAsteriskChars ::
+    MultiLineCommentNotForwardSlashOrAsteriskChar MultiLineCommentChars?
+    `*` MultiLineCommentPostAsteriskChars?
+
+MultiLineCommentNotAsteriskChar ::
+    SourceCharacter but not `*`
+
+MultiLineCommentNotForwardSlashOrAsteriskChar ::
+    SourceCharacter but not one of `/` or `*`
+
+SingleLineComment ::
+    `//` SingleLineCommentChars?
+
+SingleLineCommentChars ::
+    SingleLineCommentChar SingleLineCommentChars?
+
+SingleLineCommentChar ::
+    SourceCharacter but not LineTerminator
+
+HtmlTrivia ::
+    HtmlTagTrivia
+    HtmlCommentTrivia
+
+HtmlTagTrivia ::
+    `<` HtmlTagName HtmlTagContentChars? `>`
+    `</` HtmlTagName HtmlTagContentChars? `>`
+
+HtmlTagName ::
+    HtmlTagNameNotLowerUChar HtmlTagNameChars?
+    `u` [lookahead != `+`] HtmlTagNameChars?
+
+HtmlTagNameChars ::
+    HtmlTagNameChar HtmlTagNameChars?
+
+HtmlTagNameChar :: one of
+    `a` `b` `c` `d` `e` `f` `g` `h` `i` `j` `k` `l` `m` `n` `o` `p` `q` `r`
+    `s` `t` `u` `v` `w` `x` `y` `z`
+
+HtmlTagNameNotLowerUChar ::
+    HtmlTagNameChar but not `u`
+
+HtmlTagContentChars ::
+    HtmlTagContentChar HtmlTagContentChars?
+
+HtmlTagContentChar ::
+    SourceCharacter but not `>`
+
+HtmlCommentTrivia ::
+    `<!--` HtmlCommentChars? `-->`
+
+HtmlCommentChars ::
+    HtmlCommentNotMinusChar HtmlCommentChars?
+    `-` HtmlCommentPostMinusChars?
+
+HtmlCommentPostMinusChars ::
+    HtmlCommentNotMinusChar HtmlCommentChars?
+    `-` HtmlCommentPostMinusMinusChars?
+
+HtmlCommentPostMinusMinusChars ::
+    HtmlCommentNotMinusOrGreaterThanChar HtmlCommentChars?
+    `-` HtmlCommentPostMinusMinusChars?
+
+HtmlCommentNotMinusChar ::
+    SourceCharacter but not `-`
+
+HtmlCommentNotMinusOrGreaterThanChar ::
+    SourceCharacter but not one of `-` or `>`
+
+HtmlEntity ::
+    `&#` HtmlEntityEscapeSequence `;`
+    `&` HtmlEntityName `;`
+
+HtmlEntityEscapeSequence ::
+    HtmlEntityDecimalSequence
+    HtmlEntityHexSequence
+
+HtmlEntityDecimalSequence ::
+    DecimalDigits
+
+HtmlEntityHexSequence ::
+    `X` HexDigits
+    `x` HexDigits
+
+HtmlEntityName ::
+    `quot`
+    `amp`
+    `apos`
+    `lt`
+    `gt`
+    `nbsp`
+    `iexcl`
+    `cent`
+    `pound`
+    `curren`
+    `yen`
+    `brvbar`
+    `sect`
+    `uml`
+    `copy`
+    `ordf`
+    `laquo`
+    `not`
+    `shy`
+    `reg`
+    `macr`
+    `deg`
+    `plusmn`
+    `sup2`
+    `sup3`
+    `acute`
+    `micro`
+    `para`
+    `middot`
+    `cedil`
+    `sup1`
+    `ordm`
+    `raquo`
+    `frac14`
+    `frac12`
+    `frac34`
+    `iquest`
+    `Agrave`
+    `Aacute`
+    `Acirc`
+    `Atilde`
+    `Auml`
+    `Aring`
+    `AElig`
+    `Ccedil`
+    `Egrave`
+    `Eacute`
+    `Ecirc`
+    `Euml`
+    `Igrave`
+    `Iacute`
+    `Icirc`
+    `Iuml`
+    `ETH`
+    `Ntilde`
+    `Ograve`
+    `Oacute`
+    `Ocirc`
+    `Otilde`
+    `Ouml`
+    `times`
+    `Oslash`
+    `Ugrave`
+    `Uacute`
+    `Ucirc`
+    `Uuml`
+    `Yacute`
+    `THORN`
+    `szlig`
+    `agrave`
+    `aacute`
+    `acirc`
+    `atilde`
+    `auml`
+    `aring`
+    `aelig`
+    `ccedil`
+    `egrave`
+    `eacute`
+    `ecirc`
+    `euml`
+    `igrave`
+    `iacute`
+    `icirc`
+    `iuml`
+    `eth`
+    `ntilde`
+    `ograve`
+    `oacute`
+    `ocirc`
+    `otilde`
+    `ouml`
+    `divide`
+    `oslash`
+    `ugrave`
+    `uacute`
+    `ucirc`
+    `uuml`
+    `yacute`
+    `thorn`
+    `yuml`
+    `OElig`
+    `oelig`
+    `Scaron`
+    `scaron`
+    `Yuml`
+    `fnof`
+    `circ`
+    `tilde`
+    `Alpha`
+    `Beta`
+    `Gamma`
+    `Delta`
+    `Epsilon`
+    `Zeta`
+    `Eta`
+    `Theta`
+    `Iota`
+    `Kappa`
+    `Lambda`
+    `Mu`
+    `Nu`
+    `Xi`
+    `Omicron`
+    `Pi`
+    `Rho`
+    `Sigma`
+    `Tau`
+    `Upsilon`
+    `Phi`
+    `Chi`
+    `Psi`
+    `Omega`
+    `alpha`
+    `beta`
+    `gamma`
+    `delta`
+    `epsilon`
+    `zeta`
+    `eta`
+    `theta`
+    `iota`
+    `kappa`
+    `lambda`
+    `mu`
+    `nu`
+    `xi`
+    `omicron`
+    `pi`
+    `rho`
+    `sigmaf`
+    `sigma`
+    `tau`
+    `upsilon`
+    `phi`
+    `chi`
+    `psi`
+    `omega`
+    `thetasym`
+    `upsih`
+    `piv`
+    `ensp`
+    `emsp`
+    `thinsp`
+    `zwnj`
+    `zwj`
+    `lrm`
+    `rlm`
+    `ndash`
+    `mdash`
+    `lsquo`
+    `rsquo`
+    `sbquo`
+    `ldquo`
+    `rdquo`
+    `bdquo`
+    `dagger`
+    `Dagger`
+    `bull`
+    `hellip`
+    `permil`
+    `prime`
+    `Prime`
+    `lsaquo`
+    `rsaquo`
+    `oline`
+    `frasl`
+    `euro`
+    `image`
+    `weierp`
+    `real`
+    `trade`
+    `alefsym`
+    `larr`
+    `uarr`
+    `rarr`
+    `darr`
+    `harr`
+    `crarr`
+    `lArr`
+    `uArr`
+    `rArr`
+    `dArr`
+    `hArr`
+    `forall`
+    `part`
+    `exist`
+    `empty`
+    `nabla`
+    `isin`
+    `notin`
+    `ni`
+    `prod`
+    `sum`
+    `minus`
+    `lowast`
+    `radic`
+    `prop`
+    `infin`
+    `ang`
+    `and`
+    `or`
+    `cap`
+    `cup`
+    `int`
+    `there4`
+    `sim`
+    `cong`
+    `asymp`
+    `ne`
+    `equiv`
+    `le`
+    `ge`
+    `sub`
+    `sup`
+    `nsub`
+    `sube`
+    `supe`
+    `oplus`
+    `otimes`
+    `perp`
+    `sdot`
+    `lceil`
+    `rceil`
+    `lfloor`
+    `rfloor`
+    `lang`
+    `rang`
+    `loz`
+    `spades`
+    `clubs`
+    `hearts`
+    `diams`
+
+LinkReference ::
+    `#` LinkReferenceChars
+
+LinkReferenceChars ::
+    LinkReferenceChar LinkReferenceChars?
+
+LinkReferenceChar ::
+    SourceCharacter but not LineTerminator
 
 IdentifierName ::
     IdentifierStart
@@ -39,14 +408,58 @@ UnicodeIDContinue ::
 
 ReservedWord ::
     Keyword
+    BooleanLiteral
 
 Keyword :: one of
-    `empty` `lookahead` `lexical` `goal` `no`
-    `here`  `one`       `of`      `or`   `but`
-    `not`
+    `but`     `define` `default` `empty` `goal`
+    `here`    `import` `lexical` `line`  `lookahead`
+    `no`      `not`    `of`      `one`   `or`
+    `through`
+
+Punctuator :: one of
+    `@`  `:` `::` `:::` `{` `}`  `(` `)`  `[` `]`  `>`
+    `[>` `,` `+`  `~`   `?` `==` `=` `!=` `≠` `<-` `∈`
+    `<!` `∉`
+
+ProductionSeparator :: one of
+    `:` `::` `:::`
+
+BooleanLiteral ::
+    `true`
+    `false`
+
+NumericLiteral ::
+    DecimalLiteral
+
+DecimalLiteral ::
+    DecimalIntegerLiteral `.` DecimalDigits? ExponentPart?
+    `.` DecimalDigits ExponentPart?
+    DecimalIntegerLiteral ExponentPart?
+
+DecimalIntegerLiteral ::
+    `0`
+    NonZeroDigit DecimalDigits?
+
+DecimalDigits ::
+    DecimalDigit
+    DecimalDigits DecimalDigit
 
 DecimalDigit :: one of
     `0` `1` `2` `3` `4` `5` `6` `7` `8` `9`
+
+NonZeroDigit :: one of
+    `1` `2` `3` `4` `5` `6` `7` `8` `9`
+
+ExponentPart ::
+    ExponentIndicator SignedInteger
+
+ExponentIndicator :: one of
+    `e` `E`
+
+SignedInteger ::
+    DecimalDigits
+    `+` DecimalDigits
+    `-` DecimalDigits
 
 HexDigits ::
     HexDigit
@@ -59,21 +472,23 @@ HexDigit :: one of
 NonZeroHexDigit ::
     HexDigit but not `0`
 
-UnicodeCharacterLiteral ::
-    `<` UnicodeCharacterLiteralChars `>`
-    `U+` UnicodeCharacterLiteralHexDigits
-    `u+` UnicodeCharacterLiteralHexDigits
+StringLiteral ::
+    `"` DoubleStringCharacters? `"`
+    `'` SingleStringCharacters? `'`
 
-UnicodeCharacterLiteralHexDigits ::
-    Hex4Digits
-    NonZeroHexDigit Hex4Digits
-    `10` Hex4Digits
+DoubleStringCharacters ::
+    DoubleStringCharacter DoubleStringCharacters?
 
-UnicodeCharacterLiteralChars ::
-    UnicodeCharacterLiteralChar UnicodeCharacterLiteralChars?
+SingleStringCharacters ::
+    SingleStringCharacter SingleStringCharacters?
 
-UnicodeCharacterLiteralChar ::
-    SourceCharacter but not one of `<` or `>` or `\` or LineTerminator
+DoubleStringCharacter ::
+    SourceCharacter but not one of `"` or `\` or LineTerminator
+    `\` EscapeSequence
+    LineContinuation
+
+SingleStringCharacter ::
+    SourceCharacter but not one of `'` or `\` or LineTerminator
     `\` EscapeSequence
     LineContinuation
 
@@ -112,6 +527,52 @@ UnicodeEscapeSequence ::
 Hex4Digits ::
     HexDigit HexDigit HexDigit HexDigit
 
+UnicodeCharacterLiteral ::
+    UnicodeCharacterLiteralCodePoint
+    `<` UnicodeCharacterLiteralCodePoint WhiteSpace UnicodeCharacterLiteralCodePointDescription `>`
+    `<` UnicodeCharacterLiteralCharacterIdentifier `>`
+
+UnicodeCharacterLiteralCodePoint ::
+    `U+` UnicodeCharacterLiteralHexDigits
+    `u+` UnicodeCharacterLiteralHexDigits
+
+UnicodeCharacterLiteralHexDigits ::
+    Hex4Digits
+    NonZeroHexDigit Hex4Digits
+    `10` Hex4Digits
+
+UnicodeCharacterLiteralCodePointDescription ::
+    UnicodeCharacterLiteralCodePointDescriptionChars
+
+UnicodeCharacterLiteralCodePointDescriptionChars ::
+    UnicodeCharacterLiteralCodePointDescriptionChar UnicodeCharacterLiteralCodePointDescriptionChars?
+
+UnicodeCharacterLiteralCodePointDescriptionChar ::
+    U+0020 through U+007E but not one of `<` or `>` or `\`
+
+UnicodeCharacterLiteralCharacterIdentifier ::
+    UnicodeCharacterLiteralCharacterIdentifierStart
+    UnicodeCharacterLiteralCharacterIdentifier UnicodeCharacterLiteralCharacterIdentifierPart
+
+UnicodeCharacterLiteralCharacterIdentifierStart ::
+    LowerAlpha
+    UpperAlpha
+    `_`
+
+UnicodeCharacterLiteralCharacterIdentifierPart ::
+    LowerAlpha
+    UpperAlpha
+    DecimalDigit
+    `_`
+
+LowerAlpha :: one of
+    `a` `b` `c` `d` `e` `f` `g` `h` `i` `j` `k` `l` `m` `n` `o` `p` `q` `r`
+    `s` `t` `u` `v` `w` `x` `y` `z`
+
+UpperAlpha :: one of
+    `A` `B` `C` `D` `E` `F` `G` `H` `I` `J` `K` `L` `M` `N` `O` `P` `Q` `R`
+    `S` `T` `U` `V` `W` `X` `Y` `Z`
+
 Indent ::
     > An increase in the indentation depth from the previous line.
 
@@ -128,21 +589,25 @@ TerminalChars ::
 TerminalChar ::
     SourceCharacter but not one of ``` or LineTerminator
 
-Prose ::
-    ProseLines
+ProseFull[MultiLine] ::
+    ProseChars[?MultiLine] [lookahead ∉ { ```, `|` }]
 
-ProseLines ::
-    ProseLine
-    ProseLine LineTerminator ProseLines
+ProseHead[MultiLine] ::
+    ProseChars[?MultiLine] [lookahead ∈ { ```, `|` }]
 
-ProseLine ::
-    `>` ProseChars?
+ProseMiddle[MultiLine] ::
+    ProseChars[?MultiLine] [lookahead ∈ { ```, `|` }]
 
-ProseChars ::
-    ProseChar ProseChars?
+ProseTail[MultiLine] ::
+    ProseChars[?MultiLine] [lookahead ∉ { ```, `|` }]
 
-ProseChar ::
-    SourceCharacter but not LineTerminator
+ProseChars[MultiLine] ::
+    ProseChar[?MultiLine] ProseChars[?MultiLine]?
+
+ProseChar[MultiLine] ::
+    [+MultiLine] LineTerminator `>`
+    [+MultiLine] SourceCharacter but not one of ``` or `|` or LineTerminator
+    [~MultiLine] SourceCharacter but not one of ``` or `|` or `]`
 
 //
 // Syntactic grammar
@@ -151,11 +616,13 @@ Identifier :
     IdentifierName but not ReservedWord
 
 Argument :
-    Identifier
+    `+` Identifier
+    `~` Identifier
+    `?` Identifier
 
 Arguments :
-    `(` `)`
-    `(` ArgumentList `)`
+    `[` `]`
+    `[` ArgumentList `]`
 
 ArgumentList :
     Argument
@@ -202,15 +669,19 @@ EmptyAssertionClause :
 
 LookaheadEqualsAssertionClause :
     `lookahead` `==` PrimarySymbol
+    `lookahead` `=` PrimarySymbol
 
 LookaheadNotEqualsAssertionClause :
     `lookahead` `!=` PrimarySymbol
+    `lookahead` `≠` PrimarySymbol
 
 LookaheadInAssertionClause :
     `lookahead` `<-` SymbolSet
+    `lookahead` `∈` SymbolSet
 
 LookaheadNotInAssertionClause :
     `lookahead` `<!` SymbolSet
+    `lookahead` `∉` SymbolSet
 
 LookaheadAssertionClause :
     LookaheadEqualsAssertionClause
@@ -224,30 +695,42 @@ NoSymbolAssertionClause :
 LexicalGoalAssertionClause :
     `lexical` `goal` PrimarySymbol
 
-ParameterValueAssertionClause :
-    `~` Identifier
-    `+` Identifier
-
 AssertionClause :
     EmptyAssertionClause
     LookaheadAssertionClause
     NoSymbolAssertionClause
     LexicalGoalAssertionClause
-    ParameterValueAssertionClause
 
 Assertion :
-    `[` AssertionClause `]`
+    `[` [lookahead ∉ { `~`, `+` }] AssertionClause `]`
+    ProseAssertion
 
-ProseSpan :
-    Prose
-    ProseSpan LineTerminator Prose
+Prose :
+    `>` ProseFull[+MultiLine]
+    `>` ProseHead[+MultiLine] ProseFragment ProseSpans[+MultiLine]
+
+ProseAssertion :
+    `[>` ProseFull[~MultiLine] `]`
+    `[>` ProseHead[~MultiLine] ProseFragment ProseSpans[~MultiLine] `]`
+
+ProseFragment :
+    Terminal
+    `|` Identifier `|`
+
+ProseSpans[MultiLine] :
+    ProseTail[?MultiLine]
+    ProseMiddleList[?MultiLine] ProseTail[?MultiLine]
+
+ProseMiddleList[MultiLine] :
+    ProseMiddle[?MultiLine] ProseFragment
+    ProseMiddleList[?MultiLine] ProseMiddle[?MultiLine] ProseFragment
 
 Symbol :
     Assertion
     BinarySymbol
 
 SymbolSpan :
-    ProseSpan
+    Prose
     SymbolSpanRest
 
 SymbolSpanRest :
@@ -257,7 +740,18 @@ RightHandSideList :
     RightHandSide RightHandSideList?
 
 RightHandSide :
-    SymbolSpan LineTerminator
+    Constraints? SymbolSpan LinkReference? LineTerminator
+
+Constraints :
+    `[` [lookahead ∈ { `~`, `+` }] ConstraintList `]`
+
+ConstraintList :
+    Constraint
+    ConstraintList `,` Constraint
+
+Constraint :
+    `+` Identifier
+    `~` Identifier
 
 Terminals :
     Terminal Terminals?
@@ -278,16 +772,36 @@ ParameterList :
     ParameterList `,` Parameter
 
 Parameters :
-    `(` ParameterList `)`
+    `[` ParameterList `]`
 
 Production :
-    Identifier Parameters? `:` OneOfList
-    Identifier Parameters? `:` RightHandSide
-    Identifier Parameters? `:` LineTerminator Indent RightHandSideList Dedent
+    Identifier Parameters? ProductionSeparator Body
+
+Body :
+    OneOfList
+    RightHandSide
+    LineTerminator Indent RightHandSideList Dedent
+
+Import :
+    `@` `import` StringLiteral
+
+Define :
+    `@` `define` Identifier `default`
+    `@` `define` Identifier BooleanLiteral
+
+Line :
+    `@` `line` `default`
+    `@` `line` NumericLiteral StringLiteral
+
+MetaElement :
+    Import
+    Define
+    Line
 
 SourceElement :
     [empty]
     Production
+    MetaElement
 
 SourceElements :
     SourceElement SourceElements?

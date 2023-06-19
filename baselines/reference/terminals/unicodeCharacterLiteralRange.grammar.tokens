@@ -1,0 +1,13 @@
+/// terminals/unicodeCharacterLiteralRange.grammar:
+SyntaxKind[Identifier](1,1): CodePoints
+SyntaxKind[ColonToken](1,11): :
+SyntaxKind[UnicodeCharacterLiteral](2,5): U+0000
+SyntaxKind[ThroughKeyword](2,12): through
+SyntaxKind[UnicodeCharacterLiteral](2,20): U+FFFF
+SyntaxKind[UnicodeCharacterLiteral](3,5): U+0000
+SyntaxKind[ThroughKeyword](3,12): through
+SyntaxKind[UnicodeCharacterLiteral](3,20): U+FFFF
+SyntaxKind[ButKeyword](3,27): but
+SyntaxKind[NotKeyword](3,31): not
+SyntaxKind[TerminalLiteral](3,35): `>`
+SyntaxKind[EndOfFileToken](4,1): «EndOfFileToken»

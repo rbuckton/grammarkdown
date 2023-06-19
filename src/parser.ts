@@ -64,6 +64,7 @@ enum ParsingContext {
     SourceElements,
     Parameters,
     Arguments,
+    Constraints,
     RightHandSideListIndented,
     SymbolSet,
     OneOfList,
@@ -76,6 +77,7 @@ interface ListTypes {
     [ParsingContext.SourceElements]: SourceElement;
     [ParsingContext.Parameters]: Parameter;
     [ParsingContext.Arguments]: Argument;
+    [ParsingContext.Constraints]: Argument;
     [ParsingContext.RightHandSideListIndented]: RightHandSide;
     [ParsingContext.SymbolSet]: SymbolSpan;
     [ParsingContext.OneOfList]: TerminalLiteral;
@@ -320,6 +322,9 @@ export class Parser {
             case ParsingContext.Arguments:
                 return this.isStartOfArgument();
 
+            case ParsingContext.Constraints:
+                return this.isStartOfConstraint();
+
             case ParsingContext.RightHandSideListIndented:
                 return this.isStartOfRightHandSide();
 
@@ -353,6 +358,9 @@ export class Parser {
             case ParsingContext.Arguments:
                 return this.parseArgument();
 
+            case ParsingContext.Constraints:
+                return this.parseConstraint();
+
             case ParsingContext.RightHandSideListIndented:
                 return this.parseRightHandSide();
 
@@ -385,6 +393,10 @@ export class Parser {
 
             case ParsingContext.Arguments:
                 this.skipUntil(isAnyArgumentsRecoveryToken);
+                break;
+
+            case ParsingContext.Constraints:
+                this.skipUntil(isAnyConstraintRecoveryToken);
                 break;
 
             case ParsingContext.RightHandSideListIndented:
@@ -421,6 +433,7 @@ export class Parser {
 
             case ParsingContext.Parameters:
             case ParsingContext.Arguments:
+            case ParsingContext.Constraints:
                 this.diagnostics.report(this.scanner.getTokenPos(), Diagnostics._0_expected, formatList([SyntaxKind.CommaToken, SyntaxKind.CloseBracketToken]));
                 break;
 
@@ -449,6 +462,7 @@ export class Parser {
 
             case ParsingContext.Parameters:
             case ParsingContext.Arguments:
+            case ParsingContext.Constraints:
                 return this.token === SyntaxKind.CloseBracketToken;
 
             case ParsingContext.RightHandSideListIndented:
@@ -486,6 +500,7 @@ export class Parser {
         switch (this.parsingContext) {
             case ParsingContext.Parameters:
             case ParsingContext.Arguments:
+            case ParsingContext.Constraints:
             case ParsingContext.SymbolSet:
                 return this.parseOptional(SyntaxKind.CommaToken);
 
@@ -742,13 +757,13 @@ export class Parser {
     }
 
     private isStartOfArgument(): boolean {
-        return isLeadingArgumentToken(this.token)
+        return isArgumentOperatorToken(this.token)
             || this.canBeIdentifier(this.token);
     }
 
     private parseArgument(): Argument {
         const fullStart = this.scanner.getStartPos();
-        const operatorToken = this.parseAnyToken(isLeadingArgumentToken);
+        const operatorToken = this.parseAnyToken(isArgumentOperatorToken);
         const name = this.parseIdentifier();
         const node = new Argument(operatorToken, name);
         return this.finishNode(node, fullStart);
@@ -784,8 +799,20 @@ export class Parser {
 
     private nextTokenIsArgument(): boolean {
         this.nextToken();
-        return isLeadingArgumentToken(this.token)
+        return isArgumentOperatorToken(this.token)
             || this.token === SyntaxKind.Identifier;
+    }
+
+    private isStartOfConstraint(): boolean {
+        return isConstraintOperatorToken(this.token);
+    }
+
+    private parseConstraint(): Argument {
+        const fullStart = this.scanner.getStartPos();
+        const operatorToken = this.parseAnyToken(isConstraintOperatorToken);
+        const name = this.parseIdentifier();
+        const node = new Argument(operatorToken, name);
+        return this.finishNode(node, fullStart);
     }
 
     private parseNonterminal(allowArgumentList: boolean, allowOptional: boolean): Nonterminal {
@@ -822,7 +849,7 @@ export class Parser {
         const fullStart = this.scanner.getStartPos();
         const literal = this.parseUnicodeCharacterLiteral();
         const questionToken = allowOptional ? this.parseToken(SyntaxKind.QuestionToken) : undefined;
-        if (!allowOptional) {
+        if (!questionToken) {
             const throughKeyword = this.parseToken(SyntaxKind.ThroughKeyword);
             if (throughKeyword) {
                 return this.parseUnicodeCharacterRangeTail(literal, throughKeyword);
@@ -961,16 +988,16 @@ export class Parser {
         return undefined;
     }
 
-    private nextTokenIsParameterOperatorToken() {
+    private nextTokenIsConstraintOperatorToken() {
         this.nextToken();
-        return isParameterOperatorToken(this.token);
+        return isConstraintOperatorToken(this.token);
     }
 
     private tryParseConstraints(): Constraints | undefined {
         if (this.token === SyntaxKind.OpenBracketToken &&
-            this.lookahead(() => this.nextTokenIsParameterOperatorToken())) {
+            this.lookahead(() => this.nextTokenIsConstraintOperatorToken())) {
             const openBracketToken = this.parseToken(SyntaxKind.OpenBracketToken)!;
-            const elements = this.parseList(ParsingContext.Arguments);
+            const elements = this.parseList(ParsingContext.Constraints);
             const closeBracketToken = this.parseToken(SyntaxKind.CloseBracketToken);
             const node = new Constraints(openBracketToken, elements, closeBracketToken);
             return this.finishNode(node, openBracketToken.pos);
@@ -1159,6 +1186,18 @@ function isAnyArgumentsRecoveryToken(scanner: Scanner) {
         || (scanner.hasPrecedingLineTerminator() && !scanner.isLineContinuation());
 }
 
+function isAnyConstraintRecoveryToken(scanner: Scanner) {
+    const token = scanner.getToken();
+    return token === SyntaxKind.CommaToken
+        || token === SyntaxKind.QuestionToken
+        || token === SyntaxKind.Identifier
+        || token === SyntaxKind.CloseParenToken
+        || token === SyntaxKind.CloseBracketToken
+        || scanner.hasPrecedingDedent()
+        || scanner.hasPrecedingBlankLine()
+        || (scanner.hasPrecedingLineTerminator() && !scanner.isLineContinuation());
+}
+
 function isRightHandSideListIndentedRecoveryToken(scanner: Scanner) {
     return scanner.hasPrecedingDedent()
         || scanner.hasPrecedingBlankLine()
@@ -1227,13 +1266,13 @@ function isProductionSeparatorToken(token: SyntaxKind): token is ProductionSeper
         || token === SyntaxKind.ColonColonColonToken;
 }
 
-function isLeadingArgumentToken(token: SyntaxKind): token is ArgumentOperatorKind {
+function isArgumentOperatorToken(token: SyntaxKind): token is ArgumentOperatorKind {
     return token === SyntaxKind.QuestionToken
         || token === SyntaxKind.PlusToken
         || token === SyntaxKind.TildeToken;
 }
 
-function isParameterOperatorToken(token: SyntaxKind): token is ParameterOperatorKind {
+function isConstraintOperatorToken(token: SyntaxKind): token is ParameterOperatorKind {
     return token === SyntaxKind.PlusToken
         || token === SyntaxKind.TildeToken;
 }

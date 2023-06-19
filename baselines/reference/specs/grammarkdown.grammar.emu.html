@@ -3,6 +3,20 @@
         <emu-gprose>any Unicode code point</emu-gprose>
     </emu-rhs>
 </emu-production>
+<emu-production name="WhiteSpace" type="lexical">
+    <emu-rhs a="k4soaizl">
+        <emu-gprose>&lt;TAB&gt;</emu-gprose>
+    </emu-rhs>
+    <emu-rhs a="w_cit1lu">
+        <emu-gprose>&lt;VT&gt;</emu-gprose>
+    </emu-rhs>
+    <emu-rhs a="dvfflmsr">
+        <emu-gprose>&lt;FF&gt;</emu-gprose>
+    </emu-rhs>
+    <emu-rhs a="01dfufyk">
+        <emu-gprose>&lt;SP&gt;</emu-gprose>
+    </emu-rhs>
+</emu-production>
 <emu-production name="LineTerminator" type="lexical">
     <emu-rhs a="eznvjwhz">
         <emu-gprose>&lt;LF&gt;</emu-gprose>
@@ -34,6 +48,986 @@
     <emu-rhs a="lajs7kyd">
         <emu-gprose>&lt;CR&gt;</emu-gprose>
         <emu-gprose>&lt;LF&gt;</emu-gprose>
+    </emu-rhs>
+</emu-production>
+<emu-production name="Comment" type="lexical">
+    <emu-rhs a="sieyeref">
+        <emu-nt>MultiLineComment</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="sscrkqcd">
+        <emu-nt>SingleLineComment</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="MultiLineComment" type="lexical">
+    <emu-rhs a="hhzm60cr">
+        <emu-t>/*</emu-t>
+        <emu-nt optional>MultiLineCommentChars</emu-nt>
+        <emu-t>*/</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="MultiLineCommentChars" type="lexical">
+    <emu-rhs a="yfpqe0t3">
+        <emu-nt>MultiLineCommentNotAsteriskChar</emu-nt>
+        <emu-nt optional>MultiLineCommentChars</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="fjc-za7u">
+        <emu-t>*</emu-t>
+        <emu-nt optional>MultiLineCommentPostAsteriskChars</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="MultiLineCommentPostAsteriskChars" type="lexical">
+    <emu-rhs a="tgjdyy1d">
+        <emu-nt>MultiLineCommentNotForwardSlashOrAsteriskChar</emu-nt>
+        <emu-nt optional>MultiLineCommentChars</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="fjc-za7u">
+        <emu-t>*</emu-t>
+        <emu-nt optional>MultiLineCommentPostAsteriskChars</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="MultiLineCommentNotAsteriskChar" type="lexical">
+    <emu-rhs a="lflef8ko">
+        <emu-nt>SourceCharacter</emu-nt> <emu-gmod>but not <emu-t>*</emu-t></emu-gmod>
+    </emu-rhs>
+</emu-production>
+<emu-production name="MultiLineCommentNotForwardSlashOrAsteriskChar" type="lexical">
+    <emu-rhs a="hdfnrv5z">
+        <emu-nt>SourceCharacter</emu-nt> <emu-gmod>but not one of <emu-t>/</emu-t> or <emu-t>*</emu-t></emu-gmod>
+    </emu-rhs>
+</emu-production>
+<emu-production name="SingleLineComment" type="lexical">
+    <emu-rhs a="u-3whel6">
+        <emu-t>//</emu-t>
+        <emu-nt optional>SingleLineCommentChars</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="SingleLineCommentChars" type="lexical">
+    <emu-rhs a="rshuryvh">
+        <emu-nt>SingleLineCommentChar</emu-nt>
+        <emu-nt optional>SingleLineCommentChars</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="SingleLineCommentChar" type="lexical">
+    <emu-rhs a="lvvfp8iw">
+        <emu-nt>SourceCharacter</emu-nt> <emu-gmod>but not <emu-nt>LineTerminator</emu-nt></emu-gmod>
+    </emu-rhs>
+</emu-production>
+<emu-production name="HtmlTrivia" type="lexical">
+    <emu-rhs a="87zi44aw">
+        <emu-nt>HtmlTagTrivia</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="cbd1u4ma">
+        <emu-nt>HtmlCommentTrivia</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="HtmlTagTrivia" type="lexical">
+    <emu-rhs a="753elqeu">
+        <emu-t>&lt;</emu-t>
+        <emu-nt>HtmlTagName</emu-nt>
+        <emu-nt optional>HtmlTagContentChars</emu-nt>
+        <emu-t>&gt;</emu-t>
+    </emu-rhs>
+    <emu-rhs a="mpg6pec4">
+        <emu-t>&lt;/</emu-t>
+        <emu-nt>HtmlTagName</emu-nt>
+        <emu-nt optional>HtmlTagContentChars</emu-nt>
+        <emu-t>&gt;</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="HtmlTagName" type="lexical">
+    <emu-rhs a="zexbxouy">
+        <emu-nt>HtmlTagNameNotLowerUChar</emu-nt>
+        <emu-nt optional>HtmlTagNameChars</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="cf_cnmz9">
+        <emu-t>u</emu-t>
+        <emu-gann>lookahead ≠ <emu-t>+</emu-t></emu-gann>
+        <emu-nt optional>HtmlTagNameChars</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="HtmlTagNameChars" type="lexical">
+    <emu-rhs a="rfzkezha">
+        <emu-nt>HtmlTagNameChar</emu-nt>
+        <emu-nt optional>HtmlTagNameChars</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="HtmlTagNameChar" type="lexical" oneof>
+    <emu-rhs>a b c d e f g h i j k l m n o p q r s t u v w x y z</emu-rhs>
+</emu-production>
+<emu-production name="HtmlTagNameNotLowerUChar" type="lexical">
+    <emu-rhs a="dktipvte">
+        <emu-nt>HtmlTagNameChar</emu-nt> <emu-gmod>but not <emu-t>u</emu-t></emu-gmod>
+    </emu-rhs>
+</emu-production>
+<emu-production name="HtmlTagContentChars" type="lexical">
+    <emu-rhs a="ywjljzwj">
+        <emu-nt>HtmlTagContentChar</emu-nt>
+        <emu-nt optional>HtmlTagContentChars</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="HtmlTagContentChar" type="lexical">
+    <emu-rhs a="pgmy9wfw">
+        <emu-nt>SourceCharacter</emu-nt> <emu-gmod>but not <emu-t>&gt;</emu-t></emu-gmod>
+    </emu-rhs>
+</emu-production>
+<emu-production name="HtmlCommentTrivia" type="lexical">
+    <emu-rhs a="7hlzqyyv">
+        <emu-t>&lt;!--</emu-t>
+        <emu-nt optional>HtmlCommentChars</emu-nt>
+        <emu-t>--&gt;</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="HtmlCommentChars" type="lexical">
+    <emu-rhs a="macgozjl">
+        <emu-nt>HtmlCommentNotMinusChar</emu-nt>
+        <emu-nt optional>HtmlCommentChars</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="s4hjpagd">
+        <emu-t>-</emu-t>
+        <emu-nt optional>HtmlCommentPostMinusChars</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="HtmlCommentPostMinusChars" type="lexical">
+    <emu-rhs a="macgozjl">
+        <emu-nt>HtmlCommentNotMinusChar</emu-nt>
+        <emu-nt optional>HtmlCommentChars</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="vtgqwuws">
+        <emu-t>-</emu-t>
+        <emu-nt optional>HtmlCommentPostMinusMinusChars</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="HtmlCommentPostMinusMinusChars" type="lexical">
+    <emu-rhs a="mvaeifnj">
+        <emu-nt>HtmlCommentNotMinusOrGreaterThanChar</emu-nt>
+        <emu-nt optional>HtmlCommentChars</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="vtgqwuws">
+        <emu-t>-</emu-t>
+        <emu-nt optional>HtmlCommentPostMinusMinusChars</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="HtmlCommentNotMinusChar" type="lexical">
+    <emu-rhs a="z4htnqqt">
+        <emu-nt>SourceCharacter</emu-nt> <emu-gmod>but not <emu-t>-</emu-t></emu-gmod>
+    </emu-rhs>
+</emu-production>
+<emu-production name="HtmlCommentNotMinusOrGreaterThanChar" type="lexical">
+    <emu-rhs a="5apcqmei">
+        <emu-nt>SourceCharacter</emu-nt> <emu-gmod>but not one of <emu-t>-</emu-t> or <emu-t>&gt;</emu-t></emu-gmod>
+    </emu-rhs>
+</emu-production>
+<emu-production name="HtmlEntity" type="lexical">
+    <emu-rhs a="pwt8mgvl">
+        <emu-t>&amp;#</emu-t>
+        <emu-nt>HtmlEntityEscapeSequence</emu-nt>
+        <emu-t>;</emu-t>
+    </emu-rhs>
+    <emu-rhs a="rkpixntx">
+        <emu-t>&amp;</emu-t>
+        <emu-nt>HtmlEntityName</emu-nt>
+        <emu-t>;</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="HtmlEntityEscapeSequence" type="lexical">
+    <emu-rhs a="5cytuf8j">
+        <emu-nt>HtmlEntityDecimalSequence</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="tu6qk5r_">
+        <emu-nt>HtmlEntityHexSequence</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="HtmlEntityDecimalSequence" type="lexical">
+    <emu-rhs a="bxtox5eb">
+        <emu-nt>DecimalDigits</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="HtmlEntityHexSequence" type="lexical">
+    <emu-rhs a="p9d35iqg">
+        <emu-t>X</emu-t>
+        <emu-nt>HexDigits</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="q4wi0pyo">
+        <emu-t>x</emu-t>
+        <emu-nt>HexDigits</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="HtmlEntityName" type="lexical">
+    <emu-rhs a="woqvuahe">
+        <emu-t>quot</emu-t>
+    </emu-rhs>
+    <emu-rhs a="jcnzx6pt">
+        <emu-t>amp</emu-t>
+    </emu-rhs>
+    <emu-rhs a="nte56k12">
+        <emu-t>apos</emu-t>
+    </emu-rhs>
+    <emu-rhs a="7jgaplp9">
+        <emu-t>lt</emu-t>
+    </emu-rhs>
+    <emu-rhs a="6ig3u-sn">
+        <emu-t>gt</emu-t>
+    </emu-rhs>
+    <emu-rhs a="duf8-2xp">
+        <emu-t>nbsp</emu-t>
+    </emu-rhs>
+    <emu-rhs a="l2h6j6sv">
+        <emu-t>iexcl</emu-t>
+    </emu-rhs>
+    <emu-rhs a="meiyjtvh">
+        <emu-t>cent</emu-t>
+    </emu-rhs>
+    <emu-rhs a="xlka7ns0">
+        <emu-t>pound</emu-t>
+    </emu-rhs>
+    <emu-rhs a="mwlgjvnd">
+        <emu-t>curren</emu-t>
+    </emu-rhs>
+    <emu-rhs a="u4jlqts4">
+        <emu-t>yen</emu-t>
+    </emu-rhs>
+    <emu-rhs a="rscjp_9a">
+        <emu-t>brvbar</emu-t>
+    </emu-rhs>
+    <emu-rhs a="zlftuads">
+        <emu-t>sect</emu-t>
+    </emu-rhs>
+    <emu-rhs a="e9ngtbph">
+        <emu-t>uml</emu-t>
+    </emu-rhs>
+    <emu-rhs a="-qbnalvs">
+        <emu-t>copy</emu-t>
+    </emu-rhs>
+    <emu-rhs a="hnxdrzmv">
+        <emu-t>ordf</emu-t>
+    </emu-rhs>
+    <emu-rhs a="i2wvobxy">
+        <emu-t>laquo</emu-t>
+    </emu-rhs>
+    <emu-rhs a="gnxkho7v">
+        <emu-t>not</emu-t>
+    </emu-rhs>
+    <emu-rhs a="9c1njvx5">
+        <emu-t>shy</emu-t>
+    </emu-rhs>
+    <emu-rhs a="mx1gu6fd">
+        <emu-t>reg</emu-t>
+    </emu-rhs>
+    <emu-rhs a="djtrh7rp">
+        <emu-t>macr</emu-t>
+    </emu-rhs>
+    <emu-rhs a="5gf-ogdi">
+        <emu-t>deg</emu-t>
+    </emu-rhs>
+    <emu-rhs a="hdqr9q72">
+        <emu-t>plusmn</emu-t>
+    </emu-rhs>
+    <emu-rhs a="tfxric6p">
+        <emu-t>sup2</emu-t>
+    </emu-rhs>
+    <emu-rhs a="tjjmhuku">
+        <emu-t>sup3</emu-t>
+    </emu-rhs>
+    <emu-rhs a="kqvgkjzt">
+        <emu-t>acute</emu-t>
+    </emu-rhs>
+    <emu-rhs a="cd-82bel">
+        <emu-t>micro</emu-t>
+    </emu-rhs>
+    <emu-rhs a="qep4r72v">
+        <emu-t>para</emu-t>
+    </emu-rhs>
+    <emu-rhs a="xon9wfrx">
+        <emu-t>middot</emu-t>
+    </emu-rhs>
+    <emu-rhs a="0ioykbtj">
+        <emu-t>cedil</emu-t>
+    </emu-rhs>
+    <emu-rhs a="on1rzp4s">
+        <emu-t>sup1</emu-t>
+    </emu-rhs>
+    <emu-rhs a="w7dtdxpz">
+        <emu-t>ordm</emu-t>
+    </emu-rhs>
+    <emu-rhs a="ji9fpklk">
+        <emu-t>raquo</emu-t>
+    </emu-rhs>
+    <emu-rhs a="wbahcska">
+        <emu-t>frac14</emu-t>
+    </emu-rhs>
+    <emu-rhs a="dda_35gv">
+        <emu-t>frac12</emu-t>
+    </emu-rhs>
+    <emu-rhs a="rizhmn97">
+        <emu-t>frac34</emu-t>
+    </emu-rhs>
+    <emu-rhs a="fwttskq_">
+        <emu-t>iquest</emu-t>
+    </emu-rhs>
+    <emu-rhs a="pkyhgi5m">
+        <emu-t>Agrave</emu-t>
+    </emu-rhs>
+    <emu-rhs a="6zvkxusi">
+        <emu-t>Aacute</emu-t>
+    </emu-rhs>
+    <emu-rhs a="jsxcciwu">
+        <emu-t>Acirc</emu-t>
+    </emu-rhs>
+    <emu-rhs a="kjvffwxh">
+        <emu-t>Atilde</emu-t>
+    </emu-rhs>
+    <emu-rhs a="zjz2zziz">
+        <emu-t>Auml</emu-t>
+    </emu-rhs>
+    <emu-rhs a="m9im-kho">
+        <emu-t>Aring</emu-t>
+    </emu-rhs>
+    <emu-rhs a="pu2wapvs">
+        <emu-t>AElig</emu-t>
+    </emu-rhs>
+    <emu-rhs a="gelbktgh">
+        <emu-t>Ccedil</emu-t>
+    </emu-rhs>
+    <emu-rhs a="bn84velw">
+        <emu-t>Egrave</emu-t>
+    </emu-rhs>
+    <emu-rhs a="hhbjhcgk">
+        <emu-t>Eacute</emu-t>
+    </emu-rhs>
+    <emu-rhs a="70lk6j3z">
+        <emu-t>Ecirc</emu-t>
+    </emu-rhs>
+    <emu-rhs a="8ubpfaju">
+        <emu-t>Euml</emu-t>
+    </emu-rhs>
+    <emu-rhs a="vwf8czip">
+        <emu-t>Igrave</emu-t>
+    </emu-rhs>
+    <emu-rhs a="b-ekrkre">
+        <emu-t>Iacute</emu-t>
+    </emu-rhs>
+    <emu-rhs a="6d_wxhom">
+        <emu-t>Icirc</emu-t>
+    </emu-rhs>
+    <emu-rhs a="ca-_3tbw">
+        <emu-t>Iuml</emu-t>
+    </emu-rhs>
+    <emu-rhs a="d7hxxcht">
+        <emu-t>ETH</emu-t>
+    </emu-rhs>
+    <emu-rhs a="un7zame9">
+        <emu-t>Ntilde</emu-t>
+    </emu-rhs>
+    <emu-rhs a="pokfirax">
+        <emu-t>Ograve</emu-t>
+    </emu-rhs>
+    <emu-rhs a="1wkjgqri">
+        <emu-t>Oacute</emu-t>
+    </emu-rhs>
+    <emu-rhs a="83o1gl34">
+        <emu-t>Ocirc</emu-t>
+    </emu-rhs>
+    <emu-rhs a="okv4sakv">
+        <emu-t>Otilde</emu-t>
+    </emu-rhs>
+    <emu-rhs a="p6axabfb">
+        <emu-t>Ouml</emu-t>
+    </emu-rhs>
+    <emu-rhs a="ri19pdjg">
+        <emu-t>times</emu-t>
+    </emu-rhs>
+    <emu-rhs a="3k-gs_wc">
+        <emu-t>Oslash</emu-t>
+    </emu-rhs>
+    <emu-rhs a="dmofh5rm">
+        <emu-t>Ugrave</emu-t>
+    </emu-rhs>
+    <emu-rhs a="ydz3ldlp">
+        <emu-t>Uacute</emu-t>
+    </emu-rhs>
+    <emu-rhs a="nvrfqykh">
+        <emu-t>Ucirc</emu-t>
+    </emu-rhs>
+    <emu-rhs a="rrklwzx_">
+        <emu-t>Uuml</emu-t>
+    </emu-rhs>
+    <emu-rhs a="6ogi2owj">
+        <emu-t>Yacute</emu-t>
+    </emu-rhs>
+    <emu-rhs a="saeafm_u">
+        <emu-t>THORN</emu-t>
+    </emu-rhs>
+    <emu-rhs a="k_wfrxlt">
+        <emu-t>szlig</emu-t>
+    </emu-rhs>
+    <emu-rhs a="psrwdpa4">
+        <emu-t>agrave</emu-t>
+    </emu-rhs>
+    <emu-rhs a="aenmnvv_">
+        <emu-t>aacute</emu-t>
+    </emu-rhs>
+    <emu-rhs a="mfgieinm">
+        <emu-t>acirc</emu-t>
+    </emu-rhs>
+    <emu-rhs a="a3s7nh9d">
+        <emu-t>atilde</emu-t>
+    </emu-rhs>
+    <emu-rhs a="dvfkltjm">
+        <emu-t>auml</emu-t>
+    </emu-rhs>
+    <emu-rhs a="klbmhnj0">
+        <emu-t>aring</emu-t>
+    </emu-rhs>
+    <emu-rhs a="w3dfj8xs">
+        <emu-t>aelig</emu-t>
+    </emu-rhs>
+    <emu-rhs a="u4hdnhth">
+        <emu-t>ccedil</emu-t>
+    </emu-rhs>
+    <emu-rhs a="-qgjuk1x">
+        <emu-t>egrave</emu-t>
+    </emu-rhs>
+    <emu-rhs a="34ni0brb">
+        <emu-t>eacute</emu-t>
+    </emu-rhs>
+    <emu-rhs a="zrihn4p6">
+        <emu-t>ecirc</emu-t>
+    </emu-rhs>
+    <emu-rhs a="kqniuaat">
+        <emu-t>euml</emu-t>
+    </emu-rhs>
+    <emu-rhs a="wmvqrtg7">
+        <emu-t>igrave</emu-t>
+    </emu-rhs>
+    <emu-rhs a="qaxon4es">
+        <emu-t>iacute</emu-t>
+    </emu-rhs>
+    <emu-rhs a="r9uzzfsj">
+        <emu-t>icirc</emu-t>
+    </emu-rhs>
+    <emu-rhs a="sv76lq3-">
+        <emu-t>iuml</emu-t>
+    </emu-rhs>
+    <emu-rhs a="5f_oxsln">
+        <emu-t>eth</emu-t>
+    </emu-rhs>
+    <emu-rhs a="fzdzvqer">
+        <emu-t>ntilde</emu-t>
+    </emu-rhs>
+    <emu-rhs a="sbavi8rh">
+        <emu-t>ograve</emu-t>
+    </emu-rhs>
+    <emu-rhs a="_z0zuhum">
+        <emu-t>oacute</emu-t>
+    </emu-rhs>
+    <emu-rhs a="qacppmg0">
+        <emu-t>ocirc</emu-t>
+    </emu-rhs>
+    <emu-rhs a="oj6xfpkk">
+        <emu-t>otilde</emu-t>
+    </emu-rhs>
+    <emu-rhs a="bmvjbwdx">
+        <emu-t>ouml</emu-t>
+    </emu-rhs>
+    <emu-rhs a="zcd0xrfu">
+        <emu-t>divide</emu-t>
+    </emu-rhs>
+    <emu-rhs a="d0hbey8v">
+        <emu-t>oslash</emu-t>
+    </emu-rhs>
+    <emu-rhs a="vvdirohu">
+        <emu-t>ugrave</emu-t>
+    </emu-rhs>
+    <emu-rhs a="y_a-rmbm">
+        <emu-t>uacute</emu-t>
+    </emu-rhs>
+    <emu-rhs a="7xpaowtq">
+        <emu-t>ucirc</emu-t>
+    </emu-rhs>
+    <emu-rhs a="hru0oxpc">
+        <emu-t>uuml</emu-t>
+    </emu-rhs>
+    <emu-rhs a="zs39ltxy">
+        <emu-t>yacute</emu-t>
+    </emu-rhs>
+    <emu-rhs a="g_eojzqk">
+        <emu-t>thorn</emu-t>
+    </emu-rhs>
+    <emu-rhs a="hi9sxmq4">
+        <emu-t>yuml</emu-t>
+    </emu-rhs>
+    <emu-rhs a="diwgl6rc">
+        <emu-t>OElig</emu-t>
+    </emu-rhs>
+    <emu-rhs a="oc9kitrf">
+        <emu-t>oelig</emu-t>
+    </emu-rhs>
+    <emu-rhs a="ae1elqjw">
+        <emu-t>Scaron</emu-t>
+    </emu-rhs>
+    <emu-rhs a="ufjgdaah">
+        <emu-t>scaron</emu-t>
+    </emu-rhs>
+    <emu-rhs a="cxd6hbyf">
+        <emu-t>Yuml</emu-t>
+    </emu-rhs>
+    <emu-rhs a="r5hxaai4">
+        <emu-t>fnof</emu-t>
+    </emu-rhs>
+    <emu-rhs a="nyu01joy">
+        <emu-t>circ</emu-t>
+    </emu-rhs>
+    <emu-rhs a="asju6dfg">
+        <emu-t>tilde</emu-t>
+    </emu-rhs>
+    <emu-rhs a="eeyiw0hy">
+        <emu-t>Alpha</emu-t>
+    </emu-rhs>
+    <emu-rhs a="mlxo6xcs">
+        <emu-t>Beta</emu-t>
+    </emu-rhs>
+    <emu-rhs a="68umcrae">
+        <emu-t>Gamma</emu-t>
+    </emu-rhs>
+    <emu-rhs a="jzzizaij">
+        <emu-t>Delta</emu-t>
+    </emu-rhs>
+    <emu-rhs a="h14znbi8">
+        <emu-t>Epsilon</emu-t>
+    </emu-rhs>
+    <emu-rhs a="ygskupim">
+        <emu-t>Zeta</emu-t>
+    </emu-rhs>
+    <emu-rhs a="l1rcg-98">
+        <emu-t>Eta</emu-t>
+    </emu-rhs>
+    <emu-rhs a="vs1aajyp">
+        <emu-t>Theta</emu-t>
+    </emu-rhs>
+    <emu-rhs a="zjxle0py">
+        <emu-t>Iota</emu-t>
+    </emu-rhs>
+    <emu-rhs a="xv1hjtfy">
+        <emu-t>Kappa</emu-t>
+    </emu-rhs>
+    <emu-rhs a="c54sbudq">
+        <emu-t>Lambda</emu-t>
+    </emu-rhs>
+    <emu-rhs a="ij8n3u6p">
+        <emu-t>Mu</emu-t>
+    </emu-rhs>
+    <emu-rhs a="yqs4wif1">
+        <emu-t>Nu</emu-t>
+    </emu-rhs>
+    <emu-rhs a="bovm29dk">
+        <emu-t>Xi</emu-t>
+    </emu-rhs>
+    <emu-rhs a="rue-u-kq">
+        <emu-t>Omicron</emu-t>
+    </emu-rhs>
+    <emu-rhs a="yx130xcm">
+        <emu-t>Pi</emu-t>
+    </emu-rhs>
+    <emu-rhs a="058aiveb">
+        <emu-t>Rho</emu-t>
+    </emu-rhs>
+    <emu-rhs a="ctpj_cod">
+        <emu-t>Sigma</emu-t>
+    </emu-rhs>
+    <emu-rhs a="9l6l_k-m">
+        <emu-t>Tau</emu-t>
+    </emu-rhs>
+    <emu-rhs a="e_ayaxol">
+        <emu-t>Upsilon</emu-t>
+    </emu-rhs>
+    <emu-rhs a="p7fgqfat">
+        <emu-t>Phi</emu-t>
+    </emu-rhs>
+    <emu-rhs a="lslr1acp">
+        <emu-t>Chi</emu-t>
+    </emu-rhs>
+    <emu-rhs a="mpod5_si">
+        <emu-t>Psi</emu-t>
+    </emu-rhs>
+    <emu-rhs a="ef2a1zse">
+        <emu-t>Omega</emu-t>
+    </emu-rhs>
+    <emu-rhs a="wzncjh-6">
+        <emu-t>alpha</emu-t>
+    </emu-rhs>
+    <emu-rhs a="-uimkp5g">
+        <emu-t>beta</emu-t>
+    </emu-rhs>
+    <emu-rhs a="vbvz6ox7">
+        <emu-t>gamma</emu-t>
+    </emu-rhs>
+    <emu-rhs a="zei3aumu">
+        <emu-t>delta</emu-t>
+    </emu-rhs>
+    <emu-rhs a="mr5i6zag">
+        <emu-t>epsilon</emu-t>
+    </emu-rhs>
+    <emu-rhs a="a_yu2o3n">
+        <emu-t>zeta</emu-t>
+    </emu-rhs>
+    <emu-rhs a="mwfp3y5p">
+        <emu-t>eta</emu-t>
+    </emu-rhs>
+    <emu-rhs a="mwe9oexp">
+        <emu-t>theta</emu-t>
+    </emu-rhs>
+    <emu-rhs a="y-ukhezx">
+        <emu-t>iota</emu-t>
+    </emu-rhs>
+    <emu-rhs a="zkwlpcdq">
+        <emu-t>kappa</emu-t>
+    </emu-rhs>
+    <emu-rhs a="jjxmoo4g">
+        <emu-t>lambda</emu-t>
+    </emu-rhs>
+    <emu-rhs a="pt7fdxjp">
+        <emu-t>mu</emu-t>
+    </emu-rhs>
+    <emu-rhs a="vtpvfmxz">
+        <emu-t>nu</emu-t>
+    </emu-rhs>
+    <emu-rhs a="uqk8kejl">
+        <emu-t>xi</emu-t>
+    </emu-rhs>
+    <emu-rhs a="07bdzorh">
+        <emu-t>omicron</emu-t>
+    </emu-rhs>
+    <emu-rhs a="hhkqs4-c">
+        <emu-t>pi</emu-t>
+    </emu-rhs>
+    <emu-rhs a="cmzku7dh">
+        <emu-t>rho</emu-t>
+    </emu-rhs>
+    <emu-rhs a="ppbgfha-">
+        <emu-t>sigmaf</emu-t>
+    </emu-rhs>
+    <emu-rhs a="aev3hwus">
+        <emu-t>sigma</emu-t>
+    </emu-rhs>
+    <emu-rhs a="zs6l5irs">
+        <emu-t>tau</emu-t>
+    </emu-rhs>
+    <emu-rhs a="tispsqtd">
+        <emu-t>upsilon</emu-t>
+    </emu-rhs>
+    <emu-rhs a="tvez0ice">
+        <emu-t>phi</emu-t>
+    </emu-rhs>
+    <emu-rhs a="08ab29dh">
+        <emu-t>chi</emu-t>
+    </emu-rhs>
+    <emu-rhs a="x2qzcoyc">
+        <emu-t>psi</emu-t>
+    </emu-rhs>
+    <emu-rhs a="1gnvip0r">
+        <emu-t>omega</emu-t>
+    </emu-rhs>
+    <emu-rhs a="p0r7w0fa">
+        <emu-t>thetasym</emu-t>
+    </emu-rhs>
+    <emu-rhs a="lwffk9va">
+        <emu-t>upsih</emu-t>
+    </emu-rhs>
+    <emu-rhs a="ghg6iuso">
+        <emu-t>piv</emu-t>
+    </emu-rhs>
+    <emu-rhs a="luk2ljdt">
+        <emu-t>ensp</emu-t>
+    </emu-rhs>
+    <emu-rhs a="p8bafvvh">
+        <emu-t>emsp</emu-t>
+    </emu-rhs>
+    <emu-rhs a="etnbx8dr">
+        <emu-t>thinsp</emu-t>
+    </emu-rhs>
+    <emu-rhs a="ojy2wg4n">
+        <emu-t>zwnj</emu-t>
+    </emu-rhs>
+    <emu-rhs a="b8125wly">
+        <emu-t>zwj</emu-t>
+    </emu-rhs>
+    <emu-rhs a="y1fwxae2">
+        <emu-t>lrm</emu-t>
+    </emu-rhs>
+    <emu-rhs a="ketha52w">
+        <emu-t>rlm</emu-t>
+    </emu-rhs>
+    <emu-rhs a="t9u34_en">
+        <emu-t>ndash</emu-t>
+    </emu-rhs>
+    <emu-rhs a="jdsxhe4h">
+        <emu-t>mdash</emu-t>
+    </emu-rhs>
+    <emu-rhs a="klzrjocx">
+        <emu-t>lsquo</emu-t>
+    </emu-rhs>
+    <emu-rhs a="lwybinxj">
+        <emu-t>rsquo</emu-t>
+    </emu-rhs>
+    <emu-rhs a="mv9213af">
+        <emu-t>sbquo</emu-t>
+    </emu-rhs>
+    <emu-rhs a="ihg96_eg">
+        <emu-t>ldquo</emu-t>
+    </emu-rhs>
+    <emu-rhs a="ni5zcqjf">
+        <emu-t>rdquo</emu-t>
+    </emu-rhs>
+    <emu-rhs a="rlzrvcz-">
+        <emu-t>bdquo</emu-t>
+    </emu-rhs>
+    <emu-rhs a="eugvnyhn">
+        <emu-t>dagger</emu-t>
+    </emu-rhs>
+    <emu-rhs a="w1dbnyft">
+        <emu-t>Dagger</emu-t>
+    </emu-rhs>
+    <emu-rhs a="z-rxvvnn">
+        <emu-t>bull</emu-t>
+    </emu-rhs>
+    <emu-rhs a="auczmix6">
+        <emu-t>hellip</emu-t>
+    </emu-rhs>
+    <emu-rhs a="e6yjqpvd">
+        <emu-t>permil</emu-t>
+    </emu-rhs>
+    <emu-rhs a="pr36vyd6">
+        <emu-t>prime</emu-t>
+    </emu-rhs>
+    <emu-rhs a="k4qtoqcc">
+        <emu-t>Prime</emu-t>
+    </emu-rhs>
+    <emu-rhs a="o592fx6v">
+        <emu-t>lsaquo</emu-t>
+    </emu-rhs>
+    <emu-rhs a="xbmegseq">
+        <emu-t>rsaquo</emu-t>
+    </emu-rhs>
+    <emu-rhs a="wrthhjvj">
+        <emu-t>oline</emu-t>
+    </emu-rhs>
+    <emu-rhs a="jfdmut6g">
+        <emu-t>frasl</emu-t>
+    </emu-rhs>
+    <emu-rhs a="lvate0yq">
+        <emu-t>euro</emu-t>
+    </emu-rhs>
+    <emu-rhs a="qtpzdgsh">
+        <emu-t>image</emu-t>
+    </emu-rhs>
+    <emu-rhs a="fp8tlqwx">
+        <emu-t>weierp</emu-t>
+    </emu-rhs>
+    <emu-rhs a="0rtqroyd">
+        <emu-t>real</emu-t>
+    </emu-rhs>
+    <emu-rhs a="rsdacqqb">
+        <emu-t>trade</emu-t>
+    </emu-rhs>
+    <emu-rhs a="ylghny6h">
+        <emu-t>alefsym</emu-t>
+    </emu-rhs>
+    <emu-rhs a="idnb2edr">
+        <emu-t>larr</emu-t>
+    </emu-rhs>
+    <emu-rhs a="-y8eiamy">
+        <emu-t>uarr</emu-t>
+    </emu-rhs>
+    <emu-rhs a="cjyosfh0">
+        <emu-t>rarr</emu-t>
+    </emu-rhs>
+    <emu-rhs a="vljtc22z">
+        <emu-t>darr</emu-t>
+    </emu-rhs>
+    <emu-rhs a="ftn2j1ig">
+        <emu-t>harr</emu-t>
+    </emu-rhs>
+    <emu-rhs a="jpj8usrz">
+        <emu-t>crarr</emu-t>
+    </emu-rhs>
+    <emu-rhs a="jv9jh3bi">
+        <emu-t>lArr</emu-t>
+    </emu-rhs>
+    <emu-rhs a="rtavaytk">
+        <emu-t>uArr</emu-t>
+    </emu-rhs>
+    <emu-rhs a="bclm-oms">
+        <emu-t>rArr</emu-t>
+    </emu-rhs>
+    <emu-rhs a="gzzgchae">
+        <emu-t>dArr</emu-t>
+    </emu-rhs>
+    <emu-rhs a="1-kmnc_t">
+        <emu-t>hArr</emu-t>
+    </emu-rhs>
+    <emu-rhs a="q3ywbxkl">
+        <emu-t>forall</emu-t>
+    </emu-rhs>
+    <emu-rhs a="iw-cuggg">
+        <emu-t>part</emu-t>
+    </emu-rhs>
+    <emu-rhs a="irgnqdhi">
+        <emu-t>exist</emu-t>
+    </emu-rhs>
+    <emu-rhs a="pvkpaovp">
+        <emu-t>empty</emu-t>
+    </emu-rhs>
+    <emu-rhs a="e-mydweb">
+        <emu-t>nabla</emu-t>
+    </emu-rhs>
+    <emu-rhs a="qbpb4sso">
+        <emu-t>isin</emu-t>
+    </emu-rhs>
+    <emu-rhs a="tbusyj7h">
+        <emu-t>notin</emu-t>
+    </emu-rhs>
+    <emu-rhs a="hf1pyje2">
+        <emu-t>ni</emu-t>
+    </emu-rhs>
+    <emu-rhs a="xbfdnobq">
+        <emu-t>prod</emu-t>
+    </emu-rhs>
+    <emu-rhs a="0htsv24g">
+        <emu-t>sum</emu-t>
+    </emu-rhs>
+    <emu-rhs a="k_dk29yc">
+        <emu-t>minus</emu-t>
+    </emu-rhs>
+    <emu-rhs a="_fqe6cf-">
+        <emu-t>lowast</emu-t>
+    </emu-rhs>
+    <emu-rhs a="yphqpxsb">
+        <emu-t>radic</emu-t>
+    </emu-rhs>
+    <emu-rhs a="nhr1flmv">
+        <emu-t>prop</emu-t>
+    </emu-rhs>
+    <emu-rhs a="-ricvaw-">
+        <emu-t>infin</emu-t>
+    </emu-rhs>
+    <emu-rhs a="smckwoxq">
+        <emu-t>ang</emu-t>
+    </emu-rhs>
+    <emu-rhs a="evbmpyeh">
+        <emu-t>and</emu-t>
+    </emu-rhs>
+    <emu-rhs a="im2xkmn1">
+        <emu-t>or</emu-t>
+    </emu-rhs>
+    <emu-rhs a="yfcjcueq">
+        <emu-t>cap</emu-t>
+    </emu-rhs>
+    <emu-rhs a="njdsowfv">
+        <emu-t>cup</emu-t>
+    </emu-rhs>
+    <emu-rhs a="p0izja0r">
+        <emu-t>int</emu-t>
+    </emu-rhs>
+    <emu-rhs a="laovbxvx">
+        <emu-t>there4</emu-t>
+    </emu-rhs>
+    <emu-rhs a="ui4xvfzx">
+        <emu-t>sim</emu-t>
+    </emu-rhs>
+    <emu-rhs a="p5cytfgk">
+        <emu-t>cong</emu-t>
+    </emu-rhs>
+    <emu-rhs a="yqii828f">
+        <emu-t>asymp</emu-t>
+    </emu-rhs>
+    <emu-rhs a="6axtqibo">
+        <emu-t>ne</emu-t>
+    </emu-rhs>
+    <emu-rhs a="0zxhxbwr">
+        <emu-t>equiv</emu-t>
+    </emu-rhs>
+    <emu-rhs a="r3to47wu">
+        <emu-t>le</emu-t>
+    </emu-rhs>
+    <emu-rhs a="tkvyohfy">
+        <emu-t>ge</emu-t>
+    </emu-rhs>
+    <emu-rhs a="rwioa9pj">
+        <emu-t>sub</emu-t>
+    </emu-rhs>
+    <emu-rhs a="3zyochxt">
+        <emu-t>sup</emu-t>
+    </emu-rhs>
+    <emu-rhs a="k2330ryz">
+        <emu-t>nsub</emu-t>
+    </emu-rhs>
+    <emu-rhs a="6ut-_ydj">
+        <emu-t>sube</emu-t>
+    </emu-rhs>
+    <emu-rhs a="isgyelhy">
+        <emu-t>supe</emu-t>
+    </emu-rhs>
+    <emu-rhs a="736lvtmk">
+        <emu-t>oplus</emu-t>
+    </emu-rhs>
+    <emu-rhs a="nkxt9goq">
+        <emu-t>otimes</emu-t>
+    </emu-rhs>
+    <emu-rhs a="yopep4fa">
+        <emu-t>perp</emu-t>
+    </emu-rhs>
+    <emu-rhs a="6avvwfn1">
+        <emu-t>sdot</emu-t>
+    </emu-rhs>
+    <emu-rhs a="o3peq_cy">
+        <emu-t>lceil</emu-t>
+    </emu-rhs>
+    <emu-rhs a="nkdf-oaw">
+        <emu-t>rceil</emu-t>
+    </emu-rhs>
+    <emu-rhs a="n7kg7hb1">
+        <emu-t>lfloor</emu-t>
+    </emu-rhs>
+    <emu-rhs a="_xo4qio3">
+        <emu-t>rfloor</emu-t>
+    </emu-rhs>
+    <emu-rhs a="4jjedjqr">
+        <emu-t>lang</emu-t>
+    </emu-rhs>
+    <emu-rhs a="6yzacoab">
+        <emu-t>rang</emu-t>
+    </emu-rhs>
+    <emu-rhs a="cbfhvifr">
+        <emu-t>loz</emu-t>
+    </emu-rhs>
+    <emu-rhs a="ptlvblh5">
+        <emu-t>spades</emu-t>
+    </emu-rhs>
+    <emu-rhs a="mds7_jxk">
+        <emu-t>clubs</emu-t>
+    </emu-rhs>
+    <emu-rhs a="ubql6z6r">
+        <emu-t>hearts</emu-t>
+    </emu-rhs>
+    <emu-rhs a="wihczr6r">
+        <emu-t>diams</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="LinkReference" type="lexical">
+    <emu-rhs a="t4xnyzlr">
+        <emu-t>#</emu-t>
+        <emu-nt>LinkReferenceChars</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="LinkReferenceChars" type="lexical">
+    <emu-rhs a="99cmq8mk">
+        <emu-nt>LinkReferenceChar</emu-nt>
+        <emu-nt optional>LinkReferenceChars</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="LinkReferenceChar" type="lexical">
+    <emu-rhs a="lvvfp8iw">
+        <emu-nt>SourceCharacter</emu-nt> <emu-gmod>but not <emu-nt>LineTerminator</emu-nt></emu-gmod>
     </emu-rhs>
 </emu-production>
 <emu-production name="IdentifierName" type="lexical">
@@ -81,12 +1075,94 @@
     <emu-rhs a="o5jua5_x">
         <emu-nt>Keyword</emu-nt>
     </emu-rhs>
+    <emu-rhs a="nqjh_sxl">
+        <emu-nt>BooleanLiteral</emu-nt>
+    </emu-rhs>
 </emu-production>
 <emu-production name="Keyword" type="lexical" oneof>
-    <emu-rhs>empty lookahead lexical goal no here one of or but not</emu-rhs>
+    <emu-rhs>but define default empty goal here import lexical line lookahead no not of one or through</emu-rhs>
+</emu-production>
+<emu-production name="Punctuator" type="lexical" oneof>
+    <emu-rhs>@ : :: ::: { } ( ) [ ] &gt; [&gt; , + ~ ? == = != ≠ &lt;- ∈ &lt;! ∉</emu-rhs>
+</emu-production>
+<emu-production name="ProductionSeparator" type="lexical" oneof>
+    <emu-rhs>: :: :::</emu-rhs>
+</emu-production>
+<emu-production name="BooleanLiteral" type="lexical">
+    <emu-rhs a="-jc4xg27">
+        <emu-t>true</emu-t>
+    </emu-rhs>
+    <emu-rhs a="i9lgnxtt">
+        <emu-t>false</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="NumericLiteral" type="lexical">
+    <emu-rhs a="gma1bw5s">
+        <emu-nt>DecimalLiteral</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="DecimalLiteral" type="lexical">
+    <emu-rhs a="-1gypvbs">
+        <emu-nt>DecimalIntegerLiteral</emu-nt>
+        <emu-t>.</emu-t>
+        <emu-nt optional>DecimalDigits</emu-nt>
+        <emu-nt optional>ExponentPart</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="xpoqnclz">
+        <emu-t>.</emu-t>
+        <emu-nt>DecimalDigits</emu-nt>
+        <emu-nt optional>ExponentPart</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="e9uvir9w">
+        <emu-nt>DecimalIntegerLiteral</emu-nt>
+        <emu-nt optional>ExponentPart</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="DecimalIntegerLiteral" type="lexical">
+    <emu-rhs a="ulmkmvlx">
+        <emu-t>0</emu-t>
+    </emu-rhs>
+    <emu-rhs a="i1pwo3hj">
+        <emu-nt>NonZeroDigit</emu-nt>
+        <emu-nt optional>DecimalDigits</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="DecimalDigits" type="lexical">
+    <emu-rhs a="s4me4hlz">
+        <emu-nt>DecimalDigit</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="nyugv7lw">
+        <emu-nt>DecimalDigits</emu-nt>
+        <emu-nt>DecimalDigit</emu-nt>
+    </emu-rhs>
 </emu-production>
 <emu-production name="DecimalDigit" type="lexical" oneof>
     <emu-rhs>0 1 2 3 4 5 6 7 8 9</emu-rhs>
+</emu-production>
+<emu-production name="NonZeroDigit" type="lexical" oneof>
+    <emu-rhs>1 2 3 4 5 6 7 8 9</emu-rhs>
+</emu-production>
+<emu-production name="ExponentPart" type="lexical">
+    <emu-rhs a="f4n1gm76">
+        <emu-nt>ExponentIndicator</emu-nt>
+        <emu-nt>SignedInteger</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ExponentIndicator" type="lexical" oneof>
+    <emu-rhs>e E</emu-rhs>
+</emu-production>
+<emu-production name="SignedInteger" type="lexical">
+    <emu-rhs a="bxtox5eb">
+        <emu-nt>DecimalDigits</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="o9f-v3mh">
+        <emu-t>+</emu-t>
+        <emu-nt>DecimalDigits</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="waadsnwo">
+        <emu-t>-</emu-t>
+        <emu-nt>DecimalDigits</emu-nt>
+    </emu-rhs>
 </emu-production>
 <emu-production name="HexDigits" type="lexical">
     <emu-rhs a="omskcs0d">
@@ -105,43 +1181,45 @@
         <emu-nt>HexDigit</emu-nt> <emu-gmod>but not <emu-t>0</emu-t></emu-gmod>
     </emu-rhs>
 </emu-production>
-<emu-production name="UnicodeCharacterLiteral" type="lexical">
-    <emu-rhs a="60pqswpp">
-        <emu-t>&lt;</emu-t>
-        <emu-nt>UnicodeCharacterLiteralChars</emu-nt>
-        <emu-t>&gt;</emu-t>
+<emu-production name="StringLiteral" type="lexical">
+    <emu-rhs a="fdix8v-c">
+        <emu-t>&quot;</emu-t>
+        <emu-nt optional>DoubleStringCharacters</emu-nt>
+        <emu-t>&quot;</emu-t>
     </emu-rhs>
-    <emu-rhs a="qndmauba">
-        <emu-t>U+</emu-t>
-        <emu-nt>UnicodeCharacterLiteralHexDigits</emu-nt>
-    </emu-rhs>
-    <emu-rhs a="jyzae20u">
-        <emu-t>u+</emu-t>
-        <emu-nt>UnicodeCharacterLiteralHexDigits</emu-nt>
+    <emu-rhs a="guyz2t4p">
+        <emu-t>&apos;</emu-t>
+        <emu-nt optional>SingleStringCharacters</emu-nt>
+        <emu-t>&apos;</emu-t>
     </emu-rhs>
 </emu-production>
-<emu-production name="UnicodeCharacterLiteralHexDigits" type="lexical">
-    <emu-rhs a="pptelolr">
-        <emu-nt>Hex4Digits</emu-nt>
-    </emu-rhs>
-    <emu-rhs a="7snh6qvu">
-        <emu-nt>NonZeroHexDigit</emu-nt>
-        <emu-nt>Hex4Digits</emu-nt>
-    </emu-rhs>
-    <emu-rhs a="7cudep2z">
-        <emu-t>10</emu-t>
-        <emu-nt>Hex4Digits</emu-nt>
+<emu-production name="DoubleStringCharacters" type="lexical">
+    <emu-rhs a="i9q8d_st">
+        <emu-nt>DoubleStringCharacter</emu-nt>
+        <emu-nt optional>DoubleStringCharacters</emu-nt>
     </emu-rhs>
 </emu-production>
-<emu-production name="UnicodeCharacterLiteralChars" type="lexical">
-    <emu-rhs a="oo12fh_i">
-        <emu-nt>UnicodeCharacterLiteralChar</emu-nt>
-        <emu-nt optional>UnicodeCharacterLiteralChars</emu-nt>
+<emu-production name="SingleStringCharacters" type="lexical">
+    <emu-rhs a="f9kevwoi">
+        <emu-nt>SingleStringCharacter</emu-nt>
+        <emu-nt optional>SingleStringCharacters</emu-nt>
     </emu-rhs>
 </emu-production>
-<emu-production name="UnicodeCharacterLiteralChar" type="lexical">
-    <emu-rhs a="8ognh64m">
-        <emu-nt>SourceCharacter</emu-nt> <emu-gmod>but not one of <emu-t>&lt;</emu-t> or <emu-t>&gt;</emu-t> or <emu-t>\</emu-t> or <emu-nt>LineTerminator</emu-nt></emu-gmod>
+<emu-production name="DoubleStringCharacter" type="lexical">
+    <emu-rhs a="qh-v7bpd">
+        <emu-nt>SourceCharacter</emu-nt> <emu-gmod>but not one of <emu-t>&quot;</emu-t> or <emu-t>\</emu-t> or <emu-nt>LineTerminator</emu-nt></emu-gmod>
+    </emu-rhs>
+    <emu-rhs a="6n2njt_x">
+        <emu-t>\</emu-t>
+        <emu-nt>EscapeSequence</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="ajkpm2ja">
+        <emu-nt>LineContinuation</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="SingleStringCharacter" type="lexical">
+    <emu-rhs a="xqnh0twg">
+        <emu-nt>SourceCharacter</emu-nt> <emu-gmod>but not one of <emu-t>&apos;</emu-t> or <emu-t>\</emu-t> or <emu-nt>LineTerminator</emu-nt></emu-gmod>
     </emu-rhs>
     <emu-rhs a="6n2njt_x">
         <emu-t>\</emu-t>
@@ -228,6 +1306,102 @@
         <emu-nt>HexDigit</emu-nt>
     </emu-rhs>
 </emu-production>
+<emu-production name="UnicodeCharacterLiteral" type="lexical">
+    <emu-rhs a="n5vq70kz">
+        <emu-nt>UnicodeCharacterLiteralCodePoint</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="6lfx2hj3">
+        <emu-t>&lt;</emu-t>
+        <emu-nt>UnicodeCharacterLiteralCodePoint</emu-nt>
+        <emu-nt>WhiteSpace</emu-nt>
+        <emu-nt>UnicodeCharacterLiteralCodePointDescription</emu-nt>
+        <emu-t>&gt;</emu-t>
+    </emu-rhs>
+    <emu-rhs a="diuaxbzl">
+        <emu-t>&lt;</emu-t>
+        <emu-nt>UnicodeCharacterLiteralCharacterIdentifier</emu-nt>
+        <emu-t>&gt;</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="UnicodeCharacterLiteralCodePoint" type="lexical">
+    <emu-rhs a="qndmauba">
+        <emu-t>U+</emu-t>
+        <emu-nt>UnicodeCharacterLiteralHexDigits</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="jyzae20u">
+        <emu-t>u+</emu-t>
+        <emu-nt>UnicodeCharacterLiteralHexDigits</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="UnicodeCharacterLiteralHexDigits" type="lexical">
+    <emu-rhs a="pptelolr">
+        <emu-nt>Hex4Digits</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="7snh6qvu">
+        <emu-nt>NonZeroHexDigit</emu-nt>
+        <emu-nt>Hex4Digits</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="7cudep2z">
+        <emu-t>10</emu-t>
+        <emu-nt>Hex4Digits</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="UnicodeCharacterLiteralCodePointDescription" type="lexical">
+    <emu-rhs a="fhhzz-8p">
+        <emu-nt>UnicodeCharacterLiteralCodePointDescriptionChars</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="UnicodeCharacterLiteralCodePointDescriptionChars" type="lexical">
+    <emu-rhs a="69yfewo4">
+        <emu-nt>UnicodeCharacterLiteralCodePointDescriptionChar</emu-nt>
+        <emu-nt optional>UnicodeCharacterLiteralCodePointDescriptionChars</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="UnicodeCharacterLiteralCodePointDescriptionChar" type="lexical">
+    <emu-rhs a="djthjw0q">
+        <emu-gprose>U+0020 through U+007E</emu-gprose> <emu-gmod>but not one of <emu-t>&lt;</emu-t> or <emu-t>&gt;</emu-t> or <emu-t>\</emu-t></emu-gmod>
+    </emu-rhs>
+</emu-production>
+<emu-production name="UnicodeCharacterLiteralCharacterIdentifier" type="lexical">
+    <emu-rhs a="fsyxiqpy">
+        <emu-nt>UnicodeCharacterLiteralCharacterIdentifierStart</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="m7iabant">
+        <emu-nt>UnicodeCharacterLiteralCharacterIdentifier</emu-nt>
+        <emu-nt>UnicodeCharacterLiteralCharacterIdentifierPart</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="UnicodeCharacterLiteralCharacterIdentifierStart" type="lexical">
+    <emu-rhs a="qqgs4y6w">
+        <emu-nt>LowerAlpha</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="xj0u-zwf">
+        <emu-nt>UpperAlpha</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="b1zllonv">
+        <emu-t>_</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="UnicodeCharacterLiteralCharacterIdentifierPart" type="lexical">
+    <emu-rhs a="qqgs4y6w">
+        <emu-nt>LowerAlpha</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="xj0u-zwf">
+        <emu-nt>UpperAlpha</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="s4me4hlz">
+        <emu-nt>DecimalDigit</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="b1zllonv">
+        <emu-t>_</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="LowerAlpha" type="lexical" oneof>
+    <emu-rhs>a b c d e f g h i j k l m n o p q r s t u v w x y z</emu-rhs>
+</emu-production>
+<emu-production name="UpperAlpha" type="lexical" oneof>
+    <emu-rhs>A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</emu-rhs>
+</emu-production>
 <emu-production name="Indent" type="lexical">
     <emu-rhs a="4e0izqku">
         <emu-gprose>An increase in the indentation depth from the previous line.</emu-gprose>
@@ -261,36 +1435,46 @@
         <emu-nt>SourceCharacter</emu-nt> <emu-gmod>but not one of <emu-t>`</emu-t> or <emu-nt>LineTerminator</emu-nt></emu-gmod>
     </emu-rhs>
 </emu-production>
-<emu-production name="Prose" type="lexical">
-    <emu-rhs a="pnxhiuaa">
-        <emu-nt>ProseLines</emu-nt>
+<emu-production name="ProseFull" params="MultiLine" type="lexical">
+    <emu-rhs a="xtvu7qpy">
+        <emu-nt params="?MultiLine">ProseChars</emu-nt>
+        <emu-gann>lookahead ∉ { <emu-t>`</emu-t>, <emu-t>|</emu-t> }</emu-gann>
     </emu-rhs>
 </emu-production>
-<emu-production name="ProseLines" type="lexical">
-    <emu-rhs a="woqw5wcn">
-        <emu-nt>ProseLine</emu-nt>
+<emu-production name="ProseHead" params="MultiLine" type="lexical">
+    <emu-rhs a="kt-xsp78">
+        <emu-nt params="?MultiLine">ProseChars</emu-nt>
+        <emu-gann>lookahead ∈ { <emu-t>`</emu-t>, <emu-t>|</emu-t> }</emu-gann>
     </emu-rhs>
-    <emu-rhs a="f4rjmond">
-        <emu-nt>ProseLine</emu-nt>
+</emu-production>
+<emu-production name="ProseMiddle" params="MultiLine" type="lexical">
+    <emu-rhs a="kt-xsp78">
+        <emu-nt params="?MultiLine">ProseChars</emu-nt>
+        <emu-gann>lookahead ∈ { <emu-t>`</emu-t>, <emu-t>|</emu-t> }</emu-gann>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ProseTail" params="MultiLine" type="lexical">
+    <emu-rhs a="xtvu7qpy">
+        <emu-nt params="?MultiLine">ProseChars</emu-nt>
+        <emu-gann>lookahead ∉ { <emu-t>`</emu-t>, <emu-t>|</emu-t> }</emu-gann>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ProseChars" params="MultiLine" type="lexical">
+    <emu-rhs a="eigsxxd9">
+        <emu-nt params="?MultiLine">ProseChar</emu-nt>
+        <emu-nt params="?MultiLine" optional>ProseChars</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ProseChar" params="MultiLine" type="lexical">
+    <emu-rhs a="mzo2tvmz" constraints="+MultiLine">
         <emu-nt>LineTerminator</emu-nt>
-        <emu-nt>ProseLines</emu-nt>
-    </emu-rhs>
-</emu-production>
-<emu-production name="ProseLine" type="lexical">
-    <emu-rhs a="ows5lsia">
         <emu-t>&gt;</emu-t>
-        <emu-nt optional>ProseChars</emu-nt>
     </emu-rhs>
-</emu-production>
-<emu-production name="ProseChars" type="lexical">
-    <emu-rhs a="alfclf2w">
-        <emu-nt>ProseChar</emu-nt>
-        <emu-nt optional>ProseChars</emu-nt>
+    <emu-rhs a="wisgg6ul" constraints="+MultiLine">
+        <emu-nt>SourceCharacter</emu-nt> <emu-gmod>but not one of <emu-t>`</emu-t> or <emu-t>|</emu-t> or <emu-nt>LineTerminator</emu-nt></emu-gmod>
     </emu-rhs>
-</emu-production>
-<emu-production name="ProseChar" type="lexical">
-    <emu-rhs a="lvvfp8iw">
-        <emu-nt>SourceCharacter</emu-nt> <emu-gmod>but not <emu-nt>LineTerminator</emu-nt></emu-gmod>
+    <emu-rhs a="pmumwkvb" constraints="~MultiLine">
+        <emu-nt>SourceCharacter</emu-nt> <emu-gmod>but not one of <emu-t>`</emu-t> or <emu-t>|</emu-t> or <emu-t>]</emu-t></emu-gmod>
     </emu-rhs>
 </emu-production>
 <emu-production name="Identifier">
@@ -299,19 +1483,28 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="Argument">
-    <emu-rhs a="bras6mo_">
+    <emu-rhs a="qyr5b2v0">
+        <emu-t>+</emu-t>
+        <emu-nt>Identifier</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="dwxa7c0h">
+        <emu-t>~</emu-t>
+        <emu-nt>Identifier</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="krzcysaa">
+        <emu-t>?</emu-t>
         <emu-nt>Identifier</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="Arguments">
-    <emu-rhs a="eormm5tk">
-        <emu-t>(</emu-t>
-        <emu-t>)</emu-t>
+    <emu-rhs a="mdhsnk3i">
+        <emu-t>[</emu-t>
+        <emu-t>]</emu-t>
     </emu-rhs>
-    <emu-rhs a="i0-5a5el">
-        <emu-t>(</emu-t>
+    <emu-rhs a="qwrdii6b">
+        <emu-t>[</emu-t>
         <emu-nt>ArgumentList</emu-nt>
-        <emu-t>)</emu-t>
+        <emu-t>]</emu-t>
     </emu-rhs>
 </emu-production>
 <emu-production name="ArgumentList">
@@ -416,11 +1609,21 @@
         <emu-t>==</emu-t>
         <emu-nt>PrimarySymbol</emu-nt>
     </emu-rhs>
+    <emu-rhs a="zuemj62o">
+        <emu-t>lookahead</emu-t>
+        <emu-t>=</emu-t>
+        <emu-nt>PrimarySymbol</emu-nt>
+    </emu-rhs>
 </emu-production>
 <emu-production name="LookaheadNotEqualsAssertionClause">
     <emu-rhs a="ia_lwidb">
         <emu-t>lookahead</emu-t>
         <emu-t>!=</emu-t>
+        <emu-nt>PrimarySymbol</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="giolfcjc">
+        <emu-t>lookahead</emu-t>
+        <emu-t>≠</emu-t>
         <emu-nt>PrimarySymbol</emu-nt>
     </emu-rhs>
 </emu-production>
@@ -430,11 +1633,21 @@
         <emu-t>&lt;-</emu-t>
         <emu-nt>SymbolSet</emu-nt>
     </emu-rhs>
+    <emu-rhs a="tiatwix0">
+        <emu-t>lookahead</emu-t>
+        <emu-t>∈</emu-t>
+        <emu-nt>SymbolSet</emu-nt>
+    </emu-rhs>
 </emu-production>
 <emu-production name="LookaheadNotInAssertionClause">
     <emu-rhs a="f13ybrfp">
         <emu-t>lookahead</emu-t>
         <emu-t>&lt;!</emu-t>
+        <emu-nt>SymbolSet</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="dut96xwu">
+        <emu-t>lookahead</emu-t>
+        <emu-t>∉</emu-t>
         <emu-nt>SymbolSet</emu-nt>
     </emu-rhs>
 </emu-production>
@@ -466,16 +1679,6 @@
         <emu-nt>PrimarySymbol</emu-nt>
     </emu-rhs>
 </emu-production>
-<emu-production name="ParameterValueAssertionClause">
-    <emu-rhs a="dwxa7c0h">
-        <emu-t>~</emu-t>
-        <emu-nt>Identifier</emu-nt>
-    </emu-rhs>
-    <emu-rhs a="qyr5b2v0">
-        <emu-t>+</emu-t>
-        <emu-nt>Identifier</emu-nt>
-    </emu-rhs>
-</emu-production>
 <emu-production name="AssertionClause">
     <emu-rhs a="z3-vy0_t">
         <emu-nt>EmptyAssertionClause</emu-nt>
@@ -489,25 +1692,72 @@
     <emu-rhs a="fzqqffgp">
         <emu-nt>LexicalGoalAssertionClause</emu-nt>
     </emu-rhs>
-    <emu-rhs a="g6tlzimv">
-        <emu-nt>ParameterValueAssertionClause</emu-nt>
-    </emu-rhs>
 </emu-production>
 <emu-production name="Assertion">
-    <emu-rhs a="ofao6yda">
+    <emu-rhs a="5zr7w94f">
         <emu-t>[</emu-t>
+        <emu-gann>lookahead ∉ { <emu-t>~</emu-t>, <emu-t>+</emu-t> }</emu-gann>
         <emu-nt>AssertionClause</emu-nt>
         <emu-t>]</emu-t>
     </emu-rhs>
-</emu-production>
-<emu-production name="ProseSpan">
-    <emu-rhs a="cx0hfwg8">
-        <emu-nt>Prose</emu-nt>
+    <emu-rhs a="wpchhq_r">
+        <emu-nt>ProseAssertion</emu-nt>
     </emu-rhs>
-    <emu-rhs a="ro0tsqu_">
-        <emu-nt>ProseSpan</emu-nt>
-        <emu-nt>LineTerminator</emu-nt>
-        <emu-nt>Prose</emu-nt>
+</emu-production>
+<emu-production name="Prose">
+    <emu-rhs a="2tdvlgin">
+        <emu-t>&gt;</emu-t>
+        <emu-nt params="+MultiLine">ProseFull</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="yswof6qq">
+        <emu-t>&gt;</emu-t>
+        <emu-nt params="+MultiLine">ProseHead</emu-nt>
+        <emu-nt>ProseFragment</emu-nt>
+        <emu-nt params="+MultiLine">ProseSpans</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ProseAssertion">
+    <emu-rhs a="vikyzy02">
+        <emu-t>[&gt;</emu-t>
+        <emu-nt params="~MultiLine">ProseFull</emu-nt>
+        <emu-t>]</emu-t>
+    </emu-rhs>
+    <emu-rhs a="y85rvs8l">
+        <emu-t>[&gt;</emu-t>
+        <emu-nt params="~MultiLine">ProseHead</emu-nt>
+        <emu-nt>ProseFragment</emu-nt>
+        <emu-nt params="~MultiLine">ProseSpans</emu-nt>
+        <emu-t>]</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ProseFragment">
+    <emu-rhs a="ofus3lpy">
+        <emu-nt>Terminal</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="k57noby_">
+        <emu-t>|</emu-t>
+        <emu-nt>Identifier</emu-nt>
+        <emu-t>|</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ProseSpans" params="MultiLine">
+    <emu-rhs a="q7a_gnl8">
+        <emu-nt params="?MultiLine">ProseTail</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="t9f-vb2n">
+        <emu-nt params="?MultiLine">ProseMiddleList</emu-nt>
+        <emu-nt params="?MultiLine">ProseTail</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ProseMiddleList" params="MultiLine">
+    <emu-rhs a="lqfl9vdb">
+        <emu-nt params="?MultiLine">ProseMiddle</emu-nt>
+        <emu-nt>ProseFragment</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="pt2yvwua">
+        <emu-nt params="?MultiLine">ProseMiddleList</emu-nt>
+        <emu-nt params="?MultiLine">ProseMiddle</emu-nt>
+        <emu-nt>ProseFragment</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="Symbol">
@@ -519,8 +1769,8 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="SymbolSpan">
-    <emu-rhs a="6vm8k_ys">
-        <emu-nt>ProseSpan</emu-nt>
+    <emu-rhs a="cx0hfwg8">
+        <emu-nt>Prose</emu-nt>
     </emu-rhs>
     <emu-rhs a="avztmrvm">
         <emu-nt>SymbolSpanRest</emu-nt>
@@ -539,9 +1789,39 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="RightHandSide">
-    <emu-rhs a="ixmdjeqh">
+    <emu-rhs a="ii3ijkha">
+        <emu-nt optional>Constraints</emu-nt>
         <emu-nt>SymbolSpan</emu-nt>
+        <emu-nt optional>LinkReference</emu-nt>
         <emu-nt>LineTerminator</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="Constraints">
+    <emu-rhs a="m57ag3lb">
+        <emu-t>[</emu-t>
+        <emu-gann>lookahead ∈ { <emu-t>~</emu-t>, <emu-t>+</emu-t> }</emu-gann>
+        <emu-nt>ConstraintList</emu-nt>
+        <emu-t>]</emu-t>
+    </emu-rhs>
+</emu-production>
+<emu-production name="ConstraintList">
+    <emu-rhs a="zdh7eqf7">
+        <emu-nt>Constraint</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="hy45ujvx">
+        <emu-nt>ConstraintList</emu-nt>
+        <emu-t>,</emu-t>
+        <emu-nt>Constraint</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="Constraint">
+    <emu-rhs a="qyr5b2v0">
+        <emu-t>+</emu-t>
+        <emu-nt>Identifier</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="dwxa7c0h">
+        <emu-t>~</emu-t>
+        <emu-nt>Identifier</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="Terminals">
@@ -591,33 +1871,77 @@
     </emu-rhs>
 </emu-production>
 <emu-production name="Parameters">
-    <emu-rhs a="n-ahepcg">
-        <emu-t>(</emu-t>
+    <emu-rhs a="g-_fweri">
+        <emu-t>[</emu-t>
         <emu-nt>ParameterList</emu-nt>
-        <emu-t>)</emu-t>
+        <emu-t>]</emu-t>
     </emu-rhs>
 </emu-production>
 <emu-production name="Production">
-    <emu-rhs a="0gqocmed">
+    <emu-rhs a="mryms-2l">
         <emu-nt>Identifier</emu-nt>
         <emu-nt optional>Parameters</emu-nt>
-        <emu-t>:</emu-t>
+        <emu-nt>ProductionSeparator</emu-nt>
+        <emu-nt>Body</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="Body">
+    <emu-rhs a="1ccq4omr">
         <emu-nt>OneOfList</emu-nt>
     </emu-rhs>
-    <emu-rhs a="vhjnckof">
-        <emu-nt>Identifier</emu-nt>
-        <emu-nt optional>Parameters</emu-nt>
-        <emu-t>:</emu-t>
+    <emu-rhs a="llmigrud">
         <emu-nt>RightHandSide</emu-nt>
     </emu-rhs>
-    <emu-rhs a="e-zpzl_w">
-        <emu-nt>Identifier</emu-nt>
-        <emu-nt optional>Parameters</emu-nt>
-        <emu-t>:</emu-t>
+    <emu-rhs a="gi-s9hmk">
         <emu-nt>LineTerminator</emu-nt>
         <emu-nt>Indent</emu-nt>
         <emu-nt>RightHandSideList</emu-nt>
         <emu-nt>Dedent</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="Import">
+    <emu-rhs a="fq2yrawj">
+        <emu-t>@</emu-t>
+        <emu-t>import</emu-t>
+        <emu-nt>StringLiteral</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="Define">
+    <emu-rhs a="pxc0bbbo">
+        <emu-t>@</emu-t>
+        <emu-t>define</emu-t>
+        <emu-nt>Identifier</emu-nt>
+        <emu-t>default</emu-t>
+    </emu-rhs>
+    <emu-rhs a="87mg0xo2">
+        <emu-t>@</emu-t>
+        <emu-t>define</emu-t>
+        <emu-nt>Identifier</emu-nt>
+        <emu-nt>BooleanLiteral</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="Line">
+    <emu-rhs a="yjbsk9nk">
+        <emu-t>@</emu-t>
+        <emu-t>line</emu-t>
+        <emu-t>default</emu-t>
+    </emu-rhs>
+    <emu-rhs a="xrhpmx3b">
+        <emu-t>@</emu-t>
+        <emu-t>line</emu-t>
+        <emu-nt>NumericLiteral</emu-nt>
+        <emu-nt>StringLiteral</emu-nt>
+    </emu-rhs>
+</emu-production>
+<emu-production name="MetaElement">
+    <emu-rhs a="1vvj0r3v">
+        <emu-nt>Import</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="mvthdcbx">
+        <emu-nt>Define</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="6pz2addi">
+        <emu-nt>Line</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="SourceElement">
@@ -626,6 +1950,9 @@
     </emu-rhs>
     <emu-rhs a="33d8ezht">
         <emu-nt>Production</emu-nt>
+    </emu-rhs>
+    <emu-rhs a="_dycxkfx">
+        <emu-nt>MetaElement</emu-nt>
     </emu-rhs>
 </emu-production>
 <emu-production name="SourceElements">

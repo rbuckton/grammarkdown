@@ -1,0 +1,23 @@
+/// terminals/unicodeCharacterLiteralRange.grammar:
+(1,1)SyntaxKind[SourceFile](filename = "unicodeCharacterLiteralRange.grammar")
+  (1,1)SyntaxKind[Production]
+    (1,1)SyntaxKind[Identifier](text = "CodePoints")
+    (1,11)SyntaxKind[ColonToken]
+    (2,5)SyntaxKind[RightHandSideList]
+      (2,5)SyntaxKind[RightHandSide]
+        (2,5)SyntaxKind[SymbolSpan]
+          (2,5)SyntaxKind[UnicodeCharacterRange]
+            (2,5)SyntaxKind[UnicodeCharacterLiteral](text = U+0000)
+            (2,12)SyntaxKind[ThroughKeyword]
+            (2,20)SyntaxKind[UnicodeCharacterLiteral](text = U+FFFF)
+      (3,5)SyntaxKind[RightHandSide]
+        (3,5)SyntaxKind[SymbolSpan]
+          (3,5)SyntaxKind[ButNotSymbol]
+            (3,5)SyntaxKind[UnicodeCharacterRange]
+              (3,5)SyntaxKind[UnicodeCharacterLiteral](text = U+0000)
+              (3,12)SyntaxKind[ThroughKeyword]
+              (3,20)SyntaxKind[UnicodeCharacterLiteral](text = U+FFFF)
+            (3,27)SyntaxKind[ButKeyword]
+            (3,31)SyntaxKind[NotKeyword]
+            (3,35)SyntaxKind[Terminal]
+              (3,35)SyntaxKind[TerminalLiteral](text = ">")
