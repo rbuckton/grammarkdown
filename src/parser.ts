@@ -546,7 +546,10 @@ export class Parser {
                 const startPos = this.scanner.getStartPos();
                 this.reportDiagnostics();
                 this.recover();
-                if (this.scanner.getStartPos() === startPos) throw new Error("Recovery failed to advance.");
+                if (this.scanner.getStartPos() === startPos) {
+                    this.nextToken();
+                    this.recover();
+                }
             }
         }
 

@@ -1192,6 +1192,10 @@ export class Checker {
         }
 
         pos++;
+        if (pos === end) {
+            return this.reportGrammarErrorForNode(node, Diagnostics.Unicode_character_name_literal_that_includes_a_code_point_must_have_a_description);
+        }
+
         while (pos < end) {
             const ch = text.charCodeAt(pos);
             if (!(ch >= 0x20 && ch <= 0x7e)) {

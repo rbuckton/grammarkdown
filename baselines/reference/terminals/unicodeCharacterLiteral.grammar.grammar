@@ -22,8 +22,6 @@ WarningCodePoints :
     U+ffff
 
 CharacterNames :
-    <foo <bar>
-    <foo\<bar>
     <NBSP>
     <U+2212 MINUS SIGN>
     <U+0000 A>
@@ -37,10 +35,13 @@ CharacterNames :
     <U+0000 A>
 
 ErrorCharacterNames :
+    <foo <bar>
+    <foo\<bar>
     <U+>
     <U+A>
     <U+0>
     <U+0000>
+    <U+0000 >
     <U+00000 A>
     <U+000000 A>
     <U+110000 A>

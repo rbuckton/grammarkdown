@@ -7,21 +7,22 @@ terminals/unicodeCharacterLiteral.grammar(17,5): error GM1012: Unicode code poin
 terminals/unicodeCharacterLiteral.grammar(18,5): error GM1015: Unicode code point literal value is outside of the allowed range
 terminals/unicodeCharacterLiteral.grammar(21,5): warning GM1013: Unicode code point literals should use uppercase 'U+' prefix
 terminals/unicodeCharacterLiteral.grammar(22,5): warning GM1014: Unicode code point literals should use uppercase hexadecimal digits
-terminals/unicodeCharacterLiteral.grammar(25,5): error GM1004: Unterminated string literal
-terminals/unicodeCharacterLiteral.grammar(26,5): error GM1020: Unicode character name literal must be an ASCII identifier
+terminals/unicodeCharacterLiteral.grammar(38,5): error GM1004: Unterminated string literal
+terminals/unicodeCharacterLiteral.grammar(39,5): error GM1020: Unicode character name literal must be an ASCII identifier
 terminals/unicodeCharacterLiteral.grammar(40,5): error GM1016: Unicode character name literal may not start with 'U+' unless it is a valid code point
 terminals/unicodeCharacterLiteral.grammar(41,5): error GM1011: Unicode code point literals must have at least four hexadecimal digits
 terminals/unicodeCharacterLiteral.grammar(42,5): error GM1011: Unicode code point literals must have at least four hexadecimal digits
 terminals/unicodeCharacterLiteral.grammar(43,5): error GM1017: Unicode character name literal that includes a code point must have a description
-terminals/unicodeCharacterLiteral.grammar(44,5): error GM1012: Unicode code point literals with more than four digits may not have leading zeros
+terminals/unicodeCharacterLiteral.grammar(44,5): error GM1017: Unicode character name literal that includes a code point must have a description
 terminals/unicodeCharacterLiteral.grammar(45,5): error GM1012: Unicode code point literals with more than four digits may not have leading zeros
-terminals/unicodeCharacterLiteral.grammar(46,5): error GM1015: Unicode code point literal value is outside of the allowed range
-terminals/unicodeCharacterLiteral.grammar(47,5): error GM1019: Unicode character name literal code point description may only contain printable ASCII characters
-terminals/unicodeCharacterLiteral.grammar(48,5): error GM1020: Unicode character name literal must be an ASCII identifier
-terminals/unicodeCharacterLiteral.grammar(51,5): warning GM1013: Unicode code point literals should use uppercase 'U+' prefix
-terminals/unicodeCharacterLiteral.grammar(52,5): warning GM1014: Unicode code point literals should use uppercase hexadecimal digits
+terminals/unicodeCharacterLiteral.grammar(46,5): error GM1012: Unicode code point literals with more than four digits may not have leading zeros
+terminals/unicodeCharacterLiteral.grammar(47,5): error GM1015: Unicode code point literal value is outside of the allowed range
+terminals/unicodeCharacterLiteral.grammar(48,5): error GM1019: Unicode character name literal code point description may only contain printable ASCII characters
+terminals/unicodeCharacterLiteral.grammar(49,5): error GM1020: Unicode character name literal must be an ASCII identifier
+terminals/unicodeCharacterLiteral.grammar(52,5): warning GM1013: Unicode code point literals should use uppercase 'U+' prefix
+terminals/unicodeCharacterLiteral.grammar(53,5): warning GM1014: Unicode code point literals should use uppercase hexadecimal digits
 
-/// [terminals/unicodeCharacterLiteral.grammar] 21 errors
+/// [terminals/unicodeCharacterLiteral.grammar] 22 errors
     CodePoints:
         U+0000
         U+FFFF
@@ -62,12 +63,6 @@ terminals/unicodeCharacterLiteral.grammar(52,5): warning GM1014: Unicode code po
 !!! warning GM1014: Unicode code point literals should use uppercase hexadecimal digits
     
     CharacterNames:
-        &lt;foo&lt;bar&gt;
-        ~~~~~~~
-!!! error GM1004: Unterminated string literal
-        &lt;foo\&lt;bar&gt;
-        ~~~~~~~~~~~~~~~~~~~
-!!! error GM1020: Unicode character name literal must be an ASCII identifier
         <NBSP>
         <U+2212 MINUS SIGN>
         <U+0000 A>
@@ -81,6 +76,12 @@ terminals/unicodeCharacterLiteral.grammar(52,5): warning GM1014: Unicode code po
         <U&#x2b;0000 A>
     
     ErrorCharacterNames:
+        &lt;foo&lt;bar&gt;
+        ~~~~~~~
+!!! error GM1004: Unterminated string literal
+        &lt;foo\&lt;bar&gt;
+        ~~~~~~~~~~~~~~~~~~~
+!!! error GM1020: Unicode character name literal must be an ASCII identifier
         <U+>
         ~~~~
 !!! error GM1016: Unicode character name literal may not start with 'U+' unless it is a valid code point
@@ -92,6 +93,9 @@ terminals/unicodeCharacterLiteral.grammar(52,5): warning GM1014: Unicode code po
 !!! error GM1011: Unicode code point literals must have at least four hexadecimal digits
         <U+0000>
         ~~~~~~~~
+!!! error GM1017: Unicode character name literal that includes a code point must have a description
+        <U+0000 >
+        ~~~~~~~~~
 !!! error GM1017: Unicode character name literal that includes a code point must have a description
         <U+00000 A>
         ~~~~~~~~~~~
