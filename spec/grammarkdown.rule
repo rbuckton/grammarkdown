@@ -1,0 +1,68 @@
+DiaGrammar [Options: [
+    grammar-only?: false 
+    ruleset: true 
+    hovering: true 
+    string-input: true 
+    case-parsing: false 
+    live-edit?: true 
+    iterate-times: 1 
+    max-iterate: 5 
+    font-size: 11 
+    selected-rule: "grammar" 
+    latest-inputs: [
+    ]
+]]
+grammar:       [some [rule | directive | comment some newline]]
+rule:          [defines choice]
+defines:       [nonterminal definer]
+choice:        [sequence any [alt sequence] newline [newline | end]]
+sequence:      [opt argblock some elements opt link | prose]
+elements:      [_ [element opt optional | assertion]]
+element:       [terminal | identifier  opt condition]
+terminal:      [character | string | unicode]
+identifier:    [nonterminal not definer]
+
+directive:     [#"@" thru some newline]
+nonterminal:   [[opt "uri" some name-part | "uri"] opt argblock] 
+definer:       [opt #" " 1 3 #":" opt one-of newline some [ws | tab]]
+one-of:        [" one of"]
+prose:         [#">" to [newline | end]]
+assertion:     [#"[" _ assert-kind _ #"]"]
+assert-kind:   [
+	"empty" | lookahead | no-symbol | lexical-goal | prose-assert
+]
+lookahead:     ["lookahead " looking-for]
+looking-for:   [look-simple | look-compound]
+look-simple:   [["==" | "!="] _ terminal any [_ terminal]]
+look-compound: [["<-" | "<!"] _ [nonterminal | terminal-list]]
+no-symbol:     ["no" _ [element | #"|" identifier #"|"] _ "here"]
+lexical-goal:  ["lexical goal" _ element]
+prose-assert:  [#">" some [terminal | not #"]" skip]]
+terminal-list: [#"{" list-element some [#"," _ list-element] #"}"]
+list-element:  [some [_ element | _ assertion]]
+optional:      #"?"
+condition:     [" but not " opt "one of " cond-list]
+cond-list:     [element any [" or " element]]
+link:          [_ #"#" to newline]
+
+character:     "```"
+string:        [#"`" any [not #"`" skip] #"`"]
+unicode:       [#"<" [some upper | #"U" #"+" some hexa] #">"]
+name-part:     [upper any [lower | digit]]
+alt:           [newline tab]
+upper:         charset [#"A" - #"Z"]
+lower:         charset [#"a" - #"z"]
+argblock:      [#"[" _ args _ #"]"]
+args:          [arg any [#"," _ arg]]
+arg:           [opt modifier name-part]
+modifier:      [#"~" | #"+" | #"?"]
+ws:            charset " ^-"
+ws+:           [some ws]
+ws*:           [any ws]
+_:             ws* ;comment any [newline comment] | ws*]
+digit:         charset "0123456789"
+hexa:          union digit charset [#"A" - #"F" #"a" - #"f"]
+comment:       [line-comment | long-comment]
+line-comment:  ["//" any [not newline skip]]
+long-comment:  [_ "/*" thru "*/"]
+newline:       [_ opt comment #"^/"]
