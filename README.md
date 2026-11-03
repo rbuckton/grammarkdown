@@ -28,6 +28,7 @@ Options:
 
 A `grammarkdown` grammar file uses significant whitespace in the form of line terminators and indentation. Tab (ASCII 0x9) characters are preferred,
 however using multiple spaces for indentation is supported as long as all nested elements have the same amount of leading whitespace.
+In a grammar file, a limited subset of [HTML named character references](https://html.spec.whatwg.org/multipage/named-characters.html#named-character-references) are interpreted as their corresponding characters (e.g., `&ne;` can be used in place of `≠`).
 
 #### Productions
 
