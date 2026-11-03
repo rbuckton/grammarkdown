@@ -77,8 +77,8 @@ HexDigit :: one of
 
 #### Parameters
 
-If a *Nonterminal* on the right-hand-side of a production needs to set a parameter, they supply it in an argument list.
-Supplying the name of the argument sets the parameter, prefixing the name with a question mark ('?') passes the current value of the parameter, and eliding the argument clears the parameter:
+Each *Nonterminal* on the right-hand-side of a production can include an *argument list* specifying which parameters should be set.
+Supplying the name of a parameter sets it, prefixing the name with a question mark ('?') passes the current value of the parameter, and eliding a parameter's name clears it:
 
 ```
 Declaration[Yield] :
