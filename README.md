@@ -162,10 +162,10 @@ The possible assertions include:
 
 A *lookahead assertion* has the following operators:
 
-* The `==` operator states the lookahead phrase is matched: ``[lookahead == `class`]``
-* The `!=` operator states the lookahead phrase is not matched: ``[lookahead != `function`]``
-* The `<-` operator states that any matching phrase in the provided set is matched: ``[lookahead <- { `public`, `private` }]``
-* The `<!` operator states that any matching phrase in the provided set is not matched: ``[lookahead <! { `{`, `function` }]``
+* The `=` and `==` operators require the lookahead phrase to match: ``[lookahead = `class`]``
+* The `≠` and `!=` operators require the lookahead phrase to not match: ``[lookahead != `function`]``
+* The `∈` and `<-` operators require at least one phrase in a provided set or one expansion of a provided nonterminal to match: ``[lookahead ∈ OctalDigit]``
+* The `∉` and `<!` operators require the absence of a match for any phrase in a provided set or any expansion of a provided nonterminal: ``[lookahead <! { `{`, `function` }]``
 
 #### Linking
 
