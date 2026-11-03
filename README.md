@@ -117,7 +117,7 @@ A sentence of *Prose* is a single line with a leading greater-than character [`>
 
 #### The `but not` Condition
 
-The `but not` condition allows you to reference a production, excluding some part of that production. For example:
+The `but not` condition allows you to reference a production, excluding some expansion(s) of that production. For example:
 
 ```
 MultiLineNotAsteriskChar ::
