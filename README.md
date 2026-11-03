@@ -28,11 +28,12 @@ Options:
 
 A `grammarkdown` grammar file uses significant whitespace in the form of line terminators and indentation. Tab (ASCII 0x9) characters are preferred,
 however using multiple spaces for indentation is supported as long as all nested elements have the same amount of leading whitespace.
+In a grammar file, a limited subset of [HTML named character references](https://html.spec.whatwg.org/multipage/named-characters.html#named-character-references) are interpreted as their corresponding characters (e.g., `&ne;` can be used in place of `≠`).
 
 #### Productions
 
-A *Production* consists of a left-hand-side *Nonterminal* followed by a colon (`:`) separator and one or more *right-hand-side* sentences consisting of
-various forms of *terminal* and *nonterminal* symbols. For example:
+A *Production* consists of a left-hand-side *Nonterminal* followed by a colon [`:`] separator and one or more *right-hand-side* sentences,
+each consisting of one or more *Terminal* or *Nonterminal* symbols, a sentence of *Prose*, or an *Assertion*.
 
 ```
 NameSpaceImport : `*` `as` ImportedBinding
@@ -68,22 +69,40 @@ IdentifierReference[Yield] :
 A *Production* may also specify a limited set of terminals, by using the `one of` keyphrase:
 
 ```
-Keyword :: one of
-	`break`		`do`		`in`			`typeof`
-	`case`		`else`		`instanceof`	`var`
-	`catch`		`export`	`new`			`void`
-	`class`		`extends`	`return`		`while`
-	`const`		`finally`	`super`			`with`
-	`continue`	`for`		`switch`		`yield`
-	`debugger`	`function`	`this`
-	`default`	`if`		`throw`
-	`delete`	`import`	`try`
+HexDigit :: one of
+	`0` `1` `2` `3` `4` `5` `6` `7` `8` `9`
+	`a` `b` `c` `d` `e` `f`
+	`A` `B` `C` `D` `E` `F`
 ```
 
-#### Parameters
+#### Terminals
 
-If a *Nonterminal* on the right-hand-side of a production needs to set a parameter, they supply it in an argument list.
-Supplying the name of the argument sets the parameter, prefixing the name with a question mark ('?) passes the current value of the parameter, and eliding the argument clears the parameter:
+A *Terminal* symbol can be any of the following:
+
+* A literal string of one or more characters enclosed in backticks [`` ` ``]. For example: `` `function` ``
+* A sequence of three backtick characters, which denotes a backtick token. For example: `` ``` ``
+* A Unicode code point, of the form `U+` followed by four to six non-lowercase hexadecimal digits with no leading zeros other than those necessary for padding to a minimum of four digits, in accordance with [The Unicode Standard, Version 15.0.0, Appendix A, Notational Conventions](https://www.unicode.org/versions/Unicode15.0.0/appA.pdf) (i.e., matching Unicode extended BNF pattern `"U+" ( [1-9 A-F] | "10" )? H H H H` or regular expression pattern `^U[+]([1-9A-F]|10)?[0-9A-F]{4}$` as in `U+00A0` or `U+1D306`).
+* The preceding representation followed by a space and a printable ASCII prose explanation (such as a character name) free of `<` and `>` and line terminators, all wrapped in `<` and `>` (i.e., matching Unicode extended BNF pattern `"<" "U+" ( [1-9 A-F] | "10" )? H H H H " " [\u0020-\u007E -- [<>]]+ ">"` or regular expression pattern `^<U[+]([1-9A-F]|10)?[0-9A-F]{4} [\x20-\x3b\x3d\x3f-\x7e]+>$` as in `<U+2212 MINUS SIGN>`)
+* An abbreviation defined somewhere outside the grammar as an ASCII identifier name, wrapped in `<` and `>` (i.e., matching Unicode extended BNF pattern `"<" [A-Z a-z _] [A-Z a-z _ 0-9]* ">"` or regular expression pattern `^<[A-Za-z_][A-Za-z_0-9]*$>` as in `<NBSP>`).
+
+##### Character Ranges
+
+Character ranges may be specified using the `through` keyword:
+
+```
+    SourceCharacter but not one of `"` or `\` or U+0000 through U+001F
+```
+
+#### Nonterminals
+
+A *Nonterminal* symbol is an identifier, followed by an optional *argument list* and/or question mark [`?`]. The question mark changes the cardinality of the *Nonterminal* from "exactly one" to "zero or one".
+The identifier may optionally be enclosed in `|` characters, if it happens to collide with a keyword.
+
+##### Parameters
+
+When present, the *argument list* specifies which parameters should be set.
+It is enclosed in a leading open bracket [`[`] and a trailing close bracket [`]`], and its contents a separated by commas [`,`].
+Supplying the name of a parameter sets it, prefixing the name with a question mark [`?`] passes the current value of the parameter, and eliding a parameter's name clears it:
 
 ```
 Declaration[Yield] :
@@ -92,42 +111,13 @@ Declaration[Yield] :
 	LexicalDeclaration[In, ?Yield]
 ```
 
-The right-hand-side of a *Production* consists of one or more *Terminal* or *Nonterminal* symbols, a sentence of *Prose*, or an *Assertion*.
-
-#### Terminals
-
-A *Terminal* symbol can be one of the following:
-
-* A literal string of one or more characters enclosed in backticks ('\`'). For example: `` `function` ``
-* A sequence of three backtick characters, which denotes a backtick token. For example: `` ``` ``
-* A unicode character literal enclosed in a leading less-than ('<') character and a trailing greater-than ('>') character. For example: `<TAB>`
-
-#### Nonterminals
-
-A *Nonterminal* symbol is an identifier, followed by an optional argument list, and an optional question mark ('?'). The question mark changes the cardinality of the *Nonterminal* from "exactly one" to "zero or one".
-The identifier may optionally be enclosed in `|` characters, if it happens to collide with a keyword.
-
-#### Character Literals and Ranges
-
-Character literals may be specified using one of the following forms:
-
-* A Unicode code point, of the form `U+` followed by four to six non-lowercase hexadecimal digits with no leading zeros other than those necessary for padding to a minimum of four digits, in accordance with [The Unicode Standard, Version 15.0.0, Appendix A, Notational Conventions](https://www.unicode.org/versions/Unicode15.0.0/appA.pdf) (i.e., matching Unicode extended BNF pattern `"U+" ( [1-9 A-F] | "10" )? H H H H` or regular expression pattern `^U[+]([1-9A-F]|10)?[0-9A-F]{4}$` as in `U+00A0` or `U+1D306`).
-* The preceding representation followed by a space and a printable ASCII prose explanation (such as a character name) free of `<` and `>` and line terminators, all wrapped in `<` and `>` (i.e., matching Unicode extended BNF pattern `"<" "U+" ( [1-9 A-F] | "10" )? H H H H " " [\u0020-\u007E -- [<>]]+ ">"` or regular expression pattern `^<U[+]([1-9A-F]|10)?[0-9A-F]{4} [\x20-\x3b\x3d\x3f-\x7e]+>$` as in `<U+2212 MINUS SIGN>`)
-* An abbreviation defined somewhere outside the grammar as an ASCII identifier name, wrapped in `<` and `>` (i.e., matching Unicode extended BNF pattern `"<" [A-Z a-z _] [A-Z a-z _ 0-9]* ">"` or regular expression pattern `^<[A-Za-z_][A-Za-z_0-9]*$>` as in `<NBSP>`).
-
-Character ranges may be specified using the `through` keyword:
-
-```
-    SourceCharacter but not one of `"` or `\` or U+0000 through U+001F
-```
-
 #### Prose
 
-A sentence of *Prose* is a single line with a leading greater-than ('>') character. For example: `> any Unicode code point`
+A sentence of *Prose* is a single line with a leading greater-than character [`>`]. For example: `> any Unicode code point`
 
 #### The `but not` Condition
 
-The `but not` condition allows you to reference a production, excluding some part of that production. For example:
+The `but not` condition allows you to reference a production, excluding some expansion(s) of that production. For example:
 
 ```
 MultiLineNotAsteriskChar ::
@@ -148,24 +138,24 @@ MultiLineNotForwardSlashOrAsteriskChar ::
 
 #### Assertions
 
-An *Assertion* is a zero-width test that must evaluate successfully for the *Production* to be considered.
-*Assertions* are enclosed in a leading open bracket ('\[') character and a trailing close-bracket ('\]') character.
+An *Assertion* is a zero-width test that must evaluate successfully for a *right-hand-side* to be considered.
+*Assertions* are enclosed in a leading open bracket [`[`] and a trailing close-bracket [`]`].
 
-The possible assertions include:
+There are multiple kinds of assertion:
 
 * The *empty assertion*, which matches exactly zero tokens: `[empty]`
-* The *lookahead assertion*, which verifies the next tokens in the stream: ``[lookahead != `function`]``
-* The *no-symbol-here assertion*, which verifies the next token is not the provided symbol: `[no LineTerminator here]`
+* The *lookahead assertion*, which inspects the following tokens in the stream without consuming them: ``[lookahead != `function`]``
+* The *no-symbol-here assertion*, which requires that the next element in the stream is not the provided symbol: `[no LineTerminator here]`
 * The *lexical-goal assertion*, which states that the current lexical goal is the supplied *Nonterminal*: `[lexical goal InputElementRegExp]`
-* The *parameter assertion*, which states the supplied parameter to the current production is either set (using the plus ('+') character), or cleared (using the tilde ('~') character): `` [~Yield] `yield` ``
+* The *parameter assertion*, which requires that the supplied parameter to the current production is either set (using plus character [`+`]), or cleared (using the tilde character [`~`]): `` [~Yield] `yield` ``
 * The *prose assertion*, which allows for arbitrary prose, mixed with terminals and nonterminals: ``[> prose text `terminal` prose text |NonTerminal| prose text]``
 
-A *lookahead assertion* has the following operators:
+A *lookahead assertion* must use one the following operators:
 
-* The `==` operator states the lookahead phrase is matched: ``[lookahead == `class`]``
-* The `!=` operator states the lookahead phrase is not matched: ``[lookahead != `function`]``
-* The `<-` operator states that any matching phrase in the provided set is matched: ``[lookahead <- { `public`, `private` }]``
-* The `<!` operator states that any matching phrase in the provided set is not matched: ``[lookahead <! { `{`, `function` }]``
+* The `=` and `==` operators require the lookahead phrase to match: ``[lookahead = `class`]``
+* The `≠` and `!=` operators require the lookahead phrase to not match: ``[lookahead != `function`]``
+* The `∈` and `<-` operators require at least one phrase in a provided set or one expansion of a provided nonterminal to match: ``[lookahead ∈ OctalDigit]``
+* The `∉` and `<!` operators require the absence of a match for any phrase in a provided set or any expansion of a provided nonterminal: ``[lookahead <! { `{`, `function` }]``
 
 #### Linking
 
