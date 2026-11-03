@@ -95,7 +95,7 @@ Character ranges may be specified using the `through` keyword:
 
 #### Nonterminals
 
-A *Nonterminal* symbol is an identifier, followed by an optional *argument list*, and an optional question mark [`?`]. The question mark changes the cardinality of the *Nonterminal* from "exactly one" to "zero or one".
+A *Nonterminal* symbol is an identifier, followed by an optional *argument list* and/or question mark [`?`]. The question mark changes the cardinality of the *Nonterminal* from "exactly one" to "zero or one".
 The identifier may optionally be enclosed in `|` characters, if it happens to collide with a keyword.
 
 ##### Parameters
