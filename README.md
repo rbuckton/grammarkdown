@@ -69,16 +69,10 @@ IdentifierReference[Yield] :
 A *Production* may also specify a limited set of terminals, by using the `one of` keyphrase:
 
 ```
-Keyword :: one of
-	`break`		`do`		`in`			`typeof`
-	`case`		`else`		`instanceof`	`var`
-	`catch`		`export`	`new`			`void`
-	`class`		`extends`	`return`		`while`
-	`const`		`finally`	`super`			`with`
-	`continue`	`for`		`switch`		`yield`
-	`debugger`	`function`	`this`
-	`default`	`if`		`throw`
-	`delete`	`import`	`try`
+HexDigit :: one of
+	`0` `1` `2` `3` `4` `5` `6` `7` `8` `9`
+	`a` `b` `c` `d` `e` `f`
+	`A` `B` `C` `D` `E` `F`
 ```
 
 #### Parameters
