@@ -75,9 +75,32 @@ HexDigit :: one of
 	`A` `B` `C` `D` `E` `F`
 ```
 
-#### Parameters
+#### Terminals
 
-Each *Nonterminal* on the right-hand-side of a production can include an *argument list* specifying which parameters should be set.
+A *Terminal* symbol can be any of the following:
+
+* A literal string of one or more characters enclosed in backticks ('\`'). For example: `` `function` ``
+* A sequence of three backtick characters, which denotes a backtick token. For example: `` ``` ``
+* A Unicode code point, of the form `U+` followed by four to six non-lowercase hexadecimal digits with no leading zeros other than those necessary for padding to a minimum of four digits, in accordance with [The Unicode Standard, Version 15.0.0, Appendix A, Notational Conventions](https://www.unicode.org/versions/Unicode15.0.0/appA.pdf) (i.e., matching Unicode extended BNF pattern `"U+" ( [1-9 A-F] | "10" )? H H H H` or regular expression pattern `^U[+]([1-9A-F]|10)?[0-9A-F]{4}$` as in `U+00A0` or `U+1D306`).
+* The preceding representation followed by a space and a printable ASCII prose explanation (such as a character name) free of `<` and `>` and line terminators, all wrapped in `<` and `>` (i.e., matching Unicode extended BNF pattern `"<" "U+" ( [1-9 A-F] | "10" )? H H H H " " [\u0020-\u007E -- [<>]]+ ">"` or regular expression pattern `^<U[+]([1-9A-F]|10)?[0-9A-F]{4} [\x20-\x3b\x3d\x3f-\x7e]+>$` as in `<U+2212 MINUS SIGN>`)
+* An abbreviation defined somewhere outside the grammar as an ASCII identifier name, wrapped in `<` and `>` (i.e., matching Unicode extended BNF pattern `"<" [A-Z a-z _] [A-Z a-z _ 0-9]* ">"` or regular expression pattern `^<[A-Za-z_][A-Za-z_0-9]*$>` as in `<NBSP>`).
+
+##### Character Ranges
+
+Character ranges may be specified using the `through` keyword:
+
+```
+    SourceCharacter but not one of `"` or `\` or U+0000 through U+001F
+```
+
+#### Nonterminals
+
+A *Nonterminal* symbol is an identifier, followed by an optional *argument list*, and an optional question mark ('?'). The question mark changes the cardinality of the *Nonterminal* from "exactly one" to "zero or one".
+The identifier may optionally be enclosed in `|` characters, if it happens to collide with a keyword.
+
+##### Parameters
+
+When present, the *argument list* specifies which parameters should be set.
 Supplying the name of a parameter sets it, prefixing the name with a question mark ('?') passes the current value of the parameter, and eliding a parameter's name clears it:
 
 ```
@@ -85,33 +108,6 @@ Declaration[Yield] :
 	HoistableDeclaration[?Yield]
 	ClassDeclaration[?Yield]
 	LexicalDeclaration[In, ?Yield]
-```
-
-#### Terminals
-
-A *Terminal* symbol can be one of the following:
-
-* A literal string of one or more characters enclosed in backticks ('\`'). For example: `` `function` ``
-* A sequence of three backtick characters, which denotes a backtick token. For example: `` ``` ``
-* A unicode character literal enclosed in a leading less-than ('<') character and a trailing greater-than ('>') character. For example: `<TAB>`
-
-#### Nonterminals
-
-A *Nonterminal* symbol is an identifier, followed by an optional argument list, and an optional question mark ('?'). The question mark changes the cardinality of the *Nonterminal* from "exactly one" to "zero or one".
-The identifier may optionally be enclosed in `|` characters, if it happens to collide with a keyword.
-
-#### Character Literals and Ranges
-
-Character literals may be specified using one of the following forms:
-
-* A Unicode code point, of the form `U+` followed by four to six non-lowercase hexadecimal digits with no leading zeros other than those necessary for padding to a minimum of four digits, in accordance with [The Unicode Standard, Version 15.0.0, Appendix A, Notational Conventions](https://www.unicode.org/versions/Unicode15.0.0/appA.pdf) (i.e., matching Unicode extended BNF pattern `"U+" ( [1-9 A-F] | "10" )? H H H H` or regular expression pattern `^U[+]([1-9A-F]|10)?[0-9A-F]{4}$` as in `U+00A0` or `U+1D306`).
-* The preceding representation followed by a space and a printable ASCII prose explanation (such as a character name) free of `<` and `>` and line terminators, all wrapped in `<` and `>` (i.e., matching Unicode extended BNF pattern `"<" "U+" ( [1-9 A-F] | "10" )? H H H H " " [\u0020-\u007E -- [<>]]+ ">"` or regular expression pattern `^<U[+]([1-9A-F]|10)?[0-9A-F]{4} [\x20-\x3b\x3d\x3f-\x7e]+>$` as in `<U+2212 MINUS SIGN>`)
-* An abbreviation defined somewhere outside the grammar as an ASCII identifier name, wrapped in `<` and `>` (i.e., matching Unicode extended BNF pattern `"<" [A-Z a-z _] [A-Z a-z _ 0-9]* ">"` or regular expression pattern `^<[A-Za-z_][A-Za-z_0-9]*$>` as in `<NBSP>`).
-
-Character ranges may be specified using the `through` keyword:
-
-```
-    SourceCharacter but not one of `"` or `\` or U+0000 through U+001F
 ```
 
 #### Prose
