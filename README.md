@@ -138,14 +138,14 @@ MultiLineNotForwardSlashOrAsteriskChar ::
 
 #### Assertions
 
-An *Assertion* is a zero-width test that must evaluate successfully for the *Production* to be considered.
+An *Assertion* is a zero-width test that must evaluate successfully for a *right-hand-side* to be considered.
 *Assertions* are enclosed in a leading open bracket ('\[') character and a trailing close-bracket ('\]') character.
 
 The possible assertions include:
 
 * The *empty assertion*, which matches exactly zero tokens: `[empty]`
 * The *lookahead assertion*, which verifies the next tokens in the stream: ``[lookahead != `function`]``
-* The *no-symbol-here assertion*, which verifies the next token is not the provided symbol: `[no LineTerminator here]`
+* The *no-symbol-here assertion*, which verifies the next element in the stream is not the provided symbol: `[no LineTerminator here]`
 * The *lexical-goal assertion*, which states that the current lexical goal is the supplied *Nonterminal*: `[lexical goal InputElementRegExp]`
 * The *parameter assertion*, which states the supplied parameter to the current production is either set (using the plus ('+') character), or cleared (using the tilde ('~') character): `` [~Yield] `yield` ``
 * The *prose assertion*, which allows for arbitrary prose, mixed with terminals and nonterminals: ``[> prose text `terminal` prose text |NonTerminal| prose text]``
