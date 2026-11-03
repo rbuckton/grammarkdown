@@ -141,16 +141,16 @@ MultiLineNotForwardSlashOrAsteriskChar ::
 An *Assertion* is a zero-width test that must evaluate successfully for a *right-hand-side* to be considered.
 *Assertions* are enclosed in a leading open bracket ('\[') character and a trailing close-bracket ('\]') character.
 
-The possible assertions include:
+There are multiple kinds of assertion:
 
 * The *empty assertion*, which matches exactly zero tokens: `[empty]`
-* The *lookahead assertion*, which verifies the next tokens in the stream: ``[lookahead != `function`]``
-* The *no-symbol-here assertion*, which verifies the next element in the stream is not the provided symbol: `[no LineTerminator here]`
+* The *lookahead assertion*, which inspects the following tokens in the stream without consuming them: ``[lookahead != `function`]``
+* The *no-symbol-here assertion*, which requires that the next element in the stream is not the provided symbol: `[no LineTerminator here]`
 * The *lexical-goal assertion*, which states that the current lexical goal is the supplied *Nonterminal*: `[lexical goal InputElementRegExp]`
-* The *parameter assertion*, which states the supplied parameter to the current production is either set (using the plus ('+') character), or cleared (using the tilde ('~') character): `` [~Yield] `yield` ``
+* The *parameter assertion*, which requires that the supplied parameter to the current production is either set (using the plus ('+') character), or cleared (using the tilde ('~') character): `` [~Yield] `yield` ``
 * The *prose assertion*, which allows for arbitrary prose, mixed with terminals and nonterminals: ``[> prose text `terminal` prose text |NonTerminal| prose text]``
 
-A *lookahead assertion* has the following operators:
+A *lookahead assertion* must use one the following operators:
 
 * The `=` and `==` operators require the lookahead phrase to match: ``[lookahead = `class`]``
 * The `≠` and `!=` operators require the lookahead phrase to not match: ``[lookahead != `function`]``
