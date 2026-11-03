@@ -32,7 +32,7 @@ In a grammar file, a limited subset of [HTML named character references](https:/
 
 #### Productions
 
-A *Production* consists of a left-hand-side *Nonterminal* followed by a colon (`:`) separator and one or more *right-hand-side* sentences,
+A *Production* consists of a left-hand-side *Nonterminal* followed by a colon [`:`] separator and one or more *right-hand-side* sentences,
 each consisting of one or more *Terminal* or *Nonterminal* symbols, a sentence of *Prose*, or an *Assertion*.
 
 ```
@@ -79,7 +79,7 @@ HexDigit :: one of
 
 A *Terminal* symbol can be any of the following:
 
-* A literal string of one or more characters enclosed in backticks ('\`'). For example: `` `function` ``
+* A literal string of one or more characters enclosed in backticks [`` ` ``]. For example: `` `function` ``
 * A sequence of three backtick characters, which denotes a backtick token. For example: `` ``` ``
 * A Unicode code point, of the form `U+` followed by four to six non-lowercase hexadecimal digits with no leading zeros other than those necessary for padding to a minimum of four digits, in accordance with [The Unicode Standard, Version 15.0.0, Appendix A, Notational Conventions](https://www.unicode.org/versions/Unicode15.0.0/appA.pdf) (i.e., matching Unicode extended BNF pattern `"U+" ( [1-9 A-F] | "10" )? H H H H` or regular expression pattern `^U[+]([1-9A-F]|10)?[0-9A-F]{4}$` as in `U+00A0` or `U+1D306`).
 * The preceding representation followed by a space and a printable ASCII prose explanation (such as a character name) free of `<` and `>` and line terminators, all wrapped in `<` and `>` (i.e., matching Unicode extended BNF pattern `"<" "U+" ( [1-9 A-F] | "10" )? H H H H " " [\u0020-\u007E -- [<>]]+ ">"` or regular expression pattern `^<U[+]([1-9A-F]|10)?[0-9A-F]{4} [\x20-\x3b\x3d\x3f-\x7e]+>$` as in `<U+2212 MINUS SIGN>`)
@@ -95,14 +95,14 @@ Character ranges may be specified using the `through` keyword:
 
 #### Nonterminals
 
-A *Nonterminal* symbol is an identifier, followed by an optional *argument list*, and an optional question mark ('?'). The question mark changes the cardinality of the *Nonterminal* from "exactly one" to "zero or one".
+A *Nonterminal* symbol is an identifier, followed by an optional *argument list*, and an optional question mark [`?`]. The question mark changes the cardinality of the *Nonterminal* from "exactly one" to "zero or one".
 The identifier may optionally be enclosed in `|` characters, if it happens to collide with a keyword.
 
 ##### Parameters
 
 When present, the *argument list* specifies which parameters should be set.
-It is enclosed in a leading open bracket ('\[') character and a trailing close-bracket ('\]') character, and its contents a separated by commas (',').
-Supplying the name of a parameter sets it, prefixing the name with a question mark ('?') passes the current value of the parameter, and eliding a parameter's name clears it:
+It is enclosed in a leading open bracket [`[`] and a trailing close bracket [`]`], and its contents a separated by commas [`,`].
+Supplying the name of a parameter sets it, prefixing the name with a question mark [`?`] passes the current value of the parameter, and eliding a parameter's name clears it:
 
 ```
 Declaration[Yield] :
@@ -113,7 +113,7 @@ Declaration[Yield] :
 
 #### Prose
 
-A sentence of *Prose* is a single line with a leading greater-than ('>') character. For example: `> any Unicode code point`
+A sentence of *Prose* is a single line with a leading greater-than character [`>`]. For example: `> any Unicode code point`
 
 #### The `but not` Condition
 
@@ -139,7 +139,7 @@ MultiLineNotForwardSlashOrAsteriskChar ::
 #### Assertions
 
 An *Assertion* is a zero-width test that must evaluate successfully for a *right-hand-side* to be considered.
-*Assertions* are enclosed in a leading open bracket ('\[') character and a trailing close-bracket ('\]') character.
+*Assertions* are enclosed in a leading open bracket [`[`] and a trailing close-bracket [`]`].
 
 There are multiple kinds of assertion:
 
@@ -147,7 +147,7 @@ There are multiple kinds of assertion:
 * The *lookahead assertion*, which inspects the following tokens in the stream without consuming them: ``[lookahead != `function`]``
 * The *no-symbol-here assertion*, which requires that the next element in the stream is not the provided symbol: `[no LineTerminator here]`
 * The *lexical-goal assertion*, which states that the current lexical goal is the supplied *Nonterminal*: `[lexical goal InputElementRegExp]`
-* The *parameter assertion*, which requires that the supplied parameter to the current production is either set (using the plus ('+') character), or cleared (using the tilde ('~') character): `` [~Yield] `yield` ``
+* The *parameter assertion*, which requires that the supplied parameter to the current production is either set (using plus character [`+`]), or cleared (using the tilde character [`~`]): `` [~Yield] `yield` ``
 * The *prose assertion*, which allows for arbitrary prose, mixed with terminals and nonterminals: ``[> prose text `terminal` prose text |NonTerminal| prose text]``
 
 A *lookahead assertion* must use one the following operators:
