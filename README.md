@@ -84,7 +84,7 @@ Keyword :: one of
 #### Parameters
 
 If a *Nonterminal* on the right-hand-side of a production needs to set a parameter, they supply it in an argument list.
-Supplying the name of the argument sets the parameter, prefixing the name with a question mark ('?) passes the current value of the parameter, and eliding the argument clears the parameter:
+Supplying the name of the argument sets the parameter, prefixing the name with a question mark ('?') passes the current value of the parameter, and eliding the argument clears the parameter:
 
 ```
 Declaration[Yield] :
