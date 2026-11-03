@@ -32,8 +32,8 @@ In a grammar file, a limited subset of [HTML named character references](https:/
 
 #### Productions
 
-A *Production* consists of a left-hand-side *Nonterminal* followed by a colon (`:`) separator and one or more *right-hand-side* sentences consisting of
-various forms of *terminal* and *nonterminal* symbols. For example:
+A *Production* consists of a left-hand-side *Nonterminal* followed by a colon (`:`) separator and one or more *right-hand-side* sentences,
+each consisting of one or more *Terminal* or *Nonterminal* symbols, a sentence of *Prose*, or an *Assertion*.
 
 ```
 NameSpaceImport : `*` `as` ImportedBinding
@@ -86,8 +86,6 @@ Declaration[Yield] :
 	ClassDeclaration[?Yield]
 	LexicalDeclaration[In, ?Yield]
 ```
-
-The right-hand-side of a *Production* consists of one or more *Terminal* or *Nonterminal* symbols, a sentence of *Prose*, or an *Assertion*.
 
 #### Terminals
 
