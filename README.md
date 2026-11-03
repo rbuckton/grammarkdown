@@ -101,6 +101,7 @@ The identifier may optionally be enclosed in `|` characters, if it happens to co
 ##### Parameters
 
 When present, the *argument list* specifies which parameters should be set.
+It is enclosed in a leading open bracket ('\[') character and a trailing close-bracket ('\]') character, and its contents a separated by commas (',').
 Supplying the name of a parameter sets it, prefixing the name with a question mark ('?') passes the current value of the parameter, and eliding a parameter's name clears it:
 
 ```
